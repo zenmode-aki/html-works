@@ -22,11 +22,16 @@ def shrink(src: pathlib.Path, out_dir: pathlib.Path) -> pathlib.Path:
     """幅1200px以内・JPEG q72 に縮小する（macOSの sips を使用）。"""
     dst = out_dir / (src.stem + ".jpg")
     if src.suffix.lower() == ".png":
-        # 透過PNGは白背景のJPEGにすると汚くなるので、PNGのまま縮小だけする
+        # 小さいPNGはsipsで再保存すると、数KBのロゴが数十〜数百KBへ
+        # 逆に膨らむことがある。幅上限内なら元データをそのまま使う。
         dst = out_dir / (src.stem + ".png")
         shutil.copy(src, dst)
-        subprocess.run(["sips", "-Z", str(WIDTH), str(dst)],
-                       check=True, capture_output=True)
+        info = subprocess.run(["sips", "-g", "pixelWidth", str(dst)],
+                              check=True, capture_output=True, text=True).stdout
+        match = re.search(r"pixelWidth:\s*(\d+)", info)
+        if match and int(match.group(1)) > WIDTH:
+            subprocess.run(["sips", "-Z", str(WIDTH), str(dst)],
+                           check=True, capture_output=True)
         return dst
     shutil.copy(src, dst)
     subprocess.run(["sips", "-Z", str(WIDTH),
