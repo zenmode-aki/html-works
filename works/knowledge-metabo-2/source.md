@@ -1,4 +1,4 @@
-# slug: input-metabo-2 / date: 2026-08-26 / words: 139
+# slug: knowledge-metabo-2 / date: 2026-08-26 / words: 139
 
 ## 素材（日本語・原文のまま）
 S1. 前回の続き。
@@ -20,7 +20,7 @@ S14. ちなみに、参考動画はこちらです。
 正解を探し続けるほど、「正解がある」という思い込みに縛られて動けなくなる。
 
 ## 画像
-images/input-metabo-2-higgsfield.jpg — Higgsfield生成。正解探しの迷路で止まるペンギン
+images/knowledge-metabo-2-higgsfield.jpg — Higgsfield生成。正解探しの迷路で止まるペンギン
 images/youtube.png — YouTube logo for the reference video card
 
 ## YouTube

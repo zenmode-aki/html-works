@@ -26,9 +26,9 @@
 
 | 日付 | タイトル | 長さ |
 |---|---|---|
-| 2026.08.26 | [📤 Input Metabo #3: Only Output Makes Life Roll](works/input-metabo-3/index.html) | 144 words · 48 sec |
-| 2026.08.26 | [🔎 Input Metabo #2: I Looked for the Correct Answer](works/input-metabo-2/index.html) | 139 words · 46 sec |
-| 2026.08.26 | [🎧 Input Metabo #1: I Knew More. I Moved Less.](works/input-metabo-1/index.html) | 146 words · 49 sec |
+| 2026.08.26 | [📤 Knowledge Metabo #3: Only Output Makes Life Roll](works/knowledge-metabo-3/index.html) | 144 words · 48 sec |
+| 2026.08.26 | [🔎 Knowledge Metabo #2: I Looked for the Correct Answer](works/knowledge-metabo-2/index.html) | 139 words · 46 sec |
+| 2026.08.26 | [🎧 Knowledge Metabo #1: I Knew More. I Moved Less.](works/knowledge-metabo-1/index.html) | 146 words · 49 sec |
 | 2026.08.26 | [⚾ I Played Pawapuro Again After a Long Time! 🎮](works/pawapuro/index.html) | 163 words · 54 sec |
 
 ---
