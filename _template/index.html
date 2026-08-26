@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- 👇 差し替える -->
+<title>__SLUG__</title>
+<style>
+  :root {
+    --bg: #fff7fb;
+    --card: rgba(255,255,255,.94);
+    --text: #322536;
+    --muted: #876f84;
+    --pink: #ff6fae;
+    --purple: #8b6de8;
+    --line: rgba(91,52,103,.12);
+    --shadow: 0 20px 55px rgba(115,70,111,.16);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 8% 4%,   rgba(255,212,92,.33),  transparent 24%),
+      radial-gradient(circle at 96% 14%, rgba(255,111,174,.20), transparent 27%),
+      radial-gradient(circle at 50% 100%,rgba(101,214,189,.16), transparent 35%),
+      var(--bg);
+  }
+
+  main { width: min(920px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  /* ── 上のバー：戻る導線 と ワード数バッジ ───────────────── */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+  }
+  .home {
+    display: inline-block; min-height: 44px; padding: 12px 18px;
+    border-radius: 999px; background: #fff; color: var(--purple);
+    border: 2px solid rgba(255,255,255,.9);
+    font-size: 14px; text-decoration: none;
+    box-shadow: 0 6px 16px rgba(115,70,111,.10);
+  }
+  .home:hover { transform: translateY(-2px); }
+  /* ⏱ 読者への親切であり、AIが盛っていないことの証拠でもある */
+  .wc-badge {
+    padding: 10px 16px; border-radius: 999px;
+    background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em;
+    box-shadow: 0 6px 16px rgba(115,70,111,.08);
+  }
+
+  .label {
+    color: var(--purple); font-size: 13px; font-weight: 800;
+    letter-spacing: .14em; margin-bottom: 16px;
+  }
+
+  h1 {
+    margin: 0 0 22px; color: #3b2745;
+    font-size: clamp(34px, 6.6vw, 66px); line-height: 1.06;
+    letter-spacing: -.05em; text-wrap: balance;
+    text-shadow: 0 4px 0 rgba(255,255,255,.75);
+  }
+
+  /* ── 写真（base64で埋め込む。tools/embed.py がやる）─────────── */
+  .photo {
+    margin: 0 0 24px; overflow: hidden; background: #f3e9f2;
+    border: 7px solid rgba(255,255,255,.78); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg);
+  }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  /* ── 本文カード（1枚に2〜4文まで）──────────────────────── */
+  .card {
+    position: relative; margin-top: 18px; padding: 26px;
+    background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(115,70,111,.09);
+    backdrop-filter: blur(8px);
+  }
+  .card:nth-of-type(2n) { transform: rotate(.25deg); }
+  .card:nth-of-type(3n) { transform: rotate(-.2deg); }
+
+  p {
+    margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif;
+    font-size: clamp(17px, 2.4vw, 21px); line-height: 1.78;
+  }
+  .section-emoji { font-size: 30px; line-height: 1; margin-bottom: 10px; letter-spacing: .08em; }
+  /* オチの一言 */
+  .big { font-size: clamp(23px, 4vw, 34px); font-weight: 850; line-height: 1.45; color: #6d3a63;
+         font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ── タイムライン（段階を見せるとき）──────────────────── */
+  .timeline { display: grid; gap: 14px; margin-top: 20px; }
+  .timeline-item {
+    display: grid; grid-template-columns: 160px 1fr; align-items: center; gap: 14px;
+    padding: 16px 18px; border: 2px solid rgba(255,255,255,.9); border-radius: 22px;
+    box-shadow: 0 7px 18px rgba(115,70,111,.07);
+  }
+  .timeline-item:nth-child(1) { background: #fff5c9; }
+  .timeline-item:nth-child(2) { background: #e7f5ff; }
+  .timeline-item:nth-child(3) { background: #f4eaff; }
+  .timeline-item:nth-child(4) { background: #e6fbf4; }
+  .stage  { font-weight: 900; color: #6f52ca; }
+  .device { font-weight: 750; color: #49354d; }
+
+  /* ── YouTube（iframeにしない。カードでリンク）───────────── */
+  .youtube-card {
+    display: block; margin-top: 28px; overflow: hidden; color: #fff; text-decoration: none;
+    border: 6px solid rgba(255,255,255,.9); border-radius: 30px; background: #25152c;
+    box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .youtube-card:hover, .youtube-card:focus-visible {
+    transform: translateY(-4px) rotate(-.3deg); box-shadow: 0 25px 65px rgba(115,70,111,.24);
+  }
+  /* サムネが読めなくても、下地のグラデーションで崩れない */
+  .youtube-thumb {
+    position: relative; display: grid; min-height: 210px; place-items: center; overflow: hidden;
+    background: linear-gradient(135deg, rgba(76,36,93,.78), rgba(255,111,174,.62));
+  }
+  .play {
+    display: grid; position: relative; z-index: 1; width: 78px; height: 78px;
+    place-items: center; padding-left: 5px; border-radius: 50%;
+    background: #fff; color: #f04476; font-size: 34px; box-shadow: 0 10px 25px rgba(0,0,0,.24);
+  }
+  .youtube-footer {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 16px 18px 18px; font-size: 16px;
+  }
+  .watch-button {
+    display: inline-block; flex: 0 0 auto; min-height: 44px; padding: 13px 16px;
+    border-radius: 999px; background: #ff4f78; color: #fff; font-size: 14px;
+    box-shadow: 0 5px 0 #c9355b;
+  }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 920px); padding-top: 16px; }
+    /* 375pxでも「戻る」とバッジが1行に収まるように少しだけ詰める */
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .home     { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 12px; font-size: 12px; white-space: nowrap; }
+    .photo, .card, .youtube-card { border-radius: 23px; }
+    .card { padding: 20px; }
+    .timeline-item { grid-template-columns: 1fr; gap: 4px; }
+    .youtube-thumb { min-height: 175px; }
+    .youtube-footer { align-items: flex-start; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <a class="home" href="../../index.html">← Back to all works</a>
+    <!-- 👇 python3 tools/check.py --fix-badge が正しい数字に直してくれる -->
+    <div class="wc-badge">⏱ 0 words · 0 sec read</div>
+  </div>
+
+  <!-- 👇 差し替える -->
+  <div class="label">🐧 1 MINUTE BLOG 🐧</div>
+  <h1>🐧 Title Goes Here</h1>
+
+  <!-- 写真：images/ に入れて、ここには IMAGE:ファイル名 と書くだけ。
+       python3 tools/embed.py __SLUG__ が縮小してbase64に置き換える -->
+  <figure class="photo">
+    <img src="IMAGE:photo.jpg" alt="写真の内容を英語で説明する" />
+  </figure>
+
+  <!-- 本文カード：1枚に2〜4文まで。素材の日本語を直訳した英語だけを置く -->
+  <section class="card">
+    <p>
+      First sentence here.
+    </p>
+  </section>
+
+  <!-- 段階や流れを見せたいとき（要らなければ消す） -->
+  <section class="card">
+    <div class="timeline">
+      <div class="timeline-item"><div class="stage">🧸 Step one</div><div class="device">detail</div></div>
+      <div class="timeline-item"><div class="stage">🎒 Step two</div><div class="device">detail</div></div>
+      <div class="timeline-item"><div class="stage">🏫 Step three</div><div class="device">detail</div></div>
+    </div>
+  </section>
+
+  <!-- オチの一言（要らなければ消す） -->
+  <section class="card">
+    <div class="section-emoji" aria-hidden="true">💥🐧🔥</div>
+    <p class="big">The punchline goes here. 🙂‍↕️</p>
+  </section>
+
+  <!-- YouTubeがあるとき（要らなければ丸ごと消す） -->
+  <!--
+  <a class="youtube-card" href="https://youtu.be/XXXX" target="_blank" rel="noopener noreferrer" aria-label="Watch on YouTube">
+    <div class="youtube-thumb" aria-hidden="true"><span class="play">▶</span></div>
+    <div class="youtube-footer">
+      <span>🐧</span>
+      <span class="watch-button">▶ Watch on YouTube</span>
+    </div>
+  </a>
+  -->
+
+</main>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1  → 使った（1枚目のカード）
+S2  → 削った：重複
+
+本文の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：S2
+追加した文：0
+-->
