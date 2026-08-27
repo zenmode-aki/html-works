@@ -26,6 +26,9 @@
 
 | 日付 | タイトル | 長さ |
 |---|---|---|
+| 2026.08.27 | [✂️ Perfectionism #3: Choose 3 Things to Leave Behind First](works/perfectionist-3/index.html) | 179 words · 60 sec |
+| 2026.08.27 | [🌀 Perfectionism #2: Preparation Never Becomes Perfect](works/perfectionist-2/index.html) | 143 words · 48 sec |
+| 2026.08.27 | [🧩 Perfectionism #1: Why Perfectionists Love Starting](works/perfectionist-1/index.html) | 161 words · 54 sec |
 | 2026.08.26 | [📤 Knowledge Metabo #3: Only Output Makes Life Roll](works/knowledge-metabo-3/index.html) | 144 words · 48 sec |
 | 2026.08.26 | [🔎 Knowledge Metabo #2: I Looked for the Correct Answer](works/knowledge-metabo-2/index.html) | 139 words · 46 sec |
 | 2026.08.26 | [🎧 Knowledge Metabo #1: I Knew More. I Moved Less.](works/knowledge-metabo-1/index.html) | 146 words · 49 sec |
