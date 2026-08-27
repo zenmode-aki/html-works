@@ -21,6 +21,15 @@ WIDTH, QUALITY = 1200, 72
 def shrink(src: pathlib.Path, out_dir: pathlib.Path) -> pathlib.Path:
     """幅1200px以内・JPEG q72 に縮小する（macOSの sips を使用）。"""
     dst = out_dir / (src.stem + ".jpg")
+    # すでに十分小さく圧縮されたJPEGをsipsで再保存すると、逆に数倍へ
+    # 膨らむことがある。幅と容量が上限内なら、そのまま埋め込む。
+    if src.suffix.lower() in (".jpg", ".jpeg") and src.stat().st_size <= 250 * 1024:
+        info = subprocess.run(["sips", "-g", "pixelWidth", str(src)],
+                              check=True, capture_output=True, text=True).stdout
+        match = re.search(r"pixelWidth:\s*(\d+)", info)
+        if match and int(match.group(1)) <= WIDTH:
+            shutil.copy(src, dst)
+            return dst
     if src.suffix.lower() == ".png":
         # 小さいPNGはsipsで再保存すると、数KBのロゴが数十〜数百KBへ
         # 逆に膨らむことがある。幅上限内なら元データをそのまま使う。
