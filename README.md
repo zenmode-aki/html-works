@@ -6,13 +6,14 @@
 
 ## 🔗 3つの入口
 
-**スマホからでも、この3つのURLを開けば全部見られます。**
+**スマホからでも、この4つのURLを開けば全部見られます。**
 
 | | 何が置いてあるか | URL |
 |---|---|---|
 | 🟢 **本番** | 世界に公開しているブログ。ここだけが検索に出る | https://zenmode-aki.github.io/html-works/ |
 | 🟡 **本番前（記事）** | まだ出していない記事の置き場。**中身**を確かめるところ | https://zenmode-aki.github.io/html-works/staging/ |
-| 🔵 **本番前（見た目）** | 次のトップページの試作。**デザイン**を確かめるところ<br>スロット／検索／日本地図・世界地図／🐧ペンゲッソの自己紹介 | https://zenmode-aki.github.io/html-works/staging/prototype-home.html |
+| 🐧 **ペンゲッソ** | 書いているペンギンの自己紹介。スロット／検索／日本地図・世界地図 | https://zenmode-aki.github.io/html-works/pengesso.html |
+| 🔵 **本番前（見た目）** | 🐧 の**次の版**を試すところ。**デザイン**を確かめる | https://zenmode-aki.github.io/html-works/staging/prototype-home.html |
 
 ### なぜ「本番前」が2つあるのか
 
@@ -44,12 +45,13 @@ cd ~/Developer/html-works && ./local.sh
 
 開いたら、そこから全部たどれます。直接行きたいときは：
 
-上の3つと、同じ並びです。
+上と同じ並びです。
 
 | | URL |
 |---|---|
 | 🟢 **本番** | http://localhost:8811/index.html |
 | 🟡 **本番前（記事）**（まずここ） | http://localhost:8811/staging/index.html |
+| 🐧 **ペンゲッソ** | http://localhost:8811/pengesso.html |
 | 🔵 **本番前（見た目）** | http://localhost:8811/staging/prototype-home.html |
 
 止めるとき：
@@ -59,7 +61,7 @@ cd ~/Developer/html-works && ./local.sh stop
 ```
 
 ⚠️ ローカルは **自分のMacの中だけ。**スマホからは見られません。
-スマホで見たいときは、push してから上の 🟢🟡🔵 のURLを開いてください。
+スマホで見たいときは、push してから上の 🟢🟡🐧🔵 のURLを開いてください。
 
 ---
 
@@ -91,6 +93,11 @@ cd ~/Developer/html-works && ./local.sh stop
 | 一覧のサムネ | **絵文字ではなく画像。**1記事1枚、正方形で生成する |
 | 動き | **必ず何か動かす。**ただし大げさなアニメは作らない |
 | トーン | **反転させる。**真面目な話ほどポップに、どうでもいい話ほど荘厳に |
+| 数字 | **アルファベットで書かない。** eighth floor ではなく **8th floor**。数字のほうがパッと目に入る |
+| 表紙 | **1枚目は必ずAIで生成した絵。** 本人の写真は2枚目以降に置く |
+| 拾い物 | **ネットで拾った写真を貼らない。** 権利が分からないものは載せない。AIで描き直す |
+| 地図 | 場所の話なら **OpenStreetMap を埋め込む**（上から見て雰囲気がわかるように） |
+| 動画 | 本人のYouTubeがあれば **youtube-nocookie で埋め込む** |
 | 画像 | **本人が渡した写真を最優先し、関連する写真はなるべく全部使う。** 必ず base64 で埋め込み、相対パスも外部URLも使わない |
 | 1記事のサイズ | 通常は **400KB以内**。複数写真のフォトストーリーは **1.5MB以内** |
 | 見せ方 | 文章を少なく、写真・コード風パネル・図解・控えめなアニメーションを多めにする |
@@ -247,6 +254,22 @@ pawapuro:  708KB  →  317KB
 ```
 
 15秒記事は写真が1枚なので、もっと軽くなる。GitHub Pages のソフト上限は1GB。
+
+### 例外は2つだけ：地図と動画
+
+**地図と動画は base64 にできない。**その場でネットに取りに行くしかない。
+だから `<iframe>` を許しているのは、この2つだけ：
+
+| | 使うもの | なぜ |
+|---|---|---|
+| 🗺 地図 | `openstreetmap.org/export/embed.html` | APIキーが要らず、そのまま埋め込める |
+| ▶️ 動画 | `youtube-nocookie.com/embed/` | 追跡を減らした版のYouTube |
+
+`tools/check.py` がこの2つ以外の `<iframe>` を弾く。増やすときは理由も一緒に書くこと。
+
+> ⚠️ **Googleマップは埋め込めなくなった。** 昔できた `?output=embed` は 2026-09 の時点で
+> 404 と `X-Frame-Options: SAMEORIGIN` を返す。Googleの地図に戻すなら、
+> **APIキー**を取るか、Googleマップの「共有 → 地図を埋め込む」で出る `pb=` 付きのURLを貼るしかない。
 
 手で縮小したいとき：
 

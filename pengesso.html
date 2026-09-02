@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>15 Seconds — Pengesso (local prototype)</title>
+<title>Pengesso — the penguin who runs this blog</title>
 <style>
   /* ══════════════════════════════════════════════════════════════
      ペンゲッソの色から取った配色
@@ -40,6 +40,7 @@
     padding: 9px 14px; font-size: 11.5px; font-weight: 900; letter-spacing: .14em;
     background: var(--yellow); color: #4a2c00;
   }
+  .stage-bar-public { background: #23c98a; color: #04331d; }
   .stage-bar .why { opacity: .78; letter-spacing: .02em; font-weight: 700; }
   /* 絵文字は環境で出ないことがあるので、丸は CSS で描く */
   .stage-dot {
@@ -548,40 +549,6 @@
     .rule, .two { grid-template-columns: 1fr; }
   }
 
-  /* ── 文章は「1行だけ強く、あとは小さく」。読む量を減らすための2クラス ── */
-  .blk p.lead { font-size: clamp(19px, 3.6vw, 26px) !important; font-weight: 900 !important;
-       line-height: 1.4 !important; letter-spacing: -.025em; margin-bottom: 14px !important; }
-  .blk p.sub  { font-size: clamp(13.5px, 2.1vw, 15.5px) !important; font-weight: 700 !important;
-       color: rgba(255,255,255,.62) !important; line-height: 1.65 !important;
-       margin-top: 14px !important; }
-  .blk p.sub b { color: var(--yellow); }
-
-  /* ── 出てくるときに少しずつずらす（動きを増やす） ── */
-  .js .rule-side, .js .two-col { opacity: 0; transform: translateY(16px) scale(.97);
-       transition: opacity .55s ease-out, transform .55s cubic-bezier(.2,.85,.25,1); }
-  .js .rule.in .rule-side, .js .two.in .two-col { opacity: 1; transform: none; }
-  .js .rule.in .rule-side:nth-child(2),
-  .js .two.in .two-col:nth-child(2) { transition-delay: .13s; }
-
-  /* ── メーターの数字が 0% から回る ── */
-  .meter-num { font-variant-numeric: tabular-nums; }
-  .js .meter.in .meter-fill { animation: nudge .5s 1.5s ease-out; }
-  @keyframes nudge { 40% { transform: scaleX(1.03); } }
-
-  /* ── 主役のペンギンを少し呼吸させる ── */
-  .js .rule-pen > b { display: inline-block; animation: breathe 2.8s ease-in-out infinite; }
-  @keyframes breathe { 0%,100% { transform: translateY(0) rotate(-4deg); }
-                        50%    { transform: translateY(-6px) rotate(4deg); } }
-
-  /* ── スマホで絶対に横に崩さない ── */
-  .blk, .warn { min-width: 0; }
-  .blk *, .warn * { min-width: 0; overflow-wrap: anywhere; }
-  @media (max-width: 430px) {
-    .rule-side, .two-col { padding: 16px 14px; }
-    .rule-side > b, .two-col > b { font-size: 24px; }
-    .meter-legend { font-size: 10px; letter-spacing: .06em; gap: 6px; }
-  }
-
   @media (max-width: 560px) {
     /* 横スクロールだと5枚目に気づかない。スマホでは縦に積む */
     .steps { display: grid; grid-template-columns: 1fr; gap: 9px; overflow: visible; }
@@ -601,16 +568,16 @@
 </head>
 <body>
 
-<div class="stage-bar">
-  <span class="stage-dot" aria-hidden="true"></span>STAGING
-  <span class="why">見た目の試作。ここで作って、よければ pengesso.html へ</span>
+<div class="stage-bar stage-bar-public">
+  <span class="stage-dot" aria-hidden="true"></span>PUBLIC
+  <span class="why">Unfinished on purpose. That is the rule. 🐧</span>
 </div>
 
 <div class="wrap">
 
   <header>
     <div class="brand">
-      <div class="brand-mark"><img src="../assets/pengesso/pengesso-01.jpg" alt="Pengesso" /></div>
+      <div class="brand-mark"><img src="assets/pengesso/pengesso-01.jpg" alt="Pengesso" /></div>
       <div>
         <div class="brand-name">Pengesso</div>
         <div class="brand-sub">writes for his owner · 15 seconds each</div>
@@ -642,7 +609,7 @@
       <button class="btn btn-ghost" id="spin" type="button">🎰 Spin again</button>
     </div>
 
-    <div class="hero-pengesso"><img src="../assets/pengesso/pengesso-01.jpg" alt="" /></div>
+    <div class="hero-pengesso"><img src="assets/pengesso/pengesso-01.jpg" alt="" /></div>
   </section>
 
   <!-- ══ 検索 ══ -->
@@ -714,7 +681,7 @@
       <h3>📋 Pengesso, basically</h3>
       <div class="about-grid">
         <div class="about-photo">
-          <img src="../assets/pengesso/pengesso-01.jpg" alt="Pengesso" />
+          <img src="assets/pengesso/pengesso-01.jpg" alt="Pengesso" />
         </div>
         <div class="facts">
           <div class="fact-card">
@@ -747,8 +714,11 @@
 
     <!-- ── 🤔 何者なの ── -->
     <div class="blk">
-      <h3>🐧 What is this?</h3>
-      <p class="lead">A penguin writes short posts for his owner.</p>
+      <h3>🤔 So what is Pengesso?</h3>
+      <p>Pengesso is a penguin who writes a blog for a shy, lazy Japanese person.</p>
+      <p>His owner likes thinking.<br />He likes overthinking even more.</p>
+      <p>But social media is scary.</p>
+      <p>So the owner asked an AI for help, and somehow the job came to a penguin.</p>
 
       <div class="flow" id="flow">
         <div class="flow-step"><div class="flow-ring">🇯🇵</div><div class="flow-cap">Human</div></div>
@@ -761,13 +731,19 @@
         <div class="flow-drop" id="flowDrop" aria-hidden="true">📄</div>
       </div>
 
-      <p class="sub">His owner is too shy to post. So the penguin does it.</p>
+      <p>This is the workflow.</p>
     </div>
 
     <!-- ── 🔁 誰のため ── -->
     <div class="blk">
-      <h3>🔁 Who is it for?</h3>
-      <p class="lead">His owner, later.</p>
+      <h3>🔁 Who is this blog for?</h3>
+      <p>Mostly for his owner, in the future.</p>
+      <p>
+        His owner thinks.<br />
+        Then he forgets what he thought.<br />
+        Then he thinks the same thing again, from the start.
+      </p>
+      <p>Pengesso records this endless rerun.</p>
 
       <div class="loop-stage">
         <div class="loop" aria-hidden="true">
@@ -782,17 +758,18 @@
         </div>
       </div>
 
-      <p class="sub">He forgets everything. Pengesso keeps a copy.</p>
-      <p class="hello">Oh 😳 — you are reading it too. Welcome.</p>
+      <p class="hello" style="margin-top:22px;">Oh 😳. We did not expect you to be reading this.</p>
+      <p>But you are here now, so nothing can be done.<br />Please enjoy yourself.</p>
     </div>
 
 
     <!-- ── 🙃 未完成のまま出す ── -->
     <div class="blk">
-      <h3>🙃 One rule: post it at 60%</h3>
-      <p class="lead">The owner is a perfectionist, so he never posts.</p>
+      <h3>🙃 Pengesso has exactly one rule</h3>
+      <p>His owner is a perfectionist.<br />
+         He waits until a thing is finished. So he never posts it.</p>
 
-      <div class="rule reveal">
+      <div class="rule">
         <div class="rule-side">
           <b>🇯🇵</b>
           <div class="rule-k">THE OWNER</div>
@@ -809,33 +786,38 @@
         <div class="meter-bar"><div class="meter-fill"></div></div>
         <div class="meter-legend">
           <span>0% NOT WRITTEN</span>
-          <span class="now"><b class="meter-num">0</b>% ← POST IT 🐧</span>
+          <span class="now">60% ← POST IT 🐧</span>
           <span>100% NEVER</span>
         </div>
       </div>
 
-      <p class="sub">Typos and rough edges stay in. <b>A perfect post nobody reads is worth 0%.</b></p>
+      <p>So this site is always a bit unfinished. Typos. Rough edges. Half-thoughts.</p>
+      <p>That is on purpose. <b>A perfect post nobody ever reads is worth 0%.</b></p>
     </div>
 
     <!-- ── 🌐 インターネットとの距離感 ── -->
     <div class="blk">
-      <h3>🌐 Why it reads like this</h3>
+      <h3>🌐 Pengesso and the internet</h3>
 
-      <div class="two reveal">
+      <div class="two">
         <div class="two-col two-good">
           <b>💙</b>
-          <div class="two-k">GOOD</div>
-          <p>You learn anything, free.</p>
+          <div class="two-k">THE GOOD PART</div>
+          <p>So much good stuff arrives for free.</p>
+          <p>You can learn almost anything from strangers.</p>
         </div>
         <div class="two-col two-bad">
           <b>😵</b>
-          <div class="two-k">HARD</div>
-          <p>Everyone posts their best day.</p>
+          <div class="two-k">THE HARD PART</div>
+          <p>Posting quietly turns into comparing.</p>
+          <p>Everyone shows their best day only.</p>
         </div>
       </div>
 
-      <p class="lead">So this one posts the worries instead.</p>
-      <p class="sub">Read it without feeling behind. That is the whole idea.</p>
+      <p>So this blog does not show off happy things.</p>
+      <p><b>It shows what the owner is still worried about.</b><br />
+         Out loud. On purpose. While he is still stuck.</p>
+      <p>A place you can read without feeling behind. That is the whole idea.</p>
     </div>
 
     <!-- ── ⚙️ 公開されるまで ── -->
@@ -852,9 +834,13 @@
 
     <!-- ── ⚠️ お願い ── -->
     <div class="warn">
-      <h3>⚠️ One request</h3>
-      <p>When a post does not explain enough, please just say:</p>
+      <h3>⚠️ A small request before you read</h3>
+      <p>Please do not question us too hard.</p>
+      <p>Pengesso is a penguin, so he does not fully understand humans.</p>
+      <p>The owner is shy, so if you push him, he hides.</p>
+      <p>When the explanation is not enough, please just say:</p>
       <div class="stamp">“A penguin wrote it. Nothing can be done.”</div>
+      <p style="margin-top:14px;">Thank you for understanding.</p>
     </div>
   </section>
 
@@ -902,77 +888,47 @@ document.getElementById('spin').addEventListener('click', function () {
 /* 2. 仮データ（いまある11本） ──────────────────────────────── */
 /* ⬇️ POSTS:START — build-site.py が meta.json から作ります。手で書かない ⬇️ */
 var POSTS = [
-  {slug:'want-to-ask-for-help', label:'But How', len:15, words:47, date:'2026-09-02', age:22, place:'nagoya',
-   href:'works/want-to-ask-for-help/index.html', thumb:'../assets/thumbs/want-to-ask-for-help.jpg',
-   title:'I want to become someone who can ask for help'},
-  {slug:'thailand-first-trip', label:'Thailand First Trip', len:60, words:112, date:'2026-09-02', age:19, place:'thailand',
-   href:'works/thailand-first-trip/index.html', thumb:'../assets/thumbs/thailand-first-trip.jpg',
-   title:'My first trip abroad was a solo trip to Thailand'},
-  {slug:'nagoya-station-bookshop', label:'Eighth Floor', len:15, words:23, date:'2026-09-02', age:22, place:'nagoya',
-   href:'works/nagoya-station-bookshop/index.html', thumb:'../assets/thumbs/nagoya-station-bookshop.jpg',
-   title:'The best way to kill time at Nagoya Station is a bookshop'},
-  {slug:'mochi-cafe-baguio', label:'Food With View', len:15, words:31, date:'2026-09-02', age:22, place:'baguio',
-   href:'works/mochi-cafe-baguio/index.html', thumb:'../assets/thumbs/mochi-cafe-baguio.jpg',
-   title:'Moch Cafe in Baguio has good food and a huge calm view'},
-  {slug:'khaosan-road-chaos', label:'Beautiful Chaos', len:60, words:81, date:'2026-09-02', age:19, place:'bangkok',
-   href:'works/khaosan-road-chaos/index.html', thumb:'../assets/thumbs/khaosan-road-chaos.jpg',
-   title:'Khaosan Road was the most fun part of my Thailand trip'},
-  {slug:'is-this-really-necessary', label:'The Question', len:15, words:53, date:'2026-09-02', age:22, place:'nagoya',
-   href:'works/is-this-really-necessary/index.html', thumb:'../assets/thumbs/is-this-really-necessary.jpg',
-   title:'I ask myself whether I absolutely have to do it'},
-  {slug:'gave-up-managing-myself', label:'So I Stopped', len:15, words:46, date:'2026-09-02', age:22, place:'nagoya',
-   href:'works/gave-up-managing-myself/index.html', thumb:'../assets/thumbs/gave-up-managing-myself.jpg',
-   title:'I gave up trying to manage myself perfectly'},
-  {slug:'burnham-park-flat-walk', label:'Finally Flat', len:60, words:119, date:'2026-09-02', age:22, place:'baguio',
-   href:'works/burnham-park-flat-walk/index.html', thumb:'../assets/thumbs/burnham-park-flat-walk.jpg',
-   title:'Burnham Park was a rare flat place to walk in hilly Baguio'},
-  {slug:'best-buys-2026', label:'The Winner', len:15, words:52, date:'2026-09-02', age:22, place:'nagoya',
-   href:'works/best-buys-2026/index.html', thumb:'../assets/thumbs/best-buys-2026.jpg',
-   title:'My top three buys of 2026, and headphones won'},
-  {slug:'baguio-language-school-memories', label:'School Memories', len:60, words:62, date:'2026-09-02', age:22, place:'baguio',
-   href:'works/baguio-language-school-memories/index.html', thumb:'../assets/thumbs/baguio-language-school-memories.jpg',
-   title:'My language school life in Baguio was full of good memories'},
   {slug:'tokyo-yakult-tsubakuro', label:'Cute Outside', len:15, words:33, date:'2026-09-02', age:22, place:'tokyo',
-   href:'../works/tokyo-yakult-tsubakuro/index.html', thumb:'../assets/thumbs/tokyo-yakult-tsubakuro.jpg',
+   href:'works/tokyo-yakult-tsubakuro/index.html', thumb:'assets/thumbs/tokyo-yakult-tsubakuro.jpg',
    title:"I like the gap between Tsubakuro's cute look and old-man personality"},
   {slug:'regret-running-machine', label:'One Object', len:15, words:36, date:'2026-09-02', age:22, place:'nagoya',
-   href:'../works/regret-running-machine/index.html', thumb:'../assets/thumbs/regret-running-machine.jpg',
+   href:'works/regret-running-machine/index.html', thumb:'assets/thumbs/regret-running-machine.jpg',
    title:'I regret buying a running machine because it just sits there'},
   {slug:'output-like-a-toilet', label:'The Feeling', len:15, words:18, date:'2026-09-02', age:22, place:'nagoya',
-   href:'../works/output-like-a-toilet/index.html', thumb:'../assets/thumbs/output-like-a-toilet.jpg',
+   href:'works/output-like-a-toilet/index.html', thumb:'assets/thumbs/output-like-a-toilet.jpg',
    title:'My need to write things down works like a toilet'},
   {slug:'ai-average-score', label:'Your Job', len:15, words:28, date:'2026-09-02', age:22, place:'nagoya',
-   href:'../works/ai-average-score/index.html', thumb:'../assets/thumbs/ai-average-score.jpg',
+   href:'works/ai-average-score/index.html', thumb:'assets/thumbs/ai-average-score.jpg',
    title:'To use AI well, you have to give the answer first 🤖'},
   {slug:'stop-overthinking-practice', label:'Stop Thinking', len:60, words:178, date:'2026-08-28', age:22, place:'nagoya',
-   href:'../works/stop-overthinking-practice/index.html', thumb:'../assets/thumbs/stop-overthinking-practice.jpg',
+   href:'works/stop-overthinking-practice/index.html', thumb:'assets/thumbs/stop-overthinking-practice.jpg',
    title:'Stop Overthinking Practice 🌀'},
   {slug:'perfectionist-3', label:'Leave Behind', len:60, words:179, date:'2026-08-27', age:22, place:'nagoya',
-   href:'../works/perfectionist-3/index.html', thumb:'../assets/thumbs/perfectionist-3.jpg',
+   href:'works/perfectionist-3/index.html', thumb:'assets/thumbs/perfectionist-3.jpg',
    title:'Perfectionism #3: Choose 3 Things to Leave Behind First'},
   {slug:'perfectionist-2', label:'Never Ready', len:60, words:143, date:'2026-08-27', age:22, place:'nagoya',
-   href:'../works/perfectionist-2/index.html', thumb:'../assets/thumbs/perfectionist-2.jpg',
+   href:'works/perfectionist-2/index.html', thumb:'assets/thumbs/perfectionist-2.jpg',
    title:'Perfectionism #2: Preparation Never Becomes Perfect'},
   {slug:'perfectionist-1', label:'Love Starting', len:60, words:161, date:'2026-08-27', age:22, place:'nagoya',
-   href:'../works/perfectionist-1/index.html', thumb:'../assets/thumbs/perfectionist-1.jpg',
+   href:'works/perfectionist-1/index.html', thumb:'assets/thumbs/perfectionist-1.jpg',
    title:'Perfectionism #1: Why Perfectionists Love Starting'},
   {slug:'japan-philippines-work', label:'Working Culture', len:60, words:178, date:'2026-08-27', age:22, place:'cebu',
-   href:'../works/japan-philippines-work/index.html', thumb:'../assets/thumbs/japan-philippines-work.jpg',
+   href:'works/japan-philippines-work/index.html', thumb:'assets/thumbs/japan-philippines-work.jpg',
    title:'The Cultural Gap I Felt Working in Japan and the Philippines'},
   {slug:'japan-philippines-shops', label:'Store Staffing', len:60, words:167, date:'2026-08-27', age:22, place:'cebu',
-   href:'../works/japan-philippines-shops/index.html', thumb:'../assets/thumbs/japan-philippines-shops.jpg',
+   href:'works/japan-philippines-shops/index.html', thumb:'assets/thumbs/japan-philippines-shops.jpg',
    title:'The Difference in Store Staffing Between Japan and the Philippines'},
   {slug:'pawapuro', label:'Old Game', len:60, words:163, date:'2026-08-26', age:22, place:'nagoya',
-   href:'../works/pawapuro/index.html', thumb:'../assets/thumbs/pawapuro.jpg',
+   href:'works/pawapuro/index.html', thumb:'assets/thumbs/pawapuro.jpg',
    title:'I Played Pawapuro Again After a Long Time! 🎮'},
   {slug:'knowledge-metabo-3', label:'Output Only', len:60, words:144, date:'2026-08-26', age:22, place:'nagoya',
-   href:'../works/knowledge-metabo-3/index.html', thumb:'../assets/thumbs/knowledge-metabo-3.jpg',
+   href:'works/knowledge-metabo-3/index.html', thumb:'assets/thumbs/knowledge-metabo-3.jpg',
    title:'Knowledge Metabo #3: Only Output Makes Life Roll'},
   {slug:'knowledge-metabo-2', label:'Wrong Search', len:60, words:139, date:'2026-08-26', age:22, place:'nagoya',
-   href:'../works/knowledge-metabo-2/index.html', thumb:'../assets/thumbs/knowledge-metabo-2.jpg',
+   href:'works/knowledge-metabo-2/index.html', thumb:'assets/thumbs/knowledge-metabo-2.jpg',
    title:'Knowledge Metabo #2: I Looked for the Correct Answer'},
   {slug:'knowledge-metabo-1', label:'Knew More', len:60, words:146, date:'2026-08-26', age:22, place:'tokyo',
-   href:'../works/knowledge-metabo-1/index.html', thumb:'../assets/thumbs/knowledge-metabo-1.jpg',
+   href:'works/knowledge-metabo-1/index.html', thumb:'assets/thumbs/knowledge-metabo-1.jpg',
    title:'Knowledge Metabo #1: I Knew More. I Moved Less.'},
 ];
 /* ⬆️ POSTS:END ⬆️ */
@@ -982,9 +938,6 @@ var PLACES = {
   nagoya: {name:'Nagoya 🏯', map:'jp', row:9, col:6},
   tokyo: {name:'Tokyo 🗼', map:'jp', row:7, col:8},
   cebu: {name:'Cebu 🌴', map:'world', row:11, col:32},
-  baguio: {name:'Baguio ⛰️', map:'world', row:10, col:32},
-  bangkok: {name:'Bangkok 🛺', map:'world', row:11, col:29},
-  thailand: {name:'Kanchanaburi 🚂', map:'world', row:10, col:29},
 };
 /* ⬆️ PLACES:END ⬆️ */
 
@@ -1265,29 +1218,6 @@ if ('IntersectionObserver' in window) {
 addEventListener('scroll', checkAbout, { passive: true });
 addEventListener('resize', checkAbout);
 checkAbout();
-
-/* 🔢 60% の数字を、メーターが見えたときに 0 から回す */
-(function () {
-  var box = document.querySelector('.meter');
-  var num = document.querySelector('.meter-num');
-  if (!box || !num) return;
-  function run() {
-    var t0 = null;
-    function step(ts) {
-      if (t0 === null) t0 = ts;
-      var k = Math.min((ts - t0) / 1500, 1);
-      num.textContent = Math.round(60 * (1 - Math.pow(1 - k, 3)));
-      if (k < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-      !('IntersectionObserver' in window)) { num.textContent = '60'; return; }
-  var io = new IntersectionObserver(function (es) {
-    es.forEach(function (e) { if (e.isIntersecting) { run(); io.disconnect(); } });
-  }, { threshold: 0.5 });
-  io.observe(box);
-})();
 </script>
 </body>
 </html>

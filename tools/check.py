@@ -128,6 +128,21 @@ def check(work: pathlib.Path, fix_badge: bool):
     if ext:
         problems.append(f"{NG} 外部画像URLがあります（オフラインで消えます）: {ext}")
 
+    # 2b. 埋め込み（iframe）は地図と動画だけ。
+    #     画像を base64 にしているのは「将来フォルダを動かしても壊れない」ため。
+    #     地図と動画はその場でネットに取りに行くしかないので、ここだけ例外にしている。
+    #     ただし何でも貼れるようにはしない。増やすときはここに足して、理由も書くこと。
+    #     ⚠️ Googleマップの ?output=embed は 2026-09 に 404 + X-Frame-Options で埋め込めなくなった。
+    #        いまは OpenStreetMap を使っている。Google に戻すには APIキーか、
+    #        Googleマップの「共有 → 地図を埋め込む」で出る pb= 付きURLが要る。
+    EMBED_OK = ("https://www.openstreetmap.org/export/embed.html",
+                "https://www.youtube-nocookie.com/embed/")
+    frames = [s for s in re.findall(r'<iframe[^>]*\bsrc="([^"]*)"', doc)
+              if not s.startswith(EMBED_OK)]
+    if frames:
+        problems.append(f"{NG} 許可していない埋め込みがあります: {frames}"
+                        f"  → 地図(OpenStreetMap)と動画(youtube-nocookie)だけです")
+
     # 3-4. ワード数とバッジ
     words = body_words(doc)
     n = len(words)
@@ -189,6 +204,16 @@ def check(work: pathlib.Path, fix_badge: bool):
                 problems.append(f"{NG} 見出しラベルは英単語2〜3語にしてください: {bad[:3]}")
             elif labels:
                 notes.append(f"{OK} 見出しラベル {len(labels)}個すべて2〜3語")
+
+        # 7b. 数字はアルファベットで書かない（2026-09-02 に本人が決めた）
+        #     「8階」は eighth floor ではなく 8th floor。数字のほうがパッと目に入る。
+        #     one / first は英語として自然に出てくるので数えない。止めずに知らせるだけ。
+        spelled = sorted(set(w.lower() for w in re.findall(
+            r"\b(two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty|"
+            r"second|third|fourth|fifth|eighth|ninth|tenth|fifteenth|hundred|thousand)\b",
+            " ".join(re.findall(r"<p\b[^>]*>(.*?)</p>", doc, flags=re.S | re.I)), flags=re.I)))
+        if spelled and not legacy:
+            notes.append(f"{WARN}数字が英単語のままです: {spelled} → 8th / 15 のように数字にしてください")
 
         # 8. AIのボケは盛りすぎない
         n_quip = count_class(doc, "quip")

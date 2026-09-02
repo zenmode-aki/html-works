@@ -20,6 +20,7 @@ sips を使わない純Pythonなので、GitHub Actions（Ubuntu）でも動く�
 import html as H
 import importlib.util
 import json
+import re
 import pathlib
 import sys
 
@@ -143,6 +144,12 @@ STYLE = """
   @keyframes float { from { transform:translateY(0) rotate(-4deg); } to { transform:translateY(-9px) rotate(4deg); } }
   .float { display:inline-block; animation:float 3.4s ease-in-out infinite alternate; }
 
+  .who-link { display:inline-block; margin-top:13px; padding:10px 17px; border-radius:999px;
+       background:var(--navy); color:#fff; font-size:13.5px; font-weight:900;
+       text-decoration:none; box-shadow:0 8px 20px rgba(35,44,72,.20);
+       transition:transform .18s ease; }
+  .who-link:hover { transform:translateY(-2px); }
+
   @media (max-width:600px) {
     .work { grid-template-columns:52px 1fr; gap:14px; padding:15px 16px; border-radius:20px; }
     .work-thumb { width:52px; height:52px; border-radius:16px; }
@@ -216,11 +223,13 @@ def build_production(items):
         robots="", title="15 Second Blog ⚡", style=STYLE, bar="", script=SCRIPT,
         kicker="⚡ 15 SECOND BLOG ⚡",
         h1='Things I noticed <span class="float">🐧</span>',
-        intro=("Short posts in easy English. 🌏<br />"
+        intro=("Short posts in easy English, written by a penguin. 🐧<br />"
                "Most posts take about <b>15 seconds</b> to read — the word count is written "
-               "at the top of each page, so you know before you start. ⚡"),
+               "at the top of each page, so you know before you start. ⚡<br />"
+               '<a class="who-link" href="pengesso.html">🐧 Who is Pengesso? →</a>'),
         sections=sections,
-        footer=("🐧 Made with plain HTML. No build, no login, no tracking.<br />"
+        footer=('🐧 <a href="pengesso.html">Meet Pengesso</a> · Made with plain HTML. '
+                "No build, no login, no tracking, no likes.<br />"
                 "Each page is a single self-contained file."))
 
 
@@ -244,9 +253,64 @@ def build_staging(items):
                "気に入ったものだけ「これ出して」と言えば "
                "<a href=\"../index.html\">本番</a> に移ります。"),
         sections=sections,
-        footer=('🟡 STAGING（記事） · <a href="prototype-home.html">🔵 見た目の試作を見る</a> · '
+        footer=('🟡 STAGING（記事） · <a href="prototype-home.html">🔵 見た目の試作</a> · '
+                '<a href="../pengesso.html">🐧 本番のペンゲッソ</a> · '
                 '<a href="../index.html">🟢 本番トップを見る</a><br />'
                 'このページは python3 tools/build-site.py が作っています。'))
+
+
+# 🗺 記事の「どこの話か」。ドットマップの何行目・何列目に印を出すかもここで決める。
+#    meta.json の place がここに無いと build が止まるので、新しい土地は必ず足すこと。
+PLACES = {
+    "nagoya":   ("Nagoya 🏯",     "jp",    9,  6),
+    "tokyo":    ("Tokyo 🗼",      "jp",    7,  8),
+    "cebu":     ("Cebu 🌴",       "world", 11, 32),
+    "baguio":   ("Baguio ⛰️",     "world", 10, 32),
+    "bangkok":  ("Bangkok 🛺",    "world", 11, 29),
+    "thailand": ("Kanchanaburi 🚂", "world", 10, 29),
+}
+
+
+def pengesso(page: pathlib.Path, groups):
+    """🐧 ペンゲッソのページに、記事の一覧を差し込む。
+
+    groups は [(記事たち, リンクの前, サムネの前), …]。
+    本番のページからは works/ を、本番前のページからは
+    staging/works/ と ../works/ の両方を見せたいので、まとめて渡せる形にした。
+    """
+    if not page.exists():
+        return
+    rows, used = [], set()
+    for items, href_prefix, asset_prefix in groups:
+        for m in items:
+            place = m.get("place", "nagoya")
+            if place not in PLACES:
+                raise SystemExit(
+                    f"❌ {m['slug']}: meta.json の place \"{place}\" が tools/build-site.py の "
+                    f"PLACES にありません。地図に出す行・列を決めて足してください。")
+            used.add(place)
+            rows.append(
+                "  {slug:%r, label:%r, len:%d, words:%d, date:%r, age:%d, place:%r,\n"
+                "   href:%r, thumb:%r,\n   title:%r},"
+                % (m["slug"], m.get("label", ""), 15 if m.get("length") != "1min" else 60,
+                   m["words"], m.get("date", ""), int(m.get("age", 22)), place,
+                   f"{href_prefix}{m['slug']}/index.html",
+                   f"{asset_prefix}assets/thumbs/{m['slug']}.jpg",
+                   m.get("title", m["slug"])))
+
+    places = "\n".join(
+        "  %s: {name:%r, map:%r, row:%d, col:%d}," % (k, *PLACES[k])
+        for k in PLACES if k in used)
+
+    t = page.read_text(encoding="utf-8")
+    t = re.sub(r"(/\* ⬇️ POSTS:START.*?⬇️ \*/\n)var POSTS = .*?\n(/\* ⬆️ POSTS:END)",
+               lambda mm: mm.group(1) + "var POSTS = [\n" + "\n".join(rows) + "\n];\n" + mm.group(2),
+               t, flags=re.S)
+    t = re.sub(r"(/\* ⬇️ PLACES:START ⬇️ \*/\n)var PLACES = .*?\n(/\* ⬆️ PLACES:END)",
+               lambda mm: mm.group(1) + "var PLACES = {\n" + places + "\n};\n" + mm.group(2),
+               t, flags=re.S)
+    page.write_text(t, encoding="utf-8")
+    print(f"✅ {page.relative_to(ROOT)}  記事 {len(rows)}本を差し込みました")
 
 
 def main():
@@ -256,6 +320,12 @@ def main():
     (ROOT / "index.html").write_text(build_production(prod), encoding="utf-8")
     (ROOT / "staging").mkdir(exist_ok=True)
     (ROOT / "staging" / "index.html").write_text(build_staging(stag), encoding="utf-8")
+
+    # 🐧 本番のペンゲッソには本番の記事だけ。
+    #    本番前のペンゲッソには、本番前と本番の両方（試作の見た目を実物で確かめたいので）
+    pengesso(ROOT / "pengesso.html", [(prod, "works/", "")])
+    pengesso(ROOT / "staging" / "prototype-home.html",
+             [(stag, "works/", "../"), (prod, "../works/", "../")])
 
     size = (ROOT / "index.html").stat().st_size
     print(f"✅ index.html          本番 {len(prod)}本  ({size/1024:.0f}KB)")

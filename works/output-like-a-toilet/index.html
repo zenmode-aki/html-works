@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="robots" content="noindex, nofollow" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>My need to write things down works like a toilet ⚡</title>
 <style>
@@ -120,6 +119,47 @@
     *, *::before, *::after { animation: none !important; transition: none !important;
       opacity: 1 !important; transform: none !important; }
   }
+/* ⬇️ tools/components.py */
+  /* 🗺 地図 — 上空からその場所の雰囲気がわかるようにする */
+  .map-card, .video-card { margin: 18px 0 0; overflow: hidden;
+       border: 7px solid rgba(255,255,255,.8); border-radius: 30px;
+       box-shadow: var(--shadow); background: #dde7ea; }
+  .map-card iframe { display: block; width: 100%;
+       height: clamp(220px, 45vw, 330px); border: 0; }
+  .video-card { background: #000; }
+  .video-card .ratio { position: relative; width: 100%; padding-top: 56.25%; }
+  .video-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .map-card figcaption, .video-card figcaption {
+       display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+       padding: 11px 16px 13px; background: #fff; color: var(--muted);
+       font-size: 12.5px; font-family: "Trebuchet MS", sans-serif; }
+  .map-card figcaption a, .video-card figcaption a {
+       color: var(--accent, #2f8fbf); font-weight: 700; text-decoration: none; }
+  .map-card figcaption a:hover, .video-card figcaption a:hover { text-decoration: underline; }
+
+  /* 🎞 スライド — 写真を全部縦に流さず、横にスワイプして見る */
+  .slides { margin: 18px 0 0; }
+  .slides-track { display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 12px;
+       scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+       scrollbar-width: none; }
+  .slides-track::-webkit-scrollbar { display: none; }
+  .slides-track figure { flex: 0 0 86%; margin: 0; scroll-snap-align: center;
+       overflow: hidden; background: #fff; border: 6px solid rgba(255,255,255,.85);
+       border-radius: 24px; box-shadow: var(--shadow); }
+  .slides-track img { display: block; width: 100%; height: clamp(200px, 52vw, 280px);
+       object-fit: cover; }
+  .slides-track figcaption { padding: 9px 14px 11px; color: var(--muted);
+       font-size: 12px; font-family: "Trebuchet MS", sans-serif; }
+  .slides-dots { display: flex; justify-content: center; align-items: center; gap: 7px; }
+  /* 記事ごとに明るい配色と暗い配色があるので、色を決め打ちしない。
+     currentColor（その記事の文字色）を薄めて使えば、どちらでも必ず見える */
+  .slides-dots i { width: 7px; height: 7px; border-radius: 50%;
+       background: currentColor; opacity: .28;
+       transition: transform .3s ease, opacity .3s ease; }
+  .slides-dots i.on { opacity: 1; transform: scale(1.55); }
+  .slides-hint { margin-top: 9px; text-align: center; color: var(--muted);
+       font-size: 11.5px; letter-spacing: .1em; font-family: "Trebuchet MS", sans-serif; }
+
 </style>
 <script>document.documentElement.className += " js";</script>
 </head>
@@ -130,7 +170,7 @@
     <a class="home" href="../../index.html">← Back</a>
     <div class="badges">
       <div class="wc-badge">⚡ 18 words · 6 sec</div>
-      <div class="stage stage-staging">STAGING</div>
+      <div class="stage stage-public">PUBLIC</div>
     </div>
   </div>
 
@@ -185,6 +225,26 @@
   items.forEach(function (el) { seen.observe(el); });
   setTimeout(function () { if (!document.querySelector('.card.in')) showAll(); }, 1600);
 })();
+
+  /* 🎞 スライド：いま何枚目を見ているかを丸で出す */
+  document.querySelectorAll('.slides').forEach(function (box) {
+    var track = box.querySelector('.slides-track');
+    var dots  = box.querySelector('.slides-dots');
+    if (!track || !dots) return;
+    var figs = Array.prototype.slice.call(track.children);
+    figs.forEach(function () { dots.appendChild(document.createElement('i')); });
+    var marks = Array.prototype.slice.call(dots.children);
+    if (marks[0]) marks[0].className = 'on';
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var i = figs.indexOf(e.target);
+        marks.forEach(function (m, j) { m.className = (i === j) ? 'on' : ''; });
+      });
+    }, { root: track, threshold: 0.6 });
+    figs.forEach(function (f) { io.observe(f); });
+  });
 </script>
 </body>
 </html>
