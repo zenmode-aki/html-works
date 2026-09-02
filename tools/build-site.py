@@ -244,8 +244,8 @@ def build_staging(items):
                "気に入ったものだけ「これ出して」と言えば "
                "<a href=\"../index.html\">本番</a> に移ります。"),
         sections=sections,
-        footer=('🟡 STAGING · <a href="../index.html">本番トップを見る</a> · '
-                '<a href="https://zenmode-aki.github.io/html-works/">公開サイト</a><br />'
+        footer=('🟡 STAGING（記事） · <a href="prototype-home.html">🔵 見た目の試作を見る</a> · '
+                '<a href="../index.html">🟢 本番トップを見る</a><br />'
                 'このページは python3 tools/build-site.py が作っています。'))
 
 

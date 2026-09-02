@@ -4,10 +4,30 @@
 
 ビルドもCMSもログインも要らない。HTMLを1枚書いて、push するだけ。
 
-| | URL |
-|---|---|
-| 🟢 **本番** | https://zenmode-aki.github.io/html-works/ |
-| 🟡 **本番前**（検索には出ない） | https://zenmode-aki.github.io/html-works/staging/ |
+## 🔗 3つの入口
+
+**スマホからでも、この3つのURLを開けば全部見られます。**
+
+| | 何が置いてあるか | URL |
+|---|---|---|
+| 🟢 **本番** | 世界に公開しているブログ。ここだけが検索に出る | https://zenmode-aki.github.io/html-works/ |
+| 🟡 **本番前（記事）** | まだ出していない記事の置き場。**中身**を確かめるところ | https://zenmode-aki.github.io/html-works/staging/ |
+| 🔵 **本番前（見た目）** | 次のトップページの試作。**デザイン**を確かめるところ<br>スロット／検索／日本地図・世界地図／🐧ペンゲッソの自己紹介 | https://zenmode-aki.github.io/html-works/staging/prototype-home.html |
+
+### なぜ「本番前」が2つあるのか
+
+**変わるタイミングが別々だから。**
+
+```
+🟡 本番前（記事）    毎朝ふえる。中身の話。「この記事、出していい？」
+🔵 本番前（見た目）  たまにしか触らない。ガワの話。「このトップ、かっこいい？」
+```
+
+記事が1本ふえても見た目は変わらないし、見た目を作り直しても記事は1文字も変わらない。
+**混ぜると「どっちを見ているのか」が分からなくなるので、URLごと分けてあります。**
+
+🟡 と 🔵 はどちらも `staging/` の中。**URLを知っている人しか来られないし、検索にも出ません**
+（`robots.txt` + `noindex`）。本番トップからはリンクしていません。
 
 > 📋 **続きの作業をするときは、まず [NEXT.md](NEXT.md) を読んでください。**
 > いまどうなっているか・次にやること・触ってはいけないものが全部書いてあります。
@@ -24,11 +44,13 @@ cd ~/Developer/html-works && ./local.sh
 
 開いたら、そこから全部たどれます。直接行きたいときは：
 
+上の3つと、同じ並びです。
+
 | | URL |
 |---|---|
-| 🟡 **本番前の一覧**（まずここ） | http://localhost:8811/staging/index.html |
-| ⚡ トップの試作（スロット・検索・地図・ペンゲッソ） | http://localhost:8811/staging/prototype-home.html |
-| 🌏 いまの本番トップをローカルで確認 | http://localhost:8811/index.html |
+| 🟢 **本番** | http://localhost:8811/index.html |
+| 🟡 **本番前（記事）**（まずここ） | http://localhost:8811/staging/index.html |
+| 🔵 **本番前（見た目）** | http://localhost:8811/staging/prototype-home.html |
 
 止めるとき：
 
@@ -36,8 +58,8 @@ cd ~/Developer/html-works && ./local.sh
 cd ~/Developer/html-works && ./local.sh stop
 ```
 
-⚠️ `staging/` は **GitHub に上がります。**スマホからも ChatGPT/Codex からも見られます。
-ただし本番トップからリンクしていないし、`robots.txt` と `noindex` で検索にも出ません。
+⚠️ ローカルは **自分のMacの中だけ。**スマホからは見られません。
+スマホで見たいときは、push してから上の 🟢🟡🔵 のURLを開いてください。
 
 ---
 
@@ -252,10 +274,10 @@ html-works/
 ├── _template/
 │   ├── index.html    記事のひな形（部品とモーションキットが全部入っている）
 │   └── source.md     素材の書き込みフォーマット
-├── staging/       🟡 本番前。gitに乗る（検索には出ない）
-│   ├── index.html         本番前の一覧（生成物）
-│   ├── prototype-home.html 新しいトップの試作
-│   └── works/<slug>/      本番前の記事
+├── staging/       本番前。gitに乗る（URLを知っている人だけ・検索には出ない）
+│   ├── index.html         🟡 本番前（記事）の一覧。build-site.py の生成物
+│   ├── works/<slug>/      🟡 本番前の記事そのもの
+│   └── prototype-home.html 🔵 本番前（見た目）。次のトップの試作。手で書いている
 ├── .blog-queue/   🔒 どのSlackメッセージまで記事にしたかの記録。gitに乗らない
 └── works/
     └── pawapuro/

@@ -9,18 +9,24 @@
 
 ## 1. いまどうなっているか
 
-### 2段階になりました
+### 入口は3つあります
 
-| | URL | 中身 |
-|---|---|---|
-| 🟢 **本番** | https://zenmode-aki.github.io/html-works/ | `works/` の11本 |
-| 🟡 **本番前** | https://zenmode-aki.github.io/html-works/staging/ | `staging/works/` の13本 |
+| | URL | 中身 | 誰が作る |
+|---|---|---|---|
+| 🟢 **本番** | https://zenmode-aki.github.io/html-works/ | `works/` の11本 | `build-site.py` の生成物 |
+| 🟡 **本番前（記事）** | https://zenmode-aki.github.io/html-works/staging/ | `staging/works/` の13本 | `build-site.py` の生成物 |
+| 🔵 **本番前（見た目）** | https://zenmode-aki.github.io/html-works/staging/prototype-home.html | 次のトップの試作 | **手で書いている**（生成物ではない） |
+
+**🟡 と 🔵 は別のものです。混ぜないでください。**
+
+- 🟡 は**中身**の置き場。毎朝ふえる。`build-site.py` が作るので**手で編集しない**
+- 🔵 は**見た目**の置き場。たまにしか触らない。1枚のHTMLを**手で編集していい**
+
+🟡 と 🔵 はどちらも `staging/` の中で、`robots.txt` と `noindex` で検索から外してあります。
+本番トップからリンクもしていないので、URLを知っている人しか来ません。
 
 **同じリポジトリ・同じブランチ（main）です。** ChatGPT/Codex も Claude も、
 main に commit & push するだけ。ブランチを分ける必要はありません。
-
-本番前は `robots.txt` と `noindex` で検索から外してあります。
-本番トップからリンクもしていないので、URLを知っている人しか来ません。
 
 ### 記事は「移動するだけ」で本番に出せます
 
