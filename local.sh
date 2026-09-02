@@ -8,7 +8,7 @@ set -e
 cd "$(dirname "$0")"
 
 PORT=8811
-URL="http://localhost:$PORT/drafts/index.html"
+URL="http://localhost:$PORT/staging/index.html"
 
 if [ "$1" = "stop" ]; then
   if [ -f /tmp/html-works-local.pid ] && kill "$(cat /tmp/html-works-local.pid)" 2>/dev/null; then
@@ -32,12 +32,12 @@ fi
 
 cat <<MSG
 
-  🐧 ローカル版の入口
+  🐧 本番前（staging）の入口
      $URL
 
   ほかの入口
-     下書き一覧        http://localhost:$PORT/drafts/index.html
-     トップの試作      http://localhost:$PORT/drafts/_prototype-home.html
+     本番前の一覧      http://localhost:$PORT/staging/index.html
+     トップの試作      http://localhost:$PORT/staging/prototype-home.html
      いまの本番トップ  http://localhost:$PORT/index.html
 
   止めるとき
