@@ -150,13 +150,74 @@
     .youtube-thumb { min-height: 145px; }
     .part-nav { grid-template-columns: 1fr; }
   }
+
+  /* ══ ⚡ 15秒版から後付けした部分（本文は触っていません）══════════ */
+
+  /* 見出し：絵文字だけだと何の話か分からないので、英単語2〜3語を足した */
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label {
+    font-size: 12.5px; font-weight: 900; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--red);
+  }
+
+  /* 読みやすさ：文の切れ目で改行しているので、行間を少し広げる */
+  .card p { line-height: 1.9; text-wrap: pretty; }
+
+  /* 右上のバッジ：いま見ているのが下書きか本番か */
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .stage {
+    padding: 10px 13px; border-radius: 999px;
+    font-size: 11px; font-weight: 900; letter-spacing: .12em;
+    white-space: nowrap; box-shadow: 0 6px 16px rgba(0,0,0,.12);
+  }
+  .stage-local  { background: #ffb020; color: #4a2c00; }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  /* ── 動き。大げさにはしない。「開いた瞬間に何か動いた」程度 ────── */
+  @keyframes rise-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label, h1 { animation: rise-in .55s both ease-out; }
+  h1 { animation-delay: .1s; }
+
+  /* ⚠️ .js が付いているときだけ隠す。JSが動かない環境では最初から見えている */
+  .js .card {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .55s ease-out, transform .55s ease-out;
+  }
+  .js .card.in { opacity: 1; transform: none; }
+
+  @keyframes slide-in-x { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in-x .45s .18s both ease-out; }
+
+  @keyframes pop-in { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop-in .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @keyframes float-y { from { transform: translateY(0) rotate(-4deg); } to { transform: translateY(-8px) rotate(4deg); } }
+  .float { display: inline-block; animation: float-y 3.4s ease-in-out infinite alternate; }
+
+  @media (max-width: 600px) {
+    .badges { gap: 6px; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .card-emoji { font-size: 23px; }
+    .card-label { font-size: 11.5px; letter-spacing: .12em; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation: none !important; transition: none !important;
+      opacity: 1 !important; transform: none !important;
+    }
+  }
 </style>
+<!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
+<script>document.documentElement.className += " js";</script>
 </head>
 <body>
 <main>
   <div class="topbar">
     <a class="home" href="../../index.html">← Back to all works</a>
-    <div class="wc-badge">⏱ 139 words · 46 sec read</div>
+    <div class="badges"><div class="wc-badge">⏱ 139 words · 46 sec</div><div class="stage stage-public">PUBLIC</div></div>
   </div>
 
   <div class="series">🧠 KNOWLEDGE METABO · PART 2 OF 3</div>
@@ -174,44 +235,60 @@
   </div>
 
   <section class="card">
-    <div class="section-emoji" aria-hidden="true">↩️ 🧠</div>
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">↩️ 🧠</span>
+      <span class="card-label">Why I Froze</span>
+    </div>
     <p>
-      This is the next part of the last story.
+      This is the next part of the last story.<br />
       I thought about why too much input makes me unable to move.
     </p>
   </section>
 
   <section class="card">
-    <div class="section-emoji" aria-hidden="true">👂 → 🔎 → 🧍</div>
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">👂 → 🔎 → 🧍</span>
+      <span class="card-label">The Wrong Order</span>
+    </div>
     <p>
-      Maybe the order is like this.
-      I listen to many people’s opinions.
-      Then I start to feel that there is a correct answer in this world.
-      But I do not know it yet.
-      So I listen to more.
+      Maybe the order is like this.<br />
+      I listen to many people’s opinions.<br />
+      Then I start to feel that there is a correct answer in this world.<br />
+      But I do not know it yet.<br />
+      So I listen to more.<br />
       I have to know more, and more, and in the end I do not move from that place.
     </p>
   </section>
 
   <section class="card belief">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎯</span>
+      <span class="card-label">Getting Closer</span>
+    </div>
     <p>
-      Each time I learned something, I thought I was getting closer to the correct answer.
+      Each time I learned something, I thought I was getting closer to the correct answer.<br />
       But in fact, only one idea was growing: “There is a correct answer.”
     </p>
   </section>
 
   <section class="card quote-card">
-    <div class="section-emoji" aria-hidden="true">💡</div>
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💡</span>
+      <span class="card-label">A Psychologist Said</span>
+    </div>
     <p>
-      I remembered a quote.
+      I remembered a quote.<br />
       It seems to be words from a psychologist named William James.
     </p>
     <p class="quote">“Wisdom is knowing what to overlook.”</p>
   </section>
 
   <section class="card">
-    <div class="section-emoji" aria-hidden="true">📌</div>
-    <p>Today’s words: “Wisdom is knowing what to overlook.” The reference video is below.</p>
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📌</span>
+      <span class="card-label">The Words Today</span>
+    </div>
+    <p>Today’s words: “Wisdom is knowing what to overlook.”<br /> The reference video is below.</p>
   </section>
 
   <a class="youtube-card" href="https://youtu.be/PIqzte4OaEY?si=8yulMpmpDY3UmMfp" target="_blank" rel="noopener noreferrer" aria-label="Watch the reference video on YouTube">
@@ -227,6 +304,23 @@
     <a href="../knowledge-metabo-3/index.html">Part 3: Put it out →</a>
   </nav>
 </main>
+
+<!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  // 保険：1枚も出てこなかったら全部見せる。演出のせいで本文が読めない、を防ぐ
+  setTimeout(function () { if (!document.querySelector('.card.in')) showAll(); }, 1600);
+})();
+</script>
 </body>
 </html>
 

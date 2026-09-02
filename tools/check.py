@@ -57,6 +57,23 @@ def count_class(doc: str, cls: str) -> int:
     return sum(1 for attr in re.findall(r'class="([^"]*)"', doc) if cls in attr.split())
 
 
+def count_text_cards(doc: str) -> int:
+    """見出しラベルが要るカードの数。
+
+    数えるのは <p> を持つ「本文カード」だけ。
+    YouTube や本へのリンクだけの .card（book-card / youtube-card）は、
+    読ませる文が無いので見出しラベルの対象外にする。
+    """
+    n = 0
+    for m in re.finditer(r'<section[^>]*class="([^"]*)"[^>]*>', doc):
+        if "card" not in m.group(1).split():
+            continue
+        end = doc.find("</section>", m.end())
+        if end != -1 and re.search(r"<p\b", doc[m.end():end]):
+            n += 1
+    return n
+
+
 def check(work: pathlib.Path, fix_badge: bool):
     name = work.name
     idx = work / "index.html"
@@ -141,13 +158,15 @@ def check(work: pathlib.Path, fix_badge: bool):
             cut = re.search(r"削った文\s*[:：]\s*(.+)", doc)
             notes.append(f"{OK} 追加した文：0" + (f"（削った文: {cut.group(1).strip()[:40]}）" if cut else ""))
 
-    # 7-9. 15秒版だけの検査（1分時代の10本にはかけない）
-    if not legacy:
+    # 7-9. 見出しラベル・ボケの数・動きの逃げ道。
+    #      1分時代の10本も 2026-09 に「入れ物」だけ15秒版に揃えたので、全記事にかける。
+    #      違うのは words の上限だけ（LEGACY は 120〜180 のまま）
+    if True:
         # 7. カードの見出しは絵文字だけにしない。英単語2〜3語のラベルを必ず付ける
-        n_card = count_class(doc, "card")
+        n_card = count_text_cards(doc)
         labels = re.findall(r'class="card-label"[^>]*>(.*?)</', doc, flags=re.S)
         if n_card and len(labels) < n_card:
-            problems.append(f"{NG} 見出しラベルが足りません: card {n_card}枚 / card-label {len(labels)}個"
+            problems.append(f"{NG} 見出しラベルが足りません: 本文カード {n_card}枚 / card-label {len(labels)}個"
                             f"  → 絵文字だけの見出しは禁止。THE PROBLEM のように英単語2〜3語を付けてください")
         else:
             bad = [l.strip() for l in labels if not 2 <= len(l.split()) <= 3]
