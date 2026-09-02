@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🐧 新しい記事を1本つくる
+# ⚡ 新しい15秒記事を1本つくる
 #   使い方:  ./new-post.sh cebu-food
 set -e
 cd "$(dirname "$0")"
@@ -26,9 +26,15 @@ cat <<MSG
 
   1) 日本語の音声入力を $DIR/source.md に貼る（S1. S2. と番号を振る）
   2) PROMPT.md をAIに貼って、素材を渡す → $DIR/index.html を書いてもらう
+     ⚡ 本文は 35〜55 words。カードは3〜5枚。1枚に1〜2文
+     🏷️ すべてのカードに英単語2〜3語の card-label を付ける（絵文字だけは禁止）
+     🎭 トーンは反転させる（真面目→ポップ / どうでもいい→荘厳）
   3) 写真を $DIR/images/ に入れて、HTMLには src="IMAGE:ファイル名" と書いておく
      python3 tools/embed.py $SLUG        ← 縮小して埋め込む
   4) python3 tools/check.py $SLUG        ← 「追加した文：0」を確認
-  5) index.html（トップ）の一覧に1行足す
-  6) git add -A && git commit -m "add $SLUG" && git push
+  5) index.html（トップ）の ⚡ 15 SECOND セクションにカードを1枚足す
+  6) ひとつ前の記事の末尾の Next ⚡ を、この記事に向ける
+  7) git add -A && git commit -m "add $SLUG" && git push
+
+  ※ 毎朝6時にSlackから自動生成される下書きは drafts/ に出ます（gitには乗りません）
 MSG

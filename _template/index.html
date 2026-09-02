@@ -6,6 +6,8 @@
 <!-- 👇 差し替える -->
 <title>__SLUG__</title>
 <style>
+  /* ⚡ 色は記事ごとに変えていい。トーン反転ルール（PROMPT.md）に従うこと。
+     真面目な話 → ポップに。どうでもいい話 → 荘厳に。 */
   :root {
     --bg: #fff7fb;
     --card: rgba(255,255,255,.94);
@@ -30,7 +32,7 @@
       var(--bg);
   }
 
-  main { width: min(920px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
 
   /* ── 上のバー：戻る導線 と ワード数バッジ ───────────────── */
   .topbar {
@@ -45,7 +47,7 @@
     box-shadow: 0 6px 16px rgba(115,70,111,.10);
   }
   .home:hover { transform: translateY(-2px); }
-  /* ⏱ 読者への親切であり、AIが盛っていないことの証拠でもある */
+  /* ⚡ 読者への親切であり、AIが盛っていないことの証拠でもある */
   .wc-badge {
     padding: 10px 16px; border-radius: 999px;
     background: #fff; border: 2px solid rgba(255,255,255,.9);
@@ -60,7 +62,7 @@
 
   h1 {
     margin: 0 0 22px; color: #3b2745;
-    font-size: clamp(34px, 6.6vw, 66px); line-height: 1.06;
+    font-size: clamp(34px, 6.6vw, 60px); line-height: 1.06;
     letter-spacing: -.05em; text-wrap: balance;
     text-shadow: 0 4px 0 rgba(255,255,255,.75);
   }
@@ -73,27 +75,45 @@
   }
   .photo img { display: block; width: 100%; height: auto; }
 
-  /* ── 本文カード（1枚に2〜4文まで）──────────────────────── */
+  /* ── 本文カード：15秒版は 3〜5枚まで。1枚に1〜2文 ──────────── */
   .card {
-    position: relative; margin-top: 18px; padding: 26px;
+    position: relative; margin-top: 18px; padding: 24px 26px;
     background: var(--card); border: 2px solid rgba(255,255,255,.92);
     border-radius: var(--round); box-shadow: 0 12px 32px rgba(115,70,111,.09);
     backdrop-filter: blur(8px);
   }
-  .card:nth-of-type(2n) { transform: rotate(.25deg); }
-  .card:nth-of-type(3n) { transform: rotate(-.2deg); }
+
+  /* ── カードの見出し：絵文字だけにしない。英単語2〜3語を必ず付ける ──
+     🧠 THE PROBLEM  /  ⚡ ONE FIX  /  🎯 SO WHAT
+     tools/check.py が card の枚数と card-label の数を照合している */
+  .card-head {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+  }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label {
+    font-size: 12.5px; font-weight: 900; letter-spacing: .16em;
+    color: var(--purple); text-transform: uppercase;
+  }
 
   p {
     margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif;
-    font-size: clamp(17px, 2.4vw, 21px); line-height: 1.78;
+    font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72;
   }
-  .section-emoji { font-size: 30px; line-height: 1; margin-bottom: 10px; letter-spacing: .08em; }
-  /* オチの一言 */
-  .big { font-size: clamp(23px, 4vw, 34px); font-weight: 850; line-height: 1.45; color: #6d3a63;
+  /* オチの一言（本人の言葉） */
+  .big { font-size: clamp(23px, 4vw, 34px); font-weight: 850; line-height: 1.42; color: #6d3a63;
          font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
 
+  /* ── .quip：AIが書いていい一言ツッコミ。1記事に2個まで ──────────
+     <p> ではないので word数には入らない。ボケていい場所はここだけ */
+  .quip {
+    margin-top: 12px; padding-left: 12px;
+    border-left: 3px solid var(--pink);
+    color: var(--muted); font-size: 14px; font-style: italic;
+    font-family: "Trebuchet MS", sans-serif;
+  }
+
   /* ── タイムライン（段階を見せるとき）──────────────────── */
-  .timeline { display: grid; gap: 14px; margin-top: 20px; }
+  .timeline { display: grid; gap: 14px; margin-top: 16px; }
   .timeline-item {
     display: grid; grid-template-columns: 160px 1fr; align-items: center; gap: 14px;
     padding: 16px 18px; border: 2px solid rgba(255,255,255,.9); border-radius: 22px;
@@ -105,6 +125,22 @@
   .timeline-item:nth-child(4) { background: #e6fbf4; }
   .stage  { font-weight: 900; color: #6f52ca; }
   .device { font-weight: 750; color: #49354d; }
+
+  /* ── Next ⚡：次の記事へ直行する。ショート動画のスワイプの代わり ──── */
+  .next {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: #fff; box-shadow: var(--shadow);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .next:hover, .next:focus-visible {
+    transform: translateY(-4px); box-shadow: 0 26px 60px rgba(115,70,111,.26);
+  }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title  { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow  { font-size: 26px; flex: 0 0 auto; }
 
   /* ── YouTube（iframeにしない。カードでリンク）───────────── */
   .youtube-card {
@@ -135,19 +171,65 @@
     box-shadow: 0 5px 0 #c9355b;
   }
 
+  /* ════════════════════════════════════════════════════════════
+     ⚡ モーションキット
+     すごいアニメは作らない。「開いた瞬間に何か動いた」程度でいい。
+     部品を消してもここは残しておく。CSSは触らなくていい。
+     ════════════════════════════════════════════════════════════ */
+
+  /* 1. 上のもの（ラベル・h1・写真）は開いた瞬間に一度だけ出る */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1     { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+
+  /* 2. カードはスクロールで下からふわっと出る（下の <script> が .in を付ける）
+        ⚠️ .js が付いているときだけ隠す。JSが動かない環境では最初から見えている。
+           こうしないと「真っ白なページ」になる */
+  .js .card, .js .next {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .55s ease-out, transform .55s ease-out;
+  }
+  .js .card.in, .js .next.in { opacity: 1; transform: none; }
+
+  /* 3. 見出しラベルはカードより少し遅れて左から入る */
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+
+  /* 4. アクセント絵文字を1つだけ、ゆっくり揺らし続ける（.float を付けた要素） */
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+
+  /* 5. オチだけ少し強めにポンと出る */
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
   @media (max-width: 600px) {
-    main { width: min(100% - 18px, 920px); padding-top: 16px; }
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
     /* 375pxでも「戻る」とバッジが1行に収まるように少しだけ詰める */
     .topbar { flex-wrap: nowrap; gap: 8px; }
     .home     { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
     .wc-badge { padding: 10px 12px; font-size: 12px; white-space: nowrap; }
-    .photo, .card, .youtube-card { border-radius: 23px; }
+    .photo, .card, .youtube-card, .next { border-radius: 23px; }
     .card { padding: 20px; }
     .timeline-item { grid-template-columns: 1fr; gap: 4px; }
     .youtube-thumb { min-height: 175px; }
     .youtube-footer { align-items: flex-start; flex-direction: column; }
   }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと。
+     これが無いと tools/check.py が落ちる */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
 </style>
+<!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
+<script>document.documentElement.className += " js";</script>
 </head>
 <body>
 <main>
@@ -155,12 +237,12 @@
   <div class="topbar">
     <a class="home" href="../../index.html">← Back to all works</a>
     <!-- 👇 python3 tools/check.py --fix-badge が正しい数字に直してくれる -->
-    <div class="wc-badge">⏱ 0 words · 0 sec read</div>
+    <div class="wc-badge">⚡ 0 words · 0 sec</div>
   </div>
 
   <!-- 👇 差し替える -->
-  <div class="label">🐧 1 MINUTE BLOG 🐧</div>
-  <h1>🐧 Title Goes Here</h1>
+  <div class="label">⚡ 15 SECOND BLOG ⚡</div>
+  <h1>Title Goes Here <span class="float">🐧</span></h1>
 
   <!-- 写真：images/ に入れて、ここには IMAGE:ファイル名 と書くだけ。
        python3 tools/embed.py __SLUG__ が縮小してbase64に置き換える -->
@@ -168,15 +250,37 @@
     <img src="IMAGE:photo.jpg" alt="写真の内容を英語で説明する" />
   </figure>
 
-  <!-- 本文カード：1枚に2〜4文まで。素材の日本語を直訳した英語だけを置く -->
+  <!-- ── 本文カード：3〜5枚まで。1枚に1〜2文 ────────────────────
+       <p> の中 = 本人の言葉だけ（素材から直訳。word数に入る）
+       card-label = AIが自由に付けていい見出し（英単語2〜3語・word数に入らない） -->
   <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧠</span>
+      <span class="card-label">The Problem</span>
+    </div>
     <p>
       First sentence here.
     </p>
   </section>
 
-  <!-- 段階や流れを見せたいとき（要らなければ消す） -->
   <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">⚡</span>
+      <span class="card-label">One Fix</span>
+    </div>
+    <p>
+      Second sentence here.
+    </p>
+    <!-- AIのボケはここ。1記事に2個まで -->
+    <div class="quip">…and that took me three years to notice.</div>
+  </section>
+
+  <!-- 段階や流れを見せたいとき（要らなければカードごと消す） -->
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧭</span>
+      <span class="card-label">The Order</span>
+    </div>
     <div class="timeline">
       <div class="timeline-item"><div class="stage">🧸 Step one</div><div class="device">detail</div></div>
       <div class="timeline-item"><div class="stage">🎒 Step two</div><div class="device">detail</div></div>
@@ -184,11 +288,23 @@
     </div>
   </section>
 
-  <!-- オチの一言（要らなければ消す） -->
+  <!-- オチの一言（本人の言葉。要らなければカードごと消す） -->
   <section class="card">
-    <div class="section-emoji" aria-hidden="true">💥🐧🔥</div>
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎯</span>
+      <span class="card-label">So What</span>
+    </div>
     <p class="big">The punchline goes here. 🙂‍↕️</p>
   </section>
+
+  <!-- ⚡ 次の記事へ。公開するときにリンク先とタイトルを埋める -->
+  <a class="next" href="../__NEXT_SLUG__/index.html">
+    <div>
+      <div class="next-kicker">NEXT · 15 SEC</div>
+      <div class="next-title">Next article title</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
 
   <!-- YouTubeがあるとき（要らなければ丸ごと消す） -->
   <!--
@@ -202,6 +318,29 @@
   -->
 
 </main>
+
+<!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+
+  // 保険：何かの理由で1枚も出てこなかったら、全部見せる。
+  // 演出のために本文が読めない、が絶対に起きないようにする
+  setTimeout(function () {
+    if (!document.querySelector('.card.in, .next.in')) showAll();
+  }, 1600);
+})();
+</script>
 </body>
 </html>
 
@@ -214,4 +353,5 @@ S番号に対応しない英文は1つもありません。
 
 削った文：S2
 追加した文：0
+演出テキスト：card-label 4個 / quip 1個 ← 本人の発言ではない（word数対象外）
 -->

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Who Gives the Answer? ⚡</title>
+<style>
+  /* 🎭 トーン反転：素材は真面目な話なので、見た目はポップに振る */
+  :root {
+    --bg: #fffbf2;
+    --card: rgba(255,255,255,.95);
+    --text: #2b2140;
+    --muted: #7b6c8f;
+    --pink: #ff5fa2;
+    --purple: #7a5cf0;
+    --lime: #23c98a;
+    --shadow: 0 20px 55px rgba(90,60,140,.16);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 6% 3%,   rgba(255,214,72,.42),  transparent 26%),
+      radial-gradient(circle at 97% 12%, rgba(255,95,162,.28),  transparent 28%),
+      radial-gradient(circle at 50% 100%,rgba(35,201,138,.20),  transparent 36%),
+      var(--bg);
+  }
+
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+  }
+  .home {
+    display: inline-block; min-height: 44px; padding: 12px 18px;
+    border-radius: 999px; background: #fff; color: var(--purple);
+    border: 2px solid rgba(255,255,255,.9);
+    font-size: 14px; text-decoration: none;
+    box-shadow: 0 6px 16px rgba(90,60,140,.10);
+  }
+  .home:hover { transform: translateY(-2px); }
+  .wc-badge {
+    padding: 10px 16px; border-radius: 999px;
+    background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em;
+    box-shadow: 0 6px 16px rgba(90,60,140,.08);
+  }
+
+  .label {
+    color: var(--purple); font-size: 13px; font-weight: 800;
+    letter-spacing: .14em; margin-bottom: 16px;
+  }
+
+  h1 {
+    margin: 0 0 22px; color: #34215c;
+    font-size: clamp(36px, 7.4vw, 62px); line-height: 1.03;
+    letter-spacing: -.05em; text-wrap: balance;
+    text-shadow: 0 4px 0 rgba(255,255,255,.8);
+  }
+
+  .card {
+    position: relative; margin-top: 18px; padding: 24px 26px;
+    background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(90,60,140,.10);
+    backdrop-filter: blur(8px);
+  }
+
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label {
+    font-size: 12.5px; font-weight: 900; letter-spacing: .16em;
+    color: var(--purple); text-transform: uppercase;
+  }
+
+  p {
+    margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif;
+    font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72;
+  }
+  .big { font-size: clamp(23px, 4vw, 33px); font-weight: 850; line-height: 1.4; color: #5c2f7a;
+         font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  .quip {
+    margin-top: 12px; padding-left: 12px;
+    border-left: 3px solid var(--pink);
+    color: var(--muted); font-size: 14px; font-style: italic;
+    font-family: "Trebuchet MS", sans-serif;
+  }
+
+  /* 🎨 CSSの図解：平均点の山と、そこから飛び出す1本 */
+  .bars {
+    display: flex; align-items: flex-end; justify-content: center; gap: 10px;
+    height: 132px; margin-top: 18px; padding: 0 4px;
+  }
+  .bar { width: 30px; border-radius: 10px 10px 4px 4px; background: #ded6f2; }
+  .bar.b1 { height: 46%; } .bar.b2 { height: 56%; } .bar.b3 { height: 50%; }
+  .bar.b4 { height: 58%; } .bar.b5 { height: 48%; }
+  .bar.you {
+    height: 100%; background: linear-gradient(180deg, var(--lime), #12a06d);
+    box-shadow: 0 8px 20px rgba(35,201,138,.4);
+  }
+  .bars-note {
+    margin-top: 10px; text-align: center; color: var(--muted);
+    font-size: 12.5px; letter-spacing: .1em; font-family: "Trebuchet MS", sans-serif;
+  }
+
+  .next {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: #fff; box-shadow: var(--shadow);
+  }
+  .next:hover, .next:focus-visible { box-shadow: 0 26px 60px rgba(90,60,140,.28); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title  { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow  { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1     { animation: rise .6s .12s both ease-out; }
+
+  /* ⚠️ .js が付いているときだけ隠す。JSが動かない環境では最初から見えている */
+  .js .card, .js .next {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .55s ease-out, transform .55s ease-out, box-shadow .18s ease;
+  }
+  .js .card.in, .js .next.in { opacity: 1; transform: none; }
+  .next.in:hover, .next.in:focus-visible { transform: translateY(-4px); }
+
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+
+  @keyframes float { from { transform: translateY(0) rotate(-4deg); } to { transform: translateY(-9px) rotate(4deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  /* 棒グラフはカードが見えてから伸びる */
+  @keyframes grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  .card.in .bar { transform-origin: bottom; animation: grow .6s both cubic-bezier(.2,1.2,.4,1); }
+  .card.in .bar.b1 { animation-delay: .10s; } .card.in .bar.b2 { animation-delay: .16s; }
+  .card.in .bar.b3 { animation-delay: .22s; } .card.in .bar.b4 { animation-delay: .28s; }
+  .card.in .bar.b5 { animation-delay: .34s; } .card.in .bar.you { animation-delay: .48s; }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .home     { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 12px; font-size: 12px; white-space: nowrap; }
+    .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .bars { gap: 7px; height: 112px; }
+    .bar { width: 24px; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation: none !important; transition: none !important;
+      opacity: 1 !important; transform: none !important;
+    }
+  }
+</style>
+<!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
+<script>document.documentElement.className += " js";</script>
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <a class="home" href="../../index.html">← Back to all works</a>
+    <div class="wc-badge">⚡ 28 words · 9 sec</div>
+  </div>
+
+  <div class="label">⚡ 15 SECOND BLOG ⚡</div>
+  <h1>Who Gives the Answer? <span class="float">🤖</span></h1>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧭</span>
+      <span class="card-label">Your Job</span>
+    </div>
+    <p>
+      To use AI well, the human must give the correct answer first.
+    </p>
+    <div class="quip">Yes. Before the robot. That is the whole trick.</div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📊</span>
+      <span class="card-label">Or Else</span>
+    </div>
+    <p class="big">
+      If you do not, AI keeps giving you work that feels nice but is only average.
+    </p>
+    <div class="bars" aria-hidden="true">
+      <div class="bar b1"></div>
+      <div class="bar b2"></div>
+      <div class="bar b3"></div>
+      <div class="bar b4"></div>
+      <div class="bar b5"></div>
+      <div class="bar you"></div>
+    </div>
+    <div class="bars-note">AVERAGE · AVERAGE · AVERAGE · AVERAGE · AVERAGE · YOU</div>
+  </section>
+
+  <a class="next" href="../../index.html">
+    <div>
+      <div class="next-kicker">NEXT · 15 SEC</div>
+      <div class="next-title">See all 15-second posts</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+
+</main>
+
+<!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () {
+    if (!document.querySelector('.card.in, .next.in')) showAll();
+  }, 1600);
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1  → 使った（1枚目のカード）
+S2  → 使った（2枚目のカード・.big のオチ）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+演出テキスト：card-label 2個 / quip 1個 / h1 / bars-note ← 本人の発言ではない（word数対象外）
+-->
