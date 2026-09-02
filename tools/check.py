@@ -6,6 +6,7 @@
   python3 tools/check.py pawapuro     1本だけ
   python3 tools/check.py --fix-badge  ワード数バッジを正しい数字に書き直す
   python3 tools/check.py --staging    本番前（staging/works/）を検査する
+  python3 tools/check.py --site       サイト全体の約束ごとを検査する
 
 チェックすること:
   1. index.html が 400KB 以内か
@@ -199,7 +200,83 @@ def check(work: pathlib.Path, fix_badge: bool):
     return problems, notes
 
 
+def check_site():
+    """記事1本ずつではなく、サイト全体の約束ごとを見る。
+
+    ChatGPT/Codex と Claude の両方が同じリポジトリを触るので、
+    「片方が約束を崩したまま push する」のをここで止める。
+    """
+    problems, notes = [], []
+    prod = sorted(p for p in (ROOT / "works").iterdir() if p.is_dir()) \
+        if (ROOT / "works").exists() else []
+    stag = sorted(p for p in (ROOT / "staging" / "works").iterdir() if p.is_dir()) \
+        if (ROOT / "staging" / "works").exists() else []
+
+    # 1. バッジ：本番は PUBLIC、本番前は STAGING
+    for d, want, other in ((prod, "stage-public", "stage-staging"),
+                           (stag, "stage-staging", "stage-public")):
+        for w in d:
+            doc = (w / "index.html").read_text(encoding="utf-8")
+            # ⚠️ CSS の定義（.stage-public { ... }）にも同じ文字列が出るので、
+            #    class 属性の中だけを見る
+            used = set()
+            for attr in re.findall(r'class="([^"]*)"', doc):
+                used |= set(attr.split())
+            if other in used:
+                problems.append(f"{NG} {w.relative_to(ROOT)}: バッジが逆です（{other} が入っています）")
+            elif want not in used:
+                problems.append(f"{NG} {w.relative_to(ROOT)}: {want} のバッジがありません")
+    if not problems:
+        notes.append(f"{OK} バッジ：本番{len(prod)}本 PUBLIC / 本番前{len(stag)}本 STAGING")
+
+    # 2. noindex：本番前だけに付いている
+    bad = [w.name for w in prod if 'name="robots"' in (w / "index.html").read_text(encoding="utf-8")]
+    if bad:
+        problems.append(f"{NG} 本番なのに noindex が付いています: {bad} → 検索に出なくなります")
+    bad = [w.name for w in stag if 'name="robots"' not in (w / "index.html").read_text(encoding="utf-8")]
+    if bad:
+        problems.append(f"{NG} 本番前なのに noindex がありません: {bad} → 検索に出てしまいます")
+    if not bad:
+        notes.append(f"{OK} noindex は本番前だけに付いている")
+
+    # 3. 本番トップから staging へリンクしていない
+    idx = (ROOT / "index.html").read_text(encoding="utf-8")
+    links = re.findall(r'(?:href|src)="([^"]*staging[^"]*)"', idx)
+    if links:
+        problems.append(f"{NG} 本番トップが staging を指しています: {links[:3]}")
+    else:
+        notes.append(f"{OK} 本番トップから staging へのリンクなし")
+
+    # 4. meta.json とサムネが揃っている
+    for w in prod + stag:
+        if not (w / "meta.json").exists():
+            problems.append(f"{NG} {w.relative_to(ROOT)}/meta.json がありません → トップに出せません")
+        elif not (ROOT / "assets" / "thumbs" / f"{w.name}.jpg").exists():
+            problems.append(f"{NG} assets/thumbs/{w.name}.jpg がありません → 一覧の画像が壊れます")
+    if not any("meta.json" in p or "thumbs" in p for p in problems):
+        notes.append(f"{OK} meta.json とサムネが {len(prod)+len(stag)}本ぶん揃っている")
+
+    # 5. robots.txt がある
+    if not (ROOT / "robots.txt").exists():
+        problems.append(f"{NG} robots.txt がありません → staging が検索に出ます")
+    else:
+        notes.append(f"{OK} robots.txt あり")
+
+    print("🌏 サイト全体\n─────────────")
+    for l in notes: print("  " + l)
+    for l in problems: print("  " + l)
+    print()
+    if problems:
+        print(f"{NG} 直すところが {len(problems)} 件あります。")
+        return 1
+    print(f"{OK} サイト全体の約束ごとはすべて守られています。")
+    return 0
+
+
 def main():
+    if "--site" in sys.argv:
+        return check_site()
+
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     fix = "--fix-badge" in sys.argv
     # 本番前の記事も、公開物とまったく同じ基準で検査する。

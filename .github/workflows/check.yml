@@ -1,0 +1,48 @@
+# push のたびに、記事とサイトの約束ごとを自動で検査する。
+#
+# Claude と ChatGPT/Codex の両方がこのリポジトリに push するので、
+# 「片方が検査を忘れたまま公開してしまう」のをここで止める。
+#
+# ⚠️ tools/thumbs.py は macOS の sips を使うので、ここでは走らせない。
+#    サムネ画像そのものはローカルで作って commit する。
+
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 本番の記事（words・バッジ・見出しラベル・SOURCE MAP）
+        run: python3 tools/check.py
+
+      - name: 本番前の記事
+        run: python3 tools/check.py --staging
+
+      - name: サイト全体（バッジ・noindex・meta.json・サムネ）
+        run: python3 tools/check.py --site
+
+      # トップページは手で編集せず build-site.py で生成する決まり。
+      # 生成し直して差分が出たら、誰かが手で編集したか、生成し忘れている。
+      - name: トップページが最新かどうか
+        run: |
+          python3 tools/build-site.py
+          if ! git diff --exit-code -- index.html staging/index.html; then
+            echo ""
+            echo "❌ トップページが最新ではありません。"
+            echo "   index.html と staging/index.html は手で編集せず、"
+            echo "   python3 tools/build-site.py で作り直して commit してください。"
+            exit 1
+          fi
+          echo "✅ トップページは最新です"

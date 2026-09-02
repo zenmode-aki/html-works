@@ -2,7 +2,8 @@
 """
 🐧 画像を縮小して index.html に base64 で埋め込む
 
-  python3 tools/embed.py pawapuro
+  python3 tools/embed.py pawapuro            本番（works/）の記事
+  python3 tools/embed.py --staging <slug>    本番前（staging/works/）の記事
 
 HTML側にこう書いておくだけ：
   <img src="IMAGE:switch.jpg" alt="...">
@@ -51,10 +52,12 @@ def shrink(src: pathlib.Path, out_dir: pathlib.Path) -> pathlib.Path:
 
 
 def main():
-    if len(sys.argv) < 2:
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    if not args:
         print(__doc__)
         return 1
-    work = ROOT / "works" / sys.argv[1]
+    base = "staging/works" if "--staging" in sys.argv else "works"
+    work = ROOT / base / args[0]
     idx = work / "index.html"
     if not idx.exists():
         print(f"❌ {idx} がありません")
