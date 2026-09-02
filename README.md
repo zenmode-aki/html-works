@@ -4,7 +4,34 @@
 
 ビルドもCMSもログインも要らない。HTMLを1枚書いて、push するだけ。
 
-🌏 **公開URL** → https://zenmode-aki.github.io/html-works/
+🌏 **公開URL（本番）** → https://zenmode-aki.github.io/html-works/
+
+---
+
+## 🖥 ローカルで見る（本番に出す前のもの）
+
+Mac でこれを打つだけ。サーバが立って、ブラウザが勝手に開きます。
+
+```bash
+cd ~/Developer/html-works && ./local.sh
+```
+
+開いたら、そこから全部たどれます。直接行きたいときは：
+
+| | URL |
+|---|---|
+| 🖥 **ローカル版の入口**（まずここ） | http://localhost:8811/drafts/index.html |
+| ⚡ トップの試作（スロット・検索・地図・ペンゲッソ） | http://localhost:8811/drafts/_prototype-home.html |
+| 🌏 いまの本番トップをローカルで確認 | http://localhost:8811/index.html |
+
+止めるとき：
+
+```bash
+cd ~/Developer/html-works && ./local.sh stop
+```
+
+⚠️ `drafts/` の中は **GitHub に上がりません**。自分のMacの中だけです。
+だから上のURLは、あきくんのMacでしか開きません（世界からは見えない）。
 
 ---
 
