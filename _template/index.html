@@ -47,6 +47,8 @@
     box-shadow: 0 6px 16px rgba(115,70,111,.10);
   }
   .home:hover { transform: translateY(-2px); }
+
+  .badges { display: flex; align-items: center; gap: 8px; }
   /* ⚡ 読者への親切であり、AIが盛っていないことの証拠でもある */
   .wc-badge {
     padding: 10px 16px; border-radius: 999px;
@@ -54,6 +56,18 @@
     color: var(--muted); font-size: 13px; letter-spacing: .04em;
     box-shadow: 0 6px 16px rgba(115,70,111,.08);
   }
+
+  /* ── 🚦 いま見ているのが下書きか本番かを、右上に必ず出す ──────────
+     LOCAL  = drafts/ にある。自分のパソコンの中だけ。世界には出ていない
+     PUBLIC = works/ にある。GitHub Pages で世界に公開されている
+     公開するとき python3 tools/publish.py <slug> が LOCAL → PUBLIC に書き換える */
+  .stage {
+    padding: 10px 13px; border-radius: 999px;
+    font-size: 11px; font-weight: 900; letter-spacing: .12em;
+    white-space: nowrap; box-shadow: 0 6px 16px rgba(115,70,111,.16);
+  }
+  .stage-local  { background: #ffb020; color: #4a2c00; }
+  .stage-public { background: #23c98a; color: #04331d; }
 
   .label {
     color: var(--purple); font-size: 13px; font-weight: 800;
@@ -206,10 +220,12 @@
 
   @media (max-width: 600px) {
     main { width: min(100% - 18px, 720px); padding-top: 16px; }
-    /* 375pxでも「戻る」とバッジが1行に収まるように少しだけ詰める */
+    /* 375pxでも「戻る」と2つのバッジが1行に収まるように詰める */
     .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
     .home     { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
-    .wc-badge { padding: 10px 12px; font-size: 12px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage    { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
     .photo, .card, .youtube-card, .next { border-radius: 23px; }
     .card { padding: 20px; }
     .timeline-item { grid-template-columns: 1fr; gap: 4px; }
@@ -235,9 +251,14 @@
 <main>
 
   <div class="topbar">
-    <a class="home" href="../../index.html">← Back to all works</a>
-    <!-- 👇 python3 tools/check.py --fix-badge が正しい数字に直してくれる -->
-    <div class="wc-badge">⚡ 0 words · 0 sec</div>
+    <!-- works/<slug>/ からも drafts/<slug>/ からも、リポジトリ直下の index.html に届く -->
+    <a class="home" href="../../index.html">← Back</a>
+    <div class="badges">
+      <!-- 👇 python3 tools/check.py --fix-badge が正しい数字に直してくれる -->
+      <div class="wc-badge">⚡ 0 words · 0 sec</div>
+      <!-- 🚦 下書きのあいだは LOCAL。公開すると PUBLIC に変わる -->
+      <div class="stage stage-local">LOCAL</div>
+    </div>
   </div>
 
   <!-- 👇 差し替える -->

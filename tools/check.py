@@ -5,6 +5,7 @@
   python3 tools/check.py              全記事をチェック
   python3 tools/check.py pawapuro     1本だけ
   python3 tools/check.py --fix-badge  ワード数バッジを正しい数字に書き直す
+  python3 tools/check.py --drafts     公開前の下書き（drafts/）を検査する
 
 チェックすること:
   1. index.html が 400KB 以内か
@@ -182,12 +183,24 @@ def check(work: pathlib.Path, fix_badge: bool):
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     fix = "--fix-badge" in sys.argv
-    works = sorted(p for p in (ROOT / "works").iterdir() if p.is_dir())
+    # 毎朝AIが作る下書きも、公開物と同じ基準で検査する。
+    # drafts/ を works/ にコピーして検査する、のような回り道をしないため
+    drafts = "--drafts" in sys.argv
+
+    base = ROOT / ("drafts" if drafts else "works")
+    if not base.exists():
+        print(f"ℹ️  {base.relative_to(ROOT)}/ がありません")
+        return 0
+    works = sorted(p for p in base.iterdir() if p.is_dir())
     if args:
         works = [w for w in works if w.name in args]
         if not works:
-            print(f"{NG} そんな記事はありません: {args}")
+            where = "下書き" if drafts else "記事"
+            print(f"{NG} そんな{where}はありません: {args}")
             return 1
+    if not works:
+        print(f"ℹ️  {base.relative_to(ROOT)}/ は空です")
+        return 0
 
     total_ng = 0
     for w in works:
