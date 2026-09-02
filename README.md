@@ -30,6 +30,18 @@
 🟡 と 🔵 はどちらも `staging/` の中。**URLを知っている人しか来られないし、検索にも出ません**
 （`robots.txt` + `noindex`）。本番トップからはリンクしていません。
 
+### 🐧 ペンゲッソのページを直すとき
+
+**`pengesso.html` を直接さわらない。**試作のほうを直して、作り直します。
+
+```bash
+# 1. staging/prototype-home.html を編集する
+python3 tools/publish-pengesso.py   # 2. 本番の pengesso.html を作り直す
+python3 tools/build-site.py         # 3. 記事の一覧を差し込む
+```
+
+同じ内容の2ファイルを手で揃えると必ずズレます（2026-09-03 に実際にズレました）。
+
 > 📋 **続きの作業をするときは、まず [NEXT.md](NEXT.md) を読んでください。**
 > いまどうなっているか・次にやること・触ってはいけないものが全部書いてあります。
 
@@ -292,7 +304,9 @@ html-works/
 ├── tools/
 │   ├── embed.py      記事の画像を縮小して base64 で埋め込む
 │   ├── thumbs.py     一覧サムネを240px正方形の画像ファイルにする
-│   ├── build-site.py ⭐ トップを生成する（本番と本番前の両方）
+│   ├── build-site.py ⭐ トップと🐧ペンゲッソの記事リストを生成する
+│   ├── publish-pengesso.py 🐧 試作 → 本番の pengesso.html を作り直す
+│   ├── components.py 🧩 地図・動画・スライドの部品を全記事に配る
 │   └── check.py      納品チェック（サイズ・words・ラベル・動き・SOURCE MAP）
 ├── _template/
 │   ├── index.html    記事のひな形（部品とモーションキットが全部入っている）

@@ -549,6 +549,40 @@
     .rule, .two { grid-template-columns: 1fr; }
   }
 
+  /* ── 文章は「1行だけ強く、あとは小さく」。読む量を減らすための2クラス ── */
+  .blk p.lead { font-size: clamp(19px, 3.6vw, 26px) !important; font-weight: 900 !important;
+       line-height: 1.4 !important; letter-spacing: -.025em; margin-bottom: 14px !important; }
+  .blk p.sub  { font-size: clamp(13.5px, 2.1vw, 15.5px) !important; font-weight: 700 !important;
+       color: rgba(255,255,255,.62) !important; line-height: 1.65 !important;
+       margin-top: 14px !important; }
+  .blk p.sub b { color: var(--yellow); }
+
+  /* ── 出てくるときに少しずつずらす（動きを増やす） ── */
+  .js .rule-side, .js .two-col { opacity: 0; transform: translateY(16px) scale(.97);
+       transition: opacity .55s ease-out, transform .55s cubic-bezier(.2,.85,.25,1); }
+  .js .rule.in .rule-side, .js .two.in .two-col { opacity: 1; transform: none; }
+  .js .rule.in .rule-side:nth-child(2),
+  .js .two.in .two-col:nth-child(2) { transition-delay: .13s; }
+
+  /* ── メーターの数字が 0% から回る ── */
+  .meter-num { font-variant-numeric: tabular-nums; }
+  .js .meter.in .meter-fill { animation: nudge .5s 1.5s ease-out; }
+  @keyframes nudge { 40% { transform: scaleX(1.03); } }
+
+  /* ── 主役のペンギンを少し呼吸させる ── */
+  .js .rule-pen > b { display: inline-block; animation: breathe 2.8s ease-in-out infinite; }
+  @keyframes breathe { 0%,100% { transform: translateY(0) rotate(-4deg); }
+                        50%    { transform: translateY(-6px) rotate(4deg); } }
+
+  /* ── スマホで絶対に横に崩さない ── */
+  .blk, .warn { min-width: 0; }
+  .blk *, .warn * { min-width: 0; overflow-wrap: anywhere; }
+  @media (max-width: 430px) {
+    .rule-side, .two-col { padding: 16px 14px; }
+    .rule-side > b, .two-col > b { font-size: 24px; }
+    .meter-legend { font-size: 10px; letter-spacing: .06em; gap: 6px; }
+  }
+
   @media (max-width: 560px) {
     /* 横スクロールだと5枚目に気づかない。スマホでは縦に積む */
     .steps { display: grid; grid-template-columns: 1fr; gap: 9px; overflow: visible; }
@@ -714,11 +748,8 @@
 
     <!-- ── 🤔 何者なの ── -->
     <div class="blk">
-      <h3>🤔 So what is Pengesso?</h3>
-      <p>Pengesso is a penguin who writes a blog for a shy, lazy Japanese person.</p>
-      <p>His owner likes thinking.<br />He likes overthinking even more.</p>
-      <p>But social media is scary.</p>
-      <p>So the owner asked an AI for help, and somehow the job came to a penguin.</p>
+      <h3>🐧 What is this?</h3>
+      <p class="lead">A penguin writes short posts for his owner.</p>
 
       <div class="flow" id="flow">
         <div class="flow-step"><div class="flow-ring">🇯🇵</div><div class="flow-cap">Human</div></div>
@@ -731,19 +762,13 @@
         <div class="flow-drop" id="flowDrop" aria-hidden="true">📄</div>
       </div>
 
-      <p>This is the workflow.</p>
+      <p class="sub">His owner is too shy to post. So the penguin does it.</p>
     </div>
 
     <!-- ── 🔁 誰のため ── -->
     <div class="blk">
-      <h3>🔁 Who is this blog for?</h3>
-      <p>Mostly for his owner, in the future.</p>
-      <p>
-        His owner thinks.<br />
-        Then he forgets what he thought.<br />
-        Then he thinks the same thing again, from the start.
-      </p>
-      <p>Pengesso records this endless rerun.</p>
+      <h3>🔁 Who is it for?</h3>
+      <p class="lead">His owner, later.</p>
 
       <div class="loop-stage">
         <div class="loop" aria-hidden="true">
@@ -758,18 +783,17 @@
         </div>
       </div>
 
-      <p class="hello" style="margin-top:22px;">Oh 😳. We did not expect you to be reading this.</p>
-      <p>But you are here now, so nothing can be done.<br />Please enjoy yourself.</p>
+      <p class="sub">He forgets everything. Pengesso keeps a copy.</p>
+      <p class="hello">Oh 😳 — you are reading it too. Welcome.</p>
     </div>
 
 
     <!-- ── 🙃 未完成のまま出す ── -->
     <div class="blk">
-      <h3>🙃 Pengesso has exactly one rule</h3>
-      <p>His owner is a perfectionist.<br />
-         He waits until a thing is finished. So he never posts it.</p>
+      <h3>🙃 One rule: post it at 60%</h3>
+      <p class="lead">The owner is a perfectionist, so he never posts.</p>
 
-      <div class="rule">
+      <div class="rule reveal">
         <div class="rule-side">
           <b>🇯🇵</b>
           <div class="rule-k">THE OWNER</div>
@@ -786,38 +810,33 @@
         <div class="meter-bar"><div class="meter-fill"></div></div>
         <div class="meter-legend">
           <span>0% NOT WRITTEN</span>
-          <span class="now">60% ← POST IT 🐧</span>
+          <span class="now"><b class="meter-num">0</b>% ← POST IT 🐧</span>
           <span>100% NEVER</span>
         </div>
       </div>
 
-      <p>So this site is always a bit unfinished. Typos. Rough edges. Half-thoughts.</p>
-      <p>That is on purpose. <b>A perfect post nobody ever reads is worth 0%.</b></p>
+      <p class="sub">Typos and rough edges stay in. <b>A perfect post nobody reads is worth 0%.</b></p>
     </div>
 
     <!-- ── 🌐 インターネットとの距離感 ── -->
     <div class="blk">
-      <h3>🌐 Pengesso and the internet</h3>
+      <h3>🌐 Why it reads like this</h3>
 
-      <div class="two">
+      <div class="two reveal">
         <div class="two-col two-good">
           <b>💙</b>
-          <div class="two-k">THE GOOD PART</div>
-          <p>So much good stuff arrives for free.</p>
-          <p>You can learn almost anything from strangers.</p>
+          <div class="two-k">GOOD</div>
+          <p>You learn anything, free.</p>
         </div>
         <div class="two-col two-bad">
           <b>😵</b>
-          <div class="two-k">THE HARD PART</div>
-          <p>Posting quietly turns into comparing.</p>
-          <p>Everyone shows their best day only.</p>
+          <div class="two-k">HARD</div>
+          <p>Everyone posts their best day.</p>
         </div>
       </div>
 
-      <p>So this blog does not show off happy things.</p>
-      <p><b>It shows what the owner is still worried about.</b><br />
-         Out loud. On purpose. While he is still stuck.</p>
-      <p>A place you can read without feeling behind. That is the whole idea.</p>
+      <p class="lead">So this one posts the worries instead.</p>
+      <p class="sub">Read it without feeling behind. That is the whole idea.</p>
     </div>
 
     <!-- ── ⚙️ 公開されるまで ── -->
@@ -834,13 +853,9 @@
 
     <!-- ── ⚠️ お願い ── -->
     <div class="warn">
-      <h3>⚠️ A small request before you read</h3>
-      <p>Please do not question us too hard.</p>
-      <p>Pengesso is a penguin, so he does not fully understand humans.</p>
-      <p>The owner is shy, so if you push him, he hides.</p>
-      <p>When the explanation is not enough, please just say:</p>
+      <h3>⚠️ One request</h3>
+      <p>When a post does not explain enough, please just say:</p>
       <div class="stamp">“A penguin wrote it. Nothing can be done.”</div>
-      <p style="margin-top:14px;">Thank you for understanding.</p>
     </div>
   </section>
 
@@ -1218,6 +1233,29 @@ if ('IntersectionObserver' in window) {
 addEventListener('scroll', checkAbout, { passive: true });
 addEventListener('resize', checkAbout);
 checkAbout();
+
+/* 🔢 60% の数字を、メーターが見えたときに 0 から回す */
+(function () {
+  var box = document.querySelector('.meter');
+  var num = document.querySelector('.meter-num');
+  if (!box || !num) return;
+  function run() {
+    var t0 = null;
+    function step(ts) {
+      if (t0 === null) t0 = ts;
+      var k = Math.min((ts - t0) / 1500, 1);
+      num.textContent = Math.round(60 * (1 - Math.pow(1 - k, 3)));
+      if (k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      !('IntersectionObserver' in window)) { num.textContent = '60'; return; }
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { run(); io.disconnect(); } });
+  }, { threshold: 0.5 });
+  io.observe(box);
+})();
 </script>
 </body>
 </html>
