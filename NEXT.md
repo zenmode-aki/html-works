@@ -9,18 +9,21 @@
 
 ## 1. いまどうなっているか
 
-### 入口は3つあります
+### 入口は4つあります
 
 | | URL | 中身 | 誰が作る |
 |---|---|---|---|
-| 🟢 **本番** | https://zenmode-aki.github.io/html-works/ | `works/` の11本 | `build-site.py` の生成物 |
-| 🟡 **本番前（記事）** | https://zenmode-aki.github.io/html-works/staging/ | `staging/works/` の13本 | `build-site.py` の生成物 |
-| 🔵 **本番前（見た目）** | https://zenmode-aki.github.io/html-works/staging/prototype-home.html | 次のトップの試作 | **手で書いている**（生成物ではない） |
+| 🟢 **本番** | https://zenmode-aki.github.io/html-works/ | `works/` の14本 | `build-site.py` の生成物 |
+| 🟡 **本番前（記事）** | https://zenmode-aki.github.io/html-works/staging/ | `staging/works/` の10本 | `build-site.py` の生成物 |
+| 🐧 **ペンゲッソ（本番）** | https://zenmode-aki.github.io/html-works/pengesso.html | ペンギンの自己紹介 | `publish-pengesso.py` の生成物 |
+| 🔵 **本番前（見た目）** | https://zenmode-aki.github.io/html-works/staging/prototype-home.html | 🐧 の次の版の試作 | **手で書く。ここだけが原本** |
 
 **🟡 と 🔵 は別のものです。混ぜないでください。**
 
 - 🟡 は**中身**の置き場。毎朝ふえる。`build-site.py` が作るので**手で編集しない**
 - 🔵 は**見た目**の置き場。たまにしか触らない。1枚のHTMLを**手で編集していい**
+- 🐧 は 🔵 から作る。**`pengesso.html` を直接さわらない**
+  （`python3 tools/publish-pengesso.py` → `python3 tools/build-site.py`）
 
 🟡 と 🔵 はどちらも `staging/` の中で、`robots.txt` と `noindex` で検索から外してあります。
 本番トップからリンクもしていないので、URLを知っている人しか来ません。
@@ -65,6 +68,8 @@ python3 tools/thumbs.py             # assets/thumbs-src/ → assets/thumbs/（ma
 python3 tools/embed.py <slug>       # 記事の中の画像を base64 で埋め込む
 python3 tools/check.py --site       # サイト全体の約束ごと（バッジ・noindex・meta・サムネ）
 python3 tools/embed.py --staging <slug>  # 本番前の記事の画像を base64 に
+python3 tools/components.py --staging    # 地図・動画・スライドの部品を全記事に配る
+python3 tools/publish-pengesso.py        # 🔵試作 → 🐧本番の pengesso.html
 ./local.sh                          # ローカルでサーバを立てて本番前を開く
 
 ./promote.sh <slug>                 # 🟡本番前 → 🟢本番（push はしない）
@@ -114,27 +119,27 @@ Claude と Codex のどちらが push しても同じ基準で止まります。
 - Higgsfield（`generate_image`、model `recraft_v4_1`）で作る。**クレジットは気にしなくていい**
 - ルールは [PROMPT.md](PROMPT.md) の「画像を生成するときの世界観」
   - 人間を出さない／末尾に `No humans, no text, no lettering.`
-  - **直近3記事と同じ「動物 × 質感」を使わない**（`source.md` の「使った組み合わせ」を見る）
+  - **主役は「ゆるふわなペンギン」で固定**（2026-09-03に本人が決め直した）。
+    タコやトカゲに変えない。変えていいのは**毛糸の質感と場面だけ**
+  - **表紙（1枚目）は必ず生成画像。**本人の写真は2枚目以降
+  - **ネットで拾った写真は貼らない**（権利が分からないので）
 - 本文の画像は `images/` に置いて `IMAGE:xxx.jpg` と書き、`tools/embed.py` で base64 に
   （記事の中の画像は base64 のままにする。トップのサムネだけがファイル参照）
 
-**いま使った組み合わせ（重複させない）**
+**いま使ったペンギンの「質感 × 場面」（重複させない）**
 
 ```
-サムネ（本番）  : owl×clay / octopus×felt / capybara×plush / duck×cut-paper /
-                  squirrel×amigurumi / hedgehog×wet-clay / kitten×low-poly /
-                  otter×stained-glass / parakeet×bento / sloth×matte-plastic /
-                  turtle×amigurumi
-サムネ（本番前）: mouse×carved-wood / bear×papier-mache / rabbit×porcelain /
-                  frog×blown-glass / snail×pressed-flowers / fox×wire /
-                  panda×needle-felt
-本文（本番前）  : dormouse×marzipan / koala×painted-wood / alpaca×felt-balls /
-                  pelican×painted-ceramic / hamster×toy-bricks /
-                  raccoon×sashiko / meerkat×stencil
+ふわふわ羊毛 × スーツケースの横   （thailand-first-trip 表紙）
+モヘア       × 小さな木の橋の上   （thailand-first-trip 本文）
+シェニール   × ネオンの中でカップ （khaosan-road-chaos）
+ループヤーン × ノートの上に座る   （baguio-language-school）
+アルパカ     × 平らな湖の島       （burnham-park-flat-walk）
+フェルト     × 山を見下ろす手すり （mochi-cafe-baguio）
+手編みニット × 眼鏡と新聞（老人風）（tokyo-yakult-tsubakuro）
 ```
 
-まだ使っていない質感：砂の彫刻、ガラスモザイク、革細工、金継ぎ、切子、
-藁細工、ビーズ刺繍、コルク、消しゴムはんこ など。
+**2026-08 までの11本は、まだ動物がバラバラ**（フクロウ・タコ・カピバラなど）。
+気が向いたらペンギンに揃え直せますが、急ぎではありません。
 
 ⚠️ Higgsfield は稀に無害な絵を NSFW と誤判定します。落ちたら言い回しを変えて再送すれば通ります。
 
