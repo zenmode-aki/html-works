@@ -4,7 +4,13 @@
 
 ビルドもCMSもログインも要らない。HTMLを1枚書いて、push するだけ。
 
-🌏 **公開URL（本番）** → https://zenmode-aki.github.io/html-works/
+| | URL |
+|---|---|
+| 🟢 **本番** | https://zenmode-aki.github.io/html-works/ |
+| 🟡 **本番前**（検索には出ない） | https://zenmode-aki.github.io/html-works/staging/ |
+
+> 📋 **続きの作業をするときは、まず [NEXT.md](NEXT.md) を読んでください。**
+> いまどうなっているか・次にやること・触ってはいけないものが全部書いてあります。
 
 ---
 
@@ -20,8 +26,8 @@ cd ~/Developer/html-works && ./local.sh
 
 | | URL |
 |---|---|
-| 🖥 **ローカル版の入口**（まずここ） | http://localhost:8811/drafts/index.html |
-| ⚡ トップの試作（スロット・検索・地図・ペンゲッソ） | http://localhost:8811/drafts/_prototype-home.html |
+| 🟡 **本番前の一覧**（まずここ） | http://localhost:8811/staging/index.html |
+| ⚡ トップの試作（スロット・検索・地図・ペンゲッソ） | http://localhost:8811/staging/prototype-home.html |
 | 🌏 いまの本番トップをローカルで確認 | http://localhost:8811/index.html |
 
 止めるとき：
@@ -30,8 +36,8 @@ cd ~/Developer/html-works && ./local.sh
 cd ~/Developer/html-works && ./local.sh stop
 ```
 
-⚠️ `drafts/` の中は **GitHub に上がりません**。自分のMacの中だけです。
-だから上のURLは、あきくんのMacでしか開きません（世界からは見えない）。
+⚠️ `staging/` は **GitHub に上がります。**スマホからも ChatGPT/Codex からも見られます。
+ただし本番トップからリンクしていないし、`robots.txt` と `noindex` で検索にも出ません。
 
 ---
 
@@ -56,7 +62,7 @@ cd ~/Developer/html-works && ./local.sh stop
 | 言語 | **英語のみ。** 日本語版は作らない（素材の日本語は `source.md` に残す） |
 | 長さ | 本文 **35〜55 words**（55 words ≒ 18秒）。**基本ベース。**「1分で書いて」と言われたときだけ 120〜180 words |
 | タイトル | **キャッチーにしない。**読んだだけで中身がわかる説明文にする |
-| 右上 | **LOCAL（下書き）／ PUBLIC（公開ずみ）**を必ず出す |
+| 右上 | **STAGING（本番前）／ PUBLIC（公開ずみ）**を必ず出す |
 | 長さの表示 | ページ上部に `⚡ 47 words · 16 sec` を出す |
 | カード | **3〜5枚**。1枚に1〜2文 |
 | 見出し | **絵文字だけにしない。**英単語2〜3語のラベルを必ず付ける |
@@ -118,34 +124,34 @@ cd ~/Developer/html-works && ./local.sh stop
     いつでも   Slackの好きなチャンネルに、思ったことをポンと書く
                  （#today- 以外の12チャンネルを見ている）
                     ↓
-    毎朝 6:00   AIが昨日ぶんを全部読んで、15秒記事の下書きを作る（最大3本）
-                 → drafts/<slug>/ に置く。**GitHubには上げない**
+    毎朝 6:00   AIが昨日ぶんを全部読んで、15秒記事を作る（最大3本）
+                 → staging/works/<slug>/ に置いて push
                     ↓
-      あきくん   drafts/index.html を開いて、気が向いたときに眺める
+      あきくん   本番前のURLをスマホで開いて、気が向いたときに眺める
                  「これ出して」「ここ直して」と口で言う
                     ↓
-                言われたときだけ works/ へ移して push → 公開
+                言われたときだけ staging/works/ → works/ へ移して push → 公開
 ```
 
 **承認ボタンのようなものは作らない。** 👍を押す作業が増えるだけなので、
 2026-09-02 に本人がその案を却下した。**押す作業を増やさないこと。**
 
-### 🚦 LOCAL と PUBLIC
+### 🚦 STAGING と PUBLIC
 
-いま見ているのが下書きか本番か、**記事の右上に必ず出る。**
+いま見ているのが本番前か本番か、**記事の右上に必ず出る。**
 
 | | 意味 | 場所 |
 |---|---|---|
-| 🟡 **LOCAL** | 下書き。自分のパソコンの中だけ。世界には出ていない | `drafts/` |
+| 🟡 **STAGING** | 本番前。URLを知っている人だけ。検索には出ない | `staging/works/` |
 | 🟢 **PUBLIC** | 世界に公開されている | `works/` |
 
-公開するときに `LOCAL` → `PUBLIC` に書き換える。
+公開するときに `STAGING` → `PUBLIC` に書き換える。
 
 ### スケジュールタスク
 
 | taskId | 時刻 | 何をするか |
 |---|---|---|
-| `blog-morning-cook` | 毎朝 6:00 | Slack12chを読む → `drafts/` に下書きを作る。**push もSlack投稿もしない** |
+| `blog-morning-cook` | 毎朝 6:00 | Slack12chを読む → `staging/works/` に記事を作る。**本番（works/）には触らない** |
 
 ⚠️ **Claude Codeアプリが開いている間だけ動く。** 閉じていたら次に開いたときにまとめて走る。
 
@@ -234,17 +240,21 @@ html-works/
 ├── index.html        トップページ（⚡15秒 と 📖1分アーカイブ の2セクション）
 ├── PROMPT.md      ⭐ AIに渡すマスタープロンプト。記事を作るときはこれを貼る
 ├── new-post.sh       ./new-post.sh <slug> で1本生える
-├── .gitignore        drafts/ と .blog-queue/ を push しないための蓋
+├── NEXT.md        📋 次にやること。続きをやる人はまずここ
 ├── assets/
 │   └── thumbs-src/   一覧サムネの元画像（生成物）。埋め込みに使う原本
 ├── tools/
 │   ├── embed.py      記事の画像を縮小して base64 で埋め込む
-│   ├── thumbs.py     一覧サムネを240px正方形にして base64 で埋め込む
+│   ├── thumbs.py     一覧サムネを240px正方形の画像ファイルにする
+│   ├── build-site.py ⭐ トップを生成する（本番と本番前の両方）
 │   └── check.py      納品チェック（サイズ・words・ラベル・動き・SOURCE MAP）
 ├── _template/
 │   ├── index.html    記事のひな形（部品とモーションキットが全部入っている）
 │   └── source.md     素材の書き込みフォーマット
-├── drafts/        🔒 AIが毎朝作る下書き。gitに乗らない
+├── staging/       🟡 本番前。gitに乗る（検索には出ない）
+│   ├── index.html         本番前の一覧（生成物）
+│   ├── prototype-home.html 新しいトップの試作
+│   └── works/<slug>/      本番前の記事
 ├── .blog-queue/   🔒 どのSlackメッセージまで記事にしたかの記録。gitに乗らない
 └── works/
     └── pawapuro/
@@ -310,7 +320,8 @@ python3 tools/check.py
 - **フレームワーク・npm・ビルドを足さない**（素のHTML/CSS だけ）
   JavaScriptは、モーションキットの IntersectionObserver だけ許可。外部ライブラリは禁止
 - `prefers-reduced-motion` のブロックを消さない
-- `drafts/` を push しない（`.gitignore` で蓋をしてあるが、`git add -A` の中身は毎回見る）
+- **トップページ（index.html）を手で編集しない。**`python3 tools/build-site.py` で生成する
+  （2026-09-02 に ChatGPT側とClaude側で実際に衝突した。生成方式にして解決した）
 
 > 「普通に文章で書くとなんかちょっとだけしんどい気分になるんだけど、
 > HTMLで書くってなると、比較的、自分の文章に嫌気がしないなと思ってて。」（2026年8月1日）
