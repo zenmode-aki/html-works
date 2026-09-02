@@ -1,6 +1,6 @@
 # 📋 次にやること（Codex / ChatGPT への引き継ぎ）
 
-最終更新：2026-09-02（Claude側の作業ぶん）
+最終更新：2026-09-02（Claude側の作業ぶん・2回目）
 
 **このファイルを最初に読んでください。** 続きの作業に必要なことは全部ここにあります。
 ルールそのものは [PROMPT.md](PROMPT.md) と [README.md](README.md) にあります。
@@ -57,8 +57,17 @@ python3 tools/check.py --fix-badge  # ワード数バッジを直す
 python3 tools/build-site.py         # トップを両方つくり直す
 python3 tools/thumbs.py             # assets/thumbs-src/ → assets/thumbs/（macOS専用）
 python3 tools/embed.py <slug>       # 記事の中の画像を base64 で埋め込む
+python3 tools/check.py --site       # サイト全体の約束ごと（バッジ・noindex・meta・サムネ）
+python3 tools/embed.py --staging <slug>  # 本番前の記事の画像を base64 に
 ./local.sh                          # ローカルでサーバを立てて本番前を開く
+
+./promote.sh <slug>                 # 🟡本番前 → 🟢本番（push はしない）
+./demote.sh  <slug>                 # 🟢本番 → 🟡本番前（取り消し）
 ```
+
+**push すると GitHub Actions が自動で検査します**（`.github/workflows/check.yml`）。
+記事・サイト全体・トップが最新かを見て、崩れていれば赤くなります。
+Claude と Codex のどちらが push しても同じ基準で止まります。
 
 **push する前に必ず `python3 tools/check.py` と `--staging` の両方を通すこと。**
 
@@ -92,10 +101,9 @@ python3 tools/embed.py <slug>       # 記事の中の画像を base64 で埋め�
 > 候補は「あきくんが Slack に貼るときに、同時に Google Drive にも入れる」
 > （Drive の MCP は繋がっていて読める）。
 
-### ② 記事の中にも画像を足す 🟡
+### ② 記事の中にも画像を足す ✅ 本番前7本は済み
 
-いま画像は**一覧のサムネだけ**です。あきくんの希望は
-**「1記事に最低1枚は本文にも画像を入れたい」**。
+**本番前の7本は入れました。**これから作る記事も同じようにしてください。
 
 - Higgsfield（`generate_image`、model `recraft_v4_1`）で作る。**クレジットは気にしなくていい**
 - ルールは [PROMPT.md](PROMPT.md) の「画像を生成するときの世界観」
@@ -107,15 +115,22 @@ python3 tools/embed.py <slug>       # 記事の中の画像を base64 で埋め�
 **いま使った組み合わせ（重複させない）**
 
 ```
-本番: owl×clay / octopus×felt / capybara×plush / duck×cut-paper /
-      squirrel×amigurumi / hedgehog×wet-clay / kitten×low-poly /
-      otter×stained-glass / parakeet×bento / sloth×matte-plastic / turtle×amigurumi
-本番前: mouse×carved-wood / bear×papier-mache / rabbit×porcelain /
-        frog×blown-glass / snail×pressed-flowers / fox×wire / panda×needle-felt
+サムネ（本番）  : owl×clay / octopus×felt / capybara×plush / duck×cut-paper /
+                  squirrel×amigurumi / hedgehog×wet-clay / kitten×low-poly /
+                  otter×stained-glass / parakeet×bento / sloth×matte-plastic /
+                  turtle×amigurumi
+サムネ（本番前）: mouse×carved-wood / bear×papier-mache / rabbit×porcelain /
+                  frog×blown-glass / snail×pressed-flowers / fox×wire /
+                  panda×needle-felt
+本文（本番前）  : dormouse×marzipan / koala×painted-wood / alpaca×felt-balls /
+                  pelican×painted-ceramic / hamster×toy-bricks /
+                  raccoon×sashiko / meerkat×stencil
 ```
 
-まだ使っていない質感：マジパン、砂、木彫り彩色、ステンシル、刺し子、陶器の絵付け、
-レゴ風ブロック、フェルトボール、羊毛のドライフラワー など。
+まだ使っていない質感：砂の彫刻、ガラスモザイク、革細工、金継ぎ、切子、
+藁細工、ビーズ刺繍、コルク、消しゴムはんこ など。
+
+⚠️ Higgsfield は稀に無害な絵を NSFW と誤判定します。落ちたら言い回しを変えて再送すれば通ります。
 
 ### ③ ペンゲッソのプロトタイプに、本番前の記事を出す 🟡
 
@@ -219,19 +234,16 @@ push  →  公開
 
 計画は `~/.claude/plans/` にありますが、要点はここに写しておきます。
 
-- [ ] **`promote.sh` / `demote.sh`** — 本番前↔本番の移動を1コマンドに
-      （いまは手作業：フォルダ移動 → バッジ → noindex削除 → build-site.py → check.py）
-- [ ] **GitHub Actions** — push のたびに `check.py` を自動で走らせる。
-      `build-site.py` を走らせて `git diff --exit-code` でトップの作り忘れも検出する。
-      ⚠️ `sips` は Ubuntu に無いので `thumbs.py` は CI で走らせないこと
-- [ ] **`check.py --site`** — 不変条件の検査
-      （`works/` は全部 PUBLIC、`staging/works/` は全部 STAGING、
-       本番トップが staging へリンクしていない、meta.json とサムネが揃っている）
+- [x] ~~`promote.sh` / `demote.sh`~~ ✅ できました。往復して壊れないことも確認ずみ
+- [x] ~~GitHub Actions~~ ✅ できました。実際に緑になっています
+- [x] ~~`check.py --site`~~ ✅ できました。さっそく本物の抜けを4件見つけました
+      （記事を書き直すときにバッジを落としやすいので、この検査は残しておいてください）
 - [ ] **毎朝のタスクの更新** — `~/.claude/scheduled-tasks/blog-morning-cook/SKILL.md` は
       まだ `drafts/` を見ています。`staging/works/` に書くよう直す必要があります
       （あきくんの希望：Claude と Codex の両方で、1日2回まわしたい）
-- [ ] **README の古い記述** — `drafts/` の説明が残っています。`staging/` に直す
-- [ ] **`_template/index.html`** — バッジがまだ `stage-local` / `LOCAL` です
+- [x] ~~README の古い記述~~ ✅ 直しました
+- [x] ~~`_template/index.html` のバッジ~~ ✅ `stage-staging` / `STAGING` に直しました
+- [ ] **本番の11本にも本文画像を足す**（いま本文に画像があるのは本番前の7本だけ）
 
 ---
 
