@@ -98,8 +98,8 @@ cd ~/Developer/html-works && ./local.sh stop
 | 日付 | タイトル | 長さ |
 |---|---|---|
 | 2026.08.28 | [🌀 Stop Overthinking Practice](works/stop-overthinking-practice/index.html) | 178 words · 59 sec |
-| 2026.08.27 | [👥 Japan × Philippines #2: The Working Side](works/japan-philippines-work/index.html) | 170 words · 57 sec |
-| 2026.08.27 | [🛒 Japan × Philippines #1: Inside the Store](works/japan-philippines-shops/index.html) | 171 words · 57 sec |
+| 2026.08.27 | [👥 The Cultural Gap I Felt Working in Japan and the Philippines](works/japan-philippines-work/index.html) | 178 words · 59 sec |
+| 2026.08.27 | [🛒 The Difference in Store Staffing Between Japan and the Philippines](works/japan-philippines-shops/index.html) | 167 words · 56 sec |
 | 2026.08.27 | [✂️ Perfectionism #3: Choose 3 Things to Leave Behind First](works/perfectionist-3/index.html) | 179 words · 60 sec |
 | 2026.08.27 | [🌀 Perfectionism #2: Preparation Never Becomes Perfect](works/perfectionist-2/index.html) | 143 words · 48 sec |
 | 2026.08.27 | [🧩 Perfectionism #1: Why Perfectionists Love Starting](works/perfectionist-1/index.html) | 161 words · 54 sec |
