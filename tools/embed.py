@@ -17,6 +17,10 @@ import base64, mimetypes, pathlib, re, shutil, subprocess, sys, tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WIDTH, QUALITY = 1200, 72
+PHOTO_STORIES = {
+    "thailand-first-trip", "khaosan-road-chaos",
+    "burnham-park-flat-walk", "baguio-language-school-memories",
+}
 
 
 def shrink(src: pathlib.Path, out_dir: pathlib.Path) -> pathlib.Path:
@@ -88,8 +92,10 @@ def main():
     idx.write_text(doc, encoding="utf-8")
     shutil.rmtree(tmp, ignore_errors=True)
     size = len(doc.encode())
+    limit_kb = 1536 if args[0] in PHOTO_STORIES else 400
     print(f"\n✅ {idx.relative_to(ROOT)} = {size/1024:.0f}KB", end="")
-    print("  ⚠️ 400KBを超えています。画像を減らしてください。" if size > 400 * 1024 else " / 400KB")
+    print(f"  ⚠️ {limit_kb}KBを超えています。画像を減らしてください。"
+          if size > limit_kb * 1024 else f" / {limit_kb}KB")
     return 0
 
 

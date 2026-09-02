@@ -9,7 +9,7 @@
   python3 tools/check.py --site       サイト全体の約束ごとを検査する
 
 チェックすること:
-  1. index.html が 400KB 以内か
+  1. index.html が通常400KB以内か（複数写真フォトストーリーは1.5MB以内）
   2. 画像がすべて base64 か（相対パス・外部URL・絶対パスが残っていないか）
   3. 本文が 35〜55 words に収まっているか（＝15秒）
   4. ワード数バッジの数字が本文と合っているか
@@ -26,6 +26,7 @@ import re, sys, os, html, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MAX_BYTES = 400 * 1024
+PHOTO_STORY_MAX_BYTES = 1536 * 1024
 MIN_WORDS, MAX_WORDS = 35, 55        # ⚡ 15秒（180wpm で 12〜18秒）
 WPM = 180
 MAX_QUIP = 2                          # 1記事に入れていいAIのボケの数
@@ -39,6 +40,13 @@ LEGACY = {
     "japan-philippines-shops", "japan-philippines-work",
     "stop-overthinking-practice",
 }
+
+# 本文を水増しせず、複数写真を見る時間も含めて約1分にする形式。
+PHOTO_STORIES = {
+    "thailand-first-trip", "khaosan-road-chaos",
+    "burnham-park-flat-walk", "baguio-language-school-memories",
+}
+PHOTO_STORY_MIN, PHOTO_STORY_MAX = 60, 180
 
 OK, NG, WARN = "✅", "❌", "⚠️ "
 
@@ -84,18 +92,24 @@ def check(work: pathlib.Path, fix_badge: bool):
         return [f"{NG} {name}: index.html がありません"], []
 
     legacy = name in LEGACY
-    lo, hi = (LEGACY_MIN, LEGACY_MAX) if legacy else (MIN_WORDS, MAX_WORDS)
+    photo_story = name in PHOTO_STORIES
+    lo, hi = ((LEGACY_MIN, LEGACY_MAX) if legacy else
+              (PHOTO_STORY_MIN, PHOTO_STORY_MAX) if photo_story else
+              (MIN_WORDS, MAX_WORDS))
     if legacy:
         notes.append(f"📖 1分ブログ時代の記事（{lo}〜{hi} words で判定・15秒版の検査はかけない）")
+    elif photo_story:
+        notes.append(f"📷 1分フォトストーリー（{lo}〜{hi} words＋複数写真）")
 
     doc = idx.read_text(encoding="utf-8")
     size = len(doc.encode())
 
     # 1. サイズ
-    if size > MAX_BYTES:
-        problems.append(f"{NG} 大きすぎます: {size/1024:.0f}KB（上限 400KB）→ 画像をさらに縮小してください")
+    size_limit = PHOTO_STORY_MAX_BYTES if photo_story else MAX_BYTES
+    if size > size_limit:
+        problems.append(f"{NG} 大きすぎます: {size/1024:.0f}KB（上限 {size_limit/1024:.0f}KB）→ 画像をさらに縮小してください")
     else:
-        notes.append(f"{OK} サイズ {size/1024:.0f}KB / 400KB")
+        notes.append(f"{OK} サイズ {size/1024:.0f}KB / {size_limit/1024:.0f}KB")
 
     # 2. 画像の参照
     bad_src = [s for s in re.findall(r'<img[^>]*\bsrc="([^"]*)"', doc) if not s.startswith("data:")]
