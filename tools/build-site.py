@@ -226,7 +226,8 @@ def build_production(items):
         intro=("Short posts in easy English, written by a penguin. 🐧<br />"
                "Most posts take about <b>15 seconds</b> to read — the word count is written "
                "at the top of each page, so you know before you start. ⚡<br />"
-               '<a class="who-link" href="pengesso.html">🐧 Who is Pengesso? →</a>'),
+               '<a class="who-link" href="pengesso.html">🐧 Who is Pengesso? →</a> '
+               '<a class="who-link" href="remember/index.html">🧭 Things I Want to Remember →</a>'),
         sections=sections,
         footer=('🐧 <a href="pengesso.html">Meet Pengesso</a> · Made with plain HTML. '
                 "No build, no login, no tracking, no likes.<br />"
