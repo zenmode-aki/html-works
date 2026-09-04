@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="robots" content="noindex, nofollow" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🎯 あきの目標（大きな矢印）</title>
+<style>
+  :root {
+    --bg: #fff7fb;
+    --card: rgba(255,255,255,.94);
+    --text: #322536;
+    --muted: #876f84;
+    --pink: #ff6fae;
+    --purple: #8b6de8;
+    --green: #2aa87e;
+    --line: rgba(91,52,103,.12);
+    --shadow: 0 20px 55px rgba(115,70,111,.16);
+    --round: 26px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Hiragino Maru Gothic ProN", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 8% 4%,   rgba(255,212,92,.33),  transparent 24%),
+      radial-gradient(circle at 96% 14%, rgba(255,111,174,.20), transparent 27%),
+      radial-gradient(circle at 50% 100%,rgba(101,214,189,.16), transparent 35%),
+      var(--bg);
+  }
+  main { width: min(880px, calc(100% - 22px)); margin: 0 auto; padding: 26px 0 80px; }
+
+  .label { color: var(--purple); font-size: 12px; font-weight: 800; letter-spacing: .16em; margin-bottom: 10px; }
+  h1 { margin: 0 0 6px; font-size: clamp(30px, 6.4vw, 52px); line-height: 1.1; letter-spacing: -.04em;
+       color: #3b2745; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+  .today { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+
+  .box { padding: 22px 24px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+         border-radius: var(--round); box-shadow: 0 12px 32px rgba(115,70,111,.09); margin-top: 16px; }
+  .box h2 { margin: 0 0 14px; font-size: 17px; letter-spacing: .02em; color: #6d3a63; }
+
+  /* ── 今月これだけ ─────────────────────────── */
+  .now { background: linear-gradient(135deg, #fff2c6, #ffe0ef); border: none; }
+  .now .kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; color: #a8577f; }
+  .now .big { margin: 8px 0 0; font-size: clamp(24px, 5.2vw, 38px); line-height: 1.35; font-weight: 900; color: #5c2b52; }
+  .now .sub { margin-top: 10px; font-size: 15px; color: #7c4a70; line-height: 1.7; }
+
+  /* ── カウントダウン ───────────────────────── */
+  .counts { display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 12px; }
+  .count { padding: 16px 14px; border-radius: 20px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+           box-shadow: 0 7px 18px rgba(115,70,111,.07); text-align: center; }
+  .count .d { font-size: 30px; font-weight: 900; line-height: 1; color: var(--purple); }
+  .count .d small { font-size: 13px; font-weight: 800; margin-left: 2px; }
+  .count .t { margin-top: 8px; font-size: 13.5px; line-height: 1.45; color: #4c3550; }
+  .count .w { margin-top: 4px; font-size: 11.5px; color: var(--muted); letter-spacing: .03em; }
+  .count.soon { background: #fff3f7; }
+  .count.soon .d { color: #e4568e; }
+  .count.done { opacity: .45; }
+
+  /* ── チェックリスト ───────────────────────── */
+  .task { display: flex; gap: 12px; align-items: flex-start; padding: 13px 4px; border-top: 1px solid var(--line); }
+  .task:first-of-type { border-top: none; }
+  .task input { width: 22px; height: 22px; margin: 1px 0 0; flex: 0 0 auto; accent-color: var(--green); }
+  .task label { font-size: 15.5px; line-height: 1.6; cursor: pointer; }
+  .task .why { display: block; margin-top: 3px; font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+  .task input:checked + label { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(135,111,132,.5); }
+  .tag { display: inline-block; margin-right: 7px; padding: 2px 9px; border-radius: 999px;
+         font-size: 11px; font-weight: 800; letter-spacing: .04em; vertical-align: 2px; }
+  .t-work { background: #e7f0ff; color: #3a5aa8; }
+  .t-move { background: #e6fbf4; color: #24806a; }
+  .t-trip { background: #fff2c6; color: #96702a; }
+  .t-next { background: #f4eaff; color: #6f52ca; }
+  .t-priv { background: #f1ecef; color: #7a6b76; }
+
+  /* ── 月別 ────────────────────────────────── */
+  .months { display: grid; gap: 10px; }
+  .month { display: grid; grid-template-columns: 62px 1fr; gap: 14px; align-items: center;
+           padding: 14px 16px; border-radius: 18px; box-shadow: 0 6px 16px rgba(115,70,111,.06); }
+  .month:nth-child(1) { background: #fff5c9; }
+  .month:nth-child(2) { background: #e7f5ff; }
+  .month:nth-child(3) { background: #f4eaff; }
+  .month:nth-child(4) { background: #e6fbf4; }
+  .month:nth-child(5) { background: #ffeef6; }
+  .month .m { font-weight: 900; color: #6f52ca; font-size: 15px; }
+  .month .v { font-size: 15px; line-height: 1.55; color: #40304a; }
+
+  blockquote { margin: 0; padding: 14px 18px; background: #fbf5fd; border-left: 5px solid var(--pink);
+               border-radius: 0 16px 16px 0; font-size: 15px; line-height: 1.8; color: #4c3550; }
+  blockquote + blockquote { margin-top: 10px; }
+  .vow { font-size: 16px; line-height: 2; margin: 0; padding-left: 1.1em; }
+  .note { margin-top: 10px; font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px;
+          background: #fff; color: var(--purple); border: 2px solid rgba(255,255,255,.9);
+          font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(115,70,111,.10); margin-top: 26px; }
+  footer { margin-top: 26px; text-align: center; color: var(--muted); font-size: 12.5px; line-height: 1.9; }
+  @media (max-width: 600px) { .box { padding: 18px; border-radius: 22px; } .month { grid-template-columns: 52px 1fr; } }
+</style>
+</head>
+<body>
+<main>
+
+  <div class="label">🎯 GOALS · 自分用のページ</div>
+  <h1>大きな矢印でいい</h1>
+  <div class="today" id="today">—</div>
+
+  <!-- ════════ ここだけ書き換える ════════ -->
+  <script id="data" type="application/json">
+  {
+    "thisMonth": {
+      "kicker": "9月・これだけ",
+      "big": "今の仕事を、円満に終わらせる。",
+      "sub": "ほかは全部おまけ。9月に2つ以上やろうとしたら、それは詰め込みすぎ。"
+    },
+    "counts": [
+      { "date": "2026-09-13", "title": "海外へ出発",   "when": "関空 11:05 発" },
+      { "date": "2026-10-01", "title": "入社日",       "when": "前日9/30に前泊" },
+      { "date": "2026-11-14", "title": "LPIC-1 101",   "when": "9:00 出発「クツ」" },
+      { "date": "2026-11-15", "title": "今の家を出る", "when": "退去の期限" }
+    ],
+    "tasks": [
+      { "tag": "work", "text": "最終出社日と、返却するものを聞く",       "why": "自分では決められない。聞くだけで終わる" },
+      { "tag": "work", "text": "有給の残りと、最後の給与日を聞く",       "why": "同じ電話のついでに聞けばいい" },
+      { "tag": "work", "text": "離職票・源泉徴収票の送り先を伝える",     "why": "引っ越すので、住所が変わることだけ先に言っておく" },
+      { "tag": "trip", "text": "ホテルを3泊ぶん取る",                     "why": "13・14・15日。ここだけが未予約" },
+      { "tag": "trip", "text": "預け荷物なしで足りるか、荷物を出して見る", "why": "5kg・56×36×23cm しか持ち込めない" },
+      { "tag": "move", "text": "売るものを1つ、写真だけ撮る",             "why": "文章と値段はAIがやる。撮るのは自分にしかできない" },
+      { "tag": "move", "text": "10/1に勤務地を聞いたら、その日にエリアを絞る", "why": "決まるのが10/1、出るのが11/15。6週間しかない" },
+      { "tag": "next", "text": "IT用語を1日1つ、15秒ブログにする",        "why": "覚えるのと、書くのと、自己紹介が1回で終わる" },
+      { "tag": "priv", "text": "非公開の予定（詳細は aki-os を見る）",    "why": "ここには書かないと決めているもの" }
+    ],
+    "months": [
+      { "m": "9月",  "v": "今の会社を円満に終える／家族の付き添いで海外（9/13〜17）" },
+      { "m": "10月", "v": "新しい職場でスモールウィンを積み重ねる。毎日小さく信頼を積む" },
+      { "m": "11月", "v": "引っ越しを完了させる（11/15までに出る）" },
+      { "m": "12月", "v": "仕事を極力おぼえる。新しい生活に慣れる" },
+      { "m": "1月",  "v": "外国人の友達を見つけたい" }
+    ]
+  }
+  </script>
+  <!-- ══════════════════════════════════════ -->
+
+  <div class="box now">
+    <div class="kicker" id="nowKicker">—</div>
+    <p class="big" id="nowBig">—</p>
+    <div class="sub" id="nowSub">—</div>
+  </div>
+
+  <div class="box">
+    <h2>⏳ あと何日</h2>
+    <div class="counts" id="counts"></div>
+  </div>
+
+  <div class="box">
+    <h2>✅ 9月にやること（全部10分以内で始められる）</h2>
+    <div id="tasks"></div>
+    <div class="note">重いのは作業じゃなくて、始めるほう。チェックはこの端末にだけ残ります。</div>
+  </div>
+
+  <div class="box">
+    <h2>🗓 月ごとに1つだけ（2026年8月2日に自分で決めたもの）</h2>
+    <div class="months" id="months"></div>
+  </div>
+
+  <div class="box">
+    <h2>🧭 やりたいこと（3年ぶんのメモが出した答え）</h2>
+    <blockquote>ぐちゃぐちゃで難しい情報を、自分がわかる言葉に翻訳して、溜めて、並べ直して、誰かに渡すこと</blockquote>
+    <div class="note">「やりたいことがわからない」と思ったとき用。もう出ている答えなので、ここで悩まなくていい。</div>
+  </div>
+
+  <div class="box">
+    <h2>🤝 3つの誓い</h2>
+    <ol class="vow">
+      <li>期待を捨て、淡々と繰り返す人でありたい</li>
+      <li>不快感と共存できる人でありたい</li>
+      <li>完了させる人でありたい</li>
+    </ol>
+    <blockquote>Kindleで本が買えて、AIに課金できて、Spotifyが聴ければ人生勝ち。あとは、所属感と貢献感もあるといいね。</blockquote>
+  </div>
+
+  <div class="box">
+    <h2>🏠 引っ越しが不安になったとき</h2>
+    <blockquote>そっか、本当の問題はお金じゃなくて、不安の方なのかも。</blockquote>
+    <blockquote>もしも、両親から資金の援助がなければ？ 敷金や礼金がいらない、安い家に住む。いろんなものは捨てた状態で東京に行く。</blockquote>
+    <blockquote>いまは、家具や引越しのことを考えないのが大事なのかもなぁ。</blockquote>
+    <div class="note">全部、自分が先に書いていた答え。新しく悩む前にここを読む。</div>
+  </div>
+
+  <a class="home" href="../index.html">← ブログに戻る 🐧</a>
+
+  <footer>
+    🎯 このページは自分用。検索には出ません（noindex）。<br />
+    書き換えるところは、上のほうの JSON ブロックだけ。
+  </footer>
+
+</main>
+
+<script>
+(function () {
+  var data = JSON.parse(document.getElementById("data").textContent);
+  var now = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var W = ["日", "月", "火", "水", "木", "金", "土"];
+
+  document.getElementById("today").textContent =
+    "きょうは " + now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日（" + W[now.getDay()] + "）";
+
+  document.getElementById("nowKicker").textContent = data.thisMonth.kicker;
+  document.getElementById("nowBig").textContent = data.thisMonth.big;
+  document.getElementById("nowSub").textContent = data.thisMonth.sub;
+
+  // ── あと何日 ──────────────────────────────
+  var counts = document.getElementById("counts");
+  data.counts.forEach(function (c) {
+    var p = c.date.split("-");
+    var d = new Date(+p[0], +p[1] - 1, +p[2]);
+    var left = Math.round((d - today) / 86400000);
+    var el = document.createElement("div");
+    el.className = "count" + (left < 0 ? " done" : left <= 14 ? " soon" : "");
+    var num = left > 0 ? left + '<small>日</small>' : left === 0 ? "今日" : "済";
+    el.innerHTML =
+      '<div class="d">' + num + '</div>' +
+      '<div class="t">' + c.title + '</div>' +
+      '<div class="w">' + (+p[1]) + "/" + (+p[2]) + "（" + W[d.getDay()] + "）· " + c.when + '</div>';
+    counts.appendChild(el);
+  });
+
+  // ── チェックリスト（この端末にだけ残す）────────
+  var TAGS = { work: ["t-work", "仕事"], move: ["t-move", "引っ越し"], trip: ["t-trip", "渡航"],
+               next: ["t-next", "10月"], priv: ["t-priv", "非公開"] };
+  var store = {};
+  try { store = JSON.parse(localStorage.getItem("aki-goals") || "{}"); } catch (e) { store = {}; }
+
+  var tasks = document.getElementById("tasks");
+  data.tasks.forEach(function (t, i) {
+    var id = "task" + i;
+    var tag = TAGS[t.tag] || ["t-priv", ""];
+    var row = document.createElement("div");
+    row.className = "task";
+    row.innerHTML =
+      '<input type="checkbox" id="' + id + '" />' +
+      '<label for="' + id + '"><span class="tag ' + tag[0] + '">' + tag[1] + '</span>' +
+      t.text + '<span class="why">' + t.why + '</span></label>';
+    var box = row.querySelector("input");
+    box.checked = !!store[t.text];
+    box.addEventListener("change", function () {
+      store[t.text] = box.checked;
+      try { localStorage.setItem("aki-goals", JSON.stringify(store)); } catch (e) {}
+    });
+    tasks.appendChild(row);
+  });
+
+  // ── 月ごと ────────────────────────────────
+  var months = document.getElementById("months");
+  data.months.forEach(function (m) {
+    var el = document.createElement("div");
+    el.className = "month";
+    el.innerHTML = '<div class="m">' + m.m + '</div><div class="v">' + m.v + '</div>';
+    months.appendChild(el);
+  });
+})();
+</script>
+</body>
+</html>
