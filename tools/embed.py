@@ -2,8 +2,7 @@
 """
 🐧 画像を縮小して index.html に base64 で埋め込む
 
-  python3 tools/embed.py pawapuro            本番（works/）の記事
-  python3 tools/embed.py --staging <slug>    本番前（staging/works/）の記事
+  python3 tools/embed.py pawapuro            記事1本ぶん
 
 HTML側にこう書いておくだけ：
   <img src="IMAGE:switch.jpg" alt="...">
@@ -60,8 +59,7 @@ def main():
     if not args:
         print(__doc__)
         return 1
-    base = "staging/works" if "--staging" in sys.argv else "works"
-    work = ROOT / base / args[0]
+    work = ROOT / "works" / args[0]
     idx = work / "index.html"
     if not idx.exists():
         print(f"❌ {idx} がありません")

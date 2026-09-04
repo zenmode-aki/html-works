@@ -4,43 +4,37 @@
 
 ビルドもCMSもログインも要らない。HTMLを1枚書いて、push するだけ。
 
-## 🔗 3つの入口
+## 🔗 入口はここ1つだけ
 
-**スマホからでも、この4つのURLを開けば全部見られます。**
+**覚えるURLは1本。スマホでもこれを開けば全部見られます。**
 
-| | 何が置いてあるか | URL |
+| | 何があるか | URL |
 |---|---|---|
-| 🟢 **本番** | 世界に公開しているブログ。ここだけが検索に出る | https://zenmode-aki.github.io/html-works/ |
-| 🟡 **本番前（記事）** | まだ出していない記事の置き場。**中身**を確かめるところ | https://zenmode-aki.github.io/html-works/staging/ |
-| 🐧 **ペンゲッソ** | 書いているペンギンの自己紹介。スロット／検索／日本地図・世界地図 | https://zenmode-aki.github.io/html-works/pengesso.html |
-| 🔵 **本番前（見た目）** | 🐧 の**次の版**を試すところ。**デザイン**を確かめる | https://zenmode-aki.github.io/html-works/staging/prototype-home.html |
+| 🟢 **ブログ** | 🐧ペンゲッソの自己紹介＋記事26本。スロット／検索／日本地図・世界地図 | https://zenmode-aki.github.io/html-works/ |
 
-### なぜ「本番前」が2つあるのか
+### 本番前（staging）はもうありません
 
-**変わるタイミングが別々だから。**
+2026-09-04 にやめました。**理由：MacBookとスマホと複数のAIから触っていたら、
+どのURLが最新なのか本人が分からなくなったから。**
 
 ```
-🟡 本番前（記事）    毎朝ふえる。中身の話。「この記事、出していい？」
-🔵 本番前（見た目）  たまにしか触らない。ガワの話。「このトップ、かっこいい？」
+むかし  🟢本番 ／ 🟡本番前（記事） ／ 🐧ペンゲッソ ／ 🔵本番前（見た目）  ← 4つ
+いま    🟢 ここ1つ
 ```
 
-記事が1本ふえても見た目は変わらないし、見た目を作り直しても記事は1文字も変わらない。
-**混ぜると「どっちを見ているのか」が分からなくなるので、URLごと分けてあります。**
+**書いたらそのまま本番に出します。** 出したあとに気になったところを直す、という進め方。
+「出していい？」と聞かない、承認を待たない、下書き置き場を持たない。
 
-🟡 と 🔵 はどちらも `staging/` の中。**URLを知っている人しか来られないし、検索にも出ません**
-（`robots.txt` + `noindex`）。本番トップからはリンクしていません。
+### 🐧 トップページを直すとき
 
-### 🐧 ペンゲッソのページを直すとき
+**`index.html` を直接さわって大丈夫です。**見た目・スロット・地図はぜんぶここ。
 
-**`pengesso.html` を直接さわらない。**試作のほうを直して、作り直します。
+ただし記事の一覧（`POSTS` と `PLACES`）だけは手で書かないこと。ここは道具が差し込みます。
 
 ```bash
-# 1. staging/prototype-home.html を編集する
-python3 tools/publish-pengesso.py   # 2. 本番の pengesso.html を作り直す
-python3 tools/build-site.py         # 3. 記事の一覧を差し込む
+# index.html を編集したあと
+python3 tools/build-site.py   # 記事の一覧を差し込み直す
 ```
-
-同じ内容の2ファイルを手で揃えると必ずズレます（2026-09-03 に実際にズレました）。
 
 > 📋 **続きの作業をするときは、まず [NEXT.md](NEXT.md) を読んでください。**
 > いまどうなっているか・次にやること・触ってはいけないものが全部書いてあります。
@@ -57,14 +51,12 @@ cd ~/Developer/html-works && ./local.sh
 
 開いたら、そこから全部たどれます。直接行きたいときは：
 
-上と同じ並びです。
-
 | | URL |
 |---|---|
-| 🟢 **本番** | http://localhost:8811/index.html |
-| 🟡 **本番前（記事）**（まずここ） | http://localhost:8811/staging/index.html |
-| 🐧 **ペンゲッソ** | http://localhost:8811/pengesso.html |
-| 🔵 **本番前（見た目）** | http://localhost:8811/staging/prototype-home.html |
+| 🟢 **トップ** | http://localhost:8811/index.html |
+| 🧭 Remember | http://localhost:8811/remember/index.html |
+| 🎯 Goals（自分用） | http://localhost:8811/goals/index.html |
+| 🙋 Me（自分用） | http://localhost:8811/me/index.html |
 
 止めるとき：
 
@@ -73,7 +65,7 @@ cd ~/Developer/html-works && ./local.sh stop
 ```
 
 ⚠️ ローカルは **自分のMacの中だけ。**スマホからは見られません。
-スマホで見たいときは、push してから上の 🟢🟡🐧🔵 のURLを開いてください。
+スマホで見たいときは、push してから 🟢 のURLを開いてください。
 
 ---
 
@@ -98,7 +90,7 @@ cd ~/Developer/html-works && ./local.sh stop
 | 言語 | **英語のみ。** 日本語版は作らない（素材の日本語は `source.md` に残す） |
 | 長さ | 本文 **35〜55 words**が基本。「1分で」と言われたら **フォトストーリー（60〜180 words＋複数写真）**にする。文章を水増しせず、写真を見る時間も含めて約1分 |
 | タイトル | **キャッチーにしない。**読んだだけで中身がわかる説明文にする |
-| 右上 | **STAGING（本番前）／ PUBLIC（公開ずみ）**を必ず出す |
+| 右上 | **PUBLIC** を必ず出す（出す場所は1つしかないので、全部これ） |
 | 長さの表示 | ページ上部に `⚡ 47 words · 16 sec` を出す |
 | カード | **3〜5枚**。1枚に1〜2文。フォトストーリーは写真ギャラリーを挟み、最大6枚まで |
 | 見出し | **絵文字だけにしない。**英単語2〜3語のラベルを必ず付ける |
@@ -167,33 +159,26 @@ cd ~/Developer/html-works && ./local.sh stop
                  （#today- 以外の12チャンネルを見ている）
                     ↓
     毎朝 6:00   AIが昨日ぶんを全部読んで、15秒記事を作る（最大3本）
-                 → staging/works/<slug>/ に置いて push
+                 → works/<slug>/ に置いて、そのまま push ＝ 公開
                     ↓
-      あきくん   本番前のURLをスマホで開いて、気が向いたときに眺める
-                 「これ出して」「ここ直して」と口で言う
-                    ↓
-                言われたときだけ staging/works/ → works/ へ移して push → 公開
+      あきくん   気が向いたときに 🟢 のURLを開いて、直したいところを口で言う
+                 出したあとに直す。出す前に止めない
 ```
 
 **承認ボタンのようなものは作らない。** 👍を押す作業が増えるだけなので、
 2026-09-02 に本人がその案を却下した。**押す作業を増やさないこと。**
+2026-09-04 に、同じ理由で本番前（staging）そのものをやめた。
 
-### 🚦 STAGING と PUBLIC
+### 🚦 PUBLIC バッジ
 
-いま見ているのが本番前か本番か、**記事の右上に必ず出る。**
-
-| | 意味 | 場所 |
-|---|---|---|
-| 🟡 **STAGING** | 本番前。URLを知っている人だけ。検索には出ない | `staging/works/` |
-| 🟢 **PUBLIC** | 世界に公開されている | `works/` |
-
-公開するときに `STAGING` → `PUBLIC` に書き換える。
+記事の右上に緑の **PUBLIC** が出る。出す場所は1つしかないので、全部これ。
+`tools/check.py --site` が「STAGING が残っていないか」を機械的に見ている。
 
 ### スケジュールタスク
 
 | taskId | 時刻 | 何をするか |
 |---|---|---|
-| `blog-morning-cook` | 毎朝 6:00 | Slack12chを読む → `staging/works/` に記事を作る。**本番（works/）には触らない** |
+| `blog-morning-cook` | 毎朝 6:00 | Slack12chを読む → `works/` に記事を作って push（＝そのまま公開） |
 
 ⚠️ **Claude Codeアプリが開いている間だけ動く。** 閉じていたら次に開いたときにまとめて走る。
 
@@ -225,10 +210,14 @@ python3 tools/check.py  nagoya-dome  # 「追加した文：0」を確認する
 python3 tools/thumbs.py nagoya-dome  # 240px正方形にして base64 で埋め込む
 ```
 
-5. トップの `index.html` の `⚡ 15 SECOND` セクションに作品カードを1つ足す
-   （サムネは `<img src="THUMB:nagoya-dome" alt="...">` と書くだけ）
+5. トップの一覧に差し込む（**手で書き足さない**）
+
+```bash
+python3 tools/build-site.py
+```
+
 6. ひとつ前の記事の末尾の `Next ⚡` を、この記事に向ける
-7. `git add -A && git commit -m "add nagoya-dome" && git push`
+7. `git add -A && git commit -m "add nagoya-dome" && git push` → **これで公開**
 
 ---
 
@@ -295,7 +284,8 @@ sips -Z 1200 --setProperty formatOptions 72 photo.jpg -o photo-small.jpg
 
 ```
 html-works/
-├── index.html        トップページ（⚡15秒 と 📖1分アーカイブ の2セクション）
+├── index.html     ⭐ トップページ。🐧ペンゲッソ＋スロット＋検索＋地図＋記事一覧
+│                     見た目は手で書く。POSTS と PLACES だけ build-site.py が差し込む
 ├── PROMPT.md      ⭐ AIに渡すマスタープロンプト。記事を作るときはこれを貼る
 ├── new-post.sh       ./new-post.sh <slug> で1本生える
 ├── NEXT.md        📋 次にやること。続きをやる人はまずここ
@@ -304,19 +294,16 @@ html-works/
 ├── tools/
 │   ├── embed.py      記事の画像を縮小して base64 で埋め込む
 │   ├── thumbs.py     一覧サムネを240px正方形の画像ファイルにする
-│   ├── build-site.py ⭐ トップと🐧ペンゲッソの記事リストを生成する
-│   ├── publish-pengesso.py 🐧 試作 → 本番の pengesso.html を作り直す
+│   ├── build-site.py ⭐ index.html の POSTS / PLACES を差し込み直す
 │   ├── components.py 🧩 地図・動画・スライドの部品を全記事に配る
 │   └── check.py      納品チェック（サイズ・words・ラベル・動き・SOURCE MAP）
 ├── _template/
 │   ├── index.html    記事のひな形（部品とモーションキットが全部入っている）
 │   └── source.md     素材の書き込みフォーマット
-├── staging/       本番前。gitに乗る（URLを知っている人だけ・検索には出ない）
-│   ├── index.html         🟡 本番前（記事）の一覧。build-site.py の生成物
-│   ├── works/<slug>/      🟡 本番前の記事そのもの
-│   └── prototype-home.html 🔵 本番前（見た目）。次のトップの試作。手で書いている
+├── remember/      🧭 Things I Want to Remember（公開・トップからリンク）
+├── goals/ me/     🙋 自分用のページ（robots.txt で検索には出さない）
 ├── .blog-queue/   🔒 どのSlackメッセージまで記事にしたかの記録。gitに乗らない
-└── works/
+└── works/         📚 記事はぜんぶここ。出す前も出したあとも同じ場所
     └── pawapuro/
         ├── index.html
         ├── source.md
@@ -380,8 +367,11 @@ python3 tools/check.py
 - **フレームワーク・npm・ビルドを足さない**（素のHTML/CSS だけ）
   JavaScriptは、モーションキットの IntersectionObserver だけ許可。外部ライブラリは禁止
 - `prefers-reduced-motion` のブロックを消さない
-- **トップページ（index.html）を手で編集しない。**`python3 tools/build-site.py` で生成する
-  （2026-09-02 に ChatGPT側とClaude側で実際に衝突した。生成方式にして解決した）
+- **トップページ（index.html）の `POSTS` と `PLACES` を手で編集しない。**
+  `python3 tools/build-site.py` が差し込む。それ以外（見た目・スロット・地図）は手で直していい
+  （2026-09-02 に ChatGPT側とClaude側で実際に衝突した。差し込み方式にして解決した）
+- **本番前（staging）を作り直さない。** 2026-09-04 に、URLが増えすぎて
+  本人が管理できなくなったのでやめた。**出す場所は1つだけ。**
 
 > 「普通に文章で書くとなんかちょっとだけしんどい気分になるんだけど、
 > HTMLで書くってなると、比較的、自分の文章に嫌気がしないなと思ってて。」（2026年8月1日）

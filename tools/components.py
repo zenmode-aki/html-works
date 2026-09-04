@@ -2,8 +2,8 @@
 """
 🧩 記事に「地図・動画・スライド」の部品を足す
 
-  python3 tools/components.py --staging          本番前の全記事に部品を入れる
-  python3 tools/components.py --staging <slug>   1本だけ
+  python3 tools/components.py           全記事に部品を入れる
+  python3 tools/components.py <slug>    1本だけ
 
 記事のCSSはHTMLの中に直接書いてある（外部CSSを持たない方針）ので、
 新しい部品を足すときは全記事の <style> に同じものを入れて回る必要がある。
@@ -104,7 +104,7 @@ def inject(path: pathlib.Path) -> str:
 
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
-    base = ROOT / "staging" / "works" if "--staging" in sys.argv else ROOT / "works"
+    base = ROOT / "works"
     slugs = args or sorted(p.name for p in base.iterdir() if p.is_dir())
     for slug in slugs:
         idx = base / slug / "index.html"

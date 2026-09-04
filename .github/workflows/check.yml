@@ -24,25 +24,22 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: 本番の記事（words・バッジ・見出しラベル・SOURCE MAP）
+      - name: 記事（words・バッジ・見出しラベル・SOURCE MAP）
         run: python3 tools/check.py
 
-      - name: 本番前の記事
-        run: python3 tools/check.py --staging
-
-      - name: サイト全体（バッジ・noindex・meta.json・サムネ）
+      - name: サイト全体（バッジ・noindex・meta.json・サムネ・死んだリンク）
         run: python3 tools/check.py --site
 
-      # トップページは手で編集せず build-site.py で生成する決まり。
-      # 生成し直して差分が出たら、誰かが手で編集したか、生成し忘れている。
-      - name: トップページが最新かどうか
+      # index.html の記事一覧は手で書かず build-site.py で差し込む決まり。
+      # 差し込み直して差分が出たら、誰かが手で足したか、差し込み忘れている。
+      - name: トップページの一覧が最新かどうか
         run: |
           python3 tools/build-site.py
-          if ! git diff --exit-code -- index.html staging/index.html; then
+          if ! git diff --exit-code -- index.html; then
             echo ""
-            echo "❌ トップページが最新ではありません。"
-            echo "   index.html と staging/index.html は手で編集せず、"
-            echo "   python3 tools/build-site.py で作り直して commit してください。"
+            echo "❌ トップページの記事一覧が最新ではありません。"
+            echo "   POSTS と PLACES は手で編集せず、"
+            echo "   python3 tools/build-site.py で差し込み直して commit してください。"
             exit 1
           fi
-          echo "✅ トップページは最新です"
+          echo "✅ トップページの一覧は最新です"

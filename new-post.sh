@@ -32,9 +32,14 @@ cat <<MSG
   3) 写真を $DIR/images/ に入れて、HTMLには src="IMAGE:ファイル名" と書いておく
      python3 tools/embed.py $SLUG        ← 縮小して埋め込む
   4) python3 tools/check.py $SLUG        ← 「追加した文：0」を確認
-  5) index.html（トップ）の ⚡ 15 SECOND セクションにカードを1枚足す
-  6) ひとつ前の記事の末尾の Next ⚡ を、この記事に向ける
-  7) git add -A && git commit -m "add $SLUG" && git push
+  5) python3 tools/thumbs.py             ← 一覧に出すサムネを作る（macOSのみ）
+  6) python3 tools/build-site.py         ← トップの一覧に差し込む（手で足さない）
+  7) ひとつ前の記事の末尾の Next ⚡ を、この記事に向ける
+  8) git add -A && git commit -m "add $SLUG" && git push
+
+  ⚡ 出す場所は1つだけです。push した時点で
+     https://zenmode-aki.github.io/html-works/ に出ます。
+     気になったところは、出したあとに直してください。
 
   ※ 毎朝6時にSlackから自動生成される下書きは drafts/ に出ます（gitには乗りません）
 MSG

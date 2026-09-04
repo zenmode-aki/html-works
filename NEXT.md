@@ -1,6 +1,6 @@
 # 📋 次にやること（Codex / ChatGPT への引き継ぎ）
 
-最終更新：2026-09-03（Claude側の作業ぶん・3回目）
+最終更新：2026-09-04（本番前をやめて、出す場所を1つにした）
 
 **このファイルを最初に読んでください。** 続きの作業に必要なことは全部ここにあります。
 ルールそのものは [PROMPT.md](PROMPT.md) と [README.md](README.md) にあります。
@@ -9,78 +9,69 @@
 
 ## 1. いまどうなっているか
 
-### 入口は4つあります
+### 入口は1つだけです
 
-| | URL | 中身 | 誰が作る |
-|---|---|---|---|
-| 🟢 **本番** | https://zenmode-aki.github.io/html-works/ | `works/` の14本 | `build-site.py` の生成物 |
-| 🟡 **本番前（記事）** | https://zenmode-aki.github.io/html-works/staging/ | `staging/works/` の10本 | `build-site.py` の生成物 |
-| 🐧 **ペンゲッソ（本番）** | https://zenmode-aki.github.io/html-works/pengesso.html | ペンギンの自己紹介 | `publish-pengesso.py` の生成物 |
-| 🔵 **本番前（見た目）** | https://zenmode-aki.github.io/html-works/staging/prototype-home.html | 🐧 の次の版の試作 | **手で書く。ここだけが原本** |
+| | URL | 中身 |
+|---|---|---|
+| 🟢 **ブログ** | https://zenmode-aki.github.io/html-works/ | 🐧ペンゲッソの自己紹介＋記事26本 |
 
-**🟡 と 🔵 は別のものです。混ぜないでください。**
+**2026-09-04 に、本番前（staging/）と `pengesso.html` をなくしました。**
 
-- 🟡 は**中身**の置き場。毎朝ふえる。`build-site.py` が作るので**手で編集しない**
-- 🔵 は**見た目**の置き場。たまにしか触らない。1枚のHTMLを**手で編集していい**
-- 🐧 は 🔵 から作る。**`pengesso.html` を直接さわらない**
-  （`python3 tools/publish-pengesso.py` → `python3 tools/build-site.py`）
+やったこと：
 
-🟡 と 🔵 はどちらも `staging/` の中で、`robots.txt` と `noindex` で検索から外してあります。
-本番トップからリンクもしていないので、URLを知っている人しか来ません。
+- `staging/works/` の10本を `works/` へ移した（`japanese-subway-smell` は本番に同じものがあったので捨てた）
+- 昔の `staging/prototype-home.html`（🔵見た目の試作）を、そのまま **`index.html`**（本番トップ）にした
+- 昔の `index.html`（記事のグリッド）と `pengesso.html` は消した
+- `promote.sh` / `demote.sh` / `tools/publish-pengesso.py` も消した（行き先が1つなので要らない）
+
+理由は本人の言葉のまま：**「URLとかサイトが多すぎて、自分が管理できなくなってきた」**
+（MacBook・スマホ・複数のAIから触っていて、どれが最新か分からなくなった）。
+
+**もう本番前を作り直さないでください。** 書いたらそのまま `works/` に置いて push＝公開。
+直したいところは**出したあとに**直します。
 
 **同じリポジトリ・同じブランチ（main）です。** ChatGPT/Codex も Claude も、
 main に commit & push するだけ。ブランチを分ける必要はありません。
 
-### 記事は「移動するだけ」で本番に出せます
+### ⚠️ index.html の `POSTS` と `PLACES` だけは手で書かないでください
 
-記事は `../../index.html` で自分のトップに戻る作りなので、階層が同じなら
-中身を1文字も直さずに移動できます。
+`index.html` は**手で書いて育てるページ**です。見た目・スロット・ペンゲッソ紹介・
+地図の形は、直接編集して大丈夫。
+
+でも記事の一覧だけは `works/<slug>/meta.json` から**差し込み**ます。
 
 ```
-staging/works/<slug>/  →  works/<slug>/     これだけで本番に出る
+/* ⬇️ POSTS:START  ⬇️ */ … /* ⬆️ POSTS:END  ⬆️ */
+/* ⬇️ PLACES:START ⬇️ */ … /* ⬆️ PLACES:END ⬆️ */
 ```
-
-移動したあとにやることは3つ：
-1. 記事の中の `stage-staging` → `stage-public`、表示も `STAGING` → `PUBLIC`
-2. `<meta name="robots" content="noindex, nofollow" />` の行を消す
-3. `python3 tools/build-site.py`
-
-### ⚠️ トップページ（index.html）は手で編集しないでください
-
-`works/<slug>/meta.json` から**生成**します。
 
 ```bash
-python3 tools/build-site.py     # index.html と staging/index.html を作り直す
+python3 tools/build-site.py     # この2か所を差し込み直す
 ```
 
 2026-09-02 に実際に衝突が起きました（ChatGPT側とClaude側が同じ日に index.html を
-触った）。base64 を埋め込むのをやめて 244KB → 12KB にしたので、いまは
-「生成し直す」だけで解決します。**この方式を崩さないでください。**
+触った）。**この差し込み方式を崩さないでください。**
+新しい土地の記事を作るときは、`tools/build-site.py` の `PLACES` に足すこと
+（足さないと build が止まります）。
 
 ### 道具
 
 ```bash
-python3 tools/check.py              # 本番の記事を検査
-python3 tools/check.py --staging    # 本番前の記事を検査
+python3 tools/check.py              # 記事を検査
+python3 tools/check.py --site       # サイト全体（バッジ・noindex・meta・サムネ・死んだリンク）
 python3 tools/check.py --fix-badge  # ワード数バッジを直す
-python3 tools/build-site.py         # トップを両方つくり直す
+python3 tools/build-site.py         # index.html の記事一覧を差し込み直す
 python3 tools/thumbs.py             # assets/thumbs-src/ → assets/thumbs/（macOS専用）
 python3 tools/embed.py <slug>       # 記事の中の画像を base64 で埋め込む
-python3 tools/check.py --site       # サイト全体の約束ごと（バッジ・noindex・meta・サムネ）
-python3 tools/embed.py --staging <slug>  # 本番前の記事の画像を base64 に
-python3 tools/components.py --staging    # 地図・動画・スライドの部品を全記事に配る
-python3 tools/publish-pengesso.py        # 🔵試作 → 🐧本番の pengesso.html
-./local.sh                          # ローカルでサーバを立てて本番前を開く
-
-./promote.sh <slug>                 # 🟡本番前 → 🟢本番（push はしない）
-./demote.sh  <slug>                 # 🟢本番 → 🟡本番前（取り消し）
+python3 tools/components.py         # 地図・動画・スライドの部品を全記事に配る
+./local.sh                          # ローカルでサーバを立てて開く
 ```
 
 **push すると GitHub Actions が自動で検査します**（`.github/workflows/check.yml`）。
-記事・サイト全体・トップが最新かを見て、崩れていれば赤くなります。
+記事・サイト全体・トップの一覧が最新かを見て、崩れていれば赤くなります。
 Claude と Codex のどちらが push しても同じ基準で止まります。
 
-**push する前に必ず `python3 tools/check.py` と `--staging` の両方を通すこと。**
+**push する前に必ず `python3 tools/check.py` と `--site` を通すこと。**
 
 ---
 
@@ -88,14 +79,14 @@ Claude と Codex のどちらが push しても同じ基準で止まります。
 
 ### ① 名古屋駅の記事に写真を入れる 🔴
 
-`staging/works/nagoya-station-bookshop/` には、いま**写真が入っていません**。
+`works/nagoya-station-bookshop/` には、いま**写真が入っていません**。
 
 あきくんが Slack #サプライズ雑談 に貼った本屋（三省堂書店）の店内写真を
 使いたいのですが、**Slackのファイルは認証が要るので自動で取れませんでした。**
 
 やること：
 1. あきくんから画像をもらう（Slackから保存してもらう）
-2. `staging/works/nagoya-station-bookshop/images/sanseido.png` に置く
+2. `works/nagoya-station-bookshop/images/sanseido.png` に置く
 3. 記事の `<h1>` の直後に写真を戻す：
 
 ```html
@@ -105,16 +96,15 @@ Claude と Codex のどちらが push しても同じ基準で止まります。
   </figure>
 ```
 
-4. `python3 tools/embed.py` は `works/` しか見ないので、**staging 用に対応させるか**、
-   一時的に `works/` へ移してから戻すこと（`tools/embed.py:57` の `ROOT / "works"`）
+4. `python3 tools/embed.py nagoya-station-bookshop` で base64 に埋め込む
 
 > 恒久対策：Slack画像を自動で取る方法を決める必要があります。
 > 候補は「あきくんが Slack に貼るときに、同時に Google Drive にも入れる」
 > （Drive の MCP は繋がっていて読める）。
 
-### ② 記事の中にも画像を足す ✅ 本番前13本は済み
+### ② 記事の中にも画像を足す ✅ 13本は済み
 
-**本番前の13本は入れました。**これから作る記事も同じようにしてください。
+**あとから足した13本には入れました。**これから作る記事も同じようにしてください。
 
 - Higgsfield（`generate_image`、model `recraft_v4_1`）で作る。**クレジットは気にしなくていい**
 - ルールは [PROMPT.md](PROMPT.md) の「画像を生成するときの世界観」
@@ -143,14 +133,10 @@ Claude と Codex のどちらが push しても同じ基準で止まります。
 
 ⚠️ Higgsfield は稀に無害な絵を NSFW と誤判定します。落ちたら言い回しを変えて再送すれば通ります。
 
-### ③ ~~ペンゲッソのプロトタイプに、本番前の記事を出す~~ ✅ 済み
+### ③ ~~ペンゲッソのページに記事を出す~~ ✅ 済み
 
-`build-site.py` が `meta.json` から `var POSTS` を差し込むようになりました。
-**`var POSTS` を手で書かないでください。**差し込み口は
-`/* ⬇️ POSTS:START ⬇️ */` 〜 `/* ⬆️ POSTS:END ⬆️ */` です。
-
-新しい土地の記事を作るときは、`tools/build-site.py` の `PLACES` に
-その土地を足してください（足さないと build が止まります）。
+`build-site.py` が `meta.json` から `var POSTS` を差し込みます。
+2026-09-04 にそのページが本番トップ（`index.html`）そのものになりました。
 
 ### ③-2 ペンゲッソをもっと作り込む 🔴 ← いまここ
 
@@ -162,24 +148,12 @@ Claude と Codex のどちらが push しても同じ基準で止まります。
 - [x] 文章を 359 → 195 words に圧縮した
 - [x] メーターのカウントアップ、カードのずらし出しを追加した
 - [x] スマホで横に崩れないようにした（375pxで確認ずみ）
+- [x] 試作ではなく、**これが本番トップになった**（2026-09-04）
 - [ ] **生成画像をペンゲッソ紹介の中に入れる**（いまは絵文字だけ）
 - [ ] もっとアニメーションを増やす（本人いわく「本気で実装したい」）
 
-### ③-3 旧：プロトタイプの置き場所
-
-`staging/prototype-home.html` が新しいトップページの試作です
-（スロット・検索・地図・ペンゲッソ紹介が入っている）。
-
-**いまは記事リストが JavaScript にベタ書き**（`var POSTS = [...]`）なので、
-実際の記事と連動していません。あきくんの希望は
-**「ここに本番前の記事を載せたい」**。
-
-やり方の案：
-- `tools/build-site.py` に「プロトタイプ用の JSON も吐く」処理を足す
-  → `staging/posts.json` を作って、プロトタイプが `fetch()` で読む
-- `meta.json` には `place` と `age` が入っているので、地図と年齢の絞り込みに使える
-- ⚠️ `file://` で開くと `fetch()` は失敗するので、`./local.sh`（HTTPサーバ）前提にするか、
-  JSONをHTMLに埋め込む形にする
+直す場所は `index.html` の `<section class="about" id="about">` 以下です。
+**そこは手で編集していい。**差し込み口（`POSTS` / `PLACES`）にだけ触らないこと。
 
 ---
 
@@ -190,7 +164,7 @@ Claude と Codex のどちらが push しても同じ基準で止まります。
 - **中身を書き換えるのは、HTMLの上のほうにある `<script id="data">` のJSONブロックだけ。** CSS・JSは触らない
 - 日付は今日から自動計算する（`あと何日` を手で書かない）
 - ⏱ バッジは `#fast`（上半分）の文字数だけを数えて秒に直す。**60秒を超えると赤くなる** ＝ 何かを下半分に送る合図
-- `noindex`。本番トップからはリンクしない（`check.py --site` の「本番トップから staging へのリンクなし」とは別物なので、リンクを足さないこと）
+- トップからはリンクしない。検索に出さないのは `robots.txt` の `Disallow: /goals/` でやっている
 - **匿名ルールをここにも適用する。** 会社名・通院・家族の詳細は書かない。詳細は非公開リポジトリ `aki-os` 側
 
 ---
@@ -279,16 +253,19 @@ push  →  公開
 
 計画は `~/.claude/plans/` にありますが、要点はここに写しておきます。
 
-- [x] ~~`promote.sh` / `demote.sh`~~ ✅ できました。往復して壊れないことも確認ずみ
+- [x] ~~`promote.sh` / `demote.sh`~~ 🗑 2026-09-04 に削除。行き先が1つなので要らなくなった
 - [x] ~~GitHub Actions~~ ✅ できました。実際に緑になっています
 - [x] ~~`check.py --site`~~ ✅ できました。さっそく本物の抜けを4件見つけました
       （記事を書き直すときにバッジを落としやすいので、この検査は残しておいてください）
-- [ ] **毎朝のタスクの更新** — `~/.claude/scheduled-tasks/blog-morning-cook/SKILL.md` は
-      まだ `drafts/` を見ています。`staging/works/` に書くよう直す必要があります
+- [ ] 🔴 **毎朝のタスクの書き先を直す** — `~/.claude/scheduled-tasks/blog-morning-cook/SKILL.md`
+      が `staging/works/` に書くようになっているなら、`works/` に直すこと。
+      **staging/ はもう存在しないので、直さないと毎朝こけます**
       （あきくんの希望：Claude と Codex の両方で、1日2回まわしたい）
 - [x] ~~README の古い記述~~ ✅ 直しました
-- [x] ~~`_template/index.html` のバッジ~~ ✅ `stage-staging` / `STAGING` に直しました
-- [ ] **本番の11本にも本文画像を足す**（いま本文に画像があるのは本番前の13本）
+- [x] ~~`_template/index.html` のバッジ~~ ✅ `stage-public` / `PUBLIC` に直しました
+- [ ] **2026-08 の11本にも本文画像を足す**（本文に画像があるのは、あとから足した13本）
+- [ ] 昔の `pengesso.html` を開くと 404 になります。困るようなら
+      `pengesso.html` に「`/` へ飛ぶだけ」の1行HTMLを置けば直せます（いまは置いていない）
 
 ---
 
@@ -297,7 +274,9 @@ push  →  公開
 - **記事の `<p>` の中の英文。** あきくんの言葉です。AIが事実・体験・教訓を足さない
   （`card-label` / `.quip` / `h1` / 絵文字 / CSS / アニメは AI が自由に作っていい）
 - **`tools/check.py` の `LEGACY` に入っている10本の本文**（2026-08 の「1分ブログ」時代）
-- **トップページを手で編集すること**（必ず `build-site.py` で生成）
+- **`index.html` の `POSTS` / `PLACES` を手で編集すること**（必ず `build-site.py` で差し込む）
+- **本番前（staging/）を作り直すこと。** 2026-09-04 にあきくんがやめると決めています
+  （「URLが多すぎて管理できない」）。**出す場所は1つだけ**
 - **承認していないコメントをサイトに出すこと**
 - **匿名ルール**：本名・顔・勤務先・学校名・健康状態・収入の額・家族の特定情報は、
   本人が掲載を明示した範囲以外は落とす。顔写真や学校名を本人が明示して使うよう頼んだ場合は、

@@ -5,7 +5,6 @@
   python3 tools/check.py              全記事をチェック
   python3 tools/check.py pawapuro     1本だけ
   python3 tools/check.py --fix-badge  ワード数バッジを正しい数字に書き直す
-  python3 tools/check.py --staging    本番前（staging/works/）を検査する
   python3 tools/check.py --site       サイト全体の約束ごとを検査する
 
 チェックすること:
@@ -244,60 +243,69 @@ def check_site():
 
     ChatGPT/Codex と Claude の両方が同じリポジトリを触るので、
     「片方が約束を崩したまま push する」のをここで止める。
+
+    2026-09-04 に本番前（staging/）をやめて、公開する場所を1つにした。
+    ここで見るのは「出ているものが全部ちゃんと出ているか」だけ。
     """
     problems, notes = [], []
-    prod = sorted(p for p in (ROOT / "works").iterdir() if p.is_dir()) \
+    works = sorted(p for p in (ROOT / "works").iterdir() if p.is_dir()) \
         if (ROOT / "works").exists() else []
-    stag = sorted(p for p in (ROOT / "staging" / "works").iterdir() if p.is_dir()) \
-        if (ROOT / "staging" / "works").exists() else []
 
-    # 1. バッジ：本番は PUBLIC、本番前は STAGING
-    for d, want, other in ((prod, "stage-public", "stage-staging"),
-                           (stag, "stage-staging", "stage-public")):
-        for w in d:
-            doc = (w / "index.html").read_text(encoding="utf-8")
-            # ⚠️ CSS の定義（.stage-public { ... }）にも同じ文字列が出るので、
-            #    class 属性の中だけを見る
-            used = set()
-            for attr in re.findall(r'class="([^"]*)"', doc):
-                used |= set(attr.split())
-            if other in used:
-                problems.append(f"{NG} {w.relative_to(ROOT)}: バッジが逆です（{other} が入っています）")
-            elif want not in used:
-                problems.append(f"{NG} {w.relative_to(ROOT)}: {want} のバッジがありません")
+    # 1. バッジ：全部 PUBLIC。STAGING は残っていてはいけない
+    for w in works:
+        doc = (w / "index.html").read_text(encoding="utf-8")
+        # ⚠️ CSS の定義（.stage-public { ... }）にも同じ文字列が出るので、
+        #    class 属性の中だけを見る
+        used = set()
+        for attr in re.findall(r'class="([^"]*)"', doc):
+            used |= set(attr.split())
+        if "stage-staging" in used:
+            problems.append(f"{NG} {w.relative_to(ROOT)}: STAGING のバッジが残っています")
+        elif "stage-public" not in used:
+            problems.append(f"{NG} {w.relative_to(ROOT)}: stage-public のバッジがありません")
     if not problems:
-        notes.append(f"{OK} バッジ：本番{len(prod)}本 PUBLIC / 本番前{len(stag)}本 STAGING")
+        notes.append(f"{OK} バッジ：{len(works)}本すべて PUBLIC")
 
-    # 2. noindex：本番前だけに付いている
-    bad = [w.name for w in prod if 'name="robots"' in (w / "index.html").read_text(encoding="utf-8")]
+    # 2. noindex：公開する場所は1つなので、どこにも付いていてはいけない
+    bad = [w.name for w in works if 'name="robots"' in (w / "index.html").read_text(encoding="utf-8")]
     if bad:
-        problems.append(f"{NG} 本番なのに noindex が付いています: {bad} → 検索に出なくなります")
-    bad = [w.name for w in stag if 'name="robots"' not in (w / "index.html").read_text(encoding="utf-8")]
-    if bad:
-        problems.append(f"{NG} 本番前なのに noindex がありません: {bad} → 検索に出てしまいます")
-    if not bad:
-        notes.append(f"{OK} noindex は本番前だけに付いている")
-
-    # 3. 本番トップから staging へリンクしていない
-    idx = (ROOT / "index.html").read_text(encoding="utf-8")
-    links = re.findall(r'(?:href|src)="([^"]*staging[^"]*)"', idx)
-    if links:
-        problems.append(f"{NG} 本番トップが staging を指しています: {links[:3]}")
+        problems.append(f"{NG} noindex が付いた記事があります: {bad} → 検索に出なくなります")
     else:
-        notes.append(f"{OK} 本番トップから staging へのリンクなし")
+        notes.append(f"{OK} noindex の付いた記事はない")
+
+    # 3. 消したもの（staging/・pengesso.html）へのリンクが残っていない
+    dead = []
+    for page in [ROOT / "index.html"] + [w / "index.html" for w in works] + \
+            [p / "index.html" for p in (ROOT / "remember", ROOT / "goals", ROOT / "me")
+             if (p / "index.html").exists()]:
+        doc = page.read_text(encoding="utf-8")
+        for l in re.findall(r'(?:href|src)="([^"]*(?:staging|pengesso\.html)[^"]*)"', doc):
+            dead.append(f"{page.relative_to(ROOT)} → {l}")
+    if dead:
+        problems.append(f"{NG} もう無いページへのリンクが残っています: {dead[:3]}")
+    else:
+        notes.append(f"{OK} staging / pengesso.html へのリンクは残っていない")
 
     # 4. meta.json とサムネが揃っている
-    for w in prod + stag:
+    for w in works:
         if not (w / "meta.json").exists():
             problems.append(f"{NG} {w.relative_to(ROOT)}/meta.json がありません → トップに出せません")
         elif not (ROOT / "assets" / "thumbs" / f"{w.name}.jpg").exists():
             problems.append(f"{NG} assets/thumbs/{w.name}.jpg がありません → 一覧の画像が壊れます")
     if not any("meta.json" in p or "thumbs" in p for p in problems):
-        notes.append(f"{OK} meta.json とサムネが {len(prod)+len(stag)}本ぶん揃っている")
+        notes.append(f"{OK} meta.json とサムネが {len(works)}本ぶん揃っている")
 
-    # 5. robots.txt がある
+    # 5. トップページに一覧の差し込み口が残っている
+    idx = (ROOT / "index.html").read_text(encoding="utf-8")
+    if "POSTS:START" not in idx or "PLACES:START" not in idx:
+        problems.append(f"{NG} index.html の POSTS / PLACES の目印が消えています"
+                        f" → python3 tools/build-site.py が効かなくなります")
+    else:
+        notes.append(f"{OK} index.html に POSTS / PLACES の目印あり")
+
+    # 6. robots.txt がある（/me/ と /goals/ を検索に出さないため）
     if not (ROOT / "robots.txt").exists():
-        problems.append(f"{NG} robots.txt がありません → staging が検索に出ます")
+        problems.append(f"{NG} robots.txt がありません → /me/ と /goals/ が検索に出ます")
     else:
         notes.append(f"{OK} robots.txt あり")
 
@@ -318,11 +326,8 @@ def main():
 
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     fix = "--fix-badge" in sys.argv
-    # 本番前の記事も、公開物とまったく同じ基準で検査する。
-    # staging/ を works/ にコピーして検査する、のような回り道をしないため
-    staging = "--staging" in sys.argv
 
-    base = ROOT / ("staging/works" if staging else "works")
+    base = ROOT / "works"
     if not base.exists():
         print(f"ℹ️  {base.relative_to(ROOT)}/ がありません")
         return 0
@@ -330,8 +335,7 @@ def main():
     if args:
         works = [w for w in works if w.name in args]
         if not works:
-            where = "本番前の記事" if staging else "記事"
-            print(f"{NG} そんな{where}はありません: {args}")
+            print(f"{NG} そんな記事はありません: {args}")
             return 1
     if not works:
         print(f"ℹ️  {base.relative_to(ROOT)}/ は空です")

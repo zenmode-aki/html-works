@@ -57,16 +57,15 @@
     box-shadow: 0 6px 16px rgba(115,70,111,.08);
   }
 
-  /* ── 🚦 いま見ているのが下書きか本番かを、右上に必ず出す ──────────
-     STAGING = staging/works/ にある。URLを知っている人だけ。検索には出ない
-     PUBLIC  = works/ にある。GitHub Pages で世界に公開され、検索にも出る
-     公開するとき ./promote.sh <slug> が STAGING → PUBLIC に書き換える */
+  /* ── 🚦 公開ずみの印を右上に必ず出す ────────────────────────
+     出す場所は works/ の1つだけなので、記事はぜんぶ PUBLIC。
+     2026-09-04 に本番前（staging/）をやめたので STAGING はもう無い。
+     tools/check.py --site が「STAGING が残っていないか」を見ている */
   .stage {
     padding: 10px 13px; border-radius: 999px;
     font-size: 11px; font-weight: 900; letter-spacing: .12em;
     white-space: nowrap; box-shadow: 0 6px 16px rgba(115,70,111,.16);
   }
-  .stage-staging { background: #ffb020; color: #4a2c00; }
   .stage-public { background: #23c98a; color: #04331d; }
 
   .label {
@@ -256,8 +255,8 @@
     <div class="badges">
       <!-- 👇 python3 tools/check.py --fix-badge が正しい数字に直してくれる -->
       <div class="wc-badge">⚡ 0 words · 0 sec</div>
-      <!-- 🚦 本番前のあいだは STAGING。公開すると PUBLIC に変わる -->
-      <div class="stage stage-staging">STAGING</div>
+      <!-- 🚦 出す場所は1つだけ。記事はぜんぶ PUBLIC -->
+      <div class="stage stage-public">PUBLIC</div>
     </div>
   </div>
 
