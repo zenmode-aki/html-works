@@ -4,259 +4,379 @@
 <meta charset="UTF-8" />
 <meta name="robots" content="noindex, nofollow" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>🎯 あきの目標（大きな矢印）</title>
+<title>🧭 いまの自分（1分でわかる）</title>
 <style>
   :root {
-    --bg: #fff7fb;
-    --card: rgba(255,255,255,.94);
-    --text: #322536;
-    --muted: #876f84;
-    --pink: #ff6fae;
-    --purple: #8b6de8;
-    --green: #2aa87e;
-    --line: rgba(91,52,103,.12);
-    --shadow: 0 20px 55px rgba(115,70,111,.16);
-    --round: 26px;
+    --bg: #fdf7fb;
+    --ink: #2b2130;
+    --ink2: #5a4a5e;
+    --muted: #8e7c8d;
+    --card: #ffffff;
+    --line: rgba(91,52,103,.11);
+    --purple: #7b5cf0;
+    --pink: #ff5f9e;
+    --amber: #f2a33c;
+    --teal: #1fa588;
+    --grey: #b9adb7;
+    --round: 20px;
+    --shadow: 0 10px 30px rgba(97,60,104,.09);
   }
   * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
   body {
-    margin: 0; color: var(--text);
-    font-family: "Hiragino Maru Gothic ProN", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+    margin: 0; color: var(--ink);
+    font-family: "Hiragino Maru Gothic ProN", "Hiragino Sans", system-ui, -apple-system, sans-serif;
     background:
-      radial-gradient(circle at 8% 4%,   rgba(255,212,92,.33),  transparent 24%),
-      radial-gradient(circle at 96% 14%, rgba(255,111,174,.20), transparent 27%),
-      radial-gradient(circle at 50% 100%,rgba(101,214,189,.16), transparent 35%),
+      radial-gradient(1200px 400px at 10% -5%, rgba(255,196,224,.35), transparent 60%),
+      radial-gradient(900px 380px at 95% 8%, rgba(180,205,255,.30), transparent 62%),
       var(--bg);
+    line-height: 1.7;
   }
-  main { width: min(880px, calc(100% - 22px)); margin: 0 auto; padding: 26px 0 80px; }
+  main { width: min(940px, calc(100% - 20px)); margin: 0 auto; padding: 22px 0 90px; }
 
-  .label { color: var(--purple); font-size: 12px; font-weight: 800; letter-spacing: .16em; margin-bottom: 10px; }
-  h1 { margin: 0 0 6px; font-size: clamp(30px, 6.4vw, 52px); line-height: 1.1; letter-spacing: -.04em;
-       color: #3b2745; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
-  .today { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+  .eyebrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; color: var(--purple); }
+  .clock {
+    padding: 6px 13px; border-radius: 999px; background: #fff; border: 1px solid var(--line);
+    font-size: 12px; font-weight: 800; color: var(--ink2); box-shadow: var(--shadow);
+  }
+  .clock.over { background: #fff0f4; color: #d33a72; border-color: rgba(211,58,114,.25); }
+  h1 { margin: 0 0 4px; font-size: clamp(27px, 5.6vw, 44px); line-height: 1.14; letter-spacing: -.035em; }
+  .today { color: var(--muted); font-size: 13.5px; margin-bottom: 20px; }
 
-  .box { padding: 22px 24px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
-         border-radius: var(--round); box-shadow: 0 12px 32px rgba(115,70,111,.09); margin-top: 16px; }
-  .box h2 { margin: 0 0 14px; font-size: 17px; letter-spacing: .02em; color: #6d3a63; }
+  section { margin-top: 20px; }
+  h2 { display: flex; align-items: baseline; gap: 9px; margin: 0 0 12px;
+       font-size: 14px; letter-spacing: .04em; color: var(--ink2); }
+  h2 em { font-style: normal; font-size: 11.5px; color: var(--muted); font-weight: 500; letter-spacing: 0; }
 
-  /* ── 今月これだけ ─────────────────────────── */
-  .now { background: linear-gradient(135deg, #fff2c6, #ffe0ef); border: none; }
-  .now .kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; color: #a8577f; }
-  .now .big { margin: 8px 0 0; font-size: clamp(24px, 5.2vw, 38px); line-height: 1.35; font-weight: 900; color: #5c2b52; }
-  .now .sub { margin-top: 10px; font-size: 15px; color: #7c4a70; line-height: 1.7; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--round);
+          box-shadow: var(--shadow); padding: 18px 20px; }
 
-  /* ── カウントダウン ───────────────────────── */
-  .counts { display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 12px; }
-  .count { padding: 16px 14px; border-radius: 20px; background: #fff; border: 2px solid rgba(255,255,255,.9);
-           box-shadow: 0 7px 18px rgba(115,70,111,.07); text-align: center; }
-  .count .d { font-size: 30px; font-weight: 900; line-height: 1; color: var(--purple); }
-  .count .d small { font-size: 13px; font-weight: 800; margin-left: 2px; }
-  .count .t { margin-top: 8px; font-size: 13.5px; line-height: 1.45; color: #4c3550; }
-  .count .w { margin-top: 4px; font-size: 11.5px; color: var(--muted); letter-spacing: .03em; }
-  .count.soon { background: #fff3f7; }
-  .count.soon .d { color: #e4568e; }
-  .count.done { opacity: .45; }
+  /* ── ① いまこれだけ ─────────────────────── */
+  .hero { background: linear-gradient(135deg, #241a35 0%, #4a2a63 55%, #7b3a76 100%); color: #fff;
+          border: none; padding: 24px 24px 20px; border-radius: 24px; }
+  .hero .tag { display: inline-block; padding: 4px 11px; border-radius: 999px;
+               background: rgba(255,255,255,.16); font-size: 11px; font-weight: 900; letter-spacing: .14em; }
+  .hero h3 { margin: 12px 0 0; font-size: clamp(22px, 4.6vw, 34px); line-height: 1.32; letter-spacing: -.02em; }
+  .hero .next { margin-top: 16px; padding: 13px 16px; border-radius: 15px;
+                background: rgba(255,255,255,.13); font-size: 15px; line-height: 1.6; }
+  .hero .next b { color: #ffd88a; }
 
-  /* ── チェックリスト ───────────────────────── */
-  .task { display: flex; gap: 12px; align-items: flex-start; padding: 13px 4px; border-top: 1px solid var(--line); }
-  .task:first-of-type { border-top: none; }
-  .task input { width: 22px; height: 22px; margin: 1px 0 0; flex: 0 0 auto; accent-color: var(--green); }
-  .task label { font-size: 15.5px; line-height: 1.6; cursor: pointer; }
-  .task .why { display: block; margin-top: 3px; font-size: 12.5px; color: var(--muted); line-height: 1.55; }
-  .task input:checked + label { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(135,111,132,.5); }
-  .tag { display: inline-block; margin-right: 7px; padding: 2px 9px; border-radius: 999px;
-         font-size: 11px; font-weight: 800; letter-spacing: .04em; vertical-align: 2px; }
-  .t-work { background: #e7f0ff; color: #3a5aa8; }
-  .t-move { background: #e6fbf4; color: #24806a; }
-  .t-trip { background: #fff2c6; color: #96702a; }
-  .t-next { background: #f4eaff; color: #6f52ca; }
-  .t-priv { background: #f1ecef; color: #7a6b76; }
+  /* ── ② 9月の帯 ────────────────────────── */
+  .scroller { overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+  .tl { position: relative; min-width: 700px; height: 168px; padding-top: 6px; }
+  .tl-axis { position: absolute; left: 0; right: 0; top: 118px; height: 2px; background: var(--line); }
+  .tl-tick { position: absolute; top: 124px; transform: translateX(-50%);
+             font-size: 10.5px; color: var(--muted); white-space: nowrap; }
+  .tl-tick::before { content: ""; position: absolute; left: 50%; top: -8px; width: 1px; height: 6px; background: var(--line); }
+  .span { position: absolute; height: 30px; border-radius: 999px; display: flex; align-items: center;
+          padding: 0 13px; font-size: 12.5px; font-weight: 800; color: #fff; white-space: nowrap;
+          box-shadow: 0 6px 16px rgba(97,60,104,.16); }
+  .span.a { background: linear-gradient(90deg, #f2a33c, #ef8b5a); top: 6px; }
+  .span.b { background: linear-gradient(90deg, #1fa588, #2bb6a4); top: 44px; }
+  .pin { position: absolute; transform: translateX(-50%); text-align: center; width: 92px; }
+  .pin .dot { width: 12px; height: 12px; border-radius: 50%; margin: 0 auto; background: var(--purple);
+              box-shadow: 0 0 0 4px rgba(123,92,240,.16); }
+  .pin .lbl { margin-top: 5px; font-size: 11.5px; font-weight: 800; color: var(--ink2); line-height: 1.35; }
+  .pin.hi .dot { background: var(--pink); box-shadow: 0 0 0 5px rgba(255,95,158,.18); }
+  .now-line { position: absolute; top: 0; bottom: 40px; width: 2px; background: var(--pink); }
+  .now-line span { position: absolute; top: -4px; left: 50%; transform: translateX(-50%);
+                   padding: 2px 8px; border-radius: 999px; background: var(--pink); color: #fff;
+                   font-size: 10px; font-weight: 900; white-space: nowrap; }
+  .hint { margin-top: 6px; font-size: 11.5px; color: var(--muted); }
 
-  /* ── 月別 ────────────────────────────────── */
-  .months { display: grid; gap: 10px; }
-  .month { display: grid; grid-template-columns: 62px 1fr; gap: 14px; align-items: center;
-           padding: 14px 16px; border-radius: 18px; box-shadow: 0 6px 16px rgba(115,70,111,.06); }
-  .month:nth-child(1) { background: #fff5c9; }
-  .month:nth-child(2) { background: #e7f5ff; }
-  .month:nth-child(3) { background: #f4eaff; }
-  .month:nth-child(4) { background: #e6fbf4; }
-  .month:nth-child(5) { background: #ffeef6; }
-  .month .m { font-weight: 900; color: #6f52ca; font-size: 15px; }
-  .month .v { font-size: 15px; line-height: 1.55; color: #40304a; }
+  /* ── ③ 優先順位 ───────────────────────── */
+  .ranks { display: grid; gap: 10px; }
+  .rank { display: grid; grid-template-columns: 42px 1fr auto; gap: 14px; align-items: center;
+          background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+          padding: 14px 16px; box-shadow: var(--shadow); }
+  .rank .no { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center;
+              font-weight: 900; font-size: 15px; color: #fff; background: var(--grey); }
+  .rank:nth-child(1) .no { background: linear-gradient(135deg, #ff5f9e, #ff8a5b); }
+  .rank:nth-child(2) .no { background: linear-gradient(135deg, #7b5cf0, #a479ff); }
+  .rank:nth-child(3) .no { background: linear-gradient(135deg, #1fa588, #52c2a5); }
+  .rank .t { font-size: 15.5px; font-weight: 800; line-height: 1.45; }
+  .rank .w { margin-top: 2px; font-size: 12px; color: var(--muted); line-height: 1.55; }
+  .rank .d { text-align: right; font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+  .rank .d b { display: block; font-size: 17px; color: var(--ink); }
+  .rank.soon .d b { color: var(--pink); }
 
-  blockquote { margin: 0; padding: 14px 18px; background: #fbf5fd; border-left: 5px solid var(--pink);
-               border-radius: 0 16px 16px 0; font-size: 15px; line-height: 1.8; color: #4c3550; }
-  blockquote + blockquote { margin-top: 10px; }
-  .vow { font-size: 16px; line-height: 2; margin: 0; padding-left: 1.1em; }
-  .note { margin-top: 10px; font-size: 12.5px; color: var(--muted); line-height: 1.7; }
-  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px;
-          background: #fff; color: var(--purple); border: 2px solid rgba(255,255,255,.9);
-          font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(115,70,111,.10); margin-top: 26px; }
-  footer { margin-top: 26px; text-align: center; color: var(--muted); font-size: 12.5px; line-height: 1.9; }
-  @media (max-width: 600px) { .box { padding: 18px; border-radius: 22px; } .month { grid-template-columns: 52px 1fr; } }
+  .divider { display: flex; align-items: center; gap: 12px; margin: 30px 0 6px; color: var(--muted); font-size: 12px; }
+  .divider::before, .divider::after { content: ""; height: 1px; background: var(--line); flex: 1; }
+
+  /* ── ④ 悩みの棚 ───────────────────────── */
+  .shelf { display: grid; grid-template-columns: repeat(auto-fit, minmax(238px, 1fr)); gap: 12px; align-items: start; }
+  .col { border-radius: 18px; padding: 15px 16px; border: 1px solid var(--line); background: var(--card); box-shadow: var(--shadow); }
+  .col h3 { margin: 0 0 4px; font-size: 13.5px; }
+  .col .sub { margin: 0 0 10px; font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+  .col.move { background: #fff; }
+  .col.wait, .col.done { background: #f7f4f7; }
+  .col.wait li, .col.done li { color: var(--muted); }
+  .col ul { margin: 0; padding: 0; list-style: none; }
+  .col li { padding: 9px 0; border-top: 1px solid var(--line); font-size: 13.5px; line-height: 1.55; }
+  .col li:first-child { border-top: none; }
+  .col li small { display: block; margin-top: 2px; font-size: 11.5px; color: var(--muted); }
+  .chk { display: flex; gap: 9px; align-items: flex-start; cursor: pointer; }
+  .chk input { width: 19px; height: 19px; margin: 2px 0 0; flex: 0 0 auto; accent-color: var(--teal); }
+  .chk input:checked ~ span { color: var(--muted); text-decoration: line-through; }
+
+  /* ── ⑤ 発信レーン ─────────────────────── */
+  .beam { display: grid; grid-template-columns: repeat(auto-fit, minmax(216px, 1fr)); gap: 12px; }
+  .idea { border-radius: 18px; padding: 16px; border: 1px dashed rgba(123,92,240,.35); background: #faf7ff; }
+  .idea .e { font-size: 24px; line-height: 1; }
+  .idea .t { margin-top: 8px; font-weight: 800; font-size: 14.5px; line-height: 1.45; }
+  .idea .n { margin-top: 5px; font-size: 12px; color: var(--ink2); line-height: 1.6; }
+
+  blockquote { margin: 10px 0 0; padding: 12px 16px; background: #fbf6fd; border-left: 4px solid var(--pink);
+               border-radius: 0 14px 14px 0; font-size: 14px; line-height: 1.8; color: var(--ink2); }
+  .vows { margin: 0; padding-left: 1.15em; font-size: 14.5px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 20px; border-radius: 999px; margin-top: 28px;
+          background: #fff; border: 1px solid var(--line); color: var(--purple); font-weight: 800;
+          font-size: 14px; text-decoration: none; box-shadow: var(--shadow); }
+  footer { margin-top: 22px; color: var(--muted); font-size: 11.5px; line-height: 1.9; text-align: center; }
+
+  .reveal { opacity: 0; transform: translateY(9px); animation: up .5s ease forwards; }
+  @keyframes up { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .reveal { animation: none; opacity: 1; transform: none; } }
+  @media (max-width: 600px) {
+    .rank { grid-template-columns: 34px 1fr; }
+    .rank .d { grid-column: 2; text-align: left; margin-top: 4px; }
+    .rank .d b { display: inline; font-size: 13px; margin-right: 5px; }
+  }
 </style>
 </head>
 <body>
 <main>
 
-  <div class="label">🎯 GOALS · 自分用のページ</div>
-  <h1>大きな矢印でいい</h1>
+<!-- ═══════════ ここだけ書き換える ═══════════ -->
+<script id="data" type="application/json">
+{
+  "one": {
+    "tag": "9月・いまはこれだけ",
+    "title": "今の仕事を、円満に終わらせる。",
+    "next": "今日の15分：Booking.com を開いて、9/13・14・15 の3泊を取る。"
+  },
+  "timeline": {
+    "from": "2026-09-01", "to": "2026-10-06",
+    "spans": [
+      { "s": "2026-09-13", "e": "2026-09-17", "label": "🛫 マレーシア", "lane": "a" },
+      { "s": "2026-09-19", "e": "2026-10-04", "label": "🏟 アジア大会・名古屋", "lane": "b" }
+    ],
+    "pins": [
+      { "d": "2026-09-25", "label": "📘 基本情報" },
+      { "d": "2026-09-30", "label": "🚌 東京前泊" },
+      { "d": "2026-10-01", "label": "🎉 入社", "hi": true }
+    ]
+  },
+  "ranks": [
+    { "t": "マレーシアのホテル3泊を取る", "w": "13・14・15日ぶん。ここが唯一の未予約", "d": "2026-09-13", "min": "30分" },
+    { "t": "最終出社日と、返却するものを聞く", "w": "円満に辞めるの起点。電話1本で終わる", "d": "2026-09-13", "min": "10分" },
+    { "t": "基本情報の受験票と持ち物を確認する", "w": "帰国8日後。勉強より先に、場所と時間", "d": "2026-09-25", "min": "10分" },
+    { "t": "9/30の東京行き（バス）を取る", "w": "入社の前泊。取れば当日の不安が消える", "d": "2026-09-30", "min": "15分" },
+    { "t": "売るものを1つ、写真だけ撮る", "w": "文章と値段はAIがやる。撮るのは自分だけ", "d": "2026-11-15", "min": "5分" },
+    { "t": "アジア大会を15秒ブログにする", "w": "名古屋にいる今しか書けない。9/19から", "d": "2026-10-04", "min": "15分" }
+  ],
+  "shelf": {
+    "move": [
+      { "t": "ホテル3泊を取る", "n": "最初の一手：Booking.comを開く" },
+      { "t": "最終出社日を聞く", "n": "最初の一手：電話をかける" },
+      { "t": "受験票の場所を確認する", "n": "最初の一手：メールを検索する" },
+      { "t": "売るものを1つ撮る", "n": "最初の一手：スマホを持って立つ" }
+    ],
+    "wait": [
+      { "t": "勤務地がどこになるか", "n": "10/1のオリエンで分かる。それまで考えない" },
+      { "t": "基本情報の結果", "n": "受けてからの話" },
+      { "t": "引っ越し費用の総額", "n": "勤務地が決まらないと出ない" }
+    ],
+    "done": [
+      { "t": "お金が足りるか", "n": "「本当の問題はお金じゃなくて、不安の方なのかも」" },
+      { "t": "家具をどうするか", "n": "「いまは、家具や引越しのことを考えないのが大事」" },
+      { "t": "何がやりたいのか", "n": "「翻訳して、溜めて、並べ直して、誰かに渡すこと」" },
+      { "t": "大学の入学時期", "n": "「入学はべつに来年の4月でもいいかも」" }
+    ]
+  },
+  "beam": [
+    { "e": "🏟", "t": "アジア大会 × 名古屋", "n": "9/19〜10/4。地元で開かれる大会を、住んでる人の目線で15秒。世界の人が読む理由がある唯一のネタ" },
+    { "e": "🌏", "t": "セブでブリッジSEをしていた話", "n": "日英通訳・UIローカライズ。同じ経験の人はほとんどいない" },
+    { "e": "🧠", "t": "IT用語を1日1つ、英語15秒に翻訳", "n": "覚えるのと、書くのと、自己紹介が1回で終わる" }
+  ]
+}
+</script>
+<!-- ═════════════════════════════════════════ -->
+
+<div id="fast">
+  <div class="eyebrow">
+    <span class="kicker">🧭 いまの自分</span>
+    <span class="clock" id="clock">⏱ —</span>
+  </div>
+  <h1>状況と、優先順位。</h1>
   <div class="today" id="today">—</div>
 
-  <!-- ════════ ここだけ書き換える ════════ -->
-  <script id="data" type="application/json">
-  {
-    "thisMonth": {
-      "kicker": "9月・これだけ",
-      "big": "今の仕事を、円満に終わらせる。",
-      "sub": "ほかは全部おまけ。9月に2つ以上やろうとしたら、それは詰め込みすぎ。"
-    },
-    "counts": [
-      { "date": "2026-09-13", "title": "海外へ出発",   "when": "関空 11:05 発" },
-      { "date": "2026-10-01", "title": "入社日",       "when": "前日9/30に前泊" },
-      { "date": "2026-11-14", "title": "LPIC-1 101",   "when": "9:00 出発「クツ」" },
-      { "date": "2026-11-15", "title": "今の家を出る", "when": "退去の期限" }
-    ],
-    "tasks": [
-      { "tag": "work", "text": "最終出社日と、返却するものを聞く",       "why": "自分では決められない。聞くだけで終わる" },
-      { "tag": "work", "text": "有給の残りと、最後の給与日を聞く",       "why": "同じ電話のついでに聞けばいい" },
-      { "tag": "work", "text": "離職票・源泉徴収票の送り先を伝える",     "why": "引っ越すので、住所が変わることだけ先に言っておく" },
-      { "tag": "trip", "text": "ホテルを3泊ぶん取る",                     "why": "13・14・15日。ここだけが未予約" },
-      { "tag": "trip", "text": "預け荷物なしで足りるか、荷物を出して見る", "why": "5kg・56×36×23cm しか持ち込めない" },
-      { "tag": "move", "text": "売るものを1つ、写真だけ撮る",             "why": "文章と値段はAIがやる。撮るのは自分にしかできない" },
-      { "tag": "move", "text": "10/1に勤務地を聞いたら、その日にエリアを絞る", "why": "決まるのが10/1、出るのが11/15。6週間しかない" },
-      { "tag": "next", "text": "IT用語を1日1つ、15秒ブログにする",        "why": "覚えるのと、書くのと、自己紹介が1回で終わる" },
-      { "tag": "priv", "text": "非公開の予定（詳細は aki-os を見る）",    "why": "ここには書かないと決めているもの" }
-    ],
-    "months": [
-      { "m": "9月",  "v": "今の会社を円満に終える／家族の付き添いで海外（9/13〜17）" },
-      { "m": "10月", "v": "新しい職場でスモールウィンを積み重ねる。毎日小さく信頼を積む" },
-      { "m": "11月", "v": "引っ越しを完了させる（11/15までに出る）" },
-      { "m": "12月", "v": "仕事を極力おぼえる。新しい生活に慣れる" },
-      { "m": "1月",  "v": "外国人の友達を見つけたい" }
-    ]
-  }
-  </script>
-  <!-- ══════════════════════════════════════ -->
+  <section>
+    <div class="card hero reveal">
+      <span class="tag" id="heroTag">—</span>
+      <h3 id="heroTitle">—</h3>
+      <div class="next" id="heroNext">—</div>
+    </div>
+  </section>
 
-  <div class="box now">
-    <div class="kicker" id="nowKicker">—</div>
-    <p class="big" id="nowBig">—</p>
-    <div class="sub" id="nowSub">—</div>
+  <section>
+    <h2>📅 9月〜10月 <em>横にスクロールできます</em></h2>
+    <div class="card reveal" style="padding:14px 16px 10px">
+      <div class="scroller"><div class="tl" id="tl"></div></div>
+      <div class="hint">帰国の2日後に開幕、8日後に試験、14日後に入社。</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>🎯 優先順位 <em>上から3つだけ見ればいい</em></h2>
+    <div class="ranks" id="ranks"></div>
+  </section>
+</div>
+
+<div class="divider">ここから下は、必要になったときだけ読む</div>
+
+<section>
+  <h2>🧠 悩みの棚 <em>3つに分けると、悩む対象は左の列だけになる</em></h2>
+  <div class="shelf">
+    <div class="col move">
+      <h3>🟢 いま動かせる</h3>
+      <p class="sub">ここだけ考える。全部10分で始められる</p>
+      <ul id="colMove"></ul>
+    </div>
+    <div class="col wait">
+      <h3>🟡 相手のボール</h3>
+      <p class="sub">自分では動かせない。考えなくていい</p>
+      <ul id="colWait"></ul>
+    </div>
+    <div class="col done">
+      <h3>🔵 もう答えが出てる</h3>
+      <p class="sub">過去の自分がすでに書いた。悩み直さない</p>
+      <ul id="colDone"></ul>
+    </div>
   </div>
+</section>
 
-  <div class="box">
-    <h2>⏳ あと何日</h2>
-    <div class="counts" id="counts"></div>
-  </div>
+<section>
+  <h2>📣 発信レーン <em>これは「やること」ではなく「やりたいこと」</em></h2>
+  <div class="beam" id="beam"></div>
+</section>
 
-  <div class="box">
-    <h2>✅ 9月にやること（全部10分以内で始められる）</h2>
-    <div id="tasks"></div>
-    <div class="note">重いのは作業じゃなくて、始めるほう。チェックはこの端末にだけ残ります。</div>
-  </div>
-
-  <div class="box">
-    <h2>🗓 月ごとに1つだけ（2026年8月2日に自分で決めたもの）</h2>
-    <div class="months" id="months"></div>
-  </div>
-
-  <div class="box">
-    <h2>🧭 やりたいこと（3年ぶんのメモが出した答え）</h2>
-    <blockquote>ぐちゃぐちゃで難しい情報を、自分がわかる言葉に翻訳して、溜めて、並べ直して、誰かに渡すこと</blockquote>
-    <div class="note">「やりたいことがわからない」と思ったとき用。もう出ている答えなので、ここで悩まなくていい。</div>
-  </div>
-
-  <div class="box">
-    <h2>🤝 3つの誓い</h2>
-    <ol class="vow">
+<section>
+  <h2>🤝 迷ったとき</h2>
+  <div class="card">
+    <ol class="vows">
       <li>期待を捨て、淡々と繰り返す人でありたい</li>
       <li>不快感と共存できる人でありたい</li>
       <li>完了させる人でありたい</li>
     </ol>
     <blockquote>Kindleで本が買えて、AIに課金できて、Spotifyが聴ければ人生勝ち。あとは、所属感と貢献感もあるといいね。</blockquote>
   </div>
+</section>
 
-  <div class="box">
-    <h2>🏠 引っ越しが不安になったとき</h2>
-    <blockquote>そっか、本当の問題はお金じゃなくて、不安の方なのかも。</blockquote>
-    <blockquote>もしも、両親から資金の援助がなければ？ 敷金や礼金がいらない、安い家に住む。いろんなものは捨てた状態で東京に行く。</blockquote>
-    <blockquote>いまは、家具や引越しのことを考えないのが大事なのかもなぁ。</blockquote>
-    <div class="note">全部、自分が先に書いていた答え。新しく悩む前にここを読む。</div>
-  </div>
+<a class="home" href="../index.html">← ブログに戻る 🐧</a>
 
-  <a class="home" href="../index.html">← ブログに戻る 🐧</a>
-
-  <footer>
-    🎯 このページは自分用。検索には出ません（noindex）。<br />
-    書き換えるところは、上のほうの JSON ブロックだけ。
-  </footer>
+<footer>
+  🧭 自分用のページ。検索には出ません（noindex）。<br />
+  書き換えるのは、上のほうの JSON ブロックだけ。⏱ が 60秒 を超えたら、何かを下に送る合図。
+</footer>
 
 </main>
 
 <script>
 (function () {
-  var data = JSON.parse(document.getElementById("data").textContent);
+  var D = JSON.parse(document.getElementById("data").textContent);
+  var W = ["日","月","火","水","木","金","土"];
   var now = new Date();
   var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  var W = ["日", "月", "火", "水", "木", "金", "土"];
+  var day = function (s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); };
+  var left = function (s) { return Math.round((day(s) - today) / 86400000); };
 
   document.getElementById("today").textContent =
-    "きょうは " + now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日（" + W[now.getDay()] + "）";
+    now.getFullYear() + "年" + (now.getMonth() + 1) + "月" + now.getDate() + "日（" + W[now.getDay()] + "）現在";
 
-  document.getElementById("nowKicker").textContent = data.thisMonth.kicker;
-  document.getElementById("nowBig").textContent = data.thisMonth.big;
-  document.getElementById("nowSub").textContent = data.thisMonth.sub;
+  // ① いまこれだけ
+  document.getElementById("heroTag").textContent = D.one.tag;
+  document.getElementById("heroTitle").textContent = D.one.title;
+  document.getElementById("heroNext").innerHTML = "🎬 <b>" + D.one.next + "</b>";
 
-  // ── あと何日 ──────────────────────────────
-  var counts = document.getElementById("counts");
-  data.counts.forEach(function (c) {
-    var p = c.date.split("-");
-    var d = new Date(+p[0], +p[1] - 1, +p[2]);
-    var left = Math.round((d - today) / 86400000);
+  // ② 帯
+  var T = D.timeline, from = day(T.from), to = day(T.to), width = to - from;
+  var pct = function (d) { return ((day(d) - from) / width) * 100; };
+  var tl = document.getElementById("tl"), h = "";
+
+  T.spans.forEach(function (s) {
+    var l = pct(s.s), r = pct(s.e);
+    h += '<div class="span ' + s.lane + '" style="left:' + l + '%;width:' + (r - l) + '%">' + s.label + '</div>';
+  });
+  h += '<div class="tl-axis"></div>';
+  [1, 8, 15, 22, 29, 36].forEach(function (n) {
+    var d = new Date(from.getTime() + (n - 1) * 86400000);
+    h += '<div class="tl-tick" style="left:' + pct(d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0")) + '%">' + (d.getMonth() + 1) + "/" + d.getDate() + '</div>';
+  });
+  T.pins.forEach(function (p, i) {
+    h += '<div class="pin' + (p.hi ? " hi" : "") + '" style="left:' + pct(p.d) + '%;top:' + (i % 2 ? 92 : 78) + 'px">' +
+         '<div class="dot"></div><div class="lbl">' + p.label + '</div></div>';
+  });
+  var tp = ((today - from) / width) * 100;
+  if (tp >= 0 && tp <= 100) h += '<div class="now-line" style="left:' + tp + '%"><span>きょう</span></div>';
+  tl.innerHTML = h;
+
+  // ③ 優先順位
+  var ranks = document.getElementById("ranks");
+  D.ranks.forEach(function (r, i) {
+    var n = left(r.d);
     var el = document.createElement("div");
-    el.className = "count" + (left < 0 ? " done" : left <= 14 ? " soon" : "");
-    var num = left > 0 ? left + '<small>日</small>' : left === 0 ? "今日" : "済";
+    el.className = "rank reveal" + (n <= 14 ? " soon" : "");
+    el.style.animationDelay = (i * 45) + "ms";
     el.innerHTML =
-      '<div class="d">' + num + '</div>' +
-      '<div class="t">' + c.title + '</div>' +
-      '<div class="w">' + (+p[1]) + "/" + (+p[2]) + "（" + W[d.getDay()] + "）· " + c.when + '</div>';
-    counts.appendChild(el);
+      '<div class="no">' + (i + 1) + '</div>' +
+      '<div><div class="t">' + r.t + '</div><div class="w">' + r.w + '</div></div>' +
+      '<div class="d"><b>' + (n > 0 ? "あと" + n + "日" : n === 0 ? "きょう" : "済") + '</b>' + r.min + '</div>';
+    ranks.appendChild(el);
   });
 
-  // ── チェックリスト（この端末にだけ残す）────────
-  var TAGS = { work: ["t-work", "仕事"], move: ["t-move", "引っ越し"], trip: ["t-trip", "渡航"],
-               next: ["t-next", "10月"], priv: ["t-priv", "非公開"] };
+  // ④ 悩みの棚
   var store = {};
-  try { store = JSON.parse(localStorage.getItem("aki-goals") || "{}"); } catch (e) { store = {}; }
-
-  var tasks = document.getElementById("tasks");
-  data.tasks.forEach(function (t, i) {
-    var id = "task" + i;
-    var tag = TAGS[t.tag] || ["t-priv", ""];
-    var row = document.createElement("div");
-    row.className = "task";
-    row.innerHTML =
-      '<input type="checkbox" id="' + id + '" />' +
-      '<label for="' + id + '"><span class="tag ' + tag[0] + '">' + tag[1] + '</span>' +
-      t.text + '<span class="why">' + t.why + '</span></label>';
-    var box = row.querySelector("input");
-    box.checked = !!store[t.text];
-    box.addEventListener("change", function () {
-      store[t.text] = box.checked;
-      try { localStorage.setItem("aki-goals", JSON.stringify(store)); } catch (e) {}
+  try { store = JSON.parse(localStorage.getItem("aki-now") || "{}"); } catch (e) {}
+  var fill = function (id, items, checkable) {
+    var ul = document.getElementById(id);
+    items.forEach(function (it, i) {
+      var li = document.createElement("li");
+      if (checkable) {
+        li.innerHTML = '<label class="chk"><input type="checkbox" /><span>' + it.t +
+                       '<small>' + it.n + '</small></span></label>';
+        var box = li.querySelector("input");
+        box.checked = !!store[it.t];
+        box.addEventListener("change", function () {
+          store[it.t] = box.checked;
+          try { localStorage.setItem("aki-now", JSON.stringify(store)); } catch (e) {}
+        });
+      } else {
+        li.innerHTML = it.t + '<small>' + it.n + '</small>';
+      }
+      ul.appendChild(li);
     });
-    tasks.appendChild(row);
+  };
+  fill("colMove", D.shelf.move, true);
+  fill("colWait", D.shelf.wait, false);
+  fill("colDone", D.shelf.done, false);
+
+  // ⑤ 発信レーン
+  var beam = document.getElementById("beam");
+  D.beam.forEach(function (b) {
+    var el = document.createElement("div");
+    el.className = "idea";
+    el.innerHTML = '<div class="e">' + b.e + '</div><div class="t">' + b.t + '</div><div class="n">' + b.n + '</div>';
+    beam.appendChild(el);
   });
 
-  // ── 月ごと ────────────────────────────────
-  var months = document.getElementById("months");
-  data.months.forEach(function (m) {
-    var el = document.createElement("div");
-    el.className = "month";
-    el.innerHTML = '<div class="m">' + m.m + '</div><div class="v">' + m.v + '</div>';
-    months.appendChild(el);
-  });
+  // ⏱ 上半分だけの読了時間（日本語 500字/分）
+  var chars = (document.getElementById("fast").textContent || "").replace(/\s+/g, "").length;
+  var sec = Math.max(1, Math.round(chars / (500 / 60)));
+  var clock = document.getElementById("clock");
+  clock.textContent = sec <= 60 ? "⏱ 約" + sec + "秒で読めます" : "⚠️ " + sec + "秒 — 1分を超えました";
+  if (sec > 60) clock.classList.add("over");
 })();
 </script>
 </body>
