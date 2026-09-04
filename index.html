@@ -133,6 +133,40 @@
   }
   .panel + .panel { margin-top: 16px; }
 
+  /* ── 📝 100記事チャレンジ ────────────────────────────────
+     数字は手で書かない。下の JS が POSTS を数える。
+     目標を変えるときは JS の var GOAL だけ直す（150 でも 200 でも）*/
+  .goal {
+    margin-top: 18px; padding: 22px 24px; border-radius: var(--round);
+    background: var(--paper); border: 1.5px solid var(--line);
+    box-shadow: 0 10px 30px rgba(35,44,72,.06);
+  }
+  .goal-top {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 4px 14px; flex-wrap: wrap; margin-bottom: 14px;
+  }
+  .goal-title { font-size: 16.5px; letter-spacing: -.01em; }
+  .goal-count { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .goal-count b { font-size: 21px; color: var(--navy); }
+  .goal-bar { height: 14px; border-radius: 999px; overflow: hidden; background: rgba(35,44,72,.09); }
+  .goal-fill {
+    height: 100%; width: 0; border-radius: 999px;
+    background: linear-gradient(90deg, var(--blue), var(--blue-2));
+    transition: width 1.1s cubic-bezier(.22,1,.36,1);
+  }
+  .goal-note {
+    margin: 12px 0 0; font-family: "Trebuchet MS", sans-serif;
+    font-size: 13.5px; line-height: 1.7; color: var(--muted);
+  }
+  .goal-note b { color: var(--navy); }
+  /* 100本たまった日だけ、色が変わって3回だけひかる。派手にはしない */
+  .goal.done .goal-fill { background: linear-gradient(90deg, var(--blue-2), var(--yellow)); }
+  .goal.done .goal-bar { animation: goalGlow 1.6s ease-out 3; }
+  @keyframes goalGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255,196,46,0); }
+    50%      { box-shadow: 0 0 0 5px rgba(255,196,46,.32); }
+  }
+
   .section-title {
     display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
     margin: 44px 0 16px;
@@ -486,6 +520,8 @@
     .about { padding: 28px 22px; border-radius: 26px; }
     .about-top { grid-template-columns: 1fr; gap: 20px; }
     .about-photo { width: 62%; }
+    .goal { padding: 20px 18px; border-radius: 20px; }
+    .goal-title { font-size: 15.5px; }
     .post { grid-template-columns: 56px 1fr; padding: 14px 16px; }
     .post-thumb { width: 56px; height: 56px; border-radius: 15px; }
     .len { grid-column: 2; justify-self: start; }
@@ -625,6 +661,20 @@
     </div>
 
     <div class="hero-pengesso"><img src="assets/pengesso/pengesso-01.jpg" alt="" /></div>
+  </section>
+
+  <!-- ══ 📝 100記事チャレンジ ══
+       中の数字は下の JS が POSTS を数えて入れます。手で書かないこと -->
+  <section class="goal reveal" id="goal">
+    <div class="goal-top">
+      <div class="goal-title" id="goalTitle">📝 100 posts, then a big clean-up</div>
+      <div class="goal-count"><b id="goalNow">0</b> <span id="goalOf">/ 100 posts</span></div>
+    </div>
+    <div class="goal-bar" id="goalBar" role="progressbar"
+         aria-labelledby="goalTitle" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="goal-fill" id="goalFill"></div>
+    </div>
+    <p class="goal-note" id="goalNote"></p>
   </section>
 
   <!-- ══ 検索 ══ -->
@@ -977,6 +1027,64 @@ var PLACES = {
   thailand: {name:'Kanchanaburi 🚂', map:'world', row:10, col:29},
 };
 /* ⬆️ PLACES:END ⬆️ */
+
+/* 2.5 📝 100記事チャレンジ ────────────────────────────────
+      記事数は POSTS を数えるだけ。**手で数字を書かない。**
+      works/<slug>/ を1本足して python3 tools/build-site.py を走らせれば、
+      POSTS が伸びて、このゲージも自動で伸びる。
+
+      🎯 目標を変えたいときは、次の行の数字だけ変える（150 でも 200 でも）。
+         ほかは何も直さなくていい。 */
+var GOAL = 100;
+
+(function () {
+  var box = document.getElementById('goal');
+  if (!box) return;
+  var fill = document.getElementById('goalFill');
+  var bar  = document.getElementById('goalBar');
+  var note = document.getElementById('goalNote');
+
+  var n    = POSTS.length;
+  var left = GOAL - n;
+  var pct  = Math.max(0, Math.min(Math.round(n / GOAL * 100), 100));
+
+  document.getElementById('goalNow').textContent = n;
+  document.getElementById('goalOf').textContent  = '/ ' + GOAL + ' posts';
+  bar.setAttribute('aria-valuenow', String(pct));
+
+  if (left > 0) {
+    note.innerHTML = 'Until then I just write what I want. <b>' + left +
+      ' to go</b>, and then I sort this whole site out. \u270D\uFE0F';
+  } else {
+    box.classList.add('done');
+    document.getElementById('goalTitle').textContent = '\uD83C\uDF89 100 posts. Time to clean up.';
+    note.innerHTML = 'Everything I wanted to write is here. <b>Now I sort it out.</b> \uD83D\uDE80';
+  }
+
+  // 動きが苦手な人には、最初から伸びた状態で出す
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      !('IntersectionObserver' in window)) {
+    fill.style.width = pct + '%';
+    return;
+  }
+  // 画面に入ってから1回だけ伸ばす
+  function grow() {
+    if (fill.style.width) return;                      // 二度は伸ばさない
+    requestAnimationFrame(function () { fill.style.width = pct + '%'; });
+  }
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      io.disconnect();
+      grow();
+    });
+  }, { threshold: 0.4 });
+  io.observe(box);
+
+  // 逃げ道。observer が動かない環境で 0% のまま固まるのを防ぐ
+  // （下の .reveal と同じ考え方。ゲージが出ないより、動かずに出るほうがいい）
+  setTimeout(grow, 1800);
+})();
 
 /* 3. ドットマップ ────────────────────────────────────────── */
 var MAPS = {
