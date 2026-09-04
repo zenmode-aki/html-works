@@ -37,6 +37,19 @@
          box-shadow:var(--shadow); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px)}
 
   /* ───────── ヒーロー ───────── */
+  .banner{position:relative; overflow:hidden; border-radius:22px; padding:17px 19px;
+          background:linear-gradient(120deg, rgba(255,176,58,.20), rgba(255,95,158,.18) 55%, rgba(157,123,255,.20));
+          border:1px solid rgba(255,255,255,.16); box-shadow:var(--shadow)}
+  .bn-main{position:relative; z-index:1; display:flex; align-items:center; gap:14px}
+  .bn-emoji{font-size:32px; line-height:1; flex:0 0 auto; animation:nod 3.4s ease-in-out infinite}
+  @keyframes nod{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+  .bn-text{font-size:clamp(17px,4.4vw,21px); font-weight:900; letter-spacing:-.01em; line-height:1.4}
+  .bn-sub{margin-top:3px; font-size:12.5px; color:var(--ink2)}
+  .bn-deco{position:absolute; inset:0; pointer-events:none}
+  .bn-deco span{position:absolute; font-size:19px; opacity:.30; animation:drift 9s ease-in-out infinite}
+  @keyframes drift{0%,100%{transform:translateY(4px) rotate(-6deg); opacity:.16}
+                   50%{transform:translateY(-7px) rotate(6deg); opacity:.34}}
+  @media (prefers-reduced-motion:reduce){ .bn-emoji,.bn-deco span{animation:none} }
   .hero{position:relative; overflow:hidden; border-radius:26px; padding:0}
   .hero-img{display:block; width:100%; height:auto; aspect-ratio:16/9; object-fit:cover}
   .hero-body{padding:18px 20px 20px}
@@ -184,6 +197,12 @@
     { "y": 2028, "t": "効き始める", "n": "ブログの効果が出始める。仕事も、周りから頼られ始める。" },
     { "y": 2029, "t": "自信",     "n": "どこでもバリューを出せるくらいの自信を持てる。" }
   ],
+  "banner": {
+    "emoji": "📝",
+    "text": "不安は、ぜーんぶ書き出そう",
+    "sub": "頭の中に置いておかない。ぜんぶ、そとに出す。",
+    "deco": ["😟", "😮‍💨", "🌀", "💭", "😵‍💫", "🫠"]
+  },
   "motto": {
     "label": "いま心がけていること",
     "text": "未来も過去も、不安も妄想も全て電源をオフにする。今ここに集中するというよりかは、今ここ以外の全ての電気をオフにするイメージ。"
@@ -247,6 +266,19 @@
 }
 </script>
 <!-- ═══════════════════════════════════════════ -->
+
+<section style="margin-top:0">
+  <div class="banner reveal">
+    <div class="bn-deco" id="bnDeco" aria-hidden="true"></div>
+    <div class="bn-main">
+      <span class="bn-emoji" id="bnEmoji">📝</span>
+      <div>
+        <div class="bn-text" id="bnText">—</div>
+        <div class="bn-sub" id="bnSub">—</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section>
   <div class="glass hero reveal">
@@ -375,6 +407,22 @@
   document.getElementById("heroLead").textContent = D.hero.lead;
   document.getElementById("today").textContent =
     now.getFullYear()+"年"+(now.getMonth()+1)+"月"+now.getDate()+"日（"+W[now.getDay()]+"）";
+
+  // ── 上のバナー（不安は書き出す）───────────
+  if (D.banner) {
+    document.getElementById("bnEmoji").textContent = D.banner.emoji;
+    document.getElementById("bnText").textContent = D.banner.text;
+    document.getElementById("bnSub").textContent = D.banner.sub;
+    var deco = document.getElementById("bnDeco");
+    (D.banner.deco || []).forEach(function(e, i){
+      var s = document.createElement("span");
+      s.textContent = e;
+      s.style.right = (4 + i * 15) + "%";
+      s.style.top = (i % 2 ? 58 : 12) + "%";
+      s.style.animationDelay = (i * 0.7) + "s";
+      deco.appendChild(s);
+    });
+  }
 
   // ── いま心がけていること（原文のまま）────────
   if (D.motto) {
