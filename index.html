@@ -1068,8 +1068,9 @@ var GOAL = 100;
     return;
   }
   // 画面に入ってから1回だけ伸ばす
-  function grow() {
+  function grow(now) {
     if (fill.style.width) return;                      // 二度は伸ばさない
+    if (now) { fill.style.width = pct + '%'; return; } // 逃げ道はその場で入れる
     requestAnimationFrame(function () { fill.style.width = pct + '%'; });
   }
   var io = new IntersectionObserver(function (es) {
@@ -1081,9 +1082,10 @@ var GOAL = 100;
   }, { threshold: 0.4 });
   io.observe(box);
 
-  // 逃げ道。observer が動かない環境で 0% のまま固まるのを防ぐ
-  // （下の .reveal と同じ考え方。ゲージが出ないより、動かずに出るほうがいい）
-  setTimeout(grow, 1800);
+  // 逃げ道。observer や requestAnimationFrame が動かない環境で
+  // 0% のまま固まるのを防ぐ（下の .reveal と同じ考え方。
+  // ゲージが出ないより、動かずに出るほうがいい）
+  setTimeout(function () { grow(true); }, 1800);
 })();
 
 /* 3. ドットマップ ────────────────────────────────────────── */
