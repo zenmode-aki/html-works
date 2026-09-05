@@ -1,4 +1,4 @@
-# slug: want-to-add-comments / date: 2026-09-05 / words: 55
+# slug: want-to-add-comments / date: 2026-09-05 / words: 53
 
 ## 出どころ
 
