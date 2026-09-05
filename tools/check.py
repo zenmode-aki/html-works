@@ -15,7 +15,7 @@
   5. SOURCE MAP があり「追加した文：0」になっているか
   6. source.md があるか
   7. カードに英単語2〜3語の見出しラベルが付いているか  ← 15秒版で追加
-  8. .quip（AIのボケ）が2個以内か                      ← 15秒版で追加
+  8. 2026-09-05以降の記事に .quip（AIの小言）が0個か
   9. アニメを使うなら prefers-reduced-motion があるか   ← 15秒版で追加
 
 2026-08 に書いた10本は「1分ブログ」時代のもの。本人の英文なので書き換えない。
@@ -28,7 +28,7 @@ MAX_BYTES = 400 * 1024
 PHOTO_STORY_MAX_BYTES = 1536 * 1024
 MIN_WORDS, MAX_WORDS = 35, 55        # ⚡ 15秒（180wpm で 12〜18秒）
 WPM = 180
-MAX_QUIP = 2                          # 1記事に入れていいAIのボケの数
+QUIP_BAN_DATE = "2026-09-05"         # この日以降の記事はAIの小言を全面禁止
 
 # 📖 1分ブログ時代の10本。当時のルールで判定する
 LEGACY_MIN, LEGACY_MAX = 120, 180
@@ -187,7 +187,7 @@ def check(work: pathlib.Path, fix_badge: bool):
             cut = re.search(r"削った文\s*[:：]\s*(.+)", doc)
             notes.append(f"{OK} 追加した文：0" + (f"（削った文: {cut.group(1).strip()[:40]}）" if cut else ""))
 
-    # 7-9. 見出しラベル・ボケの数・動きの逃げ道。
+    # 7-9. 見出しラベル・余計な一言・動きの逃げ道。
     #      1分時代の10本も 2026-09 に「入れ物」だけ15秒版に揃えたので、全記事にかける。
     #      違うのは words の上限だけ（LEGACY は 120〜180 のまま）
     if True:
@@ -214,12 +214,16 @@ def check(work: pathlib.Path, fix_badge: bool):
         if spelled and not legacy:
             notes.append(f"{WARN}数字が英単語のままです: {spelled} → 8th / 15 のように数字にしてください")
 
-        # 8. AIのボケは盛りすぎない
+        # 8. 2026-09-05以降の記事では、本人が言っていない小言・ツッコミを禁止する。
+        #    以前の記事は当時のルールで作られているため、この検査では遡及しない。
         n_quip = count_class(doc, "quip")
-        if n_quip > MAX_QUIP:
-            problems.append(f"{NG} .quip が {n_quip}個あります（上限 {MAX_QUIP}）→ 盛りすぎです")
-        elif n_quip:
-            notes.append(f"{OK} .quip {n_quip}個（上限 {MAX_QUIP}）")
+        source_doc = (work / "source.md").read_text(encoding="utf-8") if (work / "source.md").exists() else ""
+        date_match = re.search(r"date:\s*(\d{4}-\d{2}-\d{2})", source_doc)
+        quip_banned = bool(date_match and date_match.group(1) >= QUIP_BAN_DATE)
+        if quip_banned and n_quip:
+            problems.append(f"{NG} .quip が {n_quip}個あります → AIの小言・ツッコミは追加禁止です")
+        elif quip_banned:
+            notes.append(f"{OK} .quip 0個（AIの余計な一言なし）")
 
         # 9. 動きを付けたなら、動きが苦手な人のための逃げ道を必ず用意する
         if "@keyframes" in doc or "transition:" in doc:
