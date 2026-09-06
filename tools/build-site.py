@@ -41,6 +41,7 @@ _spec.loader.exec_module(_chk)
 PLACES = {
     "nagoya":   ("Nagoya 🏯",       "jp",    9,  6),
     "tokyo":    ("Tokyo 🗼",        "jp",    7,  8),
+    "gifu":     ("Gifu 🌿",         "jp",    8,  6),
     "cebu":     ("Cebu 🌴",         "world", 11, 32),
     "baguio":   ("Baguio ⛰️",       "world", 10, 32),
     "bangkok":  ("Bangkok 🛺",      "world", 11, 29),
