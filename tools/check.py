@@ -10,7 +10,7 @@
 チェックすること:
   1. index.html が通常400KB以内か（複数写真フォトストーリーは1.5MB以内）
   2. 画像がすべて base64 か（相対パス・外部URL・絶対パスが残っていないか）
-  3. 本文が 35〜55 words に収まっているか（＝15秒）
+  3. 本文の語数を数える（上限・下限はもう無い。長さは素材が決める）
   4. ワード数バッジの数字が本文と合っているか
   5. SOURCE MAP があり「追加した文：0」になっているか
   6. source.md があるか
@@ -19,19 +19,23 @@
   9. アニメを使うなら prefers-reduced-motion があるか   ← 15秒版で追加
 
 2026-08 に書いた10本は「1分ブログ」時代のもの。本人の英文なので書き換えない。
-LEGACY に入れて、当時のルール（120〜180 words）のまま守る。新しい検査もかけない。
+LEGACY に入れて、新しい検査もかけない。
 """
 import re, sys, os, html, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MAX_BYTES = 400 * 1024
 PHOTO_STORY_MAX_BYTES = 1536 * 1024
-MIN_WORDS, MAX_WORDS = 35, 55        # ⚡ 15秒（180wpm で 12〜18秒）
 WPM = 180
+
+# ⛔ 語数の上限・下限はやめました（2026-09-10 に本人が決めた）
+#    「その記事に入ってる文章は、その文章量でいいと思ったから僕がそうやって決めてる」。
+#    素材の日本語をぜんぶ訳すのが先で、長さはその結果です。
+#    語数のために本人の文を削る／Partに割る、はもうしません。
+#    バッジの数字は「読むのにかかる時間」を正直に出すためだけに残しています。
 QUIP_BAN_DATE = "2026-09-05"         # この日以降の記事はAIの小言を全面禁止
 
-# 📖 1分ブログ時代の10本。当時のルールで判定する
-LEGACY_MIN, LEGACY_MAX = 120, 180
+# 📖 1分ブログ時代の10本。15秒版の検査はかけない
 LEGACY = {
     "pawapuro",
     "knowledge-metabo-1", "knowledge-metabo-2", "knowledge-metabo-3",
@@ -44,8 +48,8 @@ LEGACY = {
 PHOTO_STORIES = {
     "thailand-first-trip", "khaosan-road-chaos",
     "burnham-park-flat-walk", "baguio-language-school-memories",
+    "walked-to-work-through-the-flood",
 }
-PHOTO_STORY_MIN, PHOTO_STORY_MAX = 60, 180
 
 OK, NG, WARN = "✅", "❌", "⚠️ "
 
@@ -92,13 +96,10 @@ def check(work: pathlib.Path, fix_badge: bool):
 
     legacy = name in LEGACY
     photo_story = name in PHOTO_STORIES
-    lo, hi = ((LEGACY_MIN, LEGACY_MAX) if legacy else
-              (PHOTO_STORY_MIN, PHOTO_STORY_MAX) if photo_story else
-              (MIN_WORDS, MAX_WORDS))
     if legacy:
-        notes.append(f"📖 1分ブログ時代の記事（{lo}〜{hi} words で判定・15秒版の検査はかけない）")
+        notes.append("📖 1分ブログ時代の記事（15秒版の検査はかけない）")
     elif photo_story:
-        notes.append(f"📷 1分フォトストーリー（{lo}〜{hi} words＋複数写真）")
+        notes.append("📷 複数写真のフォトストーリー")
 
     doc = idx.read_text(encoding="utf-8")
     size = len(doc.encode())
@@ -146,12 +147,8 @@ def check(work: pathlib.Path, fix_badge: bool):
     words = body_words(doc)
     n = len(words)
     sec = round(n / (WPM / 60))
-    if n > hi:
-        problems.append(f"{NG} 本文 {n} words（上限 {hi}）→ {n - hi} words 削ってください")
-    elif n < lo:
-        notes.append(f"{WARN}本文 {n} words（目安の下限 {lo}）— 短いぶんには問題なし")
-    else:
-        notes.append(f"{OK} 本文 {n} words ≒ {sec}秒")
+    # 長さは素材が決める。ここでは数えて出すだけで、合否は付けない
+    notes.append(f"{OK} 本文 {n} words ≒ {sec}秒")
 
     # 時計は ⏱（1分時代）でも ⚡（15秒）でもいい。
     # 末尾の "read" まで飲み込ませておかないと --fix-badge が "sec read read" を作る

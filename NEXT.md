@@ -321,67 +321,89 @@ push  →  公開
 
 ---
 
-## 🛠 ネットワーク運用保守シリーズ 36本を出しました（2026-09-10）
+## 🛠 ネットワーク運用保守シリーズ 32本を出しました（2026-09-10）
 
-`ネットワーク運用保守/記事/*.txt` の日本語32本を、PROMPT.md のルールで英訳して公開しました。
-32本のうち **16番（ホームページに書く）は2本に、25番（質問は13時と17時半）は2本に、
-43番（膝まで水に浸かって出社）は3本に**割ってあります（55 words に収まらないため）。
-`03_帰る前に明日のマニュアルを開いておく` は `works/open-tomorrow-manuals/` で公開ずみなので飛ばしました。
+`ネットワーク運用保守/記事/*.txt` の日本語を英訳して公開しました。
+**1ファイル = 1記事**、**素材の文は1つも落としていません。**
 
-- 表紙は全36本ぶん生成（ペンギン固定・質感は15種類を順に回して、直近3本と重ならないようにした）
-- **本人の写真は1枚も落としていません。** 25番の1枚、43番の4枚は、割ったPartに振り分けて全部入っています
-- 部屋は全部 `jobs`、しごとは `netops` に入れてあります（`index.html` の `ROOM_OF` と `JOBS`）
-- `open-tomorrow-manuals` の末尾の Next ⚡ を、このシリーズの1本目に向けました
+### ⛔ このとき、語数の制限をやめました
 
-### 匿名ルールで落としたもの
+最初は PROMPT.md の「35〜55 words」に合わせて文を削り、収まらない3本を
+Part に割って36本にして出しました。**これは間違いでした。** あきくんの言葉：
 
-| 記事 | 落としたもの | 理由 |
-|---|---|---|
-| 26 学校みたいだった | 「社員数1000名ほど」 | 体制の規模。「創業40年以上」だけ残した |
-| 34 派遣社員です | 「1班から6班くらいまで」 | 体制人数にあたる |
-| 17 時間割を書く | 「班長やグループ長」 | 役職の呼称が社内固有に読める |
-| 28 警察から電話 | 「自殺をほのめかす投稿」 | 「危ない投稿」にまとめた |
-| 43 出社した日 | 「JR」 | `trains` に一般化した |
+> 「その記事に入ってる文章は、その文章量でいいと思ったから僕がそうやって決めてるわけで、
+> 勝手にワード数だけで勝手に決めたりしないで。」
+> 「勝手にはしょったりしないでほしい。」
 
-### 出した36本
+なので次の3つを直しました。
 
-| slug | タイトル |
+1. **`PROMPT.md` §4 を「長さは、素材が決める」に書き換え**（35〜55 words の廃止、
+   語数のための Part 分割の禁止、カード枚数の自由化）
+2. **`tools/check.py` から語数の合否判定を削除**（数えて表示するだけ。バッジは実測値の目安）
+3. **32本ぜんぶを、素材の全文で作り直し**（16番・25番・43番の Part 分割も1本に統合）
+
+本文の合計は **1683 words → 3520 words** になりました。
+
+### 覚えておくこと
+
+**長さで本人の文を削らない。長い素材は長い記事になるだけでいい。**
+Part に割るのは、あきくんが「これは分けて」と言ったときだけ。
+
+### ⚠️ 2か所だけ、確認待ちで外してあります
+
+長さの都合ではなく、`情報源.txt` の「出さない＝体制人数」に当たるためです。
+**戻してよければ言ってください。**
+
+| 記事 | 外したもの |
 |---|---|
-| `nice-escalation-sticker` | I got a sticker for asking a question that turned out to be a fault |
-| `chat-first-then-talk` | I cannot think and talk at once, so I send a chat first |
-| `chu-shortcut-explain-simply` | I typed 2 letters into my dictionary to ask for a simple explanation |
-| `three-monitors-twelve-screens` | I have 3 monitors on my desk and about 12 more on the wall |
-| `fax-to-the-police-station` | When a cable hangs down from a pole, I fax the police station |
-| `map-under-the-cash-register` | I draw a map so the field worker can find the box under the register |
-| `spare-machine-needs-config` | A spare machine does not work until someone puts the config in |
-| `veteran-works-through-break` | The veteran on my team keeps working through the whole break |
-| `faults-come-after-the-lightning` | Faults usually happen when the machines come back up after lightning |
-| `shakuyou-borrow-the-line` | Everyone at work asks if I got the shakuyou, which means borrowing a line |
-| `writing-the-outage-notice` | Writing the outage notice on our website is also part of my job |
-| `thirty-minute-drill` | The first 30 minutes of every night shift is an outage drill |
-| `everyone-writes-the-timeline` | After a big fault everyone writes down what they did at what minute |
-| `nothing-goes-home-with-me` | I cannot take a single page of work material home with me |
-| `i-only-cover-the-middle` | In a phone network my part is sometimes only the middle |
-| `questions-at-1pm-and-530pm` | I send all my questions at 1pm and 5:30pm using a scheduled message |
-| `asking-too-soon-or-too-late` | Asking right away is not good, and waiting is not good either |
-| `big-company-felt-like-school` | My first big company felt like school, where I traced a way already decided |
-| `search-before-you-think` | When I do not know something, I search the old records before I think |
-| `police-ask-who-this-is` | The police call us to ask who is behind an IP address |
-| `maybe-a-mouse-chewed-it` | We look at the papers and guess that maybe a mouse chewed the cable |
-| `sending-people-to-the-site` | Network operations also means sending a real person out to the site |
-| `double-check-every-15-minutes` | I say please double check about once every 15 minutes |
-| `20-hours-in-the-office` | A night shift can leave me in the office for about 20 hours |
-| `i-am-a-temp-worker` | I am a temp worker doing exactly the same work as permanent staff |
-| `one-second-stops-a-factory` | My customers are companies, and 1 second of downtime can stop a factory |
-| `windows-update-day-slows-network` | The network gets tight on Windows Update day every month |
-| `70-percent-company-rules` | 70% of what I had to learn was company rules, not network knowledge |
-| `same-building-strangers` | In a big company the same building is full of people I do not know |
-| `too-many-departments-to-ask` | The departments are split so finely that I have to check who to ask |
-| `half-doing-half-recording` | About half of my job is doing the work and half is recording it |
-| `10-minutes-finding-passwords` | 5 or 10 minutes melt away just finding the right password |
-| `one-loose-plank-leaks-everything` | One loose plank makes the whole barrel leak, they taught me in training |
-| `walked-to-work-through-the-flood` | I walked to work through a road that had turned into a river |
-| `applause-for-showing-up` | The whole office clapped because almost nobody else could get in |
-| `night-shift-until-half-past-noon` | My night shift ran until half past noon the next day |
+| `big-company-felt-like-school` | S2「社員数1000名ほど」（「創業40年以上」は残した） |
+| `i-am-a-temp-worker` | S3「1班から6班くらいまで」（「9割」は残した） |
+
+前回まとめてしまっていた「自殺をほのめかす投稿」「JR」「班長やグループ長」
+「機器名6つ」「担当3つ」は、**すべて本人の言葉のまま戻しました。**
+
+### 画像
+
+- 表紙は32本ぶん生成（ペンギン固定・質感15種類を順に回す）
+- **43番の写真4枚は、1本の記事に全部入っています**（フォトストーリー扱い・上限1.5MB）
+- 25番の画像は Teams のアイコンで 148x148 しかないため、引き伸ばさず
+  Teams の話をしているカードの中に実寸で置いています（落としてはいない）
+
+### 出した32本
+
+| slug | 素材 | タイトル |
+|---|---|---|
+| `nice-escalation-sticker` | 8文 | I got a sticker for asking a question that turned out to be a fault |
+| `chat-first-then-talk` | 4文 | I cannot talk and think at the same time, so I send a chat first |
+| `chu-shortcut-explain-simply` | 2文 | I typed 2 letters into my dictionary to ask for a simple explanation |
+| `three-monitors-twelve-screens` | 6文 | I have 3 monitors on my desk and about 12 more on the wall |
+| `fax-to-the-police-station` | 5文 | When a cable hangs down from a pole, I fax the police station |
+| `map-under-the-cash-register` | 6文 | I draw a map so the field worker can find the box under the register |
+| `spare-machine-needs-config` | 5文 | A spare machine does not work until someone puts the config in |
+| `veteran-works-through-break` | 6文 | The veteran on my team keeps working through the whole break |
+| `faults-come-after-the-lightning` | 4文 | Faults usually happen when the machines come back up after lightning |
+| `shakuyou-borrow-the-line` | 4文 | Everyone at work asks if I got the shakuyou, which means borrowing a line |
+| `writing-the-outage-notice` | 5文 | Writing the outage notice on our website is also part of my job |
+| `everyone-writes-the-timeline` | 7文 | After a big fault everyone writes down what they did at what minute |
+| `nothing-goes-home-with-me` | 6文 | I cannot take a single page of work material home with me |
+| `i-only-cover-the-middle` | 5文 | In a phone network my part is sometimes only the middle |
+| `questions-at-1pm-and-530pm` | 8文 | I send all my questions at 1pm and 5:30pm using a scheduled message |
+| `big-company-felt-like-school` | 5文 | My first big company felt like school, where I traced a way already decided |
+| `search-before-you-think` | 6文 | When I do not know something, I search the old records before I think |
+| `police-ask-who-this-is` | 7文 | The police call us to ask who is behind an IP address |
+| `maybe-a-mouse-chewed-it` | 7文 | We look at the papers and guess that maybe a mouse chewed the cable |
+| `sending-people-to-the-site` | 4文 | Network operations also means sending a real person out to the site |
+| `double-check-every-15-minutes` | 4文 | I say please double check about once every 15 minutes |
+| `20-hours-in-the-office` | 4文 | A night shift can leave me in the office for about 20 hours |
+| `i-am-a-temp-worker` | 4文 | I am a temp worker doing exactly the same work as permanent staff |
+| `one-second-stops-a-factory` | 3文 | My customers are companies, and 1 second of downtime can stop a factory |
+| `windows-update-day-slows-network` | 4文 | The network gets tight on Windows Update day every month |
+| `70-percent-company-rules` | 3文 | 70% of what I had to learn was company rules, not network knowledge |
+| `same-building-strangers` | 4文 | In a big company the same building is full of people I do not know |
+| `too-many-departments-to-ask` | 5文 | The departments are split so finely that I have to check who to ask |
+| `half-doing-half-recording` | 6文 | About half of my job is doing the work and half is recording it |
+| `10-minutes-finding-passwords` | 4文 | 5 or 10 minutes melt away just finding the right password |
+| `one-loose-plank-leaks-everything` | 4文 | One loose plank makes the whole barrel leak, they taught me in training |
+| `walked-to-work-through-the-flood` | 12文 | I walked to work through a road that had turned into a river |
 
 **添削するときは `works/<slug>/source.md` を渡してください**（index.html は出力物です）。
