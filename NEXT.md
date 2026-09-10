@@ -318,3 +318,70 @@ push  →  公開
 - 2026-09-02 以降は、本人提供の写真をなるべく多く使い、文章を少なめにして、
   コード風パネル・図解・控えめなアニメーションを増やす
 - **画像生成のクレジットは気にしなくていい。**ただしフォーマット化した量産はいちばん嫌がる
+
+---
+
+## 🛠 ネットワーク運用保守シリーズ 36本を出しました（2026-09-10）
+
+`ネットワーク運用保守/記事/*.txt` の日本語32本を、PROMPT.md のルールで英訳して公開しました。
+32本のうち **16番（ホームページに書く）は2本に、25番（質問は13時と17時半）は2本に、
+43番（膝まで水に浸かって出社）は3本に**割ってあります（55 words に収まらないため）。
+`03_帰る前に明日のマニュアルを開いておく` は `works/open-tomorrow-manuals/` で公開ずみなので飛ばしました。
+
+- 表紙は全36本ぶん生成（ペンギン固定・質感は15種類を順に回して、直近3本と重ならないようにした）
+- **本人の写真は1枚も落としていません。** 25番の1枚、43番の4枚は、割ったPartに振り分けて全部入っています
+- 部屋は全部 `jobs`、しごとは `netops` に入れてあります（`index.html` の `ROOM_OF` と `JOBS`）
+- `open-tomorrow-manuals` の末尾の Next ⚡ を、このシリーズの1本目に向けました
+
+### 匿名ルールで落としたもの
+
+| 記事 | 落としたもの | 理由 |
+|---|---|---|
+| 26 学校みたいだった | 「社員数1000名ほど」 | 体制の規模。「創業40年以上」だけ残した |
+| 34 派遣社員です | 「1班から6班くらいまで」 | 体制人数にあたる |
+| 17 時間割を書く | 「班長やグループ長」 | 役職の呼称が社内固有に読める |
+| 28 警察から電話 | 「自殺をほのめかす投稿」 | 「危ない投稿」にまとめた |
+| 43 出社した日 | 「JR」 | `trains` に一般化した |
+
+### 出した36本
+
+| slug | タイトル |
+|---|---|
+| `nice-escalation-sticker` | I got a sticker for asking a question that turned out to be a fault |
+| `chat-first-then-talk` | I cannot think and talk at once, so I send a chat first |
+| `chu-shortcut-explain-simply` | I typed 2 letters into my dictionary to ask for a simple explanation |
+| `three-monitors-twelve-screens` | I have 3 monitors on my desk and about 12 more on the wall |
+| `fax-to-the-police-station` | When a cable hangs down from a pole, I fax the police station |
+| `map-under-the-cash-register` | I draw a map so the field worker can find the box under the register |
+| `spare-machine-needs-config` | A spare machine does not work until someone puts the config in |
+| `veteran-works-through-break` | The veteran on my team keeps working through the whole break |
+| `faults-come-after-the-lightning` | Faults usually happen when the machines come back up after lightning |
+| `shakuyou-borrow-the-line` | Everyone at work asks if I got the shakuyou, which means borrowing a line |
+| `writing-the-outage-notice` | Writing the outage notice on our website is also part of my job |
+| `thirty-minute-drill` | The first 30 minutes of every night shift is an outage drill |
+| `everyone-writes-the-timeline` | After a big fault everyone writes down what they did at what minute |
+| `nothing-goes-home-with-me` | I cannot take a single page of work material home with me |
+| `i-only-cover-the-middle` | In a phone network my part is sometimes only the middle |
+| `questions-at-1pm-and-530pm` | I send all my questions at 1pm and 5:30pm using a scheduled message |
+| `asking-too-soon-or-too-late` | Asking right away is not good, and waiting is not good either |
+| `big-company-felt-like-school` | My first big company felt like school, where I traced a way already decided |
+| `search-before-you-think` | When I do not know something, I search the old records before I think |
+| `police-ask-who-this-is` | The police call us to ask who is behind an IP address |
+| `maybe-a-mouse-chewed-it` | We look at the papers and guess that maybe a mouse chewed the cable |
+| `sending-people-to-the-site` | Network operations also means sending a real person out to the site |
+| `double-check-every-15-minutes` | I say please double check about once every 15 minutes |
+| `20-hours-in-the-office` | A night shift can leave me in the office for about 20 hours |
+| `i-am-a-temp-worker` | I am a temp worker doing exactly the same work as permanent staff |
+| `one-second-stops-a-factory` | My customers are companies, and 1 second of downtime can stop a factory |
+| `windows-update-day-slows-network` | The network gets tight on Windows Update day every month |
+| `70-percent-company-rules` | 70% of what I had to learn was company rules, not network knowledge |
+| `same-building-strangers` | In a big company the same building is full of people I do not know |
+| `too-many-departments-to-ask` | The departments are split so finely that I have to check who to ask |
+| `half-doing-half-recording` | About half of my job is doing the work and half is recording it |
+| `10-minutes-finding-passwords` | 5 or 10 minutes melt away just finding the right password |
+| `one-loose-plank-leaks-everything` | One loose plank makes the whole barrel leak, they taught me in training |
+| `walked-to-work-through-the-flood` | I walked to work through a road that had turned into a river |
+| `applause-for-showing-up` | The whole office clapped because almost nobody else could get in |
+| `night-shift-until-half-past-noon` | My night shift ran until half past noon the next day |
+
+**添削するときは `works/<slug>/source.md` を渡してください**（index.html は出力物です）。
