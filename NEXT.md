@@ -13,7 +13,7 @@
 
 | | URL | 中身 |
 |---|---|---|
-| 🟢 **ブログ** | https://zenmode-aki.github.io/html-works/ | 🐧ペンゲッソの自己紹介＋記事34本 |
+| 🟢 **ブログ** | https://zenmode-aki.github.io/html-works/ | 🐧ペンゲッソの自己紹介＋記事42本 |
 
 **2026-09-04 に、本番前（staging/）と `pengesso.html` をなくしました。**
 
