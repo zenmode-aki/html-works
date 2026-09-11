@@ -27,6 +27,15 @@ S7. 僕にとって、セブ島で数少ない「落ち着いて歩ける場所�
 
 使った組み合わせ：ゆるふわなペンギン × あみぐるみ（毛糸） × 静かなプールサイド
 
+## ✏️ 2026-09-11 に追記：写真キャプションの修正
+
+本人の指示で2点直した（figcaptionはS番号に対応しないAI側の説明文なので、
+SOURCE MAPには影響しない）。
+
+- images/towers.jpg のキャプション「Cebu City, just outside the gate」→
+  「The poolside, with the city towers behind」（プールサイドの写真だったため）
+- images/poolside.jpg のキャプションは削除。「写真だけでいいよ」との指示のため
+
 ## 仕事ページへの関連づけ
 
 ブリッジSEの時期のセブ暮らしなので、tools/build-site.py の
