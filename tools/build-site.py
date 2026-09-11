@@ -49,6 +49,33 @@ PLACES = {
 }
 
 
+# 💼 これまでに就いた仕事。左は index.html の JOBS の k と assets/jobs/<k>.jpg に対応。
+#    posts は **meta.json の topic から自動で入る**（2026-09-11）。
+#    手で記事名を書き足さない。書き足すと必ず古くなる。
+#    topic が None の仕事（mcd / clark）は、記事がまだ無いので空のまま。
+JOBS = [
+    ("mcd",    "🍔", "Fast-food crew",    "Japan",                None),
+    ("baguio", "🎒", "English student",   "Baguio, Philippines",  None),
+    ("clark",  "🏫", "Language school",   "Clark, Philippines",   None),
+    ("cebu",   "💻", "Bridge engineer",   "Cebu, Philippines",    "bridge"),
+    ("netops", "🛠", "Network operations", "Japan",               "netops"),
+]
+
+# 手で仕事に割り当てておくぶん。足すのは次の2つの場合だけ。
+#   1. topic が無かった時代の記事
+#   2. **バッジの topic と、働いていた場所が食い違う記事**
+#      セブ暮らしの記事は読者向けには 🇵🇭 LIVING IN THE PHILIPPINES を出したいが、
+#      その暮らしはブリッジSEの時期そのものなので、cebu の仕事にも並べたい。
+#      topic を "bridge" に変えると badge が仕事の話に見えてしまうので、ここで足す。
+# それ以外の新しい記事は meta.json の topic で自動的に入るので、書き足さないこと。
+LEGACY_JOB_POSTS = {
+    "baguio": ["baguio-language-school-memories"],
+    "cebu":   ["japan-philippines-work", "japan-philippines-shops",
+               "no-public-scolding", "walking-on-the-7th-floor",
+               "concierge-downstairs", "my-room-on-video", "120-eggs"],
+}
+
+
 def collect(base: pathlib.Path):
     """<base>/<slug>/meta.json を読んで、日付の新しい順に並べる。"""
     out = []
@@ -98,6 +125,23 @@ def inject(page: pathlib.Path, items):
     t, n2 = re.subn(r"(/\* ⬇️ PLACES:START ⬇️ \*/\n)var PLACES = .*?\n(/\* ⬆️ PLACES:END)",
                     lambda mm: mm.group(1) + "var PLACES = {\n" + places + "\n};\n" + mm.group(2),
                     t, flags=re.S)
+
+    # 💼 JOBS：meta.json の topic から、その仕事の記事を自動で入れる
+    by_topic = {}
+    for m in items:
+        by_topic.setdefault(m.get("topic"), []).append(m["slug"])
+    jobs = []
+    for k, e, en, where, topic in JOBS:
+        posts = list(LEGACY_JOB_POSTS.get(k, []))
+        posts += [sl for sl in by_topic.get(topic, []) if sl not in posts]
+        jobs.append("  {k:%r, e:%r, en:%r, where:%r, posts:%r}," % (k, e, en, where, posts))
+    t, n3 = re.subn(r"(/\* ⬇️ JOBS:START.*?⬇️ \*/\n)var JOBS = .*?\n(/\* ⬆️ JOBS:END)",
+                    lambda mm: mm.group(1) + "var JOBS = [\n" + "\n".join(jobs) + "\n];\n" + mm.group(2),
+                    t, flags=re.S)
+    if not n3:
+        raise SystemExit("❌ index.html に JOBS の目印が見つかりません。"
+                         " /* ⬇️ JOBS:START ⬇️ */ … /* ⬆️ JOBS:END ⬆️ */ を消していませんか。")
+
     if not (n1 and n2):
         raise SystemExit(
             f"❌ {page.name} に POSTS / PLACES の目印が見つかりません。\n"

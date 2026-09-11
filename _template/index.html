@@ -88,7 +88,7 @@
   }
   .photo img { display: block; width: 100%; height: auto; }
 
-  /* ── 本文カード：15秒版は 3〜5枚まで。1枚に1〜2文 ──────────── */
+  /* ── 本文カード：枚数の上限はもうありません。素材の文の数だけ並べる ──── */
   .card {
     position: relative; margin-top: 18px; padding: 24px 26px;
     background: var(--card); border: 2px solid rgba(255,255,255,.92);
@@ -129,6 +129,24 @@
   .timeline-item:nth-child(4) { background: #e6fbf4; }
   .stage  { font-weight: 900; color: #6f52ca; }
   .device { font-weight: 750; color: #49354d; }
+
+  /* ── BEFORE THIS 🔗：記事を分けたときだけ、いちばん上に置く ────────
+     PROMPT.md §4「それでも分けるときは、前の記事に飛べるようにする」。
+     分けていない記事では <a class="prev"> ごと消す */
+  .prev {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px; min-height: 44px; padding: 14px 18px;
+    border-radius: 20px; text-decoration: none;
+    background: rgba(255,255,255,.7); border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); box-shadow: 0 6px 16px rgba(115,70,111,.08);
+    transition: transform .18s ease;
+  }
+  .prev:hover, .prev:focus-visible { transform: translateX(-3px); }
+  .prev-kicker {
+    flex: 0 0 auto; font-size: 10.5px; font-weight: 900;
+    letter-spacing: .16em; color: var(--purple);
+  }
+  .prev-title { font-size: 14px; line-height: 1.35; }
 
   /* ── Next ⚡：次の記事へ直行する。ショート動画のスワイプの代わり ──── */
   .next {
@@ -251,6 +269,14 @@
     </div>
   </div>
 
+  <!-- 🔗 記事を分けたときだけ使う。分けていないなら、この <a> ごと消す（PROMPT.md §4） -->
+  <!--
+  <a class="prev" href="../__PREV_SLUG__/index.html">
+    <span class="prev-kicker">BEFORE THIS</span>
+    <span class="prev-title">前の記事の内容がわかる一文</span>
+  </a>
+  -->
+
   <!-- 👇 差し替える -->
   <div class="label">⚡ 15 SECOND BLOG ⚡</div>
   <h1>Title Goes Here <span class="float">🐧</span></h1>
@@ -283,6 +309,13 @@
       Second sentence here.
     </p>
   </section>
+
+  <!-- 🖼 2枚目の生成画像は、記事の真ん中あたりに置く（PROMPT.md §12）
+       ペンギンでなくていい。記事に出てくるモノ・場面をリアルに描いてよい。
+       オチ（.big）の直前には置かない。本人の写真が2枚以上ある記事は省いてよい -->
+  <figure class="photo">
+    <img src="IMAGE:scene.jpg" alt="画像の内容を英語で説明する" />
+  </figure>
 
   <!-- 段階や流れを見せたいとき（要らなければカードごと消す） -->
   <section class="card">
