@@ -407,3 +407,44 @@ Part に割るのは、あきくんが「これは分けて」と言ったとき
 | `walked-to-work-through-the-flood` | 12文 | I walked to work through a road that had turned into a river |
 
 **添削するときは `works/<slug>/source.md` を渡してください**（index.html は出力物です）。
+
+---
+
+## 🖼 画像まわりの宿題（2026-09-11 にルールが変わった）
+
+本人の指示で3つ変えた（[PROMPT.md §12](PROMPT.md) / [§4](PROMPT.md) / [README.md](README.md)）。
+**ルールは直したが、既存の74本はまだ作り直していない。** 手が空いたら順に直す。
+
+### 1. ガラスっぽい画像をやめる
+
+`stained glass` を質感リストから削除した。以下の3本が該当するので**表紙を作り直す**。
+
+- `20-hours-in-the-office`
+- `faults-come-after-the-lightning`
+- `sakura-english-mixed-language`
+
+### 2. 生成画像を1記事2枚にする
+
+いまはどの記事も表紙1枚だけ。2枚目（記事の真ん中あたり）を足していく。
+
+- 2枚目は**ペンギンでなくてよい**。記事に出てくるモノ・場面をリアルに描いてよい
+- オチ（`.big`）の直前には置かない
+- 本人の写真が2枚以上ある記事（43番など）は、生成は表紙1枚のままでよい
+- テンプレートに `IMAGE:scene.jpg` の置き場所を用意してある
+
+### 3. 分けるときは前の記事へのリンクを置く
+
+`.prev`（BEFORE THIS）の CSS と HTML をテンプレートに入れてある。
+いま Part に分かれている記事は無いので、既存記事の修正は不要。
+
+### 画像生成の環境（2026-09-10 に用意した）
+
+Higgsfield CLI が入っていて認証も通っている。
+
+```bash
+higgsfield account status                     # 残クレジット
+higgsfield generate create nano_banana_2 --prompt "..." --wait --wait-timeout 8m
+```
+
+1枚2クレジット。出てきたURLを curl で落として `sips` で縮めてから `images/` に置き、
+`python3 tools/embed.py <slug>` で base64 に埋め込む。
