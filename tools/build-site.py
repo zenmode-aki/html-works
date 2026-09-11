@@ -78,7 +78,17 @@ LEGACY_JOB_POSTS = {
 
 
 def collect(base: pathlib.Path):
-    """<base>/<slug>/meta.json を読んで、日付の新しい順に並べる。"""
+    """<base>/<slug>/meta.json を読んで、公開した順（新しい→古い）に並べる。
+
+    並び順は meta.json の "seq" だけを見る。"date" は同じ日に何本も
+    出す日が普通にあるので、並び順には使えない
+    （2026-09-11 に、同じ日付の記事がslugのアルファベット順になってしまい、
+    本人が「アップロード順になっていない」と指摘して直した）。
+
+    "seq" は「そのファイルを最初に追加したコミット」を古い方から数えた通し番号。
+    一度 tools/renumber-seq.py で全記事に割り振ったら、あとは新しい記事を
+    足すたびに、そのときの最大値+1 を書くだけでいい。
+    """
     out = []
     if not base.exists():
         return out
@@ -93,7 +103,9 @@ def collect(base: pathlib.Path):
         m["words"] = n
         m["sec"] = round(n / (_chk.WPM / 60))
         out.append(m)
-    return sorted(out, key=lambda m: (m.get("date", ""), m["slug"]), reverse=True)
+    # ⚠️ seq が無い記事は「一番新しい」ものとして扱う（気づきやすいよう先頭に出す）。
+    #    tools/check.py --site が seq の無い記事を警告するので、見つけたら足すこと。
+    return sorted(out, key=lambda m: (m.get("seq", 1 << 30), m.get("date", ""), m["slug"]), reverse=True)
 
 
 def inject(page: pathlib.Path, items):

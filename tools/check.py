@@ -21,7 +21,7 @@
 2026-08 に書いた10本は「1分ブログ」時代のもの。本人の英文なので書き換えない。
 LEGACY に入れて、新しい検査もかけない。
 """
-import re, sys, os, html, pathlib
+import json, re, sys, os, html, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MAX_BYTES = 400 * 1024
@@ -296,6 +296,18 @@ def check_site():
             problems.append(f"{NG} assets/thumbs/{w.name}.jpg がありません → 一覧の画像が壊れます")
     if not any("meta.json" in p or "thumbs" in p for p in problems):
         notes.append(f"{OK} meta.json とサムネが {len(works)}本ぶん揃っている")
+
+    # 4.5 seq（公開順の通し番号）が無い記事を警告する。
+    #     無くてもビルドは止まらない（いちばん新しい扱いで一覧の先頭に出る）が、
+    #     気づかずに放置すると同じ日の記事の並び順がまた崩れるので、ここで知らせる。
+    no_seq = [w.name for w in works
+              if (w / "meta.json").exists()
+              and "seq" not in json.loads((w / "meta.json").read_text(encoding="utf-8"))]
+    if no_seq:
+        notes.append(f"{WARN}seq が無い記事: {no_seq} → 一覧の並び順が本来の位置からズレます。"
+                     f"python3 tools/renumber-seq.py --write で振り直してください")
+    else:
+        notes.append(f"{OK} 全記事に seq（公開順）がある")
 
     # 5. トップページに一覧の差し込み口が残っている
     idx = (ROOT / "index.html").read_text(encoding="utf-8")
