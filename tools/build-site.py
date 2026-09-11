@@ -72,7 +72,8 @@ LEGACY_JOB_POSTS = {
     "baguio": ["baguio-language-school-memories"],
     "cebu":   ["japan-philippines-work", "japan-philippines-shops",
                "no-public-scolding", "walking-on-the-7th-floor",
-               "concierge-downstairs", "my-room-on-video", "120-eggs"],
+               "concierge-downstairs", "my-room-on-video", "120-eggs",
+               "cebu-condo-poolside"],
 }
 
 

@@ -20,6 +20,7 @@ PHOTO_STORIES = {
     "thailand-first-trip", "khaosan-road-chaos",
     "burnham-park-flat-walk", "baguio-language-school-memories",
     "walked-to-work-through-the-flood",
+    "grandmothers-house-in-gifu", "cebu-condo-poolside", "gifu-drive-service-areas",
 }
 
 
