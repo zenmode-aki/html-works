@@ -15,6 +15,8 @@ import pathlib, re, sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 MARK = "/* ⬇️ tools/components.py */"
+# ◀ ▶ のボタンだけ後から足したので、別の目印にしてある（2026-09-11）
+ARROW_MARK = "/* ⬇️ tools/components.py : slides-arrow */"
 
 CSS = MARK + """
   /* 🗺 地図 — 上空からその場所の雰囲気がわかるようにする */
@@ -82,6 +84,86 @@ JS = """
 """
 
 
+ARROW_CSS = ARROW_MARK + """
+  /* ◀ ▶ スライドのボタン（2026-09-11 に本人が要望）
+     「写真をスライドさせるのはマウスだと難しいから、
+      右とか左にクリックでスライドさせられる機能もつけて」
+     ボタンのHTMLは書かない。下のJSがスライドを見つけて自分で足す */
+  .slides { position: relative; }
+  .slides-arrow {
+    position: absolute; top: calc(50% - 34px); transform: translateY(-50%);
+    display: grid; place-items: center; width: 46px; height: 46px; padding: 0;
+    border: 0; border-radius: 50%; cursor: pointer;
+    background: rgba(255,255,255,.94); color: #4a3350;
+    font-size: 26px; line-height: 1; font-family: inherit;
+    box-shadow: 0 6px 18px rgba(0,0,0,.22);
+    transition: transform .16s ease, opacity .16s ease;
+  }
+  .slides-arrow:hover  { transform: translateY(-50%) scale(1.08); }
+  .slides-arrow:disabled { opacity: .28; cursor: default; }
+  .slides-prev { left: 6px; }
+  .slides-next { right: 6px; }
+  @media (max-width: 600px) {
+    .slides-arrow { width: 40px; height: 40px; font-size: 23px; }
+  }
+"""
+
+ARROW_JS = """
+  /* ◀ ▶ スライドに、クリックで動かせるボタンを足す（2026-09-11） */
+  document.querySelectorAll('.slides').forEach(function (box) {
+    var track = box.querySelector('.slides-track');
+    if (!track || box.querySelector('.slides-arrow')) return;
+    if (track.children.length < 2) return;
+
+    function step() {
+      var first = track.children[0];
+      return first ? first.getBoundingClientRect().width + 12 : track.clientWidth;
+    }
+    var made = [];
+    [['prev', '\\u2039', 'Previous photo'], ['next', '\\u203a', 'Next photo']]
+      .forEach(function (spec) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'slides-arrow slides-' + spec[0];
+        b.textContent = spec[1];
+        b.setAttribute('aria-label', spec[2]);
+        b.addEventListener('click', function () {
+          track.scrollBy({ left: spec[0] === 'prev' ? -step() : step(), behavior: 'smooth' });
+        });
+        box.appendChild(b);
+        made.push(b);
+      });
+
+    /* 端まで来たボタンは薄くして押せなくする */
+    function sync() {
+      var max = track.scrollWidth - track.clientWidth - 2;
+      made[0].disabled = track.scrollLeft <= 2;
+      made[1].disabled = track.scrollLeft >= max;
+    }
+    track.addEventListener('scroll', sync);
+    window.addEventListener('resize', sync);
+    sync();
+  });
+"""
+
+
+def inject_arrows(path: pathlib.Path) -> str:
+    """スライドのある記事に ◀ ▶ のボタンを足す。"""
+    doc = path.read_text(encoding="utf-8")
+    # ⚠️ 上の CSS の中にも "slides-track" という文字は出てくるので、
+    #    **本文に実際のスライドがあるか**で判定する。ここを間違えると全記事に入る
+    if '<div class="slides-track">' not in doc:
+        return ""                      # スライドが無い記事は何もしない
+    if ARROW_MARK in doc:
+        return "◀▶ すでに入っています"
+    doc = doc.replace("</style>", ARROW_CSS + "\n</style>", 1)
+    tail = doc.rfind("</script>")
+    doc = doc[:tail] + ARROW_JS + doc[tail:]
+    doc = doc.replace("SWIPE FOR MORE →", "◀ ▶ OR SWIPE")
+    path.write_text(doc, encoding="utf-8")
+    return "✅ ◀▶ ボタンを入れました"
+
+
 def inject(path: pathlib.Path) -> str:
     doc = path.read_text(encoding="utf-8")
     if MARK in doc:
@@ -112,6 +194,9 @@ def main():
             print(f"  ❔ {slug}: index.html がありません")
             continue
         print(f"  {inject(idx)}  {slug}")
+        arrows = inject_arrows(idx)
+        if arrows:
+            print(f"  {arrows}  {slug}")
 
 
 if __name__ == "__main__":

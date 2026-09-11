@@ -1,6 +1,6 @@
 # 📋 次にやること（Codex / ChatGPT への引き継ぎ）
 
-最終更新：2026-09-11（ブリッジSEシリーズ19本を公開した）
+最終更新：2026-09-11（修正まとめ＋favicon＋一覧の仕事バッジ＋新記事1本）
 
 **このファイルを最初に読んでください。** 続きの作業に必要なことは全部ここにあります。
 ルールそのものは [PROMPT.md](PROMPT.md) と [README.md](README.md) にあります。
@@ -407,6 +407,73 @@ Part に割るのは、あきくんが「これは分けて」と言ったとき
 | `walked-to-work-through-the-flood` | 12文 | I walked to work through a road that had turned into a river |
 
 **添削するときは `works/<slug>/source.md` を渡してください**（index.html は出力物です）。
+
+---
+
+## 🔧 添削・サイト機能まとめ（2026-09-11・ブリッジSE19本のあと）
+
+### ✏️ 添削（本人の言葉に忠実に直した）
+
+| 記事 | 直したこと |
+|---|---|
+| `20-hours-in-the-office` | 愚痴のオチ → 「12時を過ぎると元気が湧いてくる」という体の不思議さのオチに変えた |
+| `same-building-strangers` | 「不満」→「驚き」の言い方に変えた |
+| `too-many-departments-to-ask` | 具体的な担当名（公共サービス・金融など）を消して「営業部を例にとると」に変えた |
+| `10-minutes-finding-passwords` | 「大企業だと」→「運用保守の仕事だと」に変えた |
+| `walked-to-work-through-the-flood` | 時計の写真を「洪水が引いていた」の文の直後に移動。「排水システムがいいなら、そもそも冠水しなかったのでは」というツッコミのカードを追加 |
+| `turn-off-everything-else` | 「今に集中しようとはしない」→「集中しようと考えすぎると力む。だから逆に今以外を電源オフにする」という逆転の発想の説明に変えた |
+| `ai-can-translate` | （前回すでに直した）クラウド・インフラの話を削除 |
+
+### 🐛 バグ修正
+
+`sakura-english-mixed-language` の表示崩れは、`<a class="next">` の中に紛れ込んだ
+**制御文字（`\x02`）が原因**だった。全記事をスキャンして、この1本だけだったことを確認して直した。
+
+### 🖱 スライドに ◀ ▶ ボタンを追加
+
+「写真をスライドさせるのはマウスだと難しいから」という要望で、
+`tools/components.py` に `inject_arrows()` を追加。**実際にスライド（`.slides-track`）がある
+記事だけ**を判定して足す（`khaosan-road-chaos` と `tokyo-yakult-tsubakuro` の2本）。
+
+⚠️ 最初のガード条件が甘くて全102本に入ってしまった事故があった。
+`.slides-track` という文字列は CSS の中にも出てくるので、**HTML内に実際の
+`<div class="slides-track">` があるかで判定し直す必要がある。** 次に似た部品を足すときも注意。
+
+### 🎨 `khaosan-road-chaos` の配色を明るくした
+
+このタイ記事だけ `_template` を使わない独自のダークネイビー配色（`#0c1020`）だった。
+本人が「デザインが好きじゃない」と言ったので、暖色系の明るい配色（`#fff4e2`）に総入れ替えした。
+アコーディオンのように色を1か所ずつ潰していく必要があるので、次に似た独自デザインの
+記事を直すときは、`:root` だけでなく `.hero`・`figcaption`・`.route`・`.codeblock`・`.maplink`
+などダークな背景色がベタ書きされている箇所を全部洗い出すこと。
+
+### 🕶 favicon を追加した
+
+トップページと全102本の記事の `<head>` に、ペンゲッソがサングラスをかけた顔の
+favicon を追加した（`assets/favicon.png` / `favicon-32.png` / `favicon-180.png`）。
+生成は z_image。`_template/index.html` にも入れたので、**新しく作る記事には
+自動で入る。** 新しいトップページを作るときは `assets/favicon-32.png`
+（32x32）と `favicon-180.png`（apple-touch-icon）を参照すること。
+
+### 🏷 一覧に「どの仕事の話か」のバッジを追加
+
+「仕事の内容が記事の一覧の中に入っているとタイトルが意味わからなすぎる」という指摘。
+`tools/build-site.py` の POSTS に `topic` を足し、トップページの `drawFeed()` で
+`topic` が `netops` か `bridge` の記事だけに、小さな色つきバッジ（🛠 Network Ops /
+🌉 Bridge SE）を出すようにした。他のtopic（ph/travel/study/ai/blog/life）には出していない
+（本人の要望が「仕事に関する記事」だったため、スコープを絞った）。
+
+### 🎧 新しい記事を1本書いた
+
+`yonezu-kenshi-raven` — 米津玄師「烏」を聴いて感じたことの記事。topic は `life`。
+歌詞の引用2つは日本の著作権法32条の引用の範囲で扱い、`.lyric` の見た目で本文と
+区別し、アーティスト名を必ず添えた。Spotifyへのリンクは iframe にせず、
+YouTubeカードと同じ考え方で「カード＋リンク」（`.spotify-card`）にしてある。
+
+### 💳 Higgsfield クレジット
+
+このセッションで favicon 1枚・記事画像1枚を追加生成した。残り **1.2クレジット**。
+リセットは**毎月25日**（前回の付与記録が 2026-08-25 の270クレジットだったところから逆算）。
 
 ---
 

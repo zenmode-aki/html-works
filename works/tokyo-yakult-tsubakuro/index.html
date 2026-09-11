@@ -4,6 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>I like the gap between Tsubakuro's cute look and old-man personality</title>
+<!-- 🕶 タブのアイコン。ペンゲッソがサングラスをかけている顔（2026-09-11） -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
 <script>document.documentElement.className += " js";</script>
 <style>
   :root { --bg:#fff7dc; --ink:#302547; --muted:#746785; --card:rgba(255,255,255,.94); --a:#ff4f8b; --b:#6550d8; --c:#16b99a; --shadow:0 22px 58px rgba(68,43,101,.17); }
@@ -128,6 +131,29 @@
           box-shadow: 0 8px 20px rgba(0,0,0,.16); }
   @media (max-width: 460px) { .gap-v { font-size: 15px; } .gap-face { font-size: 32px; } }
   @media (prefers-reduced-motion: reduce) { .js .gap-face { animation: none; } }
+/* ⬇️ tools/components.py : slides-arrow */
+  /* ◀ ▶ スライドのボタン（2026-09-11 に本人が要望）
+     「写真をスライドさせるのはマウスだと難しいから、
+      右とか左にクリックでスライドさせられる機能もつけて」
+     ボタンのHTMLは書かない。下のJSがスライドを見つけて自分で足す */
+  .slides { position: relative; }
+  .slides-arrow {
+    position: absolute; top: calc(50% - 34px); transform: translateY(-50%);
+    display: grid; place-items: center; width: 46px; height: 46px; padding: 0;
+    border: 0; border-radius: 50%; cursor: pointer;
+    background: rgba(255,255,255,.94); color: #4a3350;
+    font-size: 26px; line-height: 1; font-family: inherit;
+    box-shadow: 0 6px 18px rgba(0,0,0,.22);
+    transition: transform .16s ease, opacity .16s ease;
+  }
+  .slides-arrow:hover  { transform: translateY(-50%) scale(1.08); }
+  .slides-arrow:disabled { opacity: .28; cursor: default; }
+  .slides-prev { left: 6px; }
+  .slides-next { right: 6px; }
+  @media (max-width: 600px) {
+    .slides-arrow { width: 40px; height: 40px; font-size: 23px; }
+  }
+
 </style>
 </head>
 <body>
@@ -183,6 +209,42 @@
       });
     }, { root: track, threshold: 0.6 });
     figs.forEach(function (f) { io.observe(f); });
+  });
+
+  /* ◀ ▶ スライドに、クリックで動かせるボタンを足す（2026-09-11） */
+  document.querySelectorAll('.slides').forEach(function (box) {
+    var track = box.querySelector('.slides-track');
+    if (!track || box.querySelector('.slides-arrow')) return;
+    if (track.children.length < 2) return;
+
+    function step() {
+      var first = track.children[0];
+      return first ? first.getBoundingClientRect().width + 12 : track.clientWidth;
+    }
+    var made = [];
+    [['prev', '\u2039', 'Previous photo'], ['next', '\u203a', 'Next photo']]
+      .forEach(function (spec) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'slides-arrow slides-' + spec[0];
+        b.textContent = spec[1];
+        b.setAttribute('aria-label', spec[2]);
+        b.addEventListener('click', function () {
+          track.scrollBy({ left: spec[0] === 'prev' ? -step() : step(), behavior: 'smooth' });
+        });
+        box.appendChild(b);
+        made.push(b);
+      });
+
+    /* 端まで来たボタンは薄くして押せなくする */
+    function sync() {
+      var max = track.scrollWidth - track.clientWidth - 2;
+      made[0].disabled = track.scrollLeft <= 2;
+      made[1].disabled = track.scrollLeft >= max;
+    }
+    track.addEventListener('scroll', sync);
+    window.addEventListener('resize', sync);
+    sync();
   });
 </script>
 </body>

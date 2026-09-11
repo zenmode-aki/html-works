@@ -107,12 +107,12 @@ def inject(page: pathlib.Path, items):
         used.add(place)
         rows.append(
             "  {slug:%r, label:%r, len:%d, words:%d, date:%r, age:%d, place:%r,\n"
-            "   href:%r, thumb:%r,\n   title:%r},"
+            "   href:%r, thumb:%r,\n   title:%r, topic:%r},"
             % (m["slug"], m.get("label", ""), 15 if m.get("length") != "1min" else 60,
                m["words"], m.get("date", ""), int(m.get("age", 22)), place,
                f"works/{m['slug']}/index.html",
                f"assets/thumbs/{m['slug']}.jpg",
-               m.get("title", m["slug"])))
+               m.get("title", m["slug"]), m.get("topic", "")))
 
     places = "\n".join(
         "  %s: {name:%r, map:%r, row:%d, col:%d}," % (k, *PLACES[k])
