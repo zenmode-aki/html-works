@@ -225,6 +225,17 @@
     overflow: hidden; width: min(100%, 540px); margin: 0 auto;
   }
   .map2 svg.main { display: block; width: 100%; height: auto; aspect-ratio: var(--ar, 1/1); }
+
+  /* 🗾 日本地図がふわっと出る（2026-09-11 に本人が要望）
+     世界地図から日本を押したときだけ .just-opened が付く */
+  @keyframes map-in {
+    from { opacity: 0; transform: scale(.965); }
+    to   { opacity: 1; transform: none; }
+  }
+  .map2.just-opened svg.main { animation: map-in .42s cubic-bezier(.2,.9,.3,1) both; }
+  @media (prefers-reduced-motion: reduce) {
+    .map2.just-opened svg.main { animation: none; }
+  }
   .map2 .paper {
     position: absolute; inset: 0; pointer-events: none; opacity: .35;
     background: repeating-linear-gradient(44deg, rgba(255,255,255,.5) 0 1.5px, transparent 1.5px 5px);
@@ -1373,6 +1384,13 @@ function nJob(k){
 
 /* 押したら記事のところまで連れていく。ここが無いと、
    地図を押しても画面が変わらないように見えてしまう */
+/* 地図そのものを画面に収める。日本地図を出したときに使う（2026-09-11） */
+function goToMap(){
+  var soft = !window.matchMedia || !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var el = document.querySelector('.map-stage') || mapEl;
+  if (el && el.scrollIntoView) el.scrollIntoView({ behavior: soft ? 'smooth' : 'auto', block: 'center' });
+}
+
 function goToPosts(){
   var soft = !window.matchMedia || !matchMedia('(prefers-reduced-motion: reduce)').matches;
   var el = document.getElementById('posts');
@@ -1521,7 +1539,9 @@ function drawNow(){
   }).join('');
 }
 
-/* 日本を押したら県の地図をひらいて、日本の記事だけにする。
+/* 日本を押したら、まず県の地図をひらくだけ。記事一覧へは飛ばさない。
+   （2026-09-11 に本人が変更：「いきなり記事一覧に行っちゃうのが嫌」）
+   県を選んだ時点で、はじめて記事一覧へ動く。
    ほかの国はその場でその国だけにする */
 function openCountry(code){
   if (code === 'jp') {
@@ -1530,7 +1550,14 @@ function openCountry(code){
     [].forEach.call(document.querySelectorAll('.map-tabs .chip'), function(x){
       x.setAttribute('aria-pressed', String(x.dataset.map === 'japan'));
     });
-    render(); return goToPosts();
+    render();
+    /* 日本地図をふわっと出して、そこで手を止める */
+    if (mapEl) {
+      mapEl.classList.remove('just-opened');
+      void mapEl.offsetWidth;          /* アニメを撒き直す */
+      mapEl.classList.add('just-opened');
+    }
+    return goToMap();
   }
   state.country = (state.country === code) ? null : code;
   state.place = null; state.room = null; state.job = null;
