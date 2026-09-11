@@ -61,11 +61,18 @@ JOBS = [
     ("netops", "🛠", "Network operations", "Japan",               "netops"),
 ]
 
-# topic が無かった時代の記事を、手で仕事に割り当てておくぶん。
-# 新しい記事は meta.json の topic で自動的に入るので、ここに足す必要はない。
+# 手で仕事に割り当てておくぶん。足すのは次の2つの場合だけ。
+#   1. topic が無かった時代の記事
+#   2. **バッジの topic と、働いていた場所が食い違う記事**
+#      セブ暮らしの記事は読者向けには 🇵🇭 LIVING IN THE PHILIPPINES を出したいが、
+#      その暮らしはブリッジSEの時期そのものなので、cebu の仕事にも並べたい。
+#      topic を "bridge" に変えると badge が仕事の話に見えてしまうので、ここで足す。
+# それ以外の新しい記事は meta.json の topic で自動的に入るので、書き足さないこと。
 LEGACY_JOB_POSTS = {
     "baguio": ["baguio-language-school-memories"],
-    "cebu":   ["japan-philippines-work", "japan-philippines-shops"],
+    "cebu":   ["japan-philippines-work", "japan-philippines-shops",
+               "no-public-scolding", "walking-on-the-7th-floor",
+               "concierge-downstairs", "my-room-on-video", "120-eggs"],
 }
 
 

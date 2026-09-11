@@ -1,6 +1,6 @@
 # 📋 次にやること（Codex / ChatGPT への引き継ぎ）
 
-最終更新：2026-09-10（仕事シリーズの台本 WORK.md を足した）
+最終更新：2026-09-11（ブリッジSEシリーズ19本を公開した）
 
 **このファイルを最初に読んでください。** 続きの作業に必要なことは全部ここにあります。
 ルールそのものは [PROMPT.md](PROMPT.md) と [README.md](README.md) にあります。
@@ -407,6 +407,72 @@ Part に割るのは、あきくんが「これは分けて」と言ったとき
 | `walked-to-work-through-the-flood` | 12文 | I walked to work through a road that had turned into a river |
 
 **添削するときは `works/<slug>/source.md` を渡してください**（index.html は出力物です）。
+
+---
+
+## 🌉 ブリッジSEシリーズ 19本を出しました（2026-09-11）
+
+`ブリッジSE/記事/*.txt` の日本語を英訳して公開しました。
+**1ファイル = 1記事**、**素材の文は1つも落としていません。**
+
+### カテゴリーの出しかた
+
+| topic | バッジ | 本数 | 中身 |
+|---|---|---|---|
+| `bridge` | 🌉 BRIDGE ENGINEER | 14 | 仕事そのものの話 |
+| `ph` | 🇵🇭 LIVING IN THE PHILIPPINES | 5 | セブでの暮らしの話 |
+
+セブ暮らしの5本は、読者向けには 🇵🇭 のバッジを出しつつ、
+`tools/build-site.py` の `LEGACY_JOB_POSTS["cebu"]` に足して、
+💻 Bridge engineer の仕事にも並ぶようにしてあります
+（暮らしていた時期がそのままブリッジSEの時期なので）。
+
+### 出した19本
+
+| slug | topic | タイトル |
+|---|---|---|
+| `why-not-japan` | bridge | The work went overseas because it cost less, so I sat in the middle |
+| `ai-can-translate` | bridge | AI can translate, so I decided to go towards technology instead |
+| `cant-explain` | bridge | If I did not understand it myself, I could not explain it |
+| `en-to-jp-harder` | bridge | English into Japanese was much harder than Japanese into English |
+| `skill-over-language` | bridge | Technical skill mattered far more than language skill |
+| `engineers-30-min` | bridge | An engineer's 30 minutes is time the client is paying for |
+| `translate-back` | bridge | After translating into Japanese, I translated it back into English to check |
+| `not-i-can-do-it` | bridge | I tried not to say we can do it too easily |
+| `get-a-stamp` | bridge | After talking, I typed the same thing into chat and waited for a stamp |
+| `trust-the-buffer` | bridge | I decided to follow the buffer the PM made without complaining |
+| `only-japanese-person` | bridge | The projects where I was the only Japanese person were the most rewarding |
+| `that-email` | bridge | The client's thank you email was the happiest moment I had at work |
+| `after-the-meeting` | bridge | The moment a meeting ended was when I felt the most relief |
+| `minutes-in-one-minute` | bridge | People were surprised when I made the meeting minutes in 1 minute |
+| `no-public-scolding` | ph | In the Philippines, scolding someone in front of others is a taboo |
+| `walking-on-the-7th-floor` | ph | When I could not sleep, I walked round and round the 7th floor |
+| `concierge-downstairs` | ph | There was a concierge on the ground floor of my building in Cebu |
+| `my-room-on-video` | ph | I filmed the inside of my studio room right before I moved out |
+| `120-eggs` | ph | When I lived in Cebu, my fridge was always full of eggs |
+
+### 🚧 まだ出していないもの
+
+**`ブリッジSE/記事/23_セブで暮らしてた、平日の夜.txt` は骨組みのままです。**
+「仕事が終わって、まず何をしてた?／ごはんは?／洗濯は?／何時に寝てた?」が空欄。
+あきくんの記憶が入ったら記事にできます。
+
+### 画像について（⚠️ ここは今回だけ違う）
+
+**生成モデルを `nano_banana_2`（2クレジット）から `z_image`（0.15クレジット）に変えました。**
+残高が 7.65 クレジットしかなく、37枚だと `nano_banana_2` では 74 クレジット必要だったためです。
+
+`z_image` でも「リアル・3D寄り・お腹は無地・人間なし」は問題なく出せています。
+**クレジットが戻ったら、好みに合わない絵だけ `nano_banana_2` で作り直せば済みます。**
+
+```bash
+higgsfield generate cost z_image --prompt "test"   # 0.15 クレジット
+```
+
+- 3本だけ、本人の YouTube 動画をカード＋リンクで入れています（§14／iframeにしない）
+- `120-eggs` は本人の冷蔵庫の写真があるので、生成は表紙1枚だけ（§12「写真が優先」）。
+  **卵を大量に並べた絵はわざと作っていません**（集合体恐怖症への配慮／§12）
+- `120-eggs` の地図は OpenStreetMap。Googleマップは iframe で埋め込めないのでリンクだけ
 
 ---
 
