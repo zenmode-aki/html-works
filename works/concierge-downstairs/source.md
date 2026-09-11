@@ -37,7 +37,8 @@ S18. 1階にコンシェルジュがいる生活って、とても便利だな�
 
 ## 動画
 
-https://youtu.be/qhBYSJWzjUM — 本人が撮った1階の様子。カード＋リンク（§14）。
+https://youtu.be/qhBYSJWzjUM — 本人が撮った1階の様子。
+記事内に `youtube-nocookie.com/embed/` で埋め込み（2026-09-12、§14）。
 
 ## 画像
 

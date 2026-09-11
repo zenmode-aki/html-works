@@ -33,7 +33,8 @@ S14. 誰にも見せることなく、投稿もあんましてなかったんで
 
 ## 動画
 
-https://youtu.be/sRvDKhLSmfU — 本人が引っ越す直前に撮った部屋の様子。カード＋リンク（§14）。
+https://youtu.be/sRvDKhLSmfU — 本人が引っ越す直前に撮った部屋の様子。
+記事内に `youtube-nocookie.com/embed/` で埋め込み（2026-09-12、§14）。
 
 ## 画像
 

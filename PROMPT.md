@@ -882,11 +882,32 @@ python3 tools/thumbs.py <slug>   # 240px正方形に縮めて base64 で埋め�
 
 ---
 
-## 1️⃣4️⃣ YouTube はカードでリンクする ▶️
+## 1️⃣4️⃣ YouTube は記事の中に埋め込む ▶️（2026-09-12 に本人が変更）
 
-iframe は `file://` で再生エラーになりやすいので、**標準ではカード＋リンク**にする。
-カード全体をクリック可能にして、新規タブで開く（`target="_blank" rel="noopener noreferrer"`）。
-サムネイルが読み込めなくても崩れないよう、下地にグラデーションを敷いておく。
+**以前はカード＋リンク（別タブでYouTubeへ）にしていたが、
+本人が「わざわざYouTubeにリダイレクトされないように、記事の中にそのまま埋め込んでほしい」
+と言ったため、標準を埋め込みに変えた。**
+
+`youtube-nocookie.com/embed/<動画ID>` の iframe を `.video-card` に入れる
+（`.video-card` は `tools/components.py` が配る共通CSSにすでにある）。
+
+```html
+<figure class="video-card">
+  <div class="ratio">
+    <iframe src="https://www.youtube-nocookie.com/embed/<動画ID>"
+            title="動画の内容を英語で説明する" loading="lazy" allowfullscreen
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+  <figcaption>🐧 動画の内容を一言で</figcaption>
+</figure>
+```
+
+`tools/check.py` の埋め込み許可リスト（`EMBED_OK`）に
+`youtube-nocookie.com/embed/` はもとから入っているので、検査はそのまま通る。
+
+カード＋リンク（`.youtube-card`、別タブへのリンク）は過去の記事にまだ残っているが、
+古い記事を見つけたときは埋め込みに直してよい（2026-09-12 に
+`my-room-on-video` / `concierge-downstairs` / `walking-on-the-7th-floor` を直した）。
 
 ---
 
