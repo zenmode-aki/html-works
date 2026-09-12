@@ -44,6 +44,7 @@ PLACES = {
     "gifu":     ("Gifu 🌿",         "jp",    8,  6),
     "cebu":     ("Cebu 🌴",         "world", 11, 32),
     "baguio":   ("Baguio ⛰️",       "world", 10, 32),
+    "clark":    ("Clark 🏫",        "world",  9, 32),
     "bangkok":  ("Bangkok 🛺",      "world", 11, 29),
     "thailand": ("Kanchanaburi 🚂", "world", 10, 29),
 }
@@ -69,7 +70,15 @@ JOBS = [
 #      topic を "bridge" に変えると badge が仕事の話に見えてしまうので、ここで足す。
 # それ以外の新しい記事は meta.json の topic で自動的に入るので、書き足さないこと。
 LEGACY_JOB_POSTS = {
-    "baguio": ["baguio-language-school-memories"],
+    "baguio": ["baguio-language-school-memories",
+               "the-strictest-school-i-could-find", "paraphrase-to-hack-the-score",
+               "a-propeller-hairpin", "stargazing-on-the-rooftop"],
+    "clark":  ["be-friends-with-the-agents", "airport-pickup-tug-of-war",
+               "standing-desk-conversations", "gifts-from-students",
+               "clark-california-of-asia", "korean-buffet-every-day",
+               "shiny-floor-dorm-room", "the-villages-felt-like-korea",
+               "subic-bay-and-clark-airport", "cabbage-and-black-pepper",
+               "the-boss-looked-out-for-me", "turning-twenty-in-clark"],
     "cebu":   ["japan-philippines-work", "japan-philippines-shops",
                "no-public-scolding", "walking-on-the-7th-floor",
                "concierge-downstairs", "my-room-on-video", "120-eggs",
