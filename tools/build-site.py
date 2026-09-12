@@ -139,6 +139,20 @@ def inject(page: pathlib.Path, items):
                     lambda mm: mm.group(1) + "var PLACES = {\n" + places + "\n};\n" + mm.group(2),
                     t, flags=re.S)
 
+    # 🗂 ROOM_OF：meta.json の room から作る。
+    #    💼 jobs の部屋はここに入れない（index.html 側で JOBS から自動で決まる）。
+    #    2026-09-12：ここを手で書いていたせいで、仕事の記事31本が
+    #    「Jobs he has had」から消えていたので、生成するようにした。
+    room_of = {m["slug"]: m["room"] for m in sorted(items, key=lambda x: x["slug"])
+               if m.get("room") and m["room"] != "jobs"}
+    t, n4 = re.subn(r"(/\* ⬇️ ROOM_OF:START.*?⬇️ \*/\n)var ROOM_OF = .*?\n(/\* ⬆️ ROOM_OF:END)",
+                    lambda mm: mm.group(1) + "var ROOM_OF = "
+                    + json.dumps(room_of, ensure_ascii=False) + ";\n" + mm.group(2),
+                    t, flags=re.S)
+    if not n4:
+        raise SystemExit("❌ index.html に ROOM_OF の目印が見つかりません。"
+                         " /* ⬇️ ROOM_OF:START ⬇️ */ … /* ⬆️ ROOM_OF:END ⬆️ */ を消していませんか。")
+
     # 💼 JOBS：meta.json の topic から、その仕事の記事を自動で入れる
     by_topic = {}
     for m in items:

@@ -309,8 +309,36 @@ def check_site():
     else:
         notes.append(f"{OK} 全記事に seq（公開順）がある")
 
+    # 4.6 どの部屋にも入っていない記事がないか（2026-09-12）
+    #     トップの 🧠💛📚🔭💼💥 は「部屋」で記事を分けている。
+    #     仕事の記事（topic が netops / bridge、または build-site.py の
+    #     LEGACY_JOB_POSTS に書いてあるもの）は 💼 に自動で入る。
+    #     それ以外は meta.json の "room" が要る。無いとどの部屋からも辿れない。
+    src = (ROOT / "tools" / "build-site.py").read_text(encoding="utf-8")
+    legacy = set(re.findall(r'"([a-z0-9-]+)"',
+                            re.search(r"LEGACY_JOB_POSTS = \{(.*?)\n\}", src, re.S).group(1)))
+    job_topics = {"netops", "bridge"}
+    homeless = []
+    for w in works:
+        if not (w / "meta.json").exists():
+            continue
+        m = json.loads((w / "meta.json").read_text(encoding="utf-8"))
+        if m.get("topic") in job_topics or w.name in legacy:
+            continue
+        if not m.get("room"):
+            homeless.append(w.name)
+    if homeless:
+        problems.append(f"{NG} 部屋が決まっていない記事: {homeless} → トップの"
+                        f" 🧠💛📚🔭💥 のどこからも辿れません。meta.json に"
+                        f' "room"（head / keep / likes / wants / oops）を足してください')
+    else:
+        notes.append(f"{OK} 全記事がどれかの部屋に入っている")
+
     # 5. トップページに一覧の差し込み口が残っている
     idx = (ROOT / "index.html").read_text(encoding="utf-8")
+    if "ROOM_OF:START" not in idx:
+        problems.append(f"{NG} index.html の ROOM_OF の目印が消えています"
+                        f" → 部屋の割り当てが古いまま固まります")
     if "POSTS:START" not in idx or "PLACES:START" not in idx:
         problems.append(f"{NG} index.html の POSTS / PLACES の目印が消えています"
                         f" → python3 tools/build-site.py が効かなくなります")
