@@ -1115,7 +1115,7 @@ var POSTS = [
   {slug:'one-bite-hamburger', label:'One Bite', len:15, words:47, date:'2026-09-12', age:20, place:'cebu',
    href:'works/one-bite-hamburger/index.html', thumb:'assets/thumbs/one-bite-hamburger.jpg',
    title:'A hamburger in the Philippines can be small enough to eat in one bite', topic:'ph'},
-  {slug:'stargazing-on-the-rooftop', label:'The Rooftop', len:15, words:262, date:'2026-09-12', age:19, place:'baguio',
+  {slug:'stargazing-on-the-rooftop', label:'The Rooftop', len:15, words:253, date:'2026-09-12', age:19, place:'baguio',
    href:'works/stargazing-on-the-rooftop/index.html', thumb:'assets/thumbs/stargazing-on-the-rooftop.jpg',
    title:'The rooftop where I looked up at the stars was my favourite place', topic:'ph'},
   {slug:'a-propeller-hairpin', label:'The Hairpin', len:15, words:200, date:'2026-09-12', age:19, place:'baguio',
@@ -1133,7 +1133,7 @@ var POSTS = [
   {slug:'the-boss-looked-out-for-me', label:'The Boss', len:15, words:81, date:'2026-09-12', age:20, place:'clark',
    href:'works/the-boss-looked-out-for-me/index.html', thumb:'assets/thumbs/the-boss-looked-out-for-me.jpg',
    title:'The boss worried about me being the only Japanese person there', topic:'ph'},
-  {slug:'cabbage-and-black-pepper', label:'Cabbage', len:15, words:131, date:'2026-09-12', age:20, place:'clark',
+  {slug:'cabbage-and-black-pepper', label:'Cabbage', len:15, words:134, date:'2026-09-12', age:20, place:'clark',
    href:'works/cabbage-and-black-pepper/index.html', thumb:'assets/thumbs/cabbage-and-black-pepper.jpg',
    title:'Cabbage with black pepper was the best thing I cooked out there', topic:'ph'},
   {slug:'subic-bay-and-clark-airport', label:'Subic And Clark', len:15, words:67, date:'2026-09-12', age:20, place:'clark',
@@ -1142,22 +1142,22 @@ var POSTS = [
   {slug:'the-villages-felt-like-korea', label:'The Villages', len:15, words:121, date:'2026-09-12', age:20, place:'clark',
    href:'works/the-villages-felt-like-korea/index.html', thumb:'assets/thumbs/the-villages-felt-like-korea.jpg',
    title:'I lived in the Philippines, but it felt like I was living in Korea', topic:'ph'},
-  {slug:'shiny-floor-dorm-room', label:'The Dorm', len:15, words:162, date:'2026-09-12', age:20, place:'clark',
+  {slug:'shiny-floor-dorm-room', label:'The Dorm', len:15, words:174, date:'2026-09-12', age:20, place:'clark',
    href:'works/shiny-floor-dorm-room/index.html', thumb:'assets/thumbs/shiny-floor-dorm-room.jpg',
    title:'The dorm floor was so shiny I could almost see my face in it', topic:'ph'},
   {slug:'korean-buffet-every-day', label:'Korean Buffet', len:15, words:60, date:'2026-09-12', age:20, place:'clark',
    href:'works/korean-buffet-every-day/index.html', thumb:'assets/thumbs/korean-buffet-every-day.jpg',
    title:'There was a Korean buffet every day, and I only took what I liked', topic:'ph'},
-  {slug:'clark-california-of-asia', label:'The Town', len:15, words:141, date:'2026-09-12', age:20, place:'clark',
+  {slug:'clark-california-of-asia', label:'The Town', len:15, words:144, date:'2026-09-12', age:20, place:'clark',
    href:'works/clark-california-of-asia/index.html', thumb:'assets/thumbs/clark-california-of-asia.jpg',
    title:'Clark is called the California of Southeast Asia, and it really looks like it', topic:'ph'},
   {slug:'gifts-from-students', label:'Gifts', len:15, words:90, date:'2026-09-12', age:20, place:'clark',
    href:'works/gifts-from-students/index.html', thumb:'assets/thumbs/gifts-from-students.jpg',
    title:'The letters and gifts students brought me made me happy', topic:'ph'},
-  {slug:'standing-desk-conversations', label:'Standing Desk', len:15, words:179, date:'2026-09-12', age:20, place:'clark',
+  {slug:'standing-desk-conversations', label:'Standing Desk', len:15, words:187, date:'2026-09-12', age:20, place:'clark',
    href:'works/standing-desk-conversations/index.html', thumb:'assets/thumbs/standing-desk-conversations.jpg',
    title:'I worked standing up, and people started talking to me', topic:'ph'},
-  {slug:'airport-pickup-tug-of-war', label:'Airport Pickup', len:15, words:258, date:'2026-09-12', age:20, place:'clark',
+  {slug:'airport-pickup-tug-of-war', label:'Airport Pickup', len:15, words:287, date:'2026-09-12', age:20, place:'clark',
    href:'works/airport-pickup-tug-of-war/index.html', thumb:'assets/thumbs/airport-pickup-tug-of-war.jpg',
    title:'Picking students up at the airport was a tug of war with the heat', topic:'ph'},
   {slug:'be-friends-with-the-agents', label:'Day One', len:15, words:137, date:'2026-09-12', age:20, place:'clark',
@@ -1962,6 +1962,63 @@ function observe() {
 
 render();
 observe();
+
+/* 🔙 記事から戻ってきたとき、読んでいた場所に戻す ───────────────
+      記事の左上の「← Back」でここへ戻ると、いつも一覧の先頭に
+      飛ばされてしまう。それを直すために、ここを離れる直前の
+      「絞り込み」と「スクロール位置」を覚えておいて、戻ってきたら
+      そのまま復元する。覚えるのは sessionStorage（そのタブだけ・
+      タブを閉じたら消える）。 */
+(function () {
+  var KEY = 'pengesso-home-v1';
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+  function save() {
+    try {
+      sessionStorage.setItem(KEY, JSON.stringify({
+        state: state,
+        q: q.value,
+        age: age.value,
+        y: window.pageYOffset || document.documentElement.scrollTop || 0
+      }));
+    } catch (e) {}
+  }
+
+  // 記事へ入る直前と、このページを離れる直前に覚える
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('a[href^="works/"]')) save();
+  }, true);
+  window.addEventListener('pagehide', save);
+
+  function pressChips(container, attr, value) {
+    if (!container) return;
+    [].forEach.call(container.querySelectorAll('.chip'), function (x) {
+      x.setAttribute('aria-pressed', String(x.getAttribute(attr) === value));
+    });
+  }
+
+  try {
+    var saved = JSON.parse(sessionStorage.getItem(KEY) || 'null');
+    if (!saved || !saved.state) return;
+
+    for (var k in saved.state) {
+      if (Object.prototype.hasOwnProperty.call(state, k)) state[k] = saved.state[k];
+    }
+    q.value = saved.q || '';
+    if (saved.age != null) age.value = saved.age;
+    ageOut.textContent = (state.age === null) ? 'any' : state.age;
+    pressChips(document.getElementById('when'), 'data-when', state.when);
+    pressChips(document.querySelector('.map-tabs'), 'data-map', state.map);
+
+    render();
+    observe();
+
+    // 一覧を描き直したあとに戻す。保険でもう一度
+    var y = saved.y || 0;
+    requestAnimationFrame(function () { window.scrollTo(0, y); });
+    setTimeout(function () { window.scrollTo(0, y); }, 80);
+  } catch (e) {}
+})();
 
 /* 7. 🐧 名前スロット ─────────────────────────────────────────
       Pengesso 🐧 は固定。角カッコの中だけがクルッと回る。
