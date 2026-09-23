@@ -197,6 +197,16 @@ def main():
     if missing:
         print(f"\n⚠️  サムネがまだ無い: {', '.join(missing)}")
         print("   python3 tools/thumbs.py  で作れます（macOSのみ）")
+
+    # 🌐 トップの一覧のタイトルは、各記事の訳（works/<slug>/i18n/<lang>.json）から入る。
+    #    一覧を作り直したら、訳の埋め込みもここで一緒にやり直す（忘れると新しい記事だけ英語になる）
+    try:
+        sys.path.insert(0, str(ROOT / "tools"))
+        import i18n
+        sys.argv = sys.argv[:1]
+        i18n.main()
+    except Exception as e:
+        print(f"⚠️  訳の埋め込みに失敗しました（英語のページはそのまま動きます）: {e}")
     return 0
 
 

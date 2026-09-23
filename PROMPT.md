@@ -959,8 +959,14 @@ font-family:
 works/<slug>/   （下書き段階では drafts/<slug>/）
 ├── index.html     ← 公開物。base64込み・自己完結。通常400KB以内／複数写真フォトストーリー1.5MB以内
 ├── source.md      ← 私が渡した日本語の素材（S番号つき）。次にAIへ渡すのはこっち
+├── i18n/ja.json   ← 🌐 日本語で見る人向けの訳 {"title": "…", "text": {"英文": "訳"}}
 └── images/        ← 縮小する前の画像の原本
 ```
+
+🌐 **訳のつけ方（2026-09-23 から）**：`python3 tools/i18n.py --todo <slug>` で訳すべき英文が出るので、
+その英文をキーにして `i18n/ja.json` を書き、`python3 tools/i18n.py` で全ページに埋め込む。
+日本語は英語からの訳だが、`source.md` の本人の日本語を参考にして、意味がずれないようにする。
+歌詞などの引用は、本人が `source.md` に書き起こした原文を使う（訳し戻さない）。
 
 `source.md` の形は `_template/source.md` を見てください。
 **Slackから作った場合は `## 出どころ` に permalink を必ず残すこと。**
@@ -998,6 +1004,7 @@ works/<slug>/   （下書き段階では drafts/<slug>/）
 □ 生成画像の「動物 × 質感」は直近3本と違うか。source.md に記録したか
 □ 相対パス・外部URL・絶対パスが1つも残っていないか
 □ index.html は通常400KB以内、複数写真フォトストーリーは1.5MB以内か
+□ 🌐 i18n/ja.json を書いて python3 tools/i18n.py を流したか（check.py --site に ⚠️ 🌐 が出ていないか）
 □ 幅375pxで横スクロールが出ないか
 □ ← Back to all works と Next ⚡ があるか
 □ 匿名ルールに触れる情報が混ざっていないか
