@@ -351,6 +351,29 @@ def check_site():
     else:
         notes.append(f"{OK} robots.txt あり")
 
+    # 7. 🌐 多言語：訳のファイル・訳の抜け・埋め込み忘れ（英語の公開は止めないので注意だけ）
+    try:
+        sys.path.insert(0, str(ROOT / "tools"))
+        import i18n
+        langs, report, stale = i18n.status()
+        if not langs:
+            notes.append(f"{OK} 🌐 英語のみ（i18n/ui.<lang>.json がない）")
+        else:
+            nofile = [s for s, l, m in report if m and m[0].startswith("（訳のファイル")]
+            gaps = [s for s, l, m in report if not (m and m[0].startswith("（訳のファイル"))]
+            if nofile:
+                notes.append(f"{WARN}🌐 訳がまだない記事: {sorted(set(nofile))[:8]}"
+                             f" → works/<slug>/i18n/<lang>.json を作って python3 tools/i18n.py")
+            if gaps:
+                notes.append(f"{WARN}🌐 訳が外れた文があるページ: {gaps[:8]}"
+                             f" → python3 tools/i18n.py で確認（英文を直すと、その文の訳が外れます）")
+            if stale:
+                notes.append(f"{WARN}🌐 訳の埋め込みが古いページ: {stale[:8]} → python3 tools/i18n.py を流してください")
+            if not (nofile or gaps or stale):
+                notes.append(f"{OK} 🌐 en + {', '.join(langs)}：全ページ訳あり・埋め込みも最新")
+    except Exception as e:  # 多言語の検査が壊れても、公開の検査は止めない
+        notes.append(f"{WARN}🌐 多言語の検査を実行できませんでした: {e}")
+
     print("🌏 サイト全体\n─────────────")
     for l in notes: print("  " + l)
     for l in problems: print("  " + l)

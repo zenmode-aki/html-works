@@ -35,7 +35,11 @@ cat <<MSG
   5) python3 tools/thumbs.py             ← 一覧に出すサムネを作る（macOSのみ）
   6) python3 tools/build-site.py         ← トップの一覧に差し込む（手で足さない）
   7) ひとつ前の記事の末尾の Next ⚡ を、この記事に向ける
-  8) git add -A && git commit -m "add $SLUG" && git push
+  8) 🌐 日本語訳をつける
+     python3 tools/i18n.py --todo $SLUG   ← 訳していない英文が出る
+     → $DIR/i18n/ja.json に {"title": "…", "text": {"英文": "訳"}} を書く
+     python3 tools/i18n.py                ← 全ページに埋め込む
+  9) git add -A && git commit -m "add $SLUG" && git push
 
   ⚡ 出す場所は1つだけです。push した時点で
      https://zenmode-aki.github.io/html-works/ に出ます。
