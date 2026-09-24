@@ -294,7 +294,9 @@ def build_all():
             ks = units(info["root"])
             used = set(ks) | {info["title"]} | set(p for k in ks for p in k.split(" · "))
             data["langs"][l] = {"name": uis[l].get("name", l), "flag": uis[l].get("flag"),
-                                "dict": pack(d, used), "patterns": uis[l].get("patterns", [])}
+                                "dict": pack(d, used), "patterns": uis[l].get("patterns", []),
+                                "unverified": uis[l].get("unverified", False),
+                                "notice": uis[l].get("notice"), "noticeDismiss": uis[l].get("noticeDismiss")}
             miss = missing(ks, d, uis[l].get("patterns", []))
             if miss:
                 report.append((slug, l, miss))
@@ -312,7 +314,9 @@ def build_all():
             if t and infos[s]["meta_title"]:
                 d[infos[s]["meta_title"]] = t
         tdata["langs"][l] = {"name": uis[l].get("name", l), "flag": uis[l].get("flag"),
-                             "dict": pack(d), "patterns": tops[l].get("patterns", [])}
+                             "dict": pack(d), "patterns": tops[l].get("patterns", []),
+                             "unverified": uis[l].get("unverified", False),
+                             "notice": uis[l].get("notice"), "noticeDismiss": uis[l].get("noticeDismiss")}
         miss = missing(units(parse(strip_block(top.read_text(encoding="utf-8")))), d, tops[l].get("patterns", []))
         if miss:
             report.append(("(トップページ)", l, miss))

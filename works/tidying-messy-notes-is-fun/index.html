@@ -313,7 +313,7 @@
 <!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
 <script>document.documentElement.className += " js";</script>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","ulhzs4":"🛠 ネットワーク運用保守","1dq3u4g":"意外と好き","qiz0u0":"この仕事で、意外と好きだったことがあります。","15rgekm":"ぐちゃぐちゃのメモ","dvd519":"OneNoteにたくさんメモを書くんですが、そのぐちゃぐちゃのメモを整理する時間が、意外と楽しかったんです。","197t27a":"夜勤","g9isqg":"夜勤のときに、ずっとそれをやっていた時期がありました。","1d3sp7":"静かな時間","3qugr9":"夜勤の長くて静かな時間に、OneNoteのメモを整理する。それが楽しかったです。","1cb8dug":"学んだこと","e2d9sw":"メモの整理は、意外と楽しい。この仕事で気づいたことのひとつです。","1byhqrm":"ぐちゃぐちゃのメモを整理するのが、意外と楽しかった","1siras5":"ぐちゃぐちゃのメモを整理するのが、意外と楽しかった","5xv4mp":"いちばん楽しかったシフトは、野球の大会の日だった"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]]}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","ulhzs4":"🛠 ネットワーク運用保守","1dq3u4g":"意外と好き","qiz0u0":"この仕事で、意外と好きだったことがあります。","15rgekm":"ぐちゃぐちゃのメモ","dvd519":"OneNoteにたくさんメモを書くんですが、そのぐちゃぐちゃのメモを整理する時間が、意外と楽しかったんです。","197t27a":"夜勤","g9isqg":"夜勤のときに、ずっとそれをやっていた時期がありました。","1d3sp7":"静かな時間","3qugr9":"夜勤の長くて静かな時間に、OneNoteのメモを整理する。それが楽しかったです。","1cb8dug":"学んだこと","e2d9sw":"メモの整理は、意外と楽しい。この仕事で気づいたことのひとつです。","1byhqrm":"ぐちゃぐちゃのメモを整理するのが、意外と楽しかった","1siras5":"ぐちゃぐちゃのメモを整理するのが、意外と楽しかった","5xv4mp":"いちばん楽しかったシフトは、野球の大会の日だった"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":false,"notice":null,"noticeDismiss":null},"ko":{"name":"한국어","flag":"🇰🇷","dict":{"1jgmzoq":"← 뒤로","em1400":"공개중","1ks9zq3":"⚡ 15초","1nnooe8":"다음 글 · 15초","ulhzs4":"🛠 네트워크 운영보수","1dq3u4g":"뜻밖에 좋았다","qiz0u0":"이 일에서 뜻밖에 좋았던 점이 하나 있다.","15rgekm":"엉망인 메모","dvd519":"OneNote에 메모를 많이 쓰는데, 완전히 엉망인 메모를 정리하는 순간이 뜻밖에 재미있었다.","197t27a":"야간 근무","g9isqg":"야간 근무 때 계속 정리하던 시기가 있었다.","1d3sp7":"조용한 시간","3qugr9":"야간 근무의 길고 조용한 시간에 OneNote 메모를 정리했다. 그게 재미있었다.","1cb8dug":"새롭게 알게 된 점","e2d9sw":"메모를 정리하는 일은 생각보다 재미있다. 이 일을 하면서 알게 된 점 중 하나다.","1byhqrm":"엉망인 메모를 정리하는 일이 생각보다 재미있었다","1siras5":"엉망인 메모를 정리하는 일이 생각보다 재미있었다","5xv4mp":"내가 했던 근무 중 가장 좋았던 날은 야구 대회 때였다"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 약 $2초"]],"unverified":true,"notice":"🐧 이 페이지는 AI가 한국어로 번역했어요. 사이트 주인은 한국어를 읽지 못해서, 번역이 맞는지 확인하지 못했어요. 이상한 부분을 발견하면 \u003cb>pengesso@gmail.com\u003c/b> 으로 알려주세요!","noticeDismiss":"닫기"}}}</script>
 <script>
 (function () {
 var holder = document.getElementById('i18n-data');
@@ -407,19 +407,55 @@ wrap.appendChild(menu);
 }
 var spot = document.querySelector('[data-i18n-switch]');
 var bar = document.querySelector('.topbar') || document.querySelector('body > header, main > header, header');
-if (spot) spot.appendChild(wrap);
+if (spot) { spot.appendChild(wrap); switchMount = spot; }
 else if (bar) {
 var row = document.createElement('div');
 row.className = 'i18n-row';
 row.appendChild(wrap);
 bar.parentNode.insertBefore(row, bar.nextSibling);
-} else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); }
+switchMount = row;
+} else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); switchMount = wrap; }
 }
+var NOTICE_KEY_PREFIX = 'pengesso-notice-dismissed-';
+function drawNotice(l, L) {
+if (!L.unverified || !L.notice) return;
+try { if (localStorage.getItem(NOTICE_KEY_PREFIX + l) === '1') return; } catch (e) {}
+var st = document.createElement('style');
+st.textContent =
+'.i18n-notice{display:flex;align-items:flex-start;gap:10px;margin:8px 0 16px;padding:12px 14px;' +
+'background:#fff8e8;border:2px solid #f3ddaa;border-radius:16px;' +
+'box-shadow:0 6px 16px rgba(115,70,111,.08)}' +
+'.i18n-notice p{margin:0;flex:1;font-size:13px;line-height:1.55;color:#6b5a3a}' +
+'.i18n-notice button{flex:none;border:0;background:transparent;color:#9a8a5a;font-size:15px;' +
+'line-height:1;cursor:pointer;padding:4px;border-radius:8px}' +
+'.i18n-notice button:hover{background:rgba(154,138,90,.14)}' +
+'.i18n-notice button:focus-visible{outline:3px solid rgba(154,138,90,.45);outline-offset:1px}';
+document.head.appendChild(st);
+var box = document.createElement('div');
+box.className = 'i18n-notice';
+box.setAttribute('role', 'note');
+var p = document.createElement('p');
+p.innerHTML = L.notice;
+var b = document.createElement('button');
+b.type = 'button';
+b.setAttribute('aria-label', L.noticeDismiss || 'Close');
+b.textContent = '✕';
+b.addEventListener('click', function () {
+box.remove();
+try { localStorage.setItem(NOTICE_KEY_PREFIX + l, '1'); } catch (e) {}
+});
+box.appendChild(p);
+box.appendChild(b);
+if (switchMount && switchMount.parentNode) switchMount.parentNode.insertBefore(box, switchMount.nextSibling);
+else document.body.insertBefore(box, document.body.firstChild);
+}
+var switchMount = null;
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
 else start();
 function start() {
 drawSwitch();
 if (lang === 'en') return;
+drawNotice(lang, LANGS[lang] || {});
 var L = LANGS[lang];
 var DICT = L.dict || {};
 var PATTERNS = (L.patterns || []).map(function (p) { return [new RegExp(p[0]), p[1]]; });

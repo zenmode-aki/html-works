@@ -313,7 +313,7 @@
 <!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
 <script>document.documentElement.className += " js";</script>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","up0z4c":"🌉 ブリッジSE","11m82wu":"もう一度戻す","m5qexq":"訳したあと、わざわざもう一度訳し戻していました。","380yqn":"かんたんなところ","emhqv8":"エンジニアの英語の報告を日本語にして、日本語として自然にする。そこはできました。","49pkyv":"リスク","tdqra8":"でも、日本語として自然なのに技術的な意味がずれていたら、それは問題です。","7dxvnj":"英語に戻す","1ev76yt":"なので、できあがった日本語をもう一度英語に戻して、書いた本人に「これで合ってる？」と確認してもらっていました。","1jcs05g":"手間は2倍","qgy3or":"完全に2倍の手間でしたが、それをやった日は、落ち着いてお客さんに渡せました。","16jwhaq":"今でもいい","1c0rn4l":"今でも、あの確認のやり方は悪くなかったと思います。","1ekdz8d":"日本語に訳したあと、確認のためにもう一度英語に戻していた","11o0v8m":"「できます」を、軽く言わないようにしていた"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]]}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","up0z4c":"🌉 ブリッジSE","11m82wu":"もう一度戻す","m5qexq":"訳したあと、わざわざもう一度訳し戻していました。","380yqn":"かんたんなところ","emhqv8":"エンジニアの英語の報告を日本語にして、日本語として自然にする。そこはできました。","49pkyv":"リスク","tdqra8":"でも、日本語として自然なのに技術的な意味がずれていたら、それは問題です。","7dxvnj":"英語に戻す","1ev76yt":"なので、できあがった日本語をもう一度英語に戻して、書いた本人に「これで合ってる？」と確認してもらっていました。","1jcs05g":"手間は2倍","qgy3or":"完全に2倍の手間でしたが、それをやった日は、落ち着いてお客さんに渡せました。","16jwhaq":"今でもいい","1c0rn4l":"今でも、あの確認のやり方は悪くなかったと思います。","1ekdz8d":"日本語に訳したあと、確認のためにもう一度英語に戻していた","11o0v8m":"「できます」を、軽く言わないようにしていた"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":false,"notice":null,"noticeDismiss":null},"ko":{"name":"한국어","flag":"🇰🇷","dict":{"1jgmzoq":"← 뒤로","em1400":"공개중","1ks9zq3":"⚡ 15초","1nnooe8":"다음 글 · 15초","up0z4c":"🌉 브릿지 SE","11m82wu":"다시 영어로","m5qexq":"번역한 뒤 다시 번역하곤 했다.","380yqn":"쉬운 부분","emhqv8":"엔지니어의 영어 보고를 일본어로 옮겨 일본어답게 자연스럽게 만드는 일은 할 수 있었다.","49pkyv":"위험","tdqra8":"하지만 기술적인 의미가 바뀐 채 자연스럽게 들린다면 문제가 된다.","7dxvnj":"다시 영어로","1ev76yt":"그래서 완성한 일본어를 다시 영어로 옮겨서 쓴 사람에게 ‘이런 뜻이었나요?’라고 확인했다.","1jcs05g":"두 배의 일","qgy3or":"완전히 두 배로 일하는 셈이었지만, 이렇게 한 날에는 마음이 놓인 채 고객에게 전달할 수 있었다.","16jwhaq":"그래도 좋았다","1c0rn4l":"지금도 그런 확인 방식은 나쁘지 않았다고 생각한다.","1ekdz8d":"일본어로 번역한 뒤 확인하려고 다시 영어로 옮겼다","11o0v8m":"‘할 수 있어요’라고 너무 쉽게 말하지 않으려고 했다"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 약 $2초"]],"unverified":true,"notice":"🐧 이 페이지는 AI가 한국어로 번역했어요. 사이트 주인은 한국어를 읽지 못해서, 번역이 맞는지 확인하지 못했어요. 이상한 부분을 발견하면 \u003cb>pengesso@gmail.com\u003c/b> 으로 알려주세요!","noticeDismiss":"닫기"}}}</script>
 <script>
 (function () {
 var holder = document.getElementById('i18n-data');
@@ -407,19 +407,55 @@ wrap.appendChild(menu);
 }
 var spot = document.querySelector('[data-i18n-switch]');
 var bar = document.querySelector('.topbar') || document.querySelector('body > header, main > header, header');
-if (spot) spot.appendChild(wrap);
+if (spot) { spot.appendChild(wrap); switchMount = spot; }
 else if (bar) {
 var row = document.createElement('div');
 row.className = 'i18n-row';
 row.appendChild(wrap);
 bar.parentNode.insertBefore(row, bar.nextSibling);
-} else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); }
+switchMount = row;
+} else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); switchMount = wrap; }
 }
+var NOTICE_KEY_PREFIX = 'pengesso-notice-dismissed-';
+function drawNotice(l, L) {
+if (!L.unverified || !L.notice) return;
+try { if (localStorage.getItem(NOTICE_KEY_PREFIX + l) === '1') return; } catch (e) {}
+var st = document.createElement('style');
+st.textContent =
+'.i18n-notice{display:flex;align-items:flex-start;gap:10px;margin:8px 0 16px;padding:12px 14px;' +
+'background:#fff8e8;border:2px solid #f3ddaa;border-radius:16px;' +
+'box-shadow:0 6px 16px rgba(115,70,111,.08)}' +
+'.i18n-notice p{margin:0;flex:1;font-size:13px;line-height:1.55;color:#6b5a3a}' +
+'.i18n-notice button{flex:none;border:0;background:transparent;color:#9a8a5a;font-size:15px;' +
+'line-height:1;cursor:pointer;padding:4px;border-radius:8px}' +
+'.i18n-notice button:hover{background:rgba(154,138,90,.14)}' +
+'.i18n-notice button:focus-visible{outline:3px solid rgba(154,138,90,.45);outline-offset:1px}';
+document.head.appendChild(st);
+var box = document.createElement('div');
+box.className = 'i18n-notice';
+box.setAttribute('role', 'note');
+var p = document.createElement('p');
+p.innerHTML = L.notice;
+var b = document.createElement('button');
+b.type = 'button';
+b.setAttribute('aria-label', L.noticeDismiss || 'Close');
+b.textContent = '✕';
+b.addEventListener('click', function () {
+box.remove();
+try { localStorage.setItem(NOTICE_KEY_PREFIX + l, '1'); } catch (e) {}
+});
+box.appendChild(p);
+box.appendChild(b);
+if (switchMount && switchMount.parentNode) switchMount.parentNode.insertBefore(box, switchMount.nextSibling);
+else document.body.insertBefore(box, document.body.firstChild);
+}
+var switchMount = null;
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
 else start();
 function start() {
 drawSwitch();
 if (lang === 'en') return;
+drawNotice(lang, LANGS[lang] || {});
 var L = LANGS[lang];
 var DICT = L.dict || {};
 var PATTERNS = (L.patterns || []).map(function (p) { return [new RegExp(p[0]), p[1]]; });

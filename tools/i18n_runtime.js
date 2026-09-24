@@ -107,14 +107,57 @@
     /* 上のバーはスマホだと満員なので、そのすぐ下に1行つくって右に置く */
     var spot = document.querySelector('[data-i18n-switch]');
     var bar = document.querySelector('.topbar') || document.querySelector('body > header, main > header, header');
-    if (spot) spot.appendChild(wrap);
+    if (spot) { spot.appendChild(wrap); switchMount = spot; }
     else if (bar) {
       var row = document.createElement('div');
       row.className = 'i18n-row';
       row.appendChild(wrap);
       bar.parentNode.insertBefore(row, bar.nextSibling);
-    } else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); }
+      switchMount = row;
+    } else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); switchMount = wrap; }
   }
+
+  /* ── 未確認の翻訳（AIが訳したが、本人が読めない言語）についての注意書き ──────
+     i18n/ui.<lang>.json に "unverified": true と "notice" を書いた言語だけに出る。
+     一度閉じたら、その言語ではもう出さない（localStorage に言語ごとに覚える） */
+  var NOTICE_KEY_PREFIX = 'pengesso-notice-dismissed-';
+  function drawNotice(l, L) {
+    if (!L.unverified || !L.notice) return;
+    try { if (localStorage.getItem(NOTICE_KEY_PREFIX + l) === '1') return; } catch (e) {}
+
+    var st = document.createElement('style');
+    st.textContent =
+      '.i18n-notice{display:flex;align-items:flex-start;gap:10px;margin:8px 0 16px;padding:12px 14px;' +
+      'background:#fff8e8;border:2px solid #f3ddaa;border-radius:16px;' +
+      'box-shadow:0 6px 16px rgba(115,70,111,.08)}' +
+      '.i18n-notice p{margin:0;flex:1;font-size:13px;line-height:1.55;color:#6b5a3a}' +
+      '.i18n-notice button{flex:none;border:0;background:transparent;color:#9a8a5a;font-size:15px;' +
+      'line-height:1;cursor:pointer;padding:4px;border-radius:8px}' +
+      '.i18n-notice button:hover{background:rgba(154,138,90,.14)}' +
+      '.i18n-notice button:focus-visible{outline:3px solid rgba(154,138,90,.45);outline-offset:1px}';
+    document.head.appendChild(st);
+
+    var box = document.createElement('div');
+    box.className = 'i18n-notice';
+    box.setAttribute('role', 'note');
+    var p = document.createElement('p');
+    p.innerHTML = L.notice;
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', L.noticeDismiss || 'Close');
+    b.textContent = '✕';
+    b.addEventListener('click', function () {
+      box.remove();
+      try { localStorage.setItem(NOTICE_KEY_PREFIX + l, '1'); } catch (e) {}
+    });
+    box.appendChild(p);
+    box.appendChild(b);
+
+    if (switchMount && switchMount.parentNode) switchMount.parentNode.insertBefore(box, switchMount.nextSibling);
+    else document.body.insertBefore(box, document.body.firstChild);
+  }
+
+  var switchMount = null;
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
@@ -122,6 +165,7 @@
   function start() {
   drawSwitch();
   if (lang === 'en') return;
+  drawNotice(lang, LANGS[lang] || {});
 
   /* ── 差し替え ───────────────────────────────────── */
   var L = LANGS[lang];

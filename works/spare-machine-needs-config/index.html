@@ -328,7 +328,7 @@
 </style>
 <script>document.documentElement.className += " js";</script>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","flag":"🇯🇵","dict":{"1xn0f4q":"← 一覧に戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","ulhzs4":"🛠 ネットワーク運用保守","3lyh4i":"置いとくだけじゃダメ","j6xqbn":"予備の機械は、ただ置いておくだけではダメなんです。","1c1and4":"動かないまま","vusbhs":"新品があるから安心、と思っていましたが、設定が入っていないと、現地に持っていっても動きません。","1z0dwkt":"📦 箱に入った新品","1owq2hn":"⚙️ 設定が入っている","6z8b7n":"ルーターかゲートウェイか","d2t46j":"ルーターならネットワークの設定、VoIPゲートウェイなら電話番号の設定。それを先に入れてから、お客さんに渡します。","4o5may":"2つの確認","1vhzwht":"なので在庫を確認するときは、型番と、設定が入っているかどうかの両方を見ます。","bdpm33":"ちがうこと","mfxl25":"「ある」と「使える」は、ちがうことなんだなと思いました。","1ksjqdt":"予備の機械は、誰かが設定を入れるまで動かない","1h969xo":"チームのベテランは、休憩中もずっと働いている"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]]}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","flag":"🇯🇵","dict":{"1xn0f4q":"← 一覧に戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","ulhzs4":"🛠 ネットワーク運用保守","3lyh4i":"置いとくだけじゃダメ","j6xqbn":"予備の機械は、ただ置いておくだけではダメなんです。","1c1and4":"動かないまま","vusbhs":"新品があるから安心、と思っていましたが、設定が入っていないと、現地に持っていっても動きません。","1z0dwkt":"📦 箱に入った新品","1owq2hn":"⚙️ 設定が入っている","6z8b7n":"ルーターかゲートウェイか","d2t46j":"ルーターならネットワークの設定、VoIPゲートウェイなら電話番号の設定。それを先に入れてから、お客さんに渡します。","4o5may":"2つの確認","1vhzwht":"なので在庫を確認するときは、型番と、設定が入っているかどうかの両方を見ます。","bdpm33":"ちがうこと","mfxl25":"「ある」と「使える」は、ちがうことなんだなと思いました。","1ksjqdt":"予備の機械は、誰かが設定を入れるまで動かない","1h969xo":"チームのベテランは、休憩中もずっと働いている"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":false,"notice":null,"noticeDismiss":null},"ko":{"name":"한국어","flag":"🇰🇷","dict":{"1xn0f4q":"← 목록으로","em1400":"공개중","1ks9zq3":"⚡ 15초","1nnooe8":"다음 글 · 15초","ulhzs4":"🛠 네트워크 운영보수","3lyh4i":"그냥 놓아두면 부족하다","j6xqbn":"예비 장비는 그냥 놓아두기만 해서는 충분하지 않다.","1c1and4":"그대로는 작동하지 않는다","vusbhs":"새 장비가 있으면 안전하다고 생각했지만 설정이 들어 있지 않으면 현장에 가져가도 작동하지 않는다.","1z0dwkt":"📦 상자에서 막 꺼낸 새 장비","1owq2hn":"⚙️ 설정 입력 완료","6z8b7n":"라우터 또는 게이트웨이","d2t46j":"라우터라면 네트워크 설정, VoIP 게이트웨이라면 전화번호 설정이다. 먼저 그것을 입력하고 고객에게 전달한다.","4o5may":"두 가지 확인","1vhzwht":"그래서 재고를 확인할 때 모델 번호와 설정이 들어 있는지 둘 다 확인한다.","bdpm33":"서로 다른 것","mfxl25":"‘가지고 있다’와 ‘사용할 수 있다’는 서로 다르다고 생각했다.","1ksjqdt":"예비 장비도 누군가 설정을 넣지 않으면 작동하지 않는다","1h969xo":"우리 팀 베테랑은 휴식 시간 내내 계속 일한다"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 약 $2초"]],"unverified":true,"notice":"🐧 이 페이지는 AI가 한국어로 번역했어요. 사이트 주인은 한국어를 읽지 못해서, 번역이 맞는지 확인하지 못했어요. 이상한 부분을 발견하면 \u003cb>pengesso@gmail.com\u003c/b> 으로 알려주세요!","noticeDismiss":"닫기"}}}</script>
 <script>
 (function () {
 var holder = document.getElementById('i18n-data');
@@ -422,19 +422,55 @@ wrap.appendChild(menu);
 }
 var spot = document.querySelector('[data-i18n-switch]');
 var bar = document.querySelector('.topbar') || document.querySelector('body > header, main > header, header');
-if (spot) spot.appendChild(wrap);
+if (spot) { spot.appendChild(wrap); switchMount = spot; }
 else if (bar) {
 var row = document.createElement('div');
 row.className = 'i18n-row';
 row.appendChild(wrap);
 bar.parentNode.insertBefore(row, bar.nextSibling);
-} else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); }
+switchMount = row;
+} else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); switchMount = wrap; }
 }
+var NOTICE_KEY_PREFIX = 'pengesso-notice-dismissed-';
+function drawNotice(l, L) {
+if (!L.unverified || !L.notice) return;
+try { if (localStorage.getItem(NOTICE_KEY_PREFIX + l) === '1') return; } catch (e) {}
+var st = document.createElement('style');
+st.textContent =
+'.i18n-notice{display:flex;align-items:flex-start;gap:10px;margin:8px 0 16px;padding:12px 14px;' +
+'background:#fff8e8;border:2px solid #f3ddaa;border-radius:16px;' +
+'box-shadow:0 6px 16px rgba(115,70,111,.08)}' +
+'.i18n-notice p{margin:0;flex:1;font-size:13px;line-height:1.55;color:#6b5a3a}' +
+'.i18n-notice button{flex:none;border:0;background:transparent;color:#9a8a5a;font-size:15px;' +
+'line-height:1;cursor:pointer;padding:4px;border-radius:8px}' +
+'.i18n-notice button:hover{background:rgba(154,138,90,.14)}' +
+'.i18n-notice button:focus-visible{outline:3px solid rgba(154,138,90,.45);outline-offset:1px}';
+document.head.appendChild(st);
+var box = document.createElement('div');
+box.className = 'i18n-notice';
+box.setAttribute('role', 'note');
+var p = document.createElement('p');
+p.innerHTML = L.notice;
+var b = document.createElement('button');
+b.type = 'button';
+b.setAttribute('aria-label', L.noticeDismiss || 'Close');
+b.textContent = '✕';
+b.addEventListener('click', function () {
+box.remove();
+try { localStorage.setItem(NOTICE_KEY_PREFIX + l, '1'); } catch (e) {}
+});
+box.appendChild(p);
+box.appendChild(b);
+if (switchMount && switchMount.parentNode) switchMount.parentNode.insertBefore(box, switchMount.nextSibling);
+else document.body.insertBefore(box, document.body.firstChild);
+}
+var switchMount = null;
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
 else start();
 function start() {
 drawSwitch();
 if (lang === 'en') return;
+drawNotice(lang, LANGS[lang] || {});
 var L = LANGS[lang];
 var DICT = L.dict || {};
 var PATTERNS = (L.patterns || []).map(function (p) { return [new RegExp(p[0]), p[1]]; });
