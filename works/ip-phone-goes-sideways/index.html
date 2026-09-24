@@ -338,8 +338,22 @@
 </style>
 <!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
 <script>document.documentElement.className += " js";</script>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","ulhzs4":"🛠 ネットワーク運用保守","1cb8dug":"学んだこと","11w3ice":"電話の運用保守をしていて、勉強になったことがあります。","1asmvxy":"2種類","1vh93ak":"今の電話には、普通の電話とIP電話の2種類があります。","14yxo5q":"市外局番","18oz93b":"普通の電話は、番号の頭の市外局番で行き先が決まります。私が住んでいる名古屋だとだいたい052-xxx-xxxx、東京だと03-xxxx-xxxxだと思います。","sc317x":"登ってから下りる","1twvg7":"最初の番号を見て、052のお客さんは名古屋のこっち、03のお客さんはだいたい東京とその周り、という具合に判断します。なので、まず上の機器まで登って、そこから細かいところへ枝分かれしながら下りていきます。","btt7b8":"まっすぐ横へ","14uamp2":"でもIP電話はレイヤー3のレベルで動くので、どの市外の地域かを聞きに上まで登る必要がありません。ただ横へ横へと進んでいけます。","1w5c4u":"負荷がない","17retgn":"なので上の機器での処理がいらなくて、便利なんです。","1hbpwic":"かしこい機械","102xj3":"普通の電話だと、052や03を処理するいちばん上の機器は、かしこい処理がたくさん入った機械じゃないといけません。","1f23l64":"☎️ 2種類の電話","21w13m":"⬆️ 普通の電話は、上って下りる","m32dtc":"➡️ IP電話は、横にまっすぐ","24z39k":"IP電話は上に登らず、横に進む","rjkhz4":"IP電話は上に登らず、横に進む","hrrd6z":"この仕事をして、NTTに感謝するようになった"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":false,"notice":null,"noticeDismiss":null},"ko":{"name":"한국어","flag":"🇰🇷","dict":{"1jgmzoq":"← 뒤로","em1400":"공개중","1ks9zq3":"⚡ 15초","1nnooe8":"다음 글 · 15초","ulhzs4":"🛠 네트워크 운영보수","1cb8dug":"새로 알게 된 것","11w3ice":"전화 회선 운영을 하면서 알게 된 것이 있다.","1asmvxy":"두 종류","1vh93ak":"요즘 전화에는 일반 전화와 IP 전화, 두 종류가 있다.","14yxo5q":"지역 번호","18oz93b":"일반 전화는 번호 맨 앞의 지역 번호로 연결되는 곳이 정해진다. 내가 사는 나고야에서는 보통 052-xxx-xxxx이고, 도쿄에서는 03-xxxx-xxxx인 것 같다.","sc317x":"올라갔다가 내려간다","1twvg7":"처음 번호를 보고 ‘052는 나고야 쪽 고객, 03은 대략 도쿄와 그 주변 고객’이라고 판단한다. 그래서 먼저 위쪽 장비까지 올라간 뒤 점점 더 세부적인 곳으로 갈라져 내려간다.","btt7b8":"옆으로 곧장","14uamp2":"하지만 IP 전화는 레이어 3 수준에서 작동하므로 어느 도시 지역인지 물어보려고 위로 올라갈 필요가 없다. 계속 옆으로 가면 된다.","1w5c4u":"부하가 없다","17retgn":"그래서 상위 장비에서 처리할 필요가 없어 편리하다.","1hbpwic":"똑똑한 장비","102xj3":"일반 전화에서는 052나 03을 처리하는 맨 위쪽 장비가 복잡한 처리를 많이 할 수 있는 기계여야 한다.","1f23l64":"☎️ 두 종류의 전화","21w13m":"⬆️ 일반 전화는 올라갔다 내려온다","m32dtc":"➡️ IP 전화는 옆으로 곧장","24z39k":"IP 전화는 위로 올라가지 않고 옆으로 간다","rjkhz4":"IP 전화는 위로 올라가지 않고 옆으로 간다","hrrd6z":"이 일을 하고 NTT에 고마운 마음이 들었다"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 약 $2초"]],"unverified":true,"notice":"🐧 이 페이지는 AI가 한국어로 번역했어요. 사이트 주인은 한국어를 읽지 못해서, 번역이 맞는지 확인하지 못했어요. 이상한 부분을 발견하면 \u003cb>pengesso@gmail.com\u003c/b> 으로 알려주세요!","noticeDismiss":"닫기"},"zh":{"name":"简体中文","flag":"🇨🇳","dict":{"1jgmzoq":"← 返回","em1400":"已公开","1ks9zq3":"⚡ 15秒","1nnooe8":"下一篇 · 15秒","ulhzs4":"🛠 网络运维","1cb8dug":"学到的事","11w3ice":"在做电话线路的运维工作时，我学到了一件事。","1asmvxy":"两种电话","1vh93ak":"现在的电话分成两种：普通电话和IP电话。","14yxo5q":"区域号","18oz93b":"普通电话是靠号码开头的区域号来决定去哪里的。我住的名古屋，号码大多是052-xxx-xxxx这样的，东京的话应该是03-xxxx-xxxx。","sc317x":"先往上再往下","1twvg7":"系统会看开头的数字，判断052的客户在名古屋这边，03的客户大概在东京及周边。所以它会先爬到上层的设备，再从那里一层层往细分的地方分岔下去。","btt7b8":"直接横着走","14uamp2":"但IP电话是在第三层（Layer 3）的层级上工作的，所以不用往上爬去确认这是哪个城市区域。它可以一直横着走过去。","1w5c4u":"没有负担","17retgn":"所以不需要上层设备来处理，很方便。","1hbpwic":"聪明的机器","102xj3":"用普通电话的话，处理052或03的最上层设备，必须是一台内置了很多复杂处理能力的机器。","1f23l64":"☎️ 两种电话","21w13m":"⬆️ 普通电话先上后下","m32dtc":"➡️ IP电话直接横着走","24z39k":"IP电话不用爬到最上面","rjkhz4":"IP电话不用爬到最上面","hrrd6z":"乡下能上网，多亏了一家公司"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 约$2秒"]],"unverified":true,"notice":"🐧 这个页面是 AI 翻译成中文的。网站主人看不懂中文，所以没办法确认翻译是否正确。如果发现奇怪的地方，请告诉 \u003cb>pengesso@gmail.com\u003c/b>！","noticeDismiss":"关闭"},"zh-Hant":{"name":"繁體中文","flag":"🇹🇼","dict":{"1jgmzoq":"← 返回","em1400":"已公開","1ks9zq3":"⚡ 15秒","1nnooe8":"下一篇 · 15秒","ulhzs4":"🛠 網路運維","1cb8dug":"學到的事","11w3ice":"在做電話線路的運維工作時，我學到了一件事。","1asmvxy":"兩種電話","1vh93ak":"現在的電話分成兩種：普通電話和IP電話。","14yxo5q":"區域號","18oz93b":"普通電話是靠號碼開頭的區域號來決定去哪裡的。我住的名古屋，號碼大多是052-xxx-xxxx這樣的，東京的話應該是03-xxxx-xxxx。","sc317x":"先往上再往下","1twvg7":"系統會看開頭的數字，判斷052的客戶在名古屋這邊，03的客戶大概在東京及周邊。所以它會先爬到上層的裝置，再從那裡一層層往細分的地方分岔下去。","btt7b8":"直接橫著走","14uamp2":"但IP電話是在第三層（Layer 3）的層級上工作的，所以不用往上爬去確認這是哪個城市區域。它可以一直橫著走過去。","1w5c4u":"沒有負擔","17retgn":"所以不需要上層裝置來處理，很方便。","1hbpwic":"聰明的機器","102xj3":"用普通電話的話，處理052或03的最上層裝置，必須是一臺內建了很多複雜處理能力的機器。","1f23l64":"☎️ 兩種電話","21w13m":"⬆️ 普通電話先上後下","m32dtc":"➡️ IP電話直接橫著走","24z39k":"IP電話不用爬到最上面","rjkhz4":"IP電話不用爬到最上面","hrrd6z":"鄉下能上網，多虧了一家公司"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":true,"notice":"🐧 這個頁面是 AI 翻譯成中文的（由簡體字自動轉成繁體字）。網站主人看不懂中文，所以沒辦法確認翻譯是否正確。如果發現奇怪的地方，請告訴 \u003cb>pengesso@gmail.com\u003c/b>！","noticeDismiss":"關閉"}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","ulhzs4":"🛠 ネットワーク運用保守","1bnikoi":"前の記事","1cb8dug":"学んだこと","11w3ice":"電話の運用保守をしていて、勉強になったことがあります。","1asmvxy":"2種類","1vh93ak":"今の電話には、普通の電話とIP電話の2種類があります。","14yxo5q":"市外局番","18oz93b":"普通の電話は、番号の頭の市外局番で行き先が決まります。私が住んでいる名古屋だとだいたい052-xxx-xxxx、東京だと03-xxxx-xxxxだと思います。","sc317x":"登ってから下りる","1twvg7":"最初の番号を見て、052のお客さんは名古屋のこっち、03のお客さんはだいたい東京とその周り、という具合に判断します。なので、まず上の機器まで登って、そこから細かいところへ枝分かれしながら下りていきます。","btt7b8":"まっすぐ横へ","14uamp2":"でもIP電話はレイヤー3のレベルで動くので、どの市外の地域かを聞きに上まで登る必要がありません。ただ横へ横へと進んでいけます。","1w5c4u":"負荷がない","17retgn":"なので上の機器での処理がいらなくて、便利なんです。","1hbpwic":"かしこい機械","102xj3":"普通の電話だと、052や03を処理するいちばん上の機器は、かしこい処理がたくさん入った機械じゃないといけません。","1f23l64":"☎️ 2種類の電話","21w13m":"⬆️ 普通の電話は、上って下りる","m32dtc":"➡️ IP電話は、横にまっすぐ","24z39k":"IP電話は上に登らず、横に進む","rjkhz4":"IP電話は上に登らず、横に進む","hrrd6z":"この仕事をして、NTTに感謝するようになった","1nmjtlf":"スマホは宇宙と通信していると思っていた"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":false,"notice":null,"noticeDismiss":null},"ko":{"name":"한국어","flag":"🇰🇷","dict":{"1jgmzoq":"← 뒤로","em1400":"공개중","1ks9zq3":"⚡ 15초","1nnooe8":"다음 글 · 15초","ulhzs4":"🛠 네트워크 운영보수","1bnikoi":"이전 글","1cb8dug":"새로 알게 된 것","11w3ice":"전화 회선 운영을 하면서 알게 된 것이 있다.","1asmvxy":"두 종류","1vh93ak":"요즘 전화에는 일반 전화와 IP 전화, 두 종류가 있다.","14yxo5q":"지역 번호","18oz93b":"일반 전화는 번호 맨 앞의 지역 번호로 연결되는 곳이 정해진다. 내가 사는 나고야에서는 보통 052-xxx-xxxx이고, 도쿄에서는 03-xxxx-xxxx인 것 같다.","sc317x":"올라갔다가 내려간다","1twvg7":"처음 번호를 보고 ‘052는 나고야 쪽 고객, 03은 대략 도쿄와 그 주변 고객’이라고 판단한다. 그래서 먼저 위쪽 장비까지 올라간 뒤 점점 더 세부적인 곳으로 갈라져 내려간다.","btt7b8":"옆으로 곧장","14uamp2":"하지만 IP 전화는 레이어 3 수준에서 작동하므로 어느 도시 지역인지 물어보려고 위로 올라갈 필요가 없다. 계속 옆으로 가면 된다.","1w5c4u":"부하가 없다","17retgn":"그래서 상위 장비에서 처리할 필요가 없어 편리하다.","1hbpwic":"똑똑한 장비","102xj3":"일반 전화에서는 052나 03을 처리하는 맨 위쪽 장비가 복잡한 처리를 많이 할 수 있는 기계여야 한다.","1f23l64":"☎️ 두 종류의 전화","21w13m":"⬆️ 일반 전화는 올라갔다 내려온다","m32dtc":"➡️ IP 전화는 옆으로 곧장","24z39k":"IP 전화는 위로 올라가지 않고 옆으로 간다","rjkhz4":"IP 전화는 위로 올라가지 않고 옆으로 간다","hrrd6z":"이 일을 하고 NTT에 고마운 마음이 들었다","1nmjtlf":"예전에는 휴대폰이 우주와 통신한다고 생각했다"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 약 $2초"]],"unverified":true,"notice":"🐧 이 페이지는 AI가 한국어로 번역했어요. 사이트 주인은 한국어를 읽지 못해서, 번역이 맞는지 확인하지 못했어요. 이상한 부분을 발견하면 \u003cb>pengesso@gmail.com\u003c/b> 으로 알려주세요!","noticeDismiss":"닫기"},"zh":{"name":"简体中文","flag":"🇨🇳","dict":{"1jgmzoq":"← 返回","em1400":"已公开","1ks9zq3":"⚡ 15秒","1nnooe8":"下一篇 · 15秒","ulhzs4":"🛠 网络运维","1bnikoi":"上一篇","1cb8dug":"学到的事","11w3ice":"在做电话线路的运维工作时，我学到了一件事。","1asmvxy":"两种电话","1vh93ak":"现在的电话分成两种：普通电话和IP电话。","14yxo5q":"区域号","18oz93b":"普通电话是靠号码开头的区域号来决定去哪里的。我住的名古屋，号码大多是052-xxx-xxxx这样的，东京的话应该是03-xxxx-xxxx。","sc317x":"先往上再往下","1twvg7":"系统会看开头的数字，判断052的客户在名古屋这边，03的客户大概在东京及周边。所以它会先爬到上层的设备，再从那里一层层往细分的地方分岔下去。","btt7b8":"直接横着走","14uamp2":"但IP电话是在第三层（Layer 3）的层级上工作的，所以不用往上爬去确认这是哪个城市区域。它可以一直横着走过去。","1w5c4u":"没有负担","17retgn":"所以不需要上层设备来处理，很方便。","1hbpwic":"聪明的机器","102xj3":"用普通电话的话，处理052或03的最上层设备，必须是一台内置了很多复杂处理能力的机器。","1f23l64":"☎️ 两种电话","21w13m":"⬆️ 普通电话先上后下","m32dtc":"➡️ IP电话直接横着走","24z39k":"IP电话不用爬到最上面","rjkhz4":"IP电话不用爬到最上面","hrrd6z":"乡下能上网，多亏了一家公司","1nmjtlf":"手机发出的无线电波，只能到达附近的电线杆"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 约$2秒"]],"unverified":true,"notice":"🐧 这个页面是 AI 翻译成中文的。网站主人看不懂中文，所以没办法确认翻译是否正确。如果发现奇怪的地方，请告诉 \u003cb>pengesso@gmail.com\u003c/b>！","noticeDismiss":"关闭"},"zh-Hant":{"name":"繁體中文","flag":"🇹🇼","dict":{"1jgmzoq":"← 返回","em1400":"已公開","1ks9zq3":"⚡ 15秒","1nnooe8":"下一篇 · 15秒","ulhzs4":"🛠 網路運維","1bnikoi":"上一篇","1cb8dug":"學到的事","11w3ice":"在做電話線路的運維工作時，我學到了一件事。","1asmvxy":"兩種電話","1vh93ak":"現在的電話分成兩種：普通電話和IP電話。","14yxo5q":"區域號","18oz93b":"普通電話是靠號碼開頭的區域號來決定去哪裡的。我住的名古屋，號碼大多是052-xxx-xxxx這樣的，東京的話應該是03-xxxx-xxxx。","sc317x":"先往上再往下","1twvg7":"系統會看開頭的數字，判斷052的客戶在名古屋這邊，03的客戶大概在東京及周邊。所以它會先爬到上層的裝置，再從那裡一層層往細分的地方分岔下去。","btt7b8":"直接橫著走","14uamp2":"但IP電話是在第三層（Layer 3）的層級上工作的，所以不用往上爬去確認這是哪個城市區域。它可以一直橫著走過去。","1w5c4u":"沒有負擔","17retgn":"所以不需要上層裝置來處理，很方便。","1hbpwic":"聰明的機器","102xj3":"用普通電話的話，處理052或03的最上層裝置，必須是一臺內建了很多複雜處理能力的機器。","1f23l64":"☎️ 兩種電話","21w13m":"⬆️ 普通電話先上後下","m32dtc":"➡️ IP電話直接橫著走","24z39k":"IP電話不用爬到最上面","rjkhz4":"IP電話不用爬到最上面","hrrd6z":"鄉下能上網，多虧了一家公司","1nmjtlf":"手機發出的無線電波，只能到達附近的電線杆"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":true,"notice":"🐧 這個頁面是 AI 翻譯成中文的（由簡體字自動轉成繁體字）。網站主人看不懂中文，所以沒辦法確認翻譯是否正確。如果發現奇怪的地方，請告訴 \u003cb>pengesso@gmail.com\u003c/b>！","noticeDismiss":"關閉"}}}</script>
 <script>
 (function () {
 var holder = document.getElementById('i18n-data');
@@ -375,7 +389,7 @@ function pickTheme() {
 var qt = (location.search.match(/[?&]theme=(dark|light)/) || [])[1];
 if (qt) return qt;
 try { var t = localStorage.getItem(THEME_KEY); if (t === 'dark' || t === 'light') return t; } catch (e) {}
-return (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+return 'light';
 }
 var theme = pickTheme();
 document.documentElement.setAttribute('data-theme', theme);
@@ -404,7 +418,11 @@ D + '.stage-public{background:#23c98a !important;color:#04331d !important}' +
 '.theme-btn{display:inline-grid;place-items:center;width:40px;height:40px;margin-right:8px;border:2px solid rgba(255,255,255,.9);' +
 'border-radius:50%;background:#fff;font-size:18px;cursor:pointer;box-shadow:0 6px 16px rgba(115,70,111,.10);transition:transform .3s}' +
 '.theme-btn:hover{transform:rotate(-20deg) scale(1.06)}' + D + '.theme-btn{background:#22242f;border-color:rgba(255,255,255,.1)}' +
-'@media (prefers-reduced-motion: reduce){.theme-btn{transition:none}}';
+'@media (prefers-reduced-motion: reduce){.theme-btn{transition:none}}' +
+'.chap .card-label{color:color-mix(in srgb,var(--c) 66%,#000) !important}' +
+D + '.chap .card-label{color:color-mix(in srgb,var(--c) 55%,#fff) !important}' +
+'.stage-public{color:#04331d !important}' +
+D + ':is(.card-label,.label,.series,.next-kicker){filter:none}';
 (document.head || document.getElementsByTagName('head')[0]).appendChild(darkCss);
 function themeButton() {
 var b = document.createElement('button');
@@ -420,9 +438,72 @@ theme = theme === 'dark' ? 'light' : 'dark';
 document.documentElement.setAttribute('data-theme', theme);
 try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
 paint();
+guard();
 });
 return b;
 }
+var fixed = [];
+function rgba(v) { var m = /rgba?\(([^)]+)\)/.exec(v || ''); if (!m) return null;
+var p = m[1].split(/[\s,\/]+/).filter(Boolean).map(parseFloat); return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1]; }
+function lum(c) { var a = [0, 1, 2].map(function (i) { var v = c[i] / 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); });
+return .2126 * a[0] + .7152 * a[1] + .0722 * a[2]; }
+function over(t, b) { var a = t[3]; return [t[0] * a + b[0] * (1 - a), t[1] * a + b[1] * (1 - a), t[2] * a + b[2] * (1 - a), 1]; }
+function ratio(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); }
+function backOf(el) {
+var layers = [], guess = false;
+for (var e = el; e && e.nodeType === 1; e = e.parentElement) {
+var cs = getComputedStyle(e), img = cs.backgroundImage;
+if (img && img !== 'none' && e !== document.body && e !== document.documentElement) {
+if (!/gradient/.test(img)) return null;
+var g = (img.match(/rgba?\([^)]+\)/g) || []).map(rgba).filter(function (c) { return c && c[3] > .5; });
+if (g.length) { layers.push(g[0]); guess = true; break; }
+}
+var c = rgba(cs.backgroundColor);
+if (c && c[3] > 0) { layers.push(c); if (c[3] >= .99) break; }
+}
+var b = rgba(getComputedStyle(document.body).backgroundColor);
+if (!b || b[3] < 1) b = [21, 22, 29, 1];
+for (var i = layers.length - 1; i >= 0; i--) b = over(layers[i], b);
+return { c: b, guess: guess };
+}
+var LIGHT_ONLY = '.card-label,.label,.prev,.next-kicker,.moment-kicker,.series,rt,.value,.chap-title,.bubble,.key,.stage,.i18n-tip';
+var TEXTY = /[A-Za-z0-9぀-ヿ㐀-鿿가-힯]/;
+function guard() {
+fixed.forEach(function (f) { f.el.style.removeProperty('color'); if (f.old) f.el.style.setProperty('color', f.old[0], f.old[1]); });
+fixed = [];
+if (!document.body) return;
+var light = theme !== 'dark';
+var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), seen = new Set();
+while (w.nextNode()) {
+var el = w.currentNode.parentElement;
+if (!el || seen.has(el) || !TEXTY.test(w.currentNode.nodeValue)) continue;
+seen.add(el);
+if (el.closest('script,style,svg,.i18n-menu')) continue;
+if (light && !el.closest(LIGHT_ONLY)) continue;
+var cs = getComputedStyle(el), fg = rgba(cs.color); if (!fg) continue;
+var B = backOf(el); if (!B) continue;
+var f = over(fg, B.c), r = ratio(f, B.c);
+if (r >= (B.guess ? 2 : (light ? 3 : 3.2))) continue;
+var to = lum(B.c) > .35 ? [24, 22, 32] : [248, 246, 252], best = null;
+for (var t = .15; t <= 1.001; t += .1) {
+var m = [0, 1, 2].map(function (i) { return Math.round(f[i] + (to[i] - f[i]) * t); }).concat(1);
+if (ratio(m, B.c) >= 4.5) { best = m; break; }
+}
+if (!best) best = to.concat(1);
+var old = el.style.getPropertyValue('color') ? [el.style.getPropertyValue('color'), el.style.getPropertyPriority('color')] : null;
+el.style.setProperty('color', 'rgb(' + best.slice(0, 3).join(',') + ')', 'important');
+fixed.push({ el: el, old: old });
+}
+}
+var gTimer;
+function guardSoon() { clearTimeout(gTimer); gTimer = setTimeout(guard, 120); }
+window.addEventListener('load', guardSoon);
+document.addEventListener('DOMContentLoaded', function () {
+guardSoon();
+if ('MutationObserver' in window) new MutationObserver(function (ms) {
+for (var i = 0; i < ms.length; i++) if (ms[i].type === 'childList') { guardSoon(); return; }
+}).observe(document.body, { childList: true, subtree: true });
+});
 document.addEventListener('DOMContentLoaded', function () {
 if (!document.querySelector('main .card')) return;
 var bar = document.createElement('div');
@@ -500,6 +581,31 @@ st.textContent =
 'padding:6px;background:#fff;border-radius:18px;box-shadow:0 14px 34px rgba(115,70,111,.22)}' +
 '.i18n-menu[hidden]{display:none}.i18n-menu .i18n-opt{justify-content:flex-start;width:100%}' +
 '.i18n-float{position:fixed;top:10px;right:10px;z-index:50}' +
+'.i18n-cur{gap:7px;padding:8px 12px 8px 10px;background:#8b6de8;color:#fff;box-shadow:0 4px 12px rgba(139,109,232,.35)}' +
+'.i18n-cur:hover{background:#7a5bdc}' +
+'.i18n-globe{font-size:17px;line-height:1}' +
+'.i18n-stack{display:inline-flex;margin-left:2px}.i18n-stack i{font-style:normal;font-size:13px;line-height:1;' +
+'margin-left:-5px;padding:2px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 0 0 1.5px #8b6de8}' +
+'.i18n-stack i:first-child{margin-left:0}.i18n-caret{font-size:11px;opacity:.9}' +
+'.i18n-head{padding:8px 10px 6px;font-size:11.5px;font-weight:900;letter-spacing:.04em;color:#8a7d99;border-bottom:1.5px solid rgba(0,0,0,.07);margin-bottom:3px}' +
+'.i18n-menu .i18n-opt.on::after{content:"✓";margin-left:auto;font-weight:900}' +
+'.i18n-nudge .i18n-cur{animation:i18n-pulse 1.6s ease-in-out 3}' +
+'@keyframes i18n-pulse{0%,100%{box-shadow:0 4px 12px rgba(139,109,232,.35)}50%{box-shadow:0 0 0 7px rgba(139,109,232,.22),0 4px 12px rgba(139,109,232,.35)}}' +
+'.i18n-tip{position:absolute;right:0;top:calc(100% + 10px);z-index:55;display:flex;align-items:center;gap:6px;white-space:nowrap;' +
+'padding:8px 8px 8px 13px;border-radius:14px;background:#2b2440;color:#fff;font-size:13px;font-weight:800;cursor:pointer;' +
+'box-shadow:0 10px 26px rgba(0,0,0,.2);animation:i18n-tip-in .35s cubic-bezier(.2,1.4,.4,1) both}' +
+'.i18n-tip::before{content:"";position:absolute;right:26px;top:-6px;width:12px;height:12px;background:#2b2440;transform:rotate(45deg)}' +
+'.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:24px;height:24px;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
+'.i18n-tip .i18n-tip-text{color:#fff !important;font-weight:800}' +
+'.i18n-tip-text.in{animation:i18n-tip-in .3s ease-out both}.i18n-tip.bye{opacity:0;transition:opacity .35s}' +
+'@keyframes i18n-tip-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}' +
+'html[data-theme="dark"] .i18n-tip,html[data-theme="dark"] .i18n-tip::before{background:#f1ecfb;color:#2b2440}' +
+'html[data-theme="dark"] .i18n-tip .i18n-tip-text{color:#2b2440 !important}' +
+'html[data-theme="dark"] .i18n-tip button{background:rgba(0,0,0,.08);color:#2b2440}' +
+'html[data-theme="dark"] .i18n-head{color:#b3aac4;border-color:rgba(255,255,255,.1)}' +
+'html[data-theme="dark"] .i18n-stack i{background:#3a3450}' +
+'@media (prefers-reduced-motion: reduce){.i18n-nudge .i18n-cur,.i18n-tip,.i18n-tip-text.in{animation:none}}' +
+'.stage-public{display:none !important}' +
 '@media (prefers-reduced-motion: reduce){.i18n-opt{transition:none}}';
 document.head.appendChild(st);
 var wrap = document.createElement('div');
@@ -507,25 +613,64 @@ wrap.className = 'i18n-switch';
 wrap.setAttribute('translate', 'no');
 wrap.setAttribute('role', 'group');
 wrap.setAttribute('aria-label', 'Language');
-if (avail.length <= 3) {
+if (avail.length <= 2) {
 avail.forEach(function (l) { wrap.appendChild(option(l)); });
 } else {
-var cur = option(lang);
-cur.querySelector('.i18n-name').textContent = NAMES[lang] + ' ▾';
+var cur = document.createElement('button');
+cur.type = 'button';
+cur.className = 'i18n-opt i18n-cur';
 cur.setAttribute('aria-haspopup', 'true');
 cur.setAttribute('aria-expanded', 'false');
+cur.setAttribute('aria-label', 'Language: ' + NAMES[lang]);
+var others = avail.filter(function (l) { return l !== lang; }).slice(0, 4);
+cur.innerHTML = '<span class="i18n-globe" aria-hidden="true">🌐</span>' +
+'<span class="i18n-name">' + NAMES[lang] + '</span>' +
+'<span class="i18n-stack" aria-hidden="true">' + others.map(function (l) { return '<i>' + FLAGS[l] + '</i>'; }).join('') + '</span>' +
+'<span class="i18n-caret" aria-hidden="true">▾</span>';
 var menu = document.createElement('div');
 menu.className = 'i18n-menu';
 menu.hidden = true;
+var head = document.createElement('div');
+head.className = 'i18n-head';
+head.textContent = '🌐 Language · 言語 · 언어 · 语言';
+menu.appendChild(head);
 avail.forEach(function (l) { menu.appendChild(option(l)); });
+var tip = null;
+function seenTip() { try { localStorage.setItem(TIP_KEY, '1'); } catch (e) {} if (tip) { tip.remove(); tip = null; } wrap.classList.remove('i18n-nudge'); }
 cur.addEventListener('click', function (e) {
 e.stopPropagation();
+seenTip();
 menu.hidden = !menu.hidden;
 cur.setAttribute('aria-expanded', String(!menu.hidden));
 });
 document.addEventListener('click', function () { menu.hidden = true; cur.setAttribute('aria-expanded', 'false'); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { menu.hidden = true; cur.setAttribute('aria-expanded', 'false'); } });
 wrap.appendChild(cur);
 wrap.appendChild(menu);
+var TIP_KEY = 'pengesso-lang-tip-seen', seen = false;
+try { seen = localStorage.getItem(TIP_KEY) === '1'; } catch (e) {}
+if (!seen) {
+var SAY = { en: 'Read in English', ja: '日本語で読めます', ko: '한국어로도 읽을 수 있어요', zh: '也可以用中文阅读', 'zh-Hant': '也可以用中文閱讀' };
+var lines = avail.filter(function (l) { return l !== lang && SAY[l]; }).map(function (l) { return FLAGS[l] + ' ' + SAY[l]; });
+if (lines.length) {
+tip = document.createElement('div');
+tip.className = 'i18n-tip';
+tip.setAttribute('role', 'status');
+tip.innerHTML = '<span class="i18n-tip-text"></span><button type="button" aria-label="Close">×</button>';
+var txt = tip.querySelector('.i18n-tip-text'), n = 0;
+txt.textContent = lines[0];
+tip.addEventListener('click', function (e) { e.stopPropagation(); if (e.target.tagName === 'BUTTON') seenTip(); else cur.click(); });
+wrap.appendChild(tip);
+wrap.classList.add('i18n-nudge');
+var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+var iv = reduce ? null : setInterval(function () {
+if (!tip) return clearInterval(iv);
+n = (n + 1) % lines.length;
+txt.classList.remove('in'); void txt.offsetWidth; txt.textContent = lines[n]; txt.classList.add('in');
+}, 1900);
+setTimeout(function () { if (tip) { tip.classList.add('bye'); setTimeout(function () { if (tip) { tip.remove(); tip = null; } wrap.classList.remove('i18n-nudge'); clearInterval(iv); }, 400); } }, 11000);
+}
+}
 }
 var spot = document.querySelector('[data-i18n-switch]');
 var bar = document.querySelector('.topbar') || document.querySelector('body > header, main > header, header');
@@ -815,6 +960,15 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
     <div class="next-arrow" aria-hidden="true">⚡</div>
   </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../radio-only-reaches-the-pole/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">The radio from your phone only reaches the pole nearby</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
 
 
 </main>

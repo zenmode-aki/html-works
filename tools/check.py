@@ -8,7 +8,7 @@
   python3 tools/check.py --site       サイト全体の約束ごとを検査する
 
 チェックすること:
-  1. index.html が通常400KB以内か（複数写真フォトストーリーは1.5MB以内）
+  1. index.html が通常1MB以内か（複数写真フォトストーリーは1.5MB以内）
   2. 画像がすべて base64 か（相対パス・外部URL・絶対パスが残っていないか）
   3. 本文の語数を数える（上限・下限はもう無い。長さは素材が決める）
   4. ワード数バッジの数字が本文と合っているか
@@ -24,7 +24,7 @@ LEGACY に入れて、新しい検査もかけない。
 import json, re, sys, os, html, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-MAX_BYTES = 400 * 1024
+MAX_BYTES = 1024 * 1024   # 2026-09-25 本人の写真の画質を優先して 400KB → 1MB に
 PHOTO_STORY_MAX_BYTES = 1536 * 1024
 WPM = 180
 

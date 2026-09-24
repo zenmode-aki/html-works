@@ -201,6 +201,12 @@ def article_info(slug):
         m = re.search(r"\.\./([^/]+)/index\.html", nxt.attrs.get("href", ""))
         nxt_slug = m.group(1) if m else None
     nt = find(nxt, "div", "next-title") if nxt is not None else None
+    prv = find(root, "a", "prev")          # ⏮ tools/prev-links.py が入れる「前の記事へ」
+    prv_slug = None
+    if prv is not None:
+        m = re.search(r"\.\./([^/]+)/index\.html", prv.attrs.get("href", ""))
+        prv_slug = m.group(1) if m else None
+    pt = find(prv, "div", "prev-title") if prv is not None else None
     meta = load(WORKS / slug / "meta.json")
     return {
         "doc": doc, "root": root,
@@ -209,6 +215,8 @@ def article_info(slug):
         "meta_title": meta.get("title"),
         "next_slug": nxt_slug,
         "next_title": norm(text_of(nt)) if nt is not None else None,
+        "prev_slug": prv_slug,
+        "prev_title": norm(text_of(pt)) if pt is not None else None,
     }
 
 
@@ -222,6 +230,8 @@ def article_dict(slug, lang, info, titles):
                 d[k] = t
     if info["next_slug"] and info["next_title"] and titles.get(info["next_slug"]):
         d[info["next_title"]] = titles[info["next_slug"]]
+    if info["prev_slug"] and info["prev_title"] and titles.get(info["prev_slug"]):
+        d[info["prev_title"]] = titles[info["prev_slug"]]
     return d
 
 

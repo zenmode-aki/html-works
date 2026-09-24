@@ -338,8 +338,22 @@
 </style>
 <!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
 <script>document.documentElement.className += " js";</script>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","ulhzs4":"🛠 ネットワーク運用保守","618x88":"簡単だと思ってた","exl4tg":"正直、最初は派遣の仕事だから簡単かなと思っていました。","9y6o70":"大間違い","1209y4":"でも、大間違いでした。覚えることが鬼のようにあります。","vwyiu4":"一覧","aqn5pz":"機器の型番、サービスやネットワークの種類、アラームの見分け方、障害の切り分け、保守員さんの手配、他部署との連携、他の通信事業者との確認、復旧後の報告。","rgsi30":"紙じゃ無理","1xyn6iw":"これを全部、紙のノートだけで管理しようとしたら、絶対に壊れます。","1ituvm7":"ベテランも","nzkmku":"実は、何年もやっている先輩たちでさえ、基本的に手順書を見ながら仕事をしています。","1omeh8m":"多すぎる","cxv4nd":"一つ一つ暗記できる量ではないんです。","1jx8z6":"近道リスト","gw3wuq":"だからベテランの人ほど、いちばん少ない手順で手順書にたどり着くための近道リストを、きれいに持っています。","1tc4xkc":"本当の実力","1bxi8x5":"全部を覚えるより、必要な情報を手の届くところに置いておく。このフロアでは、そっちのほうが大事な力だと思います。","1xlbanp":"📚 覚えることが山ほど","iwz1ae":"🧑‍🔧 ベテランがしていること","5p3ly4":"ベテランでも、手順書を開きながら仕事をしている","cc6xz3":"ベテランでも、手順書を開きながら仕事をしている","1yxav7s":"やりとりする相手は、3種類いる"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":false,"notice":null,"noticeDismiss":null},"ko":{"name":"한국어","flag":"🇰🇷","dict":{"1jgmzoq":"← 뒤로","em1400":"공개중","1ks9zq3":"⚡ 15초","1nnooe8":"다음 글 · 15초","ulhzs4":"🛠 네트워크 운영보수","618x88":"쉬울 줄 알았다","exl4tg":"솔직히 처음에는 파견직이니까 쉬울 수도 있겠다고 생각했다.","9y6o70":"완전히 틀렸다","1209y4":"하지만 완전히 틀렸다. 외워야 할 게 어마어마하게 많다.","vwyiu4":"목록","aqn5pz":"장비 모델 번호, 서비스와 네트워크 종류, 알람 구분, 장애 범위 확인, 현장 엔지니어 섭외, 다른 부서와 협업, 다른 통신사와 확인, 복구 후 보고.","rgsi30":"종이로는 안 된다","1xyn6iw":"그 모든 걸 종이 수첩 하나로 관리하려고 하면 분명 감당하지 못할 것이다.","1ituvm7":"베테랑도","nzkmku":"사실 몇 년 동안 이 일을 해 온 선배들도 기본적으로 매뉴얼을 보면서 일한다.","1omeh8m":"너무 많다","cxv4nd":"하나씩 전부 외울 수 있는 양이 아니다.","1jx8z6":"바로 가는 목록","gw3wuq":"그래서 경력이 많을수록 가장 적은 단계로 매뉴얼을 찾을 수 있는 바로 가기 목록을 더 잘 정리해 둔다.","1tc4xkc":"진짜 능력","1bxi8x5":"모든 것을 외우기보다 필요한 정보를 손에 닿는 곳에 두는 것. 이 현장에서는 그게 더 중요한 능력이라고 생각한다.","1xlbanp":"📚 외울 게 산더미","iwz1ae":"🧑‍🔧 베테랑이 하는 것","5p3ly4":"베테랑도 매뉴얼을 펼쳐 놓고 일한다","cc6xz3":"베테랑도 매뉴얼을 펼쳐 놓고 일한다","1yxav7s":"내가 상대하는 사람은 세 종류다"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 약 $2초"]],"unverified":true,"notice":"🐧 이 페이지는 AI가 한국어로 번역했어요. 사이트 주인은 한국어를 읽지 못해서, 번역이 맞는지 확인하지 못했어요. 이상한 부분을 발견하면 \u003cb>pengesso@gmail.com\u003c/b> 으로 알려주세요!","noticeDismiss":"닫기"},"zh":{"name":"简体中文","flag":"🇨🇳","dict":{"1jgmzoq":"← 返回","em1400":"已公开","1ks9zq3":"⚡ 15秒","1nnooe8":"下一篇 · 15秒","ulhzs4":"🛠 网络运维","618x88":"以为很简单","exl4tg":"说实话，一开始我以为，反正是派遣的工作，应该挺简单的。","9y6o70":"大错特错","1209y4":"但我大错特错。要记的东西简直多到吓人。","vwyiu4":"清单","aqn5pz":"设备型号、服务和网络的种类、区分报警、故障排查、安排现场维修人员、与其他部门协作、和其他运营商核实、恢复后的汇报。","rgsi30":"光靠纸不行","1xyn6iw":"如果想只靠一本纸质笔记本来管理这一切，绝对会撑不住。","1ituvm7":"老手也一样","nzkmku":"其实，就连做了好几年的老手，基本上也是一边看手册一边工作的。","1omeh8m":"太多了","cxv4nd":"这不是能一条一条背下来的量。","1jx8z6":"捷径清单","gw3wuq":"所以越是老手，越会整理出一份清单，用最少的步骤找到手册里对应的内容。","1tc4xkc":"真正的本领","1bxi8x5":"与其把所有东西都记住，不如把需要的信息放在随手可得的地方。我觉得这才是这份工作里更重要的本领。","1xlbanp":"📚 要记的东西太多了","iwz1ae":"🧑‍🔧 老手们怎么做","5p3ly4":"就连老手，也是一边看手册一边工作的","cc6xz3":"就连老手，也是一边看手册一边工作的","1yxav7s":"我打交道的对象，大概有3种"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 约$2秒"]],"unverified":true,"notice":"🐧 这个页面是 AI 翻译成中文的。网站主人看不懂中文，所以没办法确认翻译是否正确。如果发现奇怪的地方，请告诉 \u003cb>pengesso@gmail.com\u003c/b>！","noticeDismiss":"关闭"},"zh-Hant":{"name":"繁體中文","flag":"🇹🇼","dict":{"1jgmzoq":"← 返回","em1400":"已公開","1ks9zq3":"⚡ 15秒","1nnooe8":"下一篇 · 15秒","ulhzs4":"🛠 網路運維","618x88":"以為很簡單","exl4tg":"說實話，一開始我以為，反正是派遣的工作，應該挺簡單的。","9y6o70":"大錯特錯","1209y4":"但我大錯特錯。要記的東西簡直多到嚇人。","vwyiu4":"清單","aqn5pz":"裝置型號、服務和網路的種類、區分報警、故障排查、安排現場維修人員、與其他部門協作、和其他運營商核實、恢復後的彙報。","rgsi30":"光靠紙不行","1xyn6iw":"如果想只靠一本紙質筆記本來管理這一切，絕對會撐不住。","1ituvm7":"老手也一樣","nzkmku":"其實，就連做了好幾年的老手，基本上也是一邊看手冊一邊工作的。","1omeh8m":"太多了","cxv4nd":"這不是能一條一條背下來的量。","1jx8z6":"捷徑清單","gw3wuq":"所以越是老手，越會整理出一份清單，用最少的步驟找到手冊裡對應的內容。","1tc4xkc":"真正的本領","1bxi8x5":"與其把所有東西都記住，不如把需要的資訊放在隨手可得的地方。我覺得這才是這份工作裡更重要的本領。","1xlbanp":"📚 要記的東西太多了","iwz1ae":"🧑‍🔧 老手們怎麼做","5p3ly4":"就連老手，也是一邊看手冊一邊工作的","cc6xz3":"就連老手，也是一邊看手冊一邊工作的","1yxav7s":"我打交道的物件，大概有3種"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":true,"notice":"🐧 這個頁面是 AI 翻譯成中文的（由簡體字自動轉成繁體字）。網站主人看不懂中文，所以沒辦法確認翻譯是否正確。如果發現奇怪的地方，請告訴 \u003cb>pengesso@gmail.com\u003c/b>！","noticeDismiss":"關閉"}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","ulhzs4":"🛠 ネットワーク運用保守","1bnikoi":"前の記事","618x88":"簡単だと思ってた","exl4tg":"正直、最初は派遣の仕事だから簡単かなと思っていました。","9y6o70":"大間違い","1209y4":"でも、大間違いでした。覚えることが鬼のようにあります。","vwyiu4":"一覧","aqn5pz":"機器の型番、サービスやネットワークの種類、アラームの見分け方、障害の切り分け、保守員さんの手配、他部署との連携、他の通信事業者との確認、復旧後の報告。","rgsi30":"紙じゃ無理","1xyn6iw":"これを全部、紙のノートだけで管理しようとしたら、絶対に壊れます。","1ituvm7":"ベテランも","nzkmku":"実は、何年もやっている先輩たちでさえ、基本的に手順書を見ながら仕事をしています。","1omeh8m":"多すぎる","cxv4nd":"一つ一つ暗記できる量ではないんです。","1jx8z6":"近道リスト","gw3wuq":"だからベテランの人ほど、いちばん少ない手順で手順書にたどり着くための近道リストを、きれいに持っています。","1tc4xkc":"本当の実力","1bxi8x5":"全部を覚えるより、必要な情報を手の届くところに置いておく。このフロアでは、そっちのほうが大事な力だと思います。","1xlbanp":"📚 覚えることが山ほど","iwz1ae":"🧑‍🔧 ベテランがしていること","5p3ly4":"ベテランでも、手順書を開きながら仕事をしている","cc6xz3":"ベテランでも、手順書を開きながら仕事をしている","1yxav7s":"やりとりする相手は、3種類いる","15ep3kz":"夜は静か。アラームが鳴るまでは"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":false,"notice":null,"noticeDismiss":null},"ko":{"name":"한국어","flag":"🇰🇷","dict":{"1jgmzoq":"← 뒤로","em1400":"공개중","1ks9zq3":"⚡ 15초","1nnooe8":"다음 글 · 15초","ulhzs4":"🛠 네트워크 운영보수","1bnikoi":"이전 글","618x88":"쉬울 줄 알았다","exl4tg":"솔직히 처음에는 파견직이니까 쉬울 수도 있겠다고 생각했다.","9y6o70":"완전히 틀렸다","1209y4":"하지만 완전히 틀렸다. 외워야 할 게 어마어마하게 많다.","vwyiu4":"목록","aqn5pz":"장비 모델 번호, 서비스와 네트워크 종류, 알람 구분, 장애 범위 확인, 현장 엔지니어 섭외, 다른 부서와 협업, 다른 통신사와 확인, 복구 후 보고.","rgsi30":"종이로는 안 된다","1xyn6iw":"그 모든 걸 종이 수첩 하나로 관리하려고 하면 분명 감당하지 못할 것이다.","1ituvm7":"베테랑도","nzkmku":"사실 몇 년 동안 이 일을 해 온 선배들도 기본적으로 매뉴얼을 보면서 일한다.","1omeh8m":"너무 많다","cxv4nd":"하나씩 전부 외울 수 있는 양이 아니다.","1jx8z6":"바로 가는 목록","gw3wuq":"그래서 경력이 많을수록 가장 적은 단계로 매뉴얼을 찾을 수 있는 바로 가기 목록을 더 잘 정리해 둔다.","1tc4xkc":"진짜 능력","1bxi8x5":"모든 것을 외우기보다 필요한 정보를 손에 닿는 곳에 두는 것. 이 현장에서는 그게 더 중요한 능력이라고 생각한다.","1xlbanp":"📚 외울 게 산더미","iwz1ae":"🧑‍🔧 베테랑이 하는 것","5p3ly4":"베테랑도 매뉴얼을 펼쳐 놓고 일한다","cc6xz3":"베테랑도 매뉴얼을 펼쳐 놓고 일한다","1yxav7s":"내가 상대하는 사람은 세 종류다","15ep3kz":"알람이 울리기 전까지 밤은 조용하다"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 약 $2초"]],"unverified":true,"notice":"🐧 이 페이지는 AI가 한국어로 번역했어요. 사이트 주인은 한국어를 읽지 못해서, 번역이 맞는지 확인하지 못했어요. 이상한 부분을 발견하면 \u003cb>pengesso@gmail.com\u003c/b> 으로 알려주세요!","noticeDismiss":"닫기"},"zh":{"name":"简体中文","flag":"🇨🇳","dict":{"1jgmzoq":"← 返回","em1400":"已公开","1ks9zq3":"⚡ 15秒","1nnooe8":"下一篇 · 15秒","ulhzs4":"🛠 网络运维","1bnikoi":"上一篇","618x88":"以为很简单","exl4tg":"说实话，一开始我以为，反正是派遣的工作，应该挺简单的。","9y6o70":"大错特错","1209y4":"但我大错特错。要记的东西简直多到吓人。","vwyiu4":"清单","aqn5pz":"设备型号、服务和网络的种类、区分报警、故障排查、安排现场维修人员、与其他部门协作、和其他运营商核实、恢复后的汇报。","rgsi30":"光靠纸不行","1xyn6iw":"如果想只靠一本纸质笔记本来管理这一切，绝对会撑不住。","1ituvm7":"老手也一样","nzkmku":"其实，就连做了好几年的老手，基本上也是一边看手册一边工作的。","1omeh8m":"太多了","cxv4nd":"这不是能一条一条背下来的量。","1jx8z6":"捷径清单","gw3wuq":"所以越是老手，越会整理出一份清单，用最少的步骤找到手册里对应的内容。","1tc4xkc":"真正的本领","1bxi8x5":"与其把所有东西都记住，不如把需要的信息放在随手可得的地方。我觉得这才是这份工作里更重要的本领。","1xlbanp":"📚 要记的东西太多了","iwz1ae":"🧑‍🔧 老手们怎么做","5p3ly4":"就连老手，也是一边看手册一边工作的","cc6xz3":"就连老手，也是一边看手册一边工作的","1yxav7s":"我打交道的对象，大概有3种","15ep3kz":"夜晚很安静。直到警报响起为止"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 约$2秒"]],"unverified":true,"notice":"🐧 这个页面是 AI 翻译成中文的。网站主人看不懂中文，所以没办法确认翻译是否正确。如果发现奇怪的地方，请告诉 \u003cb>pengesso@gmail.com\u003c/b>！","noticeDismiss":"关闭"},"zh-Hant":{"name":"繁體中文","flag":"🇹🇼","dict":{"1jgmzoq":"← 返回","em1400":"已公開","1ks9zq3":"⚡ 15秒","1nnooe8":"下一篇 · 15秒","ulhzs4":"🛠 網路運維","1bnikoi":"上一篇","618x88":"以為很簡單","exl4tg":"說實話，一開始我以為，反正是派遣的工作，應該挺簡單的。","9y6o70":"大錯特錯","1209y4":"但我大錯特錯。要記的東西簡直多到嚇人。","vwyiu4":"清單","aqn5pz":"裝置型號、服務和網路的種類、區分報警、故障排查、安排現場維修人員、與其他部門協作、和其他運營商核實、恢復後的彙報。","rgsi30":"光靠紙不行","1xyn6iw":"如果想只靠一本紙質筆記本來管理這一切，絕對會撐不住。","1ituvm7":"老手也一樣","nzkmku":"其實，就連做了好幾年的老手，基本上也是一邊看手冊一邊工作的。","1omeh8m":"太多了","cxv4nd":"這不是能一條一條背下來的量。","1jx8z6":"捷徑清單","gw3wuq":"所以越是老手，越會整理出一份清單，用最少的步驟找到手冊裡對應的內容。","1tc4xkc":"真正的本領","1bxi8x5":"與其把所有東西都記住，不如把需要的資訊放在隨手可得的地方。我覺得這才是這份工作裡更重要的本領。","1xlbanp":"📚 要記的東西太多了","iwz1ae":"🧑‍🔧 老手們怎麼做","5p3ly4":"就連老手，也是一邊看手冊一邊工作的","cc6xz3":"就連老手，也是一邊看手冊一邊工作的","1yxav7s":"我打交道的物件，大概有3種","15ep3kz":"夜晚很安靜。直到警報響起為止"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":true,"notice":"🐧 這個頁面是 AI 翻譯成中文的（由簡體字自動轉成繁體字）。網站主人看不懂中文，所以沒辦法確認翻譯是否正確。如果發現奇怪的地方，請告訴 \u003cb>pengesso@gmail.com\u003c/b>！","noticeDismiss":"關閉"}}}</script>
 <script>
 (function () {
 var holder = document.getElementById('i18n-data');
@@ -375,7 +389,7 @@ function pickTheme() {
 var qt = (location.search.match(/[?&]theme=(dark|light)/) || [])[1];
 if (qt) return qt;
 try { var t = localStorage.getItem(THEME_KEY); if (t === 'dark' || t === 'light') return t; } catch (e) {}
-return (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+return 'light';
 }
 var theme = pickTheme();
 document.documentElement.setAttribute('data-theme', theme);
@@ -404,7 +418,11 @@ D + '.stage-public{background:#23c98a !important;color:#04331d !important}' +
 '.theme-btn{display:inline-grid;place-items:center;width:40px;height:40px;margin-right:8px;border:2px solid rgba(255,255,255,.9);' +
 'border-radius:50%;background:#fff;font-size:18px;cursor:pointer;box-shadow:0 6px 16px rgba(115,70,111,.10);transition:transform .3s}' +
 '.theme-btn:hover{transform:rotate(-20deg) scale(1.06)}' + D + '.theme-btn{background:#22242f;border-color:rgba(255,255,255,.1)}' +
-'@media (prefers-reduced-motion: reduce){.theme-btn{transition:none}}';
+'@media (prefers-reduced-motion: reduce){.theme-btn{transition:none}}' +
+'.chap .card-label{color:color-mix(in srgb,var(--c) 66%,#000) !important}' +
+D + '.chap .card-label{color:color-mix(in srgb,var(--c) 55%,#fff) !important}' +
+'.stage-public{color:#04331d !important}' +
+D + ':is(.card-label,.label,.series,.next-kicker){filter:none}';
 (document.head || document.getElementsByTagName('head')[0]).appendChild(darkCss);
 function themeButton() {
 var b = document.createElement('button');
@@ -420,9 +438,72 @@ theme = theme === 'dark' ? 'light' : 'dark';
 document.documentElement.setAttribute('data-theme', theme);
 try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
 paint();
+guard();
 });
 return b;
 }
+var fixed = [];
+function rgba(v) { var m = /rgba?\(([^)]+)\)/.exec(v || ''); if (!m) return null;
+var p = m[1].split(/[\s,\/]+/).filter(Boolean).map(parseFloat); return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1]; }
+function lum(c) { var a = [0, 1, 2].map(function (i) { var v = c[i] / 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); });
+return .2126 * a[0] + .7152 * a[1] + .0722 * a[2]; }
+function over(t, b) { var a = t[3]; return [t[0] * a + b[0] * (1 - a), t[1] * a + b[1] * (1 - a), t[2] * a + b[2] * (1 - a), 1]; }
+function ratio(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); }
+function backOf(el) {
+var layers = [], guess = false;
+for (var e = el; e && e.nodeType === 1; e = e.parentElement) {
+var cs = getComputedStyle(e), img = cs.backgroundImage;
+if (img && img !== 'none' && e !== document.body && e !== document.documentElement) {
+if (!/gradient/.test(img)) return null;
+var g = (img.match(/rgba?\([^)]+\)/g) || []).map(rgba).filter(function (c) { return c && c[3] > .5; });
+if (g.length) { layers.push(g[0]); guess = true; break; }
+}
+var c = rgba(cs.backgroundColor);
+if (c && c[3] > 0) { layers.push(c); if (c[3] >= .99) break; }
+}
+var b = rgba(getComputedStyle(document.body).backgroundColor);
+if (!b || b[3] < 1) b = [21, 22, 29, 1];
+for (var i = layers.length - 1; i >= 0; i--) b = over(layers[i], b);
+return { c: b, guess: guess };
+}
+var LIGHT_ONLY = '.card-label,.label,.prev,.next-kicker,.moment-kicker,.series,rt,.value,.chap-title,.bubble,.key,.stage,.i18n-tip';
+var TEXTY = /[A-Za-z0-9぀-ヿ㐀-鿿가-힯]/;
+function guard() {
+fixed.forEach(function (f) { f.el.style.removeProperty('color'); if (f.old) f.el.style.setProperty('color', f.old[0], f.old[1]); });
+fixed = [];
+if (!document.body) return;
+var light = theme !== 'dark';
+var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), seen = new Set();
+while (w.nextNode()) {
+var el = w.currentNode.parentElement;
+if (!el || seen.has(el) || !TEXTY.test(w.currentNode.nodeValue)) continue;
+seen.add(el);
+if (el.closest('script,style,svg,.i18n-menu')) continue;
+if (light && !el.closest(LIGHT_ONLY)) continue;
+var cs = getComputedStyle(el), fg = rgba(cs.color); if (!fg) continue;
+var B = backOf(el); if (!B) continue;
+var f = over(fg, B.c), r = ratio(f, B.c);
+if (r >= (B.guess ? 2 : (light ? 3 : 3.2))) continue;
+var to = lum(B.c) > .35 ? [24, 22, 32] : [248, 246, 252], best = null;
+for (var t = .15; t <= 1.001; t += .1) {
+var m = [0, 1, 2].map(function (i) { return Math.round(f[i] + (to[i] - f[i]) * t); }).concat(1);
+if (ratio(m, B.c) >= 4.5) { best = m; break; }
+}
+if (!best) best = to.concat(1);
+var old = el.style.getPropertyValue('color') ? [el.style.getPropertyValue('color'), el.style.getPropertyPriority('color')] : null;
+el.style.setProperty('color', 'rgb(' + best.slice(0, 3).join(',') + ')', 'important');
+fixed.push({ el: el, old: old });
+}
+}
+var gTimer;
+function guardSoon() { clearTimeout(gTimer); gTimer = setTimeout(guard, 120); }
+window.addEventListener('load', guardSoon);
+document.addEventListener('DOMContentLoaded', function () {
+guardSoon();
+if ('MutationObserver' in window) new MutationObserver(function (ms) {
+for (var i = 0; i < ms.length; i++) if (ms[i].type === 'childList') { guardSoon(); return; }
+}).observe(document.body, { childList: true, subtree: true });
+});
 document.addEventListener('DOMContentLoaded', function () {
 if (!document.querySelector('main .card')) return;
 var bar = document.createElement('div');
@@ -500,6 +581,31 @@ st.textContent =
 'padding:6px;background:#fff;border-radius:18px;box-shadow:0 14px 34px rgba(115,70,111,.22)}' +
 '.i18n-menu[hidden]{display:none}.i18n-menu .i18n-opt{justify-content:flex-start;width:100%}' +
 '.i18n-float{position:fixed;top:10px;right:10px;z-index:50}' +
+'.i18n-cur{gap:7px;padding:8px 12px 8px 10px;background:#8b6de8;color:#fff;box-shadow:0 4px 12px rgba(139,109,232,.35)}' +
+'.i18n-cur:hover{background:#7a5bdc}' +
+'.i18n-globe{font-size:17px;line-height:1}' +
+'.i18n-stack{display:inline-flex;margin-left:2px}.i18n-stack i{font-style:normal;font-size:13px;line-height:1;' +
+'margin-left:-5px;padding:2px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 0 0 1.5px #8b6de8}' +
+'.i18n-stack i:first-child{margin-left:0}.i18n-caret{font-size:11px;opacity:.9}' +
+'.i18n-head{padding:8px 10px 6px;font-size:11.5px;font-weight:900;letter-spacing:.04em;color:#8a7d99;border-bottom:1.5px solid rgba(0,0,0,.07);margin-bottom:3px}' +
+'.i18n-menu .i18n-opt.on::after{content:"✓";margin-left:auto;font-weight:900}' +
+'.i18n-nudge .i18n-cur{animation:i18n-pulse 1.6s ease-in-out 3}' +
+'@keyframes i18n-pulse{0%,100%{box-shadow:0 4px 12px rgba(139,109,232,.35)}50%{box-shadow:0 0 0 7px rgba(139,109,232,.22),0 4px 12px rgba(139,109,232,.35)}}' +
+'.i18n-tip{position:absolute;right:0;top:calc(100% + 10px);z-index:55;display:flex;align-items:center;gap:6px;white-space:nowrap;' +
+'padding:8px 8px 8px 13px;border-radius:14px;background:#2b2440;color:#fff;font-size:13px;font-weight:800;cursor:pointer;' +
+'box-shadow:0 10px 26px rgba(0,0,0,.2);animation:i18n-tip-in .35s cubic-bezier(.2,1.4,.4,1) both}' +
+'.i18n-tip::before{content:"";position:absolute;right:26px;top:-6px;width:12px;height:12px;background:#2b2440;transform:rotate(45deg)}' +
+'.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:24px;height:24px;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
+'.i18n-tip .i18n-tip-text{color:#fff !important;font-weight:800}' +
+'.i18n-tip-text.in{animation:i18n-tip-in .3s ease-out both}.i18n-tip.bye{opacity:0;transition:opacity .35s}' +
+'@keyframes i18n-tip-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}' +
+'html[data-theme="dark"] .i18n-tip,html[data-theme="dark"] .i18n-tip::before{background:#f1ecfb;color:#2b2440}' +
+'html[data-theme="dark"] .i18n-tip .i18n-tip-text{color:#2b2440 !important}' +
+'html[data-theme="dark"] .i18n-tip button{background:rgba(0,0,0,.08);color:#2b2440}' +
+'html[data-theme="dark"] .i18n-head{color:#b3aac4;border-color:rgba(255,255,255,.1)}' +
+'html[data-theme="dark"] .i18n-stack i{background:#3a3450}' +
+'@media (prefers-reduced-motion: reduce){.i18n-nudge .i18n-cur,.i18n-tip,.i18n-tip-text.in{animation:none}}' +
+'.stage-public{display:none !important}' +
 '@media (prefers-reduced-motion: reduce){.i18n-opt{transition:none}}';
 document.head.appendChild(st);
 var wrap = document.createElement('div');
@@ -507,25 +613,64 @@ wrap.className = 'i18n-switch';
 wrap.setAttribute('translate', 'no');
 wrap.setAttribute('role', 'group');
 wrap.setAttribute('aria-label', 'Language');
-if (avail.length <= 3) {
+if (avail.length <= 2) {
 avail.forEach(function (l) { wrap.appendChild(option(l)); });
 } else {
-var cur = option(lang);
-cur.querySelector('.i18n-name').textContent = NAMES[lang] + ' ▾';
+var cur = document.createElement('button');
+cur.type = 'button';
+cur.className = 'i18n-opt i18n-cur';
 cur.setAttribute('aria-haspopup', 'true');
 cur.setAttribute('aria-expanded', 'false');
+cur.setAttribute('aria-label', 'Language: ' + NAMES[lang]);
+var others = avail.filter(function (l) { return l !== lang; }).slice(0, 4);
+cur.innerHTML = '<span class="i18n-globe" aria-hidden="true">🌐</span>' +
+'<span class="i18n-name">' + NAMES[lang] + '</span>' +
+'<span class="i18n-stack" aria-hidden="true">' + others.map(function (l) { return '<i>' + FLAGS[l] + '</i>'; }).join('') + '</span>' +
+'<span class="i18n-caret" aria-hidden="true">▾</span>';
 var menu = document.createElement('div');
 menu.className = 'i18n-menu';
 menu.hidden = true;
+var head = document.createElement('div');
+head.className = 'i18n-head';
+head.textContent = '🌐 Language · 言語 · 언어 · 语言';
+menu.appendChild(head);
 avail.forEach(function (l) { menu.appendChild(option(l)); });
+var tip = null;
+function seenTip() { try { localStorage.setItem(TIP_KEY, '1'); } catch (e) {} if (tip) { tip.remove(); tip = null; } wrap.classList.remove('i18n-nudge'); }
 cur.addEventListener('click', function (e) {
 e.stopPropagation();
+seenTip();
 menu.hidden = !menu.hidden;
 cur.setAttribute('aria-expanded', String(!menu.hidden));
 });
 document.addEventListener('click', function () { menu.hidden = true; cur.setAttribute('aria-expanded', 'false'); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { menu.hidden = true; cur.setAttribute('aria-expanded', 'false'); } });
 wrap.appendChild(cur);
 wrap.appendChild(menu);
+var TIP_KEY = 'pengesso-lang-tip-seen', seen = false;
+try { seen = localStorage.getItem(TIP_KEY) === '1'; } catch (e) {}
+if (!seen) {
+var SAY = { en: 'Read in English', ja: '日本語で読めます', ko: '한국어로도 읽을 수 있어요', zh: '也可以用中文阅读', 'zh-Hant': '也可以用中文閱讀' };
+var lines = avail.filter(function (l) { return l !== lang && SAY[l]; }).map(function (l) { return FLAGS[l] + ' ' + SAY[l]; });
+if (lines.length) {
+tip = document.createElement('div');
+tip.className = 'i18n-tip';
+tip.setAttribute('role', 'status');
+tip.innerHTML = '<span class="i18n-tip-text"></span><button type="button" aria-label="Close">×</button>';
+var txt = tip.querySelector('.i18n-tip-text'), n = 0;
+txt.textContent = lines[0];
+tip.addEventListener('click', function (e) { e.stopPropagation(); if (e.target.tagName === 'BUTTON') seenTip(); else cur.click(); });
+wrap.appendChild(tip);
+wrap.classList.add('i18n-nudge');
+var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+var iv = reduce ? null : setInterval(function () {
+if (!tip) return clearInterval(iv);
+n = (n + 1) % lines.length;
+txt.classList.remove('in'); void txt.offsetWidth; txt.textContent = lines[n]; txt.classList.add('in');
+}, 1900);
+setTimeout(function () { if (tip) { tip.classList.add('bye'); setTimeout(function () { if (tip) { tip.remove(); tip = null; } wrap.classList.remove('i18n-nudge'); clearInterval(iv); }, 400); } }, 11000);
+}
+}
 }
 var spot = document.querySelector('[data-i18n-switch]');
 var bar = document.querySelector('.topbar') || document.querySelector('body > header, main > header, header');
@@ -816,6 +961,15 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
     <div class="next-arrow" aria-hidden="true">⚡</div>
   </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../quiet-until-the-alarm/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">The night is quiet until an alarm goes off</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
 
 
 </main>

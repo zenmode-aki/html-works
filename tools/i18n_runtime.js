@@ -41,14 +41,15 @@
   (document.head || document.getElementsByTagName('head')[0]).appendChild(bold);
 
   /* ── 🌙 ダークモード（2026-09-24 本人の希望：「まぶしい」）──────────────
-     全ページ共通。最初は端末の設定（ダーク/ライト）に合わせ、ボタンで切り替えたら localStorage に覚える。
+     全ページ共通。初めての人はいつもライト（2026-09-25 本人の要望：明るい方がパッと見が好き）。
+     ボタンで切り替えたら localStorage に覚えて、次からはその設定で開く。
      <head> で先に決めるので、白く光ってから暗くなる「ちらつき」が出ない */
   var THEME_KEY = 'pengesso-theme';
   function pickTheme() {
     var qt = (location.search.match(/[?&]theme=(dark|light)/) || [])[1];
     if (qt) return qt;
     try { var t = localStorage.getItem(THEME_KEY); if (t === 'dark' || t === 'light') return t; } catch (e) {}
-    return (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    return 'light';
   }
   var theme = pickTheme();
   document.documentElement.setAttribute('data-theme', theme);
@@ -80,7 +81,12 @@
     '.theme-btn{display:inline-grid;place-items:center;width:40px;height:40px;margin-right:8px;border:2px solid rgba(255,255,255,.9);' +
       'border-radius:50%;background:#fff;font-size:18px;cursor:pointer;box-shadow:0 6px 16px rgba(115,70,111,.10);transition:transform .3s}' +
     '.theme-btn:hover{transform:rotate(-20deg) scale(1.06)}' + D + '.theme-btn{background:#22242f;border-color:rgba(255,255,255,.1)}' +
-    '@media (prefers-reduced-motion: reduce){.theme-btn{transition:none}}';
+    '@media (prefers-reduced-motion: reduce){.theme-btn{transition:none}}' +
+    /* 読みやすさ（2026-09-25）：章のラベルは淡い色なので少し濃く／PUBLIC は緑の上の濃い字に統一 */
+    '.chap .card-label{color:color-mix(in srgb,var(--c) 66%,#000) !important}' +
+    D + '.chap .card-label{color:color-mix(in srgb,var(--c) 55%,#fff) !important}' +
+    '.stage-public{color:#04331d !important}' +
+    D + ':is(.card-label,.label,.series,.next-kicker){filter:none}';
   (document.head || document.getElementsByTagName('head')[0]).appendChild(darkCss);
   function themeButton() {
     var b = document.createElement('button');
@@ -96,9 +102,78 @@
       document.documentElement.setAttribute('data-theme', theme);
       try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
       paint();
+      guard();
     });
     return b;
   }
+
+
+  /* ── 👀 読みにくい文字の見張り番（2026-09-25 本人の要望：モードを切り替えると読みづらい記事がある）──
+     （ダークは全部の文字、ライトは小さなラベル類だけ）文字の色と「実際に後ろにある背景の色」を比べる。
+     差が小さすぎる文字だけ、色味は残したまま明るく（背景が明るければ暗く）する。ライトに戻したら元に戻す。
+     記事ごとに手で直さなくても、これから作る記事にも効く */
+  var fixed = [];
+  function rgba(v) { var m = /rgba?\(([^)]+)\)/.exec(v || ''); if (!m) return null;
+    var p = m[1].split(/[\s,\/]+/).filter(Boolean).map(parseFloat); return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1]; }
+  function lum(c) { var a = [0, 1, 2].map(function (i) { var v = c[i] / 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); });
+    return .2126 * a[0] + .7152 * a[1] + .0722 * a[2]; }
+  function over(t, b) { var a = t[3]; return [t[0] * a + b[0] * (1 - a), t[1] * a + b[1] * (1 - a), t[2] * a + b[2] * (1 - a), 1]; }
+  function ratio(a, b) { var x = lum(a), y = lum(b); return (Math.max(x, y) + .05) / (Math.min(x, y) + .05); }
+  function backOf(el) {
+    var layers = [], guess = false;
+    for (var e = el; e && e.nodeType === 1; e = e.parentElement) {
+      var cs = getComputedStyle(e), img = cs.backgroundImage;
+      if (img && img !== 'none' && e !== document.body && e !== document.documentElement) {
+        if (!/gradient/.test(img)) return null;               /* 写真の上の文字はさわらない */
+        var g = (img.match(/rgba?\([^)]+\)/g) || []).map(rgba).filter(function (c) { return c && c[3] > .5; });
+        if (g.length) { layers.push(g[0]); guess = true; break; }
+      }
+      var c = rgba(cs.backgroundColor);
+      if (c && c[3] > 0) { layers.push(c); if (c[3] >= .99) break; }
+    }
+    var b = rgba(getComputedStyle(document.body).backgroundColor);
+    if (!b || b[3] < 1) b = [21, 22, 29, 1];
+    for (var i = layers.length - 1; i >= 0; i--) b = over(layers[i], b);
+    return { c: b, guess: guess };
+  }
+  var LIGHT_ONLY = '.card-label,.label,.prev,.next-kicker,.moment-kicker,.series,rt,.value,.chap-title,.bubble,.key,.stage,.i18n-tip';
+  var TEXTY = /[A-Za-z0-9぀-ヿ㐀-鿿가-힯]/;
+  function guard() {
+    fixed.forEach(function (f) { f.el.style.removeProperty('color'); if (f.old) f.el.style.setProperty('color', f.old[0], f.old[1]); });
+    fixed = [];
+    if (!document.body) return;
+    var light = theme !== 'dark';
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), seen = new Set();
+    while (w.nextNode()) {
+      var el = w.currentNode.parentElement;
+      if (!el || seen.has(el) || !TEXTY.test(w.currentNode.nodeValue)) continue;
+      seen.add(el);
+      if (el.closest('script,style,svg,.i18n-menu')) continue;
+      if (light && !el.closest(LIGHT_ONLY)) continue;   /* ライトでは小さなラベル類だけ（写真の上の見出しを誤って直さない） */
+      var cs = getComputedStyle(el), fg = rgba(cs.color); if (!fg) continue;
+      var B = backOf(el); if (!B) continue;
+      var f = over(fg, B.c), r = ratio(f, B.c);
+      if (r >= (B.guess ? 2 : (light ? 3 : 3.2))) continue;
+      var to = lum(B.c) > .35 ? [24, 22, 32] : [248, 246, 252], best = null;
+      for (var t = .15; t <= 1.001; t += .1) {
+        var m = [0, 1, 2].map(function (i) { return Math.round(f[i] + (to[i] - f[i]) * t); }).concat(1);
+        if (ratio(m, B.c) >= 4.5) { best = m; break; }
+      }
+      if (!best) best = to.concat(1);
+      var old = el.style.getPropertyValue('color') ? [el.style.getPropertyValue('color'), el.style.getPropertyPriority('color')] : null;
+      el.style.setProperty('color', 'rgb(' + best.slice(0, 3).join(',') + ')', 'important');
+      fixed.push({ el: el, old: old });
+    }
+  }
+  var gTimer;
+  function guardSoon() { clearTimeout(gTimer); gTimer = setTimeout(guard, 120); }
+  window.addEventListener('load', guardSoon);
+  document.addEventListener('DOMContentLoaded', function () {
+    guardSoon();
+    if ('MutationObserver' in window) new MutationObserver(function (ms) {
+      for (var i = 0; i < ms.length; i++) if (ms[i].type === 'childList') { guardSoon(); return; }
+    }).observe(document.body, { childList: true, subtree: true });
+  });
 
   /* ── 📏 読んでいる位置のバー（2026-09-24）。記事ページだけ、いちばん上に細い虹色の線が伸びる ── */
   document.addEventListener('DOMContentLoaded', function () {
@@ -190,6 +265,32 @@
       'padding:6px;background:#fff;border-radius:18px;box-shadow:0 14px 34px rgba(115,70,111,.22)}' +
       '.i18n-menu[hidden]{display:none}.i18n-menu .i18n-opt{justify-content:flex-start;width:100%}' +
       '.i18n-float{position:fixed;top:10px;right:10px;z-index:50}' +
+      '.i18n-cur{gap:7px;padding:8px 12px 8px 10px;background:#8b6de8;color:#fff;box-shadow:0 4px 12px rgba(139,109,232,.35)}' +
+      '.i18n-cur:hover{background:#7a5bdc}' +
+      '.i18n-globe{font-size:17px;line-height:1}' +
+      '.i18n-stack{display:inline-flex;margin-left:2px}.i18n-stack i{font-style:normal;font-size:13px;line-height:1;' +
+      'margin-left:-5px;padding:2px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 0 0 1.5px #8b6de8}' +
+      '.i18n-stack i:first-child{margin-left:0}.i18n-caret{font-size:11px;opacity:.9}' +
+      '.i18n-head{padding:8px 10px 6px;font-size:11.5px;font-weight:900;letter-spacing:.04em;color:#8a7d99;border-bottom:1.5px solid rgba(0,0,0,.07);margin-bottom:3px}' +
+      '.i18n-menu .i18n-opt.on::after{content:"✓";margin-left:auto;font-weight:900}' +
+      '.i18n-nudge .i18n-cur{animation:i18n-pulse 1.6s ease-in-out 3}' +
+      '@keyframes i18n-pulse{0%,100%{box-shadow:0 4px 12px rgba(139,109,232,.35)}50%{box-shadow:0 0 0 7px rgba(139,109,232,.22),0 4px 12px rgba(139,109,232,.35)}}' +
+      '.i18n-tip{position:absolute;right:0;top:calc(100% + 10px);z-index:55;display:flex;align-items:center;gap:6px;white-space:nowrap;' +
+      'padding:8px 8px 8px 13px;border-radius:14px;background:#2b2440;color:#fff;font-size:13px;font-weight:800;cursor:pointer;' +
+      'box-shadow:0 10px 26px rgba(0,0,0,.2);animation:i18n-tip-in .35s cubic-bezier(.2,1.4,.4,1) both}' +
+      '.i18n-tip::before{content:"";position:absolute;right:26px;top:-6px;width:12px;height:12px;background:#2b2440;transform:rotate(45deg)}' +
+      '.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:24px;height:24px;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
+      '.i18n-tip .i18n-tip-text{color:#fff !important;font-weight:800}' +
+      '.i18n-tip-text.in{animation:i18n-tip-in .3s ease-out both}.i18n-tip.bye{opacity:0;transition:opacity .35s}' +
+      '@keyframes i18n-tip-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}' +
+      'html[data-theme="dark"] .i18n-tip,html[data-theme="dark"] .i18n-tip::before{background:#f1ecfb;color:#2b2440}' +
+      'html[data-theme="dark"] .i18n-tip .i18n-tip-text{color:#2b2440 !important}' +
+      'html[data-theme="dark"] .i18n-tip button{background:rgba(0,0,0,.08);color:#2b2440}' +
+      'html[data-theme="dark"] .i18n-head{color:#b3aac4;border-color:rgba(255,255,255,.1)}' +
+      'html[data-theme="dark"] .i18n-stack i{background:#3a3450}' +
+      '@media (prefers-reduced-motion: reduce){.i18n-nudge .i18n-cur,.i18n-tip,.i18n-tip-text.in{animation:none}}' +
+      /* 読む人には関係ない「PUBLIC」は見せない（HTMLには残す。check.py が確かめるため） */
+      '.stage-public{display:none !important}' +
       '@media (prefers-reduced-motion: reduce){.i18n-opt{transition:none}}';
     document.head.appendChild(st);
 
@@ -199,25 +300,67 @@
     wrap.setAttribute('role', 'group');
     wrap.setAttribute('aria-label', 'Language');
 
-    if (avail.length <= 3) {
+    if (avail.length <= 2) {
       avail.forEach(function (l) { wrap.appendChild(option(l)); });
     } else {
-      var cur = option(lang);
-      cur.querySelector('.i18n-name').textContent = NAMES[lang] + ' ▾';
+      /* 🌐 2026-09-25 本人の要望：「言語を切り替えられる」とパッと分かるように。
+         地球儀＋いまの言語＋ほかの言語の小さな旗を重ねて見せる。初めての人には吹き出しで知らせる */
+      var cur = document.createElement('button');
+      cur.type = 'button';
+      cur.className = 'i18n-opt i18n-cur';
       cur.setAttribute('aria-haspopup', 'true');
       cur.setAttribute('aria-expanded', 'false');
+      cur.setAttribute('aria-label', 'Language: ' + NAMES[lang]);
+      var others = avail.filter(function (l) { return l !== lang; }).slice(0, 4);
+      cur.innerHTML = '<span class="i18n-globe" aria-hidden="true">🌐</span>' +
+        '<span class="i18n-name">' + NAMES[lang] + '</span>' +
+        '<span class="i18n-stack" aria-hidden="true">' + others.map(function (l) { return '<i>' + FLAGS[l] + '</i>'; }).join('') + '</span>' +
+        '<span class="i18n-caret" aria-hidden="true">▾</span>';
       var menu = document.createElement('div');
       menu.className = 'i18n-menu';
       menu.hidden = true;
+      var head = document.createElement('div');
+      head.className = 'i18n-head';
+      head.textContent = '🌐 Language · 言語 · 언어 · 语言';
+      menu.appendChild(head);
       avail.forEach(function (l) { menu.appendChild(option(l)); });
+      var tip = null;
+      function seenTip() { try { localStorage.setItem(TIP_KEY, '1'); } catch (e) {} if (tip) { tip.remove(); tip = null; } wrap.classList.remove('i18n-nudge'); }
       cur.addEventListener('click', function (e) {
         e.stopPropagation();
+        seenTip();
         menu.hidden = !menu.hidden;
         cur.setAttribute('aria-expanded', String(!menu.hidden));
       });
       document.addEventListener('click', function () { menu.hidden = true; cur.setAttribute('aria-expanded', 'false'); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { menu.hidden = true; cur.setAttribute('aria-expanded', 'false'); } });
       wrap.appendChild(cur);
       wrap.appendChild(menu);
+
+      var TIP_KEY = 'pengesso-lang-tip-seen', seen = false;
+      try { seen = localStorage.getItem(TIP_KEY) === '1'; } catch (e) {}
+      if (!seen) {
+        var SAY = { en: 'Read in English', ja: '日本語で読めます', ko: '한국어로도 읽을 수 있어요', zh: '也可以用中文阅读', 'zh-Hant': '也可以用中文閱讀' };
+        var lines = avail.filter(function (l) { return l !== lang && SAY[l]; }).map(function (l) { return FLAGS[l] + ' ' + SAY[l]; });
+        if (lines.length) {
+          tip = document.createElement('div');
+          tip.className = 'i18n-tip';
+          tip.setAttribute('role', 'status');
+          tip.innerHTML = '<span class="i18n-tip-text"></span><button type="button" aria-label="Close">×</button>';
+          var txt = tip.querySelector('.i18n-tip-text'), n = 0;
+          txt.textContent = lines[0];
+          tip.addEventListener('click', function (e) { e.stopPropagation(); if (e.target.tagName === 'BUTTON') seenTip(); else cur.click(); });
+          wrap.appendChild(tip);
+          wrap.classList.add('i18n-nudge');
+          var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+          var iv = reduce ? null : setInterval(function () {
+            if (!tip) return clearInterval(iv);
+            n = (n + 1) % lines.length;
+            txt.classList.remove('in'); void txt.offsetWidth; txt.textContent = lines[n]; txt.classList.add('in');
+          }, 1900);
+          setTimeout(function () { if (tip) { tip.classList.add('bye'); setTimeout(function () { if (tip) { tip.remove(); tip = null; } wrap.classList.remove('i18n-nudge'); clearInterval(iv); }, 400); } }, 11000);
+        }
+      }
     }
 
     /* 上のバーはスマホだと満員なので、そのすぐ下に1行つくって右に置く */

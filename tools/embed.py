@@ -6,7 +6,7 @@
 
 HTML側にこう書いておくだけ：
   <img src="IMAGE:switch.jpg" alt="...">
-        ↑ images/switch.jpg を 幅1200px・quality 72 に縮小して base64 で埋め込みます
+        ↑ images/switch.jpg を 幅1400px・quality 84 に縮小して base64 で埋め込みます
 
 チャットAIに数百KBのbase64を書かせると必ず途中で壊れるので、
 埋め込みはこのスクリプトの仕事にしてあります。
@@ -15,7 +15,7 @@ HTML側にこう書いておくだけ：
 import base64, mimetypes, pathlib, re, shutil, subprocess, sys, tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-WIDTH, QUALITY = 1200, 72
+WIDTH, QUALITY = 1400, 84   # 2026-09-25：本人の写真が荒く見えたので上げた（元は 1200 / 72）
 PHOTO_STORIES = {
     "thailand-first-trip", "khaosan-road-chaos",
     "burnham-park-flat-walk", "baguio-language-school-memories",
