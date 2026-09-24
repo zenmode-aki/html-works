@@ -9,7 +9,7 @@
 
 置き場所
   works/<slug>/i18n/<lang>.json   記事ごとの訳  {"title": "訳したタイトル", "text": {"英文": "訳"}}
-  i18n/ui.<lang>.json             全記事に共通の言葉（Back / NEXT / 見出しの分類 など）と、日本語版の一言
+  i18n/ui.<lang>.json             全記事に共通の言葉（Back / NEXT / 見出しの分類 など）と、切り替えに出す国旗
   i18n/top.<lang>.json            トップページの言葉
   tools/i18n_runtime.js           ブラウザで動く切り替えの本体
 
@@ -291,8 +291,8 @@ def build_all():
             d.update(article_dict(slug, l, info, titles[l]))
             ks = units(info["root"])
             used = set(ks) | {info["title"]} | set(p for k in ks for p in k.split(" · "))
-            data["langs"][l] = {"name": uis[l].get("name", l), "dict": pack(d, used),
-                                "patterns": uis[l].get("patterns", []), "note": uis[l].get("note")}
+            data["langs"][l] = {"name": uis[l].get("name", l), "flag": uis[l].get("flag"),
+                                "dict": pack(d, used), "patterns": uis[l].get("patterns", [])}
             miss = missing(ks, d, uis[l].get("patterns", []))
             if miss:
                 report.append((slug, l, miss))
@@ -309,8 +309,8 @@ def build_all():
             t = titles[l].get(s)
             if t and infos[s]["meta_title"]:
                 d[infos[s]["meta_title"]] = t
-        tdata["langs"][l] = {"name": uis[l].get("name", l), "dict": pack(d),
-                             "patterns": tops[l].get("patterns", []), "note": tops[l].get("note")}
+        tdata["langs"][l] = {"name": uis[l].get("name", l), "flag": uis[l].get("flag"),
+                             "dict": pack(d), "patterns": tops[l].get("patterns", [])}
         miss = missing(units(parse(strip_block(top.read_text(encoding="utf-8")))), d, tops[l].get("patterns", []))
         if miss:
             report.append(("(トップページ)", l, miss))
