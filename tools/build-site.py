@@ -71,7 +71,7 @@ JOBS = [
 # それ以外の新しい記事は meta.json の topic で自動的に入るので、書き足さないこと。
 LEGACY_JOB_POSTS = {
     "baguio": ["baguio-language-school-memories",
-               "the-strictest-school-i-could-find", "paraphrase-to-hack-the-score",
+               "paraphrase-to-hack-the-score",
                "a-propeller-hairpin", "stargazing-on-the-rooftop"],
     "clark":  ["be-friends-with-the-agents", "airport-pickup-tug-of-war",
                "standing-desk-conversations", "gifts-from-students",
