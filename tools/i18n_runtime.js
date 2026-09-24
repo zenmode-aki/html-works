@@ -234,14 +234,17 @@
     if (u === location.href) location.reload(); else location.replace(u);
   }
 
+  var EN_NAMES = { en: 'English', ja: 'Japanese', ko: 'Korean', zh: 'Chinese (Simplified)', 'zh-Hant': 'Chinese (Traditional)' };
+  Object.keys(LANGS).forEach(function (k) { if (LANGS[k].englishName) EN_NAMES[k] = LANGS[k].englishName; });
   function option(l) {
     var b = document.createElement('button');
     b.type = 'button';
     b.className = 'i18n-opt' + (l === lang ? ' on' : '');
     b.setAttribute('aria-pressed', String(l === lang));
     b.setAttribute('lang', l);
-    b.innerHTML = '<span class="i18n-flag" aria-hidden="true">' + FLAGS[l] + '</span>' +
-                  '<span class="i18n-name">' + NAMES[l] + '</span>';
+    /* 国旗は使わない（国の印で、言語の印ではない。TASK_多言語化.md §3-2）。その言語の名前＋英語名 */
+    b.innerHTML = '<span class="i18n-name">' + NAMES[l] + '</span>' +
+                  (EN_NAMES[l] && EN_NAMES[l] !== NAMES[l] ? '<span class="i18n-en">' + EN_NAMES[l] + '</span>' : '');
     b.addEventListener('click', function () { go(l); });
     return b;
   }
@@ -261,7 +264,7 @@
       '.i18n-opt:active{transform:scale(.96)}' +
       '.i18n-opt:focus-visible{outline:3px solid rgba(139,109,232,.45);outline-offset:2px}' +
       '.i18n-flag{font-size:17px;line-height:1}' +
-      '.i18n-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:60;display:grid;gap:2px;min-width:170px;' +
+      '.i18n-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:60;display:grid;gap:2px;min-width:230px;max-height:min(70vh,420px);overflow-y:auto;' +
       'padding:6px;background:#fff;border-radius:18px;box-shadow:0 14px 34px rgba(115,70,111,.22)}' +
       '.i18n-menu[hidden]{display:none}.i18n-menu .i18n-opt{justify-content:flex-start;width:100%}' +
       '.i18n-float{position:fixed;top:10px;right:10px;z-index:50}' +
@@ -272,7 +275,9 @@
       'margin-left:-5px;padding:2px;border-radius:50%;background:rgba(255,255,255,.92);box-shadow:0 0 0 1.5px #8b6de8}' +
       '.i18n-stack i:first-child{margin-left:0}.i18n-caret{font-size:11px;opacity:.9}' +
       '.i18n-head{padding:8px 10px 6px;font-size:11.5px;font-weight:900;letter-spacing:.04em;color:#8a7d99;border-bottom:1.5px solid rgba(0,0,0,.07);margin-bottom:3px}' +
-      '.i18n-menu .i18n-opt.on::after{content:"✓";margin-left:auto;font-weight:900}' +
+      '.i18n-en{margin-left:auto;padding-left:12px;font-size:11px;font-weight:700;opacity:.6}' +
+      '.i18n-menu .i18n-opt.on .i18n-en{opacity:.85}' +
+      '.i18n-menu .i18n-opt.on::after{content:"✓";margin-left:8px;font-weight:900}' +
       '.i18n-nudge .i18n-cur{animation:i18n-pulse 1.6s ease-in-out 3}' +
       '@keyframes i18n-pulse{0%,100%{box-shadow:0 4px 12px rgba(139,109,232,.35)}50%{box-shadow:0 0 0 7px rgba(139,109,232,.22),0 4px 12px rgba(139,109,232,.35)}}' +
       '.i18n-tip{position:absolute;right:0;top:calc(100% + 10px);z-index:55;display:flex;align-items:center;gap:6px;white-space:nowrap;' +
@@ -304,17 +309,15 @@
       avail.forEach(function (l) { wrap.appendChild(option(l)); });
     } else {
       /* 🌐 2026-09-25 本人の要望：「言語を切り替えられる」とパッと分かるように。
-         地球儀＋いまの言語＋ほかの言語の小さな旗を重ねて見せる。初めての人には吹き出しで知らせる */
+         地球マーク＋いまの言語名（国旗は使わない）。初めての人には吹き出しで知らせる */
       var cur = document.createElement('button');
       cur.type = 'button';
       cur.className = 'i18n-opt i18n-cur';
       cur.setAttribute('aria-haspopup', 'true');
       cur.setAttribute('aria-expanded', 'false');
       cur.setAttribute('aria-label', 'Language: ' + NAMES[lang]);
-      var others = avail.filter(function (l) { return l !== lang; }).slice(0, 4);
       cur.innerHTML = '<span class="i18n-globe" aria-hidden="true">🌐</span>' +
         '<span class="i18n-name">' + NAMES[lang] + '</span>' +
-        '<span class="i18n-stack" aria-hidden="true">' + others.map(function (l) { return '<i>' + FLAGS[l] + '</i>'; }).join('') + '</span>' +
         '<span class="i18n-caret" aria-hidden="true">▾</span>';
       var menu = document.createElement('div');
       menu.className = 'i18n-menu';
@@ -341,7 +344,7 @@
       try { seen = localStorage.getItem(TIP_KEY) === '1'; } catch (e) {}
       if (!seen) {
         var SAY = { en: 'Read in English', ja: '日本語で読めます', ko: '한국어로도 읽을 수 있어요', zh: '也可以用中文阅读', 'zh-Hant': '也可以用中文閱讀' };
-        var lines = avail.filter(function (l) { return l !== lang && SAY[l]; }).map(function (l) { return FLAGS[l] + ' ' + SAY[l]; });
+        var lines = avail.filter(function (l) { return l !== lang && SAY[l]; }).map(function (l) { return SAY[l]; });
         if (lines.length) {
           tip = document.createElement('div');
           tip.className = 'i18n-tip';
