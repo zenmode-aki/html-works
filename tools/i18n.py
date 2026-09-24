@@ -11,11 +11,13 @@
   works/<slug>/i18n/<lang>.json   記事ごとの訳  {"title": "訳したタイトル", "text": {"英文": "訳"}}
   i18n/ui.<lang>.json             全記事に共通の言葉（Back / NEXT / 見出しの分類 など）と、切り替えに出す国旗
   i18n/top.<lang>.json            トップページの言葉
+  i18n/top-data.<lang>.json       トップページで選んだ言語だけを読む、生成済みの訳
   tools/i18n_runtime.js           ブラウザで動く切り替えの本体
 
 英文はそのまま残る。訳は「英文のかたまり → 訳」の対応表として、ページの中に JSON で埋め込む。
 英文を書き直すと、その文の訳は外れて英語のまま表示される（--check で見つかる）。
-言語を足すときは i18n/ui.<lang>.json と i18n/top.<lang>.json と works/*/i18n/<lang>.json を置くだけ。
+言語を足すときは i18n/ui.<lang>.json と i18n/top.<lang>.json と works/*/i18n/<lang>.json を置き、
+python3 tools/i18n.py で記事の埋め込みと i18n/top-data.<lang>.json を生成する。
 """
 import html, json, pathlib, re, sys
 from html.parser import HTMLParser
@@ -244,6 +246,19 @@ def all_titles(lang):
     return out
 
 
+def ui_meta(ui):
+    """切り替えメニューと注意書きに必要な、本文以外の小さな情報"""
+    return {"name": ui.get("name"), "englishName": ui.get("englishName"),
+            "aliases": ui.get("aliases", []), "flag": ui.get("flag"),
+            "patterns": ui.get("patterns", []),
+            "unverified": ui.get("unverified", False),
+            "notice": ui.get("notice"), "noticeDismiss": ui.get("noticeDismiss")}
+
+
+def json_asset(data):
+    return (json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n").encode("utf-8")
+
+
 def block(data):
     js = minify(RUNTIME.read_text(encoding="utf-8"))
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
@@ -303,7 +318,9 @@ def build_all():
             d.update(article_dict(slug, l, info, titles[l]))
             ks = units(info["root"])
             used = set(ks) | {info["title"]} | set(p for k in ks for p in k.split(" · "))
-            data["langs"][l] = {"name": uis[l].get("name", l), "flag": uis[l].get("flag"),
+            data["langs"][l] = {"name": uis[l].get("name", l),
+                                "englishName": uis[l].get("englishName"),
+                                "aliases": uis[l].get("aliases", []), "flag": uis[l].get("flag"),
                                 "dict": pack(d, used), "patterns": uis[l].get("patterns", []),
                                 "unverified": uis[l].get("unverified", False),
                                 "notice": uis[l].get("notice"), "noticeDismiss": uis[l].get("noticeDismiss")}
@@ -314,7 +331,8 @@ def build_all():
 
     # トップページ：記事のタイトルとラベルは各記事の訳から自動で入る
     top = ROOT / "index.html"
-    tdata = {"langs": {}}
+    tdata = {"lazyTop": True, "langs": {}}
+    top_assets = {}
     for l in langs:
         if not tops[l]:
             continue
@@ -323,20 +341,19 @@ def build_all():
             t = titles[l].get(s)
             if t and infos[s]["meta_title"]:
                 d[infos[s]["meta_title"]] = t
-        tdata["langs"][l] = {"name": uis[l].get("name", l), "flag": uis[l].get("flag"),
-                             "dict": pack(d), "patterns": tops[l].get("patterns", []),
-                             "unverified": uis[l].get("unverified", False),
-                             "notice": uis[l].get("notice"), "noticeDismiss": uis[l].get("noticeDismiss")}
+        tdata["langs"][l] = {**ui_meta(uis[l]), "name": uis[l].get("name", l), "dict": {}}
+        top_assets[I18N / f"top-data.{l}.json"] = {
+            "dict": pack(d), "patterns": tops[l].get("patterns", [])}
         miss = missing(units(parse(strip_block(top.read_text(encoding="utf-8")))), d, tops[l].get("patterns", []))
         if miss:
             report.append(("(トップページ)", l, miss))
     pages.append((top, tdata))
-    return langs, titles, pages, report
+    return langs, titles, pages, report, top_assets
 
 
 def status():
-    """check.py --site から呼ぶ。(訳の抜け, 埋め込みが古いページ) を返す"""
-    langs, titles, pages, report = build_all()
+    """check.py --site から呼ぶ。(訳の抜け, 埋め込みや生成データが古いページ) を返す"""
+    langs, titles, pages, report, top_assets = build_all()
     stale = []
     for path, data in pages:
         doc = path.read_text(encoding="utf-8")
@@ -344,6 +361,9 @@ def status():
         cur = doc[i:doc.find(END) + len(END) + 1] if i >= 0 else ""
         if cur != block(data):
             stale.append(path.parent.name if path.name == "index.html" and path.parent != ROOT else "index.html")
+    for path, data in top_assets.items():
+        if not path.exists() or path.read_bytes() != json_asset(data):
+            stale.append(path.relative_to(ROOT).as_posix())
     return langs, report, stale
 
 
@@ -377,15 +397,21 @@ def main():
         return 0
 
     check_only = "--check" in args
-    langs, titles, pages, report = build_all()
+    langs, titles, pages, report, top_assets = build_all()
     changed = 0
+    assets_changed = 0
     if not check_only:
         for path, data in pages:
             if inject(path, data):
                 changed += 1
+        for path, data in top_assets.items():
+            output = json_asset(data)
+            if not path.exists() or path.read_bytes() != output:
+                path.write_bytes(output)
+                assets_changed += 1
 
     done = {l: len(titles[l]) for l in langs}
-    print(f"🌐 言語: en + {', '.join(langs) or '（なし）'}   訳のある記事: {done}   書き換えたページ: {changed}")
+    print(f"🌐 言語: en + {', '.join(langs) or '（なし）'}   訳のある記事: {done}   書き換えたページ: {changed}   トップ訳データ: {assets_changed}件更新")
     if report:
         print(f"⚠️  訳が足りないページ: {len(report)}（その文は英語のまま表示されます）")
         for slug, l, miss in report[:40]:

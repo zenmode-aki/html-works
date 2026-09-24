@@ -368,7 +368,7 @@ def check_site():
                 notes.append(f"{WARN}🌐 訳が外れた文があるページ: {gaps[:8]}"
                              f" → python3 tools/i18n.py で確認（英文を直すと、その文の訳が外れます）")
             if stale:
-                notes.append(f"{WARN}🌐 訳の埋め込みが古いページ: {stale[:8]} → python3 tools/i18n.py を流してください")
+                notes.append(f"{WARN}🌐 訳の埋め込み・生成データが古い: {stale[:8]} → python3 tools/i18n.py を流してください")
             if not (nofile or gaps or stale):
                 notes.append(f"{OK} 🌐 en + {', '.join(langs)}：全ページ訳あり・埋め込みも最新")
     except Exception as e:  # 多言語の検査が壊れても、公開の検査は止めない
