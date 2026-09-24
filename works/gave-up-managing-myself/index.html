@@ -172,6 +172,20 @@
   .slides-hint { margin-top: 9px; text-align: center; color: var(--muted);
        font-size: 11.5px; letter-spacing: .1em; font-family: "Trebuchet MS", sans-serif; }
 
+
+  /* 🛤 カードを1本の線でつなぐ（2026-09-24 本人の要望：見た目はAIの工夫で。本文は1文字も変えていない） */
+  .path { position: relative; margin-top: 6px; padding-left: 30px; }
+  .path::before { content: ""; position: absolute; left: 11px; top: 26px; bottom: 26px; width: 4px; border-radius: 4px;
+    background: linear-gradient(180deg, var(--pink), var(--purple)); opacity: .55; }
+  .path > .card { position: relative; }
+  .path > .card::before { content: ""; position: absolute; left: -27px; top: 26px; width: 14px; height: 14px; border-radius: 50%;
+    background: #fff; border: 4px solid var(--purple); box-shadow: 0 0 0 4px color-mix(in srgb, var(--purple) 18%, transparent); }
+  html[data-theme="dark"] .path > .card::before { background: #22242f; }
+  .path > .card.in::before { animation: path-dot .5s cubic-bezier(.2,1.6,.4,1) both; }
+  .path > .card:last-of-type::before { background: var(--purple); }
+  .path > figure, .path > div { margin-left: -30px; }
+  @keyframes path-dot { from { transform: scale(0); } to { transform: scale(1); } }
+  @media (prefers-reduced-motion: reduce) { .path > .card.in::before { animation: none; } }
 </style>
 <script>document.documentElement.className += " js";</script>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
@@ -549,6 +563,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
   <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 15 SEC</div>
   <h1>I gave up trying to manage myself perfectly <span class="float">🗓</span></h1>
 
+  <div class="path">
   <section class="card">
     <div class="card-head">
       <span class="card-emoji" aria-hidden="true">🧊</span>
@@ -584,6 +599,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
       In the end it did not work. So I gave up managing myself perfectly.
     </p>
   </section>
+  </div>
 
   <a class="next" href="../../index.html">
     <div>
@@ -642,5 +658,6 @@ S番号に対応しない英文は1つもありません。
 
 削った文：S4
 追加した文：0
+（2026-09-24：本文は変えずに、カードを1本の線でつないだ）
 演出テキスト：card-label 3個 / quip 1個 / h1 ← 本人の発言ではない（word数対象外）
 -->
