@@ -19,7 +19,9 @@
 
 ## 画像
 
-- images/cover.jpg — 本人が撮った実際の写真をそのまま使用（元 31_...jpeg、会社ロゴ部分をトリミング済み）。生成画像は使っていない
+- images/cover.jpg — 生成（z_image、2026-09-24 に追加）。A mohair penguin eating grilled pork with its flippers at a table covered with a banana leaf, with rice and watermelon
+- images/photo1.jpg — 本人が撮った実際の写真（元 31_...jpeg、会社ロゴ部分をトリミング済み）。記事の途中に置いた
+使った組み合わせ：ゆるふわなペンギン × モヘア × バナナの葉を敷いた土曜日のオフィスの机
 
 ## 仕事ページへの関連づけ
 

@@ -15,7 +15,9 @@
 
 ## 画像
 
-- images/cover.jpg — 本人が撮った実際の写真をそのまま使用（元 32_...jpeg）。会社名など写っていないためトリミングなし。生成画像は使っていない
+- images/cover.jpg — 生成（z_image、2026-09-24 に追加）。A crocheted penguin dripping a few drops of golden oil from a small bottle into a cup of coffee, next to a halved coconut
+- images/photo1.jpg — 本人が撮った実際の写真（元 32_...jpeg）。会社名など写っていないためトリミングなし。記事の途中に置いた
+使った組み合わせ：ゆるふわなペンギン × あみぐるみ（毛糸） × 机の上のコーヒーとココナッツ
 
 ## 仕事ページへの関連づけ
 
