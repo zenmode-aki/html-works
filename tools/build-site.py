@@ -80,10 +80,11 @@ LEGACY_JOB_POSTS = {
                "shiny-floor-dorm-room", "the-villages-felt-like-korea",
                "subic-bay-and-clark-airport", "cabbage-and-black-pepper",
                "the-boss-looked-out-for-me", "turning-twenty-in-clark"],
+    # 2026-09-24 本人：コンドミニアム・卵・引っ越し直前・1階のコンシェルジュ・7階を歩く話は
+    #   「ブリッジSEの話じゃなくて、ただのセブ島の生活の話」。仕事からは外して、
+    #   地図の 🇵🇭 → Cebu と、各部屋（room）から読めるようにした
     "cebu":   ["japan-philippines-work", "japan-philippines-shops",
-               "no-public-scolding", "walking-on-the-7th-floor",
-               "concierge-downstairs", "my-room-on-video", "120-eggs",
-               "cebu-condo-poolside", "boodle-fight-lunch"],
+               "no-public-scolding", "boodle-fight-lunch"],
 }
 
 
