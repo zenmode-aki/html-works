@@ -36,3 +36,9 @@ images/cover.jpg — 生成（z_image）。A chenille yarn penguin with a paper 
 ---
 このファイルがAIに渡す原本です。index.html は出力物。
 「この記事直して」と頼むときは、index.html ではなく **このファイル** を渡してください。
+
+
+## 場所
+
+マレーシア（クアラルンプール）。meta.json の place は kl（2026-09-24 本人の指示でマレーシアに関連づけた）。
+マレーシア/ シリーズとつながっている

@@ -305,8 +305,11 @@ function save(l) { try { localStorage.setItem(KEY, l); } catch (e) {} }
 var lang = pick();
 window.PENGESSO_LANG = lang;
 if (lang !== 'en') document.documentElement.setAttribute('lang', lang);
+var bold = document.createElement('style');
+bold.textContent = 'html body :where(p, li, a, span, div, figcaption, td, th, button, small, label, blockquote) { font-weight: 700; }';
+(document.head || document.getElementsByTagName('head')[0]).appendChild(bold);
 var SOFT = {
-ja: { css: 'Zen+Maru+Gothic:wght@400;500;700', name: '"Zen Maru Gothic"' },
+ja: { css: 'Zen+Maru+Gothic:wght@700;900', name: '"Zen Maru Gothic"' },
 ko: { css: 'Gowun+Dodum', name: '"Gowun Dodum"' }
 };
 if (SOFT[lang]) {

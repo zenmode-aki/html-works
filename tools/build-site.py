@@ -47,6 +47,7 @@ PLACES = {
     "clark":    ("Clark 🏫",        "world",  9, 32),
     "bangkok":  ("Bangkok 🛺",      "world", 11, 29),
     "thailand": ("Kanchanaburi 🚂", "world", 10, 29),
+    "kl":       ("Kuala Lumpur 🇲🇾", "world", 13, 29),
 }
 
 

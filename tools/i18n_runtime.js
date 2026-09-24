@@ -31,12 +31,19 @@
   window.PENGESSO_LANG = lang;
   if (lang !== 'en') document.documentElement.setAttribute('lang', lang);
 
+  /* ── 細い文字は使わない（2026-09-24 本人の好み：「細い文字が全部嫌い。全部太字でいいぐらい」）──
+     本文など太さを決めていない文字を、どの言語でも太字にする。
+     :where() で詳しさを0にしてあるので、見出しなど元から太い指定（.big / h1 / ラベル）はそのまま */
+  var bold = document.createElement('style');
+  bold.textContent = 'html body :where(p, li, a, span, div, figcaption, td, th, button, small, label, blockquote) { font-weight: 700; }';
+  (document.head || document.getElementsByTagName('head')[0]).appendChild(bold);
+
   /* ── やわらかい丸ゴシック（2026-09-24 本人の希望）────────────────
      端末ごとに入っているフォントが違うので、日本語・韓国語のときだけ Google Fonts から読み込む。
      英字は今までのフォント（Arial Rounded など）を先に並べてそのまま使い、
      日本語・韓国語の文字だけが丸ゴシックに落ちる。英語表示のときは何も読み込まない */
   var SOFT = {
-    ja: { css: 'Zen+Maru+Gothic:wght@400;500;700', name: '"Zen Maru Gothic"' },
+    ja: { css: 'Zen+Maru+Gothic:wght@700;900', name: '"Zen Maru Gothic"' },
     ko: { css: 'Gowun+Dodum', name: '"Gowun Dodum"' }
   };
   if (SOFT[lang]) {

@@ -917,6 +917,7 @@ python3 tools/thumbs.py <slug>   # 240px正方形に縮めて base64 で埋め�
 * CSS は `<style>` で HTML 内に埋め込む
 * **JavaScript は、モーションキットの IntersectionObserver だけ許可。**
   外部ライブラリ・フレームワーク・npm は禁止
+* **細い文字は使わない。本文も太字（700）**（2026-09-24 本人の好み：「細い文字が全部嫌い。全部太字でいいぐらい」）。`tools/i18n_runtime.js` が全ページで本文を太字にしている
 * **英語は外部Webフォントを使わない**。次の system font fallback を使う
 * **日本語・韓国語だけは例外**（2026-09-24 本人の希望）：端末ごとに違う硬いフォントではなく、やわらかい丸ゴシックで見せる。
   日本語＝Zen Maru Gothic、韓国語＝Gowun Dodum を Google Fonts から読み込む。
