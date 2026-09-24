@@ -31,6 +31,32 @@
   window.PENGESSO_LANG = lang;
   if (lang !== 'en') document.documentElement.setAttribute('lang', lang);
 
+  /* ── やわらかい丸ゴシック（2026-09-24 本人の希望）────────────────
+     端末ごとに入っているフォントが違うので、日本語・韓国語のときだけ Google Fonts から読み込む。
+     英字は今までのフォント（Arial Rounded など）を先に並べてそのまま使い、
+     日本語・韓国語の文字だけが丸ゴシックに落ちる。英語表示のときは何も読み込まない */
+  var SOFT = {
+    ja: { css: 'Zen+Maru+Gothic:wght@400;500;700', name: '"Zen Maru Gothic"' },
+    ko: { css: 'Gowun+Dodum', name: '"Gowun Dodum"' }
+  };
+  if (SOFT[lang]) {
+    var head = document.head || document.getElementsByTagName('head')[0];
+    ['https://fonts.googleapis.com', 'https://fonts.gstatic.com'].forEach(function (h, i) {
+      var pc = document.createElement('link');
+      pc.rel = 'preconnect'; pc.href = h;
+      if (i) pc.crossOrigin = 'anonymous';
+      head.appendChild(pc);
+    });
+    var fl = document.createElement('link');
+    fl.rel = 'stylesheet';
+    fl.href = 'https://fonts.googleapis.com/css2?family=' + SOFT[lang].css + '&display=swap';
+    head.appendChild(fl);
+    var fs = document.createElement('style');
+    fs.textContent = 'html:lang(' + lang + ') body, html:lang(' + lang + ') body *:not(code):not(pre) {' +
+      'font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", ' + SOFT[lang].name + ', sans-serif !important; }';
+    head.appendChild(fs);
+  }
+
   /* ── 切り替えボタン ─────────────────────────────── */
   /* 言語が3つまでは [🇺🇸 English | 🇯🇵 日本語] の横並び。4つ以上になったら国旗つきのメニューにする */
   var FLAGS = { en: '🇺🇸' };
