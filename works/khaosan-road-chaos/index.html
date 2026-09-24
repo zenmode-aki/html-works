@@ -155,6 +155,7 @@ if (q && avail.indexOf(q) >= 0) { save(q); return q; }
 try { var s = localStorage.getItem(KEY); if (s && avail.indexOf(s) >= 0) return s; } catch (e) {}
 var nl = navigator.languages || [navigator.language || 'en'];
 for (var i = 0; i < nl.length; i++) {
+if (/^zh-(tw|hk|mo|hant)/i.test(String(nl[i] || '')) && avail.indexOf('zh-Hant') >= 0) return 'zh-Hant';
 var c = String(nl[i] || '').toLowerCase().split('-')[0];
 if (avail.indexOf(c) >= 0) return c;
 }
@@ -220,9 +221,27 @@ paint();
 });
 return b;
 }
+document.addEventListener('DOMContentLoaded', function () {
+if (!document.querySelector('main .card')) return;
+var bar = document.createElement('div');
+bar.setAttribute('aria-hidden', 'true');
+bar.style.cssText = 'position:fixed;left:0;top:0;height:4px;width:0;z-index:80;border-radius:0 4px 4px 0;' +
+'background:linear-gradient(90deg,#ff8a70,#ffc42e,#34b27d,#4d9de0,#b07ce8);pointer-events:none';
+document.body.appendChild(bar);
+var tick = false;
+function draw() {
+tick = false;
+var h = document.documentElement.scrollHeight - innerHeight;
+bar.style.width = (h > 0 ? Math.min(100, (scrollY / h) * 100) : 0) + '%';
+}
+addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(draw); } }, { passive: true });
+draw();
+});
 var SOFT = {
 ja: { css: 'Zen+Maru+Gothic:wght@700;900', name: '"Zen Maru Gothic"' },
-ko: { css: 'Jua', name: '"Jua"' }
+ko: { css: 'Jua', name: '"Jua"' },
+zh: { css: 'Noto+Sans+SC:wght@700;900', name: '"Noto Sans SC"' },
+'zh-Hant': { css: 'Noto+Sans+TC:wght@700;900', name: '"Noto Sans TC"' }
 };
 if (SOFT[lang]) {
 var head = document.head || document.getElementsByTagName('head')[0];

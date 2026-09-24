@@ -19,6 +19,8 @@
     try { var s = localStorage.getItem(KEY); if (s && avail.indexOf(s) >= 0) return s; } catch (e) {}
     var nl = navigator.languages || [navigator.language || 'en'];
     for (var i = 0; i < nl.length; i++) {
+      /* 台湾・香港の端末は繁體字へ（2026-09-24 中国語を足した） */
+      if (/^zh-(tw|hk|mo|hant)/i.test(String(nl[i] || '')) && avail.indexOf('zh-Hant') >= 0) return 'zh-Hant';
       var c = String(nl[i] || '').toLowerCase().split('-')[0];
       if (avail.indexOf(c) >= 0) return c;
     }
@@ -98,13 +100,34 @@
     return b;
   }
 
+  /* ── 📏 読んでいる位置のバー（2026-09-24）。記事ページだけ、いちばん上に細い虹色の線が伸びる ── */
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!document.querySelector('main .card')) return;
+    var bar = document.createElement('div');
+    bar.setAttribute('aria-hidden', 'true');
+    bar.style.cssText = 'position:fixed;left:0;top:0;height:4px;width:0;z-index:80;border-radius:0 4px 4px 0;' +
+      'background:linear-gradient(90deg,#ff8a70,#ffc42e,#34b27d,#4d9de0,#b07ce8);pointer-events:none';
+    document.body.appendChild(bar);
+    var tick = false;
+    function draw() {
+      tick = false;
+      var h = document.documentElement.scrollHeight - innerHeight;
+      bar.style.width = (h > 0 ? Math.min(100, (scrollY / h) * 100) : 0) + '%';
+    }
+    addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(draw); } }, { passive: true });
+    draw();
+  });
+
   /* ── やわらかい丸ゴシック（2026-09-24 本人の希望）────────────────
      端末ごとに入っているフォントが違うので、日本語・韓国語のときだけ Google Fonts から読み込む。
      英字は今までのフォント（Arial Rounded など）を先に並べてそのまま使い、
      日本語・韓国語の文字だけが丸ゴシックに落ちる。英語表示のときは何も読み込まない */
   var SOFT = {
     ja: { css: 'Zen+Maru+Gothic:wght@700;900', name: '"Zen Maru Gothic"' },
-    ko: { css: 'Jua', name: '"Jua"' }  /* 最初から太くて丸い。Gowun Dodum は細い1種類しかなく、太字にするとにじむので変えた */
+    ko: { css: 'Jua', name: '"Jua"' },
+    /* 中国語は丸ゴシックの太いものが少ないので、太さのある Noto Sans（簡体・繁体）を使う */
+    zh: { css: 'Noto+Sans+SC:wght@700;900', name: '"Noto Sans SC"' },
+    'zh-Hant': { css: 'Noto+Sans+TC:wght@700;900', name: '"Noto Sans TC"' }  /* 最初から太くて丸い。Gowun Dodum は細い1種類しかなく、太字にするとにじむので変えた */
   };
   if (SOFT[lang]) {
     var head = document.head || document.getElementsByTagName('head')[0];
