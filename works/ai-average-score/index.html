@@ -237,98 +237,6 @@
 </style>
 <!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
 <script>document.documentElement.className += " js";</script>
-</head>
-<body>
-<main>
-
-  <div class="topbar">
-    <a class="home" href="../../index.html">← Back</a>
-    <div class="badges">
-      <div class="wc-badge">⚡ 28 words · 9 sec</div>
-      <div class="stage stage-public">PUBLIC</div>
-    </div>
-  </div>
-
-  <div class="label"><span class="topic">🤖 AI AND TOOLS</span>⚡ 15 SEC</div>
-  <h1>To use AI well, you have to give the answer first <span class="float">🤖</span></h1>
-
-  <section class="card">
-    <div class="card-head">
-      <span class="card-emoji" aria-hidden="true">🧭</span>
-      <span class="card-label">Your Job</span>
-    </div>
-    <p>
-      To use AI well, the human must give the correct answer first.
-    </p>
-    <div class="quip">Yes. Before the robot. That is the whole trick.</div>
-  </section>
-
-  <section class="card">
-    <div class="card-head">
-      <span class="card-emoji" aria-hidden="true">📊</span>
-      <span class="card-label">Or Else</span>
-    </div>
-    <p class="big">
-      If you do not, AI keeps giving you work that feels nice but is only average.
-    </p>
-    <div class="bars" aria-hidden="true">
-      <div class="bar b1"></div>
-      <div class="bar b2"></div>
-      <div class="bar b3"></div>
-      <div class="bar b4"></div>
-      <div class="bar b5"></div>
-      <div class="bar you"></div>
-    </div>
-    <div class="bars-note">AVERAGE · AVERAGE · AVERAGE · AVERAGE · AVERAGE · YOU</div>
-  </section>
-
-  <a class="next" href="../../index.html">
-    <div>
-      <div class="next-kicker">NEXT · 15 SEC</div>
-      <div class="next-title">See all 15-second posts</div>
-    </div>
-    <div class="next-arrow" aria-hidden="true">⚡</div>
-  </a>
-
-</main>
-
-<!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
-<script>
-(function () {
-  var items = [].slice.call(document.querySelectorAll('.card, .next'));
-  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
-  if (!('IntersectionObserver' in window)) { showAll(); return; }
-  var seen = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); }
-    });
-  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
-  items.forEach(function (el) { seen.observe(el); });
-  setTimeout(function () {
-    if (!document.querySelector('.card.in, .next.in')) showAll();
-  }, 1600);
-})();
-
-  /* 🎞 スライド：いま何枚目を見ているかを丸で出す */
-  document.querySelectorAll('.slides').forEach(function (box) {
-    var track = box.querySelector('.slides-track');
-    var dots  = box.querySelector('.slides-dots');
-    if (!track || !dots) return;
-    var figs = Array.prototype.slice.call(track.children);
-    figs.forEach(function () { dots.appendChild(document.createElement('i')); });
-    var marks = Array.prototype.slice.call(dots.children);
-    if (marks[0]) marks[0].className = 'on';
-    if (!('IntersectionObserver' in window)) return;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        var i = figs.indexOf(e.target);
-        marks.forEach(function (m, j) { m.className = (i === j) ? 'on' : ''; });
-      });
-    }, { root: track, threshold: 0.6 });
-    figs.forEach(function (f) { io.observe(f); });
-  });
-</script>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
 <script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1qfwat5":"15秒の記事をぜんぶ見る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","aur0gn":"🤖 AIと道具","1mx2029":"あなたの仕事","1wosxi4":"AIをうまく使うには、まず人間が正解を渡さないといけません。","16ujg3a":"そう。ロボットより先に。コツはそれだけ。","hf8945":"そうしないと","s5xtjs":"そうしないと、AIはいい感じだけど平均点の成果物ばかり出してきます。","1trgbl2":"平均 · 平均 · 平均 · 平均 · 平均 · あなた","5l2rmt":"AIをうまく使うには、まず人間が答えを渡さないといけない","1jz5fh6":"AIをうまく使うには、まず人間が答えを渡さないといけない"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]]}}}</script>
 <script>
@@ -355,6 +263,8 @@ return 'en';
 }
 function save(l) { try { localStorage.setItem(KEY, l); } catch (e) {} }
 var lang = pick();
+window.PENGESSO_LANG = lang;
+if (lang !== 'en') document.documentElement.setAttribute('lang', lang);
 var FLAGS = { en: '🇺🇸' };
 Object.keys(LANGS).forEach(function (k) { FLAGS[k] = LANGS[k].flag || '🌐'; });
 function go(l) {
@@ -430,6 +340,9 @@ row.appendChild(wrap);
 bar.parentNode.insertBefore(row, bar.nextSibling);
 } else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); }
 }
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+else start();
+function start() {
 drawSwitch();
 if (lang === 'en') return;
 var L = LANGS[lang];
@@ -547,8 +460,101 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 });
 }).observe(document.body, { childList: true, subtree: true });
 }
+}
 })();</script>
 <!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <a class="home" href="../../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 28 words · 9 sec</div>
+      <div class="stage stage-public">PUBLIC</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🤖 AI AND TOOLS</span>⚡ 15 SEC</div>
+  <h1>To use AI well, you have to give the answer first <span class="float">🤖</span></h1>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧭</span>
+      <span class="card-label">Your Job</span>
+    </div>
+    <p>
+      To use AI well, the human must give the correct answer first.
+    </p>
+    <div class="quip">Yes. Before the robot. That is the whole trick.</div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📊</span>
+      <span class="card-label">Or Else</span>
+    </div>
+    <p class="big">
+      If you do not, AI keeps giving you work that feels nice but is only average.
+    </p>
+    <div class="bars" aria-hidden="true">
+      <div class="bar b1"></div>
+      <div class="bar b2"></div>
+      <div class="bar b3"></div>
+      <div class="bar b4"></div>
+      <div class="bar b5"></div>
+      <div class="bar you"></div>
+    </div>
+    <div class="bars-note">AVERAGE · AVERAGE · AVERAGE · AVERAGE · AVERAGE · YOU</div>
+  </section>
+
+  <a class="next" href="../../index.html">
+    <div>
+      <div class="next-kicker">NEXT · 15 SEC</div>
+      <div class="next-title">See all 15-second posts</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+
+</main>
+
+<!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () {
+    if (!document.querySelector('.card.in, .next.in')) showAll();
+  }, 1600);
+})();
+
+  /* 🎞 スライド：いま何枚目を見ているかを丸で出す */
+  document.querySelectorAll('.slides').forEach(function (box) {
+    var track = box.querySelector('.slides-track');
+    var dots  = box.querySelector('.slides-dots');
+    if (!track || !dots) return;
+    var figs = Array.prototype.slice.call(track.children);
+    figs.forEach(function () { dots.appendChild(document.createElement('i')); });
+    var marks = Array.prototype.slice.call(dots.children);
+    if (marks[0]) marks[0].className = 'on';
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var i = figs.indexOf(e.target);
+        marks.forEach(function (m, j) { m.className = (i === j) ? 'on' : ''; });
+      });
+    }, { root: track, threshold: 0.6 });
+    figs.forEach(function (f) { io.observe(f); });
+  });
+</script>
 </body>
 </html>
 
