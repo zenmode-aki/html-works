@@ -29,41 +29,77 @@
   var lang = pick();
 
   /* ── 切り替えボタン ─────────────────────────────── */
+  /* 言語が3つまでは [🇺🇸 English | 🇯🇵 日本語] の横並び。4つ以上になったら国旗つきのメニューにする */
+  var FLAGS = { en: '🇺🇸' };
+  Object.keys(LANGS).forEach(function (k) { FLAGS[k] = LANGS[k].flag || '🌐'; });
+
+  function go(l) {
+    if (l === lang) return;
+    save(l);
+    var u = location.href.replace(/([?&])lang=[^&#]*&?/, '$1').replace(/[?&](#|$)/, '$1');
+    if (u === location.href) location.reload(); else location.replace(u);
+  }
+
+  function option(l) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'i18n-opt' + (l === lang ? ' on' : '');
+    b.setAttribute('aria-pressed', String(l === lang));
+    b.setAttribute('lang', l);
+    b.innerHTML = '<span class="i18n-flag" aria-hidden="true">' + FLAGS[l] + '</span>' +
+                  '<span class="i18n-name">' + NAMES[l] + '</span>';
+    b.addEventListener('click', function () { go(l); });
+    return b;
+  }
+
   function drawSwitch() {
     if (avail.length < 2) return;
     var st = document.createElement('style');
     st.textContent =
       '.i18n-row{display:flex;justify-content:flex-end;margin:-6px 0 16px}' +
-      '.i18n-switch{display:inline-flex;align-items:center;gap:4px;font-size:13px;line-height:1;' +
-      'background:#fff;color:#6b5a7b;border:2px solid rgba(255,255,255,.9);border-radius:999px;' +
-      'padding:5px 6px 5px 12px;box-shadow:0 6px 16px rgba(115,70,111,.08);white-space:nowrap}' +
-      '.i18n-switch select{font:inherit;color:inherit;background:transparent;border:0;padding:2px 2px;cursor:pointer}' +
-      '.i18n-switch select option{color:#222;background:#fff}' +
-      '.i18n-float{position:fixed;top:10px;right:10px;z-index:50;background:rgba(255,255,255,.9);color:#222}' +
-      '.i18n-note{margin:28px 0 8px;padding:18px 20px;border:1.5px dashed currentColor;border-radius:18px;' +
-      'font-size:14px;line-height:1.8;opacity:.9}' +
-      '.i18n-note p{margin:0 0 .7em}.i18n-note p:last-child{margin:0}' +
-      '.i18n-note .i18n-note-head{font-weight:700;margin-bottom:.5em}';
+      '.i18n-switch{position:relative;display:inline-flex;gap:3px;padding:4px;background:#fff;' +
+      'border:2px solid rgba(255,255,255,.9);border-radius:999px;box-shadow:0 6px 16px rgba(115,70,111,.10)}' +
+      '.i18n-opt{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;color:#7a6a88;' +
+      'font:inherit;font-size:13px;font-weight:700;line-height:1;padding:8px 13px;border-radius:999px;cursor:pointer;' +
+      'white-space:nowrap;transition:background .2s,color .2s,transform .15s}' +
+      '.i18n-opt:hover{background:rgba(139,109,232,.10)}' +
+      '.i18n-opt.on{background:#8b6de8;color:#fff;box-shadow:0 4px 10px rgba(139,109,232,.35)}' +
+      '.i18n-opt:active{transform:scale(.96)}' +
+      '.i18n-opt:focus-visible{outline:3px solid rgba(139,109,232,.45);outline-offset:2px}' +
+      '.i18n-flag{font-size:17px;line-height:1}' +
+      '.i18n-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:60;display:grid;gap:2px;min-width:170px;' +
+      'padding:6px;background:#fff;border-radius:18px;box-shadow:0 14px 34px rgba(115,70,111,.22)}' +
+      '.i18n-menu[hidden]{display:none}.i18n-menu .i18n-opt{justify-content:flex-start;width:100%}' +
+      '.i18n-float{position:fixed;top:10px;right:10px;z-index:50}' +
+      '@media (prefers-reduced-motion: reduce){.i18n-opt{transition:none}}';
     document.head.appendChild(st);
 
-    var wrap = document.createElement('label');
+    var wrap = document.createElement('div');
     wrap.className = 'i18n-switch';
     wrap.setAttribute('translate', 'no');
-    var sel = document.createElement('select');
-    sel.setAttribute('aria-label', 'Language');
-    avail.forEach(function (l) {
-      var o = document.createElement('option');
-      o.value = l; o.textContent = NAMES[l];
-      if (l === lang) o.selected = true;
-      sel.appendChild(o);
-    });
-    sel.addEventListener('change', function () {
-      save(sel.value);
-      var u = location.href.replace(/([?&])lang=[^&#]*&?/, '$1').replace(/[?&](#|$)/, '$1');
-      if (u === location.href) location.reload(); else location.replace(u);
-    });
-    wrap.appendChild(document.createTextNode('🌐'));
-    wrap.appendChild(sel);
+    wrap.setAttribute('role', 'group');
+    wrap.setAttribute('aria-label', 'Language');
+
+    if (avail.length <= 3) {
+      avail.forEach(function (l) { wrap.appendChild(option(l)); });
+    } else {
+      var cur = option(lang);
+      cur.querySelector('.i18n-name').textContent = NAMES[lang] + ' ▾';
+      cur.setAttribute('aria-haspopup', 'true');
+      cur.setAttribute('aria-expanded', 'false');
+      var menu = document.createElement('div');
+      menu.className = 'i18n-menu';
+      menu.hidden = true;
+      avail.forEach(function (l) { menu.appendChild(option(l)); });
+      cur.addEventListener('click', function (e) {
+        e.stopPropagation();
+        menu.hidden = !menu.hidden;
+        cur.setAttribute('aria-expanded', String(!menu.hidden));
+      });
+      document.addEventListener('click', function () { menu.hidden = true; cur.setAttribute('aria-expanded', 'false'); });
+      wrap.appendChild(cur);
+      wrap.appendChild(menu);
+    }
 
     /* 上のバーはスマホだと満員なので、そのすぐ下に1行つくって右に置く */
     var spot = document.querySelector('[data-i18n-switch]');
@@ -201,19 +237,6 @@
   var t0 = lookup(norm(document.title));
   if (t0 !== null) document.title = t0.replace(/<[^>]+>/g, '');
   walk(document.body);
-
-  /* ── 日本語版だけの一言 ─────────────────────────── */
-  if (L.note) {
-    var box = document.createElement('aside');
-    box.className = 'i18n-note';
-    box.innerHTML = L.note;
-    var main = document.querySelector('main') || document.body;
-    var nx = main.querySelector('.next');
-    var slot = document.querySelector('[data-i18n-note]');
-    if (slot) slot.appendChild(box);
-    else if (nx) nx.parentNode.insertBefore(box, nx);
-    else main.appendChild(box);
-  }
 
   /* ── あとから JavaScript で描かれる部分（トップの一覧など）も訳す ── */
   if ('MutationObserver' in window) {
