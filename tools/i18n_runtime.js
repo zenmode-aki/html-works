@@ -44,7 +44,7 @@
      日本語・韓国語の文字だけが丸ゴシックに落ちる。英語表示のときは何も読み込まない */
   var SOFT = {
     ja: { css: 'Zen+Maru+Gothic:wght@700;900', name: '"Zen Maru Gothic"' },
-    ko: { css: 'Gowun+Dodum', name: '"Gowun Dodum"' }
+    ko: { css: 'Jua', name: '"Jua"' }  /* 最初から太くて丸い。Gowun Dodum は細い1種類しかなく、太字にするとにじむので変えた */
   };
   if (SOFT[lang]) {
     var head = document.head || document.getElementsByTagName('head')[0];
