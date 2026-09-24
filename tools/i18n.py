@@ -243,9 +243,11 @@ def block(data):
 
 def inject(path, data):
     doc = strip_block(path.read_text(encoding="utf-8"))
-    i = doc.rfind("</body>")
+    # <head> に置く：言語をページのスクリプトより先に決めたいので（トップの「日本語だけの記事」）。
+    # 訳す処理そのものは、ページを読み終わってから（DOMContentLoaded）動く
+    i = doc.find("</head>")
     if i < 0:
-        raise SystemExit(f"❌ {path} に </body> がありません")
+        raise SystemExit(f"❌ {path} に </head> がありません")
     new = doc[:i] + block(data) + doc[i:]
     if new != path.read_text(encoding="utf-8"):
         path.write_text(new, encoding="utf-8")

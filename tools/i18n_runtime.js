@@ -27,6 +27,9 @@
   function save(l) { try { localStorage.setItem(KEY, l); } catch (e) {} }
 
   var lang = pick();
+  /* トップページが「日本語のときだけ出す記事」を決めるのに使う。<head> で先に決めておく */
+  window.PENGESSO_LANG = lang;
+  if (lang !== 'en') document.documentElement.setAttribute('lang', lang);
 
   /* ── 切り替えボタン ─────────────────────────────── */
   /* 言語が3つまでは [🇺🇸 English | 🇯🇵 日本語] の横並び。4つ以上になったら国旗つきのメニューにする */
@@ -113,6 +116,10 @@
     } else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); }
   }
 
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+
+  function start() {
   drawSwitch();
   if (lang === 'en') return;
 
@@ -250,5 +257,6 @@
         }
       });
     }).observe(document.body, { childList: true, subtree: true });
+  }
   }
 })();
