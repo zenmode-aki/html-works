@@ -227,8 +227,32 @@
     ko: { css: 'Jua', name: '"Jua"' },
     /* 中国語は丸ゴシックの太いものが少ないので、太さのある Noto Sans（簡体・繁体）を使う */
     zh: { css: 'Noto+Sans+SC:wght@700;900', name: '"Noto Sans SC"' },
-    'zh-Hant': { css: 'Noto+Sans+TC:wght@700;900', name: '"Noto Sans TC"' }  /* 最初から太くて丸い。Gowun Dodum は細い1種類しかなく、太字にするとにじむので変えた */
+    'zh-Hant': { css: 'Noto+Sans+TC:wght@700;900', name: '"Noto Sans TC"' }  /* 最初から太くて丸い。Gowun Dodum は細い1種類しかなく、太字にするとにじむので変えた */,
+    /* タイ文字・インドの文字・アラビア文字・ヘブライ文字（2026-09-25）。端末に太いフォントがないことが多いので、太い Noto を読み込む */
+    th: { css: 'Noto+Sans+Thai:wght@700;900', name: '"Noto Sans Thai"' },
+    hi: { css: 'Noto+Sans+Devanagari:wght@700;900', name: '"Noto Sans Devanagari"' },
+    mr: { css: 'Noto+Sans+Devanagari:wght@700;900', name: '"Noto Sans Devanagari"' },
+    ne: { css: 'Noto+Sans+Devanagari:wght@700;900', name: '"Noto Sans Devanagari"' },
+    bn: { css: 'Noto+Sans+Bengali:wght@700;900', name: '"Noto Sans Bengali"' },
+    ta: { css: 'Noto+Sans+Tamil:wght@700;900', name: '"Noto Sans Tamil"' },
+    te: { css: 'Noto+Sans+Telugu:wght@700;900', name: '"Noto Sans Telugu"' },
+    pa: { css: 'Noto+Sans+Gurmukhi:wght@700;900', name: '"Noto Sans Gurmukhi"' },
+    ar: { css: 'Noto+Sans+Arabic:wght@700;900', name: '"Noto Sans Arabic"' },
+    fa: { css: 'Noto+Sans+Arabic:wght@700;900', name: '"Noto Sans Arabic"' },
+    ur: { css: 'Noto+Nastaliq+Urdu:wght@700', name: '"Noto Nastaliq Urdu"' },
+    he: { css: 'Noto+Sans+Hebrew:wght@700;900', name: '"Noto Sans Hebrew"' }
   };
+  /* 右から書く言語は、ページ全体を右から左に（2026-09-25）。地図・写真・数字は CSS で向きを戻す */
+  var RTL = { ar: 1, fa: 1, ur: 1, he: 1 };
+  if (RTL[lang]) {
+    document.documentElement.setAttribute('dir', 'rtl');
+    var rtl = document.createElement('style');
+    rtl.textContent = 'html[dir="rtl"] :is(svg, img, video, iframe, pre, code, .map2, .map-stage, .i18n-switch) { direction: ltr; }' +
+      'html[dir="rtl"] .i18n-row { justify-content: flex-start; }' +
+      'html[dir="rtl"] .i18n-menu { right: auto; left: 0; }' +
+      'html[dir="rtl"] .i18n-float { right: auto; left: 10px; }';
+    (document.head || document.documentElement).appendChild(rtl);
+  }
   if (SOFT[lang]) {
     var head = document.head || document.getElementsByTagName('head')[0];
     ['https://fonts.googleapis.com', 'https://fonts.gstatic.com'].forEach(function (h, i) {
