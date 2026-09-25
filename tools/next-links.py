@@ -7,15 +7,22 @@
   ・「次」がない記事がある
 が起きていた。これからは手で決めない。この道具が並べる。
 
-並べ方：トップの一覧と同じ「新しい順」。
-ただしシリーズ（Part 1・2・3 や、韓国の野球場のように同じ帯の記事）は、
-そのシリーズのいちばん新しい記事の位置に、Part 1 → 2 → 3 の順でまとめて入れる。
-いちばん最後（いちばん古い記事）の「次」は、トップの一覧へ。
+並べ方（2026-09-25 本人：マレーシアの記事の次が、いきなり名古屋の話になる。
+「次の記事で書きます」と書いた記事の次には、ちゃんとその記事が来てほしい）：
+  1. 記事を「章」に分ける。旅や海外は国ごと（フィリピンはバギオ → クラーク → セブの順）、
+     名古屋の記事は話題（topic）ごと。
+  2. 章の中では、原稿フォルダの番号（「マレーシア/記事/01_…」の 01, 02, 03…）の順に読む。
+     シリーズ（Part 1・2・3、韓国の野球場のような帯）は、Part 1 → 2 → 3 の順でひとかたまり。
+     かたまりどうし・番号のない記事は、書いた順（古い順）。
+  3. 章どうしは、トップの一覧と同じ「新しい記事がある章が先」。
+  4. どうしても決めたい並びは meta.json に "follows": "<前に来る記事のslug>" と書く。
+     その記事のすぐ次に置かれる（ほかのルールより強い）。
+いちばん最後の記事の「次」は、トップの一覧へ。
 
 使い方: python3 tools/next-links.py   → そのあと tools/prev-links.py → tools/i18n.py
 何度走らせても同じ結果になる。記事を足したら毎回走らせる。
 """
-import html, json, pathlib, re
+import collections, html, json, pathlib, re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WORKS = ROOT / "works"
@@ -45,25 +52,70 @@ def series_key(doc):
     return None
 
 
+# 🗺 章の分け方。ここにない場所は、その場所の名前でひとつの章になる
+CHAPTER = {"baguio": "ph", "clark": "ph", "cebu": "ph", "seoul": "kr", "kl": "my",
+           "bangkok": "th", "thailand": "th", "tokyo": "jp-trip", "gifu": "jp-trip", "mie": "jp-trip"}
+# 同じ章の中で、どの街から読むか（住んだ順）
+PLACE_RANK = {"baguio": 0, "clark": 1, "cebu": 2}
+FOLDER_RE = re.compile(r"## 出どころ\s*\n+(?:[^\n]*?)([^/\n]+)/記事/(\d+)_")
+
+
+def chapter(m):
+    place = m.get("place") or ""
+    if place in CHAPTER:
+        return CHAPTER[place]
+    if place and place != "nagoya":
+        return place
+    return "home:" + (m.get("topic") or "other")
+
+
 def order():
     posts = {}
     for d in WORKS.iterdir():
         if (d / "index.html").exists() and (d / "meta.json").exists():
             m = json.loads((d / "meta.json").read_text())
+            src = (d / "source.md").read_text() if (d / "source.md").exists() else ""
+            f = FOLDER_RE.search(src)
             posts[d.name] = {"seq": m.get("seq", 0), "title": m.get("title", d.name),
-                             "series": series_key((d / "index.html").read_text())}
-    groups = {}
+                             "series": series_key((d / "index.html").read_text()),
+                             "folder": (f.group(1), int(f.group(2))) if f else None,
+                             "chapter": chapter(m), "rank": PLACE_RANK.get(m.get("place"), 9),
+                             "follows": m.get("follows")}
+
+    # かたまり（block）を作る：シリーズ → 原稿フォルダの番号順 → 1本だけの記事
+    blocks, used = [], set()
+    by = {}
     for s, p in posts.items():
         if p["series"]:
-            groups.setdefault(p["series"], []).append(s)
-    out, done = [], set()
-    for s in sorted(posts, key=lambda x: -posts[x]["seq"]):
-        if s in done:
-            continue
-        g = posts[s]["series"]
-        members = sorted(groups[g], key=lambda x: posts[x]["seq"]) if g else [s]
-        for x in members:
-            out.append(x); done.add(x)
+            by.setdefault(("series", p["series"]), []).append(s)
+    for k, ms in by.items():
+        ms.sort(key=lambda x: posts[x]["seq"]); blocks.append({"posts": ms, "loose": False}); used.update(ms)
+    by = {}
+    for s, p in posts.items():
+        if s not in used and p["folder"]:
+            by.setdefault((p["chapter"], p["folder"][0]), []).append(s)
+    for k, ms in by.items():
+        ms.sort(key=lambda x: (posts[x]["folder"][1], posts[x]["seq"]))
+        blocks.append({"posts": ms, "loose": len(ms) == 1}); used.update(ms)
+    for s in posts:
+        if s not in used:
+            blocks.append({"posts": [s], "loose": True})
+
+    # かたまりを章に入れる（かたまりの中でいちばん多い章。知識メタボの Part 1 だけ東京、などに引っぱられない）
+    chapters = {}
+    for b in blocks:
+        ch = collections.Counter(posts[x]["chapter"] for x in b["posts"]).most_common(1)[0][0]
+        b["key"] = (min(posts[x]["rank"] for x in b["posts"]), min(posts[x]["seq"] for x in b["posts"]))
+        chapters.setdefault(ch, []).append(b)
+    out = []
+    for c in sorted(chapters, key=lambda c: -max(posts[x]["seq"] for b in chapters[c] for x in b["posts"])):
+        for b in sorted(chapters[c], key=lambda b: b["key"]):
+            out.extend(b["posts"])
+
+    # "follows" の指定は最後に反映する（指定された記事のすぐ次へ移す）
+    for s, p in sorted(posts.items(), key=lambda kv: kv[1]["seq"]):
+        if p["follows"] in posts and p["follows"] != s:
+            out.remove(s); out.insert(out.index(p["follows"]) + 1, s)
     return posts, out
 
 
