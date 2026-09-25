@@ -10,11 +10,12 @@
 並べ方（2026-09-25 本人：マレーシアの記事の次が、いきなり名古屋の話になる。
 「次の記事で書きます」と書いた記事の次には、ちゃんとその記事が来てほしい）：
   1. 記事を「章」に分ける。旅や海外は国ごと（フィリピンはバギオ → クラーク → セブの順）、
-     名古屋の記事は話題（topic）ごと。
+     名古屋の記事は話題（topic）ごと。暮らし（life）はトップの「部屋」ごと。
+     meta.json に "chapter": "nagoya-town" のように書けば、その章に入る。
   2. 章の中では、原稿フォルダの番号（「マレーシア/記事/01_…」の 01, 02, 03…）の順に読む。
      シリーズ（Part 1・2・3、韓国の野球場のような帯）は、Part 1 → 2 → 3 の順でひとかたまり。
      かたまりどうし・番号のない記事は、書いた順（古い順）。
-  3. 章どうしは、トップの一覧と同じ「新しい記事がある章が先」。
+  3. 章どうしは、海外の章 → 国内の旅 → そのほか、の順。その中では「新しい記事がある章が先」。
   4. どうしても決めたい並びは meta.json に "follows": "<前に来る記事のslug>" と書く。
      その記事のすぐ次に置かれる（ほかのルールより強い）。
 いちばん最後の記事の「次」は、トップの一覧へ。
@@ -60,13 +61,22 @@ PLACE_RANK = {"baguio": 0, "clark": 1, "cebu": 2}
 FOLDER_RE = re.compile(r"## 出どころ\s*\n+(?:[^\n]*?)([^/\n]+)/記事/(\d+)_")
 
 
+ABROAD = {"ph", "kr", "my", "th"}          # 海外の章は、ひとかたまりで続けて読めるようにする
+TRIPS = {"jp-trip", "home:travel"}         # その次に、国内の旅と旅のコツ
+
+
 def chapter(m):
+    if m.get("chapter"):                   # meta.json で章を決め打ちできる（名古屋の街の話など）
+        return m["chapter"]
     place = m.get("place") or ""
     if place in CHAPTER:
         return CHAPTER[place]
     if place and place != "nagoya":
         return place
-    return "home:" + (m.get("topic") or "other")
+    topic = m.get("topic") or "other"
+    if topic == "life":                    # 暮らしの話は数が多いので、トップの「部屋」ごとに分ける
+        return "life:" + (m.get("room") or "other")
+    return "home:" + topic
 
 
 def order():
@@ -107,8 +117,12 @@ def order():
         ch = collections.Counter(posts[x]["chapter"] for x in b["posts"]).most_common(1)[0][0]
         b["key"] = (min(posts[x]["rank"] for x in b["posts"]), min(posts[x]["seq"] for x in b["posts"]))
         chapters.setdefault(ch, []).append(b)
+        for x in b["posts"]:
+            posts[x]["chapter"] = ch          # シリーズの途中で「話が変わります」と出さないように
     out = []
-    for c in sorted(chapters, key=lambda c: -max(posts[x]["seq"] for b in chapters[c] for x in b["posts"])):
+    def newest(c): return max(posts[x]["seq"] for b in chapters[c] for x in b["posts"])
+    def group(c): return 0 if c in ABROAD else 1 if c in TRIPS else 2
+    for c in sorted(chapters, key=lambda c: (group(c), -newest(c))):
         for b in sorted(chapters[c], key=lambda b: b["key"]):
             out.extend(b["posts"])
 
@@ -119,17 +133,22 @@ def order():
     return posts, out
 
 
-def block(target, posts):
+def block(target, posts, here=None):
     if target is None:
         return ('  <a class="next" href="../../index.html">\n    <div>\n'
                 '      <div class="next-kicker">NEXT · ALL POSTS</div>\n'
                 '      <div class="next-title">See all 15-second posts</div>\n    </div>\n'
                 '    <div class="next-arrow" aria-hidden="true">⚡</div>\n  </a>\n')
     t = html.escape(posts[target]["title"], quote=False)
-    return (f'  <a class="next" href="../{target}/index.html">\n    <div>\n'
-            '      <div class="next-kicker">NEXT · 15 SEC</div>\n'
+    # 章が変わるところでは「話が変わります」と先に言う（2026-09-25：マレーシアの次に急に名古屋の話が来て戸惑う）
+    new = here is not None and posts[here]["chapter"] != posts[target]["chapter"]
+    attr = ' data-topic="new"' if new else ""
+    kicker = "NEXT · NEW TOPIC" if new else "NEXT · 15 SEC"
+    arrow = "🔀" if new else "⚡"
+    return (f'  <a class="next" href="../{target}/index.html"{attr}>\n    <div>\n'
+            f'      <div class="next-kicker">{kicker}</div>\n'
             f'      <div class="next-title">{t}</div>\n    </div>\n'
-            '    <div class="next-arrow" aria-hidden="true">⚡</div>\n  </a>\n')
+            f'    <div class="next-arrow" aria-hidden="true">{arrow}</div>\n  </a>\n')
 
 
 def main():
@@ -139,7 +158,7 @@ def main():
         target = seq[i + 1] if i + 1 < len(seq) else None
         p = WORKS / s / "index.html"
         doc = p.read_text()
-        new_block = block(target, posts)
+        new_block = block(target, posts, s)
         main_end = doc.rindex("</main>")
         m = NEXT_RE.search(doc, 0, main_end)
         if m:
