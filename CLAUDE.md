@@ -48,7 +48,7 @@
 ## 🌏 表示言語（2026-09-25 更新）
 
 - 公開記事の基準言語は英語。すべての表示訳は公開中の英語本文から直接作る。日本語などの訳を別言語の翻訳元にしない
-- 現在40言語：`en ja ko zh zh-Hant es fr de pt id vi fil ms ru tr nl it pl sv nb da fi cs ro el uk sw ceb hi th bn ta te mr pa ne ar ur fa he`。フェーズB・C・Dまで全171記事に対応済み。歌詞の引用2文はタミル語・テルグ語でも原文のまま残す。右から書くアラビア語・ウルドゥー語・ペルシャ語・ヘブライ語はRTL表示に対応
+- 現在40言語：`en ja ko zh zh-Hant es fr de pt id vi fil ms ru tr nl it pl sv nb da fi cs ro el uk sw ceb hi th bn ta te mr pa ne ar ur fa he`。フェーズB・C・Dまで全177記事に対応済み。歌詞の引用2文はタミル語・テルグ語でも原文のまま残す。右から書くアラビア語・ウルドゥー語・ペルシャ語・ヘブライ語はRTL表示に対応
 - 新しい未確認訳には `unverified: true` とその言語の注意書きを設定する
 - メニューは現在の地球儀・小旗デザインを維持し、検索欄は置かない。英語名頭文字 A〜Z ジャンプを保つ
 - 中国語は簡体字の訳と既存の繁体字対応を維持する

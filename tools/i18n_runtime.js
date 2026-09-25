@@ -44,6 +44,8 @@
   var DATA;
   try { DATA = JSON.parse(holder.textContent); } catch (e) { return; }
   var LANGS = DATA.langs || {};
+  var MENU = (LANGS[lang] && LANGS[lang].menu) || {};
+  var THEME = (LANGS[lang] && LANGS[lang].theme) || {};
   var KEY = 'pengesso-lang';
   var avail = ['en'].concat(Object.keys(LANGS));
   var NAMES = { en: 'English' };
@@ -154,7 +156,7 @@
     b.type = 'button'; b.className = 'theme-btn'; b.setAttribute('translate', 'no');
     function paint() {
       b.textContent = theme === 'dark' ? '☀️' : '🌙';
-      b.setAttribute('aria-label', theme === 'dark' ? 'Light mode' : 'Dark mode');
+      b.setAttribute('aria-label', theme === 'dark' ? (THEME.lightMode || 'Light mode') : (THEME.darkMode || 'Dark mode'));
       b.title = b.getAttribute('aria-label');
     }
     paint();
@@ -305,7 +307,6 @@
     var rtl = document.createElement('style');
     rtl.textContent = 'html[dir="rtl"] :is(svg, img, video, iframe, pre, code, .map2, .map-stage, .i18n-switch) { direction: ltr; }' +
       'html[dir="rtl"] .i18n-row { justify-content: flex-start; }' +
-      'html[dir="rtl"] .i18n-menu { right: auto; left: 0; }' +
       'html[dir="rtl"] .i18n-float { right: auto; left: 10px; }';
     (document.head || document.documentElement).appendChild(rtl);
   }
@@ -435,7 +436,7 @@
     wrap.className = 'i18n-switch';
     wrap.setAttribute('translate', 'no');
     wrap.setAttribute('role', 'group');
-    wrap.setAttribute('aria-label', 'Language');
+    wrap.setAttribute('aria-label', MENU.languageLabel || 'Language');
 
     if (avail.length <= 2) {
       avail.forEach(function (l) { wrap.appendChild(option(l)); });
@@ -446,7 +447,7 @@
       cur.className = 'i18n-opt i18n-cur';
       cur.setAttribute('aria-haspopup', 'true');
       cur.setAttribute('aria-expanded', 'false');
-      cur.setAttribute('aria-label', 'Language: ' + NAMES[lang]);
+      cur.setAttribute('aria-label', (MENU.languageLabel || 'Language') + ': ' + NAMES[lang]);
       cur.setAttribute('aria-controls', 'i18n-language-menu');
       var globe = document.createElement('span');
       globe.className = 'i18n-globe'; globe.setAttribute('aria-hidden', 'true'); globe.textContent = '🌐';
@@ -465,19 +466,19 @@
       menu.className = 'i18n-menu';
       menu.id = 'i18n-language-menu';
       menu.setAttribute('role', 'group');
-      menu.setAttribute('aria-label', 'Choose a language');
+      menu.setAttribute('aria-label', MENU.chooseLanguage || 'Choose a language');
       menu.hidden = true;
       var az = document.createElement('div');
       az.className = 'i18n-az';
       az.setAttribute('role', 'group');
-      az.setAttribute('aria-label', 'Jump by the first letter of the English name');
+      az.setAttribute('aria-label', MENU.jumpByEnglishName || 'Jump by the first letter of the English name');
       menu.appendChild(az);
 
       var results = document.createElement('div'); results.className = 'i18n-results';
       var suggestedGroup = document.createElement('section');
       var suggestedTitle = document.createElement('div');
       suggestedTitle.className = 'i18n-group-label';
-      suggestedTitle.textContent = 'Suggested · たぶんこれ · 추천 · 推荐';
+      suggestedTitle.textContent = MENU.suggested || 'Suggested';
       suggestedGroup.appendChild(suggestedTitle);
       var recommended = [];
       [browserChoice(), 'en', 'ja'].forEach(function (l) {
@@ -489,7 +490,7 @@
       var allGroup = document.createElement('section');
       var allTitle = document.createElement('div');
       allTitle.className = 'i18n-group-label';
-      allTitle.textContent = 'All languages · すべての言語';
+      allTitle.textContent = MENU.allLanguages || 'All languages';
       allGroup.appendChild(allTitle);
       var allOptions = avail.slice().sort(function (a, b) {
         return searchKey(EN_NAMES[a] || a).localeCompare(searchKey(EN_NAMES[b] || b), 'en');
@@ -526,14 +527,30 @@
         cur.setAttribute('aria-expanded', 'false');
         if (returnFocus) cur.focus();
       }
+      function positionMenu() {
+        var anchor = cur.getBoundingClientRect();
+        menu.style.position = 'fixed';
+        menu.style.right = 'auto';
+        menu.style.left = '0px';
+        menu.style.top = Math.round(anchor.bottom + 6) + 'px';
+        var margin = 12, width = menu.getBoundingClientRect().width;
+        var left = Math.max(margin, Math.min(anchor.right - width, window.innerWidth - width - margin));
+        var top = anchor.bottom + 6, height = menu.getBoundingClientRect().height;
+        if (top + height > window.innerHeight - margin) top = Math.max(margin, anchor.top - height - 6);
+        menu.style.left = Math.round(left) + 'px';
+        menu.style.top = Math.round(top) + 'px';
+      }
       function seenTip() { try { localStorage.setItem(TIP_KEY, '1'); } catch (e) {} if (tip) { tip.remove(); tip = null; } wrap.classList.remove('i18n-nudge'); }
       cur.addEventListener('click', function (e) {
         e.stopPropagation();
         seenTip();
         menu.hidden = !menu.hidden;
         cur.setAttribute('aria-expanded', String(!menu.hidden));
+        if (!menu.hidden) positionMenu();
         /* 開いても入力欄にはフォーカスしない（スマホでキーボードが出ないように） */
       });
+      window.addEventListener('resize', function () { if (!menu.hidden) positionMenu(); });
+      window.addEventListener('scroll', function () { if (!menu.hidden) positionMenu(); }, { passive: true });
       document.addEventListener('click', function (e) { if (!wrap.contains(e.target)) closeMenu(false); });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !menu.hidden) closeMenu(true); });
       wrap.addEventListener('focusout', function () {
@@ -568,7 +585,8 @@
           tip = document.createElement('div');
           tip.className = 'i18n-tip';
           tip.setAttribute('role', 'status');
-          tip.innerHTML = '<span class="i18n-tip-text"></span><button type="button" aria-label="Close">×</button>';
+          tip.innerHTML = '<span class="i18n-tip-text"></span><button type="button">×</button>';
+          tip.querySelector('button').setAttribute('aria-label', (LANGS[lang] && LANGS[lang].noticeDismiss) || 'Close');
           var txt = tip.querySelector('.i18n-tip-text'), n = 0;
           txt.textContent = lines[0];
           tip.addEventListener('click', function (e) { e.stopPropagation(); if (e.target.tagName === 'BUTTON') seenTip(); else cur.click(); });
@@ -785,6 +803,11 @@
   document.documentElement.setAttribute('lang', lang);
   var t0 = lookup(norm(document.title));
   if (t0 !== null) document.title = t0.replace(/<[^>]+>/g, '');
+  /* この歌詞だけ、タミル語・テルグ語では英語の引用を保つ。
+     それ以外の言語では works/<slug>/i18n/<lang>.json の訳を表示する。 */
+  if (lang === 'ta' || lang === 'te') {
+    document.querySelectorAll('.lyric-en').forEach(function (el) { el.setAttribute('translate', 'no'); });
+  }
   walk(document.body);
 
   /* ── あとから JavaScript で描かれる部分（トップの一覧など）も訳す ── */

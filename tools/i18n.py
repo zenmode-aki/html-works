@@ -119,6 +119,25 @@ def units(root):
     return out
 
 
+def dynamic_top_units(doc):
+    """🔎 トップの JavaScript が後から描く部屋名・説明も翻訳チェックに含める"""
+    m = re.search(r"\bvar\s+ROOMS\s*=\s*(\[[\s\S]*?\]);", doc)
+    if not m:
+        raise ValueError("index.html に var ROOMS = [...] が見つかりません")
+    try:
+        rooms = json.loads(m.group(1))
+    except json.JSONDecodeError as exc:
+        raise ValueError("index.html の ROOMS 配列を JSON として読めません") from exc
+    out = []
+    for room in rooms:
+        label = (str(room.get("e", "")) + " " + str(room.get("en", ""))).strip()
+        if label:
+            out.append(label)
+        if room.get("sub"):
+            out.append(str(room["sub"]))
+    return out
+
+
 def find(n, tag, cls=None):
     if isinstance(n, str):
         return None
@@ -251,6 +270,9 @@ def ui_meta(ui):
     return {"name": ui.get("name"), "englishName": ui.get("englishName"),
             "aliases": ui.get("aliases", []), "flag": ui.get("flag"),
             "patterns": ui.get("patterns", []),
+            "menu": ui.get("menu", {}),
+            "theme": {"darkMode": ui.get("dict", {}).get("Dark mode", "Dark mode"),
+                      "lightMode": ui.get("dict", {}).get("Light mode", "Light mode")},
             "unverified": ui.get("unverified", False),
             "notice": ui.get("notice"), "noticeDismiss": ui.get("noticeDismiss")}
 
@@ -340,6 +362,9 @@ def build_all():
                                 "englishName": uis[l].get("englishName"),
                                 "aliases": uis[l].get("aliases", []), "flag": uis[l].get("flag"),
                                 "dict": pack(d, used), "patterns": uis[l].get("patterns", []),
+                                "menu": uis[l].get("menu", {}),
+                                "theme": {"darkMode": uis[l].get("dict", {}).get("Dark mode", "Dark mode"),
+                                          "lightMode": uis[l].get("dict", {}).get("Light mode", "Light mode")},
                                 "unverified": uis[l].get("unverified", False),
                                 "notice": uis[l].get("notice"), "noticeDismiss": uis[l].get("noticeDismiss")}
             miss = missing(ks, d, uis[l].get("patterns", []))
@@ -366,7 +391,9 @@ def build_all():
         # 🔄 2026-09-25：訳のファイルはブラウザに10分ほど残る。文を直した直後に古い訳を読んで
         #    英語が混ざらないよう、中身が変わったら URL も変わるように版の印（ハッシュ）を付ける
         tdata["langs"][l]["v"] = hashlib.sha1(json_asset(top_assets[I18N / f"top-data.{l}.json"])).hexdigest()[:10]
-        miss = missing(units(parse(strip_block(top.read_text(encoding="utf-8")))), d, tops[l].get("patterns", [])) + label_miss
+        top_source = strip_block(top.read_text(encoding="utf-8"))
+        miss = missing(units(parse(top_source)) + dynamic_top_units(top_source), d,
+                       tops[l].get("patterns", [])) + label_miss
         if miss:
             report.append(("(トップページ)", l, miss))
     pages.append((top, tdata))
@@ -416,7 +443,8 @@ def main():
                 d[info["meta_title"]] = t
         slugs = sorted(p.parent.name for p in WORKS.glob("*/index.html"))
         label_miss = top_labels(lang, slugs, d)
-        todo = missing(units(parse(doc)), d, tops[lang].get("patterns", [])) + label_miss
+        todo = missing(units(parse(doc)) + dynamic_top_units(doc), d,
+                       tops[lang].get("patterns", [])) + label_miss
         print(json.dumps(todo, ensure_ascii=False, indent=1))
         return 0
 
