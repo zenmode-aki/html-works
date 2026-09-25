@@ -34,7 +34,7 @@ cat <<MSG
   4) python3 tools/check.py $SLUG        ← 「追加した文：0」を確認
   5) python3 tools/thumbs.py             ← 一覧に出すサムネを作る（macOSのみ）
   6) python3 tools/build-site.py         ← トップの一覧に差し込む（手で足さない）
-  7) ひとつ前の記事の末尾の Next ⚡ を、この記事に向ける
+  7) python3 tools/next-links.py && python3 tools/prev-links.py   ← 次へ／前へ を自動で並べる（手で直さない）
   8) 🌐 日本語訳をつける
      python3 tools/i18n.py --todo $SLUG   ← 訳していない英文が出る
      → $DIR/i18n/ja.json に {"title": "…", "text": {"英文": "訳"}} を書く

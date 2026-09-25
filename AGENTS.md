@@ -25,3 +25,7 @@
   - Codex は残りの言語を埋めたあと **`python3 tools/i18n-audit.py --all-langs`** で確かめる
   - トップの一覧に出る記事の短いラベル（meta.json の `label`）の訳は、`works/<slug>/i18n/<lang>.json` の **`"label"`** に書く。抜けは `--check` / `--todo-top` にも出る
 
+## ⏭ 次の記事へ・前の記事へ（2026-09-25）
+
+- 「次の記事へ」は手で決めない。記事を公開したら `python3 tools/next-links.py` → `python3 tools/prev-links.py` → `python3 tools/i18n.py`
+- 並べ方はトップの一覧と同じ新しい順。シリーズは Part 1→2→3 でまとめる。`python3 tools/check.py --site` がループを見張っている
