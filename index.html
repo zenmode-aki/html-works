@@ -735,10 +735,84 @@
       opacity: 1 !important; transform: none !important;
     }
   }
+
+  /* ══ 2026-09-25 地図を目玉に ══════════════════════════════ */
+  .btn-map { font-size: 15px; }
+  .map-panel { position: relative; border: 2px solid rgba(47,86,201,.28);
+    box-shadow: 0 18px 44px -16px rgba(47,86,201,.35); }
+  .map-wrap { position: relative; }
+  .map-wrap .map2 { cursor: pointer; }
+  /* 押せる点は、ゆっくり波紋を出す */
+  .city .ring { fill: none; stroke: #2f56c9; stroke-width: 3; opacity: 0; pointer-events: none;
+    transform-box: fill-box; transform-origin: center; }
+  .city.has .ring { animation: ring 2.4s ease-out infinite; }
+  .city.has:nth-of-type(2n) .ring { animation-delay: .8s; }
+  .city.has:nth-of-type(3n) .ring { animation-delay: 1.6s; }
+  .city.on .ring { stroke: #e0a100; }
+  @keyframes ring { 0% { opacity: .7; transform: scale(1); } 80%, 100% { opacity: 0; transform: scale(3.4); } }
+  .city.has:hover .cname { text-decoration: underline; }
+  /* 「押してみて」の吹き出し。一度さわったら消える */
+  .map-poke {
+    position: absolute; left: 50%; top: 14px; transform: translateX(-50%);
+    padding: 9px 16px; border-radius: 999px; pointer-events: none; white-space: nowrap;
+    background: var(--yellow); color: #4a2c00; font-size: 13.5px; font-weight: 900;
+    box-shadow: 0 8px 20px -6px rgba(0,0,0,.35);
+    animation: poke 1.6s ease-in-out infinite; transition: opacity .3s;
+  }
+  .map-poke.bye { opacity: 0; animation: none; }
+  @keyframes poke { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 6px); } }
+  .map-hint { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .place-right { display: inline-flex; align-items: center; gap: 8px; }
+  .place-go { color: var(--blue); font-weight: 900; transition: transform .18s; }
+  .place:hover .place-go, .place.on .place-go { transform: translateX(4px); }
+  .place.on { box-shadow: 0 0 0 2.5px rgba(47,86,201,.2); }
+
+  /* 行き先トースト */
+  .go-toast {
+    position: fixed; left: 50%; bottom: 22px; z-index: 60; transform: translate(-50%, 140%);
+    display: flex; align-items: center; gap: 10px; max-width: calc(100vw - 32px);
+    padding: 12px 20px; border-radius: 999px; pointer-events: none;
+    background: #232c48; color: #fff; font-size: 15px; font-weight: 900;
+    box-shadow: 0 16px 40px -10px rgba(0,0,0,.45); opacity: 0;
+    transition: transform .45s cubic-bezier(.2,1.2,.4,1), opacity .3s;
+  }
+  .go-toast.show { transform: translate(-50%, 0); opacity: 1; }
+  .go-toast .gt-plane { display: inline-block; animation: fly 1.2s ease-in-out infinite; }
+  .go-toast .gt-n { padding: 3px 10px; border-radius: 999px; background: var(--yellow); color: #4a2c00; font-size: 12.5px; }
+  @keyframes fly { 0%, 100% { transform: translate(0, 0) rotate(0); } 50% { transform: translate(4px, -3px) rotate(-6deg); } }
+
+  /* 着いたら、絞った条件が光って、記事が1枚ずつすべり込む */
+  .now.arrive button { animation: now-pop .7s cubic-bezier(.2,1.4,.4,1) both; }
+  @keyframes now-pop { 0% { transform: scale(.7); opacity: 0; } 60% { transform: scale(1.08); } 100% { transform: none; opacity: 1; } }
+  .feed.arrive > * { animation: slide-in .55s cubic-bezier(.2,.9,.3,1) both; }
+  .feed.arrive > *:nth-child(2) { animation-delay: .08s; } .feed.arrive > *:nth-child(3) { animation-delay: .16s; }
+  .feed.arrive > *:nth-child(4) { animation-delay: .24s; } .feed.arrive > *:nth-child(5) { animation-delay: .32s; }
+  .feed.arrive > *:nth-child(n+6) { animation-delay: .4s; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(46px); } to { opacity: 1; transform: none; } }
+
+  /* 🎯 1000本ゲージ */
+  .goal-track { position: relative; padding-bottom: 22px; }
+  .goal-bar { height: 18px; }
+  .goal-runner { position: absolute; left: 0; top: -9px; transform: translateX(-50%); font-size: 26px;
+    line-height: 1; transition: left 1.1s cubic-bezier(.22,1,.36,1); filter: drop-shadow(0 3px 3px rgba(0,0,0,.2)); }
+  .goal-ticks span { position: absolute; bottom: 0; transform: translateX(-50%); font-size: 11px; font-weight: 900;
+    color: var(--muted); font-family: "Trebuchet MS", sans-serif; }
+  .goal-ticks span:last-child { transform: translateX(-100%); }
+  .goal-ticks span::before { content: ""; position: absolute; left: 50%; bottom: 17px; width: 2px; height: 12px;
+    background: rgba(35,44,72,.18); }
+  .goal-ticks span:last-child::before { left: auto; right: 0; }
+  .goal-ticks span.got { color: var(--blue); }
+  html[data-theme="dark"] .goal-bar { background: rgba(255,255,255,.13); }
+  html[data-theme="dark"] .goal-ticks span::before { background: rgba(255,255,255,.28); }
+  html[data-theme="dark"] .goal-ticks span.got { color: #9db4ff; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .city.has .ring, .map-poke, .go-toast .gt-plane, .feed.arrive > *, .now.arrive button { animation: none; }
+  }
 </style>
 <script>document.documentElement.className += " js";</script>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"lazyTop":true,"langs":{"ceb":{"name":"Cebuano","englishName":"Cebuano","aliases":["ceb-PH"],"flag":"🇵🇭","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 segundos"]],"unverified":true,"notice":"🐧 Kini nga panid gihubad ni AI. Ang tag-iya niini nga site makabasa lang ug English ug Japanese, mao nga dili niya masusi kon husto ba ang hubad. Kung makakita ka ug butang nga katingad-an, palihug isulti kanamo sa \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Close","dict":{},"v":"0b6f7147a4"},"cs":{"name":"Čeština","englishName":"Czech","aliases":["cs-CZ"],"flag":"🇨🇿","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekund"]],"unverified":true,"notice":"🐧 Tuto stránku přeložila AI. Majitel tohoto webu umí číst pouze anglicky a japonsky, takže nemohl zkontrolovat, zda je překlad správný. Pokud najdete něco divného, ​​řekněte nám to na \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Zavřít","dict":{},"v":"4f0bbcd77d"},"da":{"name":"Dansk","englishName":"Danish","aliases":["da-DK"],"flag":"🇩🇰","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekunder"]],"unverified":true,"notice":"🐧 Denne side er oversat af AI. Ejeren af ​​denne side kan kun læse engelsk og japansk, så han kunne ikke kontrollere, om oversættelsen er rigtig. Hvis du finder noget mærkeligt, så fortæl os venligst på \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Luk","dict":{},"v":"4dbec32794"},"de":{"name":"Deutsch","englishName":"German","aliases":["de-DE","de-AT","de-CH"],"flag":"🇩🇪","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 Sekunden"]],"unverified":true,"notice":"🐧 Diese Seite wurde von AI übersetzt. Der Inhaber dieser Website kann nur Englisch und Japanisch lesen und konnte daher nicht überprüfen, ob die Übersetzung korrekt ist. Wenn Sie etwas Seltsames finden, sagen Sie es uns bitte unter \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Schließen","dict":{},"v":"580fcb93a6"},"el":{"name":"Ελληνικά","englishName":"Greek","aliases":["el-GR"],"flag":"🇬🇷","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 δευτερόλεπτα"]],"unverified":true,"notice":"🐧 Αυτή η σελίδα μεταφράστηκε από AI. Ο ιδιοκτήτης αυτού του ιστότοπου μπορεί να διαβάσει μόνο αγγλικά και ιαπωνικά, επομένως δεν μπορούσε να ελέγξει αν η μετάφραση είναι σωστή. Αν βρείτε κάτι περίεργο, πείτε μας στο \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Κλείσιμο","dict":{},"v":"aa09ca00b7"},"es":{"name":"Español","englishName":"Spanish","aliases":["es-ES","es-MX","es-419","spa"],"flag":"🇪🇸","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 s"]],"unverified":true,"notice":"🐧 Esta página fue traducida por IA. El propietario de este sitio solo sabe leer inglés y japonés, así que no pudo comprobar si la traducción es correcta. Si encuentras algo extraño, avísanos en \u003cb>pengesso@gmail.com\u003c/b>.","noticeDismiss":"Cerrar","dict":{},"v":"36d7aa67df"},"fi":{"name":"Suomi","englishName":"Finnish","aliases":["fi-FI"],"flag":"🇫🇮","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekuntia"]],"unverified":true,"notice":"🐧 Tämän sivun on kääntänyt AI. Tämän sivuston omistaja osaa lukea vain englantia ja japania, joten hän ei voinut tarkistaa, onko käännös oikea. Jos huomaat jotain outoa, kerro siitä meille osoitteessa \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Sulje","dict":{},"v":"547141e1b0"},"fil":{"name":"Filipino","englishName":"Filipino","aliases":["tl","fil-PH"],"flag":"🇵🇭","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 segundo"]],"unverified":true,"notice":"🐧 Ang pahinang ito ay isinalin ng AI. English at Japanese lang ang kayang basahin ng may-ari ng site na ito, kaya hindi niya masuri kung tama ang pagsasalin. Kung makakita ka ng kakaiba, mangyaring sabihin sa amin sa \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Isara ang","dict":{},"v":"c4def755de"},"fr":{"name":"Français","englishName":"French","aliases":["fr-FR","fr-CA","fr-BE","fr-CH"],"flag":"🇫🇷","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 secondes"]],"unverified":true,"notice":"🐧 Cette page a été traduite par AI. Le propriétaire de ce site ne sait lire que l'anglais et le japonais, il n'a donc pas pu vérifier si la traduction est correcte. Si vous trouvez quelque chose d'étrange, veuillez nous le dire à \u003cb>pengesso@gmail.com\u003c/b> !","noticeDismiss":"Fermer","dict":{},"v":"53f55dc0ff"},"id":{"name":"Bahasa Indonesia","englishName":"Indonesian","aliases":["id-ID"],"flag":"🇮🇩","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 detik"]],"unverified":true,"notice":"🐧 Halaman ini diterjemahkan oleh AI. Pemilik situs ini hanya bisa membaca bahasa Inggris dan Jepang, jadi dia tidak bisa mengecek apakah terjemahannya benar. Jika Anda menemukan sesuatu yang aneh, silakan beri tahu kami di \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Tutup","dict":{},"v":"dfaf3fe430"},"it":{"name":"Italiano","englishName":"Italian","aliases":["it-IT"],"flag":"🇮🇹","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 secondi"]],"unverified":true,"notice":"🐧 Questa pagina è stata tradotta da AI. Il proprietario di questo sito può leggere solo inglese e giapponese, quindi non ha potuto verificare se la traduzione è corretta. Se trovi qualcosa di strano, comunicacelo a \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Chiudi","dict":{},"v":"9dff419d20"},"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":false,"notice":null,"noticeDismiss":null,"dict":{},"v":"11e83c673f"},"ko":{"name":"한국어","englishName":"Korean","aliases":["kor"],"flag":"🇰🇷","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 약 $2초"]],"unverified":true,"notice":"🐧 이 페이지는 AI가 한국어로 번역했어요. 사이트 주인은 한국어를 읽지 못해서, 번역이 맞는지 확인하지 못했어요. 이상한 부분을 발견하면 \u003cb>pengesso@gmail.com\u003c/b> 으로 알려주세요!","noticeDismiss":"닫기","dict":{},"v":"2ab8d6c6ab"},"ms":{"name":"Bahasa Melayu","englishName":"Malay","aliases":["ms-MY"],"flag":"🇲🇾","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 saat"]],"unverified":true,"notice":"🐧 Halaman ini diterjemah oleh AI. Pemilik laman web ini hanya boleh membaca bahasa Inggeris dan Jepun, jadi dia tidak dapat menyemak sama ada terjemahan itu betul. Jika anda menemui sesuatu yang pelik, sila beritahu kami di \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Tutup","dict":{},"v":"21ee5fffca"},"nb":{"name":"Norsk","englishName":"Norwegian","aliases":["no","no-NO","nb-NO"],"flag":"🇳🇴","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekunder"]],"unverified":true,"notice":"🐧 Denne siden ble oversatt av AI. Eieren av denne siden kan bare lese engelsk og japansk, så han kunne ikke sjekke om oversettelsen er riktig. Hvis du finner noe merkelig, vennligst fortell oss på \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Lukk","dict":{},"v":"097e46cab8"},"nl":{"name":"Nederlands","englishName":"Dutch","aliases":["nl-NL","nl-BE"],"flag":"🇳🇱","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 seconden"]],"unverified":true,"notice":"🐧 Deze pagina is vertaald door AI. De eigenaar van deze site kan alleen Engels en Japans lezen, dus hij kon niet controleren of de vertaling klopt. Als je iets vreemds tegenkomt, vertel het ons dan op \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Sluiten","dict":{},"v":"b62db90823"},"pl":{"name":"Polski","englishName":"Polish","aliases":["pl-PL"],"flag":"🇵🇱","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekundy"]],"unverified":true,"notice":"🐧 Ta strona została przetłumaczona przez AI. Właściciel tej strony zna tylko język angielski i japoński, więc nie mógł sprawdzić, czy tłumaczenie jest prawidłowe. Jeśli znajdziesz coś dziwnego, poinformuj nas o tym pod adresem \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Zamknij","dict":{},"v":"5e4156cba0"},"pt":{"name":"Português","englishName":"Portuguese","aliases":["pt-BR","pt-PT"],"flag":"🇧🇷","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 segundos"]],"unverified":true,"notice":"🐧 Esta página foi traduzida por AI. O proprietário deste site só sabe ler inglês e japonês, por isso não pôde verificar se a tradução está correta. Se você encontrar algo estranho, informe-nos em \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Fechar","dict":{},"v":"c5cf92b200"},"ro":{"name":"Română","englishName":"Romanian","aliases":["ro-RO"],"flag":"🇷🇴","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 secunde"]],"unverified":true,"notice":"🐧 Această pagină a fost tradusă de AI. Proprietarul acestui site poate citi doar engleză și japoneză, așa că nu a putut verifica dacă traducerea este corectă. Dacă găsiți ceva ciudat, vă rugăm să ne spuneți la \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Închidere","dict":{},"v":"c124a1f54a"},"ru":{"name":"Русский","englishName":"Russian","aliases":["ru-RU"],"flag":"🇷🇺","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 секунды"]],"unverified":true,"notice":"🐧 Эта страница была переведена AI. Владелец этого сайта умеет читать только на английском и японском, поэтому не смог проверить правильность перевода. Если вы обнаружите что-то странное, сообщите нам по адресу \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Закрыть","dict":{},"v":"3c31bc7a27"},"sv":{"name":"Svenska","englishName":"Swedish","aliases":["sv-SE"],"flag":"🇸🇪","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekunder"]],"unverified":true,"notice":"🐧 Denna sida har översatts av AI. Ägaren av denna webbplats kan bara läsa engelska och japanska, så han kunde inte kontrollera om översättningen stämmer. Om du hittar något konstigt, berätta för oss på \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Stäng","dict":{},"v":"04e824167b"},"sw":{"name":"Kiswahili","englishName":"Swahili","aliases":["sw-KE","sw-TZ"],"flag":"🇰🇪","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekunde"]],"unverified":true,"notice":"🐧 Ukurasa huu ulitafsiriwa na AI. Mmiliki wa tovuti hii anaweza tu kusoma Kiingereza na Kijapani, kwa hiyo hakuweza kuangalia ikiwa tafsiri ni sahihi. Ukipata jambo lisilo la kawaida, tafadhali tuambie kwa \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Funga","dict":{},"v":"ba0aa8dd51"},"tr":{"name":"Türkçe","englishName":"Turkish","aliases":["tr-TR"],"flag":"🇹🇷","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 saniye"]],"unverified":true,"notice":"🐧 Bu sayfa yapay zeka tarafından çevrilmiştir. Bu sitenin sahibi yalnızca İngilizce ve Japonca okuyabildiğinden çevirinin doğru olup olmadığını kontrol edemedi. Garip bir şey bulursanız lütfen bize \u003cb>pengesso@gmail.com\u003c/b> adresinden bildirin!","noticeDismiss":"Kapat","dict":{},"v":"3aad9186dc"},"uk":{"name":"Українська","englishName":"Ukrainian","aliases":["uk-UA"],"flag":"🇺🇦","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 seconds"]],"unverified":true,"notice":"🐧 Цю сторінку було перекладено ШІ. Власник цього сайту може читати лише англійською та японською мовами, тому він не міг перевірити, чи правильний переклад. Якщо ви виявите щось дивне, повідомте нам на \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Close","dict":{},"v":"d91c2f363c"},"vi":{"name":"Tiếng Việt","englishName":"Vietnamese","aliases":["vi-VN"],"flag":"🇻🇳","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 giây"]],"unverified":true,"notice":"🐧 Trang này được dịch bởi AI. Chủ sở hữu trang này chỉ có thể đọc được tiếng Anh và tiếng Nhật nên không thể kiểm tra xem bản dịch có đúng hay không. Nếu bạn phát hiện điều gì kỳ lạ, vui lòng cho chúng tôi biết tại \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Đóng","dict":{},"v":"3edb40b2fe"},"zh":{"name":"简体中文","englishName":"Chinese (Simplified)","aliases":["zh-CN","zh-Hans","zho","chi","cmn"],"flag":"🇨🇳","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 约$2秒"]],"unverified":true,"notice":"🐧 这个页面是 AI 翻译成中文的。网站主人看不懂中文，所以没办法确认翻译是否正确。如果发现奇怪的地方，请告诉 \u003cb>pengesso@gmail.com\u003c/b>！","noticeDismiss":"关闭","dict":{},"v":"44f90780ba"},"zh-Hant":{"name":"繁體中文","englishName":"Chinese (Traditional)","aliases":["zh-TW","zh-HK","zh-MO","zho","zht"],"flag":"🇹🇼","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":true,"notice":"🐧 這個頁面是 AI 翻譯成中文的（由簡體字自動轉成繁體字）。網站主人看不懂中文，所以沒辦法確認翻譯是否正確。如果發現奇怪的地方，請告訴 \u003cb>pengesso@gmail.com\u003c/b>！","noticeDismiss":"關閉","dict":{},"v":"ce30dd4bbd"}}}</script>
+<script type="application/json" id="i18n-data">{"lazyTop":true,"langs":{"ceb":{"name":"Cebuano","englishName":"Cebuano","aliases":["ceb-PH"],"flag":"🇵🇭","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 segundos"]],"unverified":true,"notice":"🐧 Kini nga panid gihubad ni AI. Ang tag-iya niini nga site makabasa lang ug English ug Japanese, mao nga dili niya masusi kon husto ba ang hubad. Kung makakita ka ug butang nga katingad-an, palihug isulti kanamo sa \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Close","dict":{},"v":"0b6f7147a4"},"cs":{"name":"Čeština","englishName":"Czech","aliases":["cs-CZ"],"flag":"🇨🇿","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekund"]],"unverified":true,"notice":"🐧 Tuto stránku přeložila AI. Majitel tohoto webu umí číst pouze anglicky a japonsky, takže nemohl zkontrolovat, zda je překlad správný. Pokud najdete něco divného, ​​řekněte nám to na \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Zavřít","dict":{},"v":"4f0bbcd77d"},"da":{"name":"Dansk","englishName":"Danish","aliases":["da-DK"],"flag":"🇩🇰","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekunder"]],"unverified":true,"notice":"🐧 Denne side er oversat af AI. Ejeren af ​​denne side kan kun læse engelsk og japansk, så han kunne ikke kontrollere, om oversættelsen er rigtig. Hvis du finder noget mærkeligt, så fortæl os venligst på \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Luk","dict":{},"v":"4dbec32794"},"de":{"name":"Deutsch","englishName":"German","aliases":["de-DE","de-AT","de-CH"],"flag":"🇩🇪","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 Sekunden"]],"unverified":true,"notice":"🐧 Diese Seite wurde von AI übersetzt. Der Inhaber dieser Website kann nur Englisch und Japanisch lesen und konnte daher nicht überprüfen, ob die Übersetzung korrekt ist. Wenn Sie etwas Seltsames finden, sagen Sie es uns bitte unter \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Schließen","dict":{},"v":"580fcb93a6"},"el":{"name":"Ελληνικά","englishName":"Greek","aliases":["el-GR"],"flag":"🇬🇷","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 δευτερόλεπτα"]],"unverified":true,"notice":"🐧 Αυτή η σελίδα μεταφράστηκε από AI. Ο ιδιοκτήτης αυτού του ιστότοπου μπορεί να διαβάσει μόνο αγγλικά και ιαπωνικά, επομένως δεν μπορούσε να ελέγξει αν η μετάφραση είναι σωστή. Αν βρείτε κάτι περίεργο, πείτε μας στο \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Κλείσιμο","dict":{},"v":"aa09ca00b7"},"es":{"name":"Español","englishName":"Spanish","aliases":["es-ES","es-MX","es-419","spa"],"flag":"🇪🇸","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 s"]],"unverified":true,"notice":"🐧 Esta página fue traducida por IA. El propietario de este sitio solo sabe leer inglés y japonés, así que no pudo comprobar si la traducción es correcta. Si encuentras algo extraño, avísanos en \u003cb>pengesso@gmail.com\u003c/b>.","noticeDismiss":"Cerrar","dict":{},"v":"36d7aa67df"},"fi":{"name":"Suomi","englishName":"Finnish","aliases":["fi-FI"],"flag":"🇫🇮","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekuntia"]],"unverified":true,"notice":"🐧 Tämän sivun on kääntänyt AI. Tämän sivuston omistaja osaa lukea vain englantia ja japania, joten hän ei voinut tarkistaa, onko käännös oikea. Jos huomaat jotain outoa, kerro siitä meille osoitteessa \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Sulje","dict":{},"v":"547141e1b0"},"fil":{"name":"Filipino","englishName":"Filipino","aliases":["tl","fil-PH"],"flag":"🇵🇭","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 segundo"]],"unverified":true,"notice":"🐧 Ang pahinang ito ay isinalin ng AI. English at Japanese lang ang kayang basahin ng may-ari ng site na ito, kaya hindi niya masuri kung tama ang pagsasalin. Kung makakita ka ng kakaiba, mangyaring sabihin sa amin sa \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Isara ang","dict":{},"v":"c4def755de"},"fr":{"name":"Français","englishName":"French","aliases":["fr-FR","fr-CA","fr-BE","fr-CH"],"flag":"🇫🇷","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 secondes"]],"unverified":true,"notice":"🐧 Cette page a été traduite par AI. Le propriétaire de ce site ne sait lire que l'anglais et le japonais, il n'a donc pas pu vérifier si la traduction est correcte. Si vous trouvez quelque chose d'étrange, veuillez nous le dire à \u003cb>pengesso@gmail.com\u003c/b> !","noticeDismiss":"Fermer","dict":{},"v":"53f55dc0ff"},"id":{"name":"Bahasa Indonesia","englishName":"Indonesian","aliases":["id-ID"],"flag":"🇮🇩","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 detik"]],"unverified":true,"notice":"🐧 Halaman ini diterjemahkan oleh AI. Pemilik situs ini hanya bisa membaca bahasa Inggris dan Jepang, jadi dia tidak bisa mengecek apakah terjemahannya benar. Jika Anda menemukan sesuatu yang aneh, silakan beri tahu kami di \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Tutup","dict":{},"v":"dfaf3fe430"},"it":{"name":"Italiano","englishName":"Italian","aliases":["it-IT"],"flag":"🇮🇹","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 secondi"]],"unverified":true,"notice":"🐧 Questa pagina è stata tradotta da AI. Il proprietario di questo sito può leggere solo inglese e giapponese, quindi non ha potuto verificare se la traduzione è corretta. Se trovi qualcosa di strano, comunicacelo a \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Chiudi","dict":{},"v":"9dff419d20"},"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":false,"notice":null,"noticeDismiss":null,"dict":{},"v":"e789ef94df"},"ko":{"name":"한국어","englishName":"Korean","aliases":["kor"],"flag":"🇰🇷","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 약 $2초"]],"unverified":true,"notice":"🐧 이 페이지는 AI가 한국어로 번역했어요. 사이트 주인은 한국어를 읽지 못해서, 번역이 맞는지 확인하지 못했어요. 이상한 부분을 발견하면 \u003cb>pengesso@gmail.com\u003c/b> 으로 알려주세요!","noticeDismiss":"닫기","dict":{},"v":"68bb4d863f"},"ms":{"name":"Bahasa Melayu","englishName":"Malay","aliases":["ms-MY"],"flag":"🇲🇾","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 saat"]],"unverified":true,"notice":"🐧 Halaman ini diterjemah oleh AI. Pemilik laman web ini hanya boleh membaca bahasa Inggeris dan Jepun, jadi dia tidak dapat menyemak sama ada terjemahan itu betul. Jika anda menemui sesuatu yang pelik, sila beritahu kami di \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Tutup","dict":{},"v":"21ee5fffca"},"nb":{"name":"Norsk","englishName":"Norwegian","aliases":["no","no-NO","nb-NO"],"flag":"🇳🇴","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekunder"]],"unverified":true,"notice":"🐧 Denne siden ble oversatt av AI. Eieren av denne siden kan bare lese engelsk og japansk, så han kunne ikke sjekke om oversettelsen er riktig. Hvis du finner noe merkelig, vennligst fortell oss på \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Lukk","dict":{},"v":"097e46cab8"},"nl":{"name":"Nederlands","englishName":"Dutch","aliases":["nl-NL","nl-BE"],"flag":"🇳🇱","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 seconden"]],"unverified":true,"notice":"🐧 Deze pagina is vertaald door AI. De eigenaar van deze site kan alleen Engels en Japans lezen, dus hij kon niet controleren of de vertaling klopt. Als je iets vreemds tegenkomt, vertel het ons dan op \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Sluiten","dict":{},"v":"b62db90823"},"pl":{"name":"Polski","englishName":"Polish","aliases":["pl-PL"],"flag":"🇵🇱","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekundy"]],"unverified":true,"notice":"🐧 Ta strona została przetłumaczona przez AI. Właściciel tej strony zna tylko język angielski i japoński, więc nie mógł sprawdzić, czy tłumaczenie jest prawidłowe. Jeśli znajdziesz coś dziwnego, poinformuj nas o tym pod adresem \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Zamknij","dict":{},"v":"5e4156cba0"},"pt":{"name":"Português","englishName":"Portuguese","aliases":["pt-BR","pt-PT"],"flag":"🇧🇷","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 segundos"]],"unverified":true,"notice":"🐧 Esta página foi traduzida por AI. O proprietário deste site só sabe ler inglês e japonês, por isso não pôde verificar se a tradução está correta. Se você encontrar algo estranho, informe-nos em \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Fechar","dict":{},"v":"c5cf92b200"},"ro":{"name":"Română","englishName":"Romanian","aliases":["ro-RO"],"flag":"🇷🇴","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 secunde"]],"unverified":true,"notice":"🐧 Această pagină a fost tradusă de AI. Proprietarul acestui site poate citi doar engleză și japoneză, așa că nu a putut verifica dacă traducerea este corectă. Dacă găsiți ceva ciudat, vă rugăm să ne spuneți la \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Închidere","dict":{},"v":"c124a1f54a"},"ru":{"name":"Русский","englishName":"Russian","aliases":["ru-RU"],"flag":"🇷🇺","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 секунды"]],"unverified":true,"notice":"🐧 Эта страница была переведена AI. Владелец этого сайта умеет читать только на английском и японском, поэтому не смог проверить правильность перевода. Если вы обнаружите что-то странное, сообщите нам по адресу \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Закрыть","dict":{},"v":"3c31bc7a27"},"sv":{"name":"Svenska","englishName":"Swedish","aliases":["sv-SE"],"flag":"🇸🇪","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekunder"]],"unverified":true,"notice":"🐧 Denna sida har översatts av AI. Ägaren av denna webbplats kan bara läsa engelska och japanska, så han kunde inte kontrollera om översättningen stämmer. Om du hittar något konstigt, berätta för oss på \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Stäng","dict":{},"v":"04e824167b"},"sw":{"name":"Kiswahili","englishName":"Swahili","aliases":["sw-KE","sw-TZ"],"flag":"🇰🇪","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 sekunde"]],"unverified":true,"notice":"🐧 Ukurasa huu ulitafsiriwa na AI. Mmiliki wa tovuti hii anaweza tu kusoma Kiingereza na Kijapani, kwa hiyo hakuweza kuangalia ikiwa tafsiri ni sahihi. Ukipata jambo lisilo la kawaida, tafadhali tuambie kwa \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Funga","dict":{},"v":"ba0aa8dd51"},"tr":{"name":"Türkçe","englishName":"Turkish","aliases":["tr-TR"],"flag":"🇹🇷","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 saniye"]],"unverified":true,"notice":"🐧 Bu sayfa yapay zeka tarafından çevrilmiştir. Bu sitenin sahibi yalnızca İngilizce ve Japonca okuyabildiğinden çevirinin doğru olup olmadığını kontrol edemedi. Garip bir şey bulursanız lütfen bize \u003cb>pengesso@gmail.com\u003c/b> adresinden bildirin!","noticeDismiss":"Kapat","dict":{},"v":"3aad9186dc"},"uk":{"name":"Українська","englishName":"Ukrainian","aliases":["uk-UA"],"flag":"🇺🇦","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 seconds"]],"unverified":true,"notice":"🐧 Цю сторінку було перекладено ШІ. Власник цього сайту може читати лише англійською та японською мовами, тому він не міг перевірити, чи правильний переклад. Якщо ви виявите щось дивне, повідомте нам на \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Close","dict":{},"v":"d91c2f363c"},"vi":{"name":"Tiếng Việt","englishName":"Vietnamese","aliases":["vi-VN"],"flag":"🇻🇳","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 $2 giây"]],"unverified":true,"notice":"🐧 Trang này được dịch bởi AI. Chủ sở hữu trang này chỉ có thể đọc được tiếng Anh và tiếng Nhật nên không thể kiểm tra xem bản dịch có đúng hay không. Nếu bạn phát hiện điều gì kỳ lạ, vui lòng cho chúng tôi biết tại \u003cb>pengesso@gmail.com\u003c/b>!","noticeDismiss":"Đóng","dict":{},"v":"3edb40b2fe"},"zh":{"name":"简体中文","englishName":"Chinese (Simplified)","aliases":["zh-CN","zh-Hans","zho","chi","cmn"],"flag":"🇨🇳","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 约$2秒"]],"unverified":true,"notice":"🐧 这个页面是 AI 翻译成中文的。网站主人看不懂中文，所以没办法确认翻译是否正确。如果发现奇怪的地方，请告诉 \u003cb>pengesso@gmail.com\u003c/b>！","noticeDismiss":"关闭","dict":{},"v":"e83f9beb7e"},"zh-Hant":{"name":"繁體中文","englishName":"Chinese (Traditional)","aliases":["zh-TW","zh-HK","zh-MO","zho","zht"],"flag":"🇹🇼","patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"unverified":true,"notice":"🐧 這個頁面是 AI 翻譯成中文的（由簡體字自動轉成繁體字）。網站主人看不懂中文，所以沒辦法確認翻譯是否正確。如果發現奇怪的地方，請告訴 \u003cb>pengesso@gmail.com\u003c/b>！","noticeDismiss":"關閉","dict":{},"v":"d65e6c2aa5"}}}</script>
 <script>
 (function () {
 var holder = document.getElementById('i18n-data');
@@ -1402,6 +1476,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 <body>
 
 <div class="wrap">
+<div class="go-toast" id="goToast" role="status" aria-live="polite"></div>
 
   <header>
     <div class="brand">
@@ -1420,7 +1495,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 
   <!-- ══ HERO：スロット ══ -->
   <section class="hero">
-    <div class="hero-kicker">⚡ 15 SECOND BLOG</div>
+    <div class="hero-kicker">⚡ A BLOG YOU CAN READ IN 15 SECONDS</div>
 
     <div class="slot-line">
       <span class="slot-fixed">15 seconds to</span>
@@ -1433,37 +1508,21 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </p>
 
     <div class="hero-cta">
-      <a class="btn btn-primary" href="#posts">Read one now ⚡</a>
+      <a class="btn btn-primary btn-map" href="#find">🗺️ Pick a place on the map</a>
+      <a class="btn btn-ghost" href="#posts">Read one now ⚡</a>
       <button class="btn btn-ghost" id="spin" type="button">🎰 Spin again</button>
     </div>
 
     <div class="hero-pengesso"><img src="assets/pengesso/pengesso-01.jpg" alt="" /></div>
   </section>
 
-  <!-- ══ 📝 100記事チャレンジ ══
-       中の数字は下の JS が POSTS を数えて入れます。手で書かないこと -->
-  <section class="goal reveal" id="goal">
-    <div class="goal-top">
-      <div class="goal-title" id="goalTitle">📝 100 posts, then a big clean-up</div>
-      <div class="goal-count"><b id="goalNow">0</b> <span id="goalOf">/ 100 posts</span></div>
-    </div>
-    <div class="goal-bar" id="goalBar" role="progressbar"
-         aria-labelledby="goalTitle" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-      <div class="goal-fill" id="goalFill"></div>
-    </div>
-    <p class="goal-note" id="goalNote"></p>
-  </section>
-
-  <!-- ══ 🔎 1本さがす ══（2026-09-25 本人：選択肢が多すぎる。話題・いつ・年齢・並び順のUIは消して、
-       「部屋」と「地図」の2つだけにした。仕事の話は 💼 の部屋から職場ごとに入れる） -->
+  <!-- ══ 🗺️ 地図で探す ══（2026-09-25 本人：地図を押すとその場所の記事に飛べるのが、このサイトの目玉。
+       来た人がまず驚くように、ヒーローのすぐ下に置く。部屋はその下） -->
   <div class="section-title" id="find">
-    <h2>🔎 Find one</h2>
-    <span class="hint">pick a room, or tap the map</span>
+    <h2>🗺️ Tap the map</h2>
+    <span class="hint">It takes you to the posts from that place.</span>
   </div>
-  <div class="rooms" id="roomsEl"></div>
-  <div class="jobs" id="jobsEl" hidden></div>
-
-  <div class="panel">
+  <div class="panel map-panel">
     <div class="map-tabs">
       <button class="chip" aria-pressed="true"  data-map="asia">🌏 Asia</button>
       <button class="chip" aria-pressed="false" data-map="japan">🗾 Japan</button>
@@ -1471,12 +1530,42 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
     <div class="map-stage">
       <div>
-        <div class="map2" id="map2"></div>
-        <p class="map-hint" id="mapHint">Tap a country to see those posts. Japan opens the prefectures.</p>
+        <div class="map-wrap">
+          <div class="map2" id="map2"></div>
+          <div class="map-poke" id="mapPoke" aria-hidden="true">👆 Tap a place</div>
+        </div>
+        <p class="map-hint" id="mapHint">👆 Tap a country to jump to its posts. Japan opens the prefectures.</p>
       </div>
       <div class="place-list" id="places"></div>
     </div>
   </div>
+
+
+  <!-- ══ 🚪 部屋で探す ══（2026-09-25 本人：選択肢が多すぎるので「部屋」と「地図」の2つだけ） -->
+  <div class="section-title" id="rooms">
+    <h2>🚪 Or pick a room</h2>
+    <span class="hint">sorted by what the post is about</span>
+  </div>
+  <div class="rooms" id="roomsEl"></div>
+  <div class="jobs" id="jobsEl" hidden></div>
+
+  <!-- ══ 🎯 1000本チャレンジ ══（2026-09-25 本人：目標は1000本。ゲージで見せる）
+       中の数字は下の JS が POSTS を数えて入れます。手で書かないこと -->
+  <section class="goal reveal" id="goal">
+    <div class="goal-top">
+      <div class="goal-title" id="goalTitle">🎯 Goal: 1,000 posts</div>
+      <div class="goal-count"><b id="goalNow">0</b> <span id="goalOf">/ 1000 posts</span></div>
+    </div>
+    <div class="goal-track">
+      <div class="goal-bar" id="goalBar" role="progressbar"
+           aria-labelledby="goalTitle" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="goal-fill" id="goalFill"></div>
+      </div>
+      <span class="goal-runner" id="goalRunner" aria-hidden="true">🐧</span>
+      <div class="goal-ticks" id="goalTicks" aria-hidden="true"></div>
+    </div>
+    <p class="goal-note" id="goalNote"></p>
+  </section>
 
   <!-- ══ 記事一覧 ══ -->
   <div class="section-title" id="posts">
@@ -2237,7 +2326,7 @@ var PLACES = {
 
       🎯 目標を変えたいときは、次の行の数字だけ変える（150 でも 200 でも）。
          ほかは何も直さなくていい。 */
-var GOAL = 100;
+var GOAL = 1000;
 
 (function () {
   var box = document.getElementById('goal');
@@ -2253,27 +2342,31 @@ var GOAL = 100;
   document.getElementById('goalNow').textContent = n;
   document.getElementById('goalOf').textContent  = '/ ' + GOAL + ' posts';
   bar.setAttribute('aria-valuenow', String(pct));
+  /* 途中の目じるし（100・250・500）と、先頭を走るペンゲッソ */
+  var ticks = document.getElementById('goalTicks'), runner = document.getElementById('goalRunner');
+  ticks.innerHTML = [100, 250, 500, GOAL].map(function (t) {
+    return '<span class="' + (n >= t ? 'got' : '') + '" style="left:' + (t / GOAL * 100) + '%">' + t + '</span>';
+  }).join('');
 
   if (left > 0) {
-    note.innerHTML = 'Until then I just write what I want. <b>' + left +
-      ' to go</b>, and then I sort this whole site out. \u270D\uFE0F';
+    note.innerHTML = 'Until 1,000, I just keep writing. <b>' + left + ' to go.</b> \u270D\uFE0F';
   } else {
     box.classList.add('done');
-    document.getElementById('goalTitle').textContent = '\uD83C\uDF89 100 posts. Time to clean up.';
+    document.getElementById('goalTitle').textContent = '\uD83C\uDF89 1,000 posts. Time to clean up.';
     note.innerHTML = 'Everything I wanted to write is here. <b>Now I sort it out.</b> \uD83D\uDE80';
   }
 
   // 動きが苦手な人には、最初から伸びた状態で出す
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
       !('IntersectionObserver' in window)) {
-    fill.style.width = pct + '%';
+    fill.style.width = pct + '%'; runner.style.left = pct + '%';
     return;
   }
   // 画面に入ってから1回だけ伸ばす
   function grow(now) {
     if (fill.style.width) return;                      // 二度は伸ばさない
-    if (now) { fill.style.width = pct + '%'; return; } // 逃げ道はその場で入れる
-    requestAnimationFrame(function () { fill.style.width = pct + '%'; });
+    if (now) { fill.style.width = pct + '%'; runner.style.left = pct + '%'; return; } // 逃げ道はその場で入れる
+    requestAnimationFrame(function () { fill.style.width = pct + '%'; runner.style.left = pct + '%'; });
   }
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) {
@@ -2357,10 +2450,49 @@ function goToMap(){
   if (el && el.scrollIntoView) el.scrollIntoView({ behavior: soft ? 'smooth' : 'auto', block: 'center' });
 }
 
+/* 2026-09-25 本人：国旗を押すと一覧が一瞬で出て、本当にその国で絞れたのか分からない。
+   → ① 画面の下に「✈️ 韓国 · 7本」と行き先を出す ② ひと呼吸おいてから、ゆっくりスライド
+     ③ 着いたら記事カードが1枚ずつすべり込む。動きが苦手な設定の人には、すぐ移動する */
+var goTimer = 0, goAnim = 0;
 function goToPosts(){
   var soft = !window.matchMedia || !matchMedia('(prefers-reduced-motion: reduce)').matches;
   var el = document.getElementById('posts');
-  if (el && el.scrollIntoView) el.scrollIntoView({ behavior: soft ? 'smooth' : 'auto', block: 'start' });
+  if (!el) return;
+  showGoToast();
+  if (!soft) { el.scrollIntoView({ block: 'start' }); return; }
+  clearTimeout(goTimer); cancelAnimationFrame(goAnim);
+  goTimer = setTimeout(function () {
+    var from = window.pageYOffset, to = from + el.getBoundingClientRect().top - 14;
+    var dist = Math.abs(to - from), dur = Math.max(750, Math.min(1400, dist * 0.9)), t0 = 0;
+    var stop = function () { cancelAnimationFrame(goAnim); off(); };
+    var off = function () { ['wheel', 'touchstart', 'keydown'].forEach(function (e) { removeEventListener(e, stop); }); };
+    ['wheel', 'touchstart', 'keydown'].forEach(function (e) { addEventListener(e, stop, { passive: true }); });
+    function step(now) {
+      if (!t0) t0 = now;
+      var k = Math.min(1, (now - t0) / dur);
+      var e = k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;   /* ゆっくり出て、ゆっくり止まる */
+      window.scrollTo(0, from + (to - from) * e);
+      if (k < 1) goAnim = requestAnimationFrame(step);
+      else { off(); arrive(); }
+    }
+    goAnim = requestAnimationFrame(step);
+  }, 420);
+}
+function showGoToast(){
+  var box = document.getElementById('goToast'); if (!box) return;
+  /* 行き先の名前は、上の「いま絞っているもの」のボタンから写す（もう訳されている） */
+  var name = [].map.call(nowEl.querySelectorAll('button'), function (b) { return b.textContent.trim(); }).join(' · ');
+  if (!name) return;
+  box.innerHTML = '<span class="gt-plane">✈️</span><span class="gt-name"></span><span class="gt-n"></span>';
+  box.querySelector('.gt-name').textContent = name;
+  box.querySelector('.gt-n').textContent = count.textContent + ' posts';
+  box.classList.remove('show'); void box.offsetWidth; box.classList.add('show');
+  clearTimeout(box._t); box._t = setTimeout(function () { box.classList.remove('show'); }, 2600);
+}
+function arrive(){
+  feed.classList.remove('arrive'); nowEl.classList.remove('arrive');
+  void feed.offsetWidth;
+  feed.classList.add('arrive'); nowEl.classList.add('arrive');
 }
 
 /* 左上の小さい日本ぜんぶ。北海道と沖縄はここに出る */
@@ -2447,7 +2579,7 @@ function drawMap(){
                '" data-place="' + c.p + '" transform="translate(' + c.x + ',' + c.y + ')">' +
             '<rect class="hit" x="' + (rx - 20) + '" y="' + (c.dy - fs * 1.08) + '" width="' + (tw + 20) +
               '" height="' + th + '" rx="12"/>' +
-            '<circle class="dot" r="8"/>' +
+            '<circle class="ring" r="8"/><circle class="dot" r="8"/>' +
             '<text class="cname" font-size="' + fs + '" text-anchor="' + c.a + '" x="' + c.dx +
               '" y="' + c.dy + '">' + txt + '</text></g>';
         });
@@ -2456,7 +2588,7 @@ function drawMap(){
       var n = nCountry(t.c);
       s += '<g class="city' + (n ? ' has' : ' soon') + (state.country === t.c ? ' on' : '') +
            '" data-country="' + t.c + '" transform="translate(' + t.x + ',' + t.y + ')">' +
-        '<circle class="hit" r="72"/><circle class="dot" r="10"/>' +
+        '<circle class="hit" r="72"/><circle class="ring" r="10"/><circle class="dot" r="10"/>' +
         '<text class="cname" font-size="' + fs + '" text-anchor="' + t.a + '" x="' + t.dx +
           '" y="' + t.dy + '">' + t.n + (n ? ' ' + n : '') + '</text></g>';
     });
@@ -2472,7 +2604,8 @@ function drawPlaces(){
     var n = nPlace(t.p);
     var b = document.createElement('button');
     b.className = 'place' + (state.place === t.p ? ' on' : '');
-    b.innerHTML = '<span>' + t.n + '</span><span class="place-n">' + (n || '—') + '</span>';
+    b.innerHTML = '<span>' + t.n + '</span><span class="place-right"><span class="place-n">' + (n || '—') +
+      '</span><span class="place-go" aria-hidden="true">→</span></span>';
     b.addEventListener('click', function(){
       state.place = (state.place === t.p) ? null : t.p;
       state.country = null; state.room = null; state.job = null;
@@ -2551,7 +2684,10 @@ function openCountry(code){
   if (state.country && !many) goToPosts();
 }
 
+function pokeBye(){ var pk = document.getElementById('mapPoke'); if (pk) pk.classList.add('bye'); }
+placesEl.addEventListener('click', pokeBye);
 mapEl.addEventListener('click', function(e){
+  pokeBye();
   var c = e.target.closest('.city');
   if (c && c.dataset.place) {
     state.place = (state.place === c.dataset.place) ? null : c.dataset.place;
