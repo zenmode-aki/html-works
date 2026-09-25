@@ -161,7 +161,7 @@
     for (var i = layers.length - 1; i >= 0; i--) b = over(layers[i], b);
     return { c: b, guess: guess };
   }
-  var LIGHT_ONLY = '.card-label,.label,.prev,.next-kicker,.moment-kicker,.series,rt,.value,.chap-title,.bubble,.key,.stage,.i18n-tip';
+  var LIGHT_ONLY = '.card-label,.label,.prev,.next-kicker,.moment-kicker,.series,rt,.value,.chap-title,.bubble,.key,.stage,.i18n-tip,.home,.topic,.bubble,.spotify-kicker,.spotify-title,.part-nav a';  /* 2026-09-25 戻る・カテゴリー・吹き出しも（白地で薄かった） */
   var TEXTY = /[A-Za-z0-9぀-ヿ㐀-鿿가-힯]/;
   function guard() {
     fixed.forEach(function (f) { f.el.style.removeProperty('color'); if (f.old) f.el.style.setProperty('color', f.old[0], f.old[1]); });
@@ -178,13 +178,18 @@
       var cs = getComputedStyle(el), fg = rgba(cs.color); if (!fg) continue;
       var B = backOf(el); if (!B) continue;
       var f = over(fg, B.c), r = ratio(f, B.c);
-      if (r >= (B.guess ? 2 : (light ? 3 : 3.2))) continue;
-      var to = lum(B.c) > .35 ? [24, 22, 32] : [248, 246, 252], best = null;
-      for (var t = .15; t <= 1.001; t += .1) {
-        var m = [0, 1, 2].map(function (i) { return Math.round(f[i] + (to[i] - f[i]) * t); }).concat(1);
-        if (ratio(m, B.c) >= 4.5) { best = m; break; }
-      }
-      if (!best) best = to.concat(1);
+      if (r >= (B.guess ? 2 : (light ? 4 : 3.2))) continue;   /* 2026-09-25 ライトは 3→4（小さい字がまだ薄かった） */
+      /* 明るい方・暗い方の両方を試して、先に 4.5 に届いたほう（＝元の色に近いほう）を使う。
+         中くらいの明るさの地（金色のバッジなど）で、白→白のまま直らなかったため（2026-09-25） */
+      var first = lum(B.c) > .35 ? [24, 22, 32] : [248, 246, 252], second = first[0] > 100 ? [24, 22, 32] : [248, 246, 252];
+      var best = null, bestT = 9;
+      [first, second].forEach(function (to) {
+        for (var t = .15; t <= 1.001; t += .1) {
+          var m = [0, 1, 2].map(function (i) { return Math.round(f[i] + (to[i] - f[i]) * t); }).concat(1);
+          if (ratio(m, B.c) >= 4.5) { if (t < bestT) { best = m; bestT = t; } break; }
+        }
+      });
+      if (!best) best = (ratio(first.concat(1), B.c) >= ratio(second.concat(1), B.c) ? first : second).concat(1);
       var old = el.style.getPropertyValue('color') ? [el.style.getPropertyValue('color'), el.style.getPropertyPriority('color')] : null;
       el.style.setProperty('color', 'rgb(' + best.slice(0, 3).join(',') + ')', 'important');
       fixed.push({ el: el, old: old });
