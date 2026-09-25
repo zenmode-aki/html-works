@@ -127,9 +127,15 @@ def order():
             out.extend(b["posts"])
 
     # "follows" の指定は最後に反映する（指定された記事のすぐ次へ移す）
-    for s, p in sorted(posts.items(), key=lambda kv: kv[1]["seq"]):
-        if p["follows"] in posts and p["follows"] != s:
-            out.remove(s); out.insert(out.index(p["follows"]) + 1, s)
+    #  A→B→C のように続けて指定しても崩れないよう、並びが変わらなくなるまでくり返す
+    for _ in range(len(posts)):
+        before = list(out)
+        for s, p in sorted(posts.items(), key=lambda kv: kv[1]["seq"]):
+            f = p["follows"]
+            if f in posts and f != s and out.index(s) != out.index(f) + 1:
+                out.remove(s); out.insert(out.index(f) + 1, s)
+        if out == before:
+            break
     return posts, out
 
 
