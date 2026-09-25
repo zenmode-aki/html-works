@@ -17,6 +17,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 MARK = "/* ⬇️ tools/components.py */"
 # ◀ ▶ のボタンだけ後から足したので、別の目印にしてある（2026-09-11）
 ARROW_MARK = "/* ⬇️ tools/components.py : slides-arrow */"
+# ダークモードの色だけ後から足したので、これも別の目印（2026-09-26）
+DARK_MARK = "/* ⬇️ tools/components.py : dark */"
 
 CSS = MARK + """
   /* 🗺 地図 — 上空からその場所の雰囲気がわかるようにする */
@@ -146,6 +148,26 @@ ARROW_JS = """
   });
 """
 
+DARK_CSS = DARK_MARK + """
+  /* 🌙 ダークモードで、動画・地図・スライドの白い枠と説明だけが浮いていた（2026-09-26） */
+  html[data-theme="dark"] .map-card, html[data-theme="dark"] .video-card { border-color: rgba(255,255,255,.10); }
+  html[data-theme="dark"] .map-card figcaption, html[data-theme="dark"] .video-card figcaption,
+  html[data-theme="dark"] .slides-track figure { background: #22242f; color: #cfc8dc; }
+  html[data-theme="dark"] .slides-track figure { border-color: rgba(255,255,255,.10); }
+  html[data-theme="dark"] .map-card figcaption a, html[data-theme="dark"] .video-card figcaption a { color: #8fd3ff; }
+  html[data-theme="dark"] .slides-arrow { background: rgba(34,36,47,.94); color: #f4f0fa; }
+"""
+
+
+def inject_dark(path: pathlib.Path) -> str:
+    """部品の入っている記事に、ダークモードの色を足す。"""
+    doc = path.read_text(encoding="utf-8")
+    if MARK not in doc or DARK_MARK in doc:
+        return ""
+    doc = doc.replace("</style>", DARK_CSS + "\n</style>", 1)
+    path.write_text(doc, encoding="utf-8")
+    return "✅ 🌙 ダークモードの色を入れました"
+
 
 def inject_arrows(path: pathlib.Path) -> str:
     """スライドのある記事に ◀ ▶ のボタンを足す。"""
@@ -194,6 +216,9 @@ def main():
             print(f"  ❔ {slug}: index.html がありません")
             continue
         print(f"  {inject(idx)}  {slug}")
+        dark = inject_dark(idx)
+        if dark:
+            print(f"  {dark}  {slug}")
         arrows = inject_arrows(idx)
         if arrows:
             print(f"  {arrows}  {slug}")
