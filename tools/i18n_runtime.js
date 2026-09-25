@@ -2,6 +2,42 @@
    ・英語の本文はそのまま。日本語などは「英文 → 訳」の対応表で、文章のかたまりごとに差し替える
    ・対応表にない文は英語のまま残る（壊れるより、英語が残るほうがまし）
    ・選んだ言語は localStorage に覚える。?lang=ja でも指定できる */
+
+/* 🎬 スマホで「たまに動きが出ない」を直す（2026-09-25 本人の報告）
+   原因：記事は写真を中に埋め込んでいて重い。スマホだと読み込みに時間がかかり、
+   ・上のラベル・タイトル・写真の「ふわっと出る」動きが、画面に映る前に終わってしまう
+   ・日本語などで読むとき、英語のまま動いたあと、途中で訳に差し替わってカクッとする
+   なので、ページを読み終えて訳に差し替えたあと、最初の描画を待ってから動きを始める。
+   カードは「少しでも見えたら」出す。もう通り過ぎたカードは、すぐ見せる。 */
+(function () {
+  var root = document.documentElement;
+  if (!document.querySelector || root.classList.contains('motion-hold')) return;
+  root.classList.add('motion-hold');
+  var st = document.createElement('style');
+  st.textContent = 'html.motion-hold main>.label,html.motion-hold main>h1,html.motion-hold main>.photo,' +
+    'html.motion-hold main>figure.photo{animation-play-state:paused !important}';
+  (document.head || root).appendChild(st);
+  var done = false;
+  function go() {
+    if (done) return; done = true;
+    var raf = window.requestAnimationFrame || function (f) { setTimeout(f, 16); };
+    raf(function () { raf(function () { root.classList.remove('motion-hold'); }); });
+  }
+  setTimeout(go, 2500); // 保険：何があっても2.5秒で動き出す
+  document.addEventListener('DOMContentLoaded', function () {
+    setTimeout(go, 0); // 訳の差し替え（同じ DOMContentLoaded）が終わってから
+    if (!('IntersectionObserver' in window)) return;
+    var items = [].slice.call(document.querySelectorAll('.card, .next'));
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting || e.boundingClientRect.bottom < 0) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -6% 0px' });
+    items.forEach(function (el) { io.observe(el); });
+  });
+  // 戻るボタンで戻ってきたとき（ページが保存されていたとき）は、止めたままにしない
+  window.addEventListener('pageshow', function () { root.classList.remove('motion-hold'); });
+})();
 (function () {
   var holder = document.getElementById('i18n-data');
   if (!holder) return;
