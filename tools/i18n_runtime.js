@@ -597,6 +597,7 @@
   if (DATA.lazyTop) {
     if (!LANGS[lang] || !window.fetch) return;
     var url = new URL('i18n/top-data.' + encodeURIComponent(lang) + '.json', location.href);
+    if (LANGS[lang].v) url.searchParams.set('v', LANGS[lang].v);   /* 訳を直したら URL も変わる＝古い訳を読まない */
     fetch(url.toString(), { credentials: 'same-origin' })
       .then(function (res) { if (!res.ok) throw new Error('Top translation unavailable'); return res.json(); })
       .then(function (topData) { translate(topData); })

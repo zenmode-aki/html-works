@@ -355,6 +355,20 @@ def check_site():
     else:
         notes.append(f"{OK} robots.txt あり")
 
+    # 6.5 ⏭ 「次の記事へ」が1本の道になっているか（2026-09-25：ループしていた）
+    try:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("next_links", ROOT / "tools" / "next-links.py")
+        nl = importlib.util.module_from_spec(spec); spec.loader.exec_module(nl)
+        np_ = nl.verify()
+        if np_:
+            for x in np_[:5]:
+                problems.append(f"{NG} 次の記事へ：{x} → python3 tools/next-links.py")
+        else:
+            notes.append(f"{OK} 「次の記事へ」は全記事で1本の道（ループなし）")
+    except Exception as e:
+        problems.append(f"{NG} 次の記事へ の確認に失敗: {e}")
+
     # 7. 🌐 多言語：訳のファイル・訳の抜け・埋め込み忘れ（英語の公開は止めないので注意だけ）
     try:
         sys.path.insert(0, str(ROOT / "tools"))

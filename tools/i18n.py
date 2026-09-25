@@ -19,7 +19,7 @@
 言語を足すときは i18n/ui.<lang>.json と i18n/top.<lang>.json と works/*/i18n/<lang>.json を置き、
 python3 tools/i18n.py で記事の埋め込みと i18n/top-data.<lang>.json を生成する。
 """
-import html, json, pathlib, re, sys
+import hashlib, html, json, pathlib, re, sys
 from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -363,6 +363,9 @@ def build_all():
         tdata["langs"][l] = {**ui_meta(uis[l]), "name": uis[l].get("name", l), "dict": {}}
         top_assets[I18N / f"top-data.{l}.json"] = {
             "dict": pack(d), "patterns": tops[l].get("patterns", [])}
+        # 🔄 2026-09-25：訳のファイルはブラウザに10分ほど残る。文を直した直後に古い訳を読んで
+        #    英語が混ざらないよう、中身が変わったら URL も変わるように版の印（ハッシュ）を付ける
+        tdata["langs"][l]["v"] = hashlib.sha1(json_asset(top_assets[I18N / f"top-data.{l}.json"])).hexdigest()[:10]
         miss = missing(units(parse(strip_block(top.read_text(encoding="utf-8")))), d, tops[l].get("patterns", [])) + label_miss
         if miss:
             report.append(("(トップページ)", l, miss))
