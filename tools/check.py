@@ -250,8 +250,12 @@ def check_site():
     ここで見るのは「出ているものが全部ちゃんと出ているか」だけ。
     """
     problems, notes = [], []
-    works = sorted(p for p in (ROOT / "works").iterdir() if p.is_dir()) \
+    work_dirs = sorted(p for p in (ROOT / "works").iterdir() if p.is_dir()) \
         if (ROOT / "works").exists() else []
+    works = [p for p in work_dirs if (p / "index.html").is_file()]
+    unfinished = [p.name for p in work_dirs if not (p / "index.html").is_file()]
+    if unfinished:
+        notes.append(f"{WARN}記事HTMLがまだないため検査を省いたフォルダ: {unfinished}")
 
     # 1. バッジ：全部 PUBLIC。STAGING は残っていてはいけない
     for w in works:
@@ -396,7 +400,7 @@ def main():
     if not base.exists():
         print(f"ℹ️  {base.relative_to(ROOT)}/ がありません")
         return 0
-    works = sorted(p for p in base.iterdir() if p.is_dir())
+    works = sorted(p for p in base.iterdir() if p.is_dir() and (p / "index.html").is_file())
     if args:
         works = [w for w in works if w.name in args]
         if not works:

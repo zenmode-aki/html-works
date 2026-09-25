@@ -26,12 +26,12 @@ MAIN = ["ja", "ko", "zh", "zh-Hant"]
 ALLOW = re.compile(r"^(Pengesso|K-POP|MLB|WBC|NTT|GitHub|ChatGPT|Claude( Code)?|Google( Maps)?|YouTube|Spotify|Jimoty|"
                    r"OneNote|Cursor|Codex|Higgsfield|Udemy|Audible|Apple Podcasts|Windows Update|Sakura English|"
                    r"Suzuka Circuit|7-Eleven|Lazada|Shopee|Grab|Agoda|WhatsApp|KLIA2|Taylor's|INTI|Sunway|APU|"
-                   r"Stop Overthinking Practice|Claude in Chrome|Claude Code / Codex|AirPods Pro Max|Owl City.*)$", re.I)
+                   r"Stop Overthinking Practice|Claude in Chrome|Claude Code / Codex|AirPods Pro Max|Owl City.*|(?:— )?Yonezu Kenshi.*Raven.*)$", re.I)
 # 学校・大学の名前（「Taylor's University — Lakeside」など）やファイルの場所は、英語のままが正しい
 KEEP = re.compile(r"(Work In Progress|University|College|Academy|Campus|\\|\.(xls|doc|pdf)\b)")
 
 JS = r"""<script>
-window.addEventListener('load', function () { setTimeout(function () {
+function auditText() {
   var out = [], seen = {};
   var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   while (w.nextNode()) {
@@ -41,9 +41,17 @@ window.addEventListener('load', function () { setTimeout(function () {
     var cs = getComputedStyle(el); if (cs.display === 'none' || cs.visibility === 'hidden') continue;
     if (seen[t]) continue; seen[t] = 1; out.push(t);
   }
-  var alts = [].map.call(document.querySelectorAll('img[alt]'), function (i) { return i.alt; });
+  return out;
+}
+/* The runtime translates on DOMContentLoaded, after this parser-time snapshot. */
+var sourceTitle = document.title, sourceText = auditText(), sourceBlocks = [];
+document.querySelectorAll('h1,h2,h3,h4,p,li,figcaption,td,th,button,a,small,label,blockquote').forEach(function (el) {
+  var t = (el.innerText || el.textContent || '').replace(/\s+/g, ' ').trim();
+  if (t) sourceBlocks.push(t);
+});
+window.addEventListener('load', function () { setTimeout(function () {
   var pre = document.createElement('pre'); pre.id = 'audit';
-  pre.textContent = JSON.stringify({ lang: document.documentElement.lang, title: document.title, text: out });
+  pre.textContent = JSON.stringify({ lang: document.documentElement.lang, title: document.title, text: auditText(), source: sourceText.concat(sourceBlocks, [sourceTitle]) });
   document.body.appendChild(pre);
 }, 900); });
 </script>"""
@@ -87,14 +95,19 @@ def run(url):
 WORD = re.compile(r"[A-Za-z][A-Za-z'’\-]+")
 
 
-def leftovers(texts):
+def normalize(text):
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def leftovers(texts, source_text):
     bad = []
+    source = {normalize(t) for t in source_text}
     for t in texts:
         words = WORD.findall(t)
         if len(words) < 3: continue
-        # ほとんどが英字なら「英語の文」とみなす（日本語の中に Claude などが混ざるのは OK）
-        letters = sum(len(w) for w in words)
-        if letters / max(1, len(re.sub(r"\s", "", t))) < 0.6: continue
+        # Latin script is used by many supported languages. Flag a phrase only when
+        # its visible text exactly matches a source-English text unit or block.
+        if normalize(t) not in source: continue
         if ALLOW.match(t.strip(" .!?🐧💻")) or "@" in t or "://" in t or KEEP.search(t): continue
         bad.append(t[:90])
     return bad
@@ -111,15 +124,16 @@ def main():
         langs = sys.argv[sys.argv.index("--langs") + 1].split(","); args = [a for a in args if a != ",".join(langs)]
     slugs = args or ["_top"] + sorted(p.name for p in (ROOT / "works").iterdir() if (p / "index.html").exists())
 
-    srv = http.server.ThreadingHTTPServer(("127.0.0.1", PORT), functools.partial(H, directory=str(ROOT)))
+    srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(H, directory=str(ROOT)))
+    port = srv.server_address[1]
     threading.Thread(target=srv.serve_forever, daemon=True).start()
-    jobs = [(s, l, f"http://127.0.0.1:{PORT}/" + ("index.html" if s == "_top" else f"works/{s}/index.html") + f"?lang={l}")
+    jobs = [(s, l, f"http://127.0.0.1:{port}/" + ("index.html" if s == "_top" else f"works/{s}/index.html") + f"?lang={l}")
             for s in slugs for l in langs]
     problems, failed = {}, []
     with ThreadPoolExecutor(6) as ex:
         for (s, l, _), res in zip(jobs, ex.map(lambda j: run(j[2]), jobs)):
             if res is None: failed.append(f"{s}[{l}]"); continue
-            bad = leftovers(res["text"] + [res["title"]])
+            bad = leftovers(res["text"] + [res["title"]], res.get("source", []))
             if bad: problems.setdefault(s, {})[l] = bad
     srv.shutdown()
 
@@ -131,7 +145,7 @@ def main():
     for s, d in problems.items():
         for l, bad in d.items():
             print(f"  {s} [{l}]")
-            for b in bad[:6]: print("     ·", b)
+            for b in bad: print("     ·", b)
     sys.exit(1)
 
 
