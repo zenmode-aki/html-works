@@ -54,6 +54,17 @@
 - 中国語は簡体字の訳と既存の繁体字対応を維持する
 - 足し方：`i18n/ui.<lang>.json`・`i18n/top.<lang>.json`・`works/*/i18n/<lang>.json` を置いて `python3 tools/i18n.py`。`python3 tools/i18n.py --check` と `python3 tools/check.py --site` を確認する
 
+## ✂️ 訳の分担：Claude は5言語だけ、残りは Codex（2026-09-25 本人が決めた）
+
+- 言語を増やしたので、1文直すだけで28言語ぶんの訳が要る。**Claude（Opus）のトークンを翻訳に使いすぎない**ための分担
+- **Claude がやる**：記事を書く・直すときは **英語・日本語・韓国語・中国語（簡体）・繁體（簡体から OpenCC で自動）** の5つだけ訳して、そのまま push してよい
+- **残りの言語はやらなくていい**。訳のない文は、その言語のページでは**自動で英語のまま**表示される（壊れない）
+- **Codex（ChatGPT）がやる**：あとでまとめて、訳が抜けている文を埋める
+  1. `python3 tools/i18n.py --check` で、どの記事のどの言語が抜けているか見る
+  2. `python3 tools/i18n.py --todo <slug> <lang>` で抜けている英文を出して、`works/<slug>/i18n/<lang>.json` に足す（直訳・1文＝1文）
+  3. `python3 tools/i18n.py` → `python3 tools/check.py --site` → 自分のファイルだけ名前で `git add` して push
+- 本人が Codex に頼むときの一言：**「`python3 tools/i18n.py --check` で抜けている訳を全部埋めて push して」**
+
 ## 🌙 ダークモード
 
 - `tools/i18n_runtime.js` が全ページに入れている。**初めての人はいつもライト**（2026-09-25 本人の要望。端末の設定には合わせない）。🌙/☀️ ボタンで切り替えたら localStorage に覚えて、次からはその設定

@@ -48,6 +48,8 @@ PLACES = {
     "bangkok":  ("Bangkok 🛺",      "world", 11, 29),
     "thailand": ("Kanchanaburi 🚂", "world", 10, 29),
     "kl":       ("Kuala Lumpur 🇲🇾", "world", 13, 29),
+    "seoul":    ("Seoul 🇰🇷",        "world",  6, 33),
+    "mie":      ("Mie 🏎️",          "jp",    10,  6),
 }
 
 
