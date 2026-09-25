@@ -55,7 +55,8 @@ def series_key(doc):
 
 # 🗺 章の分け方。ここにない場所は、その場所の名前でひとつの章になる
 CHAPTER = {"baguio": "ph", "clark": "ph", "cebu": "ph", "seoul": "kr", "kl": "my",
-           "bangkok": "th", "thailand": "th", "tokyo": "jp-trip", "gifu": "jp-trip", "mie": "jp-trip"}
+           "bangkok": "th", "thailand": "th", "tokyo": "jp-trip", "gifu": "jp-trip", "mie": "jp-trip",
+           "osaka": "jp-trip", "shiga": "jp-trip"}
 # 同じ章の中で、どの街から読むか（住んだ順）
 PLACE_RANK = {"baguio": 0, "clark": 1, "cebu": 2}
 FOLDER_RE = re.compile(r"## 出どころ\s*\n+(?:[^\n]*?)([^/\n]+)/記事/(\d+)_")

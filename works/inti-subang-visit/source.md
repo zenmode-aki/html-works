@@ -36,3 +36,7 @@ images/cover.jpg — 生成（z_image）。A felted penguin behind a small hotel
 ---
 このファイルがAIに渡す原本です。index.html は出力物。
 「この記事直して」と頼むときは、index.html ではなく **このファイル** を渡してください。
+
+## 2026-09-26 の追記
+
+2026-09-25 午後のネタ帳（inti-subang-visit）の写真と文を足した。原稿は マレーシア/記事/ の同じ番号のファイルの末尾。

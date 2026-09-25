@@ -50,6 +50,8 @@ PLACES = {
     "kl":       ("Kuala Lumpur 🇲🇾", "world", 13, 29),
     "seoul":    ("Seoul 🇰🇷",        "world",  6, 33),
     "mie":      ("Mie 🏎️",          "jp",    10,  6),
+    "osaka":    ("Osaka 🏯",        "jp",    10,  5),
+    "shiga":    ("Shiga 🌊",        "jp",     9,  5),
 }
 
 
@@ -85,6 +87,9 @@ LEGACY_JOB_POSTS = {
     # 2026-09-24 本人：コンドミニアム・卵・引っ越し直前・1階のコンシェルジュ・7階を歩く話は
     #   「ブリッジSEの話じゃなくて、ただのセブ島の生活の話」。仕事からは外して、
     #   地図の 🇵🇭 → Cebu と、各部屋（room）から読めるようにした
+    # 2026-09-26：マクドナルドのアルバイトの話（topic は life のまま、仕事の 🍔 にも並べる）
+    "mcd":    ["mcdonalds-graduation", "mcdonalds-runner-position",
+               "nagoya-mcdonalds-uber-eats", "mcdonalds-company-vs-franchise"],
     "cebu":   ["japan-philippines-work", "japan-philippines-shops",
                "no-public-scolding", "boodle-fight-lunch"],
 }

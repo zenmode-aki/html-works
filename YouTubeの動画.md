@@ -12,7 +12,7 @@
 | The Tokyo Yakult Swallows express their joy by raising their umbrellas. | https://youtu.be/6cnmZXCJk4o | 名古屋ドームの話（スワローズの傘） | |
 | In Japanese baseball, the seventh inning is called the "Lucky Seven." | https://youtu.be/S4o_G4J6Uyo | 名古屋ドームの話（ラッキーセブン） | |
 | The stadium erupted with excitement after a home run.⚾️ | https://youtu.be/WgvIJjDhm2U | 名古屋ドームの話（ホームランのあと、スタジアムが沸いた） | |
-| South Korean internet cafes🇰🇷 | https://youtu.be/E29-CV97n-k | （まだ決まっていない。韓国のネットカフェ） | |
+| South Korean internet cafes🇰🇷 | https://youtu.be/E29-CV97n-k | 本人：「韓国のサブウェイの話のリンク」 | ✅ subway-in-korea（2026-09-26） |
 | This is probably the most enjoyable place to drive in Japan.🚗 | https://youtu.be/iS-aim42XV4 | 「日本で一番楽しいドライブの場所」滋賀県の記事 | |
 | Radios in the countryside automatically turn on at 12:00 PM and play a school chime. 🏫🔔 | https://youtu.be/or17xYbTjuw | 岐阜のおばあちゃん家に行った時の記事（田舎は12時に村のラジオが鳴る） || ✅ noon-radio-in-the-countryside（2026-09-25） |
 
