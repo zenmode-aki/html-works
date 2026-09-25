@@ -20,3 +20,20 @@
 - 名古屋ドームの動画は5本（ドラゴンズ2本・スワローズの傘・ラッキーセブン・ホームラン）。1本の記事にまとめて並べるか、話ごとに分けるかは本人と決める
 - 岐阜のラジオは、公開済みの `grandmothers-house-in-gifu`（おばあちゃん家は収納が多い）とは別の話。本人の言葉は `2026-09-25_まだ本番に出していないもの（午後）/17_田舎は12時にラジオが鳴る.txt`
 - 滋賀のドライブ動画は、写真の受け箱 `2026-09-25_iPhoneからAirDrop（120枚）` の 011〜018（5/5 永源寺ドライブ）と同じ日かもしれない
+
+## 2026-09-25 にもらった分（ショート動画・縦長）
+
+ショートも `youtube-nocookie.com/embed/<ID>` で埋め込める。縦長なので `.ratio` は `padding-top: 177.78%`、幅は `max-width: 360px`（turning-twenty-in-clark が見本）。
+
+| 動画のタイトル | URL | 使う予定の記事（本人の言葉） | 使った記事 |
+|---|---|---|---|
+| DDP | https://youtube.com/shorts/UAjmC2Zs8fg | 韓国の話（DDP） | |
+| 🚗🎮 | https://youtube.com/shorts/I_uu3iBRSLQ | クラークでマリオカートをした話（公開済み `mario-kart-any-age` に合うかも） | |
+| 20th Birthday | https://youtube.com/shorts/gLVNY7K-AJI | 20歳の誕生日をみんなに祝ってもらった話 | ✅ turning-twenty-in-clark（2026-09-25） |
+| The surrounding environment when I lived in Clark | https://youtube.com/shorts/3utlqyCQA2U | クラークの寮のまわり（治安が良くて、カリフォルニアみたいにのどか。よく散歩した）。公開済み `clark-california-of-asia` に合うかも | |
+| A drive in Angeles, Philippines | https://youtube.com/shorts/Up8FXGz4dZ4 | 社長の車でアンヘルスのお店に連れて行ってもらった話（コリアンタウン） | |
+| There was an amusement park inside the shopping mall.🇵🇭🛍️ | https://youtube.com/shorts/cmgvdnOYkZw | SMクラークの中にメリーゴーランドがあった話 | |
+| I rode on the back of a motorcycle.🏍️ | https://youtube.com/shorts/D1ESEAzsbMg | フィリピンはバイクがタクシーの3分の1で速い | |
+| I took a jeepney home. | https://youtube.com/shorts/Bx67DpOpGFY | ジプニーを貸し切って家まで送ってもらった話（15分で300ペソ） | |
+
+本人の言葉（音声メモ）は `2026-09-25_まだ本番に出していないもの（午後）/18〜23` にそのまま置いた。
