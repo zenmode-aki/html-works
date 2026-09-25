@@ -28,7 +28,7 @@ SRC = pathlib.Path(os.environ.get("NE_DIR", "/private/tmp/claude-501"
 # 札を出す向き（dx, dy, 揃え）。これが無いと名古屋・岐阜・三重・大阪の名前が団子になる
 NUDGE = {
     "tokyo":  (18, 6, "start"), "nagoya": (16, 30, "start"), "gifu": (10, -20, "start"),
-    "mie":    (16, 70, "start"), "osaka":  (-20, -16, "end"),
+    "mie":    (16, 70, "start"), "osaka":  (-20, -16, "end"), "shiga": (-16, -26, "end"),
     "seoul":  (-18, 4, "end"),  "bangkok": (-18, 4, "end"),
     "kanchana": (-18, -18, "end"), "baguio": (18, -6, "start"),
     "clark":  (18, 14, "start"), "cebu": (18, 8, "start"), "kl": (-18, 16, "end"),
@@ -41,6 +41,7 @@ CITIES = [
     # key,        表示名,           日本語,        lat,      lon,     国, 記事のplace
     ("tokyo",     "Tokyo",         "東京",      35.6895, 139.6917, "jp", "tokyo"),
     ("osaka",     "Osaka",         "大阪",      34.6937, 135.5023, "jp", "osaka"),
+    ("shiga",     "Shiga",         "滋賀",      35.1300, 136.0900, "jp", "shiga"),
     ("gifu",      "Gifu",          "岐阜",      35.4233, 136.7606, "jp", "gifu"),
     ("mie",       "Mie",           "三重",      34.7185, 136.5056, "jp", "mie"),
     ("nagoya",    "Nagoya",        "名古屋",    35.1815, 136.9066, "jp", "nagoya"),
@@ -66,9 +67,9 @@ COUNTRY_MARKS = [
     ("ph", "Philippines", "フィリピン",   12.6, 122.6),
     ("my", "Malaysia",    "マレーシア",    3.9, 102.3),
 ]
-# 愛知＝名古屋。都道府県は本人が挙げた5つを光らせる
+# 愛知＝名古屋。都道府県は本人が挙げたものを光らせる（2026-09-26 滋賀を足した）
 FOCUS_PREF = {"Tokyo": "tokyo", "Ōsaka": "osaka", "Gifu": "gifu",
-              "Mie": "mie", "Aichi": "nagoya"}
+              "Mie": "mie", "Aichi": "nagoya", "Shiga": "shiga"}
 
 ASIA = dict(lon=(93.0, 148.0), lat=(-4.0, 47.5))
 # 大きい地図＝行った5県が読める範囲。北海道と沖縄はここには入らない
