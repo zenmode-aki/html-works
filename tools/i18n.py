@@ -298,6 +298,24 @@ def missing(keys, d, patterns):
     return out
 
 
+def top_labels(lang, slugs, d):
+    """🏷 トップの一覧に出る各記事の短いラベル（meta.json の label）。
+    2026-09-25：タイトルしか自動で入っておらず、ラベルが英語のまま残っても --check が気づかなかった。
+    訳は works/<slug>/i18n/<lang>.json の "label"（なければ i18n/top.<lang>.json の dict）に置く。
+    返り値：まだ訳のないラベルの英文"""
+    miss = []
+    for s in slugs:
+        label = load(WORKS / s / "meta.json").get("label")
+        if not label:
+            continue
+        t = load(WORKS / s / "i18n" / f"{lang}.json").get("label")
+        if t:
+            d[label] = t
+        if label not in d:
+            miss.append(label)
+    return miss
+
+
 def build_all():
     """全ページぶんの埋め込みデータと、訳の抜けを計算する（書き込みはしない）"""
     langs = langs_available()
@@ -329,7 +347,7 @@ def build_all():
                 report.append((slug, l, miss))
         pages.append((WORKS / slug / "index.html", data))
 
-    # トップページ：記事のタイトルとラベルは各記事の訳から自動で入る
+    # トップページ：記事のタイトルとラベルは各記事の訳から自動で入る（ラベルは "label"。top_labels を見る）
     top = ROOT / "index.html"
     tdata = {"lazyTop": True, "langs": {}}
     top_assets = {}
@@ -341,10 +359,11 @@ def build_all():
             t = titles[l].get(s)
             if t and infos[s]["meta_title"]:
                 d[infos[s]["meta_title"]] = t
+        label_miss = top_labels(l, slugs, d)
         tdata["langs"][l] = {**ui_meta(uis[l]), "name": uis[l].get("name", l), "dict": {}}
         top_assets[I18N / f"top-data.{l}.json"] = {
             "dict": pack(d), "patterns": tops[l].get("patterns", [])}
-        miss = missing(units(parse(strip_block(top.read_text(encoding="utf-8")))), d, tops[l].get("patterns", []))
+        miss = missing(units(parse(strip_block(top.read_text(encoding="utf-8")))), d, tops[l].get("patterns", [])) + label_miss
         if miss:
             report.append(("(トップページ)", l, miss))
     pages.append((top, tdata))
@@ -392,7 +411,9 @@ def main():
             t = titles[lang].get(s)
             if t and info["meta_title"]:
                 d[info["meta_title"]] = t
-        todo = missing(units(parse(doc)), d, tops[lang].get("patterns", []))
+        slugs = sorted(p.parent.name for p in WORKS.glob("*/index.html"))
+        label_miss = top_labels(lang, slugs, d)
+        todo = missing(units(parse(doc)), d, tops[lang].get("patterns", [])) + label_miss
         print(json.dumps(todo, ensure_ascii=False, indent=1))
         return 0
 

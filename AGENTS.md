@@ -19,5 +19,9 @@
   1. `python3 tools/i18n.py --check` で、どの記事のどの言語が抜けているか見る
   2. `python3 tools/i18n.py --todo <slug> <lang>` で抜けている英文を出して、`works/<slug>/i18n/<lang>.json` に足す（直訳・1文＝1文）
   3. `python3 tools/i18n.py` → `python3 tools/check.py --site` → 自分のファイルだけ名前で `git add` して push
-- 本人が Codex に頼むときの一言：**「`python3 tools/i18n.py --check` で抜けている訳を全部埋めて push して」**
+- 本人が Codex に頼むときの一言：**「`python3 tools/i18n.py --check` で抜けている訳を全部埋めて、`python3 tools/i18n-audit.py --all-langs` で確かめてから push して」**
+- **訳は「ファイルがあるか」だけでなく「画面に出ているか」まで確かめる**（2026-09-25 本人の要望）。`--check` は訳のファイルの抜けしか見ないので、見出し・トップの一覧のラベルなどが英語のまま残っても気づけなかった
+  - push の前に **`python3 tools/i18n-audit.py <slug> _top`**（本物のブラウザで ?lang=ja/ko/zh/zh-Hant を開いて、英語の文が残っていないか探す）。❌ が出たら直してから push
+  - Codex は残りの言語を埋めたあと **`python3 tools/i18n-audit.py --all-langs`** で確かめる
+  - トップの一覧に出る記事の短いラベル（meta.json の `label`）の訳は、`works/<slug>/i18n/<lang>.json` の **`"label"`** に書く。抜けは `--check` / `--todo-top` にも出る
 
