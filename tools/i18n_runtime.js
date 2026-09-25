@@ -218,6 +218,21 @@
     draw();
   });
 
+  /* ── 🔢 章の番号（1 2 3）の丸（.chap-tracker）は、スマホでは「スクロールしている間だけ」出す（2026-09-25）
+     右下に出しっぱなしだと、行の終わりの文字に重なって読めなかった。止まって1.2秒で消える ── */
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!document.querySelector('.chap-tracker')) return;
+    var st = document.createElement('style');
+    st.textContent = '@media (max-width:700px){.chap-tracker{transform-origin:right bottom;scale:.82}' +
+      'html:not(.is-scrolling) .chap-tracker.show{opacity:0 !important;transform:translateY(10px) !important}}';
+    document.head.appendChild(st);
+    var root = document.documentElement, t = 0;
+    addEventListener('scroll', function () {
+      root.classList.add('is-scrolling'); clearTimeout(t);
+      t = setTimeout(function () { root.classList.remove('is-scrolling'); }, 1200);
+    }, { passive: true });
+  });
+
   /* ── やわらかい丸ゴシック（2026-09-24 本人の希望）────────────────
      端末ごとに入っているフォントが違うので、日本語・韓国語のときだけ Google Fonts から読み込む。
      英字は今までのフォント（Arial Rounded など）を先に並べてそのまま使い、

@@ -392,6 +392,18 @@ bar.style.width = (h > 0 ? Math.min(100, (scrollY / h) * 100) : 0) + '%';
 addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(draw); } }, { passive: true });
 draw();
 });
+document.addEventListener('DOMContentLoaded', function () {
+if (!document.querySelector('.chap-tracker')) return;
+var st = document.createElement('style');
+st.textContent = '@media (max-width:700px){.chap-tracker{transform-origin:right bottom;scale:.82}' +
+'html:not(.is-scrolling) .chap-tracker.show{opacity:0 !important;transform:translateY(10px) !important}}';
+document.head.appendChild(st);
+var root = document.documentElement, t = 0;
+addEventListener('scroll', function () {
+root.classList.add('is-scrolling'); clearTimeout(t);
+t = setTimeout(function () { root.classList.remove('is-scrolling'); }, 1200);
+}, { passive: true });
+});
 var SOFT = {
 ja: { css: 'Zen+Maru+Gothic:wght@700;900', name: '"Zen Maru Gothic"' },
 ko: { css: 'Jua', name: '"Jua"' },
@@ -867,7 +879,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 <main>
   <div class="topbar">
     <a class="home" href="../../index.html">← Back to all works</a>
-    <div class="badges"><div class="wc-badge">⏱ 167 words · 56 sec</div><div class="stage stage-public">PUBLIC</div><div class="stage">PUBLIC</div></div>
+    <div class="badges"><div class="wc-badge">⏱ 167 words · 56 sec</div><div class="stage stage-public">PUBLIC</div><div class="stage stage-public">PUBLIC</div></div>
   </div>
   <div class="series"><span class="topic">🇵🇭 LIVING IN THE PHILIPPINES</span>🛒 JAPAN × PHILIPPINES · PART 1 OF 2</div>
   <h1>The Difference in Store Staffing Between Japan and the Philippines</h1>
