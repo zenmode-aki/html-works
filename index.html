@@ -1681,7 +1681,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 
     <div class="hero-cta">
       <a class="btn btn-primary btn-map" href="#find">🗺️ Pick a place on the map</a>
-      <a class="btn btn-ghost" href="#posts">Read one now ⚡</a>
+      <a class="btn btn-ghost" href="#posts" id="readOne">Read one now ⚡</a>
     </div>
 
     <div class="hero-pengesso"><img src="assets/pengesso/pengesso-01.jpg" alt="" /></div>
@@ -3262,6 +3262,20 @@ function observe() {
 
 render();
 observe();
+
+/* ⚡ 「Read one now」は、ランダムに1本ひらく（2026-09-26：前は一覧まで下がるだけだった） */
+(function () {
+  var b = document.getElementById('readOne');
+  if (!b) return;
+  b.addEventListener('click', function (e) {
+    var lang = window.PENGESSO_LANG || 'en';
+    var pool = POSTS.filter(function (p) { return !p.only || p.only === lang; });
+    if (!pool.length) return;
+    e.preventDefault();
+    var p = pool[Math.floor(Math.random() * pool.length)];
+    location.href = p.href + (location.search || '');
+  });
+})();
 
 /* 🔙 記事から戻ってきたとき、読んでいた場所に戻す ───────────────
       記事の左上の「← Back」でここへ戻ると、いつも一覧の先頭に
