@@ -63,7 +63,7 @@
   .hero .next b { color: #ffd88a; }
 
   /* ── ② 9月の帯 ────────────────────────── */
-  .scroller { overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+  .scroller { overflow-x: auto; padding-top: 16px; padding-bottom: 6px; -webkit-overflow-scrolling: touch; } /* 上は「きょう」の札が切れないように */
   .tl { position: relative; min-width: 700px; height: 168px; padding-top: 6px; }
   .tl-axis { position: absolute; left: 0; right: 0; top: 118px; height: 2px; background: var(--line); }
   .tl-tick { position: absolute; top: 124px; transform: translateX(-50%);
@@ -323,6 +323,9 @@
   var tp = ((today - from) / width) * 100;
   if (tp >= 0 && tp <= 100) h += '<div class="now-line" style="left:' + tp + '%"><span>きょう</span></div>';
   tl.innerHTML = h;
+  // 開いたら「きょう」が真ん中に来るよう、横に送っておく（2026-09-26：左端の9/1から始まって、今日が見えなかった）
+  var sc = tl.closest('.scroller');
+  if (sc && tp >= 0 && tp <= 100) sc.scrollLeft = Math.max(0, tl.scrollWidth * tp / 100 - sc.clientWidth / 2);
 
   // ③ 優先順位
   var ranks = document.getElementById("ranks");
