@@ -216,7 +216,10 @@
       var cs = getComputedStyle(el), fg = rgba(cs.color); if (!fg) continue;
       var B = backOf(el); if (!B) continue;
       var f = over(fg, B.c), r = ratio(f, B.c);
-      if (r >= (B.guess ? 2 : (light ? 4 : 3.2))) continue;   /* 2026-09-25 ライトは 3→4（小さい字がまだ薄かった） */
+      /* 2026-09-25 ライトは 3→4（小さい字がまだ薄かった）
+         2026-09-26 15px 未満の小さい字（カードの見出し・「次の記事」の札など）は 4.5 まで。3.3 くらいのまま残っていた */
+      var small = parseFloat(cs.fontSize) < 15;
+      if (r >= (B.guess ? 2 : (small ? 4.5 : (light ? 4 : 3.2)))) continue;
       /* 明るい方・暗い方の両方を試して、先に 4.5 に届いたほう（＝元の色に近いほう）を使う。
          中くらいの明るさの地（金色のバッジなど）で、白→白のまま直らなかったため（2026-09-25） */
       var first = lum(B.c) > .35 ? [24, 22, 32] : [248, 246, 252], second = first[0] > 100 ? [24, 22, 32] : [248, 246, 252];

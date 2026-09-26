@@ -483,7 +483,8 @@ if (light && !el.closest(LIGHT_ONLY)) continue;
 var cs = getComputedStyle(el), fg = rgba(cs.color); if (!fg) continue;
 var B = backOf(el); if (!B) continue;
 var f = over(fg, B.c), r = ratio(f, B.c);
-if (r >= (B.guess ? 2 : (light ? 4 : 3.2))) continue;
+var small = parseFloat(cs.fontSize) < 15;
+if (r >= (B.guess ? 2 : (small ? 4.5 : (light ? 4 : 3.2)))) continue;
 var first = lum(B.c) > .35 ? [24, 22, 32] : [248, 246, 252], second = first[0] > 100 ? [24, 22, 32] : [248, 246, 252];
 var best = null, bestT = 9;
 [first, second].forEach(function (to) {
