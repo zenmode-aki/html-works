@@ -209,6 +209,14 @@ def main():
         print(f"\n⚠️  サムネがまだ無い: {', '.join(missing)}")
         print("   python3 tools/thumbs.py  で作れます（macOSのみ）")
 
+    # 🔗 リンクを貼ったときのカード（OGP）も、全記事ぶん作り直す（2026-09-26）
+    try:
+        sys.path.insert(0, str(ROOT / "tools"))
+        import ogp
+        ogp.main_all()
+    except Exception as e:
+        print(f"⚠️  OGP の更新に失敗しました（記事はそのまま動きます）: {e}")
+
     # 🌐 トップの一覧のタイトルは、各記事の訳（works/<slug>/i18n/<lang>.json）から入る。
     #    一覧を作り直したら、訳の埋め込みもここで一緒にやり直す（忘れると新しい記事だけ英語になる）
     try:

@@ -82,6 +82,11 @@
 - 「前の記事」ボタンは `python3 tools/prev-links.py` が入れる（その記事を「次」に指している記事）
 - **記事を公開したら、`tools/next-links.py` → `tools/prev-links.py` → `tools/i18n.py` の順に走らせる**。`check.py --site` がループ・はぐれ記事を見張っている
 
+## 🔗 リンクを貼ったときのカード（OGP・2026-09-26）
+
+- LINE・X などにリンクを貼ると、表紙の絵・タイトル・最初の一文がカードで出る。`tools/ogp.py` が `<head>` の目印（`<!-- ⬇️ OGP（tools/ogp.py） -->`）の中を作る。**手で書かない**
+- `python3 tools/build-site.py` が毎回いっしょに走らせるので、新しい記事にも自動で入る。絵は `assets/thumbs-src/<slug>.jpg`
+
 ## 📸 写真の画質（2026-09-25）
 
 - 本人の写真は `tools/embed.py` が **幅1400px・JPEG q84** で埋め込む（前は1200px・q72で、荒く見えていた）。1記事の上限は **1MB**
