@@ -341,6 +341,7 @@
   @media (max-width: 460px) {
     .rooms { grid-template-columns: 1fr; }
     .jobs { grid-template-columns: repeat(2, 1fr); }
+    .jobs > :last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 5px); } /* 5枚目だけ左に余っていたので真ん中に */
   }
 
   /* ══ 記事一覧 ════════════════════════════════════════════ */
@@ -646,7 +647,7 @@
     .map-stage { grid-template-columns: 1fr; }
     .hero-pengesso { display: none; }
     .about-grid { grid-template-columns: 1fr; }
-    .about-photo { width: 62%; }
+    .about-photo { width: 62%; max-width: 280px; } /* タブレットで大きすぎた */
   }
   @media (max-width: 620px) {
     .hero { padding: 38px 24px 34px; border-radius: 26px; }
@@ -657,7 +658,7 @@
     .name-slot { display: block; width: 100%; margin-top: 8px; font-size: 15px; }
     .about { padding: 28px 22px; border-radius: 26px; }
     .about-top { grid-template-columns: 1fr; gap: 20px; }
-    .about-photo { width: 62%; }
+    .about-photo { width: 62%; max-width: 280px; } /* タブレットで大きすぎた */
     .goal { padding: 20px 18px; border-radius: 20px; }
     .goal-title { font-size: 15.5px; }
     .post { grid-template-columns: 56px 1fr; padding: 14px 16px; }
@@ -801,6 +802,10 @@
   .place-go { color: var(--blue); font-weight: 900; transition: transform .18s; }
   .place:hover .place-go, .place.on .place-go { transform: translateX(4px); }
   .place.on { box-shadow: 0 0 0 2.5px rgba(47,86,201,.2); }
+  /* タブレット幅（地図が1列になる幅）では3列に。1列だと13行も縦に並んでいた（2026-09-26） */
+  @media (max-width: 900px) and (min-width: 701px) {
+    .place-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
   /* スマホでは場所のリストを2列に（1列だと12個並んで、部屋までが遠かった） */
   @media (max-width: 700px) {
     .place-list { grid-template-columns: 1fr 1fr; gap: 7px; }
