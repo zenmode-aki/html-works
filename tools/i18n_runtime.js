@@ -126,6 +126,18 @@
   }
   var theme = pickTheme();
   document.documentElement.setAttribute('data-theme', theme);
+  /* 📱 スマホのブラウザの上の帯の色も、ダークのときは暗くする（2026-09-26）。ライトではページがもともと決めていた色に戻す */
+  var barMeta = document.querySelector('meta[name="theme-color"]'), barOrig = barMeta ? barMeta.getAttribute('content') : null;
+  function paintBar() {
+    var head = document.head || document.getElementsByTagName('head')[0];
+    if (theme === 'dark') {
+      if (!barMeta) { barMeta = document.createElement('meta'); barMeta.name = 'theme-color'; head.appendChild(barMeta); }
+      barMeta.setAttribute('content', '#15161d');
+    } else if (barMeta) {
+      if (barOrig) barMeta.setAttribute('content', barOrig); else { barMeta.remove(); barMeta = null; }
+    }
+  }
+  paintBar();
   var D = 'html[data-theme="dark"] ';
   var darkCss = document.createElement('style');
   darkCss.textContent =
@@ -175,6 +187,7 @@
       document.documentElement.setAttribute('data-theme', theme);
       try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
       paint();
+      paintBar();
       guard();
     });
     return b;
