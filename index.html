@@ -379,6 +379,12 @@
     margin: 18px 0 4px; color: var(--muted); font-size: 13px; font-weight: 700;
   }
   .pagination[hidden] { display: none; }
+  .pagination { flex-wrap: wrap; row-gap: 10px; }
+  .page-nums { flex-basis: 100%; display: flex; justify-content: center; align-items: center; gap: 6px; }
+  .pagination .page-nums button { min-width: 40px; min-height: 40px; padding: 0 8px; font-weight: 900; }
+  .pagination .page-nums button.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .page-gap { color: var(--muted); font-weight: 900; }
+  html[data-theme="dark"] .pagination .page-nums button.on { background: #8b6de8 !important; color: #fff !important; }
   .pagination button {
     padding: 9px 14px; border: 1.5px solid var(--line); border-radius: 999px;
     background: var(--paper); color: var(--navy); font: inherit; cursor: pointer;
@@ -3091,12 +3097,27 @@ var pagination = document.getElementById('pagination');
 var feedPage = 0, PAGE_SIZE = 10;
 
 pagination.addEventListener('click', function (e) {
-  var b = e.target.closest('button[data-page-step]');
+  var b = e.target.closest('button[data-page-step], button[data-page-go]');
   if (!b || b.disabled) return;
-  feedPage += Number(b.dataset.pageStep);
+  if (b.dataset.pageGo) feedPage = Number(b.dataset.pageGo);
+  else feedPage += Number(b.dataset.pageStep);
   drawFeed();
   goToPosts();
 });
+
+/* 🔢 ページ番号（2026-09-26）。25ページを「次へ」だけで進むのは遠いので、1 … 4 5 6 … 25 のように飛べる */
+function pageNums(pageCount) {
+  var show = {}, out = [], last = -1;
+  [0, pageCount - 1, feedPage - 1, feedPage, feedPage + 1].forEach(function (i) { if (i >= 0 && i < pageCount) show[i] = 1; });
+  for (var i = 0; i < pageCount; i++) {
+    if (!show[i]) continue;
+    if (last >= 0 && i - last > 1) out.push('<span class="page-gap" aria-hidden="true">…</span>');
+    out.push('<button type="button" data-page-go="' + i + '"' + (i === feedPage ? ' class="on" aria-current="page"' : '') +
+      ' aria-label="' + (i + 1) + '">' + (i + 1) + '</button>');
+    last = i;
+  }
+  return '<div class="page-nums">' + out.join('') + '</div>';
+}
 
 function drawFeed() {
   /* 🌐 meta.json に "only": "ja" がある記事は、日本語で見ている人にだけ出して、いちばん上に置く
@@ -3130,7 +3151,8 @@ function drawFeed() {
       (feedPage === 0 ? ' disabled' : '') + '>← Previous</button>' +
     '<span aria-live="polite">Page ' + (feedPage + 1) + ' of ' + pageCount + '</span>' +
     '<button type="button" data-page-step="1" aria-label="Next page"' +
-      (feedPage === pageCount - 1 ? ' disabled' : '') + '>Next →</button>';
+      (feedPage === pageCount - 1 ? ' disabled' : '') + '>Next →</button>' +
+    pageNums(pageCount);
 
   var JOB_BADGE = { netops: ['🛠', 'Network Ops'], bridge: ['🌉', 'Bridge SE'] };
   list.slice(feedPage * PAGE_SIZE, (feedPage + 1) * PAGE_SIZE).forEach(function (p) {
