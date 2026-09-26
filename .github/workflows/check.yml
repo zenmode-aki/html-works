@@ -30,6 +30,10 @@ jobs:
       - name: サイト全体（バッジ・noindex・meta.json・サムネ・死んだリンク）
         run: python3 tools/check.py --site
 
+      # 2026-09-26 スマホの写真に撮った場所（GPS）が入ったまま公開されていた。残っていたら止める
+      - name: 写真に撮った場所などの情報が残っていないか
+        run: python3 tools/strip-exif.py --check
+
       # index.html の記事一覧は手で書かず build-site.py で差し込む決まり。
       # 差し込み直して差分が出たら、誰かが手で足したか、差し込み忘れている。
       - name: トップページの一覧が最新かどうか
