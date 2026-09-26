@@ -407,7 +407,7 @@
       '.i18n-opt:focus-visible{outline:3px solid rgba(139,109,232,.45);outline-offset:2px}' +
       '.i18n-flag{font-size:17px;line-height:1}' +
       '.i18n-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:60;display:flex;flex-direction:column;gap:2px;' +
-      'width:min(340px,calc(100vw - 32px));min-width:0;max-height:min(70vh,420px);overflow:hidden;padding:8px;' +
+      'width:min(340px,calc(100vw - 32px));min-width:0;max-height:min(72vh,560px);overflow:hidden;padding:8px;' +
       'background:#fff;border-radius:18px;box-shadow:0 14px 34px rgba(115,70,111,.22)}' +
       '.i18n-menu[hidden]{display:none}.i18n-menu .i18n-opt{justify-content:flex-start;width:100%;white-space:normal;text-align:start}' +
       /* 🔤 頭文字のボタン（2026-09-25 本人：検索欄はスマホでキーボードが出てじゃま。A〜Zで飛べるほうがいい） */
