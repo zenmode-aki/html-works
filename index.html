@@ -2963,7 +2963,7 @@ function drawMap(){
     /* アジアでは国に1つだけ札を立てる。街を全部出すと名前が団子になるため */
     /* 🇵🇭 住んだ街が2つ以上ある国（フィリピン）は、押すと街ごとに開く（2026-09-24）
        バギオ・クラーク・セブを、それぞれ押して選べるようにする */
-    var open = state.country && m.cities.filter(function(t){ return t.c === state.country }).length > 1;
+    var open = state.country && splitsIntoCities(state.country);
     m.marks.forEach(function(t){
       if (open && t.c === state.country) {
         m.cities.forEach(function(c){
@@ -3076,8 +3076,16 @@ function openCountry(code){
   state.place = null; state.room = null; state.job = null;
   render();
   /* 街が2つ以上ある国は、地図の上で街が開くので、そこで手を止める */
-  var many = MAPS.asia.cities.filter(function(t){ return t.c === state.country }).length > 1;
+  var many = splitsIntoCities(state.country);
   if (state.country && !many) goToPosts();
+}
+
+/* 🇹🇭 タイは記事が2本だけなので、街に分けずに、押したらそのままタイの記事へ（2026-09-26 本人の要望）
+   分けるのは、街が2つ以上あって、ここに入っていない国だけ */
+function splitsIntoCities(code) {
+  var NO_SPLIT = { th: true };
+  if (!code || NO_SPLIT[code]) return false;
+  return MAPS.asia.cities.filter(function(t){ return t.c === code }).length > 1;
 }
 
 function pokeBye(){ var pk = document.getElementById('mapPoke'); if (pk) pk.classList.add('bye'); }
