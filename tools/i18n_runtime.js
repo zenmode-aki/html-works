@@ -108,7 +108,9 @@
      文節で折り返す。本文はそのまま（細かく割ると行がガタガタになるため）。対応していないブラウザは今までどおり */
   var jaWrap = document.createElement('style');
   jaWrap.textContent = 'html:lang(ja) :is(h1, h2, h3, .card-label, .next-title, .prev-title, .post-title, .big, .closing-line) ' +
-    '{ word-break: auto-phrase; text-wrap: balance; }';
+    '{ word-break: auto-phrase; text-wrap: balance; }' +
+    /* どの言語でも：見出しは行の長さをそろえ、本文は最後の行に1語だけ残らないようにする */
+    'h1, .next-title, .post-title { text-wrap: balance; } main p, main li, .card p { text-wrap: pretty; }';
   (document.head || document.getElementsByTagName('head')[0]).appendChild(jaWrap);
 
   /* ── 🌙 ダークモード（2026-09-24 本人の希望：「まぶしい」）──────────────
