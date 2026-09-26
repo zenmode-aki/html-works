@@ -342,6 +342,22 @@
   :is(.card, .video-card, .map-card, .uni-tags, figure.hero) + figure.photo { margin-top: 18px; }
   /* 2026-09-26 「次の記事」の白い字が、グラデーションの明るい側で薄く見えた。うっすら影をつける */
   .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+  /* 🚃 電車の長さくらべ（2026-09-26）。本文の数字だけで作った、同じものさしの図。1両ずつ区切って見せる */
+  .trains { display: grid; gap: 12px; margin: 16px 0 4px; padding: 14px 14px 12px; border-radius: 20px;
+            background: color-mix(in srgb, var(--purple) 7%, #fff); }
+  .tr-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 13.5px; font-weight: 900; }
+  .tr-top b { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .tr-bar { height: 16px; margin-top: 5px; width: calc(var(--m) / 400 * 100%); border-radius: 8px 12px 12px 8px;
+            background: repeating-linear-gradient(90deg, var(--c) 0 calc(100% / var(--n) - 3px), transparent 0 calc(100% / var(--n)));
+            transform-origin: left; }
+  .tr.me .tr-top { color: var(--purple); }
+  html[data-theme="dark"] .trains { background: #262a3a; }
+  @media (prefers-reduced-motion: no-preference) {
+    .card.in .tr-bar { animation: tr-run 1.1s cubic-bezier(.2,1,.3,1) both; }
+    .card.in .tr:nth-child(2) .tr-bar { animation-delay: .12s; } .card.in .tr:nth-child(3) .tr-bar { animation-delay: .24s; }
+    .card.in .tr:nth-child(4) .tr-bar { animation-delay: .36s; }
+    @keyframes tr-run { from { transform: scaleX(0); } to { transform: none; } }
+  }
 </style>
 <!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
 <script>document.documentElement.className += " js";</script>
@@ -360,7 +376,7 @@
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","1o4vi2":"山手線","ihlnve":"東京で、山手線という電車に乗りました。","2b4y2h":"🚉 山手線のホーム","n0cqar":"めちゃくちゃ長い","181vmkw":"驚いたことがあります。","uhlk0d":"東京の電車ってめちゃくちゃ長いんです。","1dtzusy":"名古屋の電車が、仮に50メートルくらいの長さだとしたら。","16fon7w":"東京の電車は、その3倍くらいあった気がします。","12j4r34":"150メートルくらい、あった気がしました。","9nxjo5":"調べてみた","174lswp":"（ここは、AIに調べてもらいました）","1rku5k":"山手線の電車は、11両編成です。1両が約20メートルなので、全部で約220メートルあります","rxd8th":"名古屋の地下鉄（東山線）は、6両編成です。1両が約15メートルなので、全部で約90メートルです","1fpse1k":"つまり、山手線は、名古屋の地下鉄の2倍以上の長さでした","q6bry":"私の「150メートルくらい」より、もっと長かったんです。","mm2zos":"世界一長い？","1i1acds":"こんなに長い電車は、たぶん東京にしかないんじゃないかな、と思っていました。","zpbfbv":"東京のこの電車の長さって、世界一なのかな。","19qqist":"長い電車ランキングを作ったら、山手線などのJRの電車は、どれくらいの順位になるんだろう、とちょっと気になりました。","ec6kur":"上には上がいた","jg00vt":"調べてみると、上には上がいました。","114q999":"東京の中だけでも、東海道線などは15両編成で、約300メートルあります","iyrwy7":"新幹線は16両編成で、約400メートルです","1a04np8":"世界には、20両以上つないで走る長距離列車もあります","32bte1":"山手線は、世界一ではありませんでした。","12ouzr3":"でも、2、3分に1本、220メートルの電車がぐるぐる回っている。","16gt42r":"それはそれで、やっぱり東京ってすごいなと思いました。","1x3kx9p":"夏の東京ひとり旅","aza2i4":"山手線は、めちゃくちゃ長い","14hka4g":"新宿ゴールデン街だけ、空気がちがう","r1vp01":"自転車で東京をブラブラ、川と橋が多い"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","1o4vi2":"山手線","ihlnve":"東京で、山手線という電車に乗りました。","2b4y2h":"🚉 山手線のホーム","n0cqar":"めちゃくちゃ長い","181vmkw":"驚いたことがあります。","uhlk0d":"東京の電車ってめちゃくちゃ長いんです。","1dtzusy":"名古屋の電車が、仮に50メートルくらいの長さだとしたら。","16fon7w":"東京の電車は、その3倍くらいあった気がします。","12j4r34":"150メートルくらい、あった気がしました。","9nxjo5":"調べてみた","174lswp":"（ここは、AIに調べてもらいました）","1rku5k":"山手線の電車は、11両編成です。1両が約20メートルなので、全部で約220メートルあります","rxd8th":"名古屋の地下鉄（東山線）は、6両編成です。1両が約15メートルなので、全部で約90メートルです","1fpse1k":"つまり、山手線は、名古屋の地下鉄の2倍以上の長さでした","q6bry":"私の「150メートルくらい」より、もっと長かったんです。","mm2zos":"世界一長い？","1i1acds":"こんなに長い電車は、たぶん東京にしかないんじゃないかな、と思っていました。","zpbfbv":"東京のこの電車の長さって、世界一なのかな。","19qqist":"長い電車ランキングを作ったら、山手線などのJRの電車は、どれくらいの順位になるんだろう、とちょっと気になりました。","ec6kur":"上には上がいた","jg00vt":"調べてみると、上には上がいました。","114q999":"東京の中だけでも、東海道線などは15両編成で、約300メートルあります","iyrwy7":"新幹線は16両編成で、約400メートルです","1a04np8":"世界には、20両以上つないで走る長距離列車もあります","32bte1":"山手線は、世界一ではありませんでした。","12ouzr3":"でも、2、3分に1本、220メートルの電車がぐるぐる回っている。","16gt42r":"それはそれで、やっぱり東京ってすごいなと思いました。","1x3kx9p":"夏の東京ひとり旅","1wu8mrv":"🚇 名古屋の地下鉄","qwak1v":"🚃 山手線","1qh5yd7":"🚆 東海道線","3b5ed4":"🚄 新幹線","1pwykej":"90m","1s0rnlc":"220m","1xbbh0h":"300m","dkvtt0":"400m","aza2i4":"山手線は、めちゃくちゃ長い","14hka4g":"新宿ゴールデン街だけ、空気がちがう","r1vp01":"自転車で東京をブラブラ、川と橋が多い"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1184,6 +1200,12 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
       <li>The Shinkansen has 16 cars, about 400 meters.</li>
       <li>In the world, there are also long-distance trains that run with more than 20 cars.</li>
     </ul>
+    <div class="trains">
+      <div class="tr"><div class="tr-top"><span>🚇 Nagoya subway</span><b>90 m</b></div><div class="tr-bar" style="--m:90;--n:6;--c:#f2a33c"></div></div>
+      <div class="tr me"><div class="tr-top"><span>🚃 Yamanote Line</span><b>220 m</b></div><div class="tr-bar" style="--m:220;--n:11;--c:#34b27d"></div></div>
+      <div class="tr"><div class="tr-top"><span>🚆 Tokaido Line</span><b>300 m</b></div><div class="tr-bar" style="--m:300;--n:15;--c:#e4803a"></div></div>
+      <div class="tr"><div class="tr-top"><span>🚄 Shinkansen</span><b>400 m</b></div><div class="tr-bar" style="--m:400;--n:16;--c:#4d9de0"></div></div>
+    </div>
     <p>The Yamanote Line was not the longest in the world.</p>
     <p>But a 220-meter train goes around and around, 1 every 2 or 3 minutes.</p>
     <p class="big">That alone made me think that Tokyo really is amazing.</p>
