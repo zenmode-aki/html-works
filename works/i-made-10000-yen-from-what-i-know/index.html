@@ -313,6 +313,56 @@
   :is(.card, .video-card, .map-card, .uni-tags, figure.hero) + figure.photo { margin-top: 18px; }
   /* 2026-09-26 「次の記事」の白い字が、グラデーションの明るい側で薄く見えた。うっすら影をつける */
   .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+/* ⬇️ tools/components.py */
+  /* 🗺 地図 — 上空からその場所の雰囲気がわかるようにする */
+  .map-card, .video-card { margin: 18px 0 0; overflow: hidden;
+       border: 7px solid rgba(255,255,255,.8); border-radius: 30px;
+       box-shadow: var(--shadow); background: #dde7ea; }
+  .map-card iframe { display: block; width: 100%;
+       height: clamp(220px, 45vw, 330px); border: 0; }
+  .video-card { background: #000; }
+  .video-card .ratio { position: relative; width: 100%; padding-top: 56.25%; }
+  .video-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .map-card figcaption, .video-card figcaption {
+       display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+       padding: 11px 16px 13px; background: #fff; color: var(--muted);
+       font-size: 12.5px; font-family: "Trebuchet MS", sans-serif; }
+  .map-card figcaption a, .video-card figcaption a {
+       color: var(--accent, #2f8fbf); font-weight: 700; text-decoration: none; }
+  .map-card figcaption a:hover, .video-card figcaption a:hover { text-decoration: underline; }
+
+  /* 🎞 スライド — 写真を全部縦に流さず、横にスワイプして見る */
+  .slides { margin: 18px 0 0; }
+  .slides-track { display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 12px;
+       scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+       scrollbar-width: none; }
+  .slides-track::-webkit-scrollbar { display: none; }
+  .slides-track figure { flex: 0 0 86%; margin: 0; scroll-snap-align: center;
+       overflow: hidden; background: #fff; border: 6px solid rgba(255,255,255,.85);
+       border-radius: 24px; box-shadow: var(--shadow); }
+  .slides-track img { display: block; width: 100%; height: clamp(200px, 52vw, 280px);
+       object-fit: cover; }
+  .slides-track figcaption { padding: 9px 14px 11px; color: var(--muted);
+       font-size: 12px; font-family: "Trebuchet MS", sans-serif; }
+  .slides-dots { display: flex; justify-content: center; align-items: center; gap: 7px; }
+  /* 記事ごとに明るい配色と暗い配色があるので、色を決め打ちしない。
+     currentColor（その記事の文字色）を薄めて使えば、どちらでも必ず見える */
+  .slides-dots i { width: 7px; height: 7px; border-radius: 50%;
+       background: currentColor; opacity: .28;
+       transition: transform .3s ease, opacity .3s ease; }
+  .slides-dots i.on { opacity: 1; transform: scale(1.55); }
+  .slides-hint { margin-top: 9px; text-align: center; color: var(--muted);
+       font-size: 11.5px; letter-spacing: .1em; font-family: "Trebuchet MS", sans-serif; }
+
+/* ⬇️ tools/components.py : dark */
+  /* 🌙 ダークモードで、動画・地図・スライドの白い枠と説明だけが浮いていた（2026-09-26） */
+  html[data-theme="dark"] .map-card, html[data-theme="dark"] .video-card { border-color: rgba(255,255,255,.10); }
+  html[data-theme="dark"] .map-card figcaption, html[data-theme="dark"] .video-card figcaption,
+  html[data-theme="dark"] .slides-track figure { background: #22242f; color: #cfc8dc; }
+  html[data-theme="dark"] .slides-track figure { border-color: rgba(255,255,255,.10); }
+  html[data-theme="dark"] .map-card figcaption a, html[data-theme="dark"] .video-card figcaption a { color: #8fd3ff; }
+  html[data-theme="dark"] .slides-arrow { background: rgba(34,36,47,.94); color: #f4f0fa; }
+
 </style>
 <!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
 <script>document.documentElement.className += " js";</script>
@@ -382,6 +432,7 @@ try { DATA = JSON.parse(holder.textContent); } catch (e) { return; }
 var LANGS = DATA.langs || {};
 var MENU = (LANGS[lang] && LANGS[lang].menu) || {};
 var THEME = (LANGS[lang] && LANGS[lang].theme) || {};
+var THEME_WORDS = { ja: ['ダーク表示', 'ライト表示'], ko: ['다크 모드', '라이트 모드'], zh: ['深色模式', '浅色模式'], 'zh-Hant': ['深色模式', '淺色模式'] };
 var KEY = 'pengesso-lang';
 var avail = ['en'].concat(Object.keys(LANGS));
 var NAMES = { en: 'English' };
@@ -433,7 +484,7 @@ jaWrap.textContent = 'html:lang(ja) :is(h1, h2, h3, .card-label, .next-title, .p
 '{ word-break: auto-phrase; text-wrap: balance; }' +
 'h1, .next-title, .post-title { text-wrap: balance; } main p, main li, .card p { text-wrap: pretty; }';
 (document.head || document.getElementsByTagName('head')[0]).appendChild(jaWrap);
-var THEME_KEY = 'pengesso-theme';
+var THEME_KEY = 'pengesso-theme-v2';
 function pickTheme() {
 var qt = (location.search.match(/[?&]theme=(dark|light)/) || [])[1];
 if (qt) return qt;
@@ -475,10 +526,10 @@ D + '.card p.aside,' + D + '.ba-col.before{background:rgba(255,255,255,.06) !imp
 D + '.photo{background:#22242f !important;border-color:rgba(255,255,255,.10) !important}' +
 D + 'img{filter:brightness(.93)}' +
 D + '.stage-public{background:#23c98a !important;color:#04331d !important}' +
-'.theme-btn{display:inline-grid;place-items:center;width:40px;height:40px;margin-right:8px;border:2px solid rgba(255,255,255,.9);' +
-'border-radius:50%;background:#fff;font-size:18px;cursor:pointer;box-shadow:0 6px 16px rgba(115,70,111,.10);transition:transform .3s}' +
-'.theme-btn:hover{transform:rotate(-20deg) scale(1.06)}' + D + '.theme-btn{background:#22242f;border-color:rgba(255,255,255,.1)}' +
-'@media (prefers-reduced-motion: reduce){.theme-btn{transition:none}}' +
+'.theme-foot{display:flex;justify-content:center;margin:26px auto 6px}' +
+'.theme-btn{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:4px 12px;border:0;border-radius:999px;' +
+'background:none;color:inherit;opacity:.5;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}' +
+'.theme-btn:hover,.theme-btn:focus-visible{opacity:.9}.theme-btn:focus-visible{outline:2px solid #8b6de8;outline-offset:2px}' +
 '.chap .card-label{color:color-mix(in srgb,var(--c) 66%,#000) !important}' +
 D + '.chap .card-label{color:color-mix(in srgb,var(--c) 55%,#fff) !important}' +
 '.stage-public{color:#04331d !important}' +
@@ -488,9 +539,9 @@ function themeButton() {
 var b = document.createElement('button');
 b.type = 'button'; b.className = 'theme-btn'; b.setAttribute('translate', 'no');
 function paint() {
-b.textContent = theme === 'dark' ? '☀️' : '🌙';
-b.setAttribute('aria-label', theme === 'dark' ? (THEME.lightMode || 'Light mode') : (THEME.darkMode || 'Dark mode'));
-b.title = b.getAttribute('aria-label');
+var th = (LANGS[lang] && LANGS[lang].theme) || {}, w = THEME_WORDS[lang] || [];
+var t = theme === 'dark' ? (th.lightMode || w[1] || 'Light mode') : (th.darkMode || w[0] || 'Dark mode');
+b.textContent = (theme === 'dark' ? '☀️ ' : '🌙 ') + t;
 }
 paint();
 b.addEventListener('click', function () {
@@ -906,16 +957,18 @@ setTimeout(function () { if (tip) { tip.classList.add('bye'); setTimeout(functio
 }
 var spot = document.querySelector('[data-i18n-switch]');
 var bar = document.querySelector('.topbar') || document.querySelector('body > header, main > header, header');
-var tb = themeButton();
-if (spot) { spot.appendChild(tb); spot.appendChild(wrap); switchMount = spot; }
+var foot = document.createElement('div');
+foot.className = 'theme-foot'; foot.appendChild(themeButton());
+var tail = document.querySelector('footer') || document.querySelector('main') || document.body;
+tail.appendChild(foot);
+if (spot) { spot.appendChild(wrap); switchMount = spot; }
 else if (bar) {
 var row = document.createElement('div');
 row.className = 'i18n-row';
-row.appendChild(tb);
 row.appendChild(wrap);
 bar.parentNode.insertBefore(row, bar.nextSibling);
 switchMount = row;
-} else { wrap.className += ' i18n-float'; wrap.insertBefore(tb, wrap.firstChild); document.body.appendChild(wrap); switchMount = wrap; }
+} else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); switchMount = wrap; }
 }
 var NOTICE_KEY_PREFIX = 'pengesso-notice-dismissed-';
 function drawNotice(l, L) {
@@ -1291,6 +1344,26 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
   }, { rootMargin: '-40% 0px -45% 0px' });
   [].forEach.call(document.querySelectorAll('.chap'), function(c){ io.observe(c); });
 })();
+
+  /* 🎞 スライド：いま何枚目を見ているかを丸で出す */
+  document.querySelectorAll('.slides').forEach(function (box) {
+    var track = box.querySelector('.slides-track');
+    var dots  = box.querySelector('.slides-dots');
+    if (!track || !dots) return;
+    var figs = Array.prototype.slice.call(track.children);
+    figs.forEach(function () { dots.appendChild(document.createElement('i')); });
+    var marks = Array.prototype.slice.call(dots.children);
+    if (marks[0]) marks[0].className = 'on';
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var i = figs.indexOf(e.target);
+        marks.forEach(function (m, j) { m.className = (i === j) ? 'on' : ''; });
+      });
+    }, { root: track, threshold: 0.6 });
+    figs.forEach(function (f) { io.observe(f); });
+  });
 </script>
 </body>
 </html>

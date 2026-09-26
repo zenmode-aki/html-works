@@ -46,6 +46,8 @@
   var LANGS = DATA.langs || {};
   var MENU = (LANGS[lang] && LANGS[lang].menu) || {};
   var THEME = (LANGS[lang] && LANGS[lang].theme) || {};
+  /* ダーク切り替えの文言（lang はこの下で決まるので、使うときに引く） */
+  var THEME_WORDS = { ja: ['ダーク表示', 'ライト表示'], ko: ['다크 모드', '라이트 모드'], zh: ['深色模式', '浅色模式'], 'zh-Hant': ['深色模式', '淺色模式'] };
   var KEY = 'pengesso-lang';
   var avail = ['en'].concat(Object.keys(LANGS));
   var NAMES = { en: 'English' };
@@ -117,7 +119,9 @@
      全ページ共通。初めての人はいつもライト（2026-09-25 本人の要望：明るい方がパッと見が好き）。
      ボタンで切り替えたら localStorage に覚えて、次からはその設定で開く。
      <head> で先に決めるので、白く光ってから暗くなる「ちらつき」が出ない */
-  var THEME_KEY = 'pengesso-theme';
+  /* 2026-09-26 本人：「基本はライトで見せたい。ダークは見つけづらいところでいい」。
+     覚える名前を変えて、前にダークを選んだ人も一度ライトに戻す。ボタンはページのいちばん下に小さく置く */
+  var THEME_KEY = 'pengesso-theme-v2';
   function pickTheme() {
     var qt = (location.search.match(/[?&]theme=(dark|light)/) || [])[1];
     if (qt) return qt;
@@ -163,10 +167,10 @@
     D + 'img{filter:brightness(.93)}' +
     D + '.stage-public{background:#23c98a !important;color:#04331d !important}' +
     /* 切り替えボタン */
-    '.theme-btn{display:inline-grid;place-items:center;width:40px;height:40px;margin-right:8px;border:2px solid rgba(255,255,255,.9);' +
-      'border-radius:50%;background:#fff;font-size:18px;cursor:pointer;box-shadow:0 6px 16px rgba(115,70,111,.10);transition:transform .3s}' +
-    '.theme-btn:hover{transform:rotate(-20deg) scale(1.06)}' + D + '.theme-btn{background:#22242f;border-color:rgba(255,255,255,.1)}' +
-    '@media (prefers-reduced-motion: reduce){.theme-btn{transition:none}}' +
+    '.theme-foot{display:flex;justify-content:center;margin:26px auto 6px}' +
+    '.theme-btn{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:4px 12px;border:0;border-radius:999px;' +
+      'background:none;color:inherit;opacity:.5;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}' +
+    '.theme-btn:hover,.theme-btn:focus-visible{opacity:.9}.theme-btn:focus-visible{outline:2px solid #8b6de8;outline-offset:2px}' +
     /* 読みやすさ（2026-09-25）：章のラベルは淡い色なので少し濃く／PUBLIC は緑の上の濃い字に統一 */
     '.chap .card-label{color:color-mix(in srgb,var(--c) 66%,#000) !important}' +
     D + '.chap .card-label{color:color-mix(in srgb,var(--c) 55%,#fff) !important}' +
@@ -177,9 +181,9 @@
     var b = document.createElement('button');
     b.type = 'button'; b.className = 'theme-btn'; b.setAttribute('translate', 'no');
     function paint() {
-      b.textContent = theme === 'dark' ? '☀️' : '🌙';
-      b.setAttribute('aria-label', theme === 'dark' ? (THEME.lightMode || 'Light mode') : (THEME.darkMode || 'Dark mode'));
-      b.title = b.getAttribute('aria-label');
+      var th = (LANGS[lang] && LANGS[lang].theme) || {}, w = THEME_WORDS[lang] || [];
+      var t = theme === 'dark' ? (th.lightMode || w[1] || 'Light mode') : (th.darkMode || w[0] || 'Dark mode');
+      b.textContent = (theme === 'dark' ? '☀️ ' : '🌙 ') + t;
     }
     paint();
     b.addEventListener('click', function () {
@@ -638,16 +642,18 @@
     /* 上のバーはスマホだと満員なので、そのすぐ下に1行つくって右に置く */
     var spot = document.querySelector('[data-i18n-switch]');
     var bar = document.querySelector('.topbar') || document.querySelector('body > header, main > header, header');
-    var tb = themeButton();
-    if (spot) { spot.appendChild(tb); spot.appendChild(wrap); switchMount = spot; }
+    var foot = document.createElement('div');
+    foot.className = 'theme-foot'; foot.appendChild(themeButton());
+    var tail = document.querySelector('footer') || document.querySelector('main') || document.body;
+    tail.appendChild(foot);
+    if (spot) { spot.appendChild(wrap); switchMount = spot; }
     else if (bar) {
       var row = document.createElement('div');
       row.className = 'i18n-row';
-      row.appendChild(tb);
       row.appendChild(wrap);
       bar.parentNode.insertBefore(row, bar.nextSibling);
       switchMount = row;
-    } else { wrap.className += ' i18n-float'; wrap.insertBefore(tb, wrap.firstChild); document.body.appendChild(wrap); switchMount = wrap; }
+    } else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); switchMount = wrap; }
   }
 
   /* ── 未確認の翻訳（AIが訳したが、本人が読めない言語）についての注意書き ──────
