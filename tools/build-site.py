@@ -199,9 +199,28 @@ def inject(page: pathlib.Path, items):
           f"({len(t)/1024:.0f}KB)")
 
 
+def sitemap(items):
+    """🔎 検索エンジン向けの記事の一覧（sitemap.xml）。/me/ と /goals/ は入れない（robots.txt で隠している）"""
+    site = "https://15-second-blog.com/"
+    newest = max((m.get("date", "") for m in items), default="")
+    rows = [(site, newest), (site + "remember/", "")]
+    rows += [(f"{site}works/{m['slug']}/", m.get("date", "")) for m in items]
+    body = "".join(
+        f"  <url><loc>{loc}</loc>" + (f"<lastmod>{d}</lastmod>" if d else "") + "</url>\n"
+        for loc, d in rows)
+    xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+           '<!-- python3 tools/build-site.py が作る。手で書かない -->\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + body + '</urlset>\n')
+    out = ROOT / "sitemap.xml"
+    if not out.exists() or out.read_text(encoding="utf-8") != xml:
+        out.write_text(xml, encoding="utf-8")
+    print(f"✅ sitemap.xml  {len(rows)}ページ")
+
+
 def main():
     posts = collect(ROOT / "works")
     inject(INDEX, posts)
+    sitemap(posts)
 
     missing = [m["slug"] for m in posts
                if not (ROOT / "assets" / "thumbs" / f"{m['slug']}.jpg").exists()]
