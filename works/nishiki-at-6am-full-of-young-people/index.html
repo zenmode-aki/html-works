@@ -409,6 +409,43 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
+     対応していないブラウザでは何も出ない（壊れない） */
+  @supports (animation-timeline: scroll()) {
+    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
+      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
+      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
+      animation: read-progress linear both; animation-timeline: scroll(root block); }
+    html[dir="rtl"]::before { transform-origin: 100% 50%; }
+    @keyframes read-progress { to { transform: scaleX(1); } }
+  }
+  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
+</style>
 <style id="tolist-css">
   /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
   .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
@@ -422,7 +459,7 @@
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","m3p5lw":"次の記事 · ここから話が変わります","gxduh6":"🐧 ふだんの暮らし","1bnikoi":"前の記事","1v786ox":"朝5時に起きて","zg8rv8":"ある日の朝のことです。","3j9e4q":"朝5時くらいに起きて、この日は、自転車で名古屋駅まで行こうと思いました。","8j3t1u":"⌚ 朝の5時46分","1xbvso5":"人がめちゃくちゃいた","1lywmyh":"名古屋には、有名なドン・キホーテの建物があります。","1agvvh3":"そのドン・キホーテの前あたりに着いたところで、すごく驚きました。","ofpcz7":"まだ朝の5時半を過ぎたくらいで、電車が走っているかどうか、という時間です。","ya4td0":"それなのに、ドン・キホーテのまわりに、人がめちゃくちゃいたんです。","dzv56l":"🏬 早朝のドン・キホーテ前","1emwd1m":"みんなすごく若い","1ltkbik":"しかも、みんなすごく若いんです。","1gfys5w":"20代くらいの若い人が、たくさんいました。","1yd2hqe":"「みんな、こんなに早起きして、何をしているんだろう？」","1tzwb4a":"「この時間から、働いているのかな？」","1jpz2fv":"名古屋に観光や出張で来ている人なのかな、とも思いました。","a11dof":"でも、みんなカバンがすごく小さかったり、手ぶらだったりしたんです。","13xdxhn":"錦というエリア","hz3120":"ドン・キホーテのまわりは、名古屋の錦と呼ばれるエリアです。","1na9lcc":"朝の運動をするような広場も、何もありません。","1xjq1g0":"「なんで、こんなに若い男女が、こんな時間にたくさんいるんだろう」","5xalcr":"みんな早起きして、何か頑張っているのかな、と思っていました。","1taeprv":"クラブから出てきた","1v54kq3":"その人たちがどこから出てきたのか、ちょっと見に行ってみました。","ik31uq":"すると、みんなクラブから出てきていたんです。","1h17x7p":"「え、クラブ？」と思いました。","ggx3d6":"朝まで踊るもの","184v5g0":"私は、ナイトクラブに行ったことがありません。","1ysybqv":"なので、知りませんでした。","1llcomb":"ナイトクラブで踊る人は、朝の6時くらいまで踊るんですね。","1nn0smp":"てっきり、クラブのお店も、夜の12時くらいには閉まるものだと思っていました。","1kp0s7z":"でも、翌朝の6時くらいまで、全然踊り明かせるんですね。","td98fc":"すごい体力だなと思いました。","4b9ttu":"夜遊びの世界を、私は全然知らないなと、痛感しました。","4ypkyk":"視野が広がった","f17pph":"名古屋の錦は、朝の6時でも、若い人がたくさんいます。","hzsll2":"たぶん、だいたいクラブ帰りです。","3m9xq7":"ちょっと面白くて、視野が広がりました。","ydekiw":"朝6時の錦は、若い人でいっぱいだった","i1k3j6":"名古屋駅から、プランなしでJRに飛び乗った","1ct1sfn":"9月になってから、名古屋のいたるところでアジア大会のポスターを見かける"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","6wpqut":"✨ こちらもどうぞ","x0lpqy":"🎲 ちょっと違う話","em1400":"公開中","m3p5lw":"次の記事 · ここから話が変わります","gxduh6":"🐧 ふだんの暮らし","1bnikoi":"前の記事","1v786ox":"朝5時に起きて","zg8rv8":"ある日の朝のことです。","3j9e4q":"朝5時くらいに起きて、この日は、自転車で名古屋駅まで行こうと思いました。","8j3t1u":"⌚ 朝の5時46分","1xbvso5":"人がめちゃくちゃいた","1lywmyh":"名古屋には、有名なドン・キホーテの建物があります。","1agvvh3":"そのドン・キホーテの前あたりに着いたところで、すごく驚きました。","ofpcz7":"まだ朝の5時半を過ぎたくらいで、電車が走っているかどうか、という時間です。","ya4td0":"それなのに、ドン・キホーテのまわりに、人がめちゃくちゃいたんです。","dzv56l":"🏬 早朝のドン・キホーテ前","1emwd1m":"みんなすごく若い","1ltkbik":"しかも、みんなすごく若いんです。","1gfys5w":"20代くらいの若い人が、たくさんいました。","1yd2hqe":"「みんな、こんなに早起きして、何をしているんだろう？」","1tzwb4a":"「この時間から、働いているのかな？」","1jpz2fv":"名古屋に観光や出張で来ている人なのかな、とも思いました。","a11dof":"でも、みんなカバンがすごく小さかったり、手ぶらだったりしたんです。","13xdxhn":"錦というエリア","hz3120":"ドン・キホーテのまわりは、名古屋の錦と呼ばれるエリアです。","1na9lcc":"朝の運動をするような広場も、何もありません。","1xjq1g0":"「なんで、こんなに若い男女が、こんな時間にたくさんいるんだろう」","5xalcr":"みんな早起きして、何か頑張っているのかな、と思っていました。","1taeprv":"クラブから出てきた","1v54kq3":"その人たちがどこから出てきたのか、ちょっと見に行ってみました。","ik31uq":"すると、みんなクラブから出てきていたんです。","1h17x7p":"「え、クラブ？」と思いました。","ggx3d6":"朝まで踊るもの","184v5g0":"私は、ナイトクラブに行ったことがありません。","1ysybqv":"なので、知りませんでした。","1llcomb":"ナイトクラブで踊る人は、朝の6時くらいまで踊るんですね。","1nn0smp":"てっきり、クラブのお店も、夜の12時くらいには閉まるものだと思っていました。","1kp0s7z":"でも、翌朝の6時くらいまで、全然踊り明かせるんですね。","td98fc":"すごい体力だなと思いました。","4b9ttu":"夜遊びの世界を、私は全然知らないなと、痛感しました。","4ypkyk":"視野が広がった","f17pph":"名古屋の錦は、朝の6時でも、若い人がたくさんいます。","hzsll2":"たぶん、だいたいクラブ帰りです。","3m9xq7":"ちょっと面白くて、視野が広がりました。","ydekiw":"朝6時の錦は、若い人でいっぱいだった","i1k3j6":"名古屋駅から、プランなしでJRに飛び乗った","1ct1sfn":"9月になってから、名古屋のいたるところでアジア大会のポスターを見かける","x2fzm3":"名古屋といえば矢場とん、でも地元の私は食べたことがない","7krmhv":"アジア大会の前に、名古屋でチャイニーズタイペイのための建物を見つけた","551h84":"名古屋のエレベーターは扉に広告を映していて、いいアイデアだと思う","fwhmek":"名古屋で日本っぽさを感じたいなら、大須","he2k9x":"鈴鹿サーキットの、地下700mのパドックトンネル"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1290,6 +1327,64 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../yaba-ton-local-never-eaten/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/yaba-ton-local-never-eaten.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 81 SEC</span></div>
+            <div class="rel-title">Nagoya is famous for Yaba-ton miso katsu, but I am from Nagoya and have never eaten it</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../chinese-taipei-house-in-nagoya/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/chinese-taipei-house-in-nagoya.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 36 SEC</span></div>
+            <div class="rel-title">I found a building for Team Chinese Taipei in Nagoya before the Asian Games</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../elevator-door-ad-screen/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/elevator-door-ad-screen.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 10 SEC</span></div>
+            <div class="rel-title">An elevator in Nagoya shows ads on its doors, and I think it is a good idea</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../osu-for-a-japanese-feeling-in-nagoya/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/osu-for-a-japanese-feeling-in-nagoya.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 42 SEC</span></div>
+            <div class="rel-title">If you want to feel Japan in Nagoya, go to Osu</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../suzuka-700m-paddock-tunnel/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/suzuka-700m-paddock-tunnel.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 45 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">Suzuka Circuit has a 700 m underground paddock tunnel</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
   <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
   <a class="to-list" href="../../index.html#posts">
     <span class="to-list-ic" aria-hidden="true">📚</span>

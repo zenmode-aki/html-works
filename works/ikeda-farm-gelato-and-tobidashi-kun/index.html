@@ -409,6 +409,43 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
+     対応していないブラウザでは何も出ない（壊れない） */
+  @supports (animation-timeline: scroll()) {
+    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
+      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
+      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
+      animation: read-progress linear both; animation-timeline: scroll(root block); }
+    html[dir="rtl"]::before { transform-origin: 100% 50%; }
+    @keyframes read-progress { to { transform: scaleX(1); } }
+  }
+  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
+</style>
 <style id="tolist-css">
   /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
   .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
@@ -422,7 +459,7 @@
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","m3p5lw":"次の記事 · ここから話が変わります","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","1mmubv5":"池田牧場","1usndsp":"最後に、滋賀県にある池田牧場に行きました。","pjvbc2":"ジェラートが、とても美味しかったです。","653l02":"🐄 牛の飛び出し看板","cftnoy":"飛び出し君","wspd0p":"関西エリアなのか、滋賀県だけなのかわかりませんが、","1yy0n69":"滋賀県に行くと、道路に走って飛び出そうとしている看板を、めちゃくちゃ見かけるんです。","1yyaa4x":"姉から「これ、飛び出し君っていうんだよ」と教わりました。","npkans":"道で何度も見かけると、だんだん、この飛び出し君に愛着が湧いてくるんですよね。","1b35hxb":"滋賀への日帰り旅","cf98hp":"池田牧場のジェラートと、飛び出し君","x2fzm3":"名古屋といえば矢場とん、でも地元の私は食べたことがない","10to4dh":"日本で一番気持ちいいドライブの場所は、滋賀県にあるかもしれない"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","6wpqut":"✨ こちらもどうぞ","x0lpqy":"🎲 ちょっと違う話","em1400":"公開中","m3p5lw":"次の記事 · ここから話が変わります","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","1mmubv5":"池田牧場","1usndsp":"最後に、滋賀県にある池田牧場に行きました。","pjvbc2":"ジェラートが、とても美味しかったです。","653l02":"🐄 牛の飛び出し看板","cftnoy":"飛び出し君","wspd0p":"関西エリアなのか、滋賀県だけなのかわかりませんが、","1yy0n69":"滋賀県に行くと、道路に走って飛び出そうとしている看板を、めちゃくちゃ見かけるんです。","1yyaa4x":"姉から「これ、飛び出し君っていうんだよ」と教わりました。","npkans":"道で何度も見かけると、だんだん、この飛び出し君に愛着が湧いてくるんですよね。","1b35hxb":"滋賀への日帰り旅","cf98hp":"池田牧場のジェラートと、飛び出し君","x2fzm3":"名古屋といえば矢場とん、でも地元の私は食べたことがない","10to4dh":"日本で一番気持ちいいドライブの場所は、滋賀県にあるかもしれない","ifjsjw":"日本遺産の、永源寺へ","i1k3j6":"名古屋駅から、プランなしでJRに飛び乗った","18x4cj8":"養老の滝に、癒されに行きました","116ni8f":"名古屋出身だけど、大阪城のほうが好き","s8ofkb":"ネットワーク運用保守は、実際に人を現場へ送る仕事でもある"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1234,6 +1271,64 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../eigenji-japan-heritage-temple/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/eigenji-japan-heritage-temple.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 34 SEC</span></div>
+            <div class="rel-title">I went to Eigenji, a Japan Heritage temple in Shiga, and the walk through nature was the best part</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../jumped-on-a-jr-train-with-no-plan/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/jumped-on-a-jr-train-with-no-plan.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 71 SEC</span></div>
+            <div class="rel-title">I jumped on a JR train from Nagoya Station with no plan and went to see my sister in Shiga</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../yoro-falls-healing-walk/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/yoro-falls-healing-walk.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 36 SEC</span></div>
+            <div class="rel-title">I went to Yoro Falls in Gifu to heal, and I was smiling the whole time</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../osaka-castle-over-nagoya-castle/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/osaka-castle-over-nagoya-castle.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 95 SEC</span></div>
+            <div class="rel-title">I am from Nagoya, but I like Osaka Castle better</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../sending-people-to-the-site/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/sending-people-to-the-site.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 39 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">Network operations also means sending a real person out to the site</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
   <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
   <a class="to-list" href="../../index.html#posts">
     <span class="to-list-ic" aria-hidden="true">📚</span>

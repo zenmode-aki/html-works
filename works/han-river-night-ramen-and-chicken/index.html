@@ -409,6 +409,43 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
+     対応していないブラウザでは何も出ない（壊れない） */
+  @supports (animation-timeline: scroll()) {
+    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
+      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
+      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
+      animation: read-progress linear both; animation-timeline: scroll(root block); }
+    html[dir="rtl"]::before { transform-origin: 100% 50%; }
+    @keyframes read-progress { to { transform: scaleX(1); } }
+  }
+  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
+</style>
 <style id="tolist-css">
   /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
   .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
@@ -422,7 +459,7 @@
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","m3p5lw":"次の記事 · ここから話が変わります","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","1uv0opp":"漢江","x02hj1":"韓国のソウルには、漢江（ハンガン）という川があります。","1efxk76":"その川沿いで、ビールを飲んだり、チキンを食べたり、ラーメンを食べたりする。","b5f1i4":"そういう文化が、韓国にはあるみたいです。","j7zs2c":"韓国ドラマなどで見たことがあることを、やってきました。","1exejq7":"🌙 夜の漢江の公園","11n8bgo":"チキン屋さん","8myeag":"漢江の川沿いには、bhcというチキン屋さんがあります。","1e69b10":"🍗 bhcチキン","bc8ycm":"ラーメンの機械","16xauxa":"その下にコンビニがあったので、そこでカップラーメンを買います。","zhq632":"公園の中には、カップラーメンを作る専用の機械が、ポンと置かれています。","8h8od2":"機械の指示に従ってお湯を入れると、カップラーメンが作れるんです。","swhktp":"♨️ ラーメンの機械","6mw50t":"ビールで流し込む","ndi0tw":"そうやって、カップラーメンとフライドチキンを、ビールで流し込む。","fw29ol":"ラーメンのカップ専用のゴミ箱もあって、面白かったです。","evnj0j":"🗑 カップ専用のゴミ箱","189bkbo":"夜の10時でも、席がいっぱい","58xrf":"驚いたのは、夜の10時や11時ごろに行ったのに、席がまだめちゃくちゃ埋まっていたことです。","1niybtr":"席以外にも、レジャーシートを持ってきている人もたくさんいました。","v4xdn1":"日本人の感覚では、夜の10時や11時近くまで、公園でひたすら喋ることはありません。","kt35yv":"こんなに夜遅い時間にも、公園にたくさん人がいることに、びっくりしました。","1aqkybc":"「韓国の人は、夜の23時まで公園にいて、こんなにたくさんおしゃべりするんだ」と思いました。","17a0xc3":"ニュースで見た調査","an1hl7":"そういえば、ここで思い出したことがあります。","hcs3sr":"「週末やお休みの日に何をしますか」というアンケートで、韓国の人は「大切な人や友人と過ごす」という回答が多い。","1b6acrc":"そんな調査結果を、ニュースで見たことがあります。","lyuv1d":"それが関係しているのかな、と思いました。","12je5v9":"（※なんか、「日本人は一人で過ごしがち。」みたいなニュースの記事で見たんだっけ。なんだっけ。）","1o82owe":"韓国語は、かわいい","wqep7z":"そこにいた韓国の人たちは、たぶん酔っ払っていて、公園でベラベラ喋っていました。","1nau5g5":"韓国語って、聞いていてめちゃくちゃかわいいんです。","1bhhupa":"もちろん外国語なので、何を言っているのかは分かりません。","1k871f5":"英語は、発音がかっこいいイメージです。","54o6gt":"でも韓国語は、かわいいイメージがあります。","17rgm5n":"怒っているのか、たぶん仕事の悪口を言っているのか、分かりません。","188dak9":"けっこう勢いよく、韓国語でバーっと喋っているんです。","1fwwf80":"その光景が、耳に聞こえてくるだけでも、なんだか面白かったです。","1yseoo8":"夜の漢江で、ラーメンとチキン","l08xny":"初めての海外は、カバンひとつ・計画なしのタイ一人旅","rmzuyd":"自転車で、ロッテタワーの下まで"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","6wpqut":"✨ こちらもどうぞ","x0lpqy":"🎲 ちょっと違う話","em1400":"公開中","m3p5lw":"次の記事 · ここから話が変わります","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","1uv0opp":"漢江","x02hj1":"韓国のソウルには、漢江（ハンガン）という川があります。","1efxk76":"その川沿いで、ビールを飲んだり、チキンを食べたり、ラーメンを食べたりする。","b5f1i4":"そういう文化が、韓国にはあるみたいです。","j7zs2c":"韓国ドラマなどで見たことがあることを、やってきました。","1exejq7":"🌙 夜の漢江の公園","11n8bgo":"チキン屋さん","8myeag":"漢江の川沿いには、bhcというチキン屋さんがあります。","1e69b10":"🍗 bhcチキン","bc8ycm":"ラーメンの機械","16xauxa":"その下にコンビニがあったので、そこでカップラーメンを買います。","zhq632":"公園の中には、カップラーメンを作る専用の機械が、ポンと置かれています。","8h8od2":"機械の指示に従ってお湯を入れると、カップラーメンが作れるんです。","swhktp":"♨️ ラーメンの機械","6mw50t":"ビールで流し込む","ndi0tw":"そうやって、カップラーメンとフライドチキンを、ビールで流し込む。","fw29ol":"ラーメンのカップ専用のゴミ箱もあって、面白かったです。","evnj0j":"🗑 カップ専用のゴミ箱","189bkbo":"夜の10時でも、席がいっぱい","58xrf":"驚いたのは、夜の10時や11時ごろに行ったのに、席がまだめちゃくちゃ埋まっていたことです。","1niybtr":"席以外にも、レジャーシートを持ってきている人もたくさんいました。","v4xdn1":"日本人の感覚では、夜の10時や11時近くまで、公園でひたすら喋ることはありません。","kt35yv":"こんなに夜遅い時間にも、公園にたくさん人がいることに、びっくりしました。","1aqkybc":"「韓国の人は、夜の23時まで公園にいて、こんなにたくさんおしゃべりするんだ」と思いました。","17a0xc3":"ニュースで見た調査","an1hl7":"そういえば、ここで思い出したことがあります。","hcs3sr":"「週末やお休みの日に何をしますか」というアンケートで、韓国の人は「大切な人や友人と過ごす」という回答が多い。","1b6acrc":"そんな調査結果を、ニュースで見たことがあります。","lyuv1d":"それが関係しているのかな、と思いました。","12je5v9":"（※なんか、「日本人は一人で過ごしがち。」みたいなニュースの記事で見たんだっけ。なんだっけ。）","1o82owe":"韓国語は、かわいい","wqep7z":"そこにいた韓国の人たちは、たぶん酔っ払っていて、公園でベラベラ喋っていました。","1nau5g5":"韓国語って、聞いていてめちゃくちゃかわいいんです。","1bhhupa":"もちろん外国語なので、何を言っているのかは分かりません。","1k871f5":"英語は、発音がかっこいいイメージです。","54o6gt":"でも韓国語は、かわいいイメージがあります。","17rgm5n":"怒っているのか、たぶん仕事の悪口を言っているのか、分かりません。","188dak9":"けっこう勢いよく、韓国語でバーっと喋っているんです。","1fwwf80":"その光景が、耳に聞こえてくるだけでも、なんだか面白かったです。","1yseoo8":"夜の漢江で、ラーメンとチキン","l08xny":"初めての海外は、カバンひとつ・計画なしのタイ一人旅","rmzuyd":"自転車で、ロッテタワーの下まで","1rof3l9":"韓国といえばサブウェイ、だと思っていた","1maxdwn":"韓国の野球場に、日本の国旗が立っていた","1m77yz9":"韓国の野球場は、中のごはんが安い","11u671x":"韓国の応援歌は、ノリやすい","1wy4ymc":"WIP = 1：進行中の仕事は1つだけにする"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1297,6 +1334,64 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../subway-in-korea/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/subway-in-korea.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 39 SEC</span></div>
+            <div class="rel-title">I thought Korea meant Subway</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../japanese-flag-at-korean-ballpark/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/japanese-flag-at-korean-ballpark.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 17 SEC</span></div>
+            <div class="rel-title">There was a Japanese flag at a Korean ballpark</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../korean-ballpark-food-is-cheap/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/korean-ballpark-food-is-cheap.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 18 SEC</span></div>
+            <div class="rel-title">The food inside a Korean ballpark is cheap</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../korean-cheer-songs-catchy/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/korean-cheer-songs-catchy.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 12 SEC</span></div>
+            <div class="rel-title">Korean cheer songs are easy to move to</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../work-in-progress-is-one/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/work-in-progress-is-one.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 8 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">WIP = 1: keep your work in progress to only one task</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
   <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
   <a class="to-list" href="../../index.html#posts">
     <span class="to-list-ic" aria-hidden="true">📚</span>

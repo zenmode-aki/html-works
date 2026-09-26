@@ -409,6 +409,43 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
+     対応していないブラウザでは何も出ない（壊れない） */
+  @supports (animation-timeline: scroll()) {
+    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
+      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
+      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
+      animation: read-progress linear both; animation-timeline: scroll(root block); }
+    html[dir="rtl"]::before { transform-origin: 100% 50%; }
+    @keyframes read-progress { to { transform: scaleX(1); } }
+  }
+  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
+</style>
 <style id="tolist-css">
   /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
   .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
@@ -422,7 +459,7 @@
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","13rfkaz":"お酒について学んだこと","96yblq":"お酒について、私が学んだことです。","70wj0c":"あるYouTuberが、お酒の飲み方を説明している動画がありました。","twivul":"その動画の中で、めっちゃ覚えている言葉があります。","1ef46tv":"「日本酒は、時限爆弾」です。","1fmb66c":"日本酒は、かっこいい","13ig6vc":"日本酒って、なんだかかっこいいんです。","13a1nlq":"名前も、かっこいい。","1tsevyb":"ビールよりも、お酒として格が上、みたいな雰囲気があります。","1vm8if9":"そういう雰囲気があるから、日本酒を飲むと、「うぇい、意外といけるじゃん」となるんです。","deqo61":"余裕、余裕","cdmq0n":"私も、天満で日本酒を飲みました。","khzyk4":"日本酒を飲んだとき、「あ、全然いけるじゃん」と思いました。","rrz1rf":"「なんだ、余裕、余裕」と思いました。","s3ijed":"ビールよりいける、と思いました。","fg5q86":"でも、気づいたら、私は路上で寝て、つぶれていました。","l5zy47":"本当に時限爆弾","m6vm0a":"日本酒は、本当に時限爆弾です。","k7lcc1":"飲んだ瞬間は、「いけるじゃん」と思うんです。","zsq9n2":"でも、本当に時間差で、すっごく酔いがきます。","21y976":"本当に、記憶がなくなるくらい酔います。","1e78swa":"それで私は、片方の靴をなくしました。","1og4ybs":"🍾 韓国のソジュ","1xbr3bc":"ソジュも時限爆弾","qa44al":"お酒について、もう一つ言えることがあります。","15eclxm":"韓国のソジュです。","1l1l16t":"フィリピンのクラークに住んでいたとき、ソジュをめちゃくちゃ飲ませてもらいました。","1ozws9l":"クラークは、韓国料理のお店がめちゃくちゃ多い場所です。","19eo10v":"いろいろな韓国人の人に、お店に連れて行ってもらって、韓国の料理をたくさん食べて、そのときにソジュを飲んでいました。","u7lf2l":"ソジュは、すごく好きなお酒でした。","a38ylr":"でも、ソジュも、日本酒と同じで、時限爆弾です。","1f9hm3k":"一回飲んだとき、「お、いける、いける」と思って飲んでしまうんです。","1eqwtof":"でも、時間差でめっちゃきます。","gfa393":"今は、ビールだけ","tuijbe":"天満で靴をなくしてから、私はビール以外のお酒は飲まない人間になりました。","1f7q51m":"（ビールだけは、飲んでも気持ち悪くならないんです）","7lmghd":"日本酒は、時限爆弾","18x4cj8":"養老の滝に、癒されに行きました","ry4u0g":"天満で日本酒を飲んで、路上で寝て、靴をなくした"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","6wpqut":"✨ こちらもどうぞ","x0lpqy":"🎲 ちょっと違う話","em1400":"公開中","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","13rfkaz":"お酒について学んだこと","96yblq":"お酒について、私が学んだことです。","70wj0c":"あるYouTuberが、お酒の飲み方を説明している動画がありました。","twivul":"その動画の中で、めっちゃ覚えている言葉があります。","1ef46tv":"「日本酒は、時限爆弾」です。","1fmb66c":"日本酒は、かっこいい","13ig6vc":"日本酒って、なんだかかっこいいんです。","13a1nlq":"名前も、かっこいい。","1tsevyb":"ビールよりも、お酒として格が上、みたいな雰囲気があります。","1vm8if9":"そういう雰囲気があるから、日本酒を飲むと、「うぇい、意外といけるじゃん」となるんです。","deqo61":"余裕、余裕","cdmq0n":"私も、天満で日本酒を飲みました。","khzyk4":"日本酒を飲んだとき、「あ、全然いけるじゃん」と思いました。","rrz1rf":"「なんだ、余裕、余裕」と思いました。","s3ijed":"ビールよりいける、と思いました。","fg5q86":"でも、気づいたら、私は路上で寝て、つぶれていました。","l5zy47":"本当に時限爆弾","m6vm0a":"日本酒は、本当に時限爆弾です。","k7lcc1":"飲んだ瞬間は、「いけるじゃん」と思うんです。","zsq9n2":"でも、本当に時間差で、すっごく酔いがきます。","21y976":"本当に、記憶がなくなるくらい酔います。","1e78swa":"それで私は、片方の靴をなくしました。","1og4ybs":"🍾 韓国のソジュ","1xbr3bc":"ソジュも時限爆弾","qa44al":"お酒について、もう一つ言えることがあります。","15eclxm":"韓国のソジュです。","1l1l16t":"フィリピンのクラークに住んでいたとき、ソジュをめちゃくちゃ飲ませてもらいました。","1ozws9l":"クラークは、韓国料理のお店がめちゃくちゃ多い場所です。","19eo10v":"いろいろな韓国人の人に、お店に連れて行ってもらって、韓国の料理をたくさん食べて、そのときにソジュを飲んでいました。","u7lf2l":"ソジュは、すごく好きなお酒でした。","a38ylr":"でも、ソジュも、日本酒と同じで、時限爆弾です。","1f9hm3k":"一回飲んだとき、「お、いける、いける」と思って飲んでしまうんです。","1eqwtof":"でも、時間差でめっちゃきます。","gfa393":"今は、ビールだけ","tuijbe":"天満で靴をなくしてから、私はビール以外のお酒は飲まない人間になりました。","1f7q51m":"（ビールだけは、飲んでも気持ち悪くならないんです）","7lmghd":"日本酒は、時限爆弾","18x4cj8":"養老の滝に、癒されに行きました","ry4u0g":"天満で日本酒を飲んで、路上で寝て、靴をなくした","1i5ryka":"大阪の街を、母と自転車で走った","t5o4e8":"通天閣は、遠くから見えたときが一番","1uurj2l":"名前を忘れた銭湯。答えは、写真に写っていた","116ni8f":"名古屋出身だけど、大阪城のほうが好き","1oofv07":"スプラトゥーンは日本でいちばん人気のSwitchのゲームで、好きなブキはスプラローラー"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1280,6 +1317,64 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../osaka-by-bike-with-my-mom/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/osaka-by-bike-with-my-mom.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 20 SEC</span></div>
+            <div class="rel-title">In Osaka, my mom and I rode rental bikes all around the city</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../tsutenkaku-best-from-far-away/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/tsutenkaku-best-from-far-away.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 54 SEC</span></div>
+            <div class="rel-title">Tsutenkaku Tower looked best when we first saw it from far away</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../forgot-the-name-of-the-sento/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/forgot-the-name-of-the-sento.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 53 SEC</span></div>
+            <div class="rel-title">I forgot the name of a public bath in Osaka, but the answer was in my photo</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../osaka-castle-over-nagoya-castle/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/osaka-castle-over-nagoya-castle.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 95 SEC</span></div>
+            <div class="rel-title">I am from Nagoya, but I like Osaka Castle better</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../splatoon-favorite-weapon/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/splatoon-favorite-weapon.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 25 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">Splatoon is Japan's most popular Switch game, and the Splat Roller is my favorite weapon</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
   <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
   <a class="to-list" href="../../index.html#posts">
     <span class="to-list-ic" aria-hidden="true">📚</span>

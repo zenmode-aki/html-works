@@ -409,6 +409,43 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
+     対応していないブラウザでは何も出ない（壊れない） */
+  @supports (animation-timeline: scroll()) {
+    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
+      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
+      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
+      animation: read-progress linear both; animation-timeline: scroll(root block); }
+    html[dir="rtl"]::before { transform-origin: 100% 50%; }
+    @keyframes read-progress { to { transform: scaleX(1); } }
+  }
+  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
+</style>
 <style id="tolist-css">
   /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
   .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
@@ -422,7 +459,7 @@
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","gxduh6":"🐧 ふだんの暮らし","1bnikoi":"前の記事","1la317y":"熱田神宮","g0p3z8":"名古屋にある、熱田神宮に行ってきました。","19hyt7x":"⛩ 木の鳥居と参道","13w57a7":"どんなところ？","14bmw6h":"（ここは、私が知らなかったので、AIに調べてもらいました）","1vbunab":"名古屋市の熱田区にある、とても古い神社です。","d17ccj":"始まりは、約1900年前と言われています","1uhxn1b":"日本の「三種の神器」の一つ、草薙神剣（くさなぎのみつるぎ）がまつられています","mv4rnn":"1年に、約700万人がお参りに来ます","10h85us":"名古屋の原点","1jizdju":"名古屋に住んでいる私が、驚いたことがあります。","jm1lus":"名古屋は今、日本で3番目に大きい都市と言われているのですが、","gx7gmv":"では、名古屋の中でも、どこから栄えていったんだろう、と思いました。","1c56y2g":"AIに聞いたところ、この熱田神宮の周りは、名古屋がじわじわと都会になっていった始まりの場所のひとつだそうです。","1mcnsi4":"今すごく栄えている名古屋駅のあたりは、明治時代以降に栄えた、新しい場所です。","1bnfqot":"名古屋駅ができたのは1886年なので、まだ140年くらいの歴史しかありません。","6758d5":"名古屋出身の私としては、「熱田神宮が、名古屋の原点のひとつだったのか」と、ちょっと驚きました。","bvw65l":"初詣の、すごい行列","1rkjm5p":"日本人は、1月1日ごろに、神社やお寺にお参りに行きます。","1ryr6oc":"これを「初詣」といいます。","nh7cru":"熱田神宮は、中がとても広いですが、初詣のときは、ここにすごく大量の行列ができます。","z9nru0":"神様に「今年1年、よろしくお願いします」と言うために、みんなものすごく長い行列に並ぶんです。","rzmwp8":"熱田神宮は、この初詣でもとても有名な神社です。","13kb6hj":"それが、熱田神宮です。","265pyj":"名古屋の原点のひとつは、熱田神宮だった","zbmca8":"鶴舞公園は、私のポケモンセンター","1pde5og":"名古屋で観光するなら、週末の久屋大通へ"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","6wpqut":"✨ こちらもどうぞ","x0lpqy":"🎲 ちょっと違う話","em1400":"公開中","gxduh6":"🐧 ふだんの暮らし","1bnikoi":"前の記事","1la317y":"熱田神宮","g0p3z8":"名古屋にある、熱田神宮に行ってきました。","19hyt7x":"⛩ 木の鳥居と参道","13w57a7":"どんなところ？","14bmw6h":"（ここは、私が知らなかったので、AIに調べてもらいました）","1vbunab":"名古屋市の熱田区にある、とても古い神社です。","d17ccj":"始まりは、約1900年前と言われています","1uhxn1b":"日本の「三種の神器」の一つ、草薙神剣（くさなぎのみつるぎ）がまつられています","mv4rnn":"1年に、約700万人がお参りに来ます","10h85us":"名古屋の原点","1jizdju":"名古屋に住んでいる私が、驚いたことがあります。","jm1lus":"名古屋は今、日本で3番目に大きい都市と言われているのですが、","gx7gmv":"では、名古屋の中でも、どこから栄えていったんだろう、と思いました。","1c56y2g":"AIに聞いたところ、この熱田神宮の周りは、名古屋がじわじわと都会になっていった始まりの場所のひとつだそうです。","1mcnsi4":"今すごく栄えている名古屋駅のあたりは、明治時代以降に栄えた、新しい場所です。","1bnfqot":"名古屋駅ができたのは1886年なので、まだ140年くらいの歴史しかありません。","6758d5":"名古屋出身の私としては、「熱田神宮が、名古屋の原点のひとつだったのか」と、ちょっと驚きました。","bvw65l":"初詣の、すごい行列","1rkjm5p":"日本人は、1月1日ごろに、神社やお寺にお参りに行きます。","1ryr6oc":"これを「初詣」といいます。","nh7cru":"熱田神宮は、中がとても広いですが、初詣のときは、ここにすごく大量の行列ができます。","z9nru0":"神様に「今年1年、よろしくお願いします」と言うために、みんなものすごく長い行列に並ぶんです。","rzmwp8":"熱田神宮は、この初詣でもとても有名な神社です。","13kb6hj":"それが、熱田神宮です。","265pyj":"名古屋の原点のひとつは、熱田神宮だった","zbmca8":"鶴舞公園は、私のポケモンセンター","1pde5og":"名古屋で観光するなら、週末の久屋大通へ","y066le":"名古屋で降りるべき駅、トップ3","zf5y4o":"名古屋では、大きいゴミを出せるチャンスが月に1回しかない","fwhmek":"名古屋で日本っぽさを感じたいなら、大須","x2fzm3":"名古屋といえば矢場とん、でも地元の私は食べたことがない","167apic":"空港での生徒のお迎えは、暑さとの綱引きだった"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1260,6 +1297,64 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../three-best-stations-in-nagoya/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/three-best-stations-in-nagoya.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 62 SEC</span></div>
+            <div class="rel-title">The top 3 stations to get off at in Nagoya</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../bulky-trash-once-a-month/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/bulky-trash-once-a-month.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 65 SEC</span></div>
+            <div class="rel-title">In Nagoya, you only get one chance a month to throw out something big</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../osu-for-a-japanese-feeling-in-nagoya/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/osu-for-a-japanese-feeling-in-nagoya.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 42 SEC</span></div>
+            <div class="rel-title">If you want to feel Japan in Nagoya, go to Osu</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../yaba-ton-local-never-eaten/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/yaba-ton-local-never-eaten.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 81 SEC</span></div>
+            <div class="rel-title">Nagoya is famous for Yaba-ton miso katsu, but I am from Nagoya and have never eaten it</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../airport-pickup-tug-of-war/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/airport-pickup-tug-of-war.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 96 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">Picking students up at the airport was a tug of war with the heat</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
   <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
   <a class="to-list" href="../../index.html#posts">
     <span class="to-list-ic" aria-hidden="true">📚</span>

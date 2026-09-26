@@ -424,6 +424,43 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
+     対応していないブラウザでは何も出ない（壊れない） */
+  @supports (animation-timeline: scroll()) {
+    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
+      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
+      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
+      animation: read-progress linear both; animation-timeline: scroll(root block); }
+    html[dir="rtl"]::before { transform-origin: 100% 50%; }
+    @keyframes read-progress { to { transform: scaleX(1); } }
+  }
+  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
+</style>
 <style id="tolist-css">
   /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
   .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
@@ -437,7 +474,7 @@
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","2hewl9":"たった2000円","1v67f2g":"今、名古屋から東京まで、たった2000円くらいで行けるんです。","1j087ox":"どうやって行ったかというと、夜行バスです。","d8do1i":"夜行バスを使えば、2000円くらいで行けるんです。","xjg91y":"栄から出発","adv1rp":"出発は、名古屋の栄です。","1kka4hm":"テレビ塔の前あたりで、バスに乗ります。","clopve":"🗼 栄のテレビ塔","1akx9py":"24時から朝5時半","1250k1w":"だいたい24時くらいに出発して、朝の5時半くらいに東京に着きます。","19cizfh":"💺 バスの座席","sh7aw":"パーキングエリアに2回","avb7kf":"名古屋から東京の夜行バスは、パーキングエリアに、だいたい2回くらい寄ってくれます。","1mexdv3":"🌃 夜のパーキングエリア","qbd8by":"安いバス","1s0xdno":"今回は、とても安い2000円の夜行バスで行きました。","u0e6iw":"たぶん、3000円や4000円くらいする夜行バスなら、バスの中にトイレがついていたりします。","108cgs3":"寝て起きたら、東京","rmg6e":"そして、早朝の東京駅に到着です。","tdrfu5":"🌅 早朝の東京駅","6ksupx":"もう東京","ojstgn":"こんな感じで、寝て起きたら、もう東京に到着できるんです。","1x3kx9p":"夏の東京ひとり旅","1ksgduk":"名古屋","gdhbbt":"東京","fn7vz2":"名古屋から東京まで、2000円。夜行バス","1e5t3mz":"銀座を歩いて、東京はエリアの厚みがちがうと思った","12rsya6":"鈴鹿サーキットのキャラクターが、かわいい"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","6wpqut":"✨ こちらもどうぞ","x0lpqy":"🎲 ちょっと違う話","em1400":"公開中","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","2hewl9":"たった2000円","1v67f2g":"今、名古屋から東京まで、たった2000円くらいで行けるんです。","1j087ox":"どうやって行ったかというと、夜行バスです。","d8do1i":"夜行バスを使えば、2000円くらいで行けるんです。","xjg91y":"栄から出発","adv1rp":"出発は、名古屋の栄です。","1kka4hm":"テレビ塔の前あたりで、バスに乗ります。","clopve":"🗼 栄のテレビ塔","1akx9py":"24時から朝5時半","1250k1w":"だいたい24時くらいに出発して、朝の5時半くらいに東京に着きます。","19cizfh":"💺 バスの座席","sh7aw":"パーキングエリアに2回","avb7kf":"名古屋から東京の夜行バスは、パーキングエリアに、だいたい2回くらい寄ってくれます。","1mexdv3":"🌃 夜のパーキングエリア","qbd8by":"安いバス","1s0xdno":"今回は、とても安い2000円の夜行バスで行きました。","u0e6iw":"たぶん、3000円や4000円くらいする夜行バスなら、バスの中にトイレがついていたりします。","108cgs3":"寝て起きたら、東京","rmg6e":"そして、早朝の東京駅に到着です。","tdrfu5":"🌅 早朝の東京駅","6ksupx":"もう東京","ojstgn":"こんな感じで、寝て起きたら、もう東京に到着できるんです。","1x3kx9p":"夏の東京ひとり旅","1ksgduk":"名古屋","gdhbbt":"東京","fn7vz2":"名古屋から東京まで、2000円。夜行バス","1e5t3mz":"銀座を歩いて、東京はエリアの厚みがちがうと思った","12rsya6":"鈴鹿サーキットのキャラクターが、かわいい","aza2i4":"山手線は、めちゃくちゃ長い","sj522r":"新宿駅では、日本人の私も迷子になる","r1vp01":"自転車で東京をブラブラ、川と橋が多い","14hka4g":"新宿ゴールデン街だけ、空気がちがう","b78mhp":"引っ越す直前に、ワンルームの部屋の中を動画に撮った"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1300,6 +1337,64 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../yamanote-line-trains-are-long/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/yamanote-line-trains-are-long.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 48 SEC</span></div>
+            <div class="rel-title">The Yamanote Line trains in Tokyo are really long, over 2 times longer than the Nagoya subway</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../shinjuku-station-everyone-gets-lost/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/shinjuku-station-everyone-gets-lost.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 83 SEC</span></div>
+            <div class="rel-title">At Shinjuku Station, even I, a Japanese person, get lost</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../tokyo-by-bike-rivers-and-bridges/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/tokyo-by-bike-rivers-and-bridges.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 9 SEC</span></div>
+            <div class="rel-title">Riding a bike around Tokyo, I noticed there are so many rivers and bridges</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../shinjuku-golden-gai-feels-different/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/shinjuku-golden-gai-feels-different.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 73 SEC</span></div>
+            <div class="rel-title">Only Shinjuku Golden Gai feels like old Japan from 30 or 40 years ago</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../my-room-on-video/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/my-room-on-video.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 68 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">I filmed the inside of my studio room right before I moved out</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
   <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
   <a class="to-list" href="../../index.html#posts">
     <span class="to-list-ic" aria-hidden="true">📚</span>

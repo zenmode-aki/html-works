@@ -229,8 +229,14 @@ def article_info(slug):
         prv_slug = m.group(1) if m else None
     pt = find(prv, "div", "prev-title") if prv is not None else None
     meta = load(WORKS / slug / "meta.json")
+    rel = []                                 # ✨ tools/post-bottom.py が入れる「こちらもどうぞ」の5本
+    for a in find_all(root, "a", "rel-card"):
+        m = re.search(r"\.\./([^/]+)/index\.html", a.attrs.get("href", ""))
+        rt = find(a, "div", "rel-title")
+        if m and rt is not None:
+            rel.append((m.group(1), norm(text_of(rt))))
     return {
-        "doc": doc, "root": root,
+        "doc": doc, "root": root, "related": rel,
         "h1": direct_text(h1) if h1 is not None else None,
         "title": norm(text_of(title)) if title is not None else None,
         "meta_title": meta.get("title"),
@@ -253,6 +259,9 @@ def article_dict(slug, lang, info, titles):
         d[info["next_title"]] = titles[info["next_slug"]]
     if info["prev_slug"] and info["prev_title"] and titles.get(info["prev_slug"]):
         d[info["prev_title"]] = titles[info["prev_slug"]]
+    for s, t in info.get("related", []):
+        if titles.get(s):
+            d[t] = titles[s]
     return d
 
 

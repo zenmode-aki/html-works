@@ -409,6 +409,43 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
+     対応していないブラウザでは何も出ない（壊れない） */
+  @supports (animation-timeline: scroll()) {
+    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
+      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
+      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
+      animation: read-progress linear both; animation-timeline: scroll(root block); }
+    html[dir="rtl"]::before { transform-origin: 100% 50%; }
+    @keyframes read-progress { to { transform: scaleX(1); } }
+  }
+  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
+</style>
 <style id="tolist-css">
   /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
   .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
@@ -422,7 +459,7 @@
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","1y315e9":"ここだけ空気がちがう","1r3m0hx":"個人的に、ここだけ空気感がドカッとちがうなと感じた場所があります。","hqiy9d":"それが、新宿のゴールデン街というところです。","3p4r5c":"昭和っぽい","o66y08":"ゴールデン街だけ、すごく道が狭いんです。","16gci9z":"30年、40年前の日本っぽいな、という感じがするんです。","pnrszm":"🏮 ゴールデン街の入口","1el4glv":"AIに聞いた","1mkwxrl":"ここがどういう場所か、日本人の私も全然知らなかったので、AIに聞きました。","1al5h4a":"夜はバー","10bkp0o":"ゴールデン街では、夜になると、バーがたくさん開かれるらしいです。","19pbeqm":"飲み屋さんが多いそうです。","gihsb7":"でも、会員制のバーもあるらしいんです。","1jdwjd5":"普通のお客さんが「今日はお酒を飲みたいから行こう」という感じで入れるお店ばかりではない、と。","wk44wx":"🚶 細い路地","8hipcr":"どうやってできたのか","1nbi11d":"日本は、第二次世界大戦で、東京が一度すごく焼け野原になったことがあります。","1o6wh3d":"そこで、「闇市」という市場がたくさんできました。","1r1cu8t":"その闇市が発達したのが、この新宿ゴールデン街のあたりのエリアらしいんです。","152vhk2":"その名残がまだ残っているので、道もすごく狭くて、お店もすごく乱立している。","1pru80o":"そういう雰囲気です。","1y3ujcj":"夜に通るのは","17ewqyv":"夜にここを通るのは、ちょっとどうなんだろう、と思いました。","11omb3s":"東京出身の人なら通れるのかもしれません。","1gpifun":"でも、すごく迷子になりそうな感じの場所です。","eyg0r7":"新宿のゴールデン街は、すごく不思議で、散歩していて面白かったです。","1h8ftsk":"お昼だったので、全然安心、安全でしたけどね。","1x3kx9p":"夏の東京ひとり旅","14hka4g":"新宿ゴールデン街だけ、空気がちがう","1uhuq45":"東京で疲れたら、新宿のテルマー湯","aza2i4":"山手線は、めちゃくちゃ長い"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","6wpqut":"✨ こちらもどうぞ","x0lpqy":"🎲 ちょっと違う話","em1400":"公開中","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","1y315e9":"ここだけ空気がちがう","1r3m0hx":"個人的に、ここだけ空気感がドカッとちがうなと感じた場所があります。","hqiy9d":"それが、新宿のゴールデン街というところです。","3p4r5c":"昭和っぽい","o66y08":"ゴールデン街だけ、すごく道が狭いんです。","16gci9z":"30年、40年前の日本っぽいな、という感じがするんです。","pnrszm":"🏮 ゴールデン街の入口","1el4glv":"AIに聞いた","1mkwxrl":"ここがどういう場所か、日本人の私も全然知らなかったので、AIに聞きました。","1al5h4a":"夜はバー","10bkp0o":"ゴールデン街では、夜になると、バーがたくさん開かれるらしいです。","19pbeqm":"飲み屋さんが多いそうです。","gihsb7":"でも、会員制のバーもあるらしいんです。","1jdwjd5":"普通のお客さんが「今日はお酒を飲みたいから行こう」という感じで入れるお店ばかりではない、と。","wk44wx":"🚶 細い路地","8hipcr":"どうやってできたのか","1nbi11d":"日本は、第二次世界大戦で、東京が一度すごく焼け野原になったことがあります。","1o6wh3d":"そこで、「闇市」という市場がたくさんできました。","1r1cu8t":"その闇市が発達したのが、この新宿ゴールデン街のあたりのエリアらしいんです。","152vhk2":"その名残がまだ残っているので、道もすごく狭くて、お店もすごく乱立している。","1pru80o":"そういう雰囲気です。","1y3ujcj":"夜に通るのは","17ewqyv":"夜にここを通るのは、ちょっとどうなんだろう、と思いました。","11omb3s":"東京出身の人なら通れるのかもしれません。","1gpifun":"でも、すごく迷子になりそうな感じの場所です。","eyg0r7":"新宿のゴールデン街は、すごく不思議で、散歩していて面白かったです。","1h8ftsk":"お昼だったので、全然安心、安全でしたけどね。","1x3kx9p":"夏の東京ひとり旅","14hka4g":"新宿ゴールデン街だけ、空気がちがう","1uhuq45":"東京で疲れたら、新宿のテルマー湯","aza2i4":"山手線は、めちゃくちゃ長い","1e5t3mz":"銀座を歩いて、東京はエリアの厚みがちがうと思った","sj522r":"新宿駅では、日本人の私も迷子になる","r1vp01":"自転車で東京をブラブラ、川と橋が多い","fn7vz2":"名古屋から東京まで、2000円。夜行バス","1y9v3t3":"ショッピングモールの中に、メリーゴーランドがあった"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1275,6 +1312,64 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../ginza-tokyo-areas-are-deep/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/ginza-tokyo-areas-are-deep.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 75 SEC</span></div>
+            <div class="rel-title">Walking in Ginza, I felt that Tokyo's areas go much deeper than Nagoya's</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../shinjuku-station-everyone-gets-lost/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/shinjuku-station-everyone-gets-lost.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 83 SEC</span></div>
+            <div class="rel-title">At Shinjuku Station, even I, a Japanese person, get lost</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../tokyo-by-bike-rivers-and-bridges/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/tokyo-by-bike-rivers-and-bridges.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 9 SEC</span></div>
+            <div class="rel-title">Riding a bike around Tokyo, I noticed there are so many rivers and bridges</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../night-bus-nagoya-to-tokyo-2000-yen/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/night-bus-nagoya-to-tokyo-2000-yen.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 45 SEC</span></div>
+            <div class="rel-title">From Nagoya to Tokyo for about 2,000 yen by night bus</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../sm-clark-merry-go-round/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/sm-clark-merry-go-round.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 13 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">There was a merry-go-round inside the shopping mall</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
   <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
   <a class="to-list" href="../../index.html#posts">
     <span class="to-list-ic" aria-hidden="true">📚</span>

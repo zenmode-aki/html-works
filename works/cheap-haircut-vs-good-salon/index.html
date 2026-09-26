@@ -421,6 +421,43 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
+     対応していないブラウザでは何も出ない（壊れない） */
+  @supports (animation-timeline: scroll()) {
+    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
+      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
+      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
+      animation: read-progress linear both; animation-timeline: scroll(root block); }
+    html[dir="rtl"]::before { transform-origin: 100% 50%; }
+    @keyframes read-progress { to { transform: scaleX(1); } }
+  }
+  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
+</style>
 <style id="tolist-css">
   /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
   .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
@@ -434,7 +471,7 @@
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","gxduh6":"🐧 ふだんの暮らし","1bnikoi":"前の記事","1voonyl":"千円カットで十分だと","1goaq3j":"これまでずっと、髪は千円カットで十分だと思っていました。","1j5xytk":"でも今は、割引がないと7,000円弱する美容院に通っています。","1wmtvas":"切る前の相談","1gepkm0":"一番の違いは、切る前の相談です。","13qmbv":"今の仕事や、これからどうなりたいかを話すと、美容師さんが一緒に考えてくれます。","1m5j2mu":"「それなら、こういう髪型がいいかもしれませんね」と、10分くらいしっかり話してから切り始めてくれます。","1h2jssi":"時間も1回1時間ほどかかりますし、眉カットやシャンプーもついています。","28he9o":"🪞 落ち着いた美容院","5qesqo":"伸びてきてわかる","6njknz":"切った直後は、正直そこまで違いがわかりませんでした。","qrrh80":"でも1週間、1ヶ月と経つと、「すごくいい感じに伸びてきている」とわかって驚きます。","18mhx8i":"美容院で教わったこと","iehcm8":"✂️ 千円カット","1h2ixo":"1,000円","1077csk":"💇 今の美容院","13toiq":"7,000円弱","14sxklt":"千円カットと、5,000円以上のカットの違い","nxrjrc":"高級美容師さんは、髪型のパートナー","tm370k":"髪の毛の分け目の見つけ方"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","6wpqut":"✨ こちらもどうぞ","x0lpqy":"🎲 ちょっと違う話","em1400":"公開中","gxduh6":"🐧 ふだんの暮らし","1bnikoi":"前の記事","1voonyl":"千円カットで十分だと","1goaq3j":"これまでずっと、髪は千円カットで十分だと思っていました。","1j5xytk":"でも今は、割引がないと7,000円弱する美容院に通っています。","1wmtvas":"切る前の相談","1gepkm0":"一番の違いは、切る前の相談です。","13qmbv":"今の仕事や、これからどうなりたいかを話すと、美容師さんが一緒に考えてくれます。","1m5j2mu":"「それなら、こういう髪型がいいかもしれませんね」と、10分くらいしっかり話してから切り始めてくれます。","1h2jssi":"時間も1回1時間ほどかかりますし、眉カットやシャンプーもついています。","28he9o":"🪞 落ち着いた美容院","5qesqo":"伸びてきてわかる","6njknz":"切った直後は、正直そこまで違いがわかりませんでした。","qrrh80":"でも1週間、1ヶ月と経つと、「すごくいい感じに伸びてきている」とわかって驚きます。","18mhx8i":"美容院で教わったこと","iehcm8":"✂️ 千円カット","1h2ixo":"1,000円","1077csk":"💇 今の美容院","13toiq":"7,000円弱","14sxklt":"千円カットと、5,000円以上のカットの違い","nxrjrc":"高級美容師さんは、髪型のパートナー","tm370k":"髪の毛の分け目の見つけ方","1tmgqnh":"美容院のシャンプーで、目がシャキッとする","d21j2h":"美容師さんに聞いた、いい美容院の見分け方","ahmpk5":"韓国アイドルの前髪は、横を少し落とす","1kzaypk":"マクドナルドのバイトで一番好きだったポジション","1b5zv4l":"フィリピンでは、人前で叱ることはタブー"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1258,6 +1295,64 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../salon-shampoo-wakes-up-my-eyes/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/salon-shampoo-wakes-up-my-eyes.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 19 SEC</span></div>
+            <div class="rel-title">A shampoo at the hair salon really wakes up my eyes</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../how-to-spot-a-good-hair-salon/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/how-to-spot-a-good-hair-salon.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 35 SEC</span></div>
+            <div class="rel-title">How to spot a good hair salon, from my hairdresser: check the shampoo chairs</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../korean-idol-bangs-side-strands/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/korean-idol-bangs-side-strands.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 33 SEC</span></div>
+            <div class="rel-title">Korean idols push their bangs up but leave a few strands on the sides to look smaller in the face</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../mcdonalds-runner-position/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/mcdonalds-runner-position.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 54 SEC</span></div>
+            <div class="rel-title">My favorite position at my McDonald's part-time job was "runner"</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../no-public-scolding/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/no-public-scolding.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 56 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">In the Philippines, scolding someone in front of others is a taboo</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
   <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
   <a class="to-list" href="../../index.html#posts">
     <span class="to-list-ic" aria-hidden="true">📚</span>
