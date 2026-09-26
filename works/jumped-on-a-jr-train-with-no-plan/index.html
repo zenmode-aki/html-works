@@ -359,8 +359,20 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","145w9qj":"無性に元気","u91pon":"その日は、朝5時くらいに、めちゃくちゃ早く起きてしまいました。","ywiyds":"なぜか無性に元気だったので、愛知県の外に行きたいなと思いました。","wa4rf4":"名古屋から離れたいなと思って、名古屋駅まで来ました。","miwr3n":"そして、本当に何もプランを決めずに、JRの電車に乗ったんです。","fmtb99":"🚉 名古屋駅のホーム","6px4ws":"姉がいる","ohbriq":"なんとなく電車が進んでいくうちに、思い出しました。","ch734u":"姉が、滋賀県に住んでいるんです。","1e4ctll":"「これ、終点まで乗ったら、姉の家の近くの駅まで行けるな」と思って、姉に会うことにしました。","1nb2knq":"実に、3年ぶりくらいに姉に会うことにしました。","20q4my":"3回乗りかえ","1vfnewk":"名古屋から滋賀まで在来線で行こうとすると、意外と、まっすぐビュンと行ける電車はありません。","y1jjsl":"1本の線にはなっているはずなのですが、3回くらい、降りることになります。","9socei":"まず名古屋から大垣で降りて、大垣から今度は米原で降りて、という感じです。","3hx4dj":"一回降りて、次の電車を待って、のくり返しでした。","1hoy66o":"姉は、滋賀県の最寄りの駅まで、車で迎えに来てくれました。","1mrs5v6":"🚗 姉の車の中","yvhwzh":"新鮮な体験","ua70zl":"人生で初めて、何もプランを決めずに、JRに飛び乗りました。","emp80z":"ちょっと新鮮な体験でした。","1b35hxb":"滋賀への日帰り旅","i1k3j6":"名古屋駅から、プランなしでJRに飛び乗った","ifjsjw":"日本遺産の、永源寺へ","ydekiw":"朝6時の錦は、若い人でいっぱいだった"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","145w9qj":"無性に元気","u91pon":"その日は、朝5時くらいに、めちゃくちゃ早く起きてしまいました。","ywiyds":"なぜか無性に元気だったので、愛知県の外に行きたいなと思いました。","wa4rf4":"名古屋から離れたいなと思って、名古屋駅まで来ました。","miwr3n":"そして、本当に何もプランを決めずに、JRの電車に乗ったんです。","fmtb99":"🚉 名古屋駅のホーム","6px4ws":"姉がいる","ohbriq":"なんとなく電車が進んでいくうちに、思い出しました。","ch734u":"姉が、滋賀県に住んでいるんです。","1e4ctll":"「これ、終点まで乗ったら、姉の家の近くの駅まで行けるな」と思って、姉に会うことにしました。","1nb2knq":"実に、3年ぶりくらいに姉に会うことにしました。","20q4my":"3回乗りかえ","1vfnewk":"名古屋から滋賀まで在来線で行こうとすると、意外と、まっすぐビュンと行ける電車はありません。","y1jjsl":"1本の線にはなっているはずなのですが、3回くらい、降りることになります。","9socei":"まず名古屋から大垣で降りて、大垣から今度は米原で降りて、という感じです。","3hx4dj":"一回降りて、次の電車を待って、のくり返しでした。","1hoy66o":"姉は、滋賀県の最寄りの駅まで、車で迎えに来てくれました。","1mrs5v6":"🚗 姉の車の中","yvhwzh":"新鮮な体験","ua70zl":"人生で初めて、何もプランを決めずに、JRに飛び乗りました。","emp80z":"ちょっと新鮮な体験でした。","1b35hxb":"滋賀への日帰り旅","i1k3j6":"名古屋駅から、プランなしでJRに飛び乗った","ifjsjw":"日本遺産の、永源寺へ","ydekiw":"朝6時の錦は、若い人でいっぱいだった"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1120,7 +1132,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </div>
 
-  <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 15 SEC</div>
+  <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 71 SEC</div>
   <div class="series">🌿 A DAY TRIP TO SHIGA</div>
   <h1>I jumped on a JR train from Nagoya Station with no plan and went to see my sister in Shiga <span class="float">🚃</span></h1>
 
@@ -1180,7 +1192,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 
   <a class="next" href="../eigenji-japan-heritage-temple/index.html">
     <div>
-      <div class="next-kicker">NEXT · 15 SEC</div>
+      <div class="next-kicker">NEXT · 34 SEC</div>
       <div class="next-title">I went to Eigenji, a Japan Heritage temple in Shiga, and the walk through nature was the best part</div>
     </div>
     <div class="next-arrow" aria-hidden="true">⚡</div>
@@ -1194,6 +1206,12 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
 
 </main>
 <!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->

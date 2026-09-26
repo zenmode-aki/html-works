@@ -374,8 +374,20 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","2hewl9":"たった2000円","1v67f2g":"今、名古屋から東京まで、たった2000円くらいで行けるんです。","1j087ox":"どうやって行ったかというと、夜行バスです。","d8do1i":"夜行バスを使えば、2000円くらいで行けるんです。","xjg91y":"栄から出発","adv1rp":"出発は、名古屋の栄です。","1kka4hm":"テレビ塔の前あたりで、バスに乗ります。","clopve":"🗼 栄のテレビ塔","1akx9py":"24時から朝5時半","1250k1w":"だいたい24時くらいに出発して、朝の5時半くらいに東京に着きます。","19cizfh":"💺 バスの座席","sh7aw":"パーキングエリアに2回","avb7kf":"名古屋から東京の夜行バスは、パーキングエリアに、だいたい2回くらい寄ってくれます。","1mexdv3":"🌃 夜のパーキングエリア","qbd8by":"安いバス","1s0xdno":"今回は、とても安い2000円の夜行バスで行きました。","u0e6iw":"たぶん、3000円や4000円くらいする夜行バスなら、バスの中にトイレがついていたりします。","108cgs3":"寝て起きたら、東京","rmg6e":"そして、早朝の東京駅に到着です。","tdrfu5":"🌅 早朝の東京駅","6ksupx":"もう東京","ojstgn":"こんな感じで、寝て起きたら、もう東京に到着できるんです。","1x3kx9p":"夏の東京ひとり旅","1ksgduk":"名古屋","gdhbbt":"東京","fn7vz2":"名古屋から東京まで、2000円。夜行バス","1e5t3mz":"銀座を歩いて、東京はエリアの厚みがちがうと思った","12rsya6":"鈴鹿サーキットのキャラクターが、かわいい"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","2hewl9":"たった2000円","1v67f2g":"今、名古屋から東京まで、たった2000円くらいで行けるんです。","1j087ox":"どうやって行ったかというと、夜行バスです。","d8do1i":"夜行バスを使えば、2000円くらいで行けるんです。","xjg91y":"栄から出発","adv1rp":"出発は、名古屋の栄です。","1kka4hm":"テレビ塔の前あたりで、バスに乗ります。","clopve":"🗼 栄のテレビ塔","1akx9py":"24時から朝5時半","1250k1w":"だいたい24時くらいに出発して、朝の5時半くらいに東京に着きます。","19cizfh":"💺 バスの座席","sh7aw":"パーキングエリアに2回","avb7kf":"名古屋から東京の夜行バスは、パーキングエリアに、だいたい2回くらい寄ってくれます。","1mexdv3":"🌃 夜のパーキングエリア","qbd8by":"安いバス","1s0xdno":"今回は、とても安い2000円の夜行バスで行きました。","u0e6iw":"たぶん、3000円や4000円くらいする夜行バスなら、バスの中にトイレがついていたりします。","108cgs3":"寝て起きたら、東京","rmg6e":"そして、早朝の東京駅に到着です。","tdrfu5":"🌅 早朝の東京駅","6ksupx":"もう東京","ojstgn":"こんな感じで、寝て起きたら、もう東京に到着できるんです。","1x3kx9p":"夏の東京ひとり旅","1ksgduk":"名古屋","gdhbbt":"東京","fn7vz2":"名古屋から東京まで、2000円。夜行バス","1e5t3mz":"銀座を歩いて、東京はエリアの厚みがちがうと思った","12rsya6":"鈴鹿サーキットのキャラクターが、かわいい"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1135,7 +1147,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </div>
 
-  <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 15 SEC</div>
+  <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 45 SEC</div>
   <div class="series">🗼 MY SUMMER TRIP TO TOKYO</div>
   <h1>From Nagoya to Tokyo for about 2,000 yen by night bus <span class="float">🚌</span></h1>
 
@@ -1221,7 +1233,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 
   <a class="next" href="../ginza-tokyo-areas-are-deep/index.html">
     <div>
-      <div class="next-kicker">NEXT · 15 SEC</div>
+      <div class="next-kicker">NEXT · 75 SEC</div>
       <div class="next-title">Walking in Ginza, I felt that Tokyo's areas go much deeper than Nagoya's</div>
     </div>
     <div class="next-arrow" aria-hidden="true">⚡</div>
@@ -1235,6 +1247,12 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
 
 </main>
 <!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->

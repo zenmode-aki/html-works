@@ -359,8 +359,20 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","146eaud":"ジャラン・アロー","1m0uq1a":"マレーシアのクアラルンプールで有名な、ジャラン・アローという場所に行きました。","u1cg29":"🏮 夜の屋台街","1ptkqm":"カオサン通りみたい？","1wvmxbm":"私は以前、タイに一人旅に行ったとき、カオサン通りに、夜の屋台を見に行ったことがあります。","58hv42":"なので、ジャラン・アローも、カオサン通りのような通りなのかな、と思っていました。","1f8pb08":"カオサン通りが、タイ旅行でいちばん楽しかった","j5r6c2":"カオサン通りの記事へ →","1iegtff":"はるかに静か","g4r4n6":"でも、全然ちがいました。","1erl1sr":"カオサン通りは、もっとめちゃくちゃ音量をぶち上げています。","1ti3rfr":"ジャラン・アローは、全然落ち着いていて、カオサン通りと比べたら、はるかに静かでした。","17ojpdo":"中国語と、ときどき日本語","1mhuw90":"それから、ジャラン・アローには、中国のお店がめちゃくちゃ多いんです。","cvhd5g":"そのせいか、お店の人も、私たちに中国語で話しかけてきました。","1viz2el":"でも、ときどき、たぶん私が日本人だとバレて、「お兄ちゃん、ちょっとちょっと」みたいな感じで、片言の日本語で話しかけてくれました。","1rry6si":"それが、ちょっと嬉しかったです。","1b94yd3":"歩いているだけで、とても楽しかったです。","lwg3kr":"ここは、クアラルンプールの有名な観光地なので、日本人や、いろいろな国の人とも、たくさんすれ違いました。","3739gh":"いろいろな言語が聞こえてきました。","1e156ze":"ジャラン・アローは、カオサン通りより静かだった","8mdn5m":"クアラルンプールの空が、にごっていた理由","1ey4k2m":"ビールで忘れようとしたら、セブンイレブンは9時まで"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","146eaud":"ジャラン・アロー","1m0uq1a":"マレーシアのクアラルンプールで有名な、ジャラン・アローという場所に行きました。","u1cg29":"🏮 夜の屋台街","1ptkqm":"カオサン通りみたい？","1wvmxbm":"私は以前、タイに一人旅に行ったとき、カオサン通りに、夜の屋台を見に行ったことがあります。","58hv42":"なので、ジャラン・アローも、カオサン通りのような通りなのかな、と思っていました。","1f8pb08":"カオサン通りが、タイ旅行でいちばん楽しかった","j5r6c2":"カオサン通りの記事へ →","1iegtff":"はるかに静か","g4r4n6":"でも、全然ちがいました。","1erl1sr":"カオサン通りは、もっとめちゃくちゃ音量をぶち上げています。","1ti3rfr":"ジャラン・アローは、全然落ち着いていて、カオサン通りと比べたら、はるかに静かでした。","17ojpdo":"中国語と、ときどき日本語","1mhuw90":"それから、ジャラン・アローには、中国のお店がめちゃくちゃ多いんです。","cvhd5g":"そのせいか、お店の人も、私たちに中国語で話しかけてきました。","1viz2el":"でも、ときどき、たぶん私が日本人だとバレて、「お兄ちゃん、ちょっとちょっと」みたいな感じで、片言の日本語で話しかけてくれました。","1rry6si":"それが、ちょっと嬉しかったです。","1b94yd3":"歩いているだけで、とても楽しかったです。","lwg3kr":"ここは、クアラルンプールの有名な観光地なので、日本人や、いろいろな国の人とも、たくさんすれ違いました。","3739gh":"いろいろな言語が聞こえてきました。","1e156ze":"ジャラン・アローは、カオサン通りより静かだった","8mdn5m":"クアラルンプールの空が、にごっていた理由","1ey4k2m":"ビールで忘れようとしたら、セブンイレブンは9時まで"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1120,7 +1132,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </div>
 
-  <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 15 SEC</div>
+  <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 53 SEC</div>
   <h1>Jalan Alor in Kuala Lumpur was much quieter than Khaosan Road in Bangkok <span class="float">🏮</span></h1>
 
   <figure class="photo">
@@ -1180,7 +1192,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 
   <a class="next" href="../kuala-lumpur-haze/index.html">
     <div>
-      <div class="next-kicker">NEXT · 15 SEC</div>
+      <div class="next-kicker">NEXT · 88 SEC</div>
       <div class="next-title">The Kuala Lumpur sky was cloudy because of smoke from forest fires in Indonesia</div>
     </div>
     <div class="next-arrow" aria-hidden="true">⚡</div>
@@ -1194,6 +1206,12 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
 
 </main>
 <!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->

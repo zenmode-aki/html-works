@@ -359,8 +359,20 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","gxduh6":"🐧 ふだんの暮らし","1bnikoi":"前の記事","2jbiks":"日本っぽいものを","1tz1wjd":"もし名古屋に来て、めちゃくちゃ日本っぽいものを見たい。","bodtbs":"「日本っぽいなー」と思いたい。","h4kuj9":"そんなときに、おすすめの場所があります。","pxt575":"大須という場所です。","jbv908":"日本人の私から見ても","174fu9c":"大須は、日本人の私から見ても、めちゃくちゃ日本っぽいなと思う場所です。","kh2grn":"建物や、使われている色が、とても日本っぽいんです。","1l5o4z9":"🏮 大須商店街のアーケード","rn55yb":"大須観音","jyhxws":"大須商店街は、大須という場所にある商店街です。","1j9fv0a":"その大須商店街の先っぽに、大須観音というお寺があります。","1d4fvwu":"⛩ 大須観音","12st096":"全部、日本っぽい","1447bkd":"大須観音も含めて、全部、けっこう日本っぽいなと思います。","185cjz":"日本人の私が行っても、「うわ、めちゃくちゃ日本っぽいな」と思う場所です。","gzx5iy":"名古屋で日本っぽさを感じたいなら、大須に行くのもおすすめです。","fwhmek":"名古屋で日本っぽさを感じたいなら、大須","1pde5og":"名古屋で観光するなら、週末の久屋大通へ","x2fzm3":"名古屋といえば矢場とん、でも地元の私は食べたことがない"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","gxduh6":"🐧 ふだんの暮らし","1bnikoi":"前の記事","2jbiks":"日本っぽいものを","1tz1wjd":"もし名古屋に来て、めちゃくちゃ日本っぽいものを見たい。","bodtbs":"「日本っぽいなー」と思いたい。","h4kuj9":"そんなときに、おすすめの場所があります。","pxt575":"大須という場所です。","jbv908":"日本人の私から見ても","174fu9c":"大須は、日本人の私から見ても、めちゃくちゃ日本っぽいなと思う場所です。","kh2grn":"建物や、使われている色が、とても日本っぽいんです。","1l5o4z9":"🏮 大須商店街のアーケード","rn55yb":"大須観音","jyhxws":"大須商店街は、大須という場所にある商店街です。","1j9fv0a":"その大須商店街の先っぽに、大須観音というお寺があります。","1d4fvwu":"⛩ 大須観音","12st096":"全部、日本っぽい","1447bkd":"大須観音も含めて、全部、けっこう日本っぽいなと思います。","185cjz":"日本人の私が行っても、「うわ、めちゃくちゃ日本っぽいな」と思う場所です。","gzx5iy":"名古屋で日本っぽさを感じたいなら、大須に行くのもおすすめです。","fwhmek":"名古屋で日本っぽさを感じたいなら、大須","1pde5og":"名古屋で観光するなら、週末の久屋大通へ","x2fzm3":"名古屋といえば矢場とん、でも地元の私は食べたことがない"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1120,7 +1132,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </div>
 
-  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 15 SEC</div>
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 42 SEC</div>
   <h1>If you want to feel Japan in Nagoya, go to Osu <span class="float">🏮</span></h1>
 
   <figure class="photo">
@@ -1175,7 +1187,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 
   <a class="next" href="../hisaya-odori-weekend-events/index.html">
     <div>
-      <div class="next-kicker">NEXT · 15 SEC</div>
+      <div class="next-kicker">NEXT · 52 SEC</div>
       <div class="next-title">For sightseeing in Nagoya, go to the weekend events on Hisaya-odori</div>
     </div>
     <div class="next-arrow" aria-hidden="true">⚡</div>
@@ -1189,6 +1201,12 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
 
 </main>
 <!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
