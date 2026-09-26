@@ -922,6 +922,11 @@ wrap.appendChild(cur);
 wrap.appendChild(menu);
 var TIP_KEY = 'pengesso-lang-tip-seen', seen = false;
 try { seen = localStorage.getItem(TIP_KEY) === '1'; } catch (e) {}
+try {
+var shown = +(localStorage.getItem(TIP_KEY + '-n') || 0);
+if (!seen && shown >= 2) seen = true;
+else if (!seen) localStorage.setItem(TIP_KEY + '-n', String(shown + 1));
+} catch (e) {}
 if (!seen) {
 var SAY = { en: 'Read in English', ja: '日本語で読めます', ko: '한국어로도 읽을 수 있어요', zh: '也可以用中文阅读', 'zh-Hant': '也可以用中文閱讀' };
 var lines = avail.filter(function (l) { return l !== lang && SAY[l]; }).map(function (l) { return SAY[l]; });
