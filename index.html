@@ -256,6 +256,24 @@
   @keyframes sub-pop { from { opacity: 0; } to { opacity: 1; } }
   @media (prefers-reduced-motion: reduce) { .city.sub { animation: none; } }
   .map2 .grain { opacity: .13; mix-blend-mode: multiply; pointer-events: none; }
+  /* 🌙 ダークモードの地図（2026-09-26）。明るい地図だけが大きく光って、まぶしかった */
+  html[data-theme="dark"] .map2 { background: #1b2230; }
+  html[data-theme="dark"] .map2 .sea { fill: #1d2a3b; }
+  html[data-theme="dark"] .ln-other { fill: #2e3342; stroke: #4a5064; }
+  html[data-theme="dark"] .ln { fill: #3d7b56; stroke: #8fd1a4; }
+  html[data-theme="dark"] .ln:hover { fill: #4a9166; }
+  html[data-theme="dark"] .ln.on { fill: #d9a520; stroke: #ffe08a; }
+  html[data-theme="dark"] .city .cname { fill: #f1eefa; stroke: #1b2230; }
+  html[data-theme="dark"] .city .dot { fill: #22242f; stroke: #cfd6ff; }
+  html[data-theme="dark"] .city.has .dot { fill: #7b96ff; stroke: #eef1ff; }
+  html[data-theme="dark"] .city.has .ring { stroke: #7b96ff; }
+  html[data-theme="dark"] .map2 .paper { opacity: .06; }
+  html[data-theme="dark"] .map2 .grain { opacity: .06; mix-blend-mode: screen; }
+  html[data-theme="dark"] .mini { background: #22242f !important; }
+  html[data-theme="dark"] .mini .m-land { fill: #3a4052; stroke: #5b6278; }
+  html[data-theme="dark"] .mini .m-far { fill: #5a4d2e; stroke: #9a8450; }
+  html[data-theme="dark"] .mini .m-view { fill: rgba(123,150,255,.18); stroke: #7b96ff; }
+  .city .cname { font-weight: 800; } /* 細い文字をなくす */
 
   /* 左上の小さい日本ぜんぶ。北海道と沖縄はここに出る */
   .mini {
@@ -802,6 +820,11 @@
     animation: poke 1.6s ease-in-out infinite; transition: opacity .3s;
   }
   .map-poke.bye { opacity: 0; animation: none; }
+  /* 日本地図では左上に小さい日本が出るので、札を右に寄せる（スマホで重なっていた・2026-09-26） */
+  @media (max-width: 700px) {
+    .map-wrap:has(.mini) .map-poke { left: auto; right: 10px; transform: none; animation-name: poke-r; }
+  }
+  @keyframes poke-r { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
   @keyframes poke { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 6px); } }
   .map-hint { font-size: 13px; font-weight: 700; color: var(--navy); }
   .place-right { display: inline-flex; align-items: center; gap: 8px; }
