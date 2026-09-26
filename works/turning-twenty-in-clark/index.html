@@ -397,6 +397,10 @@ if (lang !== 'en') document.documentElement.setAttribute('lang', lang);
 var bold = document.createElement('style');
 bold.textContent = 'html body :where(p, li, a, span, div, figcaption, td, th, button, small, label, blockquote) { font-weight: 700; }';
 (document.head || document.getElementsByTagName('head')[0]).appendChild(bold);
+var jaWrap = document.createElement('style');
+jaWrap.textContent = 'html:lang(ja) :is(h1, h2, h3, .card-label, .next-title, .prev-title, .post-title, .big, .closing-line) ' +
+'{ word-break: auto-phrase; text-wrap: balance; }';
+(document.head || document.getElementsByTagName('head')[0]).appendChild(jaWrap);
 var THEME_KEY = 'pengesso-theme';
 function pickTheme() {
 var qt = (location.search.match(/[?&]theme=(dark|light)/) || [])[1];

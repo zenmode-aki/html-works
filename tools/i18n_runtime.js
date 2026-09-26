@@ -103,6 +103,14 @@
   bold.textContent = 'html body :where(p, li, a, span, div, figcaption, td, th, button, small, label, blockquote) { font-weight: 700; }';
   (document.head || document.getElementsByTagName('head')[0]).appendChild(bold);
 
+  /* ── ✂️ 日本語の見出しを、言葉の途中で折り返さない（2026-09-26）──
+     「大｜阪城」のように単語の途中で改行されていた。対応しているブラウザ（Chrome 系）では
+     文節で折り返す。本文はそのまま（細かく割ると行がガタガタになるため）。対応していないブラウザは今までどおり */
+  var jaWrap = document.createElement('style');
+  jaWrap.textContent = 'html:lang(ja) :is(h1, h2, h3, .card-label, .next-title, .prev-title, .post-title, .big, .closing-line) ' +
+    '{ word-break: auto-phrase; text-wrap: balance; }';
+  (document.head || document.getElementsByTagName('head')[0]).appendChild(jaWrap);
+
   /* ── 🌙 ダークモード（2026-09-24 本人の希望：「まぶしい」）──────────────
      全ページ共通。初めての人はいつもライト（2026-09-25 本人の要望：明るい方がパッと見が好き）。
      ボタンで切り替えたら localStorage に覚えて、次からはその設定で開く。
