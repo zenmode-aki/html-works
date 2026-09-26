@@ -28,6 +28,16 @@ import collections, html, json, pathlib, re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WORKS = ROOT / "works"
 
+import importlib.util as _ilu
+_spec = _ilu.spec_from_file_location("chk", ROOT / "tools" / "check.py")
+_chk = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_chk)
+
+
+def _sec(slug):
+    """行き先の記事を読むのにかかる秒数（2026-09-26：前は全部「15 SEC」と決め打ちだった）"""
+    doc = (WORKS / slug / "index.html").read_text(encoding="utf-8")
+    return max(1, round(len(_chk.body_words(doc)) / (_chk.WPM / 60)))
+
 NEXT_RE = re.compile(r'[ \t]*(?:<!-- ⚡ 次の記事へ[^\n]*-->\s*)?<a class="next"[^>]*>.*?</a>[ \t]*\n?', re.S)
 CSS_MARK = "/* ⏭ 次の記事へ（tools/next-links.py） */"
 CSS = CSS_MARK + """
@@ -150,7 +160,7 @@ def block(target, posts, here=None):
     # 章が変わるところでは「話が変わります」と先に言う（2026-09-25：マレーシアの次に急に名古屋の話が来て戸惑う）
     new = here is not None and posts[here]["chapter"] != posts[target]["chapter"]
     attr = ' data-topic="new"' if new else ""
-    kicker = "NEXT · NEW TOPIC" if new else "NEXT · 15 SEC"
+    kicker = "NEXT · NEW TOPIC" if new else f"NEXT · {_sec(target)} SEC"
     arrow = "🔀" if new else "⚡"
     return (f'  <a class="next" href="../{target}/index.html"{attr}>\n    <div>\n'
             f'      <div class="next-kicker">{kicker}</div>\n'

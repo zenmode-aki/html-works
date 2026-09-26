@@ -359,8 +359,20 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","1t9ncf3":"盛大な失敗","33bj5m":"私が盛大にお酒で失敗したのは、大阪の「天満（てんま）」という場所でした。","tc3jyd":"天満って、どんなところ？","ovleif":"天満は、居酒屋がすごくたくさんあるエリアです。","10ke5vp":"しかも、安いお店もたくさんあります。","jagz0i":"🍻 天満の立ち飲み屋","1u9e0xe":"🏮 天満の飲み屋街","gzx50n":"片方の靴がなかった","v4aw06":"そこで、大阪にいる友達とご飯に行ったことがありました。","1mkpplm":"その日、私はめちゃくちゃ酔っ払ってしまいました。","8ummb1":"そして、天満の路上で寝てしまいました。","sza49c":"朝、気づいたら、靴がなかったんです。","1bek9us":"片方の靴だけ失いました。","1hvtukb":"それくらい酔っ払って、よく分からないところで寝てしまいました。","1626zo1":"その日から、私はお酒が怖くなりました。","1hd42e0":"友達と、日本の治安に感謝","1lkfayz":"でも、本当に友達がいいやつだったんです。","a8fmp4":"私は路上で寝てしまったらしいのですが、友達が、カバンなどの貴重品を持ち帰ってくれていました。","ufqntt":"なので、大事な荷物は取られずに済みました。","1q4p990":"それに、やっぱり日本は治安がいいなと思ったことがあります。","tg8rsf":"スマートフォンは、ポケットの中に入っていたのですが、全然取られていませんでした。","yu3pac":"起きてもスマートフォンがあったので、なんとか帰れました。","1coyf6w":"お酒でつぶれたのが、大阪で、というか日本で、本当によかったです。","8mw8v8":"日本の治安のよさに、めちゃくちゃ感謝しました。","1nzgij4":"もし見つけたら","1tp84e9":"もし天満で黒い靴を片方だけ見つけたら、","fslrx4":"それ、たぶん私のです。","1ly4zjr":"申し訳ないです。","ry4u0g":"天満で日本酒を飲んで、路上で寝て、靴をなくした","7lmghd":"日本酒は、時限爆弾","sj522r":"新宿駅では、日本人の私も迷子になる"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","1t9ncf3":"盛大な失敗","33bj5m":"私が盛大にお酒で失敗したのは、大阪の「天満（てんま）」という場所でした。","tc3jyd":"天満って、どんなところ？","ovleif":"天満は、居酒屋がすごくたくさんあるエリアです。","10ke5vp":"しかも、安いお店もたくさんあります。","jagz0i":"🍻 天満の立ち飲み屋","1u9e0xe":"🏮 天満の飲み屋街","gzx50n":"片方の靴がなかった","v4aw06":"そこで、大阪にいる友達とご飯に行ったことがありました。","1mkpplm":"その日、私はめちゃくちゃ酔っ払ってしまいました。","8ummb1":"そして、天満の路上で寝てしまいました。","sza49c":"朝、気づいたら、靴がなかったんです。","1bek9us":"片方の靴だけ失いました。","1hvtukb":"それくらい酔っ払って、よく分からないところで寝てしまいました。","1626zo1":"その日から、私はお酒が怖くなりました。","1hd42e0":"友達と、日本の治安に感謝","1lkfayz":"でも、本当に友達がいいやつだったんです。","a8fmp4":"私は路上で寝てしまったらしいのですが、友達が、カバンなどの貴重品を持ち帰ってくれていました。","ufqntt":"なので、大事な荷物は取られずに済みました。","1q4p990":"それに、やっぱり日本は治安がいいなと思ったことがあります。","tg8rsf":"スマートフォンは、ポケットの中に入っていたのですが、全然取られていませんでした。","yu3pac":"起きてもスマートフォンがあったので、なんとか帰れました。","1coyf6w":"お酒でつぶれたのが、大阪で、というか日本で、本当によかったです。","8mw8v8":"日本の治安のよさに、めちゃくちゃ感謝しました。","1nzgij4":"もし見つけたら","1tp84e9":"もし天満で黒い靴を片方だけ見つけたら、","fslrx4":"それ、たぶん私のです。","1ly4zjr":"申し訳ないです。","ry4u0g":"天満で日本酒を飲んで、路上で寝て、靴をなくした","7lmghd":"日本酒は、時限爆弾","sj522r":"新宿駅では、日本人の私も迷子になる"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1120,7 +1132,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </div>
 
-  <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 15 SEC</div>
+  <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 68 SEC</div>
   <h1>I drank sake in Tenma, Osaka, fell asleep on the street, and lost 1 shoe <span class="float">👞</span></h1>
 
   <figure class="photo">
@@ -1191,7 +1203,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 
   <a class="next" href="../sake-is-a-time-bomb/index.html">
     <div>
-      <div class="next-kicker">NEXT · 15 SEC</div>
+      <div class="next-kicker">NEXT · 100 SEC</div>
       <div class="next-title">Japanese sake is a time bomb: you feel fine at first, then it hits you later</div>
     </div>
     <div class="next-arrow" aria-hidden="true">⚡</div>
@@ -1205,6 +1217,12 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
 
 </main>
 <!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->

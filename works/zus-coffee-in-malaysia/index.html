@@ -359,8 +359,20 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","38owge":"☕ ZUS COFFEE のドリンク","1h8r49b":"ZUS COFFEE","pbrj6b":"これは、ZUS COFFEE です。","1bqjqbo":"「ZUS」と書いて、読み方は分からないのですが、「ザス」と読むのかな。","1udb1oq":"マレーシアに滞在したことがある人から、この ZUS COFFEE は本当に美味しいよ、という話を聞いたことがありました。","zqyeg5":"おじさんの絵がトレードマークのお店です。","xibpes":"CEOラテ","1w69c6i":"私は、「CEO ラテ」というものを注文しました。","1p9lkd9":"すっごく美味しかったです。","a7ohjp":"一緒に行った妹も、ZUS COFFEE の飲み物が気に入っていました。","1xs9igs":"マレーシアに行ったら、ZUS COFFEE で飲み物を買うのがおすすめです。","ukd70b":"マレーシアに行ったら、ZUS COFFEE","fxv16j":"ペトロナスツインタワーと、写真を撮る商売","8mdn5m":"クアラルンプールの空が、にごっていた理由"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","38owge":"☕ ZUS COFFEE のドリンク","1h8r49b":"ZUS COFFEE","pbrj6b":"これは、ZUS COFFEE です。","1bqjqbo":"「ZUS」と書いて、読み方は分からないのですが、「ザス」と読むのかな。","1udb1oq":"マレーシアに滞在したことがある人から、この ZUS COFFEE は本当に美味しいよ、という話を聞いたことがありました。","zqyeg5":"おじさんの絵がトレードマークのお店です。","xibpes":"CEOラテ","1w69c6i":"私は、「CEO ラテ」というものを注文しました。","1p9lkd9":"すっごく美味しかったです。","a7ohjp":"一緒に行った妹も、ZUS COFFEE の飲み物が気に入っていました。","1xs9igs":"マレーシアに行ったら、ZUS COFFEE で飲み物を買うのがおすすめです。","ukd70b":"マレーシアに行ったら、ZUS COFFEE","fxv16j":"ペトロナスツインタワーと、写真を撮る商売","8mdn5m":"クアラルンプールの空が、にごっていた理由"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1120,7 +1132,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </div>
 
-  <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 15 SEC</div>
+  <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 29 SEC</div>
   <h1>If you go to Malaysia, get a drink at ZUS COFFEE <span class="float">☕</span></h1>
 
   <figure class="photo">
@@ -1156,7 +1168,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 
   <a class="next" href="../petronas-towers-photo-business/index.html">
     <div>
-      <div class="next-kicker">NEXT · 15 SEC</div>
+      <div class="next-kicker">NEXT · 77 SEC</div>
       <div class="next-title">At the Petronas Twin Towers, people do a small business of taking your photo</div>
     </div>
     <div class="next-arrow" aria-hidden="true">⚡</div>
@@ -1170,6 +1182,12 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
 
 </main>
 <!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->

@@ -137,10 +137,10 @@ def inject(page: pathlib.Path, items):
                 f"PLACES にありません。地図に出す行・列を決めて足してください。")
         used.add(place)
         rows.append(
-            "  {slug:%r, label:%r, len:%d, words:%d, date:%r, place:%r,\n"
+            "  {slug:%r, label:%r, len:%d, sec:%d, words:%d, date:%r, place:%r,\n"
             "   href:%r, thumb:%r,\n   title:%r, topic:%r%s},"
             % (m["slug"], m.get("label", ""), 15 if m.get("length") != "1min" else 60,
-               m["words"], m.get("date", ""), place,
+               max(1, m["sec"]), m["words"], m.get("date", ""), place,
                f"works/{m['slug']}/index.html",
                f"assets/thumbs/{m['slug']}.jpg",
                m.get("title", m["slug"]), m.get("topic", ""),

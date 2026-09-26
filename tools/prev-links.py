@@ -79,6 +79,11 @@ def main():
             changed += 1
     print(f"⏮ 前の記事へ：{len(posts)}本を確認、{changed}本を書き換え")
 
+    # 📚 そのあとで、秒数の札と「一覧に戻る」ボタンを入れ直す（前の記事ボタンのすぐ下に置くので、ここで呼ぶ）
+    import importlib.util as _ilu
+    _s = _ilu.spec_from_file_location("post_bottom", ROOT / "tools" / "post-bottom.py")
+    _m = _ilu.module_from_spec(_s); _s.loader.exec_module(_m); _m.main()
+
 
 if __name__ == "__main__":
     main()

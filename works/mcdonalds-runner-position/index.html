@@ -359,8 +359,20 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","gxduh6":"🐧 ふだんの暮らし","1bnikoi":"前の記事","1s5vm1y":"いろいろなポジション","59h7yh":"マクドナルドには、ポテラー、ドリンカー、カウンター、アッセンブラーなど、いろいろなポジションがあります。","1higbbu":"その中で一番好きだったのは「ランナー」です。","1abpqrh":"ランナーは、ドリンクやポテト、ハンバーガーを袋やトレーにまとめて、お客さんに渡す係です。","dwxw62":"マルチタスク","1w9br81":"たぶん、マクドナルドで一番マルチタスクが求められるポジションだと思います。","vthuo6":"提供時間の目標があるので、とにかく忙しいです。","l0a2rg":"でも、必要ならドリンクもポテトも組み立ても手伝いに行けるので、周りから頼られます。","1qg2g42":"「いらっしゃいませ」も一番言いますし、キッチンの人ともよく話します。","3vttfi":"お店の中を動き回っていても何も言われないのも、気楽で好きでした。","14q38eu":"🍔 ランチタイム","14cs64r":"ランチタイム","1kf2tb9":"特に楽しかったのはランチタイムです。","1zwrnk":"ハンバーガーがどんどん溜まっていく中で、「これはこのお客さん」と高速でさばいていくのが気持ちよかったです。","1ieqgn0":"ちなみに","1k8j6tr":"ちなみに、「〇〇が入っていない」「ハンバーガーが違う」というミスは、だいたいランナーの責任になりがちです。","19koa2b":"マクドナルドのアルバイト","1kzaypk":"マクドナルドのバイトで一番好きだったポジション","1cgacws":"名古屋のマクドナルドは、ウーバーイーツがすごい","1jzmlxe":"マクドナルドでは、辞めることを「卒店」と呼ぶ"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","gxduh6":"🐧 ふだんの暮らし","1bnikoi":"前の記事","1s5vm1y":"いろいろなポジション","59h7yh":"マクドナルドには、ポテラー、ドリンカー、カウンター、アッセンブラーなど、いろいろなポジションがあります。","1higbbu":"その中で一番好きだったのは「ランナー」です。","1abpqrh":"ランナーは、ドリンクやポテト、ハンバーガーを袋やトレーにまとめて、お客さんに渡す係です。","dwxw62":"マルチタスク","1w9br81":"たぶん、マクドナルドで一番マルチタスクが求められるポジションだと思います。","vthuo6":"提供時間の目標があるので、とにかく忙しいです。","l0a2rg":"でも、必要ならドリンクもポテトも組み立ても手伝いに行けるので、周りから頼られます。","1qg2g42":"「いらっしゃいませ」も一番言いますし、キッチンの人ともよく話します。","3vttfi":"お店の中を動き回っていても何も言われないのも、気楽で好きでした。","14q38eu":"🍔 ランチタイム","14cs64r":"ランチタイム","1kf2tb9":"特に楽しかったのはランチタイムです。","1zwrnk":"ハンバーガーがどんどん溜まっていく中で、「これはこのお客さん」と高速でさばいていくのが気持ちよかったです。","1ieqgn0":"ちなみに","1k8j6tr":"ちなみに、「〇〇が入っていない」「ハンバーガーが違う」というミスは、だいたいランナーの責任になりがちです。","19koa2b":"マクドナルドのアルバイト","1kzaypk":"マクドナルドのバイトで一番好きだったポジション","1cgacws":"名古屋のマクドナルドは、ウーバーイーツがすごい","1jzmlxe":"マクドナルドでは、辞めることを「卒店」と呼ぶ"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1120,7 +1132,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </div>
 
-  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 15 SEC</div>
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 54 SEC</div>
   <div class="series">🍔 MY McDONALD'S PART-TIME JOB</div>
   <h1>My favorite position at my McDonald's part-time job was "runner" <span class="float">🏃</span></h1>
 
@@ -1172,7 +1184,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 
   <a class="next" href="../nagoya-mcdonalds-uber-eats/index.html">
     <div>
-      <div class="next-kicker">NEXT · 15 SEC</div>
+      <div class="next-kicker">NEXT · 27 SEC</div>
       <div class="next-title">At McDonald's in Nagoya, Uber Eats orders were amazing</div>
     </div>
     <div class="next-arrow" aria-hidden="true">⚡</div>
@@ -1186,6 +1198,12 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
 
 </main>
 <!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->

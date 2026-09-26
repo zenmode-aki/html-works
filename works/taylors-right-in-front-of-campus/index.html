@@ -359,8 +359,20 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","em1400":"公開中","1ks9zq3":"⚡ 15秒","1nnooe8":"次の記事 · 15秒","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","1vqj7kl":"大学見学1日目","3l9e4w":"大学見学の1日目に行った、Taylor's University。","a9p2zo":"インド人の学生さんが、キャンパスツアーをしてくれた大学です。","1817mt5":"🌳 Taylor's のキャンパス","1o3qx6t":"キャンパス","4px1x9":"これが、Taylor's の大学のキャンパスです。","e6e1jo":"芝生が広がっていて、奥には、ちょっと湖も見えます。","14wiypn":"大学の目の前も","1rh818m":"Taylor's のキャンパスの、本当に目の前に、学生の寮と、商店街のような建物がありました。","1y4ov85":"商店街というか、明るい吹き抜けの建物です。","1iv8c9o":"そこには、フードコートなどがありました。","rw7a6a":"☀️ 大学の目の前の、明るい吹き抜けの建物","6w62x2":"どちらも魅力的","197md7j":"Taylor's は、大学も魅力的でした。","2bcoud":"そして、大学の目の前の寮や建物も、すごく魅力的でした。","l3048g":"Taylor's は、大学の目の前まで魅力的だった","1z0l40m":"エジプトのピラミッドのような、ショッピングモール","zab4wh":"大学見学1日目の午後：INTI"},"patterns":[["^([⚡⏱]) \\d+ words · (\\d+) sec$","$1 約$2秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"name":"日本語","englishName":"Japanese","aliases":["jp","jpn"],"flag":"🇯🇵","dict":{"1jgmzoq":"← 戻る","1xn0f4q":"← 一覧に戻る","em1400":"公開中","hnhlbg":"✈️ 旅","1bnikoi":"前の記事","1vqj7kl":"大学見学1日目","3l9e4w":"大学見学の1日目に行った、Taylor's University。","a9p2zo":"インド人の学生さんが、キャンパスツアーをしてくれた大学です。","1817mt5":"🌳 Taylor's のキャンパス","1o3qx6t":"キャンパス","4px1x9":"これが、Taylor's の大学のキャンパスです。","e6e1jo":"芝生が広がっていて、奥には、ちょっと湖も見えます。","14wiypn":"大学の目の前も","1rh818m":"Taylor's のキャンパスの、本当に目の前に、学生の寮と、商店街のような建物がありました。","1y4ov85":"商店街というか、明るい吹き抜けの建物です。","1iv8c9o":"そこには、フードコートなどがありました。","rw7a6a":"☀️ 大学の目の前の、明るい吹き抜けの建物","6w62x2":"どちらも魅力的","197md7j":"Taylor's は、大学も魅力的でした。","2bcoud":"そして、大学の目の前の寮や建物も、すごく魅力的でした。","l3048g":"Taylor's は、大学の目の前まで魅力的だった","1z0l40m":"エジプトのピラミッドのような、ショッピングモール","zab4wh":"大学見学1日目の午後：INTI"},"patterns":[["^([⚡⏱]) (\\d+) words · (\\d+) sec$","$1 $2語 · 約$3秒"],["^⚡ (\\d+) SEC$","⚡ $1秒"],["^NEXT · (\\d+) SEC$","次の記事 · $1秒"]],"menu":{"suggested":"おすすめ","allLanguages":"すべての言語","languageLabel":"言語","chooseLanguage":"言語を選ぶ","jumpByEnglishName":"英語名の頭文字へ移動"},"theme":{"darkMode":"ダークモード","lightMode":"ライトモード"},"unverified":false,"notice":null,"noticeDismiss":null}}}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1120,7 +1132,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </div>
 
-  <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 15 SEC</div>
+  <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 36 SEC</div>
   <h1>At Taylor's University, even the area right in front of the campus was attractive <span class="float">🎓</span></h1>
 
   <figure class="photo">
@@ -1173,7 +1185,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 
   <a class="next" href="../sunway-pyramid-mall-and-jollibee/index.html">
     <div>
-      <div class="next-kicker">NEXT · 15 SEC</div>
+      <div class="next-kicker">NEXT · 63 SEC</div>
       <div class="next-title">In Malaysia, there is a shopping mall that looks like an Egyptian pyramid, and I found Jollibee inside</div>
     </div>
     <div class="next-arrow" aria-hidden="true">⚡</div>
@@ -1187,6 +1199,12 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
   <!-- /⏮ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
 
 </main>
 <!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
