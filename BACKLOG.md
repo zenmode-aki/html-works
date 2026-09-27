@@ -26,7 +26,7 @@
 - バークマン・外国人ランキング・Palagi・Udemy・否定できない・英語とIT・書くのが一番・24歳の運気・Sunway・APU・バギオの厳しい学校
 - 🖼 表紙は絵文字のタイル（画像生成はあとで。`assets/thumbs-src/<slug>.jpg` を差し替える）
 - ❓ 本人に確認：バークマンの本の名前（記事は原稿のまま『imperfections』。『Four Thousand Weeks』『Meditations for Mortals』か、ニュースレター「The Imperfectionist」のことかも）／ランキングの「the daily news」「Tian Tuan」「Ryan」の表記
-- 😴 **夜勤の体力の話**の下書きは、リポジトリに無かった。パソコンに保存したままなら push するか、話してくれれば記事にする
+- ✅ 2026-09-27 夜勤の話を2本にした：`night-shift-coffee-shakes`（コーヒー1.5リットルでぶるぶる）→ `night-shift-energy-after-7am`（朝7時で体力が戻る）。「3本目をデカフェにしてみた」の続編もできる
 - ✅ 2026-09-27：11本すべてを全39表示言語に翻訳
 
 ## 🔍 2026-09-26 の「批判的な見直し」の残り
