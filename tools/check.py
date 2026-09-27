@@ -51,6 +51,8 @@ PHOTO_STORIES = {
     "walked-to-work-through-the-flood",
     "grandmothers-house-in-gifu", "cebu-condo-poolside", "gifu-drive-service-areas",
     # 2026-09-26 午後のネタ帳から公開した、写真が2枚以上の記事
+    # 2026-09-27 本人の写真を2枚足した（生徒との写真は顔をぼかし済み）
+    "gifts-from-students",
     "anytime-fitness-for-2-months",
     "apu-felt-like-the-tech-future",
     "drive-to-survive-to-suzuka",
