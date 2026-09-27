@@ -13,6 +13,7 @@
 | In Japanese baseball, the seventh inning is called the "Lucky Seven." | https://youtu.be/S4o_G4J6Uyo | 名古屋ドームの話（ラッキーセブン） || ✅ nagoya-dome-lucky-seven（2026-09-27） |
 | The stadium erupted with excitement after a home run.⚾️ | https://youtu.be/WgvIJjDhm2U | 名古屋ドームの話（ホームランのあと、スタジアムが沸いた） || ✅ nagoya-dome-home-run（2026-09-27） |
 | South Korean internet cafes🇰🇷 | https://youtu.be/E29-CV97n-k | 韓国のPCカフェの動画（2026-09-27 サブウェイの記事から移した） | ✅ korean-pc-cafe（2026-09-27） |
+| SUBWAY in Korea 🇰🇷 | https://youtu.be/gDRUYiFeGtU | 韓国のサブウェイ（2026-09-27 本人が指定） | ✅ subway-in-korea（2026-09-27） |
 | This is probably the most enjoyable place to drive in Japan.🚗 | https://youtu.be/iS-aim42XV4 | 「日本で一番楽しいドライブの場所」滋賀県の記事 | |
 | Radios in the countryside automatically turn on at 12:00 PM and play a school chime. 🏫🔔 | https://youtu.be/or17xYbTjuw | 岐阜のおばあちゃん家に行った時の記事（田舎は12時に村のラジオが鳴る） || ✅ noon-radio-in-the-countryside（2026-09-25） |
 
