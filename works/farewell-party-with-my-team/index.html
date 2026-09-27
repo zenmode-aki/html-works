@@ -421,6 +421,20 @@
   html[data-theme="dark"] .ss.now { background: #4a2626; } html[data-theme="dark"] .manners span { background: #1f3a2a; }
   @media (prefers-reduced-motion: reduce) { .tm b, .ss.now, .fee-bar, .hy-bar i, .hy-row .fire { animation: none !important; } .tm .moon { opacity: 0; } }
 </style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
 <style id="related-css">
   /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
   .related { margin: 34px 0 0; }
@@ -470,22 +484,8 @@
   html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
 </style>
-<style id="prev-css">
-  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
-  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
-    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
-    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
-  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
-  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
-    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
-  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
-  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
-  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
-  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
-  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
-</style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"ba473102fc"},"ko":{"v":"54c28afc51"},"zh":{"v":"61ff97740c"},"zh-Hant":{"v":"7fe14603f4"}},"uiData":true,"uiV":"38b65c5b36"}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"81e9e33fbb"},"ko":{"v":"4fc858868a"},"zh":{"v":"418c91b2fc"},"zh-Hant":{"v":"93206abbe1"}},"uiData":true,"uiV":"38b65c5b36"}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1409,7 +1409,7 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
       <span class="card-label">Paid For Everything</span>
     </div>
     <p>
-      By the way, at this restaurant, I also had a welcome party when I joined the company.
+      By the way, at this restaurant, I also had a welcome party when I started working there.
     </p>
     <p>
       At that time I was on a different team, but they paid for everything! 😳
@@ -1456,21 +1456,21 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     <h2 class="related-h" id="related-h">✨ You might also like</h2>
     <ul class="related-list">
       <li>
-        <a class="rel-card" href="../night-shift-energy-after-7am/index.html">
-          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/night-shift-energy-after-7am.jpg')"></span>
-          <div class="rel-body">
-            <div class="rel-kicker"><span class="rel-sec">⚡ 59 SEC</span></div>
-            <div class="rel-title">On night shifts, my energy comes back after 7 AM</div>
-          </div>
-          <span class="rel-go" aria-hidden="true">→</span>
-        </a>
-      </li>
-      <li>
         <a class="rel-card" href="../temp-worker-contract-nerves/index.html">
           <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/temp-worker-contract-nerves.jpg')"></span>
           <div class="rel-body">
             <div class="rel-kicker"><span class="rel-sec">⚡ 105 SEC</span></div>
             <div class="rel-title">As a temp worker, my heart races a little every 3 months</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../night-shift-energy-after-7am/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/night-shift-energy-after-7am.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 59 SEC</span></div>
+            <div class="rel-title">On night shifts, my energy comes back after 7 AM</div>
           </div>
           <span class="rel-go" aria-hidden="true">→</span>
         </a>
