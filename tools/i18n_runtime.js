@@ -1,4 +1,4 @@
-/* 🌐 言語の切り替え（python3 tools/i18n.py が各ページに埋め込みます。ここを直したら i18n.py を流し直す）
+/* 🌐 言語の切り替え（共通メニューと記事訳は必要なJSONだけ読む。ここを直したら i18n.py を流し直す）
    ・英語の本文はそのまま。日本語などは「英文 → 訳」の対応表で、文章のかたまりごとに差し替える
    ・対応表にない文は英語のまま残る（壊れるより、英語が残るほうがまし）
    ・選んだ言語は localStorage に覚える。?lang=ja でも指定できる */
@@ -44,18 +44,41 @@
   var DATA;
   try { DATA = JSON.parse(holder.textContent); } catch (e) { return; }
   var LANGS = DATA.langs || {};
-  var MENU = (LANGS[lang] && LANGS[lang].menu) || {};
-  var THEME = (LANGS[lang] && LANGS[lang].theme) || {};
+  var MENU = {};
+  var THEME = {};
   /* ダーク切り替えの文言（lang はこの下で決まるので、使うときに引く） */
   var THEME_WORDS = { ja: ['ダーク表示', 'ライト表示'], ko: ['다크 모드', '라이트 모드'], zh: ['深色模式', '浅色模式'], 'zh-Hant': ['深色模式', '淺色模式'] };
   var KEY = 'pengesso-lang';
   var avail = ['en'].concat(Object.keys(LANGS));
   var NAMES = { en: 'English' };
   var EN_NAMES = { en: 'English' };
-  Object.keys(LANGS).forEach(function (k) {
-    NAMES[k] = LANGS[k].name || k;
-    EN_NAMES[k] = LANGS[k].englishName || k;
-  });
+  var FLAGS = { en: '🇺🇸' };
+  var UI_READY = Promise.resolve();
+  function refreshLanguageMeta() {
+    NAMES = { en: 'English' }; EN_NAMES = { en: 'English' }; FLAGS = { en: '🇺🇸' };
+    Object.keys(LANGS).forEach(function (k) {
+      NAMES[k] = LANGS[k].name || k;
+      EN_NAMES[k] = LANGS[k].englishName || k;
+      FLAGS[k] = LANGS[k].flag || '🌐';
+    });
+    MENU = (LANGS[lang] && LANGS[lang].menu) || {};
+    THEME = (LANGS[lang] && LANGS[lang].theme) || {};
+  }
+  refreshLanguageMeta();
+  if (DATA.uiData && window.fetch) {
+    var uiUrl = new URL('../../i18n/ui-data.json', location.href);
+    if (DATA.uiV) uiUrl.searchParams.set('v', DATA.uiV);
+    UI_READY = fetch(uiUrl.toString(), { credentials: 'same-origin' })
+      .then(function (res) { if (!res.ok) throw new Error('Language menu unavailable'); return res.json(); })
+      .then(function (uiData) {
+        var pageLangs = LANGS, commonLangs = uiData.langs || {}, merged = {};
+        Object.keys(pageLangs).forEach(function (k) {
+          if (commonLangs[k]) merged[k] = Object.assign({}, commonLangs[k], pageLangs[k]);
+        });
+        LANGS = merged; avail = ['en'].concat(Object.keys(LANGS));
+        refreshLanguageMeta();
+      }).catch(function () {});
+  }
 
   function canonical(code) {
     var q = String(code || '').replace(/_/g, '-').toLowerCase();
@@ -94,6 +117,7 @@
   function save(l) { try { localStorage.setItem(KEY, l); } catch (e) {} }
 
   var lang = pick();
+  refreshLanguageMeta();
   /* トップページが「日本語のときだけ出す記事」を決めるのに使う。<head> で先に決めておく */
   window.PENGESSO_LANG = lang;
   if (lang !== 'en') document.documentElement.setAttribute('lang', lang);
@@ -359,9 +383,6 @@
   }
 
   /* ── 切り替えボタン ─────────────────────────────── */
-  var FLAGS = { en: '🇺🇸' };
-  Object.keys(LANGS).forEach(function (k) { FLAGS[k] = LANGS[k].flag || '🌐'; });
-
   function go(l) {
     if (l === lang) return;
     save(l);
@@ -702,6 +723,10 @@
   else start();
 
   function start() {
+  UI_READY.then(startReady, startReady);
+  }
+
+  function startReady() {
   drawSwitch();
   if (lang === 'en') return;
   drawNotice(lang, LANGS[lang] || {});
@@ -716,7 +741,16 @@
       .catch(function () {}); /* 訳を読み込めなくても英語本文をそのまま表示する */
     return;
   }
-  translate(LANGS[lang]);
+  var articleLang = LANGS[lang];
+  if (!articleLang) return;
+  if (articleLang.dict && Object.keys(articleLang.dict).length) { translate(articleLang); return; }
+  if (!window.fetch) return;
+  var articleUrl = new URL('i18n/data.' + encodeURIComponent(lang) + '.json', location.href);
+  if (articleLang.v) articleUrl.searchParams.set('v', articleLang.v);
+  fetch(articleUrl.toString(), { credentials: 'same-origin' })
+    .then(function (res) { if (!res.ok) throw new Error('Article translation unavailable'); return res.json(); })
+    .then(function (articleData) { articleLang.dict = articleData.dict || {}; translate(articleLang); })
+    .catch(function () {}); /* 訳を読み込めなくても英語本文をそのまま表示する */
   }
 
   function translate(L) {

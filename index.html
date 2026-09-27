@@ -936,17 +936,40 @@ if (!holder) return;
 var DATA;
 try { DATA = JSON.parse(holder.textContent); } catch (e) { return; }
 var LANGS = DATA.langs || {};
-var MENU = (LANGS[lang] && LANGS[lang].menu) || {};
-var THEME = (LANGS[lang] && LANGS[lang].theme) || {};
+var MENU = {};
+var THEME = {};
 var THEME_WORDS = { ja: ['ダーク表示', 'ライト表示'], ko: ['다크 모드', '라이트 모드'], zh: ['深色模式', '浅色模式'], 'zh-Hant': ['深色模式', '淺色模式'] };
 var KEY = 'pengesso-lang';
 var avail = ['en'].concat(Object.keys(LANGS));
 var NAMES = { en: 'English' };
 var EN_NAMES = { en: 'English' };
+var FLAGS = { en: '🇺🇸' };
+var UI_READY = Promise.resolve();
+function refreshLanguageMeta() {
+NAMES = { en: 'English' }; EN_NAMES = { en: 'English' }; FLAGS = { en: '🇺🇸' };
 Object.keys(LANGS).forEach(function (k) {
 NAMES[k] = LANGS[k].name || k;
 EN_NAMES[k] = LANGS[k].englishName || k;
+FLAGS[k] = LANGS[k].flag || '🌐';
 });
+MENU = (LANGS[lang] && LANGS[lang].menu) || {};
+THEME = (LANGS[lang] && LANGS[lang].theme) || {};
+}
+refreshLanguageMeta();
+if (DATA.uiData && window.fetch) {
+var uiUrl = new URL('../../i18n/ui-data.json', location.href);
+if (DATA.uiV) uiUrl.searchParams.set('v', DATA.uiV);
+UI_READY = fetch(uiUrl.toString(), { credentials: 'same-origin' })
+.then(function (res) { if (!res.ok) throw new Error('Language menu unavailable'); return res.json(); })
+.then(function (uiData) {
+var pageLangs = LANGS, commonLangs = uiData.langs || {}, merged = {};
+Object.keys(pageLangs).forEach(function (k) {
+if (commonLangs[k]) merged[k] = Object.assign({}, commonLangs[k], pageLangs[k]);
+});
+LANGS = merged; avail = ['en'].concat(Object.keys(LANGS));
+refreshLanguageMeta();
+}).catch(function () {});
+}
 function canonical(code) {
 var q = String(code || '').replace(/_/g, '-').toLowerCase();
 for (var i = 0; i < avail.length; i++) if (avail[i].toLowerCase() === q) return avail[i];
@@ -980,6 +1003,7 @@ return browserChoice() || 'en';
 }
 function save(l) { try { localStorage.setItem(KEY, l); } catch (e) {} }
 var lang = pick();
+refreshLanguageMeta();
 window.PENGESSO_LANG = lang;
 if (lang !== 'en') document.documentElement.setAttribute('lang', lang);
 var bold = document.createElement('style');
@@ -1198,8 +1222,6 @@ fs.textContent = 'html:lang(' + lang + ') body, html:lang(' + lang + ') body *:n
 'font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", ' + SOFT[lang].name + ', sans-serif !important; }';
 head.appendChild(fs);
 }
-var FLAGS = { en: '🇺🇸' };
-Object.keys(LANGS).forEach(function (k) { FLAGS[k] = LANGS[k].flag || '🌐'; });
 function go(l) {
 if (l === lang) return;
 save(l);
@@ -1513,6 +1535,9 @@ var switchMount = null;
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
 else start();
 function start() {
+UI_READY.then(startReady, startReady);
+}
+function startReady() {
 drawSwitch();
 if (lang === 'en') return;
 drawNotice(lang, LANGS[lang] || {});
@@ -1526,7 +1551,16 @@ fetch(url.toString(), { credentials: 'same-origin' })
 .catch(function () {});
 return;
 }
-translate(LANGS[lang]);
+var articleLang = LANGS[lang];
+if (!articleLang) return;
+if (articleLang.dict && Object.keys(articleLang.dict).length) { translate(articleLang); return; }
+if (!window.fetch) return;
+var articleUrl = new URL('i18n/data.' + encodeURIComponent(lang) + '.json', location.href);
+if (articleLang.v) articleUrl.searchParams.set('v', articleLang.v);
+fetch(articleUrl.toString(), { credentials: 'same-origin' })
+.then(function (res) { if (!res.ok) throw new Error('Article translation unavailable'); return res.json(); })
+.then(function (articleData) { articleLang.dict = articleData.dict || {}; translate(articleLang); })
+.catch(function () {});
 }
 function translate(L) {
 if (!L) return;

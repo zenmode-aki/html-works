@@ -316,7 +316,7 @@ python3 tools/build-site.py
 ```bash
 python3 tools/i18n.py --todo nagoya-dome   # まだ訳していない英文が出る
 # → works/nagoya-dome/i18n/ja.json に {"title": "…", "text": {"英文": "訳"}} を書く
-python3 tools/i18n.py                      # 全ページに埋め込む（build-site.py も最後にこれを呼ぶ）
+python3 tools/i18n.py                      # 言語メニューと訳データを生成する（build-site.py も最後にこれを呼ぶ）
 ```
 
 8. `git add -A && git commit -m "add nagoya-dome" && git push` → **これで公開**
