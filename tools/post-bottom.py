@@ -121,6 +121,9 @@ def pick_related(slug, doc, info):
         pts = 0
         if _series(s) == _series(slug) and _series(s) != s:
             pts += 20                                   # 同じシリーズ（Part 1/2/3）
+        if m.get("series") and m.get("series") == me.get("series"):
+            pts += 20                                   # meta.json の "series" が同じ（名古屋ドームの4本など）
+        pts += 6 * len(set(m.get("tags", [])) & set(me.get("tags", [])))   # 同じタグ（"baseball" など）
         if m.get("topic") and m.get("topic") == me.get("topic"):
             pts += 5                                    # 同じ話題（仕事・旅・暮らし…）
         if m.get("place") and m.get("place") == me.get("place"):

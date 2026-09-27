@@ -53,6 +53,7 @@ PHOTO_STORIES = {
     # 2026-09-26 午後のネタ帳から公開した、写真が2枚以上の記事
     # 2026-09-27 本人の写真を2枚足した（生徒との写真は顔をぼかし済み）
     "gifts-from-students",
+    "korean-baseball-speaker-cheers",   # 写真2枚＋動画。2026-09-27「こちらもどうぞ」で1KBだけ1MBを超えた
     "anytime-fitness-for-2-months",
     "apu-felt-like-the-tech-future",
     "drive-to-survive-to-suzuka",
