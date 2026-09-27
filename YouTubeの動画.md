@@ -14,8 +14,6 @@
 | The stadium erupted with excitement after a home run.⚾️ | https://youtu.be/WgvIJjDhm2U | 名古屋ドームの話（ホームランのあと、スタジアムが沸いた） || ✅ nagoya-dome-home-run（2026-09-27） |
 | South Korean internet cafes🇰🇷 | https://youtu.be/E29-CV97n-k | 韓国のPCカフェの動画（2026-09-27 サブウェイの記事から移した） | ✅ korean-pc-cafe（2026-09-27） |
 | SUBWAY in Korea 🇰🇷 | https://youtu.be/gDRUYiFeGtU | 韓国のサブウェイ（2026-09-27 本人が指定） | ✅ subway-in-korea（2026-09-27） |
-| DDP (Shorts) | https://youtube.com/shorts/UAjmC2Zs8fg | ソウルのDDP（2026-09-27 本人が指定） | ✅ ddp-white-planet（2026-09-27） |
-| Mario Kart at SM Clark (Shorts) | https://youtube.com/shorts/I_uu3iBRSLQ | SMクラークのゲームセンター（2026-09-27 本人が指定） | ✅ sm-clark-arcade-mario-kart（2026-09-27） |
 | This is probably the most enjoyable place to drive in Japan.🚗 | https://youtu.be/iS-aim42XV4 | 「日本で一番楽しいドライブの場所」滋賀県の記事 | |
 | Radios in the countryside automatically turn on at 12:00 PM and play a school chime. 🏫🔔 | https://youtu.be/or17xYbTjuw | 岐阜のおばあちゃん家に行った時の記事（田舎は12時に村のラジオが鳴る） || ✅ noon-radio-in-the-countryside（2026-09-25） |
 
@@ -30,9 +28,8 @@
 
 | 動画のタイトル | URL | 使う予定の記事（本人の言葉） | 使った記事 |
 |---|---|---|---|
-| DDP | https://youtube.com/shorts/UAjmC2Zs8fg | 韓国の話（DDP） | |
-| Mario Kart at SM Clark (Shorts) | https://youtube.com/shorts/I_uu3iBRSLQ | SMクラークのゲームセンター（2026-09-27 本人が指定） | ✅ sm-clark-arcade-mario-kart（2026-09-27） |
-| 🚗🎮 | https://youtube.com/shorts/I_uu3iBRSLQ | クラークでマリオカートをした話（公開済み `mario-kart-any-age` に合うかも） | |
+| DDP | https://youtube.com/shorts/UAjmC2Zs8fg | 韓国の話（DDP） | ✅ ddp-white-planet（2026-09-27） |
+| 🚗🎮 | https://youtube.com/shorts/I_uu3iBRSLQ | クラークでマリオカートをした話（公開済み `mario-kart-any-age` に合うかも） | ✅ sm-clark-arcade-mario-kart（2026-09-27 本人の指定で新しい記事に） |
 | 20th Birthday | https://youtube.com/shorts/gLVNY7K-AJI | 20歳の誕生日をみんなに祝ってもらった話 | ✅ turning-twenty-in-clark（2026-09-25） |
 | The surrounding environment when I lived in Clark | https://youtube.com/shorts/3utlqyCQA2U | クラークの寮のまわり（治安が良くて、カリフォルニアみたいにのどか。よく散歩した）。公開済み `clark-california-of-asia` に合うかも | |
 | A drive in Angeles, Philippines | https://youtube.com/shorts/Up8FXGz4dZ4 | 社長の車でアンヘルスのお店に連れて行ってもらった話（コリアンタウン） | |
