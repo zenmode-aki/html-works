@@ -26,7 +26,7 @@
 
 - バークマン・外国人ランキング・Palagi・Udemy・否定できない・英語とIT・書くのが一番・24歳の運気・Sunway・APU・バギオの厳しい学校
 - 🖼 表紙は絵文字のタイル（画像生成はあとで。`assets/thumbs-src/<slug>.jpg` を差し替える）
-- ❓ 本人に確認：バークマンの本の名前（原稿の『imperfections』は『Imperfectionist』と読んだ）／ランキングの「the daily news」「Tian Tuan」「Ryan」の表記
+- ❓ 本人に確認：バークマンの本の名前（記事は原稿のまま『imperfections』。『Four Thousand Weeks』『Meditations for Mortals』か、ニュースレター「The Imperfectionist」のことかも）／ランキングの「the daily news」「Tian Tuan」「Ryan」の表記
 - 😴 **夜勤の体力の話**の下書きは、リポジトリに無かった。パソコンに保存したままなら push するか、話してくれれば記事にする
 - 🌐 韓国語・中国語などはまだ（Codex の訳まとめで入る）
 
