@@ -397,9 +397,19 @@
   @keyframes glow { to { box-shadow: 0 0 0 2px #ff8a8a, 0 0 14px rgba(255,120,120,.5); } }
   .manners { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
   .manners span { padding: 8px 12px; border-radius: 999px; background: #eaf7ee; font-weight: 900; font-size: 13.5px; }
+  .fee { margin: 16px 0 14px; padding: 14px; border-radius: 18px; background: #fff8e1; }
+  .fee-row { display: grid; grid-template-columns: 100px 1fr; align-items: center; gap: 8px; margin-bottom: 10px; font-weight: 900; font-size: 13.5px; }
+  .fee-bar { display: flex; align-items: center; justify-content: flex-end; height: 28px; width: var(--w); padding: 0 10px; border-radius: 999px;
+    background: linear-gradient(90deg,#ffe08a,#ffc53d); transform-origin: 0 50%; animation: fee 1.4s ease-out both; }
+  .fee-bar.boss { background: linear-gradient(90deg,#ffc53d,#ff8a3d); animation-delay: .3s; }
+  .fee-bar b { font-size: 13px; white-space: nowrap; }
+  @keyframes fee { from { transform: scaleX(.05); } }
+  .fee-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fee-tags span { padding: 6px 10px; border-radius: 999px; background: #fff; font-weight: 900; font-size: 12.5px; }
+  html[data-theme="dark"] .fee { background: #3a3220; } html[data-theme="dark"] .fee-tags span { background: #22242f; color: #f4f0fa; } html[data-theme="dark"] .fee-bar b { color: #3a2a00; }
   html[data-theme="dark"] .tm { background: #22304a; } html[data-theme="dark"] .ss { background: #3a3020; }
   html[data-theme="dark"] .ss.now { background: #4a2626; } html[data-theme="dark"] .manners span { background: #1f3a2a; }
-  @media (prefers-reduced-motion: reduce) { .tm b, .ss.now { animation: none !important; } .tm .moon { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .tm b, .ss.now, .fee-bar { animation: none !important; } .tm .moon { opacity: 0; } }
 </style>
 <style id="prev-css">
   /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
@@ -465,7 +475,7 @@
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"30295c6f7d"},"ko":{"v":"f173eb8e6f"},"zh":{"v":"2183497a56"},"zh-Hant":{"v":"f836d58a26"}},"uiData":true,"uiV":"38b65c5b36"}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"401fd561a3"},"ko":{"v":"3cde184a64"},"zh":{"v":"17ce58a950"},"zh-Hant":{"v":"9ce81de7c0"}},"uiData":true,"uiV":"38b65c5b36"}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1259,13 +1269,13 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     <a class="home" href="../../index.html">← Back</a>
     <div class="badges">
       <!-- 👇 python3 tools/check.py --fix-badge が正しい数字に直してくれる -->
-      <div class="wc-badge">⚡ 248 words · 83 sec</div>
+      <div class="wc-badge">⚡ 355 words · 118 sec</div>
       <!-- 🚦 出す場所は1つだけ。記事はぜんぶ PUBLIC -->
       <div class="stage stage-public">PUBLIC</div>
     </div>
   </div>
 
-  <div class="label"><span class="topic">🛠 NETWORK OPERATIONS</span>⚡ 83 SEC</div>
+  <div class="label"><span class="topic">🛠 NETWORK OPERATIONS</span>⚡ 118 SEC</div>
   <h1>My team held a farewell party for me <span class="float">🥩</span></h1>
   <section class="card">
     <div class="card-head">
@@ -1340,6 +1350,35 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
       And it is common for new or young people to serve the salad to everyone and pour drinks for people whose glasses are almost empty.
     </p>
     <div class="manners" aria-hidden="true"><span>⏱ 2–3 hours</span><span>🥗 Serve the salad</span><span>🍶 Pour drinks</span></div>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💴</span>
+      <span class="card-label">Price By Rank</span>
+    </div>
+    <p>
+      What felt very Japanese to me was the fee for the drinking party.
+    </p>
+    <p>
+      Japanese companies have a system called "nenko joretsu," where your pay goes up with the number of years since you joined.
+    </p>
+    <p>
+      So, for example, a new person a few years into the company pays 3,000 yen, and a manager pays 10,000 yen. The price just changes like that.
+    </p>
+    <div class="fee" aria-hidden="true">
+      <div class="fee-row"><span class="fee-who">🐣 New staff</span><span class="fee-bar" style="--w:30%"><b>¥3,000</b></span></div>
+      <div class="fee-row"><span class="fee-who">🧑‍💼 Manager</span><span class="fee-bar boss" style="--w:100%"><b>¥10,000</b></span></div>
+      <div class="fee-tags"><span>👩 About 1,000 yen off for women</span><span>🎁 Sometimes a manager pays for everyone</span></div>
+    </div>
+    <p>
+      Women sometimes pay about 1,000 yen less than men, and male managers sometimes pay for others.
+    </p>
+    <p>
+      I often heard about this in dramas and novels, but it really happened at my workplace too.
+    </p>
+    <p class="big">
+      Even the price of a drinking party shows the order inside the company.
+    </p>
   </section>
   <section class="card">
     <div class="card-head">
