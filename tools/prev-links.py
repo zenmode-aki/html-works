@@ -88,6 +88,9 @@ def main():
     _dm = _ilu.module_from_spec(_d); _d.loader.exec_module(_dm)
     if (ROOT / "draft").exists():
         _dm.build()
+    # 🏠 VS Code でいちばん上に出る「書く部屋」も作り直す
+    _w = _ilu.spec_from_file_location("writing_home", ROOT / "tools" / "writing-home.py")
+    _wm = _ilu.module_from_spec(_w); _w.loader.exec_module(_wm); _wm.main()
 
 
 if __name__ == "__main__":

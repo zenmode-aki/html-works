@@ -2,7 +2,7 @@
 
 ## 出どころ
 
-ネットワーク運用保守/記事/25_質問は13時と17時半にまとめて送る.txt（写真も同ファイル）（本人が日本語で書いた原稿）
+10_🛠 ネットワーク運用保守/📄 記事/25_✅_質問は13時と17時半にまとめて送る.txt（写真も同ファイル）（本人が日本語で書いた原稿）
 
 ## 素材（日本語・本人の言葉。1文ずつ S番号 を振る）
 
@@ -39,7 +39,7 @@ S1〜S8 → **全部使いました。**語数のために削った文はあり�
 
 images/cover.jpg — 生成。An amigurumi penguin dropping small folded notes into a big envelope with a round clock behind
 使った組み合わせ：ゆるふわなペンギン × あみぐるみ（毛糸） × 封筒に入れていく折った紙
-images/icon.jpg — 本人がくれた画像（25_質問は13時と17時半にまとめて送る.jpeg）。The Microsoft Teams app icon
+images/icon.jpg — 本人がくれた画像（25_✅_質問は13時と17時半にまとめて送る.jpeg）。The Microsoft Teams app icon
 148x148 しかないので、引き伸ばさず実寸のまま本文カードの中に置いている。
 
 ## 匿名まわりの判断
