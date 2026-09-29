@@ -51,21 +51,36 @@
 </style>
 <script>
   // サイトのほかのページと同じく、🌙 を選んでいた人にはダークで出す
-  try { if (localStorage.getItem('pengesso-theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
+  try { if (localStorage.getItem('pengesso-theme-v2') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
 </script>
 </head>
 <body>
 <main>
   <div class="pen"><img src="/assets/pengesso/pengesso-01.jpg" alt="Pengesso, a plush penguin in a blue cap and sunglasses" /></div>
-  <div class="code">404 · NOT FOUND</div>
-  <h1>This page is not here.</h1>
-  <div class="ja" lang="ja">このページは、見つかりませんでした。</div>
-  <p class="say">Maybe the penguin moved it.
+  <div class="code" id="code">404 · NOT FOUND</div>
+  <h1 id="h">This page is not here.</h1>
+  <div class="ja" lang="ja" id="hja">このページは、見つかりませんでした。</div>
+  <p class="say" id="say">Maybe the penguin moved it.
     <span lang="ja">ペンギンがどこかへ持っていったのかもしれません。</span></p>
   <div class="btns">
     <a class="btn main" href="/">🐧 Go to the top<small lang="ja">トップへ</small></a>
     <a class="btn sub" href="/#find">🗺️ Pick a place on the map<small lang="ja">地図から選ぶ</small></a>
   </div>
 </main>
+<script>
+/* 📝 2026-09-29：下書きに戻した記事（tools/draft.py が draft/slugs.json に書く）の古い URL で来た人には、
+   「いま書き直しています。もうすぐ戻ってきます」と出す。下書きそのものへはリンクしない */
+(function () {
+  var m = location.pathname.match(/\/works\/([a-z0-9-]+)\/?/);
+  if (!m || !window.fetch) return;
+  fetch('/draft/slugs.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : []; }).then(function (list) {
+    if (list.indexOf(m[1]) < 0) return;
+    document.getElementById('code').textContent = '📝 COMING BACK SOON';
+    document.getElementById('h').textContent = 'This post is being rewritten.';
+    document.getElementById('hja').textContent = 'この記事は、いま書き直しています。';
+    document.getElementById('say').innerHTML = 'It will be back soon, a little better. <span lang="ja">もうすぐ、ちょっと良くなって戻ってきます。</span>';
+  }).catch(function () {});
+})();
+</script>
 </body>
 </html>

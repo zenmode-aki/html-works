@@ -321,6 +321,8 @@ def build():
     today = datetime.date.today()
     DRAFT.mkdir(exist_ok=True)
     (DRAFT / "index.html").write_text(index_html(infos, today, len(works)), encoding="utf-8")
+    # 404.html が「いま書き直しています」と出すための一覧（下書きの slug だけ）
+    (DRAFT / "slugs.json").write_text(json.dumps(sorted(drafts)) + "\n", encoding="utf-8")
     top = ROOT / "index.html"
     doc = top.read_text(encoding="utf-8")
     doc = re.sub(r"\n?[ \t]*" + re.escape(SOON_S) + r".*?" + re.escape(SOON_E) + r"\n?", "\n", doc, flags=re.S)
