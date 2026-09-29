@@ -83,6 +83,11 @@ def main():
     import importlib.util as _ilu
     _s = _ilu.spec_from_file_location("post_bottom", ROOT / "tools" / "post-bottom.py")
     _m = _ilu.module_from_spec(_s); _s.loader.exec_module(_m); _m.main()
+    # 📝 下書きサイトの一覧と、本番トップの「もうすぐ公開」（本数・日付）もいっしょに作り直す
+    _d = _ilu.spec_from_file_location("draft", ROOT / "tools" / "draft.py")
+    _dm = _ilu.module_from_spec(_d); _d.loader.exec_module(_dm)
+    if (ROOT / "draft").exists():
+        _dm.build()
 
 
 if __name__ == "__main__":
