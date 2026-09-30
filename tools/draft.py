@@ -91,7 +91,9 @@ def slugs(d):
 def to_draft_page(slug, doc, drafts, works, nxt):
     for rx in PROD_BLOCKS:
         doc = rx.sub("\n", doc)
-    doc = re.sub(re.escape(RIB_S) + r".*?" + re.escape(RIB_E) + r"\n?", "", doc, flags=re.S)
+    # 前の印を消すとき、行頭の空白も一緒に消す（残すと build のたびに空白が2つずつ増えていた・2026-09-30）
+    doc = re.sub(r"[ \t]*" + re.escape(RIB_S) + r".*?" + re.escape(RIB_E) + r"\n?", "", doc, flags=re.S)
+    doc = re.sub(r"(<main[^>]*>\n)[ \t]+\n", r"\1", doc, count=1)
     doc = re.sub(r"\n?[ \t]*" + re.escape(NAV_S) + r".*?" + re.escape(NAV_E) + r"\n?", "\n", doc, flags=re.S)
     doc = re.sub(r'<style id="draft-css">.*?</style>\n?', "", doc, flags=re.S)
     doc = doc.replace(NOINDEX + "\n", "")
