@@ -406,6 +406,21 @@
   html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
 </style>
+<style id="aside-css">
+  /* 🤖 AIで調べた補足（anytime-fitness と同じ見た目） */
+  p.aside { margin-top: 12px; padding: 12px 14px 12px 44px; position: relative; border-radius: 16px;
+    background: color-mix(in srgb, var(--purple) 8%, #fff); border: 2px dashed color-mix(in srgb, var(--purple) 30%, transparent);
+    font-size: clamp(15.5px, 2.1vw, 18px); line-height: 1.6; }
+  p.aside::before { content: "🤖"; position: absolute; left: 13px; top: 11px; font-size: 18px; }
+  /* 2026-09-26 続けて並ぶ 🤖 の豆知識は、1つの箱に見せる（1文ずつ箱が並ぶとうるさかった） */
+  p.aside:has(+ p.aside) { padding-bottom: 5px; border-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  p.aside + p.aside { margin-top: 0; padding-top: 5px; border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
+  p.aside + p.aside::before { content: "•"; left: 19px; top: 4px; font-size: 16px; color: var(--purple); }
+  /* このページは暗い色が基本なので、箱も暗い色に合わせる */
+  .card p.aside { background: rgba(192,166,255,.10) !important; border: 1px dashed rgba(192,166,255,.45) !important; color: inherit !important; }
+  .card p.aside + p.aside { border-top: 0 !important; }
+  .card p.aside:has(+ p.aside) { border-bottom: 0 !important; }
+</style>
 <style id="prev-css">
   /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
   .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
@@ -421,7 +436,7 @@
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"043155c226"},"bn":{"v":"bf674f0ea0"},"ceb":{"v":"bf7f202a32"},"cs":{"v":"9bfe31ae19"},"da":{"v":"4f05dfeec8"},"de":{"v":"966bf445cb"},"el":{"v":"f472bff900"},"es":{"v":"4585d8a5e7"},"fa":{"v":"081e98bced"},"fi":{"v":"30ff3b1884"},"fil":{"v":"442122aad7"},"fr":{"v":"11b0f9f391"},"he":{"v":"ea06b7628c"},"hi":{"v":"ab11dd57fe"},"id":{"v":"5db9e78045"},"it":{"v":"f3fb19f6c9"},"ja":{"v":"dc5d69acb1"},"ko":{"v":"205ad8cc87"},"mr":{"v":"a19dbbd1bc"},"ms":{"v":"e279b1fd19"},"nb":{"v":"319ff1b0c7"},"ne":{"v":"661ea2672d"},"nl":{"v":"a91b9d762b"},"pa":{"v":"fcf9620cbc"},"pl":{"v":"fe753ed477"},"pt":{"v":"e4beb2734f"},"ro":{"v":"67eac7b2a7"},"ru":{"v":"43d928ce2f"},"sv":{"v":"eb2d43c610"},"sw":{"v":"eda46ec1d2"},"ta":{"v":"a7d84075e2"},"te":{"v":"fd1e30f15e"},"th":{"v":"bf97395151"},"tr":{"v":"9b112053ea"},"uk":{"v":"ee6aecf9d5"},"ur":{"v":"4fe4fd429e"},"vi":{"v":"78f3d5b730"},"zh":{"v":"5772c83bb5"},"zh-Hant":{"v":"b90ddcb137"}},"uiData":true,"uiV":"38b65c5b36"}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"f371953a7f"},"bn":{"v":"335e04a515"},"ceb":{"v":"cd5f9a0264"},"cs":{"v":"444e859f18"},"da":{"v":"0c2be5c274"},"de":{"v":"32a6f4a8c2"},"el":{"v":"1c94c7f59e"},"es":{"v":"bca891ca9b"},"fa":{"v":"65066d95e0"},"fi":{"v":"7f63a59226"},"fil":{"v":"069f8455bb"},"fr":{"v":"be46d0e7be"},"he":{"v":"d46fe51047"},"hi":{"v":"3ed5bdf305"},"id":{"v":"48b6053190"},"it":{"v":"56fb2985b7"},"ja":{"v":"a45d79bac3"},"ko":{"v":"4f2df91fb5"},"mr":{"v":"a19dbbd1bc"},"ms":{"v":"114be1304d"},"nb":{"v":"e47fde7aed"},"ne":{"v":"661ea2672d"},"nl":{"v":"74602f7806"},"pa":{"v":"fcf9620cbc"},"pl":{"v":"880a1044bc"},"pt":{"v":"575cd62513"},"ro":{"v":"2ceb4b54bc"},"ru":{"v":"ef361303e3"},"sv":{"v":"1d9ebb0d27"},"sw":{"v":"da43c7549a"},"ta":{"v":"a7d84075e2"},"te":{"v":"fd1e30f15e"},"th":{"v":"b1cb0389a9"},"tr":{"v":"9b44c10fca"},"uk":{"v":"175f27562c"},"ur":{"v":"c81d156e00"},"vi":{"v":"1c547e39e6"},"zh":{"v":"3c38febe88"},"zh-Hant":{"v":"6022c3e6bd"}},"uiData":true,"uiV":"38b65c5b36"}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1213,12 +1228,12 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
   <div class="topbar">
     <a class="home" href="../../index.html">&larr; Back to all works</a>
     <div class="badges">
-      <div class="wc-badge">⚡ 77 words · 26 sec</div>
+      <div class="wc-badge">⚡ 120 words · 40 sec</div>
       <div class="stage stage-public">PUBLIC</div>
     </div>
   </div>
 
-  <div class="label"><span class="topic">🛠 NETWORK OPERATIONS</span>⚡ 26 SEC</div>
+  <div class="label"><span class="topic">🛠 NETWORK OPERATIONS</span>⚡ 40 SEC</div>
   <h1>The network gets tight on Windows Update day every month <span class="float">🪟</span></h1>
 
   <figure class="photo">
@@ -1243,6 +1258,9 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     <p>
       I think it was around the 2nd or 3rd Wednesday of every month, and on that day many different companies start updating Windows all at the same time.
     </p>
+    <p class="aside">When I looked it up with AI, Microsoft's updates come on the 2nd Tuesday of every month in American time.</p>
+    <p class="aside">In Japan, it is the next day, Wednesday.</p>
+    <p class="aside">So it can be the 2nd Wednesday, and it can also be the 3rd Wednesday.</p>
   </section>
 
   <section class="card">
