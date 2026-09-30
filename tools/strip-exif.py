@@ -62,7 +62,9 @@ def strip(b: bytes) -> bytes:
 
 def main():
     check = "--check" in sys.argv
-    files = subprocess.run(["git", "ls-files"], cwd=ROOT, capture_output=True, text=True).stdout.split("\n")
+    # git に入っているファイルに加えて、まだ add していない新しいファイルも見る（2026-09-30：新しい表紙が素通りした）
+    files = subprocess.run(["git", "ls-files", "--cached", "--others", "--exclude-standard"], cwd=ROOT,
+                           capture_output=True, text=True).stdout.split("\n")
     changed = []
     for f in files:
         p = ROOT / f
