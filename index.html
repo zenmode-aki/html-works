@@ -650,6 +650,8 @@
   .loop-item.i3 { transform: translate(-80px, 48px); }
   /* 円の上をぐるぐる回る点 */
   .loop-orbit { position: absolute; inset: 0; animation: orbit 7s linear infinite; }
+  /* 2026-09-30 幅320pxで、回っている四角（点の通り道）の角が画面の外に出て、ページが横に7pxずれていた → 小さいスマホでは円ごと少し小さく */
+  @media (max-width: 360px) { .loop { transform: scale(.86); transform-origin: left center; margin-right: -34px; } }
   .loop-dot {
     position: absolute; left: 50%; top: -7px; width: 13px; height: 13px; margin-left: -6.5px;
     border-radius: 50%; background: var(--yellow); box-shadow: 0 0 0 5px rgba(255,196,46,.2);
@@ -906,9 +908,15 @@
     .place { min-width: 0; }
     .place > span:first-child { min-width: 0; overflow-wrap: break-word; hyphens: auto; }
   }
+  /* 2026-09-30 幅390pxでも「Kanchanab / uri」と単語の途中で折れていた → スマホでは矢印をやめて名前の場所を広げる */
+  @media (max-width: 440px) {
+    .place-go { display: none; }
+  }
   @media (max-width: 360px) {
     .place { padding: 10px 9px; font-size: 12.5px; }
     .place-go { display: none; }
+    .place > span:first-child { overflow-wrap: normal; letter-spacing: -.02em; }
+    .place-n { min-width: 22px; padding: 3px 6px; font-size: 11px; }
   }
 
   /* 行き先トースト */
