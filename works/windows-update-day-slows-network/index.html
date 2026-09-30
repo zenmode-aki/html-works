@@ -357,6 +357,21 @@
   .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
 </style>
 <script>document.documentElement.className += " js";</script>
+<style id="aside-css">
+  /* 🤖 AIで調べた補足（anytime-fitness と同じ見た目） */
+  p.aside { margin-top: 12px; padding: 12px 14px 12px 44px; position: relative; border-radius: 16px;
+    background: color-mix(in srgb, var(--purple) 8%, #fff); border: 2px dashed color-mix(in srgb, var(--purple) 30%, transparent);
+    font-size: clamp(15.5px, 2.1vw, 18px); line-height: 1.6; }
+  p.aside::before { content: "🤖"; position: absolute; left: 13px; top: 11px; font-size: 18px; }
+  /* 2026-09-26 続けて並ぶ 🤖 の豆知識は、1つの箱に見せる（1文ずつ箱が並ぶとうるさかった） */
+  p.aside:has(+ p.aside) { padding-bottom: 5px; border-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  p.aside + p.aside { margin-top: 0; padding-top: 5px; border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
+  p.aside + p.aside::before { content: "•"; left: 19px; top: 4px; font-size: 16px; color: var(--purple); }
+  /* このページは暗い色が基本なので、箱も暗い色に合わせる */
+  .card p.aside { background: rgba(192,166,255,.10) !important; border: 1px dashed rgba(192,166,255,.45) !important; color: inherit !important; }
+  .card p.aside + p.aside { border-top: 0 !important; }
+  .card p.aside:has(+ p.aside) { border-bottom: 0 !important; }
+</style>
 <style id="related-css">
   /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
   .related { margin: 34px 0 0; }
@@ -405,21 +420,6 @@
   .to-list-ic { font-size: 20px; line-height: 1; }
   html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
-</style>
-<style id="aside-css">
-  /* 🤖 AIで調べた補足（anytime-fitness と同じ見た目） */
-  p.aside { margin-top: 12px; padding: 12px 14px 12px 44px; position: relative; border-radius: 16px;
-    background: color-mix(in srgb, var(--purple) 8%, #fff); border: 2px dashed color-mix(in srgb, var(--purple) 30%, transparent);
-    font-size: clamp(15.5px, 2.1vw, 18px); line-height: 1.6; }
-  p.aside::before { content: "🤖"; position: absolute; left: 13px; top: 11px; font-size: 18px; }
-  /* 2026-09-26 続けて並ぶ 🤖 の豆知識は、1つの箱に見せる（1文ずつ箱が並ぶとうるさかった） */
-  p.aside:has(+ p.aside) { padding-bottom: 5px; border-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
-  p.aside + p.aside { margin-top: 0; padding-top: 5px; border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
-  p.aside + p.aside::before { content: "•"; left: 19px; top: 4px; font-size: 16px; color: var(--purple); }
-  /* このページは暗い色が基本なので、箱も暗い色に合わせる */
-  .card p.aside { background: rgba(192,166,255,.10) !important; border: 1px dashed rgba(192,166,255,.45) !important; color: inherit !important; }
-  .card p.aside + p.aside { border-top: 0 !important; }
-  .card p.aside:has(+ p.aside) { border-bottom: 0 !important; }
 </style>
 <style id="prev-css">
   /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
