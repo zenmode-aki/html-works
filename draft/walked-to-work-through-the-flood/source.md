@@ -2,7 +2,7 @@
 
 ## 出どころ
 
-10_🛠 ネットワーク運用保守/📄 記事/43_✅_膝まで水に浸かって出社したら拍手された.txt（写真4枚も同フォルダ）（本人が日本語で書いた原稿）
+10_🛠 ネットワーク運用保守/📄 記事/43_📝_膝まで水に浸かって出社したら拍手された.txt（写真4枚も同フォルダ）（本人が日本語で書いた原稿）
 
 ## 素材（日本語・本人の言葉。1文ずつ S番号 を振る）
 
@@ -43,10 +43,10 @@ S1〜S12 → **全部使いました。**語数のために削った文はあり
 
 images/cover.jpg — 生成。A bento art penguin wading through knee deep water on a flooded street with soft rain falling
 使った組み合わせ：ゆるふわなペンギン × キャラ弁 × 膝まで水に浸かった道
-images/photo1.jpg — 本人の写真（43_✅_膝まで水に浸かって出社したら拍手された_1_冠水した交差点.jpeg）。A city crossing completely flooded, the crosswalk under brown water
-images/photo2.jpg — 本人の写真（43_✅_膝まで水に浸かって出社したら拍手された_2_冠水した道路を走る車.jpeg）。A car driving slowly through the flooded road, pushing a wave of water in front of it
-images/photo3.jpg — 本人の写真（43_✅_膝まで水に浸かって出社したら拍手された_3_膝下まで浸かった足元.jpeg）。Looking down at legs standing in the muddy floodwater, up to below the knee
-images/photo4.jpg — 本人の写真（43_✅_膝まで水に浸かって出社したら拍手された_4_退勤時の時刻.jpeg）。A watch checked on the way out, showing the time just after noon the next day
+images/photo1.jpg — 本人の写真（43_📝_膝まで水に浸かって出社したら拍手された_1_冠水した交差点.jpeg）。A city crossing completely flooded, the crosswalk under brown water
+images/photo2.jpg — 本人の写真（43_📝_膝まで水に浸かって出社したら拍手された_2_冠水した道路を走る車.jpeg）。A car driving slowly through the flooded road, pushing a wave of water in front of it
+images/photo3.jpg — 本人の写真（43_📝_膝まで水に浸かって出社したら拍手された_3_膝下まで浸かった足元.jpeg）。Looking down at legs standing in the muddy floodwater, up to below the knee
+images/photo4.jpg — 本人の写真（43_📝_膝まで水に浸かって出社したら拍手された_4_退勤時の時刻.jpeg）。A watch checked on the way out, showing the time just after noon the next day
 
 ## 匿名まわりの判断
 
