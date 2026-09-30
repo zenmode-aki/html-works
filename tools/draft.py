@@ -27,6 +27,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 WORKS, DRAFT = ROOT / "works", ROOT / "draft"
 GOAL = 1000
 WORK_TOPICS = {"netops", "work", "bridge", "bridgese", "mcd"}
+# 本番トップの「もうすぐ公開」に出す下書き（2026-09-30 本人：3本だけ・元気でくだらなくて面白いもの。公開したら次の候補に入れかえる）
+PEEK_PICKS = ["korean-pc-cafe", "sm-clark-arcade-mario-kart", "nagoya-dome-swallows-umbrellas"]
 
 _spec = importlib.util.spec_from_file_location("chk", ROOT / "tools" / "check.py")
 chk = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(chk)
@@ -240,8 +242,13 @@ def index_html(infos, today, published):
 # ── 本番トップの「もうすぐ公開」 ─────────────────────────
 def coming_soon(infos, today):
     peek = [x for x in order(infos) if x["topic"] not in WORK_TOPICS]
+    # 2026-09-30 本人：チラ見せは3本だけ。元気でくだらなくて面白いタイトルを手で選ぶ（PEEK_PICKS）
+    by = {x["slug"]: x for x in peek}
+    picked = [by[s] for s in PEEK_PICKS if s in by]
+    if len(picked) < 3:
+        picked += [x for x in peek if x not in picked][:3 - len(picked)]
     data = {"asOf": today.isoformat(), "n": len(infos),
-            "peek": [x["t"] for x in peek[:12]]}
+            "peek": [x["t"] for x in picked[:3]]}
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
     return f"""    {SOON_S}
     <style>
@@ -282,8 +289,7 @@ def coming_soon(infos, today):
         zh: ['📝 即将发布', '截至' + y + '年' + m + '月' + dd + '日，有<b>' + D.n + '篇</b>草稿在等待', '偷看一下标题 👀', '还有更多…'],
         'zh-Hant': ['📝 即將發布', '截至' + y + '年' + m + '月' + dd + '日，有<b>' + D.n + '篇</b>草稿在等待', '偷看一下標題 👀', '還有更多…']
       }}[key];
-      var pick = D.peek.slice(), show = [];
-      while (pick.length && show.length < 5) show.push(pick.splice(Math.floor(Math.random() * pick.length), 1)[0]);
+      var show = D.peek.slice(0, 3);
       function esc(s) {{ return String(s).replace(/[&<>"]/g, function (c) {{ return {{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}}[c]; }}); }}
       box.innerHTML = '<div class="soon-head"><div class="soon-title">' + W[0] + '</div><div class="soon-count">' + W[1] + '</div></div>' +
         '<p class="soon-peek">' + W[2] + '</p><ul class="soon-list">' +
