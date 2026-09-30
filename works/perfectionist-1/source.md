@@ -30,3 +30,7 @@ Perfectionists love the blank beginning because it does not yet show the gap fro
 ## Asset
 
 - `images/perfectionist-start.jpg` — original image generated with Higgsfield for this post; no external image assets.
+
+## 画像
+
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin opening a new sketchbook on a running track start line。主役はペンギンに統一）

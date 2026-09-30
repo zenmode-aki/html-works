@@ -33,6 +33,8 @@ S12. That was my introduction to Pawapuro, a game loved by baseball fans in Japa
 
 images/switch.jpg — Pawapuro on Nintendo Switch
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin in a red cap hitting a home run in a toy baseball stadium。主役はペンギンに統一）
+
 ## YouTube
 
 https://youtu.be/pxdRtLSTI80?si=w3P72cdsCupu2LZS

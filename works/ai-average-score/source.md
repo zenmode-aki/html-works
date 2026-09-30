@@ -28,6 +28,8 @@ S4. だからこそ、私たち人間が正解を教えてあげないといけ�
 なし（CSSの図解と絵文字だけで持たせる）
 使った組み合わせ：なし
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin at a desk with two MacBooks, holding a small gauge dial。主役はペンギンに統一）
+
 ## YouTube
 
 なし

@@ -29,3 +29,7 @@ Preparation never becomes perfect. The next condition keeps appearing, so the fi
 ## Asset
 
 - `images/perfectionist-prepare.jpg` — original image generated with Higgsfield for this post; no external image assets.
+
+## 画像
+
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin jumping into a pool, leaving a clipboard behind。主役はペンギンに統一）

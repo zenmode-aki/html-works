@@ -30,3 +30,5 @@ S4（「代わりに毎日ふわっと抽象的に考えるようにしている
 
 なし
 使った組み合わせ：なし
+
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A relaxed fluffy penguin lying in a hammock with a closed planner nearby。主役はペンギンに統一）

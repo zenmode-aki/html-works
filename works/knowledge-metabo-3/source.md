@@ -22,5 +22,7 @@ S14. よし、今日から知識メタボから痩せるぞ🙂‍↕️
 ## 画像
 images/knowledge-metabo-3-higgsfield.jpg — Higgsfield生成。アウトプットを外へ転がすペンギン
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin pushing a big snowball down a sunny snowy hill。主役はペンギンに統一）
+
 ## YouTube
 なし

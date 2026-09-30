@@ -25,3 +25,5 @@ S5. サウナよりも悩みが吹っ飛ぶ。
 
 なし
 使った組み合わせ：なし
+
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A happy fluffy penguin in big headphones beside a Mac mini。主役はペンギンに統一）

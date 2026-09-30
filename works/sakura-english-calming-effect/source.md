@@ -36,6 +36,8 @@ S9. ほぼ何を言っているかわからないけどね🙂‍↕️
 images/cover.jpg — 生成。小さなポッドキャストのアイコンが積み重なった横で、静かに休んでいるペンギン
 使った組み合わせ：ゆるふわなペンギン × 低ポリゴン（3D） × 積み重なった小さなアイコンのブロック
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A calm fluffy penguin with a small radio between two world globes。主役はペンギンに統一）
+
 ## リンク
 
 なし

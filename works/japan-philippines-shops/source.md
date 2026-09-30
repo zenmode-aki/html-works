@@ -19,3 +19,7 @@ S15. 楽しそうで、話しかけやすい人が多いと感じた。
 ## 写真
 
 - `cebu-checkout.jpg`: 本人撮影。セブのスーパーのレジ周辺。
+
+## 画像
+
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin working a convenience store checkout all alone。主役はペンギンに統一）

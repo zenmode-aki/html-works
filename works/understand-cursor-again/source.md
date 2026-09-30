@@ -28,6 +28,8 @@ images/cursor-comeback-penguin.jpg — 変化したコードエディタへ戻�
 images/cursor-supplied-image.jpg — ユーザー提供のCursor画像（WebP原本も保存）
 使った組み合わせ：ゆるふわなペンギン × メリノウール × 変形したコードエディタ
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin in front of an iMac with a code editor and a big mouse cursor。主役はペンギンに統一）
+
 ## YouTube
 
 なし

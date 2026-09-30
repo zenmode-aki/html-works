@@ -28,6 +28,8 @@ S11.
 
 images/ — （画像2枚は index.html に base64 で埋め込み済み。原本は残っていません）
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin resting in a small boat on a calm lake as a thought cloud drifts away。主役はペンギンに統一）
+
 ## YouTube
 
 なし

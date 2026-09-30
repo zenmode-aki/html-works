@@ -24,3 +24,5 @@ S2. なんか、頭の中にアイデアが残っていると不愉快なんだ�
 
 なし
 使った組み合わせ：なし
+
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A relieved fluffy penguin with a notebook next to a clean white toilet。主役はペンギンに統一）

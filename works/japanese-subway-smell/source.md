@@ -30,3 +30,5 @@ S6. 地下鉄に乗っている時じゃなくて、ホームで待っている�
 - subway-platform.jpg：本人が提供した地下鉄ホームの写真（通行人が判別できないよう加工）
 使った組み合わせ：フェルト刺繍 × 地下鉄ホーム
 
+
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin with eyes closed, smelling the breeze on a Japanese subway platform。主役はペンギンに統一）

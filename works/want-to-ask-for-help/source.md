@@ -26,3 +26,5 @@ S4. どうしたらもっと他人に手伝ってってお願いできるよう�
 
 なし
 使った組み合わせ：なし
+
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin carrying a tall stack of boxes while another penguin helps。主役はペンギンに統一）

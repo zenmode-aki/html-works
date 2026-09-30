@@ -26,6 +26,8 @@ S3. 最近の私が心がけたいこと。
 images/turn-off-everything-else.jpg — A quilted penguin touching one warm glowing light on a dark circular control panel
 使った組み合わせ：ペンギン × キルティングコットン × 消灯した操作盤
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin switching off light switches, with one warm light left on。主役はペンギンに統一）
+
 ---
 このファイルがAIに渡す原本です。index.html は出力物。
 「この記事直して」と頼むときは、index.html ではなく **このファイル** を渡してください。

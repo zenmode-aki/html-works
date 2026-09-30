@@ -25,6 +25,8 @@ images/sanseido.png — Slackに貼った本屋の店内写真
    あきくんが images/ に置けば、tools/embed.py で埋め込めます。
 使った組み合わせ：本物の写真（生成画像より優先）
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin reading a book in a bookshop high above the city and railway。主役はペンギンに統一）
+
 ## リンク
 
 https://share.google/kbYN4boA8PP4qo6Br （Googleマップ）

@@ -32,6 +32,8 @@ S1〜S4 → **全部使いました。**語数のために削った文はあり�
 images/cover.jpg — 生成。A mohair penguin watching a thick transparent pipe filled right up to the top in a dark grey room
 使った組み合わせ：ゆるふわなペンギン × モヘア × 上限まで満たされた太いパイプ
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin watching toy delivery trucks jammed on a road into a router。主役はペンギンに統一）
+
 ## 匿名まわりの判断
 
 顧客名・契約帯域の数字は素材に無いので足さない。Windows は業界一般の製品名。

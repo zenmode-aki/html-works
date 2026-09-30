@@ -26,6 +26,8 @@ images/hermes-memory-penguin.jpg — 記憶装置を眺める毛糸のペンギ�
 images/hermes-agent-official-logo.jpg — ユーザー提供のHermes Agent公式ロゴ（WebP原本も保存）
 使った組み合わせ：ゆるふわなペンギン × ブークレ毛糸 × 記憶オーブのAI研究室
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin looking at a small robot holding a notebook on a MacBook。主役はペンギンに統一）
+
 ## YouTube
 
 なし

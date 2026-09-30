@@ -23,5 +23,7 @@ images/youtube.png — YouTube logo
 images/audible.png — Audible logo
 images/the-daily.jpeg — The Daily podcast cover
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A sleepy fluffy penguin on a sofa with headphones and a phone。主役はペンギンに統一）
+
 ## YouTube
 なし

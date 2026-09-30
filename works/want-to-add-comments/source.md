@@ -30,6 +30,8 @@ S10. まあ、時間ができたらやってみたい。
 images/comment-garden-penguin.jpg — 空の吹き出しと小さな門を眺めるペンギン（AI生成・表紙、PNG原本も保存）
 使った組み合わせ：ゆるふわなペンギン × コーデュロイ × コメントの庭と小さな門
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin by a mailbox with speech bubbles floating in。主役はペンギンに統一）
+
 ## YouTube
 
 なし

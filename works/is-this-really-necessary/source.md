@@ -25,3 +25,5 @@ S3. シンプルであり続けることが大事。
 
 なし
 使った組み合わせ：なし
+
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin crossing one line off a short to-do note。主役はペンギンに統一）

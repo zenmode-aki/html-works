@@ -23,5 +23,7 @@ S14. ちなみに、参考動画はこちらです。
 images/knowledge-metabo-2-higgsfield.jpg — Higgsfield生成。正解探しの迷路で止まるペンギン
 images/youtube.png — YouTube logo for the reference video card
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin standing still at a hedge maze in front of a signpost with many arrows。主役はペンギンに統一）
+
 ## YouTube
 https://youtu.be/PIqzte4OaEY?si=8yulMpmpDY3UmMfp

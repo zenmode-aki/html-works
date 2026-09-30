@@ -20,6 +20,8 @@ images/mochi-cafe-view.jpg — ユーザー提供画像
 
 使った組み合わせ：ユーザー提供画像（生成画像より優先）
 
+（2026-09-30 本人の依頼で表紙を作り直した：images/cover.jpg — 生成（z_image）。A fluffy penguin at a cafe table with pasta and a big green mountain view。主役はペンギンに統一）
+
 ## リンク
 
 https://maps.app.goo.gl/Ps839pxHzWq8Nys47
