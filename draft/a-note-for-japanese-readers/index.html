@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="robots" content="noindex, nofollow" /><!-- 📝 draft -->
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <!-- 👇 差し替える -->
@@ -11,7 +12,7 @@
 <meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
 <meta property="og:title" content="A message from the owner to people reading in Japanese" />
 <meta property="og:description" content="The Japanese version of this blog is made by having AI translate into Japanese the posts I first put into English." />
-<meta property="og:url" content="https://15-second-blog.com/works/a-note-for-japanese-readers/" />
+<meta property="og:url" content="https://15-second-blog.com/draft/a-note-for-japanese-readers/" />
 <meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/a-note-for-japanese-readers.jpg" />
 <meta property="og:image:alt" content="Pengesso turning a tangle of messy lines into neat boxes on a tablet" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -410,8 +411,29 @@
   html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
+<style id="draft-css">
+  /* 📝 下書きの印（tools/draft.py）。本番に出すと消える */
+  .draft-ribbon { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 14px;
+    padding: 9px 14px; border-radius: 14px; background: repeating-linear-gradient(135deg, #fff4c2 0 14px, #ffeaa0 14px 28px);
+    color: #5b4300; font-size: 13.5px; font-weight: 900; letter-spacing: .02em; text-align: center; }
+  .draft-ribbon a { color: inherit; }
+  .stage-draft { background: #ffd54a !important; color: #4a3500 !important; }
+  /* 2026-09-30 幅390pxで「戻る」「○ words」「DRAFT」が6pxはみ出していた → 札を少し詰めて、それでも入らなければ折り返す */
+  @media (max-width: 600px) { .topbar { flex-wrap: wrap; row-gap: 8px; } .stage-draft { padding-inline: 8px !important; letter-spacing: .04em !important; } }
+  .draft-nav { display: grid; gap: 12px; margin-top: 26px; }
+  .draft-next { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-radius: 22px;
+    text-decoration: none; color: #3a2d00; background: #fff1b8; border: 2px dashed rgba(120,90,0,.35); font-weight: 900; }
+  .draft-next small { display: block; font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .draft-next span.t { display: block; font-size: 17px; line-height: 1.4; }
+  .draft-next small.en { margin-top: 4px; letter-spacing: 0; font-weight: 700; }
+  .draft-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .draft-prod { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
+  html[data-theme="dark"] .draft-next { background: #3a3320; color: #ffe9a8; border-color: rgba(255,233,168,.3); }
+  html[data-theme="dark"] .draft-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+</style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"a520b800c9"},"bn":{"v":"558dda7ac7"},"ceb":{"v":"0456631d2f"},"cs":{"v":"02b2d56a7f"},"da":{"v":"02a09c72ff"},"de":{"v":"3bd5883251"},"el":{"v":"48051444b1"},"es":{"v":"7242282fc5"},"fa":{"v":"fc34109b61"},"fi":{"v":"2801008ac4"},"fil":{"v":"5946d22ae4"},"fr":{"v":"1dad69f692"},"he":{"v":"7a6d1b9cdd"},"hi":{"v":"326a25211a"},"id":{"v":"ffede182d2"},"it":{"v":"45ee0f740c"},"ja":{"v":"16b36305ff"},"ko":{"v":"639dc75382"},"mr":{"v":"fc056ce853"},"ms":{"v":"8a56cca91b"},"nb":{"v":"3cf9362a31"},"ne":{"v":"65764a03c9"},"nl":{"v":"e6540e47f9"},"pa":{"v":"edc61e0525"},"pl":{"v":"73d24bad30"},"pt":{"v":"60e56061e3"},"ro":{"v":"2d088cee3e"},"ru":{"v":"54a0abb07d"},"sv":{"v":"948c0499d8"},"sw":{"v":"bb9e4268e5"},"ta":{"v":"9f26d6d7b6"},"te":{"v":"fb0eefbfaa"},"th":{"v":"7b5abcc00e"},"tr":{"v":"a2e097afbf"},"uk":{"v":"e56be16249"},"ur":{"v":"86ce4517b5"},"vi":{"v":"f9964a489e"},"zh":{"v":"ba8a0d64ee"},"zh-Hant":{"v":"8d00b34854"}},"uiData":true,"uiV":"38b65c5b36"}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"9b9d0e5acc"}},"uiData":true,"uiV":"38b65c5b36"}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1199,15 +1221,18 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
 </head>
 <body>
 <main>
+  <!-- 📝 draft-ribbon:start（tools/draft.py） -->
+  <div class="draft-ribbon" translate="no">📝 DRAFT · 下書き — まだ本番に出していません · <a href="../index.html">下書き一覧</a></div>
+  <!-- 📝 draft-ribbon:end -->
 
   <div class="topbar">
     <!-- works/<slug>/ からも drafts/<slug>/ からも、リポジトリ直下の index.html に届く -->
-    <a class="home" href="../../index.html">← Back</a>
+    <a class="home" href="../index.html">← Back</a>
     <div class="badges">
       <!-- 👇 python3 tools/check.py --fix-badge が正しい数字に直してくれる -->
       <div class="wc-badge">⚡ 215 words · 72 sec</div>
       <!-- 🚦 出す場所は1つだけ。記事はぜんぶ PUBLIC -->
-      <div class="stage stage-public">PUBLIC</div>
+      <div class="stage stage-draft">DRAFT</div>
     </div>
   </div>
 
@@ -1335,87 +1360,14 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
   </section>
   </div>
 
-  <a class="next" href="../rules-of-this-blog/index.html">
-    <div>
-      <div class="next-kicker">NEXT · 19 SEC</div>
-      <div class="next-title">Why I write this blog, and my rules</div>
-    </div>
-    <div class="next-arrow" aria-hidden="true">⚡</div>
-  </a>
-  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
-  <a class="prev" href="../what-i-write-about/index.html">
-    <span class="prev-arrow" aria-hidden="true">←</span>
-    <div>
-      <div class="prev-kicker">PREVIOUS POST</div>
-      <div class="prev-title">I made a list of every kind of post I write here</div>
-    </div>
-  </a>
-  <!-- /⏮ -->
-  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
-  <section class="related" aria-labelledby="related-h">
-    <h2 class="related-h" id="related-h">✨ You might also like</h2>
-    <ul class="related-list">
-      <li>
-        <a class="rel-card" href="../output-like-a-toilet/index.html">
-          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/output-like-a-toilet.jpg')"></span>
-          <div class="rel-body">
-            <div class="rel-kicker"><span class="rel-sec">⚡ 6 SEC</span></div>
-            <div class="rel-title">My need to write things down works like a toilet</div>
-          </div>
-          <span class="rel-go" aria-hidden="true">→</span>
-        </a>
-      </li>
-      <li>
-        <a class="rel-card" href="../live-like-duolingo/index.html">
-          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/live-like-duolingo.jpg')"></span>
-          <div class="rel-body">
-            <div class="rel-kicker"><span class="rel-sec">⚡ 65 SEC</span></div>
-            <div class="rel-title">I want to live like Duolingo, and I want this blog to be as fun to use</div>
-          </div>
-          <span class="rel-go" aria-hidden="true">→</span>
-        </a>
-      </li>
-      <li>
-        <a class="rel-card" href="../how-i-write-this-blog/index.html">
-          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/how-i-write-this-blog.jpg')"></span>
-          <div class="rel-body">
-            <div class="rel-kicker"><span class="rel-sec">⚡ 18 SEC</span></div>
-            <div class="rel-title">How I actually write this 15-second blog, step by step</div>
-          </div>
-          <span class="rel-go" aria-hidden="true">→</span>
-        </a>
-      </li>
-      <li>
-        <a class="rel-card" href="../weekly-strict-ai-editor/index.html">
-          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/weekly-strict-ai-editor.jpg')"></span>
-          <div class="rel-body">
-            <div class="rel-kicker"><span class="rel-sec">⚡ 69 SEC</span></div>
-            <div class="rel-title">Once a week, I ask AI to be a very strict editor</div>
-          </div>
-          <span class="rel-go" aria-hidden="true">→</span>
-        </a>
-      </li>
-      <li>
-        <a class="rel-card" href="../seoul-stadium-station-exit/index.html">
-          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/seoul-stadium-station-exit.jpg')"></span>
-          <div class="rel-body">
-            <div class="rel-kicker"><span class="rel-sec">⚡ 17 SEC</span>
-            <span class="rel-chip">🎲 Something different</span></div>
-            <div class="rel-title">The station exit nearest a baseball stadium makes me excited</div>
-          </div>
-          <span class="rel-go" aria-hidden="true">→</span>
-        </a>
-      </li>
-    </ul>
-  </section>
-  <!-- /✨ -->
-  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
-  <a class="to-list" href="../../index.html#posts">
-    <span class="to-list-ic" aria-hidden="true">📚</span>
-    <span class="to-list-t">← Back to all works</span>
-  </a>
-  <!-- /📚 -->
 
+  <!-- 📝 draft-nav:start（tools/draft.py） -->
+  <nav class="draft-nav" translate="no">
+    <a class="draft-next" href="../the-boss-looked-out-for-me/index.html"><span><small>NEXT DRAFT · 次の下書き</small><span class="t">日本人がひとりだけの私を、社長は気にかけてくれた</span><small class="en">The boss worried about me being the only Japanese person there</small></span><span aria-hidden="true">📝</span></a>
+    <a class="draft-back" href="../index.html">📝 ← 下書き一覧 / All drafts</a>
+    <a class="draft-prod" href="../../index.html">本番のサイトへ ↗</a>
+  </nav>
+  <!-- 📝 draft-nav:end -->
 </main>
 
 <!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
