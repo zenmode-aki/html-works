@@ -55,44 +55,12 @@ PLACES = {
 }
 
 
-# 💼 これまでに就いた仕事。左は index.html の JOBS の k と assets/jobs/<k>.jpg に対応。
-#    posts は **meta.json の topic から自動で入る**（2026-09-11）。
-#    手で記事名を書き足さない。書き足すと必ず古くなる。
-#    topic が None の仕事（mcd / clark）は、記事がまだ無いので空のまま。
-JOBS = [
-    ("mcd",    "🍔", "Fast-food crew",    "Japan",                None),
-    ("baguio", "🎒", "English student",   "Baguio, Philippines",  None),
-    ("clark",  "🏫", "Language school",   "Clark, Philippines",   None),
-    ("cebu",   "💻", "Bridge engineer",   "Cebu, Philippines",    "bridge"),
-    ("netops", "🛠", "Network operations", "Japan",               "netops"),
-]
-
-# 手で仕事に割り当てておくぶん。足すのは次の2つの場合だけ。
-#   1. topic が無かった時代の記事
-#   2. **バッジの topic と、働いていた場所が食い違う記事**
-#      セブ暮らしの記事は読者向けには 🇵🇭 LIVING IN THE PHILIPPINES を出したいが、
-#      その暮らしはブリッジSEの時期そのものなので、cebu の仕事にも並べたい。
-#      topic を "bridge" に変えると badge が仕事の話に見えてしまうので、ここで足す。
-# それ以外の新しい記事は meta.json の topic で自動的に入るので、書き足さないこと。
-LEGACY_JOB_POSTS = {
-    "baguio": ["baguio-language-school-memories",
-               "paraphrase-to-hack-the-score",
-               "a-propeller-hairpin", "stargazing-on-the-rooftop"],
-    "clark":  ["be-friends-with-the-agents", "airport-pickup-tug-of-war",
-               "standing-desk-conversations", "gifts-from-students",
-               "clark-california-of-asia", "korean-buffet-every-day",
-               "shiny-floor-dorm-room", "the-villages-felt-like-korea",
-               "subic-bay-and-clark-airport", "cabbage-and-black-pepper",
-               "the-boss-looked-out-for-me", "turning-twenty-in-clark"],
-    # 2026-09-24 本人：コンドミニアム・卵・引っ越し直前・1階のコンシェルジュ・7階を歩く話は
-    #   「ブリッジSEの話じゃなくて、ただのセブ島の生活の話」。仕事からは外して、
-    #   地図の 🇵🇭 → Cebu と、各部屋（room）から読めるようにした
-    # 2026-09-26：マクドナルドのアルバイトの話（topic は life のまま、仕事の 🍔 にも並べる）
-    "mcd":    ["mcdonalds-graduation", "mcdonalds-runner-position",
-               "nagoya-mcdonalds-uber-eats", "mcdonalds-company-vs-franchise"],
-    "cebu":   ["japan-philippines-work", "japan-philippines-shops",
-               "no-public-scolding", "boodle-fight-lunch"],
-}
+# 💼 職歴（JOBS）は持たない（2026-10-01 本人が決めた）
+#    「働いた会社ごとに記録すると、かえって会社が特定できる。業界でまとめる。
+#      会社のことと仕事の中身は書かない。業界の抽象的な話だけ書く」
+#    トップの「Jobs he has had」の部屋もなくした。index.html の JOBS は空のまま作る。
+JOBS = []
+LEGACY_JOB_POSTS = {}
 
 
 def collect(base: pathlib.Path):

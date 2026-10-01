@@ -355,7 +355,7 @@ def check_site():
     #     それ以外は meta.json の "room" が要る。無いとどの部屋からも辿れない。
     src = (ROOT / "tools" / "build-site.py").read_text(encoding="utf-8")
     legacy = set(re.findall(r'"([a-z0-9-]+)"',
-                            re.search(r"LEGACY_JOB_POSTS = \{(.*?)\n\}", src, re.S).group(1)))
+                            (re.search(r"LEGACY_JOB_POSTS = \{(.*?)\}\n", src, re.S) or re.search("()", "")).group(1)))
     job_topics = {"netops", "bridge"}
     homeless = []
     for w in works:
