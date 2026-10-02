@@ -11,6 +11,7 @@ tools/i18n.py --check は「訳のファイルに抜けがないか」しか見�
   python3 tools/i18n-audit.py seoul-stadium-station-exit _top   # 記事を指定（_top＝トップ）
   python3 tools/i18n-audit.py --langs ja,es,fr     # 言語を指定
   python3 tools/i18n-audit.py --all-langs          # 全言語（時間がかかる）
+  python3 tools/i18n-audit.py --draft --all-langs  # 下書き全記事の全言語
 
 英語が3語以上つづいている文字を「訳漏れの疑い」として出す。固有名詞（MLB など）は ALLOW で除く。
 記事を公開・修正したら、push の前に必ず走らせる（CLAUDE.md / AGENTS.md）。
@@ -19,6 +20,8 @@ import functools, http.server, json, pathlib, re, shutil, subprocess, sys, tempf
 from concurrent.futures import ThreadPoolExecutor
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+PAGES_ROOT = ROOT / ("draft" if "--draft" in sys.argv else "works")
+PAGE_PREFIX = PAGES_ROOT.name
 PORT = 8791
 MAIN = ["ja", "ko", "zh", "zh-Hant"]
 
@@ -122,12 +125,12 @@ def main():
         if a.startswith("--langs="): langs = a.split("=", 1)[1].split(",")
     if "--langs" in sys.argv:
         langs = sys.argv[sys.argv.index("--langs") + 1].split(","); args = [a for a in args if a != ",".join(langs)]
-    slugs = args or ["_top"] + sorted(p.name for p in (ROOT / "works").iterdir() if (p / "index.html").exists())
+    slugs = args or ([] if PAGE_PREFIX == "draft" else ["_top"]) + sorted(p.name for p in PAGES_ROOT.iterdir() if (p / "index.html").exists())
 
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(H, directory=str(ROOT)))
     port = srv.server_address[1]
     threading.Thread(target=srv.serve_forever, daemon=True).start()
-    jobs = [(s, l, f"http://127.0.0.1:{port}/" + ("index.html" if s == "_top" else f"works/{s}/index.html") + f"?lang={l}")
+    jobs = [(s, l, f"http://127.0.0.1:{port}/" + ("index.html" if s == "_top" else f"{PAGE_PREFIX}/{s}/index.html") + f"?lang={l}")
             for s in slugs for l in langs]
     problems, failed = {}, []
     with ThreadPoolExecutor(6) as ex:

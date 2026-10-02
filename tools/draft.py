@@ -16,7 +16,7 @@
 
 決まりごと
 - 同じリポジトリの draft/ フォルダ。GitHub Pages はリポジトリ全体を配るので、URL が1つ増えるだけ
-- 下書きは英語と日本語だけ（draft/<slug>/i18n/ja.json）。ほかの言語の訳ファイルがあっても消さない
+- 下書き記事は本番共通の言語メニューを使い、存在する翻訳ファイルの言語を選べる。訳ファイルは消さない
 - 検索に出さない：各ページに noindex、robots.txt で /draft/ を止める、sitemap にも入れない
 - 下書きのページから本番の記事へのリンクは ../../works/<slug>/ に向け直す（切れないように）
 - 本番トップのチラ見せには、仕事の話（topic が netops / work / bridge）のタイトルは出さない（ブログ憲法 第1条）
@@ -221,7 +221,7 @@ def index_html(infos, today, published):
 <main>
   <div class="top"><a href="../index.html">← 本番のサイト（15-second-blog.com）</a></div>
   <h1>📝 下書き <span style="font-size:.5em">{n}本</span></h1>
-  <p class="lead">{today.year}年{today.month}月{today.day}日時点。ここは、まだ本番に出していない記事の置き場です（英語と日本語だけ）。<br>
+  <p class="lead">{today.year}年{today.month}月{today.day}日時点。ここは、まだ本番に出していない記事の置き場です（記事ページでは、翻訳ファイルがある言語を選べます）。<br>
   完成の形を見ながら直して、「本番に出して」で公開します。検索には出ません。</p>
   <section class="goal">
     <div>🎯 1000本まで：公開 <b>{published}</b> ＋ 下書き <b>{n}</b> ＝ {published + n}本</div>
@@ -233,7 +233,7 @@ def index_html(infos, today, published):
   </div>
   <div class="how">
     💡 <b>AIへの頼み方</b><br>
-    「下書きにして」→ <code>python3 tools/draft.py new &lt;slug&gt;</code> で作って push（英日だけ・表紙はあとでいい）<br>
+    「下書きにして」→ <code>python3 tools/draft.py new &lt;slug&gt;</code> で作成（原稿は英日から。翻訳ファイルがある言語は記事で選択できます）<br>
     「本番に出して」→ <code>python3 tools/draft.py publish &lt;slug&gt;</code> → 表紙の生成・英日韓中の訳・いつもの手順で push<br>
     本番から下書きに戻す → <code>python3 tools/draft.py move &lt;slug&gt;</code>
   </div>
@@ -324,7 +324,7 @@ def build():
         new = to_draft_page(s, doc, drafts, works, seq[i + 1] if i + 1 < len(seq) else None)
         if new != doc:
             p.write_text(new, encoding="utf-8")
-    # 下書きの訳は日本語だけ（英語は本文そのもの）
+    # 下書き記事も、存在する全言語の訳データを埋め込む（英語は本文そのもの）
     r = subprocess.run([sys.executable, str(ROOT / "tools" / "i18n.py"), "--draft"], cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         print(r.stdout, r.stderr); raise SystemExit("❌ 下書きの訳の埋め込みに失敗")

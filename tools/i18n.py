@@ -25,7 +25,7 @@ from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WORKS = ROOT / "works"
-# 📝 下書きサイト（tools/draft.py）：--draft のときは draft/ を、日本語だけで作る。トップページは触らない
+# 📝 下書きサイト（tools/draft.py）：--draft のときは draft/ を全対応言語で作る。トップページは触らない
 DRAFT_MODE = "--draft" in sys.argv
 if DRAFT_MODE:
     WORKS = ROOT / "draft"
@@ -208,8 +208,6 @@ def strip_block(doc):
 
 # ── 言語ごとのデータ ──────────────────────────────
 def langs_available():
-    if DRAFT_MODE:
-        return ["ja"]
     return sorted(p.stem.split(".", 1)[1] for p in I18N.glob("ui.*.json"))
 
 
@@ -362,7 +360,7 @@ def build_all():
     tops = {l: load(I18N / f"top.{l}.json") for l in langs}
     titles = {l: all_titles(l) for l in langs}
     ui_asset = {"langs": {l: ui_meta(uis[l]) for l in langs}}
-    if DRAFT_MODE:   # 言語メニューのデータは本番と共通。下書きでは作り直さない（日本語だけにならないように）
+    if DRAFT_MODE:   # 言語メニューのデータは本番と共通。下書きの記事も対応済み言語を選べるようにする
         ui_asset = load(I18N / "ui-data.json")
     ui_version = hashlib.sha1(json_asset(ui_asset)).hexdigest()[:10]
     pages, report = [], []
