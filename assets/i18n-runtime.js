@@ -961,6 +961,66 @@ setTimeout(function () { if (!tip) return; n = (n + 1) % lines.length; tx.textCo
 setTimeout(function () { if (tip) { var t = tip; tip = null; clearInterval(iv); t.classList.add('bye'); setTimeout(function () { t.remove(); }, 380); } }, 14000);
 }
 }
+var MOOD_E = { lift: '🌧', laugh: '😂', travel: '✈️', think: '🤔', learn: '📚', energy: '⚡' };
+var MOOD_EN = { lift: 'Need a little lift', laugh: 'Want a laugh', travel: 'Want to go somewhere',
+think: 'Want to think a bit', learn: 'Want to learn something', energy: 'Full of energy' };
+var MOOD_HEAD = {
+en: ['For your mood: “{m}”', '2 more', 'Same mood', 'Change mood'],
+ja: ['いまの気分「{m}」の人に', 'あと2本', '同じ気分', '気分を変える'],
+ko: ['지금 기분 “{m}”인 분께', '2개 더', '같은 기분', '기분 바꾸기'],
+zh: ['给现在“{m}”的你', '再来2篇', '同样的心情', '换个心情'],
+'zh-Hant': ['給現在「{m}」的你', '再來2篇', '同樣的心情', '換個心情']
+};
+function ss(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) { return null; } }
+window.pengessoEntryMood = function (k) { ss('pengesso-entry-mood', k || null); };
+function moodMore() {
+var rel = document.querySelector('section.related');
+var m = /\/(?:works|draft)\/([^\/]+)\//.exec(location.pathname);
+if (!m) return;
+var me = decodeURIComponent(m[1]);
+var read = []; try { read = JSON.parse(ss('pengesso-read') || '[]'); } catch (e) {}
+if (read.indexOf(me) < 0) { read.push(me); ss('pengesso-read', JSON.stringify(read.slice(-80))); }
+var mood = ss('pengesso-entry-mood');
+if (!rel || !mood || !MOOD_E[mood] || !window.fetch) return;
+var shown = {}; shown[me] = 1;
+[].forEach.call(document.querySelectorAll('a.next, a.prev, a.rel-card'), function (a) {
+var x = /\.\.\/([^\/]+)\/index\.html/.exec(a.getAttribute('href') || ''); if (x) shown[x[1]] = 1;
+});
+var T = MOOD_HEAD[lang] || MOOD_HEAD.en;
+var top = (lang === 'en') ? Promise.resolve({}) :
+fetch('/i18n/top-data.' + encodeURIComponent(lang) + '.json').then(function (r) { return r.ok ? r.json() : {}; }).then(function (d) { return d.dict || {}; }, function () { return {}; });
+Promise.all([fetch('/assets/moods.json').then(function (r) { return r.json(); }), top]).then(function (res) {
+var rows = res[0], dict = res[1];
+function tr(en) { var k = fp2(en); return Object.prototype.hasOwnProperty.call(dict, k) ? dict[k] : en; }
+var pool = rows.filter(function (r) { return r[3].indexOf(mood) >= 0 && !shown[r[0]]; });
+var fresh = pool.filter(function (r) { return read.indexOf(r[0]) < 0; });
+if (fresh.length >= 2) pool = fresh;
+var seed = 0; for (var i = 0; i < me.length; i++) seed = (seed * 31 + me.charCodeAt(i)) >>> 0;
+var picks = [];
+while (pool.length && picks.length < 2) { seed = (seed * 1103515245 + 12345) >>> 0; picks.push(pool.splice(seed % pool.length, 1)[0]); }
+if (!picks.length) return;
+var e = MOOD_E[mood], name = tr(MOOD_EN[mood]);
+var sec = document.createElement('section');
+sec.className = 'related mood-more'; sec.setAttribute('translate', 'no');
+sec.innerHTML = '<h2 class="related-h">' + e + ' ' + esc(T[0].replace('{m}', name)) + ' <span class="mm-n">' + esc(T[1]) + '</span></h2>' +
+'<ul class="related-list">' + picks.map(function (r) {
+return '<li><a class="rel-card mm-card" href="../' + encodeURIComponent(r[0]) + '/index.html">' +
+'<span class="rel-thumb" aria-hidden="true" style="background-image:url(\'../../assets/thumbs/' + encodeURIComponent(r[0]) + '.jpg\')"></span>' +
+'<div class="rel-body"><div class="rel-kicker"><span class="rel-sec">⚡ ' + r[2] + ' SEC</span><span class="rel-chip mm-chip">' + e + ' ' + esc(T[2]) + '</span></div>' +
+'<div class="rel-title">' + esc(tr(r[1])) + '</div></div><span class="rel-go" aria-hidden="true">→</span></a></li>';
+}).join('') + '</ul>' +
+'<a class="mm-change" href="../../index.html#mood">' + esc(T[3]) + ' →</a>';
+var st = document.createElement('style');
+st.textContent = '.mood-more{margin-top:22px;padding:14px;border-radius:24px;background:linear-gradient(135deg,#fff4d6,#ffe3ee)}' +
+'.mood-more .mm-n{display:inline-block;margin-left:4px;padding:2px 9px;border-radius:999px;background:#ff8a3d;color:#fff;font-size:12px;vertical-align:2px}' +
+'.mood-more .mm-chip{background:#ff8a3d}' +
+'.mm-change{display:inline-block;margin-top:10px;font-size:13px;font-weight:900;color:#b4521a;text-decoration:none}' +
+'.mm-change:hover{text-decoration:underline}' +
+'html[data-theme="dark"] .mood-more{background:linear-gradient(135deg,#3a2f1c,#3a2030)}html[data-theme="dark"] .mm-change{color:#ffb37a}';
+document.head.appendChild(st);
+rel.parentNode.insertBefore(sec, rel.nextSibling);
+}).catch(function () {});
+}
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
 else start();
 function start() {
@@ -968,6 +1028,7 @@ UI_READY.then(startReady, startReady);
 }
 function startReady() {
 drawSwitch();
+try { moodMore(); } catch (e) {}
 window.pengessoLang = lang;
 if (lang === 'en') { if (!DATA.lazyTop) drawLearn(collectEnglish(), true); return; }
 drawNotice(lang, LANGS[lang] || {});

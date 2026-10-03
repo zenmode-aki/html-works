@@ -195,6 +195,15 @@ def main():
     inject(INDEX, posts)
     sitemap(posts)
 
+    # 😊 気分のおすすめ（2026-10-03 本人の要望）：トップで気分を選んで入ってきた人に、記事のいちばん下で
+    #    「同じ気分の記事をあと2本」を出す（tools/i18n_runtime.js の moodMore）。そのための小さな一覧。手で書かない
+    rows = [[m["slug"], m.get("title", m["slug"]), max(1, m["sec"]), m["mood"]]
+            for m in posts if m.get("mood") and not m.get("only")]
+    out = ROOT / "assets" / "moods.json"
+    js = json.dumps(rows, ensure_ascii=False, separators=(",", ":")) + "\n"
+    if not out.exists() or out.read_text(encoding="utf-8") != js:
+        out.write_text(js, encoding="utf-8")
+
     missing = [m["slug"] for m in posts
                if not (ROOT / "assets" / "thumbs" / f"{m['slug']}.jpg").exists()]
     if missing:
