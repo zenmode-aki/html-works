@@ -1145,6 +1145,72 @@ if (switchMount && switchMount.parentNode) switchMount.parentNode.insertBefore(b
 else document.body.insertBefore(box, document.body.firstChild);
 }
 var switchMount = null;
+var LEARN_KEY = 'pengesso-learn';
+var LEARN_WORDS = {
+ja: ['英語も見る', '英語学習モード：日本語のすぐ下に、もとの英文が出ます'],
+ko: ['영어도 보기', '영어 학습 모드: 한국어 바로 아래에 원래 영어 문장이 나옵니다'],
+zh: ['同时看英文', '英语学习模式：在中文下面显示原来的英文'],
+'zh-Hant': ['同時看英文', '英語學習模式：在中文下面顯示原來的英文']
+};
+function learnable(el) {
+if (!el.closest || !el.closest('main')) return false;
+if (el.closest('.topbar, .label, .card-head, .next, .prev, .related, .to-list, .i18n-row, .i18n-switch, .theme-foot, nav, button, .part-nav')) return false;
+return /^(P|LI|H1|H2|H3|FIGCAPTION|BLOCKQUOTE|DT|DD)$/.test(el.tagName) || el.classList.contains('big');
+}
+function drawLearn(list) {
+if (!list.length || document.querySelector('.learn-btn')) return;
+var root = document.documentElement, on = false;
+try { on = localStorage.getItem(LEARN_KEY) === '1'; } catch (e) {}
+var st = document.createElement('style');
+st.textContent =
+'.learn-en{display:none;margin-top:.4em;padding:.15em 0 .15em .7em;border-left:3px solid #c9bbf5;' +
+'font-size:.86em;line-height:1.55;font-weight:700;color:#5b4bb0;text-align:left;unicode-bidi:isolate;letter-spacing:0}' +
+'h1 .learn-en{font-size:.5em;line-height:1.45}' +
+'html.learn-on .learn-en{display:block;animation:learnIn .45s ease both}' +
+'@keyframes learnIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}' +
+'.learn-btn{display:inline-flex;align-items:center;gap:8px;margin-inline-end:auto;min-height:38px;padding:6px 14px 6px 8px;' +
+'border:2px solid rgba(255,255,255,.9);border-radius:999px;background:#fff;color:#5b4bb0;font:inherit;font-size:13px;font-weight:800;' +
+'line-height:1;cursor:pointer;box-shadow:0 6px 16px rgba(115,70,111,.10);white-space:nowrap}' +
+'.learn-btn:focus-visible{outline:3px solid rgba(139,109,232,.45);outline-offset:2px}' +
+'.learn-sw{position:relative;flex:none;width:34px;height:20px;border-radius:999px;background:#ddd6f3;transition:background .2s}' +
+'.learn-sw::after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff;' +
+'box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}' +
+'.learn-btn[aria-pressed="true"] .learn-sw{background:#8b6de8}' +
+'.learn-btn[aria-pressed="true"] .learn-sw::after{transform:translateX(14px)}' +
+'html[data-theme="dark"] .learn-en{color:#c9bbff;border-color:#5b4bb0}' +
+'html[data-theme="dark"] .learn-btn{background:#22242f;border-color:#33364a;color:#c9bbff}' +
+'@media (prefers-reduced-motion:reduce){html.learn-on .learn-en{animation:none}.learn-sw,.learn-sw::after{transition:none}}';
+document.head.appendChild(st);
+list.forEach(function (x) {
+if (!x.el.isConnected) return;
+var s = document.createElement('span');
+s.className = 'learn-en';
+s.setAttribute('lang', 'en'); s.setAttribute('dir', 'ltr'); s.setAttribute('translate', 'no');
+s.textContent = x.en;
+x.el.appendChild(s);
+});
+var W = LEARN_WORDS[lang] || ['English too', 'Shows the original English under each sentence'];
+var b = document.createElement('button');
+b.type = 'button'; b.className = 'learn-btn'; b.setAttribute('translate', 'no');
+b.title = W[1];
+b.innerHTML = '<span class="learn-sw" aria-hidden="true"></span><span>🇬🇧 </span>';
+b.lastChild.textContent = '🇬🇧 ' + W[0];
+function paint() { b.setAttribute('aria-pressed', on ? 'true' : 'false'); root.classList.toggle('learn-on', on); }
+b.addEventListener('click', function () {
+on = !on; paint();
+try { localStorage.setItem(LEARN_KEY, on ? '1' : '0'); } catch (e) {}
+});
+paint();
+var row = switchMount && switchMount.classList.contains('i18n-row') ? switchMount : null;
+if (row) {
+var tip = row.querySelector('.i18n-tip');
+if (tip) tip.remove();
+row.insertBefore(b, row.firstChild);
+} else {
+var h1 = document.querySelector('main h1');
+if (h1) h1.parentNode.insertBefore(b, h1); else return;
+}
+}
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
 else start();
 function start() {
@@ -1184,6 +1250,7 @@ STRONG:1, SUB:1, SUP:1, U:1, TIME:1, WBR:1 };
 var SKIP = { SCRIPT:1, STYLE:1, NOSCRIPT:1, TEXTAREA:1, SELECT:1, OPTION:1, TEMPLATE:1 };
 var ATTRS = ['placeholder', 'title', 'aria-label'];
 var LETTER = /[A-Za-z]/;
+var LEARN = [];
 function norm(s) { return String(s).replace(/\s+/g, ' ').trim(); }
 function isInline(n) {
 return n.nodeType === 1 && n.namespaceURI === 'http://www.w3.org/1999/xhtml' &&
@@ -1264,6 +1331,7 @@ if (u && el.__i18n !== u.key) {
 var tr = lookup(u.key);
 if (tr !== null) {
 place(el, u.nodes, tr);
+if (learnable(el)) LEARN.push({ el: el, en: u.key });
 var nu = unitOf(el);
 el.__i18n = nu ? nu.key : '';
 }
@@ -1282,6 +1350,7 @@ if (lang === 'ta' || lang === 'te') {
 document.querySelectorAll('.lyric-en').forEach(function (el) { el.setAttribute('translate', 'no'); });
 }
 walk(document.body);
+if (!DATA.lazyTop) drawLearn(LEARN);
 if ('MutationObserver' in window) {
 new MutationObserver(function (list) {
 list.forEach(function (m) {
