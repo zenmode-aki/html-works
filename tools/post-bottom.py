@@ -16,7 +16,13 @@
      ・5本目は「🎲 ちょっと違う話」。話題も場所もちがう記事から1本（slug から決まるので毎回同じ）
      ・自分・次の記事・前の記事・日本語だけの記事（meta.json の "only"）は出さない
    サムネはトップと同じ assets/thumbs/<slug>.jpg を CSS の背景で出す（飾りなので、無くても文字は読める）
-4. 画面のいちばん上に、読んだところまでの細い線（CSS だけ・JS なし。2026-09-26）
+4. ~~画面のいちばん上の、読んだところまでの線（CSS 版）~~ → 2026-10-03 やめた。i18n_runtime.js の虹色の線（JS 版）と
+   2本重なっていた（Chrome では紫だけ、Safari では虹色）。虹色の1本だけにした
+5. 全記事に効く小さな見た目の直し（<style id="shared-fix-css">。2026-10-03 の UI 見直し）
+   ・PC では表紙（h1 のすぐ下の写真）を切らずに少し小さく → 本文が最初の画面に近づく
+   ・「次の記事」ボタンの左側を少し暗くして、白い字を読みやすく（金色・黄色の記事で薄かった）
+   ・日本語のときだけ、11px 前後の小さい札を 12.5px に（太い丸ゴシックだとつぶれた）
+   ・読み込み中だけ見えていた「PUBLIC」の札を、最初から隠す
 
 何度走らせても同じ結果になる。ボタンの文字は「← Back to all works」で、40言語の訳がすでにある。
 """
@@ -80,17 +86,6 @@ REL_CSS = """<style id="related-css">
   html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
   html[dir="rtl"] .rel-go { transform: scaleX(-1); }
   @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
-  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
-     対応していないブラウザでは何も出ない（壊れない） */
-  @supports (animation-timeline: scroll()) {
-    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
-      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
-      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
-      animation: read-progress linear both; animation-timeline: scroll(root block); }
-    html[dir="rtl"]::before { transform-origin: 100% 50%; }
-    @keyframes read-progress { to { transform: scaleX(1); } }
-  }
-  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
 </style>
 """
 
@@ -172,9 +167,30 @@ def related_block(slug, doc, info):
             f"  {REL_END}\n")
 
 
+FIX_CSS = """<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    h1 + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+"""
+
+
 BLOCK_RE = re.compile(r"\n?[ \t]*" + re.escape(START) + r".*?" + re.escape(END) + r"\n?", re.S)
 CSS_RE = re.compile(r'<style id="tolist-css">.*?</style>\n?', re.S)
 REL_CSS_RE = re.compile(r'<style id="related-css">.*?</style>\n?', re.S)
+FIX_CSS_RE = re.compile(r'<style id="shared-fix-css">.*?</style>\n?', re.S)
 LABEL_RE = re.compile(r'(<div class="label">(?:\s*<span class="topic">.*?</span>)?\s*)[⚡⏱][^<]*(</div>)', re.S)
 PREV_END = "<!-- /⏮ -->"
 
@@ -189,6 +205,7 @@ def fix(doc: str, slug: str = None, info: dict = None) -> str:
 
     doc = CSS_RE.sub("", BLOCK_RE.sub("\n", doc))
     doc = REL_CSS_RE.sub("", REL_RE.sub("\n", doc))
+    doc = FIX_CSS_RE.sub("", doc)
     k = doc.find(PREV_END)
     if k >= 0:
         at = doc.find("\n", k) + 1
@@ -197,7 +214,7 @@ def fix(doc: str, slug: str = None, info: dict = None) -> str:
         at = m.end() if m else doc.rindex("</main>")
     rel = related_block(slug, doc, info) if slug and info and slug in info else ""
     doc = doc[:at] + rel + BLOCK + doc[at:]
-    css = (REL_CSS if rel else "") + CSS
+    css = (REL_CSS if rel else "") + CSS + FIX_CSS
     # 🌐 i18n.py は自分の埋め込みを </head> の直前に置く。こちらはその前に置いて、
     #    2つの道具がお互いの順番を入れ替え合わないようにする（何度走らせても同じ結果）
     i18n_at = doc.find("<!-- 🌐 i18n:start")

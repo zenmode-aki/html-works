@@ -377,17 +377,6 @@
   html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
   html[dir="rtl"] .rel-go { transform: scaleX(-1); }
   @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
-  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
-     対応していないブラウザでは何も出ない（壊れない） */
-  @supports (animation-timeline: scroll()) {
-    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
-      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
-      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
-      animation: read-progress linear both; animation-timeline: scroll(root block); }
-    html[dir="rtl"]::before { transform-origin: 100% 50%; }
-    @keyframes read-progress { to { transform: scaleX(1); } }
-  }
-  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
 </style>
 <style id="tolist-css">
   /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
@@ -400,6 +389,23 @@
   .to-list-ic { font-size: 20px; line-height: 1; }
   html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    h1 + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
 </style>
 <style id="prev-css">
   /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
@@ -416,7 +422,7 @@
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"6549e1a4fe"},"bn":{"v":"71e81a66c3"},"ceb":{"v":"ba68c6a56d"},"cs":{"v":"8245f9c5f4"},"da":{"v":"13a2211ce8"},"de":{"v":"b12fa496e8"},"el":{"v":"ac7b954373"},"es":{"v":"373ff5a47a"},"fa":{"v":"2369f78066"},"fi":{"v":"2e781f041a"},"fil":{"v":"84af02420f"},"fr":{"v":"8d361aca4a"},"he":{"v":"ee0eeae4a1"},"hi":{"v":"acb56a5215"},"id":{"v":"ec679b623b"},"it":{"v":"cec672b139"},"ja":{"v":"c1e3af442d"},"ko":{"v":"3c490af95a"},"mr":{"v":"ad3cc65316"},"ms":{"v":"6a0ba9afda"},"nb":{"v":"0caa3875f4"},"ne":{"v":"d394784a49"},"nl":{"v":"7f7d842c16"},"pa":{"v":"6d0e1f2dfe"},"pl":{"v":"ef9e2c76a5"},"pt":{"v":"fd8272b9c0"},"ro":{"v":"d1f3001481"},"ru":{"v":"c36d2abdd4"},"sv":{"v":"523fa01032"},"sw":{"v":"d41f3baa45"},"ta":{"v":"1ff5cc1cbd"},"te":{"v":"c4a97341d2"},"th":{"v":"a8b1bc6000"},"tr":{"v":"b2448338ed"},"uk":{"v":"f58e65ad8b"},"ur":{"v":"b7c6d27f02"},"vi":{"v":"3e4875f092"},"zh":{"v":"6fd731be26"},"zh-Hant":{"v":"79fe8065dd"}},"uiData":true,"uiV":"38b65c5b36"}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"facbb383c9"},"bn":{"v":"f3729cfc8c"},"ceb":{"v":"21a8b873eb"},"cs":{"v":"6b35513ad7"},"da":{"v":"b4fe53cfca"},"de":{"v":"5f81781dae"},"el":{"v":"39f539b79c"},"es":{"v":"ad44a09e0c"},"fa":{"v":"deeb55f4a8"},"fi":{"v":"d3d447cd7d"},"fil":{"v":"ddfe12c813"},"fr":{"v":"92aad52d64"},"he":{"v":"f7f4bdecb0"},"hi":{"v":"e8e082e80c"},"id":{"v":"9dfd3a21b1"},"it":{"v":"a67bfc7df3"},"ja":{"v":"c1e3af442d"},"ko":{"v":"d511edfeb0"},"mr":{"v":"66e312036f"},"ms":{"v":"11e892a025"},"nb":{"v":"998a51f6f1"},"ne":{"v":"1cd1dac142"},"nl":{"v":"d4c0f91022"},"pa":{"v":"dce4510557"},"pl":{"v":"ca8eb09e0f"},"pt":{"v":"9e2a1c6b09"},"ro":{"v":"37a8c34e3e"},"ru":{"v":"2041379f32"},"sv":{"v":"4659225a5a"},"sw":{"v":"711e3a1aeb"},"ta":{"v":"45a29087bd"},"te":{"v":"da2920ebdf"},"th":{"v":"656c4a75e1"},"tr":{"v":"f96386c87d"},"uk":{"v":"f97aaca413"},"ur":{"v":"1c7c401e01"},"vi":{"v":"b799c99517"},"zh":{"v":"19e0ed9cf1"},"zh-Hant":{"v":"31d9f8e92b"}},"uiData":true,"uiV":"38b65c5b36"}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -813,14 +819,16 @@ st.textContent =
 '.i18n-menu .i18n-opt.on::after{content:"✓";margin-left:8px;font-weight:900}' +
 '.i18n-nudge .i18n-cur{animation:i18n-pulse 1.6s ease-in-out 3}' +
 '@keyframes i18n-pulse{0%,100%{box-shadow:0 4px 12px rgba(139,109,232,.35)}50%{box-shadow:0 0 0 7px rgba(139,109,232,.22),0 4px 12px rgba(139,109,232,.35)}}' +
-'.i18n-tip{position:absolute;right:0;top:calc(100% + 10px);z-index:55;display:flex;align-items:center;gap:6px;white-space:nowrap;' +
-'padding:8px 8px 8px 13px;border-radius:14px;background:#2b2440;color:#fff;font-size:13px;font-weight:800;cursor:pointer;' +
+'.i18n-tip{position:absolute;right:calc(100% + 12px);top:0;bottom:0;margin:auto 0;width:max-content;max-width:250px;height:-webkit-fit-content;height:fit-content;z-index:55;' +
+'display:flex;align-items:center;gap:6px;white-space:normal;line-height:1.3;' +
+'padding:7px 7px 7px 12px;border-radius:14px;background:#2b2440;color:#fff;font-size:13px;font-weight:800;cursor:pointer;' +
 'box-shadow:0 10px 26px rgba(0,0,0,.2);animation:i18n-tip-in .35s cubic-bezier(.2,1.4,.4,1) both}' +
-'.i18n-tip::before{content:"";position:absolute;right:26px;top:-6px;width:12px;height:12px;background:#2b2440;transform:rotate(45deg)}' +
-'.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:28px;height:28px;flex:none;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
+'.i18n-tip::before{content:"";position:absolute;right:-5px;top:50%;margin-top:-6px;width:12px;height:12px;background:#2b2440;transform:rotate(45deg)}' +
+'.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:32px;height:32px;flex:none;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
+'html[dir="rtl"] .i18n-tip{right:auto;left:calc(100% + 12px)}html[dir="rtl"] .i18n-tip::before{right:auto;left:-5px}' +
 '.i18n-tip .i18n-tip-text{color:#fff !important;font-weight:800}' +
 '.i18n-tip-text.in{animation:i18n-tip-in .3s ease-out both}.i18n-tip.bye{opacity:0;transition:opacity .35s}' +
-'@keyframes i18n-tip-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}' +
+'@keyframes i18n-tip-in{from{opacity:0;transform:translateX(6px)}to{opacity:1;transform:none}}' +
 'html[data-theme="dark"] .i18n-tip,html[data-theme="dark"] .i18n-tip::before{background:#f1ecfb;color:#2b2440}' +
 'html[data-theme="dark"] .i18n-tip .i18n-tip-text{color:#2b2440 !important}' +
 'html[data-theme="dark"] .i18n-tip button{background:rgba(0,0,0,.08);color:#2b2440}' +
@@ -997,6 +1005,13 @@ n = (n + 1) % lines.length;
 txt.classList.remove('in'); void txt.offsetWidth; txt.textContent = lines[n]; txt.classList.add('in');
 }, 1900);
 setTimeout(function () { if (tip) { tip.classList.add('bye'); setTimeout(function () { if (tip) { tip.remove(); tip = null; } wrap.classList.remove('i18n-nudge'); clearInterval(iv); }, 400); } }, 11000);
+setTimeout(function () {
+if (!tip) return;
+var r = wrap.getBoundingClientRect(), rtl = document.documentElement.dir === 'rtl';
+var room = (rtl ? innerWidth - r.right : r.left) - 12 - 12;
+if (room < 130) { tip.remove(); tip = null; wrap.classList.remove('i18n-nudge'); clearInterval(iv); return; }
+tip.style.maxWidth = Math.min(room, 250) + 'px';
+}, 0);
 }
 }
 }

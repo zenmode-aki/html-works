@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#f7eee0" />
-<title>Preparation Never Becomes Perfect — 1 Minute Blog</title>
+<title>Preparation Never Becomes Perfect</title>
 <!-- ⬇️ OGP（tools/ogp.py） -->
 <meta name="description" content="This is the next part. I wrote that perfectionists hate finishing, so they keep starting new things. So what should I do? The first answer is not e…" />
 <meta property="og:type" content="article" />
@@ -189,17 +189,6 @@
   html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
   html[dir="rtl"] .rel-go { transform: scaleX(-1); }
   @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
-  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
-     対応していないブラウザでは何も出ない（壊れない） */
-  @supports (animation-timeline: scroll()) {
-    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
-      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
-      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
-      animation: read-progress linear both; animation-timeline: scroll(root block); }
-    html[dir="rtl"]::before { transform-origin: 100% 50%; }
-    @keyframes read-progress { to { transform: scaleX(1); } }
-  }
-  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
 </style>
 <style id="tolist-css">
   /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
@@ -212,6 +201,23 @@
   .to-list-ic { font-size: 20px; line-height: 1; }
   html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    h1 + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
 </style>
 <style id="prev-css">
   /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
@@ -228,7 +234,7 @@
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"18ade3bd9a"},"bn":{"v":"4ac6e8f422"},"ceb":{"v":"bd6ca09fdc"},"cs":{"v":"c5fe6879d7"},"da":{"v":"fefad1753d"},"de":{"v":"00dc3ccadd"},"el":{"v":"0f0683ec2c"},"es":{"v":"d2c374a0f7"},"fa":{"v":"05ae0c7bec"},"fi":{"v":"1396a7ef98"},"fil":{"v":"c0dd869e88"},"fr":{"v":"11af10b8c5"},"he":{"v":"6b84030da2"},"hi":{"v":"8403b52d87"},"id":{"v":"1a86df58c3"},"it":{"v":"9728399f19"},"ja":{"v":"fefd0d4d1b"},"ko":{"v":"86ef5b4b28"},"mr":{"v":"c945290125"},"ms":{"v":"43622e6cec"},"nb":{"v":"b69a5c1a6b"},"ne":{"v":"99e0deaf09"},"nl":{"v":"b7c83295c7"},"pa":{"v":"e8674a4d7a"},"pl":{"v":"295dfa30d0"},"pt":{"v":"91adc2e6f6"},"ro":{"v":"2eb0104309"},"ru":{"v":"617fefd3ba"},"sv":{"v":"e9920a3ae4"},"sw":{"v":"901eae1872"},"ta":{"v":"611bb22bf2"},"te":{"v":"0b2ae9ded4"},"th":{"v":"8a1a541700"},"tr":{"v":"3249abd1d0"},"uk":{"v":"8fc3de776b"},"ur":{"v":"a02a5763b1"},"vi":{"v":"b95103ac82"},"zh":{"v":"161d56b367"},"zh-Hant":{"v":"d01efd8e09"}},"uiData":true,"uiV":"38b65c5b36"}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"7ba8f8558d"},"bn":{"v":"0cbe7c3db5"},"ceb":{"v":"24cd52f6cc"},"cs":{"v":"08a04cd13b"},"da":{"v":"fe0ea0c2de"},"de":{"v":"64c7bd81b9"},"el":{"v":"047c982ac3"},"es":{"v":"ab4c5720e8"},"fa":{"v":"27d3048a48"},"fi":{"v":"b9e662047d"},"fil":{"v":"ab9fb6ad2a"},"fr":{"v":"f64e08e83c"},"he":{"v":"d0eec6a022"},"hi":{"v":"f3b5e3e973"},"id":{"v":"032e512ba1"},"it":{"v":"e74cc71008"},"ja":{"v":"5fe6456285"},"ko":{"v":"46782d80a6"},"mr":{"v":"6ed86adcdd"},"ms":{"v":"36098a44a6"},"nb":{"v":"aebc4d937c"},"ne":{"v":"8b71d0146a"},"nl":{"v":"3521ce5314"},"pa":{"v":"02a7f57a36"},"pl":{"v":"d8a927c9d9"},"pt":{"v":"dc91481d1e"},"ro":{"v":"b647de8b2d"},"ru":{"v":"01a2200b73"},"sv":{"v":"12a0db0cb3"},"sw":{"v":"8029ef9dfb"},"ta":{"v":"ee73f2a71e"},"te":{"v":"8ed512fd43"},"th":{"v":"5003b51106"},"tr":{"v":"79d466e291"},"uk":{"v":"8d02ba47e7"},"ur":{"v":"72906aa8df"},"vi":{"v":"5e865a9158"},"zh":{"v":"319d14310d"},"zh-Hant":{"v":"d1e6422399"}},"uiData":true,"uiV":"38b65c5b36"}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -625,14 +631,16 @@ st.textContent =
 '.i18n-menu .i18n-opt.on::after{content:"✓";margin-left:8px;font-weight:900}' +
 '.i18n-nudge .i18n-cur{animation:i18n-pulse 1.6s ease-in-out 3}' +
 '@keyframes i18n-pulse{0%,100%{box-shadow:0 4px 12px rgba(139,109,232,.35)}50%{box-shadow:0 0 0 7px rgba(139,109,232,.22),0 4px 12px rgba(139,109,232,.35)}}' +
-'.i18n-tip{position:absolute;right:0;top:calc(100% + 10px);z-index:55;display:flex;align-items:center;gap:6px;white-space:nowrap;' +
-'padding:8px 8px 8px 13px;border-radius:14px;background:#2b2440;color:#fff;font-size:13px;font-weight:800;cursor:pointer;' +
+'.i18n-tip{position:absolute;right:calc(100% + 12px);top:0;bottom:0;margin:auto 0;width:max-content;max-width:250px;height:-webkit-fit-content;height:fit-content;z-index:55;' +
+'display:flex;align-items:center;gap:6px;white-space:normal;line-height:1.3;' +
+'padding:7px 7px 7px 12px;border-radius:14px;background:#2b2440;color:#fff;font-size:13px;font-weight:800;cursor:pointer;' +
 'box-shadow:0 10px 26px rgba(0,0,0,.2);animation:i18n-tip-in .35s cubic-bezier(.2,1.4,.4,1) both}' +
-'.i18n-tip::before{content:"";position:absolute;right:26px;top:-6px;width:12px;height:12px;background:#2b2440;transform:rotate(45deg)}' +
-'.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:28px;height:28px;flex:none;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
+'.i18n-tip::before{content:"";position:absolute;right:-5px;top:50%;margin-top:-6px;width:12px;height:12px;background:#2b2440;transform:rotate(45deg)}' +
+'.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:32px;height:32px;flex:none;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
+'html[dir="rtl"] .i18n-tip{right:auto;left:calc(100% + 12px)}html[dir="rtl"] .i18n-tip::before{right:auto;left:-5px}' +
 '.i18n-tip .i18n-tip-text{color:#fff !important;font-weight:800}' +
 '.i18n-tip-text.in{animation:i18n-tip-in .3s ease-out both}.i18n-tip.bye{opacity:0;transition:opacity .35s}' +
-'@keyframes i18n-tip-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}' +
+'@keyframes i18n-tip-in{from{opacity:0;transform:translateX(6px)}to{opacity:1;transform:none}}' +
 'html[data-theme="dark"] .i18n-tip,html[data-theme="dark"] .i18n-tip::before{background:#f1ecfb;color:#2b2440}' +
 'html[data-theme="dark"] .i18n-tip .i18n-tip-text{color:#2b2440 !important}' +
 'html[data-theme="dark"] .i18n-tip button{background:rgba(0,0,0,.08);color:#2b2440}' +
@@ -809,6 +817,13 @@ n = (n + 1) % lines.length;
 txt.classList.remove('in'); void txt.offsetWidth; txt.textContent = lines[n]; txt.classList.add('in');
 }, 1900);
 setTimeout(function () { if (tip) { tip.classList.add('bye'); setTimeout(function () { if (tip) { tip.remove(); tip = null; } wrap.classList.remove('i18n-nudge'); clearInterval(iv); }, 400); } }, 11000);
+setTimeout(function () {
+if (!tip) return;
+var r = wrap.getBoundingClientRect(), rtl = document.documentElement.dir === 'rtl';
+var room = (rtl ? innerWidth - r.right : r.left) - 12 - 12;
+if (room < 130) { tip.remove(); tip = null; wrap.classList.remove('i18n-nudge'); clearInterval(iv); return; }
+tip.style.maxWidth = Math.min(room, 250) + 'px';
+}, 0);
 }
 }
 }
@@ -1041,7 +1056,6 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
       <span class="card-emoji" aria-hidden="true">📌</span>
       <span class="card-label">The Boring Rule</span>
     </div><p>It is not exciting, but this is the rule.<br /> “When I can do XX” will not come.<br /> I should remember only that.<br /> Next, I will write another way.</p></section>
-  <nav class="part-nav" aria-label="Perfectionism series"><a href="../perfectionist-1/index.html">← Part 1: Starting</a><a href="../perfectionist-3/index.html">Part 3: Choose 3 →</a></nav>
   <a class="next" href="../perfectionist-3/index.html">
     <div>
       <div class="next-kicker">NEXT · 60 SEC</div>

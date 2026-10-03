@@ -458,17 +458,6 @@
   html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
   html[dir="rtl"] .rel-go { transform: scaleX(-1); }
   @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
-  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
-     対応していないブラウザでは何も出ない（壊れない） */
-  @supports (animation-timeline: scroll()) {
-    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
-      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
-      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
-      animation: read-progress linear both; animation-timeline: scroll(root block); }
-    html[dir="rtl"]::before { transform-origin: 100% 50%; }
-    @keyframes read-progress { to { transform: scaleX(1); } }
-  }
-  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
 </style>
 <style id="tolist-css">
   /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
@@ -481,6 +470,23 @@
   .to-list-ic { font-size: 20px; line-height: 1; }
   html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    h1 + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
 </style>
 <style id="prev-css">
   /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
@@ -497,7 +503,7 @@
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"7fc953d699"},"bn":{"v":"5f39536e76"},"ceb":{"v":"f949617f7a"},"cs":{"v":"b8a1655290"},"da":{"v":"563f841b1a"},"de":{"v":"42d332c98b"},"el":{"v":"c95a653497"},"es":{"v":"4c1482bfba"},"fa":{"v":"8598e443ff"},"fi":{"v":"9ad8065918"},"fil":{"v":"37eb28f264"},"fr":{"v":"10c0dba09a"},"he":{"v":"518a6e7b0c"},"hi":{"v":"f172dc83d8"},"id":{"v":"fec64bad04"},"it":{"v":"6d427c771a"},"ja":{"v":"2e1ec94f67"},"ko":{"v":"9c63a60185"},"mr":{"v":"05c04214c3"},"ms":{"v":"dcf5669171"},"nb":{"v":"a761d71ad4"},"ne":{"v":"e65337cbce"},"nl":{"v":"a30e9b270f"},"pa":{"v":"d24b0db99c"},"pl":{"v":"6510e76737"},"pt":{"v":"2cbfa9a731"},"ro":{"v":"ce0b34d9c5"},"ru":{"v":"0e581919ab"},"sv":{"v":"4fc53206ee"},"sw":{"v":"4b1f72606c"},"ta":{"v":"08c571ac8b"},"te":{"v":"0e2e728e89"},"th":{"v":"8675f6e5c5"},"tr":{"v":"0043b0f68d"},"uk":{"v":"9dee47a05f"},"ur":{"v":"60bcca1c90"},"vi":{"v":"9be022114b"},"zh":{"v":"d6ee3124d5"},"zh-Hant":{"v":"306bef003d"}},"uiData":true,"uiV":"38b65c5b36"}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"d0986d170f"},"bn":{"v":"6967cc0629"},"ceb":{"v":"fa32ff4361"},"cs":{"v":"1343819542"},"da":{"v":"dc163696a3"},"de":{"v":"2c2741f59a"},"el":{"v":"ad3b516d5c"},"es":{"v":"3a021fd565"},"fa":{"v":"415bb4a08e"},"fi":{"v":"d43a298cf3"},"fil":{"v":"feff381ba3"},"fr":{"v":"eb3f472e5e"},"he":{"v":"a495ca445c"},"hi":{"v":"d2deca64f6"},"id":{"v":"a23585d789"},"it":{"v":"5b65174762"},"ja":{"v":"7acd0dc5c7"},"ko":{"v":"784fc918c9"},"mr":{"v":"996735df0a"},"ms":{"v":"0dc5ceb1c1"},"nb":{"v":"b831d6373d"},"ne":{"v":"c420a8803a"},"nl":{"v":"0f62006c22"},"pa":{"v":"03ee4a9a3e"},"pl":{"v":"9dc3f30d29"},"pt":{"v":"e33375d74b"},"ro":{"v":"65a6bf979d"},"ru":{"v":"423a21726f"},"sv":{"v":"25405dd80c"},"sw":{"v":"080e132d9c"},"ta":{"v":"240c848193"},"te":{"v":"cc3c509d9c"},"th":{"v":"762089d93b"},"tr":{"v":"bfb8a7a56c"},"uk":{"v":"5a2b6d8db8"},"ur":{"v":"9b2f19d6f8"},"vi":{"v":"024ce3447e"},"zh":{"v":"a6ecd03d7d"},"zh-Hant":{"v":"5b3ee40067"}},"uiData":true,"uiV":"38b65c5b36"}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -894,14 +900,16 @@ st.textContent =
 '.i18n-menu .i18n-opt.on::after{content:"✓";margin-left:8px;font-weight:900}' +
 '.i18n-nudge .i18n-cur{animation:i18n-pulse 1.6s ease-in-out 3}' +
 '@keyframes i18n-pulse{0%,100%{box-shadow:0 4px 12px rgba(139,109,232,.35)}50%{box-shadow:0 0 0 7px rgba(139,109,232,.22),0 4px 12px rgba(139,109,232,.35)}}' +
-'.i18n-tip{position:absolute;right:0;top:calc(100% + 10px);z-index:55;display:flex;align-items:center;gap:6px;white-space:nowrap;' +
-'padding:8px 8px 8px 13px;border-radius:14px;background:#2b2440;color:#fff;font-size:13px;font-weight:800;cursor:pointer;' +
+'.i18n-tip{position:absolute;right:calc(100% + 12px);top:0;bottom:0;margin:auto 0;width:max-content;max-width:250px;height:-webkit-fit-content;height:fit-content;z-index:55;' +
+'display:flex;align-items:center;gap:6px;white-space:normal;line-height:1.3;' +
+'padding:7px 7px 7px 12px;border-radius:14px;background:#2b2440;color:#fff;font-size:13px;font-weight:800;cursor:pointer;' +
 'box-shadow:0 10px 26px rgba(0,0,0,.2);animation:i18n-tip-in .35s cubic-bezier(.2,1.4,.4,1) both}' +
-'.i18n-tip::before{content:"";position:absolute;right:26px;top:-6px;width:12px;height:12px;background:#2b2440;transform:rotate(45deg)}' +
-'.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:28px;height:28px;flex:none;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
+'.i18n-tip::before{content:"";position:absolute;right:-5px;top:50%;margin-top:-6px;width:12px;height:12px;background:#2b2440;transform:rotate(45deg)}' +
+'.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:32px;height:32px;flex:none;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
+'html[dir="rtl"] .i18n-tip{right:auto;left:calc(100% + 12px)}html[dir="rtl"] .i18n-tip::before{right:auto;left:-5px}' +
 '.i18n-tip .i18n-tip-text{color:#fff !important;font-weight:800}' +
 '.i18n-tip-text.in{animation:i18n-tip-in .3s ease-out both}.i18n-tip.bye{opacity:0;transition:opacity .35s}' +
-'@keyframes i18n-tip-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}' +
+'@keyframes i18n-tip-in{from{opacity:0;transform:translateX(6px)}to{opacity:1;transform:none}}' +
 'html[data-theme="dark"] .i18n-tip,html[data-theme="dark"] .i18n-tip::before{background:#f1ecfb;color:#2b2440}' +
 'html[data-theme="dark"] .i18n-tip .i18n-tip-text{color:#2b2440 !important}' +
 'html[data-theme="dark"] .i18n-tip button{background:rgba(0,0,0,.08);color:#2b2440}' +
@@ -1078,6 +1086,13 @@ n = (n + 1) % lines.length;
 txt.classList.remove('in'); void txt.offsetWidth; txt.textContent = lines[n]; txt.classList.add('in');
 }, 1900);
 setTimeout(function () { if (tip) { tip.classList.add('bye'); setTimeout(function () { if (tip) { tip.remove(); tip = null; } wrap.classList.remove('i18n-nudge'); clearInterval(iv); }, 400); } }, 11000);
+setTimeout(function () {
+if (!tip) return;
+var r = wrap.getBoundingClientRect(), rtl = document.documentElement.dir === 'rtl';
+var room = (rtl ? innerWidth - r.right : r.left) - 12 - 12;
+if (room < 130) { tip.remove(); tip = null; wrap.classList.remove('i18n-nudge'); clearInterval(iv); return; }
+tip.style.maxWidth = Math.min(room, 250) + 'px';
+}, 0);
 }
 }
 }
@@ -1369,10 +1384,10 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </p>
   </section>
 
-  <a class="next" href="../knowledge-metabo-1/index.html" data-topic="new">
+  <a class="next" href="../knowledge-metabo-2/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>
-      <div class="next-title">Knowledge Metabo #1: I Knew More. I Moved Less.</div>
+      <div class="next-title">Knowledge Metabo #2: I Looked for the Correct Answer</div>
     </div>
     <div class="next-arrow" aria-hidden="true">🔀</div>
   </a>
@@ -1430,12 +1445,12 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
         </a>
       </li>
       <li>
-        <a class="rel-card" href="../sm-clark-merry-go-round/index.html">
-          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/sm-clark-merry-go-round.jpg')"></span>
+        <a class="rel-card" href="../inti-subang-visit/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/inti-subang-visit.jpg')"></span>
           <div class="rel-body">
-            <div class="rel-kicker"><span class="rel-sec">⚡ 13 SEC</span>
+            <div class="rel-kicker"><span class="rel-sec">⚡ 28 SEC</span>
             <span class="rel-chip">🎲 Something different</span></div>
-            <div class="rel-title">There was a merry-go-round inside the shopping mall</div>
+            <div class="rel-title">University visit, day 1 afternoon: INTI</div>
           </div>
           <span class="rel-go" aria-hidden="true">→</span>
         </a>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="theme-color" content="#e7e3da" />
-<title>Knowledge Metabo #2 — 1 Minute Blog</title>
+<title>Knowledge Metabo #2</title>
 <!-- ⬇️ OGP（tools/ogp.py） -->
 <meta name="description" content="This is the next part of the last story. I thought about why too much input makes me unable to move." />
 <meta property="og:type" content="article" />
@@ -331,17 +331,6 @@
   html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
   html[dir="rtl"] .rel-go { transform: scaleX(-1); }
   @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
-  /* 📏 読んだところまでの細い線（画面のいちばん上）。JS は使わず CSS のスクロール連動だけ。
-     対応していないブラウザでは何も出ない（壊れない） */
-  @supports (animation-timeline: scroll()) {
-    html::before { content: ""; position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 2147483000;
-      pointer-events: none; transform-origin: 0 50%; transform: scaleX(0);
-      background: linear-gradient(90deg, var(--pink, #f0a8d0), var(--purple, #8b6de8));
-      animation: read-progress linear both; animation-timeline: scroll(root block); }
-    html[dir="rtl"]::before { transform-origin: 100% 50%; }
-    @keyframes read-progress { to { transform: scaleX(1); } }
-  }
-  @media (prefers-reduced-motion: reduce) { html::before { display: none; } }
 </style>
 <style id="tolist-css">
   /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
@@ -354,6 +343,23 @@
   .to-list-ic { font-size: 20px; line-height: 1; }
   html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
   @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    h1 + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
 </style>
 <style id="prev-css">
   /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
@@ -370,7 +376,7 @@
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"39dcb09e0f"},"bn":{"v":"4d79d51620"},"ceb":{"v":"20ff8bfdd8"},"cs":{"v":"9bec807b51"},"da":{"v":"2c8361cdc1"},"de":{"v":"473fb6e8e5"},"el":{"v":"52b41ff7bf"},"es":{"v":"9783db5177"},"fa":{"v":"f5b9779571"},"fi":{"v":"499dae3293"},"fil":{"v":"09f7a79aef"},"fr":{"v":"102713268c"},"he":{"v":"490f7c65cc"},"hi":{"v":"8e82554bbe"},"id":{"v":"09e7f7a30a"},"it":{"v":"23380cda26"},"ja":{"v":"c71d9d15ff"},"ko":{"v":"e5b2de4507"},"mr":{"v":"4dfd3f89bd"},"ms":{"v":"c1cd8be350"},"nb":{"v":"feb24ad94f"},"ne":{"v":"8bc5dda2f6"},"nl":{"v":"c557028c0d"},"pa":{"v":"9509779547"},"pl":{"v":"94b4626887"},"pt":{"v":"68dad2197f"},"ro":{"v":"c867597f08"},"ru":{"v":"da7500e1f5"},"sv":{"v":"788d26d5da"},"sw":{"v":"8883eb6628"},"ta":{"v":"e9ce397698"},"te":{"v":"cd1fd5729e"},"th":{"v":"b61280171b"},"tr":{"v":"55aa3bb160"},"uk":{"v":"ccff40aaad"},"ur":{"v":"02e4694ddf"},"vi":{"v":"c4110feaff"},"zh":{"v":"1f3799abc2"},"zh-Hant":{"v":"db01fdc16c"}},"uiData":true,"uiV":"38b65c5b36"}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"3b863fa194"},"bn":{"v":"d982ead55e"},"ceb":{"v":"4cf9fe67e1"},"cs":{"v":"feefde6eda"},"da":{"v":"73135e28c6"},"de":{"v":"2629194305"},"el":{"v":"fd2c3f8495"},"es":{"v":"622948c6f2"},"fa":{"v":"0931c96405"},"fi":{"v":"d48e62a51b"},"fil":{"v":"039b351b74"},"fr":{"v":"e9df9904aa"},"he":{"v":"a545febfd6"},"hi":{"v":"e6e554d99d"},"id":{"v":"e724ac108c"},"it":{"v":"665b0c0c2a"},"ja":{"v":"019c7655a9"},"ko":{"v":"749bc5db91"},"mr":{"v":"ef09e66fab"},"ms":{"v":"4296b3d3b6"},"nb":{"v":"f0bcbffb13"},"ne":{"v":"fb1c0b2b94"},"nl":{"v":"08f6f0e746"},"pa":{"v":"9e0cf9a12d"},"pl":{"v":"aa91dc72f2"},"pt":{"v":"d04107fe24"},"ro":{"v":"57ccd63d63"},"ru":{"v":"daead7825d"},"sv":{"v":"66bb7634b3"},"sw":{"v":"21bb0bc4bd"},"ta":{"v":"0620f15440"},"te":{"v":"1b74a7a389"},"th":{"v":"a931d625ec"},"tr":{"v":"456b4eab5d"},"uk":{"v":"a112905d36"},"ur":{"v":"e6b36d793b"},"vi":{"v":"f084fd881a"},"zh":{"v":"b146a19d67"},"zh-Hant":{"v":"d0cb3a9b3f"}},"uiData":true,"uiV":"38b65c5b36"}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -767,14 +773,16 @@ st.textContent =
 '.i18n-menu .i18n-opt.on::after{content:"✓";margin-left:8px;font-weight:900}' +
 '.i18n-nudge .i18n-cur{animation:i18n-pulse 1.6s ease-in-out 3}' +
 '@keyframes i18n-pulse{0%,100%{box-shadow:0 4px 12px rgba(139,109,232,.35)}50%{box-shadow:0 0 0 7px rgba(139,109,232,.22),0 4px 12px rgba(139,109,232,.35)}}' +
-'.i18n-tip{position:absolute;right:0;top:calc(100% + 10px);z-index:55;display:flex;align-items:center;gap:6px;white-space:nowrap;' +
-'padding:8px 8px 8px 13px;border-radius:14px;background:#2b2440;color:#fff;font-size:13px;font-weight:800;cursor:pointer;' +
+'.i18n-tip{position:absolute;right:calc(100% + 12px);top:0;bottom:0;margin:auto 0;width:max-content;max-width:250px;height:-webkit-fit-content;height:fit-content;z-index:55;' +
+'display:flex;align-items:center;gap:6px;white-space:normal;line-height:1.3;' +
+'padding:7px 7px 7px 12px;border-radius:14px;background:#2b2440;color:#fff;font-size:13px;font-weight:800;cursor:pointer;' +
 'box-shadow:0 10px 26px rgba(0,0,0,.2);animation:i18n-tip-in .35s cubic-bezier(.2,1.4,.4,1) both}' +
-'.i18n-tip::before{content:"";position:absolute;right:26px;top:-6px;width:12px;height:12px;background:#2b2440;transform:rotate(45deg)}' +
-'.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:28px;height:28px;flex:none;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
+'.i18n-tip::before{content:"";position:absolute;right:-5px;top:50%;margin-top:-6px;width:12px;height:12px;background:#2b2440;transform:rotate(45deg)}' +
+'.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:32px;height:32px;flex:none;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
+'html[dir="rtl"] .i18n-tip{right:auto;left:calc(100% + 12px)}html[dir="rtl"] .i18n-tip::before{right:auto;left:-5px}' +
 '.i18n-tip .i18n-tip-text{color:#fff !important;font-weight:800}' +
 '.i18n-tip-text.in{animation:i18n-tip-in .3s ease-out both}.i18n-tip.bye{opacity:0;transition:opacity .35s}' +
-'@keyframes i18n-tip-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}' +
+'@keyframes i18n-tip-in{from{opacity:0;transform:translateX(6px)}to{opacity:1;transform:none}}' +
 'html[data-theme="dark"] .i18n-tip,html[data-theme="dark"] .i18n-tip::before{background:#f1ecfb;color:#2b2440}' +
 'html[data-theme="dark"] .i18n-tip .i18n-tip-text{color:#2b2440 !important}' +
 'html[data-theme="dark"] .i18n-tip button{background:rgba(0,0,0,.08);color:#2b2440}' +
@@ -951,6 +959,13 @@ n = (n + 1) % lines.length;
 txt.classList.remove('in'); void txt.offsetWidth; txt.textContent = lines[n]; txt.classList.add('in');
 }, 1900);
 setTimeout(function () { if (tip) { tip.classList.add('bye'); setTimeout(function () { if (tip) { tip.remove(); tip = null; } wrap.classList.remove('i18n-nudge'); clearInterval(iv); }, 400); } }, 11000);
+setTimeout(function () {
+if (!tip) return;
+var r = wrap.getBoundingClientRect(), rtl = document.documentElement.dir === 'rtl';
+var room = (rtl ? innerWidth - r.right : r.left) - 12 - 12;
+if (room < 130) { tip.remove(); tip = null; wrap.classList.remove('i18n-nudge'); clearInterval(iv); return; }
+tip.style.maxWidth = Math.min(room, 250) + 'px';
+}, 0);
 }
 }
 }
@@ -1242,10 +1257,6 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </div>
   </a>
 
-  <nav class="part-nav" aria-label="Knowledge Metabo series">
-    <a href="../knowledge-metabo-1/index.html">← Part 1: Too much input</a>
-    <a href="../knowledge-metabo-3/index.html">Part 3: Put it out →</a>
-  </nav>
   <a class="next" href="../knowledge-metabo-3/index.html">
     <div>
       <div class="next-kicker">NEXT · 49 SEC</div>
@@ -1254,11 +1265,11 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     <div class="next-arrow" aria-hidden="true">⚡</div>
   </a>
   <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
-  <a class="prev" href="../knowledge-metabo-1/index.html">
+  <a class="prev" href="../cant-disagree-with-people/index.html">
     <span class="prev-arrow" aria-hidden="true">←</span>
     <div>
       <div class="prev-kicker">PREVIOUS POST</div>
-      <div class="prev-title">Knowledge Metabo #1: I Knew More. I Moved Less.</div>
+      <div class="prev-title">I cannot disagree with what people say</div>
     </div>
   </a>
   <!-- /⏮ -->
@@ -1266,6 +1277,16 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
   <section class="related" aria-labelledby="related-h">
     <h2 class="related-h" id="related-h">✨ You might also like</h2>
     <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../knowledge-metabo-1/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/knowledge-metabo-1.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 49 SEC</span></div>
+            <div class="rel-title">Knowledge Metabo #1: I Knew More. I Moved Less.</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
       <li>
         <a class="rel-card" href="../sakura-english-calming-effect/index.html">
           <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/sakura-english-calming-effect.jpg')"></span>
@@ -1292,16 +1313,6 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
           <div class="rel-body">
             <div class="rel-kicker"><span class="rel-sec">⚡ 8 SEC</span></div>
             <div class="rel-title">WIP = 1: keep your work in progress to only one task</div>
-          </div>
-          <span class="rel-go" aria-hidden="true">→</span>
-        </a>
-      </li>
-      <li>
-        <a class="rel-card" href="../sakura-english-mixed-language/index.html">
-          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/sakura-english-mixed-language.jpg')"></span>
-          <div class="rel-body">
-            <div class="rel-kicker"><span class="rel-sec">⚡ 14 SEC</span></div>
-            <div class="rel-title">A podcast that mixes Japanese and English is easier for me to follow</div>
           </div>
           <span class="rel-go" aria-hidden="true">→</span>
         </a>

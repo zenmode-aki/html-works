@@ -139,6 +139,37 @@ def from_draft_page(slug, doc):
     return doc
 
 
+# 🗂 下書きの一覧を「どうすれば出せるか」で分けて見せる（2026-10-03 の全体見直し・HANDOFF_2026-10-03.md の D）。
+#    ここに無い下書きは、仕事の話（WORK_TOPICS）なら「💼 仕事の話」、それ以外は「🗂 そのほか」に入る。
+#    出したら一覧から自然に消えるので、ここは消さなくてよい
+GROUPS = [
+    ("fix", "✏️ 少し直せば出せる", "本人に1つ確かめるか、仕事の言葉を消せば出せるもの",
+     ["oliver-burkeman-blog", "favorite-foreigners-2026", "luck-rises-at-24", "sunway-college-visit",
+      "baguio-strictest-school", "cabbage-and-black-pepper", "chu-shortcut-explain-simply", "chat-first-then-talk",
+      "tidying-messy-notes-is-fun", "just-read-the-table-of-contents", "read-from-the-left", "boodle-fight-lunch",
+      "no-public-scolding", "standing-desk-conversations"]),
+    ("industry", "🏭 業界の話として出せそう", "会社が分からない、業界の一般的な話。続けて出さない・シリーズでつなげない",
+     ["windows-update-day-slows-network", "faults-come-after-the-lightning", "radio-only-reaches-the-pole",
+      "spare-machine-needs-config", "one-loose-plank-leaks-everything", "windows-shortcuts-i-learned", "why-not-japan",
+      "en-to-jp-harder", "get-a-stamp", "trust-the-buffer", "countryside-internet-thanks", "maybe-a-mouse-chewed-it"]),
+    ("work", "💼 仕事の話（業界の話に書き直してから）", "ブログ憲法 第1条：会社と仕事の中身は書かない。多くはこのまま置いておく", None),
+    ("other", "🗂 そのほか", "", None),
+    ("no", "🔒 出さない", "第1条・第2条に近いもの、または本人の判断待ち",
+     ["a-note-for-japanese-readers", "big-company-harassment-transparency", "nice-escalation-sticker",
+      "writing-the-outage-notice", "quiet-until-the-alarm", "three-monitors-twelve-screens", "minutes-in-one-minute",
+      "gifts-from-students", "the-boss-looked-out-for-me", "subic-bay-and-clark-airport"]),
+]
+
+SHORT = {"fix": "✏️ 少し直す", "industry": "🏭 業界の話", "work": "💼 仕事の話", "other": "🗂 そのほか", "no": "🔒 出さない"}
+
+
+def group_of(x):
+    for key, _, _, slugs_ in GROUPS:
+        if slugs_ and x["slug"] in slugs_:
+            return key
+    return "work" if x["topic"] in WORK_TOPICS else "other"
+
+
 # ── 一覧に出す情報 ───────────────────────────────────
 def info(slug):
     d = DRAFT / slug
@@ -162,17 +193,26 @@ def order(infos):
 
 def index_html(infos, today, published):
     n = len(infos)
-    cards = []
+    cards = {}
     for x in infos:
         img = (f'<img src="../assets/thumbs/{x["slug"]}.jpg" alt="" loading="lazy">' if x["thumb"] else '<span>📝</span>')
         chips = [f'⚡ {x["words"]}語 · 約{x["sec"]}秒']
         if not x["cover"]:
             chips.append("🖼 表紙まだ")
         ja = f'<div class="ja">{html.escape(x["t"]["ja"])}</div>' if x["t"].get("ja") else '<div class="ja none">（日本語タイトルまだ）</div>'
-        cards.append(
+        cards.setdefault(group_of(x), []).append(
             f'<a class="card" href="{x["slug"]}/index.html"><div class="th">{img}</div><div class="tx">{ja}'
             f'<div class="en">{html.escape(x["t"]["en"])}</div><div class="meta">{html.escape(x["date"])} · '
             + " · ".join(chips) + "</div></div></a>")
+    secs, jump = [], []
+    for key, title, note, _ in GROUPS:
+        cs = cards.get(key)
+        if not cs:
+            continue
+        jump.append(f'<a href="#g-{key}">{SHORT.get(key, title)} {len(cs)}</a>')
+        secs.append(f'  <section class="grp" id="g-{key}">\n    <h2>{title} <small>{len(cs)}本</small></h2>\n'
+                    + (f'    <p class="note">{note}</p>\n' if note else "")
+                    + '    <div class="grid">\n' + "\n".join("      " + c for c in cs) + "\n    </div>\n  </section>")
     pub_pct = min(100, published / GOAL * 100)
     dr_pct = min(100 - pub_pct, n / GOAL * 100)
     return f"""<!DOCTYPE html>
@@ -212,6 +252,12 @@ def index_html(infos, today, published):
   .ja.none {{ color: var(--muted); font-weight: 700; }}
   .en {{ margin-top: 3px; font-size: 12.5px; color: var(--muted); line-height: 1.4; }}
   .meta {{ margin-top: 6px; font-size: 11.5px; color: var(--muted); }}
+  .jump {{ display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 8px; }}
+  .jump a {{ padding: 8px 14px; border-radius: 999px; background: var(--card); border: 1.5px solid var(--line); color: inherit; text-decoration: none; font-size: 13.5px; }}
+  .grp {{ margin-top: 26px; scroll-margin-top: 12px; }}
+  .grp h2 {{ margin: 0 0 4px; font-size: 20px; font-weight: 900; }}
+  .grp h2 small {{ font-size: 13px; color: var(--muted); }}
+  .grp .note {{ margin: 0 0 12px; font-size: 13px; color: var(--muted); line-height: 1.6; }}
   .how {{ margin-top: 26px; padding: 16px 18px; border-radius: 18px; background: #fff; border: 1.5px dashed var(--line); font-size: 13.5px; line-height: 1.8; color: var(--muted); }}
   .how code {{ background: #f3f0fa; padding: 1px 6px; border-radius: 6px; color: var(--ink); }}
   @media (prefers-reduced-motion: reduce) {{ .card {{ transition: none; }} }}
@@ -228,9 +274,8 @@ def index_html(infos, today, published):
     <div class="bar" role="img" aria-label="公開{published}本・下書き{n}本・目標1000本"><div class="p"></div><div class="d"></div></div>
     <div class="legend"><span><i style="background:var(--pub)"></i>公開 {published}</span><span><i style="background:var(--dr)"></i>下書き {n}</span><span>あと {max(0, GOAL - published - n)}本</span></div>
   </section>
-  <div class="grid">
-    {chr(10).join("    " + c for c in cards) if cards else '<p>下書きはまだありません。</p>'}
-  </div>
+  <nav class="jump" aria-label="下書きの種類">{" ".join(jump)}</nav>
+{chr(10).join(secs) if secs else '<p>下書きはまだありません。</p>'}
   <div class="how">
     💡 <b>AIへの頼み方</b><br>
     「下書きにして」→ <code>python3 tools/draft.py new &lt;slug&gt;</code> で作って push（英日だけ・表紙はあとでいい）<br>
