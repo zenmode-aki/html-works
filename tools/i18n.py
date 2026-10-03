@@ -297,11 +297,26 @@ def json_asset(data):
     return (json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n").encode("utf-8")
 
 
+RUNTIME_OUT = ROOT / "assets" / "i18n-runtime.js"
+_RUNTIME_SRC = None
+
+
+def runtime_src():
+    """切り替えの本体は全ページ共通の1ファイル（2026-10-03：前は全ページに65KBずつ埋め込んでいて、
+    写真の多い記事が1.5MBの上限を超えた）。中身が変わったら ?v= も変わる＝古いものを読まない"""
+    global _RUNTIME_SRC
+    if _RUNTIME_SRC is None:
+        js = minify(RUNTIME.read_text(encoding="utf-8")) + "\n"
+        if not RUNTIME_OUT.exists() or RUNTIME_OUT.read_text(encoding="utf-8") != js:
+            RUNTIME_OUT.write_text(js, encoding="utf-8")
+        _RUNTIME_SRC = "/assets/i18n-runtime.js?v=" + hashlib.sha1(js.encode()).hexdigest()[:10]
+    return _RUNTIME_SRC
+
+
 def block(data):
-    js = minify(RUNTIME.read_text(encoding="utf-8"))
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
     return (f"{START}\n<script type=\"application/json\" id=\"i18n-data\">{payload}</script>\n"
-            f"<script>\n{js}</script>\n{END}\n")
+            f"<script src=\"{runtime_src()}\"></script>\n{END}\n")
 
 
 def inject(path, data):

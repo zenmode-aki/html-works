@@ -172,12 +172,13 @@ def check(work: pathlib.Path, fix_badge: bool):
     #        いまは OpenStreetMap を使っている。Google に戻すには APIキーか、
     #        Googleマップの「共有 → 地図を埋め込む」で出る pb= 付きURLが要る。
     EMBED_OK = ("https://www.openstreetmap.org/export/embed.html",
-                "https://www.youtube-nocookie.com/embed/")
+                "https://www.youtube-nocookie.com/embed/",
+                "https://open.spotify.com/embed/")   # 2026-10-03 本人の要望：曲の記事に Spotify のプレイヤー
     frames = [s for s in re.findall(r'<iframe[^>]*\bsrc="([^"]*)"', doc)
               if not s.startswith(EMBED_OK)]
     if frames:
         problems.append(f"{NG} 許可していない埋め込みがあります: {frames}"
-                        f"  → 地図(OpenStreetMap)と動画(youtube-nocookie)だけです")
+                        f"  → 地図(OpenStreetMap)・動画(youtube-nocookie)・曲(Spotify)だけです")
 
     # 3-4. ワード数とバッジ
     words = body_words(doc)
