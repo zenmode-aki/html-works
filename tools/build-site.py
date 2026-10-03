@@ -113,7 +113,12 @@ def inject(page: pathlib.Path, items):
                f"assets/thumbs/{m['slug']}.jpg",
                m.get("title", m["slug"]), m.get("topic", ""),
                # 🌐 "only": "ja" の記事は、日本語で見ている人にだけ、一覧のいちばん上に出す
-               (", only:%r" % m["only"]) if m.get("only") else ""))
+               ((", only:%r" % m["only"]) if m.get("only") else "") +
+               # 😊 気分で選ぶ（meta.json の "mood"）／💻 IT用語モードがある記事（works/<slug>/it.ja.json）
+               ((", mood:%s" % json.dumps(m["mood"])) if m.get("mood") else "") +
+               (", it:1" if (ROOT / "works" / m["slug"] / "it.ja.json").exists() else "") +
+               # 🏷 タグ（meta.json の "tags"。名前と訳は i18n/tags.json）
+               ((", tags:%s" % json.dumps(m["tags"])) if m.get("tags") else "")))
 
     places = "\n".join(
         "  %s: {name:%r, map:%r, row:%d, col:%d}," % (k, *PLACES[k])
@@ -195,6 +200,16 @@ def main():
     if missing:
         print(f"\n⚠️  サムネがまだ無い: {', '.join(missing)}")
         print("   python3 tools/thumbs.py  で作れます（macOSのみ）")
+
+    # 🏷 記事の題の下のタグと、タグの名前の訳（2026-10-03）。i18n の前にやる
+    try:
+        sys.path.insert(0, str(ROOT / "tools"))
+        import tags
+        tags.main()
+    except SystemExit as e:
+        print(e)
+    except Exception as e:
+        print(f"⚠️  タグの更新に失敗しました（記事はそのまま動きます）: {e}")
 
     # 🔗 リンクを貼ったときのカード（OGP）も、全記事ぶん作り直す（2026-09-26）
     try:

@@ -385,7 +385,7 @@
   /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
   /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
   @media (min-width: 700px) {
-    h1 + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
   }
   /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
   .next { position: relative; isolation: isolate; }
@@ -413,7 +413,7 @@
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"518672cb48"},"bn":{"v":"735c51be10"},"ceb":{"v":"0c03121958"},"cs":{"v":"00279a4975"},"da":{"v":"7a16323bfe"},"de":{"v":"a8c26de33f"},"el":{"v":"dbe906a510"},"es":{"v":"bf42aa678b"},"fa":{"v":"fe333177b4"},"fi":{"v":"17525301e5"},"fil":{"v":"0ebf563573"},"fr":{"v":"6e78fa985a"},"he":{"v":"ca6d7fb82c"},"hi":{"v":"8257b1f0d3"},"id":{"v":"854b27b4eb"},"it":{"v":"9b2d540829"},"ja":{"v":"1555853b12"},"ko":{"v":"ab57eb5758"},"mr":{"v":"c85bf1c9e8"},"ms":{"v":"092a3cb545"},"nb":{"v":"a637fa027a"},"ne":{"v":"0625502d87"},"nl":{"v":"6db5622e8e"},"pa":{"v":"02d94800f0"},"pl":{"v":"68fc351ae6"},"pt":{"v":"50eeb6f0e0"},"ro":{"v":"6232bb0883"},"ru":{"v":"8f95ef4ca6"},"sv":{"v":"0e331c130c"},"sw":{"v":"3b18b8f69d"},"ta":{"v":"44fafe8dbc"},"te":{"v":"75ca8d69d5"},"th":{"v":"533aabf6e5"},"tr":{"v":"2ea4c6ac60"},"uk":{"v":"bfa94a7ea0"},"ur":{"v":"467ec037bc"},"vi":{"v":"3278c967e6"},"zh":{"v":"fa55bec836"},"zh-Hant":{"v":"d163044931"}},"uiData":true,"uiV":"38b65c5b36"}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"79c860a6b7"},"bn":{"v":"a978120857"},"ceb":{"v":"05c0803028"},"cs":{"v":"4797cd73da"},"da":{"v":"fbc20036a5"},"de":{"v":"4f9e43abf1"},"el":{"v":"2d7afde867"},"es":{"v":"6079e8c360"},"fa":{"v":"e8f72447f5"},"fi":{"v":"1d3e2c9377"},"fil":{"v":"303122f1a9"},"fr":{"v":"1b99d53463"},"he":{"v":"44413e4510"},"hi":{"v":"3aff536423"},"id":{"v":"acbb411772"},"it":{"v":"43b1c9252a"},"ja":{"v":"c9d2fa55b9"},"ko":{"v":"979c5c197d"},"mr":{"v":"f20be96083"},"ms":{"v":"5ff88c4b94"},"nb":{"v":"fffbfba653"},"ne":{"v":"838d6d3b54"},"nl":{"v":"b36816eb54"},"pa":{"v":"40cee81fd6"},"pl":{"v":"f665ef6acc"},"pt":{"v":"a8b9870a8a"},"ro":{"v":"54fafbd1fe"},"ru":{"v":"5f15ac8a97"},"sv":{"v":"6cd270d12e"},"sw":{"v":"cb66999d90"},"ta":{"v":"0a22555fee"},"te":{"v":"fb897c0969"},"th":{"v":"76b6814e53"},"tr":{"v":"bbedebaf71"},"uk":{"v":"6cb7b782d8"},"ur":{"v":"77eecc18c4"},"vi":{"v":"134f02da7f"},"zh":{"v":"6a0058afbe"},"zh-Hant":{"v":"e886467167"}},"uiData":true,"uiV":"38b65c5b36"}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1055,28 +1055,72 @@ if (switchMount && switchMount.parentNode) switchMount.parentNode.insertBefore(b
 else document.body.insertBefore(box, document.body.firstChild);
 }
 var switchMount = null;
-var LEARN_KEY = 'pengesso-learn', NATIVE_KEY = 'pengesso-native-alpha', IT_KEY = 'pengesso-it', STUDY_TIP_KEY = 'pengesso-study-tip';
+var LEARN_KEY = 'pengesso-learn', NATIVE_KEY = 'pengesso-native-alpha', IT_KEY = 'pengesso-it',
+STUDY_TIP_KEY = 'pengesso-study-tip', SUB_KEY = 'pengesso-learn-lang';
 var STUDY_WORDS = {
-ja: { en: '英語も見る', it: 'IT用語で言うと', dim: '日本語の濃さ', tip: '英語の勉強も、いっしょにしますか？ 🇬🇧 をオンにすると、日本語のすぐ下に英語が出ます', itNote: '🤖 AIが強引に IT の言葉で言い換えています（本当の意味とは少しちがいます）' },
-ko: { en: '영어도 보기', dim: '한국어 진하기', tip: '영어 공부도 같이 할까요? 🇬🇧 를 켜면 한국어 바로 아래에 영어가 나와요' },
-zh: { en: '同时看英文', dim: '中文的浓淡', tip: '要不要顺便学英语？打开 🇬🇧，中文下面就会出现英文' },
-'zh-Hant': { en: '同時看英文', dim: '中文的濃淡', tip: '要不要順便學英文？打開 🇬🇧，中文下面就會出現英文' }
+ja: { en: '英語も見る', it: 'IT用語で言うと', dim: '日本語の濃さ',
+tips: ['英語の勉強も、いっしょにしますか？ 🇬🇧 をオンにすると、日本語のすぐ下に英語が出ます',
+'IT業界の人ですか？ 飼い主もIT用語を勉強中。💻 をオンにすると、日記がめちゃくちゃ強引にIT用語に言い換わります'],
+itNote: '🤖 AIがめちゃくちゃ強引に IT の言葉で言い換えています（本当の意味とは少しちがいます）',
+about: '🐧 飼い主は、英語の勉強を続けたいと思っています。そして、IT企業で働いていてテクノロジーが好きなので、IT用語もついでに覚えたいと思っています。' +
+'だから、このブログには小さな勉強モードが2つあります。🇬🇧 をオンにすると、日本語のすぐ下にもとの英文が出ます（日本語を薄くすると、英語に集中できます）。' +
+'💻 をオンにすると、AIが日記をめちゃくちゃ強引に IT用語に言い換えます。英語やIT用語に、ふわっとさわってみたい人は、よかったらどうぞ。' },
+ko: { en: '영어도 보기', dim: '한국어 진하기',
+tips: ['영어 공부도 같이 할까요? 🇬🇧 를 켜면 한국어 바로 아래에 영어가 나와요'],
+about: '🐧 주인은 영어 공부를 계속하고 싶어 합니다. 그리고 IT 회사에서 일하고 기술을 좋아해서, IT 용어도 같이 배우고 싶어 합니다. ' +
+'그래서 이 블로그에는 작은 공부 모드가 있습니다. 🇬🇧 를 켜면 한국어 바로 아래에 원래 영어 문장이 나옵니다. 한국어를 연하게 하면 영어에 집중할 수 있어요.' },
+zh: { en: '同时看英文', dim: '中文的浓淡',
+tips: ['要不要顺便学英语？打开 🇬🇧，中文下面就会出现英文'],
+about: '🐧 主人想继续学习英语。主人也在IT公司工作，喜欢科技，所以也想顺便学一些IT用语。所以这个博客有小小的学习模式。打开 🇬🇧，中文下面就会出现原来的英文。把中文调淡，就能专心看英文。' },
+'zh-Hant': { en: '同時看英文', dim: '中文的濃淡',
+tips: ['要不要順便學英文？打開 🇬🇧，中文下面就會出現英文'],
+about: '🐧 主人想繼續學習英文。主人也在IT公司工作，喜歡科技，所以也想順便學一些IT用語。所以這個部落格有小小的學習模式。打開 🇬🇧，中文下面就會出現原來的英文。把中文調淡，就能專心看英文。' }
 };
-var STUDY_DEFAULT = { en: 'English too', dim: 'My language', tip: 'Learning English too? Turn on 🇬🇧 to see the English under each sentence' };
+var STUDY_DEFAULT = { en: 'English too', dim: 'My language',
+tips: ['Learning English too? Turn on 🇬🇧 to see the English under each sentence'],
+about: '🐧 Pengesso’s owner wants to keep studying English, and also works at an IT company and loves technology. ' +
+'So this blog has small study modes. Turn on 🇬🇧 to see the original English under each sentence. Make your language lighter to focus on the English.' };
+var STUDY_EN = { en: 'Show', it: 'IT words', dim: 'English',
+tips: ['Learning Japanese? Turn on 🌏 to see Japanese (or another language) under each line',
+'Work in IT? 💻 turns this diary into IT words, in a very forced way'],
+itNote: '🤖 AI re-says each line with IT words, in a very forced way (not always correct)',
+about: '🐧 Pengesso’s owner wants to keep studying English, and also works at an IT company and loves technology, so the owner is learning IT words too. ' +
+'So this blog has two small study modes. 🌏 shows another language (Japanese, Korean, Chinese, and more) under each English line. Make the English lighter to focus on the other language. ' +
+'💻 makes AI re-say each line with IT words, in a very forced way. If you want to touch a new language or IT words a little, give them a try.' };
 function learnable(el) {
 if (!el.closest || !el.closest('main')) return false;
-if (el.closest('.topbar, .label, .card-head, .next, .prev, .related, .to-list, .i18n-row, .i18n-switch, .study-bar, .theme-foot, nav, button, .part-nav')) return false;
+if (el.closest('.topbar, .label, .card-head, .next, .prev, .related, .to-list, .i18n-row, .i18n-switch, .study-bar, .study-info, .theme-foot, nav, button, .part-nav, [translate="no"]')) return false;
 return /^(P|LI|H1|H2|H3|FIGCAPTION|BLOCKQUOTE|DT|DD)$/.test(el.tagName) || el.classList.contains('big');
 }
 function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
 function get(k, d) { try { var v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } }
 function set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
-function drawLearn(list) {
+function plain(html) { var t = document.createElement('template'); t.innerHTML = html; return t.content.textContent; }
+function nrm(s) { return String(s).replace(/\s+/g, ' ').trim(); }
+function fp2(s) { var h = 0x811c9dc5; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(36); }
+var INL = { A:1, ABBR:1, B:1, BR:1, CODE:1, EM:1, I:1, MARK:1, Q:1, S:1, SMALL:1, STRONG:1, SUB:1, SUP:1, U:1, TIME:1, WBR:1, SPAN:1 };
+function collectEnglish() {
+var out = [];
+document.querySelectorAll('main p, main li, main h1, main h2, main h3, main figcaption, main blockquote, main dt, main dd, main .big').forEach(function (el) {
+if (!learnable(el)) return;
+var parts = [], shown = [], direct = false;
+for (var c = el.firstChild; c; c = c.nextSibling) {
+if (c.nodeType === 3) { parts.push(c.nodeValue); shown.push(c.nodeValue); if (/\S/.test(c.nodeValue)) direct = true; }
+else if (c.nodeType === 1 && INL[c.tagName] && !c.hasAttribute('class') && !c.hasAttribute('id')) {
+parts.push(c.textContent); shown.push(c.tagName === 'BR' ? '\n' : c.textContent);
+}
+}
+if (direct) out.push({ el: el, en: nrm(parts.join('')) });
+});
+return out;
+}
+function drawLearn(list, enMode) {
 if (!list.length || document.querySelector('.study-bar')) return;
 var root = document.documentElement;
-var W = STUDY_WORDS[lang] || STUDY_DEFAULT;
+var W = enMode ? STUDY_EN : (STUDY_WORDS[lang] || STUDY_DEFAULT);
 var itMeta = document.querySelector('meta[name="pengesso-it"]');
-var hasIt = !!(itMeta && (' ' + itMeta.content + ' ').indexOf(' ' + lang + ' ') >= 0 && W.it);
+var itLang = enMode ? 'en' : lang;
+var hasIt = !!(itMeta && (' ' + itMeta.content + ' ').indexOf(' ' + itLang + ' ') >= 0 && W.it);
 var st = document.createElement('style');
 st.textContent =
 '.study-bar{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:-8px 0 16px}' +
@@ -1084,7 +1128,7 @@ st.textContent =
 'border:2px solid rgba(255,255,255,.9);border-radius:999px;background:#fff;color:#5b4bb0;font:inherit;font-size:13px;font-weight:800;' +
 'line-height:1;cursor:pointer;box-shadow:0 6px 16px rgba(115,70,111,.10);white-space:nowrap}' +
 '.study-btn.it{color:#1f7a55}' +
-'.study-btn:focus-visible{outline:3px solid rgba(139,109,232,.45);outline-offset:2px}' +
+'.study-btn:focus-visible,.study-q:focus-visible,.study-sel:focus-visible{outline:3px solid rgba(139,109,232,.45);outline-offset:2px}' +
 '.study-sw{position:relative;flex:none;width:34px;height:20px;border-radius:999px;background:#ddd6f3;transition:background .2s}' +
 '.study-btn.it .study-sw{background:#cfe9dc}' +
 '.study-sw::after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff;' +
@@ -1093,15 +1137,23 @@ st.textContent =
 '.study-btn.it[aria-pressed="true"] .study-sw{background:#2f9e6e}' +
 '.study-btn[aria-pressed="true"] .study-sw::after{transform:translateX(14px)}' +
 'html[dir="rtl"] .study-btn[aria-pressed="true"] .study-sw::after{transform:translateX(-14px)}' +
+'.study-sel{min-height:38px;max-width:150px;padding:0 10px;border:2px solid rgba(255,255,255,.9);border-radius:999px;background:#fff;' +
+'color:#5b4bb0;font:inherit;font-size:13px;font-weight:800;box-shadow:0 6px 16px rgba(115,70,111,.10)}' +
+'.study-q{flex:none;width:38px;height:38px;border:2px solid rgba(255,255,255,.9);border-radius:50%;background:#fff;color:#5b4bb0;' +
+'font:inherit;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 6px 16px rgba(115,70,111,.10)}' +
+'.study-q[aria-expanded="true"]{background:#5b4bb0;color:#fff}' +
+'.study-info{margin:-6px 0 16px;padding:14px 16px;border-radius:18px;background:#f3effc;color:#3f3478;font-size:13.5px;font-weight:700;line-height:1.7}' +
+'.study-info[hidden]{display:none}' +
 '.study-dim{display:none;align-items:center;gap:8px;min-height:38px;padding:4px 14px;border-radius:999px;background:#fff;' +
 'color:#5b4bb0;font-size:12.5px;font-weight:800;box-shadow:0 6px 16px rgba(115,70,111,.10)}' +
 'html.learn-on .study-dim{display:inline-flex}' +
 '.study-dim input{width:110px;accent-color:#8b6de8}' +
 '.learn-en{display:none;margin-top:.4em;padding:.15em 0 .15em .7em;border-left:3px solid #c9bbf5;' +
 'font-size:.86em;line-height:1.55;font-weight:700;color:#5b4bb0;color:color-mix(in srgb,currentColor 35%,#6a55d8);white-space:pre-line;' +
-'text-align:left;unicode-bidi:isolate;letter-spacing:0;border-left-color:rgba(139,109,232,.55)}' +
+'text-align:start;unicode-bidi:isolate;letter-spacing:0;border-left-color:rgba(139,109,232,.55)}' +
 'h1 .learn-en,h1 .it-say{font-size:.5em;line-height:1.45}' +
 'html.learn-on .learn-en{display:block;animation:learnIn .45s ease both}' +
+'html.learn-on .learn-en[hidden]{display:none}' +
 'html.learn-on .learn-native{opacity:var(--native-a,1);transition:opacity .15s}' +
 '.it-say{display:none;margin-top:.45em;padding:.45em .7em;border-radius:12px;background:#eaf7f0;color:#1d5c41;' +
 'font-size:.84em;line-height:1.6;font-weight:700;text-align:start}' +
@@ -1112,15 +1164,18 @@ st.textContent =
 'html.it-on .it-note{display:block}' +
 '@keyframes learnIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}' +
 '.study-tip{position:absolute;left:0;top:calc(100% + 10px);z-index:55;display:flex;align-items:flex-start;gap:6px;' +
-'max-width:min(300px,calc(100vw - 32px));padding:10px 8px 10px 14px;border-radius:16px;background:#5b4bb0;color:#fff;' +
+'max-width:min(310px,calc(100vw - 32px));padding:10px 8px 10px 14px;border-radius:16px;background:#5b4bb0;color:#fff;' +
 'font-size:13px;font-weight:800;line-height:1.5;box-shadow:0 10px 24px rgba(91,75,176,.35);animation:tipIn .4s ease both;cursor:pointer}' +
+'.study-tip.it{background:#1f7a55;box-shadow:0 10px 24px rgba(31,122,85,.35)}.study-tip.it::before{background:#1f7a55}' +
 '.study-tip::before{content:"";position:absolute;left:26px;top:-7px;width:14px;height:14px;background:#5b4bb0;transform:rotate(45deg);border-radius:3px}' +
 'html[dir="rtl"] .study-tip{left:auto;right:0}html[dir="rtl"] .study-tip::before{left:auto;right:26px}' +
 '.study-tip button{flex:none;width:28px;height:28px;margin:-4px 0;border:0;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font:inherit;cursor:pointer}' +
+'.study-tip .t{transition:opacity .25s}.study-tip .t.fade{opacity:0}' +
 '.study-tip.bye{opacity:0;transition:opacity .35s}' +
 '@keyframes tipIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}' +
 'html[data-theme="dark"] .learn-en{color:#c9bbff;border-color:#7a66d8}' +
-'html[data-theme="dark"] :is(.study-btn,.study-dim){background:#22242f;border-color:#33364a;color:#c9bbff}' +
+'html[data-theme="dark"] :is(.study-btn,.study-dim,.study-sel,.study-q){background:#22242f;border-color:#33364a;color:#c9bbff}' +
+'html[data-theme="dark"] .study-info{background:#2a2540;color:#ddd5ff}' +
 'html[data-theme="dark"] .study-btn.it{color:#8fe0b8}' +
 'html[data-theme="dark"] .it-say{background:#163126;color:#bfead4}html[data-theme="dark"] .it-say b{background:#1f4a37;color:#d8ffe9}' +
 'html[data-theme="dark"] .it-say small{color:#8fc7ad}html[data-theme="dark"] .it-note{background:#163126;color:#bfead4}' +
@@ -1134,45 +1189,80 @@ wrap.className = 'learn-native';
 while (el.firstChild) wrap.appendChild(el.firstChild);
 el.appendChild(wrap);
 var s = document.createElement('span');
-s.className = 'learn-en';
-s.setAttribute('lang', 'en'); s.setAttribute('dir', 'ltr'); s.setAttribute('translate', 'no');
-s.textContent = x.show || x.en;
+s.className = 'learn-en'; s.setAttribute('translate', 'no');
+if (!enMode) { s.setAttribute('lang', 'en'); s.setAttribute('dir', 'ltr'); s.textContent = x.show || x.en; }
+x.sub = s;
 el.appendChild(s);
 });
+var subLoaded = {};
+function fillSub(l) {
+list.forEach(function (x) { if (x.sub) { x.sub.textContent = ''; x.sub.hidden = true; } });
+function put(dict) {
+list.forEach(function (x) {
+var t = dict[fp2(x.en)];
+if (!t || !x.sub) return;
+x.sub.textContent = plain(t); x.sub.hidden = false;
+x.sub.setAttribute('lang', l); x.sub.setAttribute('dir', /^(ar|ur|fa|he)$/.test(l) ? 'rtl' : 'ltr');
+});
+}
+if (subLoaded[l]) return put(subLoaded[l]);
+var L = LANGS[l]; if (!L) return;
+if (L.dict && Object.keys(L.dict).length) { subLoaded[l] = L.dict; return put(L.dict); }
+if (!window.fetch) return;
+var u = new URL('i18n/data.' + encodeURIComponent(l) + '.json', location.href);
+if (L.v) u.searchParams.set('v', L.v);
+fetch(u.toString(), { credentials: 'same-origin' }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
+.then(function (d) { subLoaded[l] = d.dict || {}; if (sel.value === l) put(subLoaded[l]); }).catch(function () {});
+}
 var bar = document.createElement('div');
 bar.className = 'study-bar'; bar.setAttribute('translate', 'no');
-function toggle(cls, label, key, htmlClass, onFirst) {
+function toggle(cls, label, key, htmlClass, onOn) {
 var b = document.createElement('button');
 b.type = 'button'; b.className = 'study-btn' + (cls ? ' ' + cls : '');
 b.innerHTML = '<span class="study-sw" aria-hidden="true"></span><span></span>';
 b.lastChild.textContent = label;
 var on = get(key, '0') === '1';
-function paint() { b.setAttribute('aria-pressed', on ? 'true' : 'false'); root.classList.toggle(htmlClass, on); if (on && onFirst) onFirst(); }
+function paint() { b.setAttribute('aria-pressed', on ? 'true' : 'false'); root.classList.toggle(htmlClass, on); if (on && onOn) onOn(); }
 b.addEventListener('click', function () { on = !on; set(key, on ? '1' : '0'); paint(); closeTip(); });
-paint();
 bar.appendChild(b);
+b._paint = paint;
 return b;
 }
-var enBtn = toggle('', '🇬🇧 ' + W.en, LEARN_KEY, 'learn-on');
+var sel = null;
+var enBtn = toggle('', (enMode ? '🌏 ' : '🇬🇧 ') + W.en, LEARN_KEY, 'learn-on', function () { if (enMode) fillSub(sel.value); });
+if (enMode) {
+sel = document.createElement('select');
+sel.className = 'study-sel'; sel.setAttribute('aria-label', 'Language to show under English');
+var pref = ['ja', 'ko', 'zh', 'zh-Hant', 'es', 'fr', 'de', 'pt', 'id', 'vi', 'th', 'fil'];
+var opts = pref.filter(function (l) { return LANGS[l]; }).concat(Object.keys(LANGS).filter(function (l) { return pref.indexOf(l) < 0; }));
+opts.forEach(function (l) { var o = document.createElement('option'); o.value = l; o.textContent = (FLAGS[l] || '') + ' ' + (NAMES[l] || l); sel.appendChild(o); });
+var want = get(SUB_KEY, 'ja'); sel.value = LANGS[want] ? want : 'ja';
+sel.addEventListener('change', function () {
+set(SUB_KEY, sel.value);
+if (!root.classList.contains('learn-on')) enBtn.click(); else fillSub(sel.value);
+});
+bar.appendChild(sel);
+}
 var dim = document.createElement('label');
 dim.className = 'study-dim';
 dim.innerHTML = '<span></span><input type="range" min="10" max="100" step="5">';
-dim.firstChild.textContent = W.dim;
+dim.firstChild.textContent = enMode ? 'English' : W.dim;
 var range = dim.lastChild;
 range.value = get(NATIVE_KEY, '100');
-range.setAttribute('aria-label', W.dim);
+range.setAttribute('aria-label', dim.firstChild.textContent);
 function alpha() { root.style.setProperty('--native-a', String(range.value / 100)); }
 range.addEventListener('input', function () { alpha(); set(NATIVE_KEY, range.value); });
 alpha();
+var itBtn = null, note = null;
 if (hasIt) {
 var itLoaded = false;
-var note = document.createElement('p');
-note.className = 'it-note';
+note = document.createElement('p');
+note.className = 'it-note'; note.setAttribute('translate', 'no');
 note.textContent = W.itNote;
-toggle('it', '💻 ' + W.it, IT_KEY, 'it-on', function () {
+itBtn = toggle('it', '💻 ' + W.it, IT_KEY, 'it-on', function () {
 if (itLoaded || !window.fetch) return;
 itLoaded = true;
-fetch(new URL('it.' + encodeURIComponent(lang) + '.json', location.href).toString(), { credentials: 'same-origin' })
+fetch(new URL('it.' + encodeURIComponent(itLang) + '.json', location.href).toString(), { credentials: 'same-origin' })
 .then(function (r) { if (!r.ok) throw new Error('no it'); return r.json(); })
 .then(function (data) {
 var items = data.items || {};
@@ -1182,7 +1272,7 @@ if (!it || !x.el.isConnected) return;
 var s = document.createElement('span');
 s.className = 'it-say'; s.setAttribute('translate', 'no');
 s.innerHTML = '💻 ' + esc(it.it).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>') +
-(it.term && it.mean ? '<small>📖 ' + esc(it.term) + '＝' + esc(it.mean) + '</small>' : '');
+(it.term && it.mean ? '<small>📖 ' + esc(it.term) + (enMode ? ' = ' : '＝') + esc(it.mean) + '</small>' : '');
 x.el.appendChild(s);
 });
 })
@@ -1190,28 +1280,49 @@ x.el.appendChild(s);
 });
 }
 bar.appendChild(dim);
+var q = document.createElement('button');
+q.type = 'button'; q.className = 'study-q'; q.textContent = '?';
+q.setAttribute('aria-expanded', 'false'); q.setAttribute('aria-label', 'About these study modes');
+var info = document.createElement('p');
+info.className = 'study-info'; info.hidden = true; info.setAttribute('translate', 'no');
+info.textContent = W.about;
+q.addEventListener('click', function () { info.hidden = !info.hidden; q.setAttribute('aria-expanded', info.hidden ? 'false' : 'true'); closeTip(); });
+bar.appendChild(q);
 var row = switchMount && switchMount.classList.contains('i18n-row') ? switchMount : null;
 if (row) row.parentNode.insertBefore(bar, row.nextSibling);
 else { var h1 = document.querySelector('main h1'); if (!h1) return; h1.parentNode.insertBefore(bar, h1); }
-if (hasIt) bar.parentNode.insertBefore(note, bar.nextSibling);
-var tip = null;
+bar.parentNode.insertBefore(info, bar.nextSibling);
+if (note) info.parentNode.insertBefore(note, info.nextSibling);
+enBtn._paint(); if (itBtn) itBtn._paint();
+var tip = null, iv = null;
 function closeTip() {
 if (!tip) return;
-var t = tip; tip = null; set(STUDY_TIP_KEY, '9');
+var t = tip; tip = null; clearInterval(iv); set(STUDY_TIP_KEY, '9');
 t.classList.add('bye'); setTimeout(function () { t.remove(); }, 380);
 }
+var lines = (W.tips || []).slice(0, hasIt ? 2 : 1);
 var shown = +get(STUDY_TIP_KEY, '0') || 0;
-if (get(LEARN_KEY, null) === null && shown < 3) {
+if (lines.length && get(LEARN_KEY, null) === null && get(IT_KEY, null) === null && shown < 3) {
 set(STUDY_TIP_KEY, String(shown + 1));
 var old = row && row.querySelector('.i18n-tip');
 if (old) old.remove();
 tip = document.createElement('div');
 tip.className = 'study-tip'; tip.setAttribute('role', 'status');
-tip.innerHTML = '<span></span><button type="button" aria-label="×">×</button>';
-tip.firstChild.textContent = W.tip;
-tip.addEventListener('click', function (e) { if (e.target.tagName !== 'BUTTON') enBtn.click(); closeTip(); });
+tip.innerHTML = '<span class="t"></span><button type="button" aria-label="×">×</button>';
+var tx = tip.firstChild, n = 0;
+tx.textContent = lines[0];
+tip.addEventListener('click', function (e) {
+if (e.target.tagName !== 'BUTTON') (n === 1 && itBtn ? itBtn : enBtn).click();
+closeTip();
+});
 bar.appendChild(tip);
-setTimeout(function () { if (tip) { var t = tip; tip = null; t.classList.add('bye'); setTimeout(function () { t.remove(); }, 380); } }, 12000);
+var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (lines.length > 1 && !reduce) iv = setInterval(function () {
+if (!tip) return clearInterval(iv);
+tx.classList.add('fade');
+setTimeout(function () { if (!tip) return; n = (n + 1) % lines.length; tx.textContent = lines[n]; tip.classList.toggle('it', n === 1); tx.classList.remove('fade'); }, 250);
+}, 4500);
+setTimeout(function () { if (tip) { var t = tip; tip = null; clearInterval(iv); t.classList.add('bye'); setTimeout(function () { t.remove(); }, 380); } }, 14000);
 }
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
@@ -1221,7 +1332,8 @@ UI_READY.then(startReady, startReady);
 }
 function startReady() {
 drawSwitch();
-if (lang === 'en') return;
+window.pengessoLang = lang;
+if (lang === 'en') { if (!DATA.lazyTop) drawLearn(collectEnglish(), true); return; }
 drawNotice(lang, LANGS[lang] || {});
 if (DATA.lazyTop) {
 if (!LANGS[lang] || !window.fetch) return;
@@ -1386,6 +1498,9 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
   <div class="series">⚾ WHAT SURPRISED ME AT A KOREAN BALLPARK</div>
   <div class="label"><span class="topic">✈️ TRAVEL</span>⚡ 14 SEC</div>
   <h1>At Korean ballparks, the cheer songs come out of speakers <span class="float">🔊</span></h1>
+  <!-- 🏷 タグ（tools/tags.py） -->
+  <style id="post-tags-css">.post-tags{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 18px}.post-tags a{display:inline-flex;align-items:center;gap:4px;padding:6px 11px;border-radius:999px;background:#fff;border:1.5px solid rgba(35,44,72,.12);color:#3a3550;font-size:12.5px;font-weight:800;line-height:1.2;text-decoration:none;box-shadow:0 3px 8px rgba(35,44,72,.05);transition:transform .15s ease,border-color .15s ease}.post-tags a:hover{transform:translateY(-1px);border-color:#8b6de8}.post-tags a.place{background:#f3effc}html[data-theme="dark"] .post-tags a{background:#22242f;border-color:#33364a;color:#e6e2ff}html[data-theme="dark"] .post-tags a.place{background:#2a2540}@media (prefers-reduced-motion:reduce){.post-tags a{transition:none}}</style><nav class="post-tags" aria-label="Tags"><a href="../../index.html?tag=south-korea#posts" class="place">🇰🇷 South Korea</a><a href="../../index.html?tag=seoul#posts" class="place">🏙️ Seoul</a><a href="../../index.html?tag=baseball#posts">⚾ Baseball</a><a href="../../index.html?tag=music#posts">🎵 Music</a><a href="../../index.html?tag=sports#posts">🏟️ Sports</a><a href="../../index.html?tag=culture-differences#posts">🌏 Culture differences</a><a href="../../index.html?tag=travel#posts">✈️ Travel</a><a href="../../index.html?tag=video#posts">🎬 Video</a></nav>
+  <!-- /🏷 -->
 
   <!-- 🎬 動画を一番上に（2026-09-24 本人：いきなり文章が始まると何のことか分からない） -->
   <figure class="video-card">

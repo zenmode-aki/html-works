@@ -106,6 +106,18 @@ def load_all():
     return out
 
 
+_TAG_N = {}
+
+
+def _tag_w(t, info):
+    """タグの重さ：2本だけのタグ≒8点、10本≒4点、50本≒2点、100本以上≒1点"""
+    if not _TAG_N:
+        for v in info.values():
+            for x in v["meta"].get("tags", []):
+                _TAG_N[x] = _TAG_N.get(x, 0) + 1
+    return max(1, round(12 / max(1, _TAG_N.get(t, 1)) ** 0.5))
+
+
 def pick_related(slug, doc, info):
     me = info[slug]["meta"]
     skip = {slug} | set(re.findall(r'<a class="(?:next|prev)"[^>]*href="\.\./([^/]+)/index\.html"', doc))
@@ -118,7 +130,8 @@ def pick_related(slug, doc, info):
             pts += 20                                   # 同じシリーズ（Part 1/2/3）
         if m.get("series") and m.get("series") == me.get("series"):
             pts += 20                                   # meta.json の "series" が同じ（名古屋ドームの4本など）
-        pts += 6 * len(set(m.get("tags", [])) & set(me.get("tags", [])))   # 同じタグ（"baseball" など）
+        # 同じタグ。めずらしいタグほど重く（"baseball" は強く、"japan" や "travel" は弱く）
+        pts += sum(_tag_w(t, info) for t in set(m.get("tags", [])) & set(me.get("tags", [])))
         if m.get("topic") and m.get("topic") == me.get("topic"):
             pts += 5                                    # 同じ話題（仕事・旅・暮らし…）
         if m.get("place") and m.get("place") == me.get("place"):
@@ -171,7 +184,7 @@ FIX_CSS = """<style id="shared-fix-css">
   /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
   /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
   @media (min-width: 700px) {
-    h1 + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
   }
   /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
   .next { position: relative; isolation: isolate; }
