@@ -201,16 +201,19 @@ def main():
         print(f"\n⚠️  サムネがまだ無い: {', '.join(missing)}")
         print("   python3 tools/thumbs.py  で作れます（macOSのみ）")
 
-    # 💻 ☁️ 勉強モードの目印（2026-10-03）：it.<lang>.json / gcp.<lang>.json がある記事の <head> に
-    #    <meta name="pengesso-it" content="ja en gcp"> を入れる。ファイルを足したら自動で付く。手で書かない
+    # 💻 ☁️ 勉強モードの目印（2026-10-03）：<pack>.<lang>.json がある記事の <head> に
+    #    <meta name="pengesso-it" content="it:en,ja gcp:en,ja net:en,ja,ko"> を入れる。ファイルを足したら自動で付く。手で書かない
     import re as _re
     for d in sorted((ROOT / "works").iterdir()):
         page = d / "index.html"
         if not page.exists():
             continue
-        toks = [l for l in ("ja", "en") if (d / f"it.{l}.json").exists()]
-        if toks and all((d / f"gcp.{l}.json").exists() for l in toks):
-            toks.append("gcp")
+        # 言い換えパック：💻 it ☁️ gcp 🌐 net 🖥 srv 🔐 sec 💼 biz。「net:ja,en,ko」の形で、読める言語を書く
+        toks = []
+        for pack in ("it", "gcp", "net", "srv", "sec", "biz"):
+            ls = sorted(f.name.split(".")[1] for f in d.glob(f"{pack}.*.json"))
+            if ls:
+                toks.append(f"{pack}:{','.join(ls)}")
         doc = page.read_text(encoding="utf-8")
         new = _re.sub(r'<meta name="pengesso-it"[^>]*>(<!--[^>]*-->)?\n?', "", doc)
         if toks:

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="pengesso-it" content="ja en gcp">
+<meta name="pengesso-it" content="it:en,ja gcp:en,ja">
 <title>If you ride a bike in Korea, use the Seoul city share bikes</title>
 <!-- ⬇️ OGP（tools/ogp.py） -->
 <meta name="description" content="I rode a bike in Korea." />
@@ -1136,13 +1136,16 @@ var LEARN_KEY = 'pengesso-learn', NATIVE_KEY = 'pengesso-native-alpha', IT_KEY =
 STUDY_TIP_KEY = 'pengesso-study-tip', SUB_KEY = 'pengesso-learn-lang';
 var STUDY_WORDS = {
 ja: { en: '英語も見る', it: 'IT用語で言うと', gcp: 'Google Cloud で言うと', dim: '日本語の濃さ',
+net: 'ネットワークで言うと', srv: 'サーバーで言うと', sec: 'セキュリティで言うと', biz: 'ビジネス横文字で言うと',
 tips: ['英語の勉強も、いっしょにしますか？ 🇬🇧 をオンにすると、日本語のすぐ下に英語が出ます',
 'IT業界の人ですか？ 飼い主もIT用語を勉強中。💻 をオンにすると、日記がめちゃくちゃ強引にIT用語に言い換わります'],
-itNote: '🤖 AIがめちゃくちゃ強引に IT の言葉（💻 ふつうのIT用語／☁️ Google Cloud の言葉）で言い換えています。略語はフルスペルで書いています',
+itNote: '🤖 AIがめちゃくちゃ強引に IT の言葉（💻 ふつうのIT用語／Google Cloud の言葉）で言い換えています。略語はフルスペルで書いています',
 about: '🐧 飼い主は、英語の勉強を続けたいと思っています。そして、IT企業で働いていてテクノロジーが好きなので、IT用語もついでに覚えたいと思っています。' +
 'だから、このブログには小さな勉強モードが2つあります。🇬🇧 をオンにすると、日本語のすぐ下にもとの英文が出ます（日本語を薄くすると、英語に集中できます）。' +
 '💻 をオンにすると、AIが日記をめちゃくちゃ強引に IT用語に言い換えます。英語やIT用語に、ふわっとさわってみたい人は、よかったらどうぞ。' },
 ko: { en: '영어도 보기', dim: '한국어 진하기',
+net: '네트워크로 말하면', srv: '서버로 말하면', sec: '보안으로 말하면', biz: '비즈니스 용어로 말하면',
+itNote: '🤖 AI가 아주 억지로 각 분야의 말로 바꿔 말하고 있어요(베타). 약어는 풀어서 써요',
 tips: ['영어 공부도 같이 할까요? 🇬🇧 를 켜면 한국어 바로 아래에 영어가 나와요'],
 about: '🐧 주인은 영어 공부를 계속하고 싶어 합니다. 그리고 IT 회사에서 일하고 기술을 좋아해서, IT 용어도 같이 배우고 싶어 합니다. ' +
 '그래서 이 블로그에는 작은 공부 모드가 있습니다. 🇬🇧 를 켜면 한국어 바로 아래에 원래 영어 문장이 나옵니다. 한국어를 연하게 하면 영어에 집중할 수 있어요.' },
@@ -1158,9 +1161,10 @@ tips: ['Learning English too? Turn on 🇬🇧 to see the English under each sen
 about: '🐧 Pengesso’s owner wants to keep studying English, and also works at an IT company and loves technology. ' +
 'So this blog has small study modes. Turn on 🇬🇧 to see the original English under each sentence. Make your language lighter to focus on the English.' };
 var STUDY_EN = { en: 'Show', it: 'IT words', gcp: 'Google Cloud', dim: 'English',
+net: 'Network', srv: 'Server', sec: 'Security', biz: 'Business jargon',
 tips: ['Learning Japanese? Turn on 🌏 to see Japanese (or another language) under each line',
 'Work in IT? 💻 turns this diary into IT words, in a very forced way'],
-itNote: '🤖 AI re-says each line with IT words (💻 general IT / ☁️ Google Cloud), in a very forced way. Short forms are spelled out',
+itNote: '🤖 AI re-says each line with IT words (💻 general IT / Google Cloud), in a very forced way. Short forms are spelled out',
 about: '🐧 Pengesso’s owner wants to keep studying English, and also works at an IT company and loves technology, so the owner is learning IT words too. ' +
 'So this blog has two small study modes. 🌏 shows another language (Japanese, Korean, Chinese, and more) under each English line. Make the English lighter to focus on the other language. ' +
 '💻 makes AI re-say each line with IT words, in a very forced way. If you want to touch a new language or IT words a little, give them a try.' };
@@ -1197,8 +1201,25 @@ var root = document.documentElement;
 var W = enMode ? STUDY_EN : (STUDY_WORDS[lang] || STUDY_DEFAULT);
 var itMeta = document.querySelector('meta[name="pengesso-it"]');
 var itLang = enMode ? 'en' : lang;
-var hasIt = !!(itMeta && (' ' + itMeta.content + ' ').indexOf(' ' + itLang + ' ') >= 0 && W.it);
-var hasGcp = hasIt && (' ' + itMeta.content + ' ').indexOf(' gcp ') >= 0 && !!W.gcp;
+var PACK_ORDER = ['it', 'gcp', 'net', 'srv', 'sec', 'biz'];
+var PACK_ICON = { it: '💻', gcp: '☁️', net: '🌐', srv: '🖥', sec: '🔐', biz: '💼' };
+var GCP_MARK = '<img class="gcp-mark" src="/assets/gcp-mark.png" alt="Google Cloud" width="20" height="16" decoding="async">';
+function packIcon(kind) { return kind === 'gcp' ? GCP_MARK : PACK_ICON[kind]; }
+var packLangs = {};
+if (itMeta) {
+var legacy = [];
+itMeta.content.split(/\s+/).forEach(function (t) {
+if (!t) return;
+var m = t.split(':');
+if (m.length === 2) packLangs[m[0]] = m[1].split(',');
+else if (t === 'gcp') packLangs.gcp = 'legacy';
+else legacy.push(t);
+});
+if (legacy.length && !packLangs.it) packLangs.it = legacy;
+if (packLangs.gcp === 'legacy') packLangs.gcp = packLangs.it || [];
+}
+var packs = PACK_ORDER.filter(function (k) { return packLangs[k] && packLangs[k].indexOf(itLang) >= 0 && W[k]; });
+var hasIt = packs.length > 0;
 var st = document.createElement('style');
 st.textContent =
 '.study-bar{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:-8px 0 16px}' +
@@ -1235,6 +1256,7 @@ st.textContent =
 'html.learn-on .learn-native{opacity:var(--native-a,1);transition:opacity .15s}' +
 '.it-say{display:none;margin-top:.45em;padding:.45em .7em;border-radius:12px;background:#eaf7f0;color:#1d5c41;' +
 'font-size:.84em;line-height:1.6;font-weight:700;text-align:start}' +
+'.gcp-mark{display:inline-block;width:1.25em;height:auto;vertical-align:-.2em;margin-right:1px}' +
 '.it-say b{color:#0b5e3a;background:linear-gradient(transparent 48%,#a9e4c6 48%);padding:0 .15em;border-radius:3px;font-weight:900}' +
 '.study-beta{margin-left:2px;padding:1px 5px;border-radius:5px;background:#2d2845;color:#fff;font-size:9.5px;font-weight:900;letter-spacing:.06em;line-height:1.4}' +
 '.it-say small{display:block;margin-top:.2em;font-size:.86em;color:#4d7a66}' +
@@ -1243,6 +1265,21 @@ st.textContent =
 '.gcp-say b{color:#0b3d91;background:linear-gradient(transparent 48%,#c2d7fb 48%);padding:0 .15em;border-radius:3px;font-weight:900}' +
 '.gcp-say small{display:block;margin-top:.15em;font-size:.88em;opacity:.85}' +
 'html.gcp-on .gcp-say{display:block;animation:learnIn .45s ease both}h1 .gcp-say{font-size:.5em;line-height:1.45}' +
+'.net-say,.srv-say,.sec-say,.biz-say{display:none;margin-top:.45em;padding:.45em .7em;border-radius:12px;font-size:.86em;line-height:1.6;font-weight:700;text-align:start}' +
+'.net-say small,.srv-say small,.sec-say small,.biz-say small{display:block;margin-top:.15em;font-size:.88em;opacity:.85}' +
+'h1 .net-say,h1 .srv-say,h1 .sec-say,h1 .biz-say{font-size:.5em;line-height:1.45}' +
+'.net-say{background:#e4f6f6;color:#0b5e66}.net-say b{background:linear-gradient(transparent 48%,#aee2e5 48%)}' +
+'.srv-say{background:#eef0f7;color:#36406a}.srv-say b{background:linear-gradient(transparent 48%,#cbd2ec 48%)}' +
+'.sec-say{background:#fdeeee;color:#8a1f2b}.sec-say b{background:linear-gradient(transparent 48%,#f5c4c8 48%)}' +
+'.biz-say{background:#fff3e2;color:#87480a}.biz-say b{background:linear-gradient(transparent 48%,#ffd8a1 48%)}' +
+'.net-say b,.srv-say b,.sec-say b,.biz-say b{padding:0 .15em;border-radius:3px;font-weight:900;color:inherit}' +
+'html.net-on .net-say,html.srv-on .srv-say,html.sec-on .sec-say,html.biz-on .biz-say{display:block;animation:learnIn .45s ease both}' +
+'.study-btn.net{color:#0b6e78}.study-btn.srv{color:#3d4a86}.study-btn.sec{color:#a3263a}.study-btn.biz{color:#9a5408}' +
+'.study-btn.net[aria-pressed="true"] .study-sw{background:#139aa6}.study-btn.srv[aria-pressed="true"] .study-sw{background:#5866b3}' +
+'.study-btn.sec[aria-pressed="true"] .study-sw{background:#d0384e}.study-btn.biz[aria-pressed="true"] .study-sw{background:#e08a1e}' +
+'html[data-theme="dark"] .net-say{background:#123236;color:#bdeef0}html[data-theme="dark"] .srv-say{background:#20243a;color:#d3d9f5}' +
+'html[data-theme="dark"] .sec-say{background:#3a1a20;color:#f8d0d5}html[data-theme="dark"] .biz-say{background:#3a2a14;color:#ffe2bd}' +
+'html[data-theme="dark"] .net-say b,html[data-theme="dark"] .srv-say b,html[data-theme="dark"] .sec-say b,html[data-theme="dark"] .biz-say b{background:rgba(255,255,255,.14)}' +
 'html[data-theme="dark"] .gcp-say{background:#16233d;color:#c6dafc}html[data-theme="dark"] .gcp-say b{background:linear-gradient(transparent 48%,#274b86 48%);color:#e3edff}' +
 '.it-note{display:none;width:fit-content;margin:-6px 0 14px;padding:6px 12px;border-radius:12px;background:#eaf7f0;font-size:12px;font-weight:700;color:#1d5c41}' +
 'html.it-on .it-note{display:block}' +
@@ -1338,10 +1375,10 @@ range.setAttribute('aria-label', dim.firstChild.textContent);
 function alpha() { root.style.setProperty('--native-a', String(range.value / 100)); }
 range.addEventListener('input', function () { alpha(); set(NATIVE_KEY, range.value); });
 alpha();
-var itBtn = null, gcpBtn = null, note = null;
-function sayToggle(kind, label, key, htmlClass, icon) {
-var loaded = false;
-return toggle(kind, icon + ' ' + label, key, htmlClass, function () {
+var note = null, packBtns = [];
+function sayToggle(kind) {
+var loaded = false, icon = PACK_ICON[kind], order = PACK_ORDER.indexOf(kind);
+var b = toggle(kind, icon + ' ' + W[kind], 'pengesso-' + kind, kind + '-on', function () {
 if (loaded || !window.fetch) return;
 loaded = true;
 fetch(new URL(kind + '.' + encodeURIComponent(itLang) + '.json', location.href).toString(), { credentials: 'same-origin' })
@@ -1352,23 +1389,26 @@ list.forEach(function (x) {
 var it = items[x.en];
 if (!it || !x.el.isConnected) return;
 var s = document.createElement('span');
-s.className = kind + '-say'; s.setAttribute('translate', 'no');
-s.innerHTML = icon + ' ' + esc(it.it).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>') +
+s.className = 'pack-say ' + kind + '-say'; s.setAttribute('translate', 'no'); s.setAttribute('data-o', String(order));
+s.innerHTML = packIcon(kind) + ' ' + esc(it.it).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>') +
 (it.term && it.mean ? '<small>📖 ' + esc(it.term) + (enMode ? ' = ' : '＝') + esc(it.mean) + '</small>' : '');
-var after = kind === 'it' && x.el.querySelector(':scope > .gcp-say');
+var after = null;
+[].forEach.call(x.el.querySelectorAll(':scope > .pack-say'), function (o) { if (!after && +o.getAttribute('data-o') > order) after = o; });
 if (after) x.el.insertBefore(s, after); else x.el.appendChild(s);
 });
 })
 .catch(function () {});
 });
+if (kind === 'gcp') b.children[1].innerHTML = GCP_MARK + ' ' + esc(W[kind]);
+return b;
 }
 if (hasIt) {
 note = document.createElement('p');
 note.className = 'it-note'; note.setAttribute('translate', 'no');
-note.textContent = W.itNote;
-itBtn = sayToggle('it', W.it, IT_KEY, 'it-on', '💻');
-if (hasGcp) gcpBtn = sayToggle('gcp', W.gcp, GCP_KEY, 'gcp-on', '☁️');
+note.textContent = W.itNote || STUDY_EN.itNote;
+packs.forEach(function (k) { packBtns.push(sayToggle(k)); });
 }
+var itBtn = packBtns[0] || null;
 bar.appendChild(dim);
 var q = document.createElement('button');
 q.type = 'button'; q.className = 'study-q'; q.textContent = '?';
@@ -1383,14 +1423,14 @@ if (row) row.parentNode.insertBefore(bar, row.nextSibling);
 else { var h1 = document.querySelector('main h1'); if (!h1) return; h1.parentNode.insertBefore(bar, h1); }
 bar.parentNode.insertBefore(info, bar.nextSibling);
 if (note) info.parentNode.insertBefore(note, info.nextSibling);
-enBtn._paint(); if (itBtn) itBtn._paint(); if (gcpBtn) gcpBtn._paint();
+enBtn._paint(); packBtns.forEach(function (b) { b._paint(); });
 var tip = null, iv = null;
 function closeTip() {
 if (!tip) return;
 var t = tip; tip = null; clearInterval(iv); set(STUDY_TIP_KEY, '9');
 t.classList.add('bye'); setTimeout(function () { t.remove(); }, 380);
 }
-var lines = (W.tips || []).slice(0, hasIt ? 2 : 1);
+var lines = (W.tips || []).slice(0, hasIt && packLangs.it && packLangs.it.indexOf(itLang) >= 0 ? 2 : 1);
 var shown = +get(STUDY_TIP_KEY, '0') || 0;
 if (lines.length && get(LEARN_KEY, null) === null && get(IT_KEY, null) === null && shown < 3) {
 set(STUDY_TIP_KEY, String(shown + 1));
