@@ -28,7 +28,7 @@ WORKS, DRAFT = ROOT / "works", ROOT / "draft"
 GOAL = 1000
 WORK_TOPICS = {"netops", "work", "bridge", "bridgese", "mcd"}
 # 本番トップの「もうすぐ公開」に出す下書き（2026-09-30 本人：3本だけ・元気でくだらなくて面白いもの。公開したら次の候補に入れかえる）
-PEEK_PICKS = ["korean-pc-cafe", "sm-clark-arcade-mario-kart", "nagoya-dome-swallows-umbrellas"]
+PEEK_PICKS = ["luck-rises-at-24", "favorite-foreigners-2026", "oliver-burkeman-blog"]
 
 _spec = importlib.util.spec_from_file_location("chk", ROOT / "tools" / "check.py")
 chk = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(chk)
