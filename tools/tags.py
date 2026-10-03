@@ -27,9 +27,9 @@ BLOCK_RE = re.compile(r"\n?[ \t]*" + re.escape(START) + r".*?" + re.escape(END) 
 CSS = (
     "<style id=\"post-tags-css\">"
     ".post-tags{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 18px}"
-    ".post-tags a{display:inline-flex;align-items:center;gap:4px;padding:6px 11px;border-radius:999px;background:#fff;"
+    ".post-tags a{display:inline-flex;align-items:center;padding:6px 11px;border-radius:999px;background:#fff;"
     "border:1.5px solid rgba(35,44,72,.12);color:#3a3550;font-size:12.5px;font-weight:800;line-height:1.2;text-decoration:none;"
-    "box-shadow:0 3px 8px rgba(35,44,72,.05);transition:transform .15s ease,border-color .15s ease}"
+    "transition:transform .15s,border-color .15s}"
     ".post-tags a:hover{transform:translateY(-1px);border-color:#8b6de8}"
     ".post-tags a.place{background:#f3effc}"
     "html[data-theme=\"dark\"] .post-tags a{background:#22242f;border-color:#33364a;color:#e6e2ff}"

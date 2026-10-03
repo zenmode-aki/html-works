@@ -105,7 +105,7 @@ python3 tools/check.py --site                # サイト全体のチェック（
 運営者は英語と日本語しか読めない。なので `i18n/ui.<lang>.json` に `"unverified": true` と `"notice"` を書く（`ui.ko.json` と同じ形）。
 `notice` の元の英文は次のとおり。これを各言語に訳す：
 
-> 🐧 This page was translated by AI. The owner of this site can only read English and Japanese, so he could not check if the translation is right. If you find something strange, please tell us at **pengesso@gmail.com**!
+> 🐧 This page was translated by AI. The owner of this site can only read English and Japanese, so he could not check if the translation is right. If there are mistakes in the translation, we are sorry. Please just ignore them and keep reading.（2026-10-03 本人：メールの案内はやめて、謝ってスルーしてもらう形に）
 
 **右から書く言語（ar / fa / ur / he）だけ**、上の文のあとに次の1文を足す：
 

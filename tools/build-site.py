@@ -201,6 +201,26 @@ def main():
         print(f"\n⚠️  サムネがまだ無い: {', '.join(missing)}")
         print("   python3 tools/thumbs.py  で作れます（macOSのみ）")
 
+    # 💻 ☁️ 勉強モードの目印（2026-10-03）：it.<lang>.json / gcp.<lang>.json がある記事の <head> に
+    #    <meta name="pengesso-it" content="ja en gcp"> を入れる。ファイルを足したら自動で付く。手で書かない
+    import re as _re
+    for d in sorted((ROOT / "works").iterdir()):
+        page = d / "index.html"
+        if not page.exists():
+            continue
+        toks = [l for l in ("ja", "en") if (d / f"it.{l}.json").exists()]
+        if toks and all((d / f"gcp.{l}.json").exists() for l in toks):
+            toks.append("gcp")
+        doc = page.read_text(encoding="utf-8")
+        new = _re.sub(r'<meta name="pengesso-it"[^>]*>(<!--[^>]*-->)?\n?', "", doc)
+        if toks:
+            tag = f'<meta name="pengesso-it" content="{" ".join(toks)}">\n'
+            m = _re.search(r'<meta name="viewport"[^>]*>\n', new)
+            if m:
+                new = new[:m.end()] + tag + new[m.end():]
+        if new != doc:
+            page.write_text(new, encoding="utf-8")
+
     # 🏷 記事の題の下のタグと、タグの名前の訳（2026-10-03）。i18n の前にやる
     try:
         sys.path.insert(0, str(ROOT / "tools"))
