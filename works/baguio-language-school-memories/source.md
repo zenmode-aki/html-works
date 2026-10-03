@@ -25,3 +25,7 @@ S4. 通っていた場所はPines International Academy（IELTS Specialized Camp
 ## リンク
 
 https://maps.app.goo.gl/ao7oxxCFC9fjyKzd8
+
+## 名前のぼかし（2026-10-03）
+
+- index.html に埋め込んだ graduation.jpg は、証書の名前の部分をぼかした。images/graduation.jpg（元の写真）はそのままなので、埋め込み直すときは必ずまたぼかすこと
