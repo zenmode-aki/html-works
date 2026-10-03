@@ -301,6 +301,13 @@
   :is(.card, .video-card, .map-card, .uni-tags, figure.hero) + figure.photo { margin-top: 18px; }
   /* 2026-09-26 「次の記事」の白い字が、グラデーションの明るい側で薄く見えた。うっすら影をつける */
   .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+
+/* 🎥 埋め込み動画（2026-10-03） */
+.video-card { margin: 18px 0 0; overflow: hidden; border: 7px solid rgba(255,255,255,.8); border-radius: 30px; box-shadow: var(--shadow); background: #000; }
+.video-card .ratio { position: relative; width: 100%; padding-top: 56.25%; }
+.video-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.video-card figcaption { padding: 11px 16px 13px; background: #fff; color: var(--muted); font-size: 12.5px; font-weight: 700; }
+html[data-theme="dark"] .video-card figcaption { background: #1f2230; }
 </style>
 <!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
 <script>document.documentElement.className += " js";</script>
@@ -462,7 +469,7 @@
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
-<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"af2df00e93"},"bn":{"v":"fc24421ff0"},"ceb":{"v":"6e6eb0c298"},"cs":{"v":"7dff851ee6"},"da":{"v":"a426c49f90"},"de":{"v":"1b59ee81d1"},"el":{"v":"9227013e2b"},"es":{"v":"2c393babd4"},"fa":{"v":"b4d368d08d"},"fi":{"v":"f4c4932a92"},"fil":{"v":"fd5f8dcefe"},"fr":{"v":"48c255dab6"},"he":{"v":"b7f1d0e477"},"hi":{"v":"e47f29631a"},"id":{"v":"dd2b679731"},"it":{"v":"4743116f7e"},"ja":{"v":"71628234e7"},"ko":{"v":"5936c3211c"},"mr":{"v":"cd2a851a18"},"ms":{"v":"915b4c8a6c"},"nb":{"v":"cb9d95e817"},"ne":{"v":"143c367b9b"},"nl":{"v":"d3e95f116e"},"pa":{"v":"4343bbc1eb"},"pl":{"v":"7d491be2f8"},"pt":{"v":"c9c54708fd"},"ro":{"v":"4bf19cd5c1"},"ru":{"v":"efef88128e"},"sv":{"v":"a182e405e0"},"sw":{"v":"672733561b"},"ta":{"v":"959950c69b"},"te":{"v":"cdd86e80e5"},"th":{"v":"4cf33c9841"},"tr":{"v":"877b3cff00"},"uk":{"v":"da3016363d"},"ur":{"v":"4ee6a5885a"},"vi":{"v":"fd95de1f7c"},"zh":{"v":"813da687dc"},"zh-Hant":{"v":"76bb4d61b6"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"761433ccc6"},"bn":{"v":"5880938f7b"},"ceb":{"v":"db5faa0814"},"cs":{"v":"bd176a0bac"},"da":{"v":"49b64fb412"},"de":{"v":"7ccf9d58b8"},"el":{"v":"93cf843161"},"es":{"v":"3a4f14985e"},"fa":{"v":"5f96ac95f0"},"fi":{"v":"5f5fabc9a2"},"fil":{"v":"3649efa74e"},"fr":{"v":"18a2f9a77b"},"he":{"v":"284a476703"},"hi":{"v":"cf0054cf1d"},"id":{"v":"30af37aef4"},"it":{"v":"92e5cb1aac"},"ja":{"v":"88cb3765a2"},"ko":{"v":"7deb83e422"},"mr":{"v":"1a2d6d4d40"},"ms":{"v":"bf0bb557c3"},"nb":{"v":"69d5bf9448"},"ne":{"v":"4e66c0e375"},"nl":{"v":"f58ca2568d"},"pa":{"v":"8dffa740e7"},"pl":{"v":"5ad210f85f"},"pt":{"v":"effe118845"},"ro":{"v":"0472c719b5"},"ru":{"v":"9afcd48125"},"sv":{"v":"23c349bbf8"},"sw":{"v":"da2835e6a4"},"ta":{"v":"4a3fe15b77"},"te":{"v":"930861118c"},"th":{"v":"dd6f0a4859"},"tr":{"v":"2a03aa0e5a"},"uk":{"v":"6dd3119b66"},"ur":{"v":"ee8e1e0be9"},"vi":{"v":"2cc91479d8"},"zh":{"v":"7e5883f75a"},"zh-Hant":{"v":"7ac4bd5347"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
 <script>
 (function () {
 var root = document.documentElement;
@@ -1665,20 +1672,15 @@ else if (n.nodeType === 3 && m.target.nodeType === 1) walk(m.target);
     </p>
   </section>
 
-  <a
-    class="youtube-card"
-    href="https://youtu.be/pxdRtLSTI80?si=w3P72cdsCupu2LZS"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="Watch on YouTube">
-    <div class="youtube-thumb" aria-hidden="true">
-      <span class="play">▶</span>
+  <!-- 🎥 パワプロの動画（2026-10-03 本人：リンクではなく埋め込みに） -->
+  <figure class="video-card">
+    <div class="ratio">
+      <iframe src="https://www.youtube-nocookie.com/embed/pxdRtLSTI80"
+              title="Pawapuro" loading="lazy" allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
-    <div class="youtube-footer">
-      <span>⚾🎮</span>
-      <span class="watch-button">▶ Watch on YouTube</span>
-    </div>
-  </a>
+    <figcaption translate="no">▶️ ⚾🎮 Pawapuro</figcaption>
+  </figure>
 
   <a class="next" href="../best-buys-2026/index.html">
     <div>
