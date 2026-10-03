@@ -28,7 +28,8 @@ i18n = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(i18n)
 
 def git_dates(*paths):
     out = subprocess.run(["git", "log", "--format=%cI", "--", *paths], cwd=ROOT, capture_output=True, text=True).stdout.split()
-    return [datetime.datetime.fromisoformat(x) for x in out]
+    # Mac の Python 3.9 は末尾の「Z」を読めない（2026-10-03 ここで止まっていた）→ +00:00 に置きかえる
+    return [datetime.datetime.fromisoformat(x.replace("Z", "+00:00")) for x in out]
 
 
 def main():
