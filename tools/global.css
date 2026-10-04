@@ -22,3 +22,14 @@ html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view
 :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; }
 :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title),
 :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; }
+
+/* 👆 タップの手ごたえ（2026-10-04 本人：スマホだとアニメーションが少ない）
+   指でさわっている間、ほんの少し縮む。scale は transform とは別の指定なので、ページごとの hover の動き（transform）とぶつからない。
+   指でさわる端末（hover: none）だけ。動きを減らす・OFF のときは縮まない */
+@media (hover: none) {
+  :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a,
+      button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; }
+  a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); }
+}
+@media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } }
+html[data-motion="off"] :active { scale: none !important; }

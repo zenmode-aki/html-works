@@ -1394,6 +1394,8 @@ parts.push(c.textContent); nodes.push(c);
 }
 return direct ? { key: norm(parts.join('')), nodes: nodes } : null;
 }
+var NUMJOIN = /([0-9０-９])(?=(?:年代|年|か月|ヶ月|ヵ月|月|日|時間|時|分|秒|曲|本|枚|人|円|歳|歲|代|倍|個|个|回|次|語|语|階|层|層|泊|度|％|%|冊|件|社|台|点|位|着|戦|試合|万|億|亿|千|百|番|目|割|元|キロ|メートル|km|cm|kg))/g;
+function joinNum(s) { return (lang === 'ja' || lang === 'zh' || lang === 'zh-Hant') ? String(s).replace(NUMJOIN, '$1\u2060') : s; }
 function place(el, nodes, html) {
 var first = null;
 for (var i = 0; i < nodes.length; i++) {
@@ -1425,7 +1427,7 @@ var u = unitOf(el);
 if (u && el.__i18n !== u.key) {
 var tr = lookup(u.key);
 if (tr !== null) {
-place(el, u.nodes, tr);
+place(el, u.nodes, joinNum(tr));
 if (learnable(el)) LEARN.push({ el: el, en: u.key,
 show: u.nodes.map(function (n) { return n.nodeName === 'BR' ? '\n' : (n.nodeType === 3 ? n.nodeValue : n.textContent); })
 .join('').split('\n').map(norm).filter(Boolean).join('\n') });

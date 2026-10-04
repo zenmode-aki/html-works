@@ -94,12 +94,21 @@ def browser():
 
 
 def run(url, reduce):
+    for _ in range(2):          # 開けなかったら、1回だけやり直す
+        res = run_once(url, reduce)
+        if res is not None: return res
+    return None
+
+
+def run_once(url, reduce):
     d = tempfile.mkdtemp(prefix="mchk")
     try:
+        # 外のサイト（YouTube・地図・フォントなど）には行かせない。待たされて遅くなる・不安定になるのを防ぐ（自分のサーバーだけ見る）
         cmd = browser() + ["--disable-gpu", "--no-sandbox", f"--user-data-dir={d}", "--window-size=390,844",
+                           "--host-resolver-rules=MAP * ~NOTFOUND , EXCLUDE 127.0.0.1",
                            "--virtual-time-budget=7000", "--dump-dom"]
         if reduce: cmd.append("--force-prefers-reduced-motion")
-        r = subprocess.run(cmd + [url], capture_output=True, text=True, timeout=120)
+        r = subprocess.run(cmd + [url], capture_output=True, text=True, timeout=60)
         m = re.search(r'<pre id="mc">(.*?)</pre>', r.stdout, re.S)
         return json.loads(html.unescape(m.group(1))) if m else None
     except subprocess.TimeoutExpired:
