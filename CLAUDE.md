@@ -130,7 +130,10 @@
 - **ページ移動**：`tools/global.css`（`tools/i18n.py` が全ページの `<head>` に `<style id="pengesso-global">` として入れる）の `@view-transition`。記事から記事へ、ふわっと切り替わる（Chrome・Edge・Safari 18.2〜）。動きを減らす・OFF のときは即切り替え
 - **診断**：どのページでも **`?debug=1`** を付けて開くと、左下に診断（端末の「動きを減らす」・動きの設定・html のクラス・`--native-a`・`.learn-native` の opacity）が出る。本人のiPhoneはこちらでは試せない（再現用のブラウザは Chromium だけ）ので、「動かない」と言われたら、まずこれの画面の写真をもらう
 - **自動チェック `python3 tools/mobile-check.py`**（GitHub Actions の `check` でも走る）：スマホ幅（390px）×「普通」「動きを減らす」の2通りで、見本の記事12本（`--all` で全記事、記事名を並べれば指定）を本物のChromeで開き、①JSエラーなし ②横にはみ出さない ③勉強バーが出る ④**日本語の濃さを30％にしたら本当に opacity が 0.3 になる** ⑤動きを減らす設定でもカードが全部見える・透明な select が見えない、を確かめる。**古い版では ④ と ⑤ が落ちる**ことも確認済み（`--root=<古い版を取り出した場所>`）。記事のCSS・ランタイム・勉強バーを直したら流す
-- 折り返し：`tools/global.css`。韓国語は `word-break: keep-all`、日本語・中国語は `line-break: strict`。日本語の見出しの文節折り返し（`auto-phrase`）は `tools/i18n_runtime.js` にある（本文は、行がガタガタになるのでやらない）
+- **折り返し**（2026-10-04）：`tools/global.css`＝韓国語は `word-break: keep-all`、日本語・中国語は `line-break: strict`。
+  - **日本語の見出しは、全部の端末で Google の BudouX（Apache-2.0）の文節で折り返す**：`tools/ja_phrase.js` ＋ `tools/ja_phrase_model.json` → `tools/i18n.py` が `assets/ja-phrase.js`（23KB）を作り、日本語のページだけで読む（`i18n_runtime.js` の `loadPhrase`）。文節の境目に `<wbr>` を入れ、`.ja-ph` を付ける。トップの一覧の題など、あとから入る見出しも MutationObserver で。前は Chrome の `auto-phrase` だけで、iPhone の Safari では「曲の｜カード」と割れていた（端末で見え方が変わるのも本人は嫌い）。`?phrase=0` で読まずに比べられる
+  - 対象は見出しだけ（`h1,h2,h3,.card-label,.next-title,.prev-title,.post-title,.rel-title,.big,.closing-line`）。**本文は、行がガタガタになるのでやらない**（2026-09-26 の決まり）
+  - **数字と単位は行末で割らない**：日本語・中国語の訳を入れるとき、数字と単位のあいだに見えない印（U+2060）を入れる（`i18n_runtime.js` の `joinNum`。「2000｜年代」を防ぐ）。題やタイトルタグには入れない
 
 ## 🏷 タグ（2026-10-03 本人の要望）
 
