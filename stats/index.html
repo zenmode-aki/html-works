@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pengesso in numbers · 15-second blog</title>
+<meta name="description" content="Live numbers of the 15-second blog: views, likes, countries, and what people are reading now. Real numbers only.">
+<link rel="icon" href="../assets/pengesso/pengesso-01.jpg">
+<!-- 📊 数字のページ（2026-10-04 本人：「どれだけ見られてるか、ちゃんとわかるブログに。プラットフォーム化していきたい」）
+     数字は集計係（stats-worker）の /v1/stats から。偽の数字は出さない。?pxdemo=1 のときだけ「サンプル」と出して見本の数字
+     地図は world-atlas（jsdelivr）。記事の題は assets/moods.json、訳はトップの訳（i18n/top-data.<lang>.json） -->
+<style>
+  :root {
+    --navy:#232c48; --blue:#2f56c9; --blue-2:#567cf0; --purple:#8b6de8; --yellow:#ffc42e; --pink:#ff6b8b;
+    --cream:#f6efe3; --paper:#fffdf8; --ink:#1b2138; --muted:#6d7593; --line:rgba(35,44,72,.10);
+    --land:#e6e1f2; --sea:#f3f8ff;
+  }
+  html[data-theme="dark"] {
+    --cream:#15161d; --paper:#22242f; --ink:#f4f0fa; --muted:#b3aac4; --line:rgba(255,255,255,.12);
+    --land:#33364a; --sea:#1b1d27;
+  }
+  * { box-sizing:border-box; }
+  html, body { overflow-x:clip; }
+  body { margin:0; color:var(--ink); background:var(--cream); font-weight:800;
+    font-family:"Arial Rounded MT Bold","Avenir Next Rounded","Hiragino Maru Gothic ProN","Trebuchet MS",sans-serif; -webkit-font-smoothing:antialiased; }
+  .wrap { width:min(1000px, calc(100% - 32px)); margin:0 auto; padding:18px 0 60px; }
+  a { color:inherit; }
+  .top { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .back { display:inline-flex; align-items:center; gap:6px; padding:10px 16px; border-radius:999px; background:var(--paper);
+    border:1.5px solid var(--line); text-decoration:none; font-size:14px; }
+  .langs { display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end; }
+  .langs button { border:1.5px solid var(--line); background:var(--paper); color:var(--ink); border-radius:999px; padding:6px 10px;
+    font:inherit; font-size:12.5px; cursor:pointer; }
+  .langs button[aria-pressed="true"] { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .demo { margin:14px 0 0; padding:10px 14px; border-radius:14px; background:#ffe48a; color:#4a3a00; font-size:14px; text-align:center; }
+
+  h1 { margin:22px 0 6px; font-size:clamp(28px, 6vw, 46px); letter-spacing:-.02em; line-height:1.1; }
+  h1 .peng { display:inline-block; width:1.15em; height:1.15em; border-radius:50%; vertical-align:-.18em; margin-right:.2em;
+    background:url('../assets/pengesso/pengesso-01.jpg') center/cover; box-shadow:0 4px 12px rgba(35,44,72,.18); }
+  .lead { margin:0; color:var(--muted); font-size:15px; line-height:1.6; }
+
+  .card { margin-top:18px; padding:22px; border-radius:24px; background:var(--paper); border:1.5px solid var(--line);
+    box-shadow:0 12px 34px rgba(35,44,72,.07); }
+  .card h2 { margin:0 0 4px; font-size:20px; }
+  .card .sub { margin:0 0 14px; color:var(--muted); font-size:13.5px; }
+
+  /* いま読んでいる人 */
+  .live { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .pulse { position:relative; width:16px; height:16px; border-radius:50%; background:#20c27a; flex:0 0 auto; }
+  .pulse::after { content:""; position:absolute; inset:-6px; border-radius:50%; border:3px solid #20c27a; opacity:0; animation:ring 1.8s ease-out infinite; }
+  @keyframes ring { 0% { transform:scale(.5); opacity:.8; } 100% { transform:scale(1.6); opacity:0; } }
+  .live b { font-size:26px; }
+  .live .flags { font-size:22px; letter-spacing:2px; }
+
+  /* 大きな数字 */
+  .kpis { display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; }
+  .kpi { padding:16px 12px; border-radius:18px; background:linear-gradient(160deg, #f4efff, #eef4ff); text-align:center; }
+  .kpi:nth-child(2) { background:linear-gradient(160deg, #fff6d9, #ffefe0); }
+  .kpi:nth-child(3) { background:linear-gradient(160deg, #e3f7ee, #eaf5ff); }
+  .kpi:nth-child(4) { background:linear-gradient(160deg, #ffe8ee, #fff1f5); }
+  .kpi:nth-child(5) { background:linear-gradient(160deg, #e9f1ff, #f2ecff); }
+  html[data-theme="dark"] .kpi { background:#2b2e3c !important; }
+  .kpi b { display:block; font-size:clamp(22px, 4.6vw, 34px); letter-spacing:-.02em; }
+  .kpi small { display:block; margin-top:4px; color:var(--muted); font-size:12.5px; }
+  @media (max-width:640px) { .kpis { grid-template-columns:repeat(2, 1fr); } .kpi:first-child { grid-column:1 / -1; } }
+
+  /* 30日のグラフ */
+  .chart { width:100%; height:auto; display:block; }
+  .chart .bar { fill:url(#gBar); }
+  .chart .bar.today { fill:var(--pink); }
+  .chart text { font-size:11px; fill:var(--muted); font-weight:800; font-family:inherit; }
+  .chart .gl { stroke:var(--line); }
+
+  /* 地図 */
+  .map { position:relative; border-radius:18px; overflow:hidden; background:var(--sea); }
+  .map svg { display:block; width:100%; height:auto; }
+  .map .c { fill:var(--land); stroke:var(--paper); stroke-width:.4; transition:fill .3s; }
+  .map .c.on { cursor:pointer; }
+  .map .dot { fill:#20c27a; }
+  .map .ring { fill:none; stroke:#20c27a; stroke-width:2; animation:mring 1.8s ease-out infinite; transform-box:fill-box; transform-origin:center; }
+  @keyframes mring { 0% { transform:scale(.4); opacity:.9; } 100% { transform:scale(2.2); opacity:0; } }
+  .map .tip { position:absolute; pointer-events:none; padding:6px 10px; border-radius:10px; background:var(--navy); color:#fff; font-size:13px;
+    white-space:nowrap; transform:translate(-50%, -130%); opacity:0; transition:opacity .15s; }
+  .legend { display:flex; align-items:center; gap:8px; margin-top:10px; color:var(--muted); font-size:12px; flex-wrap:wrap; }
+  .legend .scale { width:120px; height:10px; border-radius:6px; background:linear-gradient(90deg, #d9d2f5, #5b45c9); }
+  .legend .ld { width:10px; height:10px; border-radius:50%; background:#20c27a; display:inline-block; }
+
+  /* ランキング */
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+  .tabs button { border:1.5px solid var(--line); background:var(--paper); color:var(--ink); border-radius:999px; padding:8px 14px;
+    font:inherit; font-size:14px; cursor:pointer; }
+  .tabs button[aria-selected="true"] { background:var(--purple); color:#fff; border-color:var(--purple); }
+  .rank { list-style:none; margin:0; padding:0; display:grid; gap:8px; }
+  .rank a { display:grid; grid-template-columns:34px 56px 1fr auto; align-items:center; gap:12px; padding:8px 12px 8px 8px;
+    border-radius:18px; border:1.5px solid var(--line); text-decoration:none; background:var(--paper); transition:transform .15s, border-color .15s; }
+  .rank a:hover { transform:translateY(-2px); border-color:var(--purple); }
+  .rank .no { text-align:center; font-size:18px; color:var(--muted); }
+  .rank li:nth-child(1) .no { color:#e0a100; } .rank li:nth-child(2) .no { color:#8d97a8; } .rank li:nth-child(3) .no { color:#c47a3a; }
+  .rank .th { width:56px; height:56px; border-radius:14px; background:#f1ecf8 center/cover; }
+  .rank .tt { font-size:14.5px; line-height:1.35; overflow-wrap:anywhere; }
+  .rank .nn { font-size:15px; white-space:nowrap; }
+  .rank .nn small { display:block; color:var(--muted); font-size:11px; text-align:right; }
+
+  /* 棒のリスト */
+  .bars { display:grid; gap:7px; }
+  .bars .r { display:grid; grid-template-columns:28px 1fr auto; align-items:center; gap:10px; font-size:14px; }
+  .bars .bw { position:relative; height:26px; border-radius:10px; background:rgba(86,124,240,.08); overflow:hidden; }
+  .bars .bw i { position:absolute; inset:0 auto 0 0; border-radius:10px; background:linear-gradient(90deg, #cbd8ff, #b9a8ff); transform-origin:left; animation:grow .9s cubic-bezier(.2,.9,.3,1) both; }
+  .bars .bw span { position:relative; padding-left:10px; line-height:26px; }
+  @keyframes grow { from { transform:scaleX(0); } }
+  .pills { display:flex; flex-wrap:wrap; gap:6px; }
+  .pills span { padding:7px 12px; border-radius:999px; background:var(--cream); font-size:13.5px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  @media (max-width:760px) { .grid2 { grid-template-columns:1fr; } }
+  .h3 { margin:16px 0 8px; font-size:15px; }
+  .empty { padding:18px; border-radius:16px; background:var(--cream); color:var(--muted); font-size:14px; text-align:center; line-height:1.6; }
+  .promise { margin:0; padding-left:20px; color:var(--muted); font-size:13.5px; line-height:1.8; }
+  .foot { margin-top:22px; text-align:center; color:var(--muted); font-size:12.5px; }
+  @media (prefers-reduced-motion:reduce) {
+    .pulse::after, .map .ring, .bars .bw i { animation:none; }
+    .rank a { transition:none; } .rank a:hover { transform:none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="../index.html">← <span data-t="back">Back</span></a>
+    <div class="langs" id="langs"></div>
+  </div>
+  <div class="demo" id="demo" hidden></div>
+
+  <h1><span class="peng" aria-hidden="true"></span><span data-t="title">Pengesso in numbers</span></h1>
+  <p class="lead" id="lead"></p>
+
+  <section class="card">
+    <div class="live" id="live"></div>
+  </section>
+
+  <section class="card">
+    <div class="kpis" id="kpis"></div>
+  </section>
+
+  <section class="card">
+    <h2 data-t="mapH">🌏 Where readers are</h2>
+    <p class="sub" data-t="mapSub">Darker = more views. Green dots = reading right now.</p>
+    <div class="map" id="map"><div class="empty" data-t="loading">Loading…</div></div>
+    <div class="legend"><span data-t="few">Few</span><span class="scale"></span><span data-t="many">Many</span><span>·</span><span class="ld"></span><span data-t="now">Now</span></div>
+  </section>
+
+  <section class="card">
+    <h2 data-t="daysH">📈 Views, last 30 days</h2>
+    <p class="sub" data-t="daysSub">One person reading one post counts once a day.</p>
+    <div id="days"></div>
+  </section>
+
+  <section class="card">
+    <h2 data-t="rankH">🏆 Popular posts</h2>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <ol class="rank" id="rank"></ol>
+  </section>
+
+  <section class="card grid2">
+    <div>
+      <h2 data-t="ccH">🗺 Countries</h2>
+      <div class="bars" id="cc"></div>
+    </div>
+    <div>
+      <h2 data-t="moreH">🧭 How people read</h2>
+      <div class="h3" data-t="langH">Language</div><div class="pills" id="lang"></div>
+      <div class="h3" data-t="refH">Came from</div><div class="pills" id="ref"></div>
+      <div class="h3" data-t="devH">Device</div><div class="pills" id="dev"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 data-t="howH">🤝 How we count</h2>
+    <ul class="promise" id="promise"></ul>
+  </section>
+  <p class="foot" id="foot"></p>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var NUM2A2 = {"004":"AF","008":"AL","012":"DZ","016":"AS","020":"AD","024":"AO","660":"AI","010":"AQ","028":"AG","032":"AR","051":"AM","533":"AW","036":"AU","040":"AT","031":"AZ","044":"BS","048":"BH","050":"BD","052":"BB","112":"BY","056":"BE","084":"BZ","204":"BJ","060":"BM","064":"BT","068":"BO","070":"BA","072":"BW","074":"BV","076":"BR","086":"IO","096":"BN","100":"BG","854":"BF","108":"BI","116":"KH","120":"CM","124":"CA","132":"CV","136":"KY","140":"CF","148":"TD","152":"CL","156":"CN","162":"CX","166":"CC","170":"CO","174":"KM","178":"CG","180":"CD","184":"CK","188":"CR","384":"CI","191":"HR","192":"CU","196":"CY","203":"CZ","208":"DK","262":"DJ","212":"DM","214":"DO","218":"EC","818":"EG","222":"SV","226":"GQ","232":"ER","233":"EE","231":"ET","238":"FK","234":"FO","242":"FJ","246":"FI","250":"FR","254":"GF","258":"PF","260":"TF","266":"GA","270":"GM","268":"GE","276":"DE","288":"GH","292":"GI","300":"GR","304":"GL","308":"GD","312":"GP","316":"GU","320":"GT","324":"GN","624":"GW","328":"GY","332":"HT","334":"HM","336":"VA","340":"HN","344":"HK","348":"HU","352":"IS","356":"IN","360":"ID","364":"IR","368":"IQ","372":"IE","376":"IL","380":"IT","388":"JM","392":"JP","400":"JO","398":"KZ","404":"KE","296":"KI","408":"KP","410":"KR","414":"KW","417":"KG","418":"LA","428":"LV","422":"LB","426":"LS","430":"LR","434":"LY","438":"LI","440":"LT","442":"LU","446":"MO","450":"MG","454":"MW","458":"MY","462":"MV","466":"ML","470":"MT","584":"MH","474":"MQ","478":"MR","480":"MU","175":"YT","484":"MX","583":"FM","498":"MD","492":"MC","496":"MN","500":"MS","504":"MA","508":"MZ","104":"MM","516":"NA","520":"NR","524":"NP","528":"NL","540":"NC","554":"NZ","558":"NI","562":"NE","566":"NG","570":"NU","574":"NF","580":"MP","807":"MK","578":"NO","512":"OM","586":"PK","585":"PW","275":"PS","591":"PA","598":"PG","600":"PY","604":"PE","608":"PH","612":"PN","616":"PL","620":"PT","630":"PR","634":"QA","638":"RE","642":"RO","643":"RU","646":"RW","654":"SH","659":"KN","662":"LC","666":"PM","670":"VC","882":"WS","674":"SM","678":"ST","682":"SA","686":"SN","690":"SC","694":"SL","702":"SG","703":"SK","705":"SI","090":"SB","706":"SO","710":"ZA","239":"GS","724":"ES","144":"LK","729":"SD","740":"SR","744":"SJ","748":"SZ","752":"SE","756":"CH","760":"SY","158":"TW","762":"TJ","834":"TZ","764":"TH","626":"TL","768":"TG","772":"TK","776":"TO","780":"TT","788":"TN","792":"TR","795":"TM","796":"TC","798":"TV","800":"UG","804":"UA","784":"AE","826":"GB","840":"US","581":"UM","858":"UY","860":"UZ","548":"VU","862":"VE","704":"VN","092":"VG","850":"VI","876":"WF","732":"EH","887":"YE","894":"ZM","716":"ZW","248":"AX","535":"BQ","531":"CW","831":"GG","833":"IM","832":"JE","499":"ME","652":"BL","663":"MF","688":"RS","534":"SX","728":"SS","983":"XK"}   /* 地図の国の番号（ISO 3166 numeric）→ 2文字コード */;
+  var API = '';   /* つなぎ先は assets/stats-config.json の endpoint（記事の数字と同じところ） */
+  var params = new URLSearchParams(location.search);
+  var DEMO = params.get('pxdemo') === '1';
+
+  /* ── ことば（英・日・韓・中。ほかの言語は英語） ── */
+  var T = {
+    en: { back: 'Back', title: 'Pengesso in numbers', lead: 'Real numbers only. Counting since {d}. Updated every minute.',
+      sample: '🧪 These are sample numbers. They are not real.', live: '{n} people are reading now', live1: '1 person is reading now', live0: 'Nobody is reading right now. Maybe you can be the first?',
+      total: 'Views so far', today: 'Today', week: 'This week', likes: 'Likes', countries: 'Countries',
+      mapH: '🌏 Where readers are', mapSub: 'Darker = more views. Green dots = reading right now.', few: 'Few', many: 'Many', now: 'Now', loading: 'Loading…',
+      daysH: '📈 Views, last 30 days', daysSub: 'One person reading one post counts once a day.',
+      rankH: '🏆 Popular posts', tWeek: '🔥 This week', tAll: '👀 All time', tLiked: '♥ Most liked', views: 'views', likesU: 'likes',
+      ccH: '🗺 Countries', moreH: '🧭 How people read', langH: 'Language', refH: 'Came from', devH: 'Device',
+      phone: '📱 Phone', desktop: '💻 Computer', tablet: '📲 Tablet', direct: 'Direct', other: 'Other',
+      empty: 'We just started counting. Numbers will show up here soon.', emptyRank: 'No posts here yet.',
+      howH: '🤝 How we count',
+      p: ['We count which post was read, from which country, in which language.', 'We do not keep IP addresses, cookies, names, or emails.', 'One person reading one post counts once a day.', 'Search robots are not counted. People with "Do Not Track" are not counted.', 'We never show fake numbers.'],
+      foot: 'Last update: {t}' },
+    ja: { back: '戻る', title: 'ペンゲッソの数字', lead: '本物の数字だけです。{d} から数えています。1分ごとに新しくなります。',
+      sample: '🧪 サンプルの数字です。本物ではありません。', live: 'いま {n}人 が読んでいます', live1: 'いま 1人 が読んでいます', live0: 'いまは誰も読んでいません。あなたが1人目になりませんか？',
+      total: 'これまでの閲覧', today: '今日', week: '今週', likes: 'いいね', countries: '国と地域',
+      mapH: '🌏 どこで読まれているか', mapSub: '色が濃いほど、たくさん読まれています。緑の点は、いま読んでいる人です。', few: '少ない', many: '多い', now: 'いま', loading: '読み込み中…',
+      daysH: '📈 30日間の閲覧', daysSub: '同じ人が同じ記事を読むのは、1日1回だけ数えます。',
+      rankH: '🏆 人気の記事', tWeek: '🔥 今週', tAll: '👀 これまで', tLiked: '♥ いいねが多い', views: '閲覧', likesU: 'いいね',
+      ccH: '🗺 国と地域', moreH: '🧭 どう読まれているか', langH: '言語', refH: 'どこから来たか', devH: '端末',
+      phone: '📱 スマホ', desktop: '💻 パソコン', tablet: '📲 タブレット', direct: '直接', other: 'そのほか',
+      empty: '数え始めたばかりです。もうすぐ、ここに数字が出ます。', emptyRank: 'まだ記事がありません。',
+      howH: '🤝 数え方の約束',
+      p: ['どの記事が・どの国から・どの言語で読まれたかを数えます。', 'IPアドレス・Cookie・名前・メールは残しません。', '同じ人が同じ記事を読むのは、1日1回だけ数えます。', '検索ロボットは数えません。「トラッキングしない」の人も数えません。', '偽の数字は、絶対に出しません。'],
+      foot: '最後の更新：{t}' },
+    ko: { back: '뒤로', title: '펭게소의 숫자', lead: '진짜 숫자만 보여 줘요. {d}부터 세고 있어요. 1분마다 새로워져요.',
+      sample: '🧪 샘플 숫자예요. 진짜가 아니에요.', live: '지금 {n}명이 읽고 있어요', live1: '지금 1명이 읽고 있어요', live0: '지금은 아무도 읽고 있지 않아요. 첫 번째가 되어 볼래요?',
+      total: '지금까지 조회', today: '오늘', week: '이번 주', likes: '좋아요', countries: '나라와 지역',
+      mapH: '🌏 어디에서 읽히고 있나', mapSub: '색이 진할수록 많이 읽혔어요. 초록 점은 지금 읽고 있는 사람이에요.', few: '적음', many: '많음', now: '지금', loading: '불러오는 중…',
+      daysH: '📈 30일 동안의 조회', daysSub: '같은 사람이 같은 글을 읽는 건 하루에 한 번만 세요.',
+      rankH: '🏆 인기 글', tWeek: '🔥 이번 주', tAll: '👀 지금까지', tLiked: '♥ 좋아요가 많은', views: '조회', likesU: '좋아요',
+      ccH: '🗺 나라와 지역', moreH: '🧭 어떻게 읽히고 있나', langH: '언어', refH: '어디에서 왔나', devH: '기기',
+      phone: '📱 스마트폰', desktop: '💻 컴퓨터', tablet: '📲 태블릿', direct: '직접', other: '그 밖',
+      empty: '이제 막 세기 시작했어요. 곧 여기에 숫자가 나와요.', emptyRank: '아직 글이 없어요.',
+      howH: '🤝 세는 방법의 약속',
+      p: ['어떤 글이, 어느 나라에서, 어떤 언어로 읽혔는지 세요.', 'IP 주소・쿠키・이름・메일은 남기지 않아요.', '같은 사람이 같은 글을 읽는 건 하루에 한 번만 세요.', '검색 로봇은 세지 않아요. "추적 안 함"인 사람도 세지 않아요.', '가짜 숫자는 절대 보여 주지 않아요.'],
+      foot: '마지막 업데이트: {t}' },
+    zh: { back: '返回', title: '彭格索的数字', lead: '只显示真实的数字。从 {d} 开始统计。每分钟更新。',
+      sample: '🧪 这是示例数字，不是真实的。', live: '现在有 {n} 人在阅读', live1: '现在有 1 人在阅读', live0: '现在没有人在阅读。要不要当第一个？',
+      total: '累计浏览', today: '今天', week: '本周', likes: '点赞', countries: '国家和地区',
+      mapH: '🌏 读者在哪里', mapSub: '颜色越深，浏览越多。绿点是正在阅读的人。', few: '少', many: '多', now: '现在', loading: '加载中…',
+      daysH: '📈 30 天的浏览', daysSub: '同一个人读同一篇文章，一天只算一次。',
+      rankH: '🏆 热门文章', tWeek: '🔥 本周', tAll: '👀 累计', tLiked: '♥ 点赞最多', views: '浏览', likesU: '点赞',
+      ccH: '🗺 国家和地区', moreH: '🧭 大家怎么读', langH: '语言', refH: '从哪里来', devH: '设备',
+      phone: '📱 手机', desktop: '💻 电脑', tablet: '📲 平板', direct: '直接', other: '其他',
+      empty: '刚开始统计。很快这里就会出现数字。', emptyRank: '还没有文章。',
+      howH: '🤝 统计的约定',
+      p: ['统计哪篇文章、从哪个国家、用哪种语言被阅读。', '不保存 IP 地址、Cookie、姓名、邮箱。', '同一个人读同一篇文章，一天只算一次。', '不统计搜索机器人，也不统计开启“请勿追踪”的人。', '绝不显示假的数字。'],
+      foot: '最后更新：{t}' },
+    'zh-Hant': { back: '返回', title: '彭格索的數字', lead: '只顯示真實的數字。從 {d} 開始統計。每分鐘更新。',
+      sample: '🧪 這是範例數字，不是真實的。', live: '現在有 {n} 人在閱讀', live1: '現在有 1 人在閱讀', live0: '現在沒有人在閱讀。要不要當第一個？',
+      total: '累計瀏覽', today: '今天', week: '本週', likes: '按讚', countries: '國家和地區',
+      mapH: '🌏 讀者在哪裡', mapSub: '顏色越深，瀏覽越多。綠點是正在閱讀的人。', few: '少', many: '多', now: '現在', loading: '載入中…',
+      daysH: '📈 30 天的瀏覽', daysSub: '同一個人讀同一篇文章，一天只算一次。',
+      rankH: '🏆 熱門文章', tWeek: '🔥 本週', tAll: '👀 累計', tLiked: '♥ 按讚最多', views: '瀏覽', likesU: '讚',
+      ccH: '🗺 國家和地區', moreH: '🧭 大家怎麼讀', langH: '語言', refH: '從哪裡來', devH: '裝置',
+      phone: '📱 手機', desktop: '💻 電腦', tablet: '📲 平板', direct: '直接', other: '其他',
+      empty: '剛開始統計。很快這裡就會出現數字。', emptyRank: '還沒有文章。',
+      howH: '🤝 統計的約定',
+      p: ['統計哪篇文章、從哪個國家、用哪種語言被閱讀。', '不保存 IP 位址、Cookie、姓名、信箱。', '同一個人讀同一篇文章，一天只算一次。', '不統計搜尋機器人，也不統計開啟「請勿追蹤」的人。', '絕不顯示假的數字。'],
+      foot: '最後更新：{t}' }
+  };
+  var LANGS = [['en', 'EN'], ['ja', '日本語'], ['ko', '한국어'], ['zh', '简体'], ['zh-Hant', '繁體']];
+  function pickLang() {
+    var q = params.get('lang'); if (q && T[q]) return q;
+    try { var s = localStorage.getItem('pengesso-lang'); if (s && T[s]) return s; } catch (e) {}
+    return 'en';
+  }
+  var lang = pickLang();
+  try { if (localStorage.getItem('pengesso-theme-v2') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
+  function t(k) { return (T[lang] && T[lang][k] != null) ? T[lang][k] : T.en[k]; }
+  function fill(s, o) { return String(s).replace(/\{(\w+)\}/g, function (m, k) { return o[k] != null ? o[k] : m; }); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  var nf, nfc, regionNames, langNames;
+  function setupIntl() {
+    var loc = lang === 'zh-Hant' ? 'zh-TW' : lang;
+    try { nf = new Intl.NumberFormat(loc); nfc = new Intl.NumberFormat(loc, { notation: 'compact', maximumFractionDigits: 1 }); } catch (e) { nf = nfc = { format: String }; }
+    try { regionNames = new Intl.DisplayNames([loc], { type: 'region' }); langNames = new Intl.DisplayNames([loc], { type: 'language' }); } catch (e) { regionNames = langNames = null; }
+  }
+  function fmt(n) { n = +n || 0; return n >= 10000 ? nfc.format(n) : nf.format(n); }
+  function flag(cc) { return /^[A-Z]{2}$/.test(cc) ? String.fromCodePoint(0x1F1E6 + cc.charCodeAt(0) - 65, 0x1F1E6 + cc.charCodeAt(1) - 65) : '🏳️'; }
+  function country(cc) { try { return (regionNames && regionNames.of(cc)) || cc; } catch (e) { return cc; } }
+  function langName(l) { try { return (langNames && langNames.of(l === 'zh-hant' ? 'zh-Hant' : l)) || l; } catch (e) { return l; } }
+  function fp(s) { var h = 0x811c9dc5; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(36); }
+
+  /* ── 記事の題（英語）と、その訳（トップの訳から） ── */
+  var POSTS = {}, DICT = {};
+  function title(slug) { var en = POSTS[slug] || slug; var k = fp(en); return Object.prototype.hasOwnProperty.call(DICT, k) ? DICT[k] : en; }
+  function loadTitles() {
+    var a = fetch('../assets/moods.json').then(function (r) { return r.json(); }).then(function (rows) { rows.forEach(function (r) { POSTS[r[0]] = r[1]; }); }).catch(function () {});
+    var b = lang === 'en' ? Promise.resolve() : fetch('../i18n/top-data.' + encodeURIComponent(lang) + '.json').then(function (r) { return r.ok ? r.json() : {}; })
+      .then(function (d) { DICT = d.dict || {}; }).catch(function () {});
+    return Promise.all([a, b]);
+  }
+
+  /* ── 見本の数字（?pxdemo=1 のときだけ。画面に「サンプル」と出す） ── */
+  function demoData() {
+    var slugs = Object.keys(POSTS); var cc = [['JP', 26000], ['US', 8150], ['KR', 4400], ['PH', 3200], ['TW', 2050], ['GB', 1650], ['DE', 1300], ['BR', 950], ['IN', 900], ['FR', 700], ['MY', 650], ['CA', 600], ['AU', 520], ['ID', 480], ['VN', 300]];
+    var days = []; for (var i = 29; i >= 0; i--) { var d = new Date(Date.now() - i * 864e5).toISOString().slice(0, 10); days.push([d, 900 + Math.round(600 * Math.sin(i / 3) + i * 20 + (i % 7) * 40)]); }
+    return { since: '2026-10-04', v: 48210, vt: 612, v7: 5320, l: 2840, nc: 62, cc: cc, days: days,
+      top7: slugs.slice(2, 12).map(function (s, i) { return [s, 900 - i * 61]; }), topAll: slugs.slice(20, 30).map(function (s, i) { return [s, 4200 - i * 300]; }),
+      topLiked: slugs.slice(40, 50).map(function (s, i) { return [s, 120 - i * 9]; }),
+      lang: [['en', 20000], ['ja', 15000], ['ko', 5200], ['zh', 3300], ['es', 1500]], ref: [['direct', 18000], ['line', 9000], ['x', 8000], ['google', 7000], ['instagram', 3000], ['other', 3210]],
+      dev: [['phone', 33000], ['desktop', 13000], ['tablet', 2210]], live: { n: 14, cc: [['JP', 6], ['US', 3], ['KR', 2], ['PH', 2], ['GB', 1]] } };
+  }
+
+  /* ── 描く ── */
+  var S = null, tab = 'top7';
+  function drawStatic() {
+    document.documentElement.lang = lang;
+    [].forEach.call(document.querySelectorAll('[data-t]'), function (e) { e.textContent = t(e.getAttribute('data-t')); });
+    $('langs').innerHTML = LANGS.map(function (l) { return '<button type="button" data-l="' + l[0] + '" aria-pressed="' + (l[0] === lang) + '">' + l[1] + '</button>'; }).join('');
+    $('promise').innerHTML = t('p').map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('');
+    $('tabs').innerHTML = [['top7', t('tWeek')], ['topAll', t('tAll')], ['topLiked', t('tLiked')]].map(function (x) {
+      return '<button type="button" role="tab" data-tab="' + x[0] + '" aria-selected="' + (x[0] === tab) + '">' + esc(x[1]) + '</button>';
+    }).join('');
+    if (DEMO) { $('demo').hidden = false; $('demo').textContent = t('sample'); }
+  }
+  function draw() {
+    var s = S; if (!s) return;
+    $('lead').textContent = fill(t('lead'), { d: s.since || '2026-10-04' });
+    var live = s.live || { n: 0, cc: [] };
+    $('live').innerHTML = (live.n > 0 ? '<span class="pulse" aria-hidden="true"></span>' : '<span aria-hidden="true">🌙</span>') +
+      '<b>' + esc(live.n > 0 ? fill(live.n === 1 ? t('live1') : t('live'), { n: fmt(live.n) }) : t('live0')) + '</b>' +
+      '<span class="flags">' + (live.cc || []).map(function (c) { return '<span title="' + esc(country(c[0])) + '">' + flag(c[0]) + '</span>'; }).join('') + '</span>';
+    $('kpis').innerHTML = [['v', 'total'], ['vt', 'today'], ['v7', 'week'], ['l', 'likes'], ['nc', 'countries']].map(function (k) {
+      return '<div class="kpi"><b>' + fmt(s[k[0]]) + '</b><small>' + esc(t(k[1])) + '</small></div>';
+    }).join('');
+    drawDays(s.days || []);
+    drawRank();
+    var cc = s.cc || [], max = cc.length ? cc[0][1] : 1;
+    $('cc').innerHTML = cc.length ? cc.slice(0, 15).map(function (c) {
+      return '<div class="r"><span>' + flag(c[0]) + '</span><div class="bw"><i style="width:' + Math.max(4, c[1] / max * 100).toFixed(1) + '%"></i><span>' + esc(country(c[0])) + '</span></div><b>' + fmt(c[1]) + '</b></div>';
+    }).join('') : '<div class="empty">' + esc(t('empty')) + '</div>';
+    function pills(id, rows, name) {
+      $(id).innerHTML = rows && rows.length ? rows.map(function (r) { return '<span>' + esc(name(r[0])) + ' <b>' + fmt(r[1]) + '</b></span>'; }).join('') : '<span>—</span>';
+    }
+    pills('lang', s.lang, langName);
+    pills('ref', s.ref, function (k) { return { direct: t('direct'), other: t('other'), google: 'Google', bing: 'Bing', yahoo: 'Yahoo', x: 'X', facebook: 'Facebook', instagram: 'Instagram', line: 'LINE', youtube: 'YouTube', github: 'GitHub', reddit: 'Reddit', hatena: 'Hatena' }[k] || k; });
+    pills('dev', s.dev, function (k) { return t(k); });
+    paintMap();
+    var d = new Date((s.gen || Date.now() / 1000) * 1000);
+    $('foot').textContent = fill(t('foot'), { t: d.toLocaleString(lang === 'zh-Hant' ? 'zh-TW' : lang) });
+  }
+  function drawDays(days) {
+    if (!days.length) { $('days').innerHTML = '<div class="empty">' + esc(t('empty')) + '</div>'; return; }
+    var by = {}; days.forEach(function (d) { by[d[0]] = d[1]; });
+    var list = [], last = days[days.length - 1][0];
+    var end = new Date(last + 'T00:00:00Z').getTime();
+    for (var i = 29; i >= 0; i--) { var k = new Date(end - i * 864e5).toISOString().slice(0, 10); list.push([k, by[k] || 0]); }
+    var W = 600, H = 200, P = 26, max = Math.max.apply(null, list.map(function (x) { return x[1]; })) || 1;
+    var bw = (W - P) / list.length;
+    var h = '<svg class="chart" viewBox="0 0 ' + W + ' ' + (H + 22) + '" role="img" aria-label="' + esc(t('daysH')) + '"><defs><linearGradient id="gBar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8b6de8"/><stop offset="1" stop-color="#567cf0"/></linearGradient></defs>';
+    [0, .5, 1].forEach(function (f) { var y = H - f * (H - 10); h += '<line class="gl" x1="' + P + '" x2="' + W + '" y1="' + y + '" y2="' + y + '"/><text x="0" y="' + (y + 4) + '">' + fmt(Math.round(max * f)) + '</text>'; });
+    list.forEach(function (d, i) {
+      var bh = d[1] / max * (H - 10), x = P + i * bw + 2;
+      h += '<rect class="bar' + (i === list.length - 1 ? ' today' : '') + '" x="' + x.toFixed(1) + '" y="' + (H - bh).toFixed(1) + '" width="' + (bw - 4).toFixed(1) + '" height="' + Math.max(bh, d[1] ? 2 : 0).toFixed(1) + '" rx="3"><title>' + d[0] + ' · ' + fmt(d[1]) + '</title></rect>';
+      if (i % 7 === 0 || (i === list.length - 1 && i % 7 >= 3)) h += '<text x="' + (x + bw / 2 - 2) + '" y="' + (H + 16) + '" text-anchor="middle">' + d[0].slice(5).replace('-', '/') + '</text>';
+    });
+    $('days').innerHTML = h + '</svg>';
+  }
+  function drawRank() {
+    var rows = (S && S[tab]) || [];
+    var unit = tab === 'topLiked' ? t('likesU') : t('views');
+    $('rank').innerHTML = rows.length ? rows.slice(0, 10).map(function (r, i) {
+      var s = r[0];
+      return '<li><a href="../works/' + encodeURIComponent(s) + '/index.html"><span class="no">' + (i + 1) + '</span>' +
+        '<span class="th" style="background-image:url(\'../assets/thumbs/' + encodeURIComponent(s) + '.jpg\')"></span>' +
+        '<span class="tt">' + esc(title(s)) + '</span><span class="nn">' + fmt(r[1]) + '<small>' + esc(unit) + '</small></span></a></li>';
+    }).join('') : '<li class="empty">' + esc(S && S.v ? t('emptyRank') : t('empty')) + '</li>';
+    [].forEach.call(document.querySelectorAll('#tabs button'), function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-tab') === tab)); });
+  }
+
+  /* ── 地図（world-atlas の国の形。色＝閲覧の多さ、緑の点＝いま読んでいる人） ── */
+  var mapReady = null, geo = null, path = null, proj = null;
+  function loadScript(src) { return new Promise(function (ok, ng) { var s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = ng; document.head.appendChild(s); }); }
+  function initMap() {
+    if (mapReady) return mapReady;
+    mapReady = loadScript('https://cdn.jsdelivr.net/npm/d3-array@3/dist/d3-array.min.js')
+      .then(function () { return loadScript('https://cdn.jsdelivr.net/npm/d3-geo@3/dist/d3-geo.min.js'); })
+      .then(function () { return loadScript('https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js'); })
+      .then(function () { return fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function (r) { return r.json(); }); })
+      .then(function (topo) {
+        geo = topojson.feature(topo, topo.objects.countries).features.filter(function (f) { return f.id !== '010'; });   // 南極は外す
+        proj = d3.geoEqualEarth().fitSize([960, 470], { type: 'FeatureCollection', features: geo });
+        path = d3.geoPath(proj);
+      });
+    return mapReady;
+  }
+  function paintMap() {
+    initMap().then(function () {
+      var views = {}, max = 1; (S.cc || []).forEach(function (c) { views[c[0]] = c[1]; if (c[1] > max) max = c[1]; });
+      var liveCc = {}; ((S.live && S.live.cc) || []).forEach(function (c) { liveCc[c[0]] = c[1]; });
+      function color(n) { if (!n) return ''; var f = Math.sqrt(n / max); var a = [217, 210, 245], b = [91, 69, 201];
+        return 'rgb(' + a.map(function (x, i) { return Math.round(x + (b[i] - x) * f); }).join(',') + ')'; }
+      var h = '<svg viewBox="0 0 960 470" role="img" aria-label="' + esc(t('mapH')) + '">';
+      var dots = '';
+      geo.forEach(function (f) {
+        var a2 = NUM2A2[f.id] || ''; var n = views[a2] || 0;
+        h += '<path class="c' + (n ? ' on' : '') + '" d="' + path(f) + '"' + (n ? ' style="fill:' + color(n) + '"' : '') + ' data-cc="' + a2 + '"/>';
+        if (liveCc[a2]) { var c = path.centroid(f); if (isFinite(c[0])) dots += '<circle class="ring" cx="' + c[0].toFixed(1) + '" cy="' + c[1].toFixed(1) + '" r="7"/><circle class="dot" cx="' + c[0].toFixed(1) + '" cy="' + c[1].toFixed(1) + '" r="5"/>'; }
+      });
+      $('map').innerHTML = h + dots + '</svg><div class="tip" id="tip"></div>';
+      var tip = $('tip'), box = $('map');
+      box.onmousemove = function (e) {
+        var p = e.target.closest && e.target.closest('path'); if (!p) { tip.style.opacity = 0; return; }
+        var a2 = p.getAttribute('data-cc'); if (!a2) { tip.style.opacity = 0; return; }
+        var r = box.getBoundingClientRect();
+        tip.textContent = flag(a2) + ' ' + country(a2) + ' · ' + fmt(views[a2] || 0) + (liveCc[a2] ? ' · 🟢 ' + liveCc[a2] : '');
+        tip.style.left = (e.clientX - r.left) + 'px'; tip.style.top = (e.clientY - r.top) + 'px'; tip.style.opacity = 1;
+      };
+      box.onmouseleave = function () { tip.style.opacity = 0; };
+    }).catch(function () { $('map').innerHTML = '<div class="empty">🌏</div>'; });
+  }
+
+  function load() {
+    if (DEMO) { S = demoData(); draw(); return; }
+    var cfg = API ? Promise.resolve() : fetch('../assets/stats-config.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (c) { if (c.enabled && c.endpoint) API = c.endpoint.replace(/\/+$/, ''); else throw new Error('off'); });
+    cfg.then(function () { return fetch(API + '/v1/stats'); }).then(function (r) { return r.json(); }).then(function (j) { if (j && j.site) { S = j.site; draw(); } })
+      .catch(function () { if (!S) { S = { since: '2026-10-04', v: 0, vt: 0, v7: 0, l: 0, nc: 0, cc: [], days: [], top7: [], topAll: [], topLiked: [], live: { n: 0, cc: [] } }; draw(); } });
+  }
+
+  document.addEventListener('click', function (e) {
+    var l = e.target.closest('[data-l]');
+    if (l) { lang = l.getAttribute('data-l'); try { localStorage.setItem('pengesso-lang', lang); } catch (x) {} setupIntl(); drawStatic(); loadTitles().then(draw); return; }
+    var b = e.target.closest('[data-tab]');
+    if (b) { tab = b.getAttribute('data-tab'); drawRank(); }
+  });
+
+  setupIntl(); drawStatic();
+  loadTitles().then(load);
+  setInterval(function () { if (!DEMO && !document.hidden) load(); }, 60000);
+})();
+</script>
+</body>
+</html>
