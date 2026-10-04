@@ -1461,7 +1461,32 @@
   UI_READY.then(startReady, startReady);
   }
 
+  /* 🛠 診断（?debug=1 を付けて開いたときだけ）：スマホで「動かない」ときに、画面の写真を送ってもらえば原因が分かるように（2026-10-04）
+     本人の端末（iPhone）は、こちらでは試せない。端末の設定・動きの設定・薄くする指定が、いま何になっているかを画面の左下に出す */
+  function drawDebug() {
+    if (!/[?&]debug=1\b/.test(location.search)) return;
+    var box = document.createElement('div');
+    box.setAttribute('translate', 'no');
+    box.style.cssText = 'position:fixed;left:6px;bottom:6px;z-index:2147483600;max-width:calc(100vw - 12px);padding:8px 10px;border-radius:10px;' +
+      'background:rgba(0,0,0,.85);color:#9ff0b5;font:11px/1.45 ui-monospace,Menlo,monospace;white-space:pre-wrap;word-break:break-all;pointer-events:none';
+    document.body.appendChild(box);
+    function ua() { var u = navigator.userAgent; return (/iPhone|iPad/.test(u) ? 'iOS' : /Android/.test(u) ? 'Android' : 'PC') + ' ' + (/CriOS/.test(u) ? 'Chrome' : /FxiOS/.test(u) ? 'Firefox' : /Edg/.test(u) ? 'Edge' : /Chrome/.test(u) ? 'Chrome' : /Safari/.test(u) ? 'Safari' : '?'); }
+    function tick() {
+      var r = document.documentElement, ln = document.querySelector('.learn-native'), os = '?';
+      try { os = (window.pengessoMotion ? pengessoMotion.os() : false) ? 'YES(減らす設定)' : 'no'; } catch (e) {}
+      var op = ln ? getComputedStyle(ln).opacity : '(なし)';
+      box.textContent = '🛠 診断 ?debug=1\n' + ua() + ' / ' + innerWidth + 'x' + innerHeight + ' @' + (window.devicePixelRatio || 1) +
+        '\n言語 ' + lang + ' / html lang=' + (r.getAttribute('lang') || '-') +
+        '\n端末の「動きを減らす」: ' + os + ' / 動きの設定: ' + (r.getAttribute('data-motion') || 'auto') +
+        '\nhtml.class: ' + r.className.replace(/\s+/g, ' ') +
+        '\n--native-a: ' + (r.style.getPropertyValue('--native-a') || '(未設定)') +
+        '\n.learn-native: ' + document.querySelectorAll('.learn-native').length + '個 / 先頭の opacity=' + op +
+        '\n.learn-en: ' + document.querySelectorAll('.learn-en').length + '個';
+    }
+    tick(); setInterval(tick, 600);
+  }
   function startReady() {
+  try { drawDebug(); } catch (e) {}
   drawSwitch();
   try { drawMotionNote(); } catch (e) {}
   try { moodMore(); } catch (e) {}

@@ -523,14 +523,24 @@ Bad Habit     Small Win     My Excuse     The Real Cost Turns Out
 さらに末尾のスクリプトに**保険**が入っています。1枚も出てこなかったら全部見せます。
 `_template/index.html` からコピーすれば、この2つは最初から入っています。
 
+### ⚠️ 「動きを減らす」の書き方（2026-10-04 に変えた。前の書き方に戻さない）
+
 ```css
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
     animation: none !important; transition: none !important;
-    opacity: 1 !important; transform: none !important;
   }
+  /* このページが最初に隠している要素（opacity: 0 にしているもの）だけ、はじめから見せる */
+  html.js:not([data-motion="on"]) .card, html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
 }
+html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+html.js[data-motion="off"] .card, html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
 ```
+
+- **全部の要素に `opacity: 1 !important` を付けない。** 前はそうしていて、端末が「動きを減らす」設定のスマホで、
+  ①アニメーションが出ない ②日本語の「濃さ」（薄くする）が効かない ③言語ボタンの透明な select が見えてしまう、が起きた
+- 「最初に隠す」要素を足したら（`.js .something { opacity: 0 }`）、ここの2か所（`@media` の中と `[data-motion="off"]` の行）にも同じセレクタを足す
+- `data-motion` は、フッターの「✨ 動き」（自動・ON・OFF）で決まる（`tools/i18n_runtime.js` の最初）。ON なら、端末が「減らす」でも動く
 
 ---
 
