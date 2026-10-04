@@ -330,9 +330,19 @@ def px_src():
     return _PX_SRC
 
 
+GLOBAL_CSS = ROOT / "tools" / "global.css"
+
+
+def global_style():
+    """全ページ共通の CSS（tools/global.css）。各ページの <head> に入れる＝JS を待たないので、ちらつかない"""
+    css = re.sub(r"/\*.*?\*/", "", GLOBAL_CSS.read_text(encoding="utf-8"), flags=re.S)
+    css = re.sub(r"\s+", " ", css).strip()
+    return f'<style id="pengesso-global">{css}</style>\n'
+
+
 def block(data):
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
-    return (f"{START}\n<script type=\"application/json\" id=\"i18n-data\">{payload}</script>\n"
+    return (f"{START}\n{global_style()}<script type=\"application/json\" id=\"i18n-data\">{payload}</script>\n"
             f"<script src=\"{runtime_src()}\"></script>\n"
             f"<script src=\"{px_src()}\" defer></script>\n{END}\n")
 

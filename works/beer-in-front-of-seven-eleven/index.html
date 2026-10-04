@@ -253,13 +253,23 @@
   /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと。
      これが無いと tools/check.py が落ちる */
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
       animation: none !important;
       transition: none !important;
+    }
+    /* このページが「ふわっと出す」ために最初に隠している要素（opacity: 0 にしているもの）だけ、はじめから見せる。ページごとに数え上げた（2026-10-04）。ほかの部品（言語メニュー・勉強バーなど）はさわらない */
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .next,
+    html:not([data-motion="on"]) .cal span {
       opacity: 1 !important;
       transform: none !important;
     }
   }
+  /* ✨ 動きの設定（2026-10-04）：本人がフッターの「✨ 動き」で ON を選んだら、端末が「減らす」でも動かす。OFF なら、端末が「減らさない」でも止める。上の @media は auto（端末にしたがう）のときだけ効く */
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .next,
+  html[data-motion="off"] .cal span { opacity: 1 !important; transform: none !important; }
 
   /* 🌙 夜のセブ。最初から暗い記事 */
   body { background: radial-gradient(circle at 80% 0%, rgba(127,163,255,.22), transparent 40%), radial-gradient(circle at 10% 90%, rgba(255,184,77,.16), transparent 40%), var(--bg) !important; }
@@ -426,9 +436,10 @@
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; }</style>
 <script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"303d94e27b"},"bn":{"v":"89d1dfd7b0"},"ceb":{"v":"47c1e489ff"},"cs":{"v":"3efab1810c"},"da":{"v":"8b8ec5720c"},"de":{"v":"b07492abd6"},"el":{"v":"36fb71bbe9"},"es":{"v":"121f7d4929"},"fa":{"v":"d96b5e524f"},"fi":{"v":"f3f2933886"},"fil":{"v":"cf34f21686"},"fr":{"v":"34219310d1"},"he":{"v":"d5a5b17045"},"hi":{"v":"cefef01856"},"id":{"v":"7bb58bcf73"},"it":{"v":"6f62c8a2de"},"ja":{"v":"f52afc5228"},"ko":{"v":"617cc97ead"},"mr":{"v":"a35e3da175"},"ms":{"v":"597c274c5a"},"nb":{"v":"f113d91f6a"},"ne":{"v":"cb83c25564"},"nl":{"v":"668181473a"},"pa":{"v":"cf9b065110"},"pl":{"v":"72c133a255"},"pt":{"v":"b7049ecca5"},"ro":{"v":"c5c20d7407"},"ru":{"v":"78d6f72d9d"},"sv":{"v":"3407d9af9b"},"sw":{"v":"69f8454926"},"ta":{"v":"0d60c83185"},"te":{"v":"0bb3ced162"},"th":{"v":"f505862e28"},"tr":{"v":"f0dc8eeefd"},"uk":{"v":"3329c40e4d"},"ur":{"v":"d008159c1b"},"vi":{"v":"bebc31c26c"},"zh":{"v":"da658ea98f"},"zh-Hant":{"v":"8326ebafde"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
-<script src="/assets/i18n-runtime.js?v=58ad551aca"></script>
-<script src="/assets/px.js?v=bb6c785780" defer></script>
+<script src="/assets/i18n-runtime.js?v=44f27a45a8"></script>
+<script src="/assets/px.js?v=4fb886f8bf" defer></script>
 <!-- 🌐 i18n:end -->
 </head>
 <body>

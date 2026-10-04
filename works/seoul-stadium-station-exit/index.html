@@ -253,13 +253,23 @@
   /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと。
      これが無いと tools/check.py が落ちる */
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
       animation: none !important;
       transition: none !important;
+    }
+    /* このページが「ふわっと出す」ために最初に隠している要素（opacity: 0 にしているもの）だけ、はじめから見せる。ページごとに数え上げた（2026-10-04）。ほかの部品（言語メニュー・勉強バーなど）はさわらない */
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .next,
+    html:not([data-motion="on"]) .stairs b {
       opacity: 1 !important;
       transform: none !important;
     }
   }
+  /* ✨ 動きの設定（2026-10-04）：本人がフッターの「✨ 動き」で ON を選んだら、端末が「減らす」でも動かす。OFF なら、端末が「減らさない」でも止める。上の @media は auto（端末にしたがう）のときだけ効く */
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .next,
+  html[data-motion="off"] .stairs b { opacity: 1 !important; transform: none !important; }
 
   /* ⚾ 韓国の野球場シリーズの帯 */
   .series { display: inline-block; margin-bottom: 12px; padding: 6px 13px; border-radius: 999px;
@@ -415,9 +425,10 @@
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; }</style>
 <script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"1c8075e940"},"bn":{"v":"07c6131a55"},"ceb":{"v":"8c364552ec"},"cs":{"v":"37768ba6f1"},"da":{"v":"7fbe968bae"},"de":{"v":"d2f648afb6"},"el":{"v":"df7ad10457"},"es":{"v":"8f9f109276"},"fa":{"v":"1849232e85"},"fi":{"v":"be32c85806"},"fil":{"v":"abca673c37"},"fr":{"v":"9d67275910"},"he":{"v":"2ceb471a1f"},"hi":{"v":"912c4cd253"},"id":{"v":"0089b53e23"},"it":{"v":"56fb62d536"},"ja":{"v":"f90385d462"},"ko":{"v":"064b19bba4"},"mr":{"v":"db45c9e5d0"},"ms":{"v":"39c0661b2a"},"nb":{"v":"b5439de3a7"},"ne":{"v":"54540c4835"},"nl":{"v":"14c90974ba"},"pa":{"v":"048e4d6a9c"},"pl":{"v":"0353b7d1d9"},"pt":{"v":"cd3d01ef2b"},"ro":{"v":"fe7d815a82"},"ru":{"v":"c3b8042f99"},"sv":{"v":"00c83d2f76"},"sw":{"v":"43bf434b95"},"ta":{"v":"7e8ed061cf"},"te":{"v":"358b07472c"},"th":{"v":"05adfc8767"},"tr":{"v":"4b22066e93"},"uk":{"v":"874276406d"},"ur":{"v":"f99c8fb058"},"vi":{"v":"ec7b538b57"},"zh":{"v":"effc44605e"},"zh-Hant":{"v":"bc72472a8a"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
-<script src="/assets/i18n-runtime.js?v=58ad551aca"></script>
-<script src="/assets/px.js?v=bb6c785780" defer></script>
+<script src="/assets/i18n-runtime.js?v=44f27a45a8"></script>
+<script src="/assets/px.js?v=4fb886f8bf" defer></script>
 <!-- 🌐 i18n:end -->
 </head>
 <body>

@@ -268,13 +268,21 @@
   /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと。
      これが無いと tools/check.py が落ちる */
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
       animation: none !important;
       transition: none !important;
+    }
+    /* このページが「ふわっと出す」ために最初に隠している要素（opacity: 0 にしているもの）だけ、はじめから見せる。ページごとに数え上げた（2026-10-04）。ほかの部品（言語メニュー・勉強バーなど）はさわらない */
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .next {
       opacity: 1 !important;
       transform: none !important;
     }
   }
+  /* ✨ 動きの設定（2026-10-04）：本人がフッターの「✨ 動き」で ON を選んだら、端末が「減らす」でも動かす。OFF なら、端末が「減らさない」でも止める。上の @media は auto（端末にしたがう）のときだけ効く */
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
 
   /* 🛤 カードを1本の線でつなぐ（2026-09-24 本人の要望：見た目はAIの工夫で。本文は1文字も変えていない） */
   .path { position: relative; margin-top: 6px; padding-left: 30px; }
@@ -502,9 +510,10 @@
   @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; }</style>
 <script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"a02dbb83ca"},"bn":{"v":"b0aff71c62"},"ceb":{"v":"3a35426a33"},"cs":{"v":"174e0b8e64"},"da":{"v":"448e49a519"},"de":{"v":"937f4e45c1"},"el":{"v":"48416f12da"},"es":{"v":"9e008cb365"},"fa":{"v":"fd07524a29"},"fi":{"v":"e3d1d76dfb"},"fil":{"v":"5f84f44356"},"fr":{"v":"dd474730f8"},"he":{"v":"9875325a36"},"hi":{"v":"9b7733008e"},"id":{"v":"cc190c81ba"},"it":{"v":"b36b4a415f"},"ja":{"v":"b8ec004e22"},"ko":{"v":"6a45756f96"},"mr":{"v":"a8c40d6fae"},"ms":{"v":"50b74e744d"},"nb":{"v":"36f20397aa"},"ne":{"v":"fbf4b97e30"},"nl":{"v":"2b8932cba7"},"pa":{"v":"b883861fa9"},"pl":{"v":"956b40eafd"},"pt":{"v":"22b64e2051"},"ro":{"v":"cbfa76ebe0"},"ru":{"v":"8e4bebea2a"},"sv":{"v":"7b94029849"},"sw":{"v":"414b643e88"},"ta":{"v":"d7fe1ce041"},"te":{"v":"2d8bf9d4e2"},"th":{"v":"754ff61da9"},"tr":{"v":"e5c301a836"},"uk":{"v":"d883f7241f"},"ur":{"v":"45a0484411"},"vi":{"v":"14e82a339b"},"zh":{"v":"ecb1d89249"},"zh-Hant":{"v":"181c779157"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
-<script src="/assets/i18n-runtime.js?v=58ad551aca"></script>
-<script src="/assets/px.js?v=bb6c785780" defer></script>
+<script src="/assets/i18n-runtime.js?v=44f27a45a8"></script>
+<script src="/assets/px.js?v=4fb886f8bf" defer></script>
 <!-- 🌐 i18n:end -->
 </head>
 <body>

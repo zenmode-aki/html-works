@@ -1,4 +1,35 @@
 (function () {
+var html = document.documentElement, KEY = 'pengesso-motion';
+function stored() { try { var v = localStorage.getItem(KEY); return v === 'on' || v === 'off' ? v : 'auto'; } catch (e) { return 'auto'; } }
+var m0 = stored();
+if (m0 !== 'auto') html.setAttribute('data-motion', m0);
+var realMM = window.matchMedia;
+var osMQ = realMM ? realMM.call(window, '(prefers-reduced-motion: reduce)') : null;
+if (realMM) {
+window.matchMedia = function (q) {
+var mql = realMM.call(window, q);
+if (typeof q !== 'string' || q.indexOf('prefers-reduced-motion') < 0) return mql;
+var cur = html.getAttribute('data-motion');
+if (cur !== 'on' && cur !== 'off') return mql;
+var asksNoPref = /no-preference/.test(q);
+return { matches: asksNoPref ? cur === 'on' : cur === 'off', media: q, onchange: null,
+addListener: function () {}, removeListener: function () {}, addEventListener: function () {}, removeEventListener: function () {}, dispatchEvent: function () { return false; } };
+};
+}
+window.pengessoMotion = {
+mode: function () { var c = html.getAttribute('data-motion'); return c === 'on' || c === 'off' ? c : 'auto'; },
+os: function () { return !!(osMQ && osMQ.matches); },
+set: function (m) {
+try { if (m === 'on' || m === 'off') localStorage.setItem(KEY, m); else localStorage.removeItem(KEY); } catch (e) {}
+if (m === 'on' || m === 'off') html.setAttribute('data-motion', m); else html.removeAttribute('data-motion');
+try { document.dispatchEvent(new CustomEvent('pengesso:motion', { detail: m })); } catch (e) {}
+}
+};
+var st = document.createElement('style');
+st.textContent = 'html[data-motion="off"] *,html[data-motion="off"] *::before,html[data-motion="off"] *::after{animation:none !important;transition:none !important}';
+(document.head || html).appendChild(st);
+})();
+(function () {
 var root = document.documentElement;
 if (!document.querySelector || root.classList.contains('motion-hold')) return;
 root.classList.add('motion-hold');
@@ -153,7 +184,7 @@ D + '.card p.aside,' + D + '.ba-col.before{background:rgba(255,255,255,.06) !imp
 D + '.photo{background:#22242f !important;border-color:rgba(255,255,255,.10) !important}' +
 D + 'img{filter:brightness(.93)}' +
 D + '.stage-public{background:#23c98a !important;color:#04331d !important}' +
-'.theme-foot{display:flex;justify-content:center;margin:26px auto 6px}' +
+'.theme-foot{display:flex;flex-wrap:wrap;justify-content:center;gap:2px 6px;margin:26px auto 6px}' +
 '.theme-btn{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:4px 12px;border:0;border-radius:999px;' +
 'background:none;color:inherit;opacity:.5;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}' +
 '.theme-btn:hover,.theme-btn:focus-visible{opacity:.9}.theme-btn:focus-visible{outline:2px solid #8b6de8;outline-offset:2px}' +
@@ -162,6 +193,22 @@ D + '.chap .card-label{color:color-mix(in srgb,var(--c) 55%,#fff) !important}' +
 '.stage-public{color:#04331d !important}' +
 D + ':is(.card-label,.label,.series,.next-kicker){filter:none}';
 (document.head || document.getElementsByTagName('head')[0]).appendChild(darkCss);
+var MOTION_WORDS = {
+en: ['✨ Motion: Auto', '✨ Motion: On', '✨ Motion: Off'],
+ja: ['✨ 動き：自動', '✨ 動き：ON', '✨ 動き：OFF'],
+ko: ['✨ 움직임: 자동', '✨ 움직임: 켜짐', '✨ 움직임: 꺼짐'],
+zh: ['✨ 动效：自动', '✨ 动效：开', '✨ 动效：关'],
+'zh-Hant': ['✨ 動態：自動', '✨ 動態：開', '✨ 動態：關']
+};
+function motionButton() {
+var b = document.createElement('button'), M = window.pengessoMotion, order = ['auto', 'on', 'off'];
+b.type = 'button'; b.className = 'theme-btn motion-btn'; b.setAttribute('translate', 'no');
+function paint() { b.textContent = (MOTION_WORDS[lang] || MOTION_WORDS.en)[order.indexOf(M.mode())]; }
+paint();
+b.addEventListener('click', function () { M.set(order[(order.indexOf(M.mode()) + 1) % 3]); paint(); });
+document.addEventListener('pengesso:motion', paint);
+return b;
+}
 function themeButton() {
 var b = document.createElement('button');
 b.type = 'button'; b.className = 'theme-btn'; b.setAttribute('translate', 'no');
@@ -412,9 +459,9 @@ st.textContent =
 'html[data-theme="dark"] .i18n-az button{background:#3a3450;color:#d9ceff}' +
 'html[data-theme="dark"] .i18n-az button.on{background:#8b6de8;color:#fff}' +
 'html[data-theme="dark"] .i18n-stack i{background:#3a3450}' +
-'@media (prefers-reduced-motion: reduce){.i18n-nudge .i18n-cur,.i18n-tip,.i18n-tip-text.in{animation:none}}' +
+'@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) :is(.i18n-nudge .i18n-cur,.i18n-tip,.i18n-tip-text.in){animation:none}}' +
 '.stage-public{display:none !important}' +
-'@media (prefers-reduced-motion: reduce){.i18n-opt{transition:none}}';
+'@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .i18n-opt{transition:none}}';
 document.head.appendChild(st);
 var wrap = document.createElement('div');
 wrap.className = 'i18n-switch';
@@ -592,7 +639,7 @@ tip.style.maxWidth = Math.min(room, 250) + 'px';
 var spot = document.querySelector('[data-i18n-switch]');
 var bar = document.querySelector('.topbar') || document.querySelector('body > header, main > header, header');
 var foot = document.createElement('div');
-foot.className = 'theme-foot'; foot.appendChild(themeButton());
+foot.className = 'theme-foot'; foot.appendChild(themeButton()); foot.appendChild(motionButton());
 var tail = document.querySelector('footer') || document.querySelector('main') || document.body;
 tail.appendChild(foot);
 if (spot) { spot.appendChild(wrap); switchMount = spot; }
@@ -638,6 +685,37 @@ if (switchMount && switchMount.parentNode) switchMount.parentNode.insertBefore(b
 else document.body.insertBefore(box, document.body.firstChild);
 }
 var switchMount = null;
+var MOTION_NOTE = {
+en: ['Your device is set to reduce motion, so the animations on this site are off.', 'Turn animations on', 'Keep them off'],
+ja: ['この端末は「動きを減らす」設定のため、このサイトのアニメーションを止めています。', '動きをつける', 'このまま'],
+ko: ['이 기기는 “동작 줄이기” 설정이라서, 이 사이트의 애니메이션을 멈추고 있어요.', '움직임 켜기', '그대로 두기'],
+zh: ['这台设备开启了“减少动态效果”，所以本站的动画已关闭。', '打开动效', '保持关闭'],
+'zh-Hant': ['這台裝置開啟了「減少動態效果」，所以本站的動畫已關閉。', '開啟動態', '保持關閉']
+};
+function drawMotionNote() {
+var M = window.pengessoMotion, KEYN = 'pengesso-motion-note';
+if (!M || !M.os() || M.mode() !== 'auto' || !switchMount) return;
+var n = 0; try { n = +localStorage.getItem(KEYN) || 0; } catch (e) {}
+if (n >= 3) return;
+try { localStorage.setItem(KEYN, String(n + 1)); } catch (e) {}
+var W = MOTION_NOTE[lang] || MOTION_NOTE.en;
+var st = document.createElement('style');
+st.textContent = '.motion-note{margin:8px 0 14px;padding:12px 14px;border-radius:16px;background:#eef6ff;border:2px solid #cfe3fb;color:#1f4b80;font-size:13px;font-weight:700;line-height:1.55}' +
+'.motion-note p{margin:0 0 10px}.motion-note .mn-btns{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}' +
+'.motion-note button{flex:none;min-height:40px;padding:0 16px;border:0;border-radius:999px;font:inherit;font-size:13px;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent}' +
+'.motion-note .mn-on{background:#2f6fd0;color:#fff}.motion-note .mn-off{background:transparent;color:#1f4b80;text-decoration:underline}' +
+'html[data-theme="dark"] .motion-note{background:#182335;border-color:#2b4468;color:#cfe3ff}html[data-theme="dark"] .motion-note .mn-off{color:#cfe3ff}';
+document.head.appendChild(st);
+var box = document.createElement('div');
+box.className = 'motion-note'; box.setAttribute('role', 'note'); box.setAttribute('translate', 'no');
+box.innerHTML = '<p></p><div class="mn-btns"><button type="button" class="mn-on"></button><button type="button" class="mn-off"></button></div>';
+var bt = box.lastChild.children;
+box.firstChild.textContent = '✨ ' + W[0];
+bt[0].textContent = W[1]; bt[1].textContent = W[2];
+bt[0].addEventListener('click', function () { M.set('on'); box.remove(); try { localStorage.setItem(KEYN, '9'); } catch (e) {} });
+bt[1].addEventListener('click', function () { box.remove(); try { localStorage.setItem(KEYN, '9'); } catch (e) {} });
+if (switchMount.parentNode) switchMount.parentNode.insertBefore(box, switchMount.nextSibling);
+}
 var LEARN_KEY = 'pengesso-learn', NATIVE_KEY = 'pengesso-native-alpha', IT_KEY = 'pengesso-it', GCP_KEY = 'pengesso-gcp',
 STUDY_TIP_KEY = 'pengesso-study-tip', SUB_KEY = 'pengesso-learn-lang';
 var STUDY_WORDS = {
@@ -763,7 +841,7 @@ st.textContent =
 '.study-re{position:relative;display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:6px 10px 6px 12px;border:2px solid rgba(255,255,255,.9);border-radius:999px;background:#fff;color:#5b4bb0;' +
 'font-size:13px;font-weight:800;line-height:1;white-space:nowrap;box-shadow:0 6px 16px rgba(115,70,111,.10);cursor:pointer;-webkit-tap-highlight-color:transparent}' +
 '.study-re .re-ic{font-size:15px;line-height:1}.study-re .re-caret{font-size:11px;opacity:.7}' +
-'.study-re .re-sel{position:absolute;left:0;top:0;width:100%;height:100%;margin:0;border:0;opacity:0;cursor:pointer;font-size:16px;-webkit-appearance:none;appearance:none}' +
+'.study-re .re-sel{position:absolute;left:0;top:0;width:100%;height:100%;margin:0;padding:0;border:0;background:transparent;color:transparent;-webkit-text-fill-color:transparent;opacity:0;cursor:pointer;font-size:16px;-webkit-appearance:none;appearance:none}' +
 '.study-re:focus-within{outline:3px solid rgba(139,109,232,.45);outline-offset:2px}' +
 '@supports selector(:has(*)){.study-re:focus-within{outline:0}.study-re:has(.re-sel:focus-visible){outline:3px solid rgba(139,109,232,.45);outline-offset:2px}}' +
 '.study-re.on{border-color:var(--pc);background:var(--pb);color:var(--pc)}' +
@@ -826,8 +904,8 @@ st.textContent =
 'html[data-theme="dark"] .study-info{background:#2a2540;color:#ddd5ff}' +
 'html[data-theme="dark"] .it-say{background:#163126;color:#bfead4}html[data-theme="dark"] .it-say b{background:linear-gradient(transparent 48%,#2a6a4c 48%);color:#d8ffe9}' +
 'html[data-theme="dark"] .it-say small{color:#8fc7ad}html[data-theme="dark"] .it-note{background:#163126;color:#bfead4}' +
-'@media (prefers-reduced-motion:reduce){html.learn-on .learn-en,html.it-on .it-say,html.learn-on .study-tray,.study-tip{animation:none}.study-sw,.study-sw::after,.dim-b{transition:none}' +
-'.study-btn:active,.study-re:active,.study-q:active,.study-chip:active,.dim-b:active{transform:none}}';
+'@media (prefers-reduced-motion:reduce){html:not([data-motion="on"]) :is(.learn-en,.it-say,.study-tray,.study-tip){animation:none}html:not([data-motion="on"]) :is(.study-sw,.study-sw::after,.dim-b){transition:none}' +
+'html:not([data-motion="on"]) :is(.study-btn,.study-re,.study-q,.study-chip,.dim-b):active{transform:none}}';
 st.textContent +=
 '.learn-body{display:block;min-width:0;flex:1}.learn-line{display:inline;white-space:pre-line}' +
 '.learn-en ruby{ruby-position:over}.learn-en rt{font-size:.56em;font-weight:800;line-height:1;letter-spacing:0;color:#7a5ee0}' +
@@ -1188,6 +1266,7 @@ UI_READY.then(startReady, startReady);
 }
 function startReady() {
 drawSwitch();
+try { drawMotionNote(); } catch (e) {}
 try { moodMore(); } catch (e) {}
 window.pengessoLang = lang;
 if (lang === 'en') { if (!DATA.lazyTop) drawLearn(collectEnglish(), true); return; }

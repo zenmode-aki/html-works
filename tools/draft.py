@@ -260,7 +260,8 @@ def index_html(infos, today, published):
   .grp .note {{ margin: 0 0 12px; font-size: 13px; color: var(--muted); line-height: 1.6; }}
   .how {{ margin-top: 26px; padding: 16px 18px; border-radius: 18px; background: #fff; border: 1.5px dashed var(--line); font-size: 13.5px; line-height: 1.8; color: var(--muted); }}
   .how code {{ background: #f3f0fa; padding: 1px 6px; border-radius: 6px; color: var(--ink); }}
-  @media (prefers-reduced-motion: reduce) {{ .card {{ transition: none; }} }}
+  @media (prefers-reduced-motion: reduce) {{ html:not([data-motion="on"]) .card {{ transition: none; }} }}
+  html[data-motion="off"] .card {{ transition: none; }}
 </style>
 </head>
 <body>
@@ -320,7 +321,8 @@ def coming_soon(infos, today):
       html[data-theme="dark"] .soon {{ background: #2e2a1c; border-color: rgba(255,220,130,.25); }}
       html[data-theme="dark"] .soon-list li {{ background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.12); }}
       html[data-theme="dark"] :is(.soon-title,.soon-count,.soon-peek,.soon-more) {{ color: #ffe39a; }}
-      @media (prefers-reduced-motion: reduce) {{ .soon-list li {{ opacity: 1; transform: none; transition: none; }} .goal-draft {{ transition: none; }} }}
+      @media (prefers-reduced-motion: reduce) {{ html:not([data-motion="on"]) .soon-list li {{ opacity: 1; transform: none; transition: none; }} html:not([data-motion="on"]) .goal-draft {{ transition: none; }} }}
+      html[data-motion="off"] .soon-list li {{ opacity: 1; transform: none; transition: none; }} html[data-motion="off"] .goal-draft {{ transition: none; }}
     </style>
     <div class="soon" id="soon" translate="no"></div>
     <script>

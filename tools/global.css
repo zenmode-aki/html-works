@@ -1,0 +1,24 @@
+/* 🌐 全ページ共通の CSS（tools/i18n.py が、各ページの <head> に <style id="pengesso-global"> として入れる。手でページに書かない）
+   ・ここを直したら python3 tools/i18n.py を流し直す
+   ・⚠️ コメントの中に、アスタリスクと斜線をこの順で並べて書かない（コメントが途中で閉じる） */
+
+/* ⏩ ページ移動をなめらかに（2026-10-04 本人：スマホで「アプリみたいな動き」がほしい）
+   同じサイトの中を移るとき、ふわっと切り替わる。対応しているブラウザ（Chrome・Edge・Safari 18.2〜）だけで、
+   ほかは今までどおり。動きを減らす設定・動きOFFのときは、すぐ切り替わる */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: .16s ease both pg-out; }
+::view-transition-new(root) { animation: .28s ease both pg-in; }
+@keyframes pg-out { to { opacity: 0; } }
+@keyframes pg-in { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; }
+}
+html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; }
+
+/* 📖 読みやすさ（2026-10-04）
+   ・韓国語：単語の途中で折り返さない（スペースで折る）。長すぎる語だけは、はみ出さずに折る
+   ・日本語・中国語：行のはじめに「ゃ」「ー」「、」などが来ない（きびしい禁則）
+   日本語の見出しの「文節で折り返す」は、i18n_runtime.js にすでにある（本文は、行がガタガタになるのでやらない） */
+:lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; }
+:lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title),
+:lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; }

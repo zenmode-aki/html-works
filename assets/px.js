@@ -278,7 +278,7 @@ var css = [
 'html[data-theme="dark"] :is(.px-world .px-lead,.px-big small,.px-pop .px-nn){color:#b3aac4}',
 'html[dir="rtl"] .px-bar i{transform-origin:right;left:auto;right:0}',
 '@media (max-width:420px){.px-chip{padding:6px 11px;font-size:12.5px}.px-world{padding:20px 16px}.px-heart{width:100%}}',
-'@media (prefers-reduced-motion:reduce){.px-strip,.px-ov,.px-sheet,.px-toast,.px-heart{transition:none}.px-dot,.px-bar i,.px-heart.pop .px-heart-ic,.px-burst{animation:none}}'
+'@media (prefers-reduced-motion:reduce){html:not([data-motion="on"]) :is(.px-strip,.px-ov,.px-sheet,.px-toast,.px-heart){transition:none}html:not([data-motion="on"]) :is(.px-dot,.px-bar i,.px-heart.pop .px-heart-ic,.px-burst){animation:none}}'
 ].join('\n');
 function addCss() {
 if (qs('#px-css')) return;
