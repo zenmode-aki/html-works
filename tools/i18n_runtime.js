@@ -81,6 +81,22 @@
   // 戻るボタンで戻ってきたとき（ページが保存されていたとき）は、止めたままにしない
   window.addEventListener('pageshow', function () { root.classList.remove('motion-hold'); });
 })();
+/* 🎬 動画・曲・地図（iframe）は、画面に近づいてから読む（2026-10-04 本人：「スマホで開くと少しラグがある」）
+   YouTube は1つで 0.5〜1MB。前はページを開いた瞬間に読み始めて、本文や訳の読み込みと回線を取り合っていた。
+   記事の HTML では <iframe data-src="…">（src を書かない）。ここで、画面の 600px 手前に来たら src に入れる */
+(function () {
+  function go() {
+    var fs = [].slice.call(document.querySelectorAll('iframe[data-src]'));
+    if (!fs.length) return;
+    function load(f) { var u = f.getAttribute('data-src'); if (u) { f.setAttribute('src', u); f.removeAttribute('data-src'); } }
+    if (!('IntersectionObserver' in window)) { fs.forEach(load); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { load(e.target); io.unobserve(e.target); } });
+    }, { rootMargin: '600px 0px' });
+    fs.forEach(function (f) { io.observe(f); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+})();
 (function () {
   var holder = document.getElementById('i18n-data');
   if (!holder) return;

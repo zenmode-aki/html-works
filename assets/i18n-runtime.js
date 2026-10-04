@@ -59,6 +59,19 @@ items.forEach(function (el) { io.observe(el); });
 window.addEventListener('pageshow', function () { root.classList.remove('motion-hold'); });
 })();
 (function () {
+function go() {
+var fs = [].slice.call(document.querySelectorAll('iframe[data-src]'));
+if (!fs.length) return;
+function load(f) { var u = f.getAttribute('data-src'); if (u) { f.setAttribute('src', u); f.removeAttribute('data-src'); } }
+if (!('IntersectionObserver' in window)) { fs.forEach(load); return; }
+var io = new IntersectionObserver(function (es) {
+es.forEach(function (e) { if (e.isIntersecting) { load(e.target); io.unobserve(e.target); } });
+}, { rootMargin: '600px 0px' });
+fs.forEach(function (f) { io.observe(f); });
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+})();
+(function () {
 var holder = document.getElementById('i18n-data');
 if (!holder) return;
 var DATA;

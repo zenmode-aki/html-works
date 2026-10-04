@@ -176,6 +176,10 @@ def check(work: pathlib.Path, fix_badge: bool):
                 "https://open.spotify.com/embed/")   # 2026-10-03 本人の要望：曲の記事に Spotify のプレイヤー
     frames = [s for s in re.findall(r'<iframe[^>]*\bsrc="([^"]*)"', doc)
               if not s.startswith(EMBED_OK)]
+    # 2026-10-04：iframe は data-src に書く（画面に近づいてから読む。i18n_runtime.js）。src だとスマホで最初の表示が遅くなる
+    eager = re.findall(r'<iframe\b[^>]*?(?<![\w-])src="(https://[^"]*)"', doc)
+    if eager:
+        problems.append(f"{NG} iframe が src で書かれています: {eager[:2]}  → data-src=\"…\" に変えてください（画面に近づいてから読み込む）")
     if frames:
         problems.append(f"{NG} 許可していない埋め込みがあります: {frames}"
                         f"  → 地図(OpenStreetMap)・動画(youtube-nocookie)・曲(Spotify)だけです")
