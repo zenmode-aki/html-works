@@ -330,6 +330,20 @@ def px_src():
     return _PX_SRC
 
 
+PHRASE = ROOT / "tools" / "ja_phrase.js"
+PHRASE_MODEL = ROOT / "tools" / "ja_phrase_model.json"
+PHRASE_OUT = ROOT / "assets" / "ja-phrase.js"
+
+
+def build_phrase():
+    """✂️ 日本語の見出しを文節で折り返す（Chrome 以外用）。Google の BudouX の日本語モデル（Apache-2.0）入り。
+    読み込むのは日本語で、Chrome 以外のときだけ（i18n_runtime.js）。モデルが変わらなければ書き直さない"""
+    model = json.dumps(json.loads(PHRASE_MODEL.read_text(encoding="utf-8")), ensure_ascii=False, separators=(",", ":"))
+    js = minify(PHRASE.read_text(encoding="utf-8").replace("__MODEL__", model)) + "\n"
+    if not PHRASE_OUT.exists() or PHRASE_OUT.read_text(encoding="utf-8") != js:
+        PHRASE_OUT.write_text(js, encoding="utf-8")
+
+
 GLOBAL_CSS = ROOT / "tools" / "global.css"
 
 
@@ -340,7 +354,13 @@ def global_style():
     return f'<style id="pengesso-global">{css}</style>\n'
 
 
+_PHRASE_DONE = False
+
+
 def block(data):
+    global _PHRASE_DONE
+    if not _PHRASE_DONE:
+        build_phrase(); _PHRASE_DONE = True
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
     return (f"{START}\n{global_style()}<script type=\"application/json\" id=\"i18n-data\">{payload}</script>\n"
             f"<script src=\"{runtime_src()}\"></script>\n"

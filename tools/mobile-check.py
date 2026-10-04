@@ -16,6 +16,7 @@
   3. 勉強バーが出る（1段目：英語の勉強／言い換え／？）。2段目（濃さの4ボタン）は、オンにしたときだけ見える
   4. 「日本語の濃さ」を30％にしたら、日本語の文字（.learn-native）の opacity が本当に0.3になる ← 2026-10-04 の事故
   5. 動きを減らす設定のときは、カードが全部見える（opacity 1）。透明にして重ねた部品（言い換えの select）は、どちらでも見えない
+  6. 日本語の見出しが文節で折り返される（BudouX が動いて .ja-ph が付く）
 
 Chrome の場所：環境変数 CHROME、なければ Mac / Linux の普通の場所（Playwright の Chromium も探す）。
 """
@@ -56,6 +57,7 @@ window.addEventListener('load', function () { setTimeout(function () {
   var cards = [].slice.call(document.querySelectorAll('main .card'));
   r.cards = cards.length;
   r.hiddenCards = cards.filter(function (c) { var o = 1; for (var e = c; e && e.nodeType === 1; e = e.parentElement) o *= parseFloat(getComputedStyle(e).opacity); return o < 0.9; }).length;
+  r.phrase = document.querySelectorAll('.ja-ph').length;
   var sel = document.querySelector('.re-sel');
   r.selOp = sel ? parseFloat(getComputedStyle(sel).opacity) : null;
   r.selColor = sel ? getComputedStyle(sel).color : null;
@@ -132,6 +134,7 @@ def judge(r, reduce):
     if reduce and r["cards"] and r["hiddenCards"]: bad.append(f"動きを減らす設定なのに、見えないカードが {r['hiddenCards']} 枚ある")
     if r["selOp"] is not None and r["selOp"] > 0.01 and "0, 0, 0, 0" not in str(r["selColor"]) and "transparent" not in str(r["selColor"]):
         bad.append("言い換えの select（透明にして重ねるもの）が見えてしまっている")
+    if r.get("phrase", 0) < 1: bad.append("日本語の見出しの文節折り返し（.ja-ph・BudouX）が効いていない")
     if reduce and r["reduce"] is not True: bad.append("（検査の不具合）動きを減らす設定が効いていない")
     return bad
 

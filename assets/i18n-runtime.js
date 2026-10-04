@@ -1313,7 +1313,14 @@ box.textContent = '🛠 診断 ?debug=1\n' + ua() + ' / ' + innerWidth + 'x' + i
 }
 tick(); setInterval(tick, 600);
 }
+function loadPhrase() {
+if (lang !== 'ja' || /[?&]phrase=0\b/.test(location.search)) return;
+var s = document.createElement('script');
+s.src = '/assets/ja-phrase.js'; s.async = true;
+(document.head || document.documentElement).appendChild(s);
+}
 function startReady() {
+try { loadPhrase(); } catch (e) {}
 try { drawDebug(); } catch (e) {}
 drawSwitch();
 try { drawMotionNote(); } catch (e) {}

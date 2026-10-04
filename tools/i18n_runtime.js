@@ -1485,7 +1485,17 @@
     }
     tick(); setInterval(tick, 600);
   }
+  /* ✂️ 日本語の見出しを文節で折り返す（2026-10-04）。Google の BudouX（assets/ja-phrase.js）で文節の境目を探し、<wbr> を入れる。
+     Chrome にも CSS の auto-phrase はあるが、iPhone の Safari・Firefox にはない。端末で折り返しが変わらないよう、日本語のときは全部の端末で同じこれを使う。
+     （「曲の｜カード」と割れるのが、BudouX だと「曲のカード、」のまま折れる）?phrase=0 を付けると読まない（比べるとき用） */
+  function loadPhrase() {
+    if (lang !== 'ja' || /[?&]phrase=0\b/.test(location.search)) return;
+    var s = document.createElement('script');
+    s.src = '/assets/ja-phrase.js'; s.async = true;
+    (document.head || document.documentElement).appendChild(s);
+  }
   function startReady() {
+  try { loadPhrase(); } catch (e) {}
   try { drawDebug(); } catch (e) {}
   drawSwitch();
   try { drawMotionNote(); } catch (e) {}
