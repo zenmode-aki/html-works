@@ -641,15 +641,17 @@ var switchMount = null;
 var LEARN_KEY = 'pengesso-learn', NATIVE_KEY = 'pengesso-native-alpha', IT_KEY = 'pengesso-it', GCP_KEY = 'pengesso-gcp',
 STUDY_TIP_KEY = 'pengesso-study-tip', SUB_KEY = 'pengesso-learn-lang';
 var STUDY_WORDS = {
-ja: { en: '英語も見る', say: '英語を聞く', it: 'IT用語で言うと', gcp: 'Google Cloud で言うと', dim: '日本語の濃さ',
+ja: { en: '英語も見る', say: '英語を聞く', it: 'IT用語で言うと', gcp: 'Google Cloud で言うと', dim: '日本語の濃さ', re: '言い換え', off: 'オフ',
+packs: { it: 'IT用語', gcp: 'Google Cloud', net: 'ネットワーク', srv: 'サーバー', sec: 'セキュリティ', biz: 'ビジネス横文字' },
 net: 'ネットワークで言うと', srv: 'サーバーで言うと', sec: 'セキュリティで言うと', biz: 'ビジネス横文字で言うと',
 tips: ['英語の勉強も、いっしょにしますか？ 🇬🇧 をオンにすると、日本語のすぐ下に英語が出ます',
-'IT業界の人ですか？ 飼い主もIT用語を勉強中。💻 をオンにすると、日記がめちゃくちゃ強引にIT用語に言い換わります'],
-itNote: '🤖 AIがめちゃくちゃ強引に IT の言葉（💻 ふつうのIT用語／Google Cloud の言葉）で言い換えています。略語はフルスペルで書いています',
+'IT業界の人ですか？ 飼い主もIT用語を勉強中。「✨ 言い換え」で「IT用語」を選ぶと、日記がめちゃくちゃ強引にIT用語に言い換わります'],
+itNote: '🤖 AIが、めちゃくちゃ強引に言い換えています。略語はフルスペルで書いています',
 about: '🐧 飼い主は、英語の勉強を続けたいと思っています。そして、IT企業で働いていてテクノロジーが好きなので、IT用語もついでに覚えたいと思っています。' +
 'だから、このブログには小さな勉強モードが2つあります。🇬🇧 をオンにすると、日本語のすぐ下にもとの英文が出ます（日本語を薄くすると、英語に集中できます）。' +
-'💻 をオンにすると、AIが日記をめちゃくちゃ強引に IT用語に言い換えます。英語やIT用語に、ふわっとさわってみたい人は、よかったらどうぞ。' },
-ko: { en: '영어도 보기', say: '영어 듣기', dim: '한국어 진하기',
+'「✨ 言い換え」を選ぶと、AIが日記をめちゃくちゃ強引に IT用語などに言い換えます（いちどに1つだけ）。英語やIT用語に、ふわっとさわってみたい人は、よかったらどうぞ。' },
+ko: { en: '영어도 보기', say: '영어 듣기', dim: '한국어 진하기', re: '바꿔 말하기', off: '끄기',
+packs: { net: '네트워크', srv: '서버', sec: '보안', biz: '비즈니스 용어' },
 net: '네트워크로 말하면', srv: '서버로 말하면', sec: '보안으로 말하면', biz: '비즈니스 용어로 말하면',
 itNote: '🤖 AI가 아주 억지로 각 분야의 말로 바꿔 말하고 있어요(베타). 약어는 풀어서 써요',
 tips: ['영어 공부도 같이 할까요? 🇬🇧 를 켜면 한국어 바로 아래에 영어가 나와요'],
@@ -666,15 +668,15 @@ var STUDY_DEFAULT = { en: 'English too', say: 'Listen', dim: 'My language',
 tips: ['Learning English too? Turn on 🇬🇧 to see the English under each sentence'],
 about: '🐧 Pengesso’s owner wants to keep studying English, and also works at an IT company and loves technology. ' +
 'So this blog has small study modes. Turn on 🇬🇧 to see the original English under each sentence. Make your language lighter to focus on the English.' };
-var STUDY_EN = { en: 'Study Japanese', furi: 'Furigana', rom: 'Romaji', say: 'Listen', other: 'Other language', dim: 'English', it: 'IT words', gcp: 'Google Cloud',
+var STUDY_EN = { en: 'Study Japanese', furi: 'Furigana', rom: 'Romaji', say: 'Listen', other: 'Other language', dim: 'English', it: 'IT words', gcp: 'Google Cloud', re: 'Reword', off: 'Off',
 net: 'Network', srv: 'Server', sec: 'Security', biz: 'Business jargon',
 tips: ['Learning Japanese? Turn on 🇯🇵 to see the original Japanese under each line, with furigana (reading help)',
-'Work in IT? 💻 turns this diary into IT words, in a very forced way'],
-itNote: '🤖 AI re-says each line with IT words (💻 general IT / Google Cloud), in a very forced way. Short forms are spelled out',
+'Work in IT? Pick “✨ Reword”, then “IT words”, to see this diary in IT words, in a very forced way'],
+itNote: '🤖 AI re-says each line in a very forced way. Short forms are spelled out',
 about: '🐧 Pengesso’s owner writes every post in Japanese first, in simple everyday words, so every English line has the original Japanese. Turn on 🇯🇵 to see it under each line. ' +
 'Furigana shows how to read the kanji, Romaji shows the sounds in English letters, and 🔊 reads a line aloud. ' +
 'These aids are made automatically, so they can have mistakes. Make the English lighter to focus on the Japanese. ' +
-'You can also pick another language. 💻 makes AI re-say each line with IT words, in a very forced way.' };
+'You can also pick another language. ✨ Reword makes AI re-say each line with IT words (or Google Cloud, Network, and more), in a very forced way. One style at a time.' };
 function learnable(el) {
 if (!el.closest || !el.closest('main')) return false;
 if (el.closest('.topbar, .label, .card-head, .next, .prev, .related, .to-list, .i18n-row, .i18n-switch, .study-bar, .study-info, .theme-foot, nav, button, .part-nav, [translate="no"]')) return false;
@@ -729,31 +731,45 @@ var packs = PACK_ORDER.filter(function (k) { return packLangs[k] && packLangs[k]
 var hasIt = packs.length > 0;
 var st = document.createElement('style');
 st.textContent =
-'.study-bar{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:-8px 0 16px}' +
-'.study-btn{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:6px 14px 6px 8px;' +
+'.study-bar{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:-8px 0 16px;padding-top:7px}' +
+'.study-btn{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 14px 6px 8px;' +
 'border:2px solid rgba(255,255,255,.9);border-radius:999px;background:#fff;color:#5b4bb0;font:inherit;font-size:13px;font-weight:800;' +
-'line-height:1;cursor:pointer;box-shadow:0 6px 16px rgba(115,70,111,.10);white-space:nowrap}' +
-'.study-btn.it{color:#1f7a55}.study-btn.gcp{color:#1a56c4}' +
-'.study-btn:focus-visible,.study-q:focus-visible,.study-sel:focus-visible{outline:3px solid rgba(139,109,232,.45);outline-offset:2px}' +
+'line-height:1;cursor:pointer;box-shadow:0 6px 16px rgba(115,70,111,.10);white-space:nowrap;-webkit-tap-highlight-color:transparent}' +
+'.study-btn:active,.study-re:active,.study-q:active,.study-chip:active,.dim-b:active{transform:scale(.96)}' +
+'.study-btn:focus-visible,.study-q:focus-visible,.study-sel:focus-visible,.study-chip:focus-visible,.dim-b:focus-visible{outline:3px solid rgba(139,109,232,.45);outline-offset:2px}' +
 '.study-sw{position:relative;flex:none;width:34px;height:20px;border-radius:999px;background:#ddd6f3;transition:background .2s}' +
-'.study-btn.it .study-sw{background:#cfe9dc}.study-btn.gcp .study-sw{background:#d2e3fc}' +
 '.study-sw::after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff;' +
 'box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}' +
 '.study-btn[aria-pressed="true"] .study-sw{background:#8b6de8}' +
-'.study-btn.it[aria-pressed="true"] .study-sw{background:#2f9e6e}.study-btn.gcp[aria-pressed="true"] .study-sw{background:#1a73e8}' +
 '.study-btn[aria-pressed="true"] .study-sw::after{transform:translateX(14px)}' +
 'html[dir="rtl"] .study-btn[aria-pressed="true"] .study-sw::after{transform:translateX(-14px)}' +
-'.study-sel{min-height:38px;max-width:150px;padding:0 10px;border:2px solid rgba(255,255,255,.9);border-radius:999px;background:#fff;' +
+'.study-sel{min-height:40px;max-width:150px;padding:0 10px;border:2px solid rgba(255,255,255,.9);border-radius:999px;background:#fff;' +
 'color:#5b4bb0;font:inherit;font-size:13px;font-weight:800;box-shadow:0 6px 16px rgba(115,70,111,.10)}' +
-'.study-q{flex:none;width:38px;height:38px;border:2px solid rgba(255,255,255,.9);border-radius:50%;background:#fff;color:#5b4bb0;' +
-'font:inherit;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 6px 16px rgba(115,70,111,.10)}' +
+'.study-q{flex:none;width:44px;height:44px;padding:0;border:2px solid rgba(255,255,255,.9);border-radius:50%;background:#fff;color:#5b4bb0;' +
+'font:inherit;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 6px 16px rgba(115,70,111,.10);-webkit-tap-highlight-color:transparent}' +
 '.study-q[aria-expanded="true"]{background:#5b4bb0;color:#fff}' +
 '.study-info{margin:-6px 0 16px;padding:14px 16px;border-radius:18px;background:#f3effc;color:#3f3478;font-size:13.5px;font-weight:700;line-height:1.7}' +
 '.study-info[hidden]{display:none}' +
-'.study-dim{display:none;align-items:center;gap:8px;min-height:38px;padding:4px 14px;border-radius:999px;background:#fff;' +
-'color:#5b4bb0;font-size:12.5px;font-weight:800;box-shadow:0 6px 16px rgba(115,70,111,.10)}' +
-'html.learn-on .study-dim{display:inline-flex}' +
-'.study-dim input{width:110px;accent-color:#8b6de8}' +
+'.study-tray{display:none;flex:1 0 100%;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:8px 10px;border-radius:22px;background:rgba(255,255,255,.55);box-shadow:inset 0 0 0 2px rgba(255,255,255,.85)}' +
+'html.learn-on .study-tray{display:flex;animation:learnIn .3s ease both}' +
+'.study-chip{display:none;align-items:center;gap:6px;min-height:40px;padding:0 14px;border:2px solid rgba(139,109,232,.28);border-radius:999px;background:#fff;color:#5b4bb0;' +
+'font:inherit;font-size:13px;font-weight:800;line-height:1;cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent}' +
+'.study-chip[aria-pressed="true"]{background:#8b6de8;border-color:#8b6de8;color:#fff}.study-chip[aria-pressed="true"]::before{content:"✓";font-weight:900}' +
+'html.learn-on.sub-ja .study-chip.ja-only,html.learn-on.tts-ok .study-chip.say-btn{display:inline-flex}' +
+'.study-dim{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px;color:#5b4bb0;font-size:12.5px;font-weight:800}.dim-l{margin-right:2px}' +
+'.dim-b{display:inline-flex;align-items:center;justify-content:center;flex:none;width:46px;height:42px;padding:0;border:2px solid rgba(139,109,232,.28);border-radius:14px;background:#fff;color:#5b4bb0;' +
+'font:inherit;font-size:18px;font-weight:900;line-height:1;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .12s,box-shadow .15s,border-color .15s}' +
+'.dim-b i{font-style:normal;pointer-events:none}.dim-b[aria-pressed="true"]{border-color:#8b6de8;box-shadow:0 0 0 3px rgba(139,109,232,.28)}' +
+'.study-re{position:relative;display:inline-flex;align-items:center;gap:7px;min-height:44px;padding:6px 12px 6px 14px;border:2px solid rgba(255,255,255,.9);border-radius:999px;background:#fff;color:#5b4bb0;' +
+'font-size:13px;font-weight:800;line-height:1;white-space:nowrap;box-shadow:0 6px 16px rgba(115,70,111,.10);cursor:pointer;-webkit-tap-highlight-color:transparent}' +
+'.study-re .re-ic{font-size:15px;line-height:1}.study-re .re-caret{font-size:11px;opacity:.7}' +
+'.study-re .re-sel{position:absolute;left:0;top:0;width:100%;height:100%;margin:0;border:0;opacity:0;cursor:pointer;font-size:16px;-webkit-appearance:none;appearance:none}' +
+'.study-re:focus-within{outline:3px solid rgba(139,109,232,.45);outline-offset:2px}' +
+'@supports selector(:has(*)){.study-re:focus-within{outline:0}.study-re:has(.re-sel:focus-visible){outline:3px solid rgba(139,109,232,.45);outline-offset:2px}}' +
+'.study-re.on{border-color:var(--pc);background:var(--pb);color:var(--pc)}' +
+'.study-re.it{--pc:#1f7a55;--pb:#eaf7f0}.study-re.gcp{--pc:#1a56c4;--pb:#e8f0fe}.study-re.net{--pc:#0b6e78;--pb:#e4f6f6}' +
+'.study-re.srv{--pc:#3d4a86;--pb:#eef0f7}.study-re.sec{--pc:#a3263a;--pb:#fdeeee}.study-re.biz{--pc:#9a5408;--pb:#fff3e2}' +
+'@media (pointer:coarse){.study-sel{font-size:16px}}' +
 '.learn-en{display:none;margin-top:.4em;padding:.15em 0 .15em .7em;border-left:3px solid #c9bbf5;' +
 'font-size:.86em;line-height:1.55;font-weight:700;color:#5b4bb0;color:color-mix(in srgb,currentColor 35%,#6a55d8);white-space:pre-line;' +
 'text-align:start;unicode-bidi:isolate;letter-spacing:0;border-left-color:rgba(139,109,232,.55)}' +
@@ -763,9 +779,10 @@ st.textContent =
 'html.learn-on .learn-native{opacity:var(--native-a,1);transition:opacity .15s}' +
 '.it-say{display:none;margin-top:.45em;padding:.45em .7em;border-radius:12px;background:#eaf7f0;color:#1d5c41;' +
 'font-size:.84em;line-height:1.6;font-weight:700;text-align:start}' +
-'.gcp-mark{display:inline-block;width:1.25em;height:auto;vertical-align:-.2em;margin-right:1px}' +
+'.gcp-mark{display:inline-block;width:1.25em;height:auto;vertical-align:-.2em;margin-right:1px}.pack-say{letter-spacing:0}' +
 '.it-say b{color:#0b5e3a;background:linear-gradient(transparent 48%,#a9e4c6 48%);padding:0 .15em;border-radius:3px;font-weight:900}' +
-'.study-beta{margin-left:2px;padding:1px 5px;border-radius:5px;background:#2d2845;color:#fff;font-size:9.5px;font-weight:900;letter-spacing:.06em;line-height:1.4}' +
+'.study-beta{padding:1px 5px;border-radius:5px;background:#2d2845;color:#fff;font-size:9.5px;font-weight:900;letter-spacing:.06em;line-height:1.4}' +
+'.study-btn .study-beta,.study-re .study-beta{position:absolute;top:-7px;right:12px;margin:0;pointer-events:none}' +
 '.it-say small{display:block;margin-top:.2em;font-size:.86em;color:#4d7a66}' +
 'html.it-on .it-say{display:block;animation:learnIn .45s ease both}' +
 '.gcp-say{display:none;margin-top:.45em;padding:.45em .7em;border-radius:12px;background:#e8f0fe;color:#174ea6;font-size:.86em;line-height:1.6;font-weight:700;text-align:left}' +
@@ -781,15 +798,12 @@ st.textContent =
 '.biz-say{background:#fff3e2;color:#87480a}.biz-say b{background:linear-gradient(transparent 48%,#ffd8a1 48%)}' +
 '.net-say b,.srv-say b,.sec-say b,.biz-say b{padding:0 .15em;border-radius:3px;font-weight:900;color:inherit}' +
 'html.net-on .net-say,html.srv-on .srv-say,html.sec-on .sec-say,html.biz-on .biz-say{display:block;animation:learnIn .45s ease both}' +
-'.study-btn.net{color:#0b6e78}.study-btn.srv{color:#3d4a86}.study-btn.sec{color:#a3263a}.study-btn.biz{color:#9a5408}' +
-'.study-btn.net[aria-pressed="true"] .study-sw{background:#139aa6}.study-btn.srv[aria-pressed="true"] .study-sw{background:#5866b3}' +
-'.study-btn.sec[aria-pressed="true"] .study-sw{background:#d0384e}.study-btn.biz[aria-pressed="true"] .study-sw{background:#e08a1e}' +
 'html[data-theme="dark"] .net-say{background:#123236;color:#bdeef0}html[data-theme="dark"] .srv-say{background:#20243a;color:#d3d9f5}' +
 'html[data-theme="dark"] .sec-say{background:#3a1a20;color:#f8d0d5}html[data-theme="dark"] .biz-say{background:#3a2a14;color:#ffe2bd}' +
 'html[data-theme="dark"] .net-say b,html[data-theme="dark"] .srv-say b,html[data-theme="dark"] .sec-say b,html[data-theme="dark"] .biz-say b{background:rgba(255,255,255,.14)}' +
 'html[data-theme="dark"] .gcp-say{background:#16233d;color:#c6dafc}html[data-theme="dark"] .gcp-say b{background:linear-gradient(transparent 48%,#274b86 48%);color:#e3edff}' +
 '.it-note{display:none;width:fit-content;margin:-6px 0 14px;padding:6px 12px;border-radius:12px;background:#eaf7f0;font-size:12px;font-weight:700;color:#1d5c41}' +
-'html.it-on .it-note{display:block}' +
+'html.pack-on .it-note{display:block}' +
 '@keyframes learnIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}' +
 '.study-tip{position:absolute;left:0;top:calc(100% + 10px);z-index:55;display:flex;align-items:flex-start;gap:6px;' +
 'max-width:min(310px,calc(100vw - 32px));padding:10px 8px 10px 14px;border-radius:16px;background:#5b4bb0;color:#fff;' +
@@ -802,12 +816,18 @@ st.textContent =
 '.study-tip.bye{opacity:0;transition:opacity .35s}' +
 '@keyframes tipIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}' +
 'html[data-theme="dark"] .learn-en{color:#c9bbff;border-color:#7a66d8}' +
-'html[data-theme="dark"] :is(.study-btn,.study-dim,.study-sel,.study-q){background:#22242f;border-color:#33364a;color:#c9bbff}' +
+'html[data-theme="dark"] :is(.study-btn,.study-sel,.study-q,.study-re,.study-chip,.dim-b){background:#22242f;border-color:#33364a;color:#c9bbff}' +
+'html[data-theme="dark"] .study-chip[aria-pressed="true"]{background:#8b6de8;border-color:#8b6de8;color:#fff}' +
+'html[data-theme="dark"] .study-tray{background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 2px rgba(255,255,255,.1)}' +
+'html[data-theme="dark"] .study-dim{color:#c9bbff}html[data-theme="dark"] .dim-b[aria-pressed="true"]{border-color:#b9a8ff;box-shadow:0 0 0 3px rgba(185,168,255,.3)}' +
+'html[data-theme="dark"] .study-re.on{background:var(--pb);border-color:var(--pc);color:var(--pc)}' +
+'html[data-theme="dark"] .study-re.it{--pc:#8fe0b8;--pb:#163126}html[data-theme="dark"] .study-re.gcp{--pc:#9cc2ff;--pb:#16233d}html[data-theme="dark"] .study-re.net{--pc:#8fe3e8;--pb:#123236}' +
+'html[data-theme="dark"] .study-re.srv{--pc:#b8c2f2;--pb:#20243a}html[data-theme="dark"] .study-re.sec{--pc:#f5a9b2;--pb:#3a1a20}html[data-theme="dark"] .study-re.biz{--pc:#ffc88a;--pb:#3a2a14}' +
 'html[data-theme="dark"] .study-info{background:#2a2540;color:#ddd5ff}' +
-'html[data-theme="dark"] .study-btn.it{color:#8fe0b8}' +
 'html[data-theme="dark"] .it-say{background:#163126;color:#bfead4}html[data-theme="dark"] .it-say b{background:linear-gradient(transparent 48%,#2a6a4c 48%);color:#d8ffe9}' +
 'html[data-theme="dark"] .it-say small{color:#8fc7ad}html[data-theme="dark"] .it-note{background:#163126;color:#bfead4}' +
-'@media (prefers-reduced-motion:reduce){html.learn-on .learn-en,html.it-on .it-say,.study-tip{animation:none}.study-sw,.study-sw::after{transition:none}}';
+'@media (prefers-reduced-motion:reduce){html.learn-on .learn-en,html.it-on .it-say,html.learn-on .study-tray,.study-tip{animation:none}.study-sw,.study-sw::after,.dim-b{transition:none}' +
+'.study-btn:active,.study-re:active,.study-q:active,.study-chip:active,.dim-b:active{transform:none}}';
 st.textContent +=
 '.learn-body{display:block;min-width:0;flex:1}.learn-line{display:inline;white-space:pre-line}' +
 '.learn-en ruby{ruby-position:over}.learn-en rt{font-size:.56em;font-weight:800;line-height:1;letter-spacing:0;color:#7a5ee0}' +
@@ -820,8 +840,7 @@ st.textContent +=
 '.learn-say:active{transform:scale(.9);background:rgba(139,109,232,.3)}.learn-say.on{background:#8b6de8;color:#fff}' +
 'html.learn-on.tts-on.tts-ok .learn-en:not([hidden]){display:flex;gap:6px;align-items:flex-start}' +
 'html.learn-on.tts-on.tts-ok .learn-say{display:inline-flex}' +
-'.study-btn.ja-only,.study-btn.say-btn{display:none}' +
-'html.learn-on.sub-ja .study-btn.ja-only{display:inline-flex}html.learn-on.tts-ok .study-btn.say-btn{display:inline-flex}' +
+'.study-tray .study-sel,.study-tray .study-chip{flex:none}' +
 'h1 .learn-say{width:28px;height:28px;font-size:13px}' +
 'html[data-theme="dark"] .learn-en rt{color:#c9bbff}html[data-theme="dark"] .learn-rom{color:#b9acf0}' +
 'html[data-theme="dark"] .learn-say{background:rgba(185,168,255,.18);color:#d9ceff}';
@@ -918,17 +937,24 @@ fetch(u.toString(), { credentials: 'same-origin' }).then(function (r) { if (!r.o
 }
 var bar = document.createElement('div');
 bar.className = 'study-bar'; bar.setAttribute('translate', 'no');
+var tray = document.createElement('div');
+tray.className = 'study-tray';
 function toggle(cls, label, key, htmlClass, onOn, opts) {
 opts = opts || {};
 var b = document.createElement('button');
-b.type = 'button'; b.className = 'study-btn' + (cls ? ' ' + cls : '');
-b.innerHTML = '<span class="study-sw" aria-hidden="true"></span><span></span>';
+b.type = 'button';
+if (opts.chip) {
+b.className = 'study-chip' + (cls ? ' ' + cls : '');
+b.textContent = label;
+} else {
+b.className = 'study-btn' + (cls ? ' ' + cls : '');
+b.innerHTML = '<span class="study-sw" aria-hidden="true"></span><span></span><span class="study-beta" aria-hidden="true">BETA</span>';
 b.children[1].textContent = label;
-if (!opts.noBeta) { var beta = document.createElement('span'); beta.className = 'study-beta'; beta.textContent = 'BETA'; b.appendChild(beta); }
+}
 var on = get(key, opts.def ? '1' : '0') === '1';
 function paint() { b.setAttribute('aria-pressed', on ? 'true' : 'false'); root.classList.toggle(htmlClass, on); if (on && onOn) onOn(); }
 b.addEventListener('click', function () { on = !on; set(key, on ? '1' : '0'); paint(); closeTip(); });
-bar.appendChild(b);
+(opts.into || bar).appendChild(b);
 b._paint = paint;
 return b;
 }
@@ -941,44 +967,18 @@ root.classList.toggle('sub-ja', sel.value === 'ja');
 enBtn.children[1].textContent = sel.value === 'ja' ? '🇯🇵 ' + W.en : subName(sel.value);
 updateTts();
 }
-if (enMode) {
-sel = document.createElement('select');
-sel.className = 'study-sel'; sel.setAttribute('aria-label', 'Language to show under English');
-var pref = ['ja', 'ko', 'zh', 'zh-Hant', 'es', 'fr', 'de', 'pt', 'id', 'vi', 'th', 'fil'];
-var opts = pref.filter(function (l) { return LANGS[l]; }).concat(Object.keys(LANGS).filter(function (l) { return pref.indexOf(l) < 0; }));
-opts.forEach(function (l) { var o = document.createElement('option'); o.value = l; o.textContent = (FLAGS[l] || '') + ' ' + (NAMES[l] || l); sel.appendChild(o); });
-var want = get(SUB_KEY, 'ja'); sel.value = LANGS[want] ? want : 'ja';
-sel.addEventListener('change', function () {
-set(SUB_KEY, sel.value);
-paintSubState();
-if (!root.classList.contains('learn-on')) enBtn.click(); else fillSub(sel.value);
-});
-bar.appendChild(sel);
-sel.setAttribute('aria-label', W.other || 'Other language');
+var PACK_KEY = 'pengesso-pack', pack = 'off', packLoaded = {}, rePill = null, reIc = null, reTx = null, reSel = null, note = null;
+function curPack() {
+var v = get(PACK_KEY, '');
+if (!v) {
+for (var i = 0; i < PACK_ORDER.length; i++) { if (get('pengesso-' + PACK_ORDER[i], '0') === '1') { v = PACK_ORDER[i]; break; } }
 }
-var furiBtn = null, romBtn = null;
-if (enMode) {
-furiBtn = toggle('ja-only', 'あ ' + W.furi, 'pengesso-furi', 'furi-on', null, { noBeta: true, def: true });
-romBtn = toggle('ja-only', 'Aa ' + W.rom, 'pengesso-rom', 'rom-on', null, { noBeta: true });
+return packs.indexOf(v) >= 0 ? v : 'off';
 }
-var sayBtn = toggle('say-btn', '🔊 ' + (W.say || 'Listen'), 'pengesso-say', 'tts-on', null, { noBeta: true, def: true });
-if (synth) { updateTts(); if (synth.addEventListener) synth.addEventListener('voiceschanged', updateTts); else synth.onvoiceschanged = updateTts; }
-var dim = document.createElement('label');
-dim.className = 'study-dim';
-dim.innerHTML = '<span></span><input type="range" min="10" max="100" step="5">';
-dim.firstChild.textContent = enMode ? 'English' : W.dim;
-var range = dim.lastChild;
-range.value = get(NATIVE_KEY, '100');
-range.setAttribute('aria-label', dim.firstChild.textContent);
-function alpha() { root.style.setProperty('--native-a', String(range.value / 100)); }
-range.addEventListener('input', function () { alpha(); set(NATIVE_KEY, range.value); });
-alpha();
-var note = null, packBtns = [];
-function sayToggle(kind) {
-var loaded = false, icon = PACK_ICON[kind], order = PACK_ORDER.indexOf(kind);
-var b = toggle(kind, icon + ' ' + W[kind], 'pengesso-' + kind, kind + '-on', function () {
-if (loaded || !window.fetch) return;
-loaded = true;
+function loadPack(kind) {
+if (packLoaded[kind] || !window.fetch) return;
+packLoaded[kind] = true;
+var order = PACK_ORDER.indexOf(kind);
 fetch(new URL(kind + '.' + encodeURIComponent(itLang) + '.json', location.href).toString(), { credentials: 'same-origin' })
 .then(function (r) { if (!r.ok) throw new Error('no ' + kind); return r.json(); })
 .then(function (data) {
@@ -995,19 +995,36 @@ var after = null;
 if (after) x.el.insertBefore(s, after); else x.el.appendChild(s);
 });
 })
-.catch(function () {});
-});
-if (kind === 'gcp') b.children[1].innerHTML = GCP_MARK + ' ' + esc(W[kind]);
-return b;
+.catch(function () { packLoaded[kind] = false; });
 }
+function paintPack() {
+PACK_ORDER.forEach(function (k) { root.classList.toggle(k + '-on', pack === k); });
+root.classList.toggle('pack-on', pack !== 'off');
+if (!rePill) return;
+rePill.className = 'study-re' + (pack === 'off' ? '' : ' on ' + pack);
+reIc.innerHTML = pack === 'off' ? '✨' : packIcon(pack);
+reTx.textContent = pack === 'off' ? (W.re || STUDY_EN.re) : ((W.packs && W.packs[pack]) || W[pack]);
+reSel.value = pack;
+if (pack !== 'off') loadPack(pack);
+}
+function setPack(k) { pack = k; set(PACK_KEY, k); paintPack(); closeTip(); }
 if (hasIt) {
 note = document.createElement('p');
 note.className = 'it-note'; note.setAttribute('translate', 'no');
 note.textContent = W.itNote || STUDY_EN.itNote;
-packs.forEach(function (k) { packBtns.push(sayToggle(k)); });
+rePill = document.createElement('div');
+rePill.className = 'study-re';
+rePill.innerHTML = '<span class="re-ic" aria-hidden="true"></span><span class="re-tx"></span><span class="re-caret" aria-hidden="true">▾</span>' +
+'<span class="study-beta" aria-hidden="true">BETA</span><select class="re-sel"></select>';
+reIc = rePill.children[0]; reTx = rePill.children[1]; reSel = rePill.lastChild;
+reSel.setAttribute('aria-label', W.re || STUDY_EN.re);
+var addOpt = function (v, t) { var o = document.createElement('option'); o.value = v; o.textContent = t; reSel.appendChild(o); };
+addOpt('off', '✨ ' + (W.off || STUDY_EN.off));
+packs.forEach(function (k) { addOpt(k, PACK_ICON[k] + ' ' + W[k]); });
+reSel.addEventListener('change', function () { setPack(reSel.value); });
+bar.appendChild(rePill);
+pack = curPack();
 }
-var itBtn = packBtns[0] || null;
-bar.appendChild(dim);
 var q = document.createElement('button');
 q.type = 'button'; q.className = 'study-q'; q.textContent = '?';
 q.setAttribute('aria-expanded', 'false'); q.setAttribute('aria-label', 'About these study modes');
@@ -1016,12 +1033,58 @@ info.className = 'study-info'; info.hidden = true; info.setAttribute('translate'
 info.textContent = W.about;
 q.addEventListener('click', function () { info.hidden = !info.hidden; q.setAttribute('aria-expanded', info.hidden ? 'false' : 'true'); closeTip(); });
 bar.appendChild(q);
+bar.appendChild(tray);
+if (enMode) {
+sel = document.createElement('select');
+sel.className = 'study-sel'; sel.setAttribute('aria-label', 'Language to show under English');
+var pref = ['ja', 'ko', 'zh', 'zh-Hant', 'es', 'fr', 'de', 'pt', 'id', 'vi', 'th', 'fil'];
+var opts = pref.filter(function (l) { return LANGS[l]; }).concat(Object.keys(LANGS).filter(function (l) { return pref.indexOf(l) < 0; }));
+opts.forEach(function (l) { var o = document.createElement('option'); o.value = l; o.textContent = (FLAGS[l] || '') + ' ' + (NAMES[l] || l); sel.appendChild(o); });
+var want = get(SUB_KEY, 'ja'); sel.value = LANGS[want] ? want : 'ja';
+sel.addEventListener('change', function () {
+set(SUB_KEY, sel.value);
+paintSubState();
+if (!root.classList.contains('learn-on')) enBtn.click(); else fillSub(sel.value);
+});
+tray.appendChild(sel);
+sel.setAttribute('aria-label', W.other || 'Other language');
+}
+var furiBtn = null, romBtn = null;
+if (enMode) {
+furiBtn = toggle('ja-only', 'あ ' + W.furi, 'pengesso-furi', 'furi-on', null, { chip: true, def: true, into: tray });
+romBtn = toggle('ja-only', 'Aa ' + W.rom, 'pengesso-rom', 'rom-on', null, { chip: true, into: tray });
+}
+var sayBtn = toggle('say-btn', '🔊 ' + (W.say || 'Listen'), 'pengesso-say', 'tts-on', null, { chip: true, def: true, into: tray });
+if (synth) { updateTts(); if (synth.addEventListener) synth.addEventListener('voiceschanged', updateTts); else synth.onvoiceschanged = updateTts; }
+var STEPS = [100, 60, 30, 10], SHOWN = { 100: 1, 60: .7, 30: .45, 10: .25 };
+var GLYPH = { ja: 'あ', ko: '가', zh: '字', 'zh-Hant': '字', ar: 'ع', ur: 'ع', fa: 'ع', hi: 'अ', bn: 'অ', ru: 'Я' };
+var dim = document.createElement('div'), dimBtns = [];
+dim.className = 'study-dim'; dim.setAttribute('role', 'group'); dim.setAttribute('aria-label', W.dim);
+var dl = document.createElement('span');
+dl.className = 'dim-l'; dl.textContent = W.dim; dim.appendChild(dl);
+function setDim(v, save) {
+root.style.setProperty('--native-a', String(v / 100));
+if (save) set(NATIVE_KEY, String(v));
+dimBtns.forEach(function (b) { b.setAttribute('aria-pressed', +b.getAttribute('data-v') === v ? 'true' : 'false'); });
+}
+STEPS.forEach(function (v) {
+var b = document.createElement('button'), g = document.createElement('i');
+b.type = 'button'; b.className = 'dim-b'; b.setAttribute('data-v', String(v)); b.setAttribute('aria-label', W.dim + ' ' + v + '%');
+g.textContent = enMode ? 'A' : (GLYPH[lang] || 'Aa'); g.style.opacity = String(SHOWN[v]);
+b.appendChild(g);
+b.addEventListener('click', function () { setDim(v, true); });
+dim.appendChild(b); dimBtns.push(b);
+});
+var saved = +get(NATIVE_KEY, '100') || 100, near = 100;
+STEPS.forEach(function (v) { if (Math.abs(v - saved) < Math.abs(near - saved)) near = v; });
+setDim(near, false);
+tray.appendChild(dim);
 var row = switchMount && switchMount.classList.contains('i18n-row') ? switchMount : null;
 if (row) row.parentNode.insertBefore(bar, row.nextSibling);
 else { var h1 = document.querySelector('main h1'); if (!h1) return; h1.parentNode.insertBefore(bar, h1); }
 bar.parentNode.insertBefore(info, bar.nextSibling);
 if (note) info.parentNode.insertBefore(note, info.nextSibling);
-enBtn._paint(); packBtns.forEach(function (b) { b._paint(); });
+enBtn._paint(); paintPack();
 [furiBtn, romBtn, sayBtn].forEach(function (b) { if (b) b._paint(); });
 paintSubState();
 if (enMode && root.classList.contains('learn-on')) fillSub(sel.value);
@@ -1033,7 +1096,7 @@ t.classList.add('bye'); setTimeout(function () { t.remove(); }, 380);
 }
 var lines = (W.tips || []).slice(0, hasIt && packLangs.it && packLangs.it.indexOf(itLang) >= 0 ? 2 : 1);
 var shown = +get(STUDY_TIP_KEY, '0') || 0;
-if (lines.length && get(LEARN_KEY, null) === null && get(IT_KEY, null) === null && shown < 3) {
+if (lines.length && get(LEARN_KEY, null) === null && get(IT_KEY, null) === null && get(PACK_KEY, null) === null && shown < 3) {
 set(STUDY_TIP_KEY, String(shown + 1));
 var old = row && row.querySelector('.i18n-tip');
 if (old) old.remove();
@@ -1043,7 +1106,9 @@ tip.innerHTML = '<span class="t"></span><button type="button" aria-label="×">×
 var tx = tip.firstChild, n = 0;
 tx.textContent = lines[0];
 tip.addEventListener('click', function (e) {
-if (e.target.tagName !== 'BUTTON') (n === 1 && itBtn ? itBtn : enBtn).click();
+if (e.target.tagName !== 'BUTTON') {
+if (n === 1 && rePill && packs.indexOf('it') >= 0) setPack('it'); else enBtn.click();
+}
 closeTip();
 });
 bar.appendChild(tip);
