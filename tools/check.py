@@ -200,15 +200,16 @@ def check(work: pathlib.Path, fix_badge: bool):
         problems.append(f"{NG} ワード数バッジがありません"
                         f"（<div class=\"wc-badge\">{icon} {n} words · {sec} sec</div>）")
     else:
-        shown = int(m.group(1))
-        if abs(shown - n) > 3:
-            if fix_badge:
-                doc = doc[:m.start()] + f'class="wc-badge">{icon} {n} words · {sec} sec' + doc[m.end():]
-                idx.write_text(doc, encoding="utf-8")
-                notes.append(f"{OK} バッジを直しました: {shown} → {n} words · {sec} sec")
-            else:
-                problems.append(f"{NG} バッジの数字が違います: 表示 {shown} words / 実際 {n} words"
-                                f"  → python3 tools/check.py --fix-badge で直せます")
+        shown = int(m.group(1)); shown_sec = int(m.group(2))
+        # 普通の検査は±3語まで見逃す（書き直しのたびに怒らない）。ただし --fix-badge は、ぴったりにそろえる
+        # （2026-10-04：上のバッジが「31秒」、題の上の札が「32秒」のように、同じ画面で秒数がくいちがう記事が14本あった）
+        if fix_badge and (shown != n or shown_sec != sec):
+            doc = doc[:m.start()] + f'class="wc-badge">{icon} {n} words · {sec} sec' + doc[m.end():]
+            idx.write_text(doc, encoding="utf-8")
+            notes.append(f"{OK} バッジを直しました: {shown} → {n} words · {sec} sec")
+        elif abs(shown - n) > 3:
+            problems.append(f"{NG} バッジの数字が違います: 表示 {shown} words / 実際 {n} words"
+                            f"  → python3 tools/check.py --fix-badge で直せます")
         else:
             notes.append(f"{OK} バッジの数字が本文と一致")
 
