@@ -744,7 +744,7 @@
   var LEARN_KEY = 'pengesso-learn', NATIVE_KEY = 'pengesso-native-alpha', IT_KEY = 'pengesso-it', GCP_KEY = 'pengesso-gcp',
       STUDY_TIP_KEY = 'pengesso-study-tip', SUB_KEY = 'pengesso-learn-lang';
   var STUDY_WORDS = {
-    ja: { en: '英語も見る', it: 'IT用語で言うと', gcp: 'Google Cloud で言うと', dim: '日本語の濃さ',
+    ja: { en: '英語も見る', say: '英語を聞く', it: 'IT用語で言うと', gcp: 'Google Cloud で言うと', dim: '日本語の濃さ',
           net: 'ネットワークで言うと', srv: 'サーバーで言うと', sec: 'セキュリティで言うと', biz: 'ビジネス横文字で言うと',
           tips: ['英語の勉強も、いっしょにしますか？ 🇬🇧 をオンにすると、日本語のすぐ下に英語が出ます',
                  'IT業界の人ですか？ 飼い主もIT用語を勉強中。💻 をオンにすると、日記がめちゃくちゃ強引にIT用語に言い換わります'],
@@ -752,31 +752,32 @@
           about: '🐧 飼い主は、英語の勉強を続けたいと思っています。そして、IT企業で働いていてテクノロジーが好きなので、IT用語もついでに覚えたいと思っています。' +
                  'だから、このブログには小さな勉強モードが2つあります。🇬🇧 をオンにすると、日本語のすぐ下にもとの英文が出ます（日本語を薄くすると、英語に集中できます）。' +
                  '💻 をオンにすると、AIが日記をめちゃくちゃ強引に IT用語に言い換えます。英語やIT用語に、ふわっとさわってみたい人は、よかったらどうぞ。' },
-    ko: { en: '영어도 보기', dim: '한국어 진하기',
+    ko: { en: '영어도 보기', say: '영어 듣기', dim: '한국어 진하기',
           net: '네트워크로 말하면', srv: '서버로 말하면', sec: '보안으로 말하면', biz: '비즈니스 용어로 말하면',
           itNote: '🤖 AI가 아주 억지로 각 분야의 말로 바꿔 말하고 있어요(베타). 약어는 풀어서 써요',
           tips: ['영어 공부도 같이 할까요? 🇬🇧 를 켜면 한국어 바로 아래에 영어가 나와요'],
           about: '🐧 주인은 영어 공부를 계속하고 싶어 합니다. 그리고 IT 회사에서 일하고 기술을 좋아해서, IT 용어도 같이 배우고 싶어 합니다. ' +
                  '그래서 이 블로그에는 작은 공부 모드가 있습니다. 🇬🇧 를 켜면 한국어 바로 아래에 원래 영어 문장이 나옵니다. 한국어를 연하게 하면 영어에 집중할 수 있어요.' },
-    zh: { en: '同时看英文', dim: '中文的浓淡',
+    zh: { en: '同时看英文', say: '听英文', dim: '中文的浓淡',
           tips: ['要不要顺便学英语？打开 🇬🇧，中文下面就会出现英文'],
           about: '🐧 主人想继续学习英语。主人也在IT公司工作，喜欢科技，所以也想顺便学一些IT用语。所以这个博客有小小的学习模式。打开 🇬🇧，中文下面就会出现原来的英文。把中文调淡，就能专心看英文。' },
-    'zh-Hant': { en: '同時看英文', dim: '中文的濃淡',
+    'zh-Hant': { en: '同時看英文', say: '聽英文', dim: '中文的濃淡',
           tips: ['要不要順便學英文？打開 🇬🇧，中文下面就會出現英文'],
           about: '🐧 主人想繼續學習英文。主人也在IT公司工作，喜歡科技，所以也想順便學一些IT用語。所以這個部落格有小小的學習模式。打開 🇬🇧，中文下面就會出現原來的英文。把中文調淡，就能專心看英文。' }
   };
-  var STUDY_DEFAULT = { en: 'English too', dim: 'My language',
+  var STUDY_DEFAULT = { en: 'English too', say: 'Listen', dim: 'My language',
     tips: ['Learning English too? Turn on 🇬🇧 to see the English under each sentence'],
     about: '🐧 Pengesso’s owner wants to keep studying English, and also works at an IT company and loves technology. ' +
            'So this blog has small study modes. Turn on 🇬🇧 to see the original English under each sentence. Make your language lighter to focus on the English.' };
-  var STUDY_EN = { en: 'Show', it: 'IT words', gcp: 'Google Cloud', dim: 'English',
+  var STUDY_EN = { en: 'Study Japanese', furi: 'Furigana', rom: 'Romaji', say: 'Listen', other: 'Other language', dim: 'English', it: 'IT words', gcp: 'Google Cloud',
     net: 'Network', srv: 'Server', sec: 'Security', biz: 'Business jargon',
-    tips: ['Learning Japanese? Turn on 🌏 to see Japanese (or another language) under each line',
+    tips: ['Learning Japanese? Turn on 🇯🇵 to see the original Japanese under each line, with furigana (reading help)',
            'Work in IT? 💻 turns this diary into IT words, in a very forced way'],
     itNote: '🤖 AI re-says each line with IT words (💻 general IT / Google Cloud), in a very forced way. Short forms are spelled out',
-    about: '🐧 Pengesso’s owner wants to keep studying English, and also works at an IT company and loves technology, so the owner is learning IT words too. ' +
-           'So this blog has two small study modes. 🌏 shows another language (Japanese, Korean, Chinese, and more) under each English line. Make the English lighter to focus on the other language. ' +
-           '💻 makes AI re-say each line with IT words, in a very forced way. If you want to touch a new language or IT words a little, give them a try.' };
+    about: '🐧 Pengesso’s owner writes every post in Japanese first, in simple everyday words, so every English line has the original Japanese. Turn on 🇯🇵 to see it under each line. ' +
+           'Furigana shows how to read the kanji, Romaji shows the sounds in English letters, and 🔊 reads a line aloud. ' +
+           'These aids are made automatically, so they can have mistakes. Make the English lighter to focus on the Japanese. ' +
+           'You can also pick another language. 💻 makes AI re-say each line with IT words, in a very forced way.' };
   function learnable(el) {
     if (!el.closest || !el.closest('main')) return false;
     if (el.closest('.topbar, .label, .card-head, .next, .prev, .related, .to-list, .i18n-row, .i18n-switch, .study-bar, .study-info, .theme-foot, nav, button, .part-nav, [translate="no"]')) return false;
@@ -917,6 +918,24 @@
       'html[data-theme="dark"] .it-say{background:#163126;color:#bfead4}html[data-theme="dark"] .it-say b{background:linear-gradient(transparent 48%,#2a6a4c 48%);color:#d8ffe9}' +
       'html[data-theme="dark"] .it-say small{color:#8fc7ad}html[data-theme="dark"] .it-note{background:#163126;color:#bfead4}' +
       '@media (prefers-reduced-motion:reduce){html.learn-on .learn-en,html.it-on .it-say,.study-tip{animation:none}.study-sw,.study-sw::after{transition:none}}';
+    /* 🇯🇵 日本語を学ぶ人のために（2026-10-04）：ふりがな・ローマ字・読み上げ */
+    st.textContent +=
+      '.learn-body{display:block;min-width:0;flex:1}.learn-line{display:inline;white-space:pre-line}' +
+      '.learn-en ruby{ruby-position:over}.learn-en rt{font-size:.56em;font-weight:800;line-height:1;letter-spacing:0;color:#7a5ee0}' +
+      'html:not(.furi-on) .learn-en rt{display:none}' +
+      'html.furi-on .learn-en[lang="ja"] .learn-line,html.furi-on .learn-en .learn-line[lang="ja"]{line-height:2.15}' +
+      '.learn-rom{display:none;margin-top:.12em;font-size:.84em;font-weight:700;line-height:1.5;color:#6a5a98;white-space:normal;text-align:start}' +
+      'html.rom-on .learn-rom{display:block}' +
+      '.learn-say{display:none;flex:none;align-items:center;justify-content:center;width:34px;height:34px;margin:-3px 0 -3px -3px;padding:0;border:0;border-radius:50%;' +
+      'background:rgba(139,109,232,.14);color:#5b4bb0;font-size:15px;line-height:1;cursor:pointer;-webkit-tap-highlight-color:transparent}' +
+      '.learn-say:active{transform:scale(.9);background:rgba(139,109,232,.3)}.learn-say.on{background:#8b6de8;color:#fff}' +
+      'html.learn-on.tts-on.tts-ok .learn-en:not([hidden]){display:flex;gap:6px;align-items:flex-start}' +
+      'html.learn-on.tts-on.tts-ok .learn-say{display:inline-flex}' +
+      '.study-btn.ja-only,.study-btn.say-btn{display:none}' +
+      'html.learn-on.sub-ja .study-btn.ja-only{display:inline-flex}html.learn-on.tts-ok .study-btn.say-btn{display:inline-flex}' +
+      'h1 .learn-say{width:28px;height:28px;font-size:13px}' +
+      'html[data-theme="dark"] .learn-en rt{color:#c9bbff}html[data-theme="dark"] .learn-rom{color:#b9acf0}' +
+      'html[data-theme="dark"] .learn-say{background:rgba(185,168,255,.18);color:#d9ceff}';
     document.head.appendChild(st);
 
     /* 文ごとに：もとの文を .learn-native で包み（薄くするため）、下に出す言語の場所を足す */
@@ -929,10 +948,69 @@
       el.appendChild(wrap);
       var s = document.createElement('span');
       s.className = 'learn-en'; s.setAttribute('translate', 'no');
-      if (!enMode) { s.setAttribute('lang', 'en'); s.setAttribute('dir', 'ltr'); s.textContent = x.show || x.en; }
+      if (!enMode) { s.setAttribute('lang', 'en'); s.setAttribute('dir', 'ltr'); paintSub(x, 'en', x.show || x.en, s); }
       x.sub = s;
       el.appendChild(s);
     });
+
+    /* 🔊 読み上げ（ブラウザの音声合成。端末に、その言語の声があるときだけボタンを出す）*/
+    var synth = window.speechSynthesis;
+    var TAGS = { en: 'en-US', ja: 'ja-JP', ko: 'ko-KR', zh: 'zh-CN', 'zh-Hant': 'zh-TW', es: 'es-ES', fr: 'fr-FR', de: 'de-DE', pt: 'pt-BR', it: 'it-IT', ru: 'ru-RU',
+      id: 'id-ID', vi: 'vi-VN', th: 'th-TH', hi: 'hi-IN', ar: 'ar-SA', tr: 'tr-TR', pl: 'pl-PL', nl: 'nl-NL', sv: 'sv-SE', fil: 'fil-PH', ms: 'ms-MY' };
+    function voiceFor(tag) {
+      var vs = synth && synth.getVoices ? synth.getVoices() : [], base = tag.split('-')[0].toLowerCase(), exact = null, any = null;
+      for (var i = 0; i < vs.length; i++) {
+        var vl = String(vs[i].lang || '').replace('_', '-').toLowerCase();
+        if (vl === tag.toLowerCase()) exact = exact || vs[i];
+        else if (vl.indexOf(base) === 0) any = any || vs[i];
+      }
+      return exact || any;
+    }
+    function speakLang() { return enMode ? (sel ? sel.value : 'ja') : 'en'; }
+    function updateTts() { root.classList.toggle('tts-ok', !!(synth && voiceFor(TAGS[speakLang()] || speakLang()))); }
+    var speakingBtn = null;
+    function speak(text, l, btn) {
+      if (!synth) return;
+      try {
+        synth.cancel();
+        if (speakingBtn) speakingBtn.classList.remove('on');
+        if (speakingBtn === btn) { speakingBtn = null; return; }
+        var u = new SpeechSynthesisUtterance(text), tag = TAGS[l] || l, v = voiceFor(tag);
+        u.lang = tag; if (v) u.voice = v; u.rate = l === 'ja' ? .85 : .92;
+        u.onend = u.onerror = function () { if (btn) btn.classList.remove('on'); if (speakingBtn === btn) speakingBtn = null; };
+        speakingBtn = btn; if (btn) btn.classList.add('on');
+        synth.speak(u);
+      } catch (e) {}
+    }
+    /* 1文ぶんの「下に出す言語」の中身：🔊 ＋ 文（ふりがな）＋ ローマ字 */
+    var readData = null, readTried = false;
+    function rubyHtml(s) {
+      return esc(s).replace(/｜?([0-9０-９,，㐀-䶿一-鿿々〆ヶ]+)\{([^}]+)\}/g, '<ruby>$1<rt>$2</rt></ruby>');
+    }
+    function paintSub(x, l, text, s) {
+      s = s || x.sub;
+      var f = fp2(x.en);
+      s.textContent = '';
+      var say = document.createElement('button');
+      say.type = 'button'; say.className = 'learn-say'; say.textContent = '🔊'; say.setAttribute('aria-label', W.say || 'Listen');
+      say.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); speak(text, l, say); });
+      var body = document.createElement('span'); body.className = 'learn-body';
+      var line = document.createElement('span'); line.className = 'learn-line'; line.setAttribute('lang', l);
+      var rb = l === 'ja' && readData && readData.r ? readData.r[f] : null;
+      if (rb) line.innerHTML = rubyHtml(rb); else line.textContent = text;
+      body.appendChild(line);
+      var rm = l === 'ja' && readData && readData.m ? readData.m[f] : null;
+      if (rm) { var r = document.createElement('span'); r.className = 'learn-rom'; r.setAttribute('lang', 'ja-Latn'); r.textContent = rm; body.appendChild(r); }
+      s.appendChild(say); s.appendChild(body);
+    }
+    /* ふりがな・ローマ字のデータ（works/<slug>/i18n/read.ja.json。tools/furigana.py が作る）。日本語を下に出すときだけ読む */
+    function loadRead(then) {
+      if (readData || readTried || !window.fetch) return then && then();
+      readTried = true;
+      fetch(new URL('i18n/read.ja.json', location.href).toString(), { credentials: 'same-origin' })
+        .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+        .then(function (d) { readData = d; if (then) then(); }).catch(function () {});
+    }
 
     /* 英語で読んでいるとき：選んだ言語の訳を読み込んで、英文の下に入れる */
     var subLoaded = {};
@@ -942,9 +1020,11 @@
         list.forEach(function (x) {
           var t = dict[fp2(x.en)];
           if (!t || !x.sub) return;
-          x.sub.textContent = plain(t); x.sub.hidden = false;
+          x.sub.hidden = false;
           x.sub.setAttribute('lang', l); x.sub.setAttribute('dir', /^(ar|ur|fa|he)$/.test(l) ? 'rtl' : 'ltr');
+          paintSub(x, l, plain(t));
         });
+        if (l === 'ja') loadRead(function () { if (sel.value === 'ja') list.forEach(function (x) { var t = subLoaded.ja && subLoaded.ja[fp2(x.en)]; if (t && x.sub) paintSub(x, 'ja', plain(t)); }); });
       }
       if (subLoaded[l]) return put(subLoaded[l]);
       var L = LANGS[l]; if (!L) return;
@@ -958,13 +1038,14 @@
 
     var bar = document.createElement('div');
     bar.className = 'study-bar'; bar.setAttribute('translate', 'no');
-    function toggle(cls, label, key, htmlClass, onOn) {
+    function toggle(cls, label, key, htmlClass, onOn, opts) {
+      opts = opts || {};
       var b = document.createElement('button');
       b.type = 'button'; b.className = 'study-btn' + (cls ? ' ' + cls : '');
       b.innerHTML = '<span class="study-sw" aria-hidden="true"></span><span></span>';
-      b.lastChild.textContent = label;
-      var beta = document.createElement('span'); beta.className = 'study-beta'; beta.textContent = 'BETA'; b.appendChild(beta);  /* 2026-10-03 本人：どちらもベータ版 */
-      var on = get(key, '0') === '1';
+      b.children[1].textContent = label;
+      if (!opts.noBeta) { var beta = document.createElement('span'); beta.className = 'study-beta'; beta.textContent = 'BETA'; b.appendChild(beta); }  /* 2026-10-03 本人：どちらもベータ版 */
+      var on = get(key, opts.def ? '1' : '0') === '1';
       function paint() { b.setAttribute('aria-pressed', on ? 'true' : 'false'); root.classList.toggle(htmlClass, on); if (on && onOn) onOn(); }
       b.addEventListener('click', function () { on = !on; set(key, on ? '1' : '0'); paint(); closeTip(); });
       bar.appendChild(b);
@@ -972,7 +1053,14 @@
       return b;
     }
     var sel = null;
-    var enBtn = toggle('', (enMode ? '🌏 ' : '🇬🇧 ') + W.en, LEARN_KEY, 'learn-on', function () { if (enMode) fillSub(sel.value); });
+    var enBtn = toggle('', (enMode ? '🇯🇵 ' : '🇬🇧 ') + W.en, LEARN_KEY, 'learn-on', function () { if (enMode) { fillSub(sel.value); updateTts(); } });
+    function subName(l) { return (FLAGS[l] || '🌏') + ' ' + (NAMES[l] || l); }
+    function paintSubState() {
+      if (!enMode) return;
+      root.classList.toggle('sub-ja', sel.value === 'ja');
+      enBtn.children[1].textContent = sel.value === 'ja' ? '🇯🇵 ' + W.en : subName(sel.value);
+      updateTts();
+    }
     if (enMode) {
       sel = document.createElement('select');
       sel.className = 'study-sel'; sel.setAttribute('aria-label', 'Language to show under English');
@@ -982,10 +1070,20 @@
       var want = get(SUB_KEY, 'ja'); sel.value = LANGS[want] ? want : 'ja';
       sel.addEventListener('change', function () {
         set(SUB_KEY, sel.value);
+        paintSubState();
         if (!root.classList.contains('learn-on')) enBtn.click(); else fillSub(sel.value);
       });
       bar.appendChild(sel);
+      sel.setAttribute('aria-label', W.other || 'Other language');
     }
+    /* ふりがな・ローマ字（日本語を下に出しているときだけ）と、🔊 聞く（その言語の声がある端末だけ） */
+    var furiBtn = null, romBtn = null;
+    if (enMode) {
+      furiBtn = toggle('ja-only', 'あ ' + W.furi, 'pengesso-furi', 'furi-on', null, { noBeta: true, def: true });
+      romBtn = toggle('ja-only', 'Aa ' + W.rom, 'pengesso-rom', 'rom-on', null, { noBeta: true });
+    }
+    var sayBtn = toggle('say-btn', '🔊 ' + (W.say || 'Listen'), 'pengesso-say', 'tts-on', null, { noBeta: true, def: true });
+    if (synth) { updateTts(); if (synth.addEventListener) synth.addEventListener('voiceschanged', updateTts); else synth.onvoiceschanged = updateTts; }
 
     var dim = document.createElement('label');
     dim.className = 'study-dim';
@@ -1051,6 +1149,9 @@
     bar.parentNode.insertBefore(info, bar.nextSibling);
     if (note) info.parentNode.insertBefore(note, info.nextSibling);
     enBtn._paint(); packBtns.forEach(function (b) { b._paint(); });
+    [furiBtn, romBtn, sayBtn].forEach(function (b) { if (b) b._paint(); });
+    paintSubState();
+    if (enMode && root.classList.contains('learn-on')) fillSub(sel.value);
 
     /* 💬 吹き出し：まだ一度もさわっていない人に、最初の3回だけ。言葉は数秒ごとに入れかわる */
     var tip = null, iv = null;

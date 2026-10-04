@@ -428,6 +428,30 @@ def check_site():
     except Exception as e:  # 多言語の検査が壊れても、公開の検査は止めない
         notes.append(f"{WARN}🌐 多言語の検査を実行できませんでした: {e}")
 
+    # 8. 📖 英語のページで日本語を学ぶ人のための、ふりがな・ローマ字（古くても公開は止めない。古い文はふりがな無しで出るだけ）
+    try:
+        import furigana
+        old_read = furigana.stale()
+        if old_read:
+            notes.append(f"{WARN}📖 ふりがな・ローマ字が古い記事: {old_read[:8]}（{len(old_read)}本）→ python3 tools/i18n.py のあと python3 tools/furigana.py")
+        else:
+            notes.append(f"{OK} 📖 ふりがな・ローマ字は最新")
+    except Exception as e:
+        notes.append(f"{WARN}📖 ふりがなの検査を実行できませんでした: {e}")
+
+    # 9. 📊 数える・いいね：つなぎ先の設定（偽の数字を出さない決まりの番人）
+    try:
+        cfgp = ROOT / "assets" / "stats-config.json"
+        cfg = json.loads(cfgp.read_text(encoding="utf-8"))
+        if cfg.get("enabled") and not str(cfg.get("endpoint", "")).startswith("https://"):
+            problems.append(f"{NG} assets/stats-config.json：enabled なのに endpoint が https:// で始まっていません")
+        else:
+            notes.append(f"{OK} 📊 数える・いいね：{'つながっている' if cfg.get('enabled') else 'まだつながっていない（画面には何も出ない）'}")
+        if any(k in cfg for k in ("fake", "inflate", "boost", "offset", "multiplier")):
+            problems.append(f"{NG} assets/stats-config.json：数字を盛る設定は置けません（本物の数字だけを出す決まり）")
+    except Exception as e:
+        problems.append(f"{NG} assets/stats-config.json を読めません: {e}")
+
     print("🌏 サイト全体\n─────────────")
     for l in notes: print("  " + l)
     for l in problems: print("  " + l)
