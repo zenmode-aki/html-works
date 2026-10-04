@@ -149,6 +149,8 @@ export class Stats extends DurableObject {
         topLiked: all("SELECT slug, n FROM t_like WHERE n>0 ORDER BY n DESC LIMIT 20").map((r) => [r.slug, r.n]),
         per: all("SELECT s.slug AS slug, s.n AS v, COALESCE(l.n, 0) AS l FROM t_slug s LEFT JOIN t_like l ON l.slug = s.slug WHERE s.slug != '_home' ORDER BY s.n DESC LIMIT 1000").map((r) => [r.slug, r.v, r.l]),
         lang: kv("lang"), ref: kv("ref"), dev: kv("dev"),
+        // 📈 日ごとの閲覧（30日ぶん。/stats/ のグラフ用）
+        days: all("SELECT day, SUM(n) n FROM d_slug WHERE day>=? GROUP BY day ORDER BY day", this.dayOf(now - 29 * DAY_MS)).map((r) => [r.day, r.n]),
         gen: Math.floor(now / 1000),
       };
     });

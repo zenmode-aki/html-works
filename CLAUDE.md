@@ -218,6 +218,8 @@
 - 見た目の確認は `?pxdemo=1`（画面に「サンプル」と必ず出る。本番の読者には出ない）。手元の集計係に向けるときは `?pxstats=http://localhost:8799&pxmin=0`（localhost だけ）
 - 公開は GitHub Actions（`.github/workflows/deploy-stats.yml`）。`CLOUDFLARE_API_TOKEN` と `CLOUDFLARE_ACCOUNT_ID` を GitHub に登録すると動く（本人の作業。手順は `stats-worker/README.md`）
 - 画面に出す言葉は `tools/px_runtime.js` の `T`（ja・en・ko・zh・zh-Hant。ほかの言語は英語）。新しい言葉を足したら、優先の14言語にも足す
+- **📊 数字のページ `stats/index.html`**（2026-10-04 本人：「どれだけ見られてるか、ちゃんとわかるブログに。プラットフォーム化したい」）：いま読んでいる人・大きな数字・世界地図（色＝閲覧、緑の点＝いま）・30日のグラフ（集計係の `days`）・人気の記事（今週／これまで／いいね）・国・言語・流入元・端末。トップのメニュー「Numbers／数字」と「世界の読者」から行ける。偽の数字は出さない（`?pxdemo=1` は「サンプル」と出る）
+- **運営者の端末（`?count=off` ずみ）には、しきい値なしで本物の数字を出す**（`px_runtime.js` の `min()`）。読者には今までどおり
 - ⚠️ `tools/i18n.py` の minify は、コメントを全部消す。**コメントや文字列の中に、アスタリスクと斜線をこの順で並べて書かない**（JS が壊れる）
 
 ## 🔔 回答の最後に、残っているタスクを声かけする（2026-09-24 本人が決めた）

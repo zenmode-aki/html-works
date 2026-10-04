@@ -36,6 +36,7 @@
       dnt: 'People who turn on “Do Not Track” are not counted.', offBtn: 'Do not count this browser', onBtn: 'Count this browser again',
       offNow: 'This browser is not counted. Likes are off too.', onNow: 'This browser is counted.',
       world: 'Readers around the world', thisWeek: 'This week', allTime: 'All time', topCountries: 'Where readers are', languages: 'Reading languages',
+      dash: '📊 See all the numbers →', 
       arrive: 'How readers arrive', showAll: 'Show all {n} countries', popular: 'Popular this week', likesWord: 'likes', today: 'Today',
       nowReading: '{n} reading right now', fromWhere: 'from {n} countries', err: 'Could not save. Please try again.',
       demo: '🧪 SAMPLE DATA. These are not real numbers.', offToast: 'This browser will not be counted.', onToast: 'This browser will be counted.',
@@ -52,6 +53,7 @@
       dnt: '「トラッキングしない」（Do Not Track）設定の人は、数えません。', offBtn: 'このブラウザのアクセスを数えない', onBtn: 'このブラウザも数える',
       offNow: 'このブラウザは数えていません。いいねもできません。', onNow: 'このブラウザは数えています。',
       world: '世界の読者', thisWeek: '今週', allTime: 'これまで', topCountries: '読まれている国', languages: '読まれている言語',
+      dash: '📊 数字をぜんぶ見る →', 
       arrive: 'どこから来たか', showAll: '{n}か国ぜんぶ見る', popular: '今週よく読まれている記事', likesWord: 'いいね', today: '今日',
       nowReading: 'いま {n}人が読んでいます', fromWhere: '{n}か国から', err: 'うまく保存できませんでした。もう一度どうぞ。',
       demo: '🧪 サンプルの数字です。本物ではありません。', offToast: 'このブラウザは数えません。', onToast: 'このブラウザも数えます。',
@@ -68,6 +70,7 @@
       dnt: '“추적하지 않음”(Do Not Track)을 켠 분은 세지 않아요.', offBtn: '이 브라우저는 세지 않기', onBtn: '이 브라우저도 다시 세기',
       offNow: '이 브라우저는 세지 않아요. 좋아요도 꺼져 있어요.', onNow: '이 브라우저도 세고 있어요.',
       world: '세계의 독자', thisWeek: '이번 주', allTime: '지금까지', topCountries: '읽고 있는 나라', languages: '읽는 언어',
+      dash: '📊 숫자 모두 보기 →', 
       arrive: '어디서 왔나요', showAll: '{n}개국 모두 보기', popular: '이번 주 인기 글', likesWord: '좋아요', today: '오늘',
       nowReading: '지금 {n}명이 읽고 있어요', fromWhere: '{n}개국에서', err: '저장하지 못했어요. 다시 해 주세요.',
       demo: '🧪 샘플 숫자예요. 진짜가 아니에요.', offToast: '이 브라우저는 세지 않아요.', onToast: '이 브라우저도 세요.',
@@ -84,6 +87,7 @@
       dnt: '开启“请勿跟踪”（Do Not Track）的人不会被统计。', offBtn: '不统计这个浏览器', onBtn: '重新统计这个浏览器',
       offNow: '这个浏览器不被统计，点赞也已关闭。', onNow: '这个浏览器被统计。',
       world: '世界各地的读者', thisWeek: '本周', allTime: '到目前为止', topCountries: '读者所在的国家', languages: '阅读语言',
+      dash: '📊 查看全部数字 →', 
       arrive: '读者从哪里来', showAll: '查看全部 {n} 个国家', popular: '本周热门文章', likesWord: '点赞', today: '今天',
       nowReading: '现在有 {n} 人在读', fromWhere: '来自 {n} 个国家', err: '保存失败，请再试一次。',
       demo: '🧪 这是示例数字，不是真实数据。', offToast: '这个浏览器不会被统计。', onToast: '这个浏览器会被统计。',
@@ -100,6 +104,7 @@
       dnt: '開啟「請勿追蹤」（Do Not Track）的人不會被統計。', offBtn: '不統計這個瀏覽器', onBtn: '重新統計這個瀏覽器',
       offNow: '這個瀏覽器不被統計，按讚也已關閉。', onNow: '這個瀏覽器被統計。',
       world: '世界各地的讀者', thisWeek: '本週', allTime: '到目前為止', topCountries: '讀者所在的國家', languages: '閱讀語言',
+      dash: '📊 查看全部數字 →', 
       arrive: '讀者從哪裡來', showAll: '查看全部 {n} 個國家', popular: '本週熱門文章', likesWord: '按讚', today: '今天',
       nowReading: '現在有 {n} 人在讀', fromWhere: '來自 {n} 個國家', err: '儲存失敗，請再試一次。',
       demo: '🧪 這是範例數字，不是真實資料。', offToast: '這個瀏覽器不會被統計。', onToast: '這個瀏覽器會被統計。',
@@ -376,7 +381,8 @@
   /* ── 数字の持ち主（いまの状態）─────────────────────── */
   var state = { post: null, site: null };
   px.state = state;
-  function min(k, d) { var v = cfg && cfg[k]; return typeof v === 'number' ? v : d; }
+  /* 👤 運営者の端末（?count=off ずみ）には、しきい値なしで本物の数字を出す（2026-10-04 本人：「どれだけ見られてるか、ちゃんとわかるように」）。読者には今までどおり */
+  function min(k, d) { if (blocked()) return 1; var v = cfg && cfg[k]; return typeof v === 'number' ? v : d; }
   function emit() { try { doc.dispatchEvent(new CustomEvent('px:update', { detail: state })); } catch (e) {} }
 
   /* ── 記事ページ：題の下の小さな数字 ───────────────────── */
@@ -527,6 +533,7 @@
         return '<span class="px-chip">' + ({ phone: '📱', desktop: '💻', tablet: '📲' }[x[0]] || '') + ' ' + esc((L.dev && L.dev[x[0]]) || T.en.dev[x[0]] || x[0]) + ' <b>' + esc(fmt(x[1])) + '</b></span>';
       }).join('') + '</div>';
     }
+    h += '<a class="px-link px-dash" href="/stats/" style="padding-left:0;display:block">' + esc(t('dash')) + '</a>';   /* 📊 数字のページ（2026-10-04） */
     h += '<button type="button" class="px-link" data-how="1" style="padding-left:0">' + esc(t('how')) + '</button>';
     sec.innerHTML = h;
     after.parentNode.insertBefore(sec, after.nextSibling);
