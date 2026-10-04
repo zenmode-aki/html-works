@@ -132,6 +132,20 @@ return browserChoice() || 'en';
 function save(l) { try { localStorage.setItem(KEY, l); } catch (e) {} }
 var lang = pick();
 refreshLanguageMeta();
+function langUrl(name) {
+var u = new URL('i18n/' + name + '.' + encodeURIComponent(lang) + '.json', location.href);
+if (LANGS[lang] && LANGS[lang].v) u.searchParams.set('v', LANGS[lang].v);
+return u.toString();
+}
+function getJson(url) {
+return fetch(url, { credentials: 'same-origin' }).then(function (res) { if (!res.ok) throw new Error('Translation unavailable'); return res.json(); });
+}
+var EARLY = null;
+if (lang !== 'en' && window.fetch && LANGS[lang]) {
+if (DATA.lazyTop) EARLY = getJson(langUrl('top-data'));
+else if (!(LANGS[lang].dict && Object.keys(LANGS[lang].dict).length)) EARLY = getJson(langUrl('data'));
+if (EARLY) EARLY.catch(function () {});
+}
 window.PENGESSO_LANG = lang;
 if (lang !== 'en') document.documentElement.setAttribute('lang', lang);
 var bold = document.createElement('style');
@@ -1273,10 +1287,7 @@ if (lang === 'en') { if (!DATA.lazyTop) drawLearn(collectEnglish(), true); retur
 drawNotice(lang, LANGS[lang] || {});
 if (DATA.lazyTop) {
 if (!LANGS[lang] || !window.fetch) return;
-var url = new URL('i18n/top-data.' + encodeURIComponent(lang) + '.json', location.href);
-if (LANGS[lang].v) url.searchParams.set('v', LANGS[lang].v);
-fetch(url.toString(), { credentials: 'same-origin' })
-.then(function (res) { if (!res.ok) throw new Error('Top translation unavailable'); return res.json(); })
+(EARLY || getJson(langUrl('top-data')))
 .then(function (topData) { translate(topData); })
 .catch(function () {});
 return;
@@ -1285,10 +1296,7 @@ var articleLang = LANGS[lang];
 if (!articleLang) return;
 if (articleLang.dict && Object.keys(articleLang.dict).length) { translate(articleLang); return; }
 if (!window.fetch) return;
-var articleUrl = new URL('i18n/data.' + encodeURIComponent(lang) + '.json', location.href);
-if (articleLang.v) articleUrl.searchParams.set('v', articleLang.v);
-fetch(articleUrl.toString(), { credentials: 'same-origin' })
-.then(function (res) { if (!res.ok) throw new Error('Article translation unavailable'); return res.json(); })
+(EARLY || getJson(langUrl('data')))
 .then(function (articleData) { articleLang.dict = articleData.dict || {}; translate(articleLang); })
 .catch(function () {});
 }

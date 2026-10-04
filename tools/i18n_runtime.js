@@ -161,6 +161,23 @@
 
   var lang = pick();
   refreshLanguageMeta();
+
+  /* ⚡ 訳のデータは、ページを読み終わるのを待たずに、いま取りに行く（2026-10-04 本人：「スマホで開くと少しラグがある」）
+     前は DOMContentLoaded のあとに取りに行っていたので、写真の多い記事ほど訳が出るのが遅かった */
+  function langUrl(name) {
+    var u = new URL('i18n/' + name + '.' + encodeURIComponent(lang) + '.json', location.href);
+    if (LANGS[lang] && LANGS[lang].v) u.searchParams.set('v', LANGS[lang].v);
+    return u.toString();
+  }
+  function getJson(url) {
+    return fetch(url, { credentials: 'same-origin' }).then(function (res) { if (!res.ok) throw new Error('Translation unavailable'); return res.json(); });
+  }
+  var EARLY = null;
+  if (lang !== 'en' && window.fetch && LANGS[lang]) {
+    if (DATA.lazyTop) EARLY = getJson(langUrl('top-data'));
+    else if (!(LANGS[lang].dict && Object.keys(LANGS[lang].dict).length)) EARLY = getJson(langUrl('data'));
+    if (EARLY) EARLY.catch(function () {});
+  }
   /* トップページが「日本語のときだけ出す記事」を決めるのに使う。<head> で先に決めておく */
   window.PENGESSO_LANG = lang;
   if (lang !== 'en') document.documentElement.setAttribute('lang', lang);
@@ -1438,10 +1455,8 @@
 
   if (DATA.lazyTop) {
     if (!LANGS[lang] || !window.fetch) return;
-    var url = new URL('i18n/top-data.' + encodeURIComponent(lang) + '.json', location.href);
-    if (LANGS[lang].v) url.searchParams.set('v', LANGS[lang].v);   /* 訳を直したら URL も変わる＝古い訳を読まない */
-    fetch(url.toString(), { credentials: 'same-origin' })
-      .then(function (res) { if (!res.ok) throw new Error('Top translation unavailable'); return res.json(); })
+    /* 訳を直したら URL の v も変わる＝古い訳を読まない */
+    (EARLY || getJson(langUrl('top-data')))
       .then(function (topData) { translate(topData); })
       .catch(function () {}); /* 訳を読み込めなくても英語本文をそのまま表示する */
     return;
@@ -1450,10 +1465,7 @@
   if (!articleLang) return;
   if (articleLang.dict && Object.keys(articleLang.dict).length) { translate(articleLang); return; }
   if (!window.fetch) return;
-  var articleUrl = new URL('i18n/data.' + encodeURIComponent(lang) + '.json', location.href);
-  if (articleLang.v) articleUrl.searchParams.set('v', articleLang.v);
-  fetch(articleUrl.toString(), { credentials: 'same-origin' })
-    .then(function (res) { if (!res.ok) throw new Error('Article translation unavailable'); return res.json(); })
+  (EARLY || getJson(langUrl('data')))
     .then(function (articleData) { articleLang.dict = articleData.dict || {}; translate(articleLang); })
     .catch(function () {}); /* 訳を読み込めなくても英語本文をそのまま表示する */
   }

@@ -405,6 +405,7 @@ return '<span title="' + esc(country(x[0]) + ' ' + fmt(x[1])) + '" aria-label="'
 }).join('') + '</div>';
 }
 html_ += '<button type="button" class="px-link">' + esc(t('how')) + '</button>';
+html_ += '<a class="px-link px-dash" href="/stats/">' + esc(t('dash')) + '</a>';
 c.innerHTML = html_;
 var hb = qs('.px-heart', c); hb.addEventListener('click', function () { toggleLike(hb); });
 qs('.px-link', c).addEventListener('click', openExplainer);

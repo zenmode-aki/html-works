@@ -176,7 +176,7 @@ def sitemap(items):
     """🔎 検索エンジン向けの記事の一覧（sitemap.xml）。/me/ と /goals/ は入れない（robots.txt で隠している）"""
     site = "https://15-second-blog.com/"
     newest = max((m.get("date", "") for m in items), default="")
-    rows = [(site, newest), (site + "remember/", "")]
+    rows = [(site, newest), (site + "remember/", ""), (site + "stats/", "")]   # 📊 数字のページ（2026-10-04）
     rows += [(f"{site}works/{m['slug']}/", m.get("date", "")) for m in items]
     body = "".join(
         f"  <url><loc>{loc}</loc>" + (f"<lastmod>{d}</lastmod>" if d else "") + "</url>\n"
