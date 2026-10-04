@@ -896,11 +896,12 @@ python3 tools/thumbs.py <slug>   # 240px正方形に縮めて base64 で埋め�
 
 `youtube-nocookie.com/embed/<動画ID>` の iframe を `.video-card` に入れる
 （`.video-card` は `tools/components.py` が配る共通CSSにすでにある）。
+**iframe は `src` ではなく `data-src` に書く**（2026-10-04）。画面に近づいてから読み込む（`tools/i18n_runtime.js`）。開いた瞬間に YouTube を読み始めると、スマホで本文の表示が遅くなるため。`check.py` が見張っている。
 
 ```html
 <figure class="video-card">
   <div class="ratio">
-    <iframe src="https://www.youtube-nocookie.com/embed/<動画ID>"
+    <iframe data-src="https://www.youtube-nocookie.com/embed/<動画ID>"
             title="動画の内容を英語で説明する" loading="lazy" allowfullscreen
             referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
