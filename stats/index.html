@@ -6,6 +6,14 @@
 <title>Pengesso in numbers · 15-second blog</title>
 <meta name="description" content="Live numbers of the 15-second blog: views, likes, countries, and what people are reading now. Real numbers only.">
 <link rel="icon" href="../assets/pengesso/pengesso-01.jpg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Pengesso in numbers · 15-second blog">
+<meta property="og:description" content="Live numbers of the 15-second blog: views, likes, countries, and what people are reading now. Real numbers only.">
+<meta property="og:url" content="https://15-second-blog.com/stats/">
+<meta property="og:image" content="https://15-second-blog.com/assets/pengesso/pengesso-01.jpg">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://pengesso-stats.pengesso.workers.dev" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <!-- 📊 数字のページ（2026-10-04 本人：「どれだけ見られてるか、ちゃんとわかるブログに。プラットフォーム化していきたい」）
      数字は集計係（stats-worker）の /v1/stats から。偽の数字は出さない。?pxdemo=1 のときだけ「サンプル」と出して見本の数字
      地図は world-atlas（jsdelivr）。記事の題は assets/moods.json、訳はトップの訳（i18n/top-data.<lang>.json） -->
@@ -50,19 +58,23 @@
   .pulse::after { content:""; position:absolute; inset:-6px; border-radius:50%; border:3px solid #20c27a; opacity:0; animation:ring 1.8s ease-out infinite; }
   @keyframes ring { 0% { transform:scale(.5); opacity:.8; } 100% { transform:scale(1.6); opacity:0; } }
   .live b { font-size:26px; }
+  .live b.quiet { font-size:16px; color:var(--muted); line-height:1.5; }
   .live .flags { font-size:22px; letter-spacing:2px; }
 
   /* 大きな数字 */
-  .kpis { display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; }
+  .kpis { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
   .kpi { padding:16px 12px; border-radius:18px; background:linear-gradient(160deg, #f4efff, #eef4ff); text-align:center; }
   .kpi:nth-child(2) { background:linear-gradient(160deg, #fff6d9, #ffefe0); }
   .kpi:nth-child(3) { background:linear-gradient(160deg, #e3f7ee, #eaf5ff); }
   .kpi:nth-child(4) { background:linear-gradient(160deg, #ffe8ee, #fff1f5); }
   .kpi:nth-child(5) { background:linear-gradient(160deg, #e9f1ff, #f2ecff); }
+  .kpi:nth-child(6) { background:linear-gradient(160deg, #fff1d6, #f6efe3); }
+  .baby { margin-top:18px; padding:14px 18px; border-radius:18px; background:#fff4c9; color:#5a4500; font-size:14.5px; line-height:1.6; }
+  html[data-theme="dark"] .baby { background:#3a3220; color:#ffe7a6; }
   html[data-theme="dark"] .kpi { background:#2b2e3c !important; }
   .kpi b { display:block; font-size:clamp(22px, 4.6vw, 34px); letter-spacing:-.02em; }
   .kpi small { display:block; margin-top:4px; color:var(--muted); font-size:12.5px; }
-  @media (max-width:640px) { .kpis { grid-template-columns:repeat(2, 1fr); } .kpi:first-child { grid-column:1 / -1; } }
+  @media (max-width:640px) { .kpis { grid-template-columns:repeat(2, 1fr); } }
 
   /* 30日のグラフ */
   .chart { width:100%; height:auto; display:block; }
@@ -133,6 +145,7 @@
   <h1><span class="peng" aria-hidden="true"></span><span data-t="title">Pengesso in numbers</span></h1>
   <p class="lead" id="lead"></p>
 
+  <p class="baby" id="baby" hidden data-t="baby">🐣 We just started counting. The numbers are still small, and we show them as they are.</p>
   <section class="card">
     <div class="live" id="live"></div>
   </section>
@@ -190,7 +203,7 @@
 
   /* ── ことば（英・日・韓・中。ほかの言語は英語） ── */
   var T = {
-    en: { back: 'Back', title: 'Pengesso in numbers', lead: 'Real numbers only. Counting since {d}. Updated every minute.',
+    en: { posts: 'Posts', baby: '🐣 We just started counting. The numbers are still small, and we show them as they are.', back: 'Back', title: 'Pengesso in numbers', lead: 'Real numbers only. Counting since {d}. Updated every minute.',
       sample: '🧪 These are sample numbers. They are not real.', live: '{n} people are reading now', live1: '1 person is reading now', live0: 'Nobody is reading right now. Maybe you can be the first?',
       total: 'Views so far', today: 'Today', week: 'This week', likes: 'Likes', countries: 'Countries',
       mapH: '🌏 Where readers are', mapSub: 'Darker = more views. Green dots = reading right now.', few: 'Few', many: 'Many', now: 'Now', loading: 'Loading…',
@@ -202,7 +215,7 @@
       howH: '🤝 How we count',
       p: ['We count which post was read, from which country, in which language.', 'We do not keep IP addresses, cookies, names, or emails.', 'One person reading one post counts once a day.', 'Search robots are not counted. People with "Do Not Track" are not counted.', 'We never show fake numbers.'],
       foot: 'Last update: {t}' },
-    ja: { back: '戻る', title: 'ペンゲッソの数字', lead: '本物の数字だけです。{d} から数えています。1分ごとに新しくなります。',
+    ja: { posts: '記事', baby: '🐣 数え始めたばかりです。数字はまだ小さいですが、そのまま出しています。', back: '戻る', title: 'ペンゲッソの数字', lead: '本物の数字だけです。{d} から数えています。1分ごとに新しくなります。',
       sample: '🧪 サンプルの数字です。本物ではありません。', live: 'いま {n}人 が読んでいます', live1: 'いま 1人 が読んでいます', live0: 'いまは誰も読んでいません。あなたが1人目になりませんか？',
       total: 'これまでの閲覧', today: '今日', week: '今週', likes: 'いいね', countries: '国と地域',
       mapH: '🌏 どこで読まれているか', mapSub: '色が濃いほど、たくさん読まれています。緑の点は、いま読んでいる人です。', few: '少ない', many: '多い', now: 'いま', loading: '読み込み中…',
@@ -214,7 +227,7 @@
       howH: '🤝 数え方の約束',
       p: ['どの記事が・どの国から・どの言語で読まれたかを数えます。', 'IPアドレス・Cookie・名前・メールは残しません。', '同じ人が同じ記事を読むのは、1日1回だけ数えます。', '検索ロボットは数えません。「トラッキングしない」の人も数えません。', '偽の数字は、絶対に出しません。'],
       foot: '最後の更新：{t}' },
-    ko: { back: '뒤로', title: '펭게소의 숫자', lead: '진짜 숫자만 보여 줘요. {d}부터 세고 있어요. 1분마다 새로워져요.',
+    ko: { posts: '글', baby: '🐣 이제 막 세기 시작했어요. 숫자는 아직 작지만, 그대로 보여 드려요.', back: '뒤로', title: '펭게소의 숫자', lead: '진짜 숫자만 보여 줘요. {d}부터 세고 있어요. 1분마다 새로워져요.',
       sample: '🧪 샘플 숫자예요. 진짜가 아니에요.', live: '지금 {n}명이 읽고 있어요', live1: '지금 1명이 읽고 있어요', live0: '지금은 아무도 읽고 있지 않아요. 첫 번째가 되어 볼래요?',
       total: '지금까지 조회', today: '오늘', week: '이번 주', likes: '좋아요', countries: '나라와 지역',
       mapH: '🌏 어디에서 읽히고 있나', mapSub: '색이 진할수록 많이 읽혔어요. 초록 점은 지금 읽고 있는 사람이에요.', few: '적음', many: '많음', now: '지금', loading: '불러오는 중…',
@@ -226,7 +239,7 @@
       howH: '🤝 세는 방법의 약속',
       p: ['어떤 글이, 어느 나라에서, 어떤 언어로 읽혔는지 세요.', 'IP 주소・쿠키・이름・메일은 남기지 않아요.', '같은 사람이 같은 글을 읽는 건 하루에 한 번만 세요.', '검색 로봇은 세지 않아요. "추적 안 함"인 사람도 세지 않아요.', '가짜 숫자는 절대 보여 주지 않아요.'],
       foot: '마지막 업데이트: {t}' },
-    zh: { back: '返回', title: '彭格索的数字', lead: '只显示真实的数字。从 {d} 开始统计。每分钟更新。',
+    zh: { posts: '文章', baby: '🐣 刚开始统计。数字还很小，但我们如实显示。', back: '返回', title: '彭格索的数字', lead: '只显示真实的数字。从 {d} 开始统计。每分钟更新。',
       sample: '🧪 这是示例数字，不是真实的。', live: '现在有 {n} 人在阅读', live1: '现在有 1 人在阅读', live0: '现在没有人在阅读。要不要当第一个？',
       total: '累计浏览', today: '今天', week: '本周', likes: '点赞', countries: '国家和地区',
       mapH: '🌏 读者在哪里', mapSub: '颜色越深，浏览越多。绿点是正在阅读的人。', few: '少', many: '多', now: '现在', loading: '加载中…',
@@ -238,7 +251,7 @@
       howH: '🤝 统计的约定',
       p: ['统计哪篇文章、从哪个国家、用哪种语言被阅读。', '不保存 IP 地址、Cookie、姓名、邮箱。', '同一个人读同一篇文章，一天只算一次。', '不统计搜索机器人，也不统计开启“请勿追踪”的人。', '绝不显示假的数字。'],
       foot: '最后更新：{t}' },
-    'zh-Hant': { back: '返回', title: '彭格索的數字', lead: '只顯示真實的數字。從 {d} 開始統計。每分鐘更新。',
+    'zh-Hant': { posts: '文章', baby: '🐣 剛開始統計。數字還很小，但我們如實顯示。', back: '返回', title: '彭格索的數字', lead: '只顯示真實的數字。從 {d} 開始統計。每分鐘更新。',
       sample: '🧪 這是範例數字，不是真實的。', live: '現在有 {n} 人在閱讀', live1: '現在有 1 人在閱讀', live0: '現在沒有人在閱讀。要不要當第一個？',
       total: '累計瀏覽', today: '今天', week: '本週', likes: '按讚', countries: '國家和地區',
       mapH: '🌏 讀者在哪裡', mapSub: '顏色越深，瀏覽越多。綠點是正在閱讀的人。', few: '少', many: '多', now: '現在', loading: '載入中…',
@@ -313,11 +326,15 @@
     $('lead').textContent = fill(t('lead'), { d: s.since || '2026-10-04' });
     var live = s.live || { n: 0, cc: [] };
     $('live').innerHTML = (live.n > 0 ? '<span class="pulse" aria-hidden="true"></span>' : '<span aria-hidden="true">🌙</span>') +
-      '<b>' + esc(live.n > 0 ? fill(live.n === 1 ? t('live1') : t('live'), { n: fmt(live.n) }) : t('live0')) + '</b>' +
+      '<b' + (live.n > 0 ? '' : ' class="quiet"') + '>' + esc(live.n > 0 ? fill(live.n === 1 ? t('live1') : t('live'), { n: fmt(live.n) }) : t('live0')) + '</b>' +
       '<span class="flags">' + (live.cc || []).map(function (c) { return '<span title="' + esc(country(c[0])) + '">' + flag(c[0]) + '</span>'; }).join('') + '</span>';
-    $('kpis').innerHTML = [['v', 'total'], ['vt', 'today'], ['v7', 'week'], ['l', 'likes'], ['nc', 'countries']].map(function (k) {
-      return '<div class="kpi"><b>' + fmt(s[k[0]]) + '</b><small>' + esc(t(k[1])) + '</small></div>';
+    var nPosts = Object.keys(POSTS).length;
+    $('kpis').innerHTML = [['v', 'total'], ['vt', 'today'], ['v7', 'week'], ['l', 'likes'], ['nc', 'countries'], ['_p', 'posts']].map(function (k) {
+      var n = k[0] === '_p' ? nPosts : s[k[0]];
+      return '<div class="kpi"><b>' + fmt(n) + '</b><small>' + esc(t(k[1])) + '</small></div>';
     }).join('');
+    /* 🐣 数字がまだ小さいうちは、正直にそう書く（盛らない） */
+    $('baby').hidden = !(s.v < 10);
     drawDays(s.days || []);
     drawRank();
     var cc = s.cc || [], max = cc.length ? cc[0][1] : 1;
