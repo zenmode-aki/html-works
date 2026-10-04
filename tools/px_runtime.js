@@ -25,7 +25,7 @@
 
   /* ── 言葉（ja / en / ko / zh / zh-Hant。ほかの言語は英語）──────────── */
   var T = {
-    en: { devices: 'Devices', countriesW: 'countries', viewsF: '{n} views', viewsF1: '{n} view', countriesF: '{n} countries', countriesF1: '{n} country', liveF: '{n} reading now', views: 'views', countries: 'countries', live: 'reading now', likeLabel: 'Like', liked: 'Liked', likeAria: 'Like this post',
+    en: { share: 'Share', copied: 'Link copied', bandLive: '{n} reading now', bandLive1: '{n} reading now (you!)', bandQuiet: 'Quiet right now', bandDay: 'Day {n} of counting', bandSee: 'See the numbers', devices: 'Devices', countriesW: 'countries', viewsF: '{n} views', viewsF1: '{n} view', countriesF: '{n} countries', countriesF1: '{n} country', liveF: '{n} reading now', views: 'views', countries: 'countries', live: 'reading now', likeLabel: 'Like', liked: 'Liked', likeAria: 'Like this post',
       endTitle: 'Liked this post?', endSub: 'Tap the heart. It tells the next reader this post was worth it.', how: 'How are these numbers counted?',
       howTitle: 'How these numbers work', since: 'Counting since {d}.',
       b1: 'Only real readers are counted. Search-engine robots and similar programs are left out.',
@@ -42,7 +42,7 @@
       demo: '🧪 SAMPLE DATA. These are not real numbers.', offToast: 'This browser will not be counted.', onToast: 'This browser will be counted.',
       close: 'Close', start: 'The numbers are real. They start small, and they grow.', dev: { phone: 'Phone', desktop: 'Computer', tablet: 'Tablet' },
       ref: { direct: 'Direct', google: 'Google', bing: 'Bing', yahoo: 'Yahoo', x: 'X', facebook: 'Facebook', instagram: 'Instagram', line: 'LINE', youtube: 'YouTube', github: 'GitHub', reddit: 'Reddit', hatena: 'Hatena', other: 'Other' } },
-    ja: { devices: '端末', countriesW: '国', viewsF: '閲覧 {n}', countriesF: '{n}か国', liveF: 'いま{n}人が読んでいます', views: '閲覧', countries: 'か国', live: 'いま読んでいる', likeLabel: 'いいね', liked: 'いいね済み', likeAria: 'この記事にいいねする',
+    ja: { share: 'シェアする', copied: 'リンクをコピーしました', bandLive: 'いま{n}人が読んでいます', bandLive1: 'いま{n}人が読んでいます（あなた！）', bandQuiet: 'いまは静か', bandDay: '数え始めて{n}日目', bandSee: '数字を見る', devices: '端末', countriesW: '国', viewsF: '閲覧 {n}', countriesF: '{n}か国', liveF: 'いま{n}人が読んでいます', views: '閲覧', countries: 'か国', live: 'いま読んでいる', likeLabel: 'いいね', liked: 'いいね済み', likeAria: 'この記事にいいねする',
       endTitle: 'この記事、よかったら', endSub: 'ハートを押すと、次に読む人に「この記事、いいよ」と伝わります。', how: 'この数字は、どう数えていますか？',
       howTitle: 'この数字の数え方', since: '{d} から数えています。',
       b1: '本物の読者だけを数えています。検索ロボットなどは除いています。',
@@ -59,7 +59,7 @@
       demo: '🧪 サンプルの数字です。本物ではありません。', offToast: 'このブラウザは数えません。', onToast: 'このブラウザも数えます。',
       close: '閉じる', start: '数字は本物です。小さく始まって、少しずつ育ちます。', dev: { phone: 'スマホ', desktop: 'パソコン', tablet: 'タブレット' },
       ref: { direct: '直接', google: 'Google', bing: 'Bing', yahoo: 'Yahoo!', x: 'X', facebook: 'Facebook', instagram: 'Instagram', line: 'LINE', youtube: 'YouTube', github: 'GitHub', reddit: 'Reddit', hatena: 'はてな', other: 'そのほか' } },
-    ko: { devices: '기기', countriesW: '나라', viewsF: '조회 {n}', countriesF: '{n}개국', liveF: '지금 {n}명이 읽는 중', views: '조회', countries: '개국', live: '지금 읽는 중', likeLabel: '좋아요', liked: '좋아요 완료', likeAria: '이 글에 좋아요',
+    ko: { share: '공유하기', copied: '링크를 복사했어요', bandLive: '지금 {n}명이 읽는 중', bandLive1: '지금 {n}명이 읽는 중(바로 당신!)', bandQuiet: '지금은 조용해요', bandDay: '센 지 {n}일째', bandSee: '숫자 보기', devices: '기기', countriesW: '나라', viewsF: '조회 {n}', countriesF: '{n}개국', liveF: '지금 {n}명이 읽는 중', views: '조회', countries: '개국', live: '지금 읽는 중', likeLabel: '좋아요', liked: '좋아요 완료', likeAria: '이 글에 좋아요',
       endTitle: '이 글이 좋았다면', endSub: '하트를 누르면, 다음에 읽는 분에게 “이 글 괜찮아요”가 전해져요.', how: '이 숫자는 어떻게 세나요?',
       howTitle: '숫자 집계 방식', since: '{d}부터 세고 있어요.',
       b1: '진짜 독자만 세요. 검색 로봇 같은 것은 빼요.',
@@ -76,7 +76,7 @@
       demo: '🧪 샘플 숫자예요. 진짜가 아니에요.', offToast: '이 브라우저는 세지 않아요.', onToast: '이 브라우저도 세요.',
       close: '닫기', start: '숫자는 진짜예요. 작게 시작해서 조금씩 자라요.', dev: { phone: '휴대폰', desktop: '컴퓨터', tablet: '태블릿' },
       ref: { direct: '직접', google: 'Google', bing: 'Bing', yahoo: 'Yahoo', x: 'X', facebook: 'Facebook', instagram: 'Instagram', line: 'LINE', youtube: 'YouTube', github: 'GitHub', reddit: 'Reddit', hatena: 'Hatena', other: '기타' } },
-    zh: { devices: '设备', countriesW: '国家', viewsF: '浏览 {n}', countriesF: '{n}个国家', liveF: '现在 {n} 人在读', views: '浏览', countries: '个国家', live: '正在阅读', likeLabel: '点赞', liked: '已点赞', likeAria: '给这篇文章点赞',
+    zh: { share: '分享', copied: '已复制链接', bandLive: '现在 {n} 人在读', bandLive1: '现在 {n} 人在读（就是你！）', bandQuiet: '现在很安静', bandDay: '开始统计第{n}天', bandSee: '看数字', devices: '设备', countriesW: '国家', viewsF: '浏览 {n}', countriesF: '{n}个国家', liveF: '现在 {n} 人在读', views: '浏览', countries: '个国家', live: '正在阅读', likeLabel: '点赞', liked: '已点赞', likeAria: '给这篇文章点赞',
       endTitle: '觉得这篇不错的话', endSub: '点一下爱心，下一位读者就会知道“这篇值得读”。', how: '这些数字是怎么统计的？',
       howTitle: '数字是怎么统计的', since: '从 {d} 开始统计。',
       b1: '只统计真实的读者，搜索引擎机器人之类的不算。',
@@ -93,7 +93,7 @@
       demo: '🧪 这是示例数字，不是真实数据。', offToast: '这个浏览器不会被统计。', onToast: '这个浏览器会被统计。',
       close: '关闭', start: '数字是真实的。从小开始，慢慢长大。', dev: { phone: '手机', desktop: '电脑', tablet: '平板' },
       ref: { direct: '直接访问', google: 'Google', bing: 'Bing', yahoo: 'Yahoo', x: 'X', facebook: 'Facebook', instagram: 'Instagram', line: 'LINE', youtube: 'YouTube', github: 'GitHub', reddit: 'Reddit', hatena: 'Hatena', other: '其他' } },
-    'zh-Hant': { devices: '裝置', countriesW: '國家', viewsF: '瀏覽 {n}', countriesF: '{n}個國家', liveF: '現在 {n} 人在讀', views: '瀏覽', countries: '個國家', live: '正在閱讀', likeLabel: '按讚', liked: '已按讚', likeAria: '為這篇文章按讚',
+    'zh-Hant': { share: '分享', copied: '已複製連結', bandLive: '現在 {n} 人在讀', bandLive1: '現在 {n} 人在讀（就是你！）', bandQuiet: '現在很安靜', bandDay: '開始統計第{n}天', bandSee: '看數字', devices: '裝置', countriesW: '國家', viewsF: '瀏覽 {n}', countriesF: '{n}個國家', liveF: '現在 {n} 人在讀', views: '瀏覽', countries: '個國家', live: '正在閱讀', likeLabel: '按讚', liked: '已按讚', likeAria: '為這篇文章按讚',
       endTitle: '覺得這篇不錯的話', endSub: '按一下愛心，下一位讀者就會知道「這篇值得讀」。', how: '這些數字是怎麼統計的？',
       howTitle: '數字是怎麼統計的', since: '從 {d} 開始統計。',
       b1: '只統計真實的讀者，搜尋引擎機器人之類的不算。',
@@ -226,6 +226,7 @@
     /* 記事のいちばん下 */
     '.px-end{position:relative;margin:26px 0 0;padding:24px 20px 20px;border-radius:28px;text-align:center;color:#322536;',
     'background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(255,240,247,.96));border:2px solid rgba(255,255,255,.95);box-shadow:0 14px 36px rgba(115,70,111,.13)}',
+    '.px-end:empty{display:none}',
     '.px-end h3{margin:0;font-size:19px;line-height:1.35;font-weight:900;color:#3b2745}',
     '.px-end p{margin:6px auto 0;max-width:34ch;font-size:14px;line-height:1.6;font-weight:700;color:#7a6a88}',
     '.px-heart{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:58px;margin-top:16px;padding:12px 30px;border:0;border-radius:999px;',
@@ -266,6 +267,18 @@
     'color:#232c48;font-weight:800;font-size:14px;line-height:1.4;font-family:inherit;box-shadow:0 8px 24px rgba(35,44,72,.06)}',
     '.px-hs b{font-weight:900;font-size:16px}',
     '.px-hs .px-sep{opacity:.3}',
+    '.px-band{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:14px 0 4px;padding:14px 18px;border-radius:22px;background:#fffdf8;border:1.5px solid rgba(35,44,72,.10);box-shadow:0 8px 24px rgba(35,44,72,.07);color:#1b2138;text-decoration:none;transition:transform .15s,box-shadow .15s}',
+    '.px-band:hover{transform:translateY(-1px);box-shadow:0 12px 30px rgba(35,44,72,.11)}.px-band:active{transform:scale(.985)}',
+    '.pb-live{display:inline-flex;align-items:center;gap:8px;font-size:15px}.pb-live b{font-weight:900}.pb-fl{font-size:15px;letter-spacing:1px}',
+    '.px-dot.off{background:#b9b4cc;box-shadow:none;animation:none}',
+    '.pb-nums{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}.pb-nums span{display:inline-flex;align-items:baseline;gap:5px}.pb-nums em{font-style:normal;font-size:12px;font-weight:800;color:#6d7593}.pb-nums b{font-size:17px;font-weight:900;font-variant-numeric:tabular-nums}',
+    '.pb-spark{width:84px;height:26px;flex:none}.pb-spark polyline{fill:none;stroke:#8b6de8;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}',
+    '.pb-go{display:inline-flex;flex-direction:column;align-items:flex-end;margin-left:auto;font-size:14px;font-weight:900;color:#5b45c9;white-space:nowrap}.pb-go small{font-size:11px;font-weight:800;color:#8a86a0}',
+    '@media (max-width:520px){.px-band{padding:13px 14px;gap:8px 12px}.pb-go{flex-direction:row;gap:8px;align-items:baseline;margin-left:0;width:100%;justify-content:space-between}}',
+    'html[data-theme="dark"] .px-band{background:#22242f;border-color:rgba(255,255,255,.1);color:#ece8f3}html[data-theme="dark"] .pb-nums em,html[data-theme="dark"] .pb-go small{color:#b3aac4}html[data-theme="dark"] .pb-go{color:#cfc2ff}',
+    '@media (prefers-reduced-motion:reduce){.px-band{transition:none}}',
+    '.px-share{display:flex;align-items:center;justify-content:center;gap:8px;margin:12px auto 0;min-height:48px;padding:10px 26px;border:1.5px solid rgba(35,44,72,.12);border-radius:999px;background:#fff;color:#2b2f45;font:inherit;font-size:15px;font-weight:900;cursor:pointer;transition:transform .12s}',
+    '.px-share:active{transform:scale(.96)}html[data-theme="dark"] .px-share{background:#22242f;border-color:rgba(255,255,255,.12);color:#ece8f3}',
     '.px-world{margin-top:18px;padding:24px;border-radius:22px;background:#fffdf8;border:1.5px solid rgba(35,44,72,.10);box-shadow:0 10px 30px rgba(35,44,72,.06);color:#1b2138}',
     '.px-world h2{margin:0;font-size:clamp(20px,3vw,27px);letter-spacing:-.02em}',
     '.px-world .px-lead{margin:6px 0 0;font-size:14px;font-weight:700;color:#6d7593}',
@@ -444,11 +457,20 @@
         return '<span title="' + esc(country(x[0]) + ' ' + fmt(x[1])) + '" aria-label="' + esc(country(x[0])) + '">' + flag(x[0]) + '</span>';
       }).join('') + '</div>';
     }
+    html_ += '<button type="button" class="px-share">📤 ' + esc(t('share')) + '</button>';   /* 📤 スマホの共有（LINE・X など）。なければリンクをコピー（2026-10-05） */
     html_ += '<button type="button" class="px-link">' + esc(t('how')) + '</button>';
     html_ += '<a class="px-link px-dash" href="/stats/">' + esc(t('dash')) + '</a>';   /* 📊 ブログ全体の数字（2026-10-04） */
     c.innerHTML = html_;
     var hb = qs('.px-heart', c); hb.addEventListener('click', function () { toggleLike(hb); });
     qs('.px-link', c).addEventListener('click', openExplainer);
+    var sb = qs('.px-share', c);
+    sb.addEventListener('click', function () {
+      var url = loc.origin + loc.pathname, title = doc.title;
+      if (navigator.share) { navigator.share({ title: title, url: url }).catch(function () {}); return; }
+      var done = function () { toast(t('copied')); if (window.pengessoPop) { var r = sb.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top, ['🔗', '✨'], 8); } };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done).catch(function () { prompt('', url); });
+      else prompt('', url);
+    });
   }
 
   function burst(btn) {
@@ -459,6 +481,16 @@
       var a = (Math.PI * 2 * i) / 7 - Math.PI / 2, r = 44 + (i % 3) * 10;
       b.style.setProperty('--dx', Math.round(Math.cos(a) * r) + 'px'); b.style.setProperty('--dy', Math.round(Math.sin(a) * r) + 'px');
       btn.appendChild(b); (function (n) { setTimeout(function () { n.remove(); }, 800); })(b);
+    }
+    // 🎉 その記事のタグの絵文字（🇵🇭 🎵 🤝…）も、画面いっぱいに飛び散る（i18n-runtime の pengessoPop）
+    if (window.pengessoPop) {
+      var emo = ['💖', '✨'];
+      [].forEach.call(doc.querySelectorAll('.post-tags a'), function (a) {
+        var m = (a.textContent || '').trim().match(/^(\S+)/);
+        if (m && !/^[\w　-鿿]/.test(m[1])) emo.push(m[1]);
+      });
+      var r = btn.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, emo, 18);
     }
   }
 
@@ -482,17 +514,31 @@
 
   /* ── トップページ：小さな帯・世界の読者・人気の記事・一覧の数字 ───── */
   function sumBy(a, k) { return (a || []).reduce(function (s, x) { return s + (x[k] || 0); }, 0); }
+  /* 📊 トップの「いまの数字」の帯（2026-10-05 本人：「数字のページ、めちゃくちゃいい。トップに置いてもいいぐらい」）
+     前は「閲覧10・3か国」をこえるまで何も出なかった。いまは、つながっていればいつも出す（小さい数字も、そのまま。数え始めて何日目かも書く）
+     帯ぜんたいが /stats/ へのリンク。右に30日の小さなグラフ */
   function renderHomeStrip() {
     var s = state.site; if (!s) return;
-    var old = qs('.px-hs'); if (old) old.remove();
-    var ok = s.v >= min('minViews', 10) && s.nc >= min('minCountries', 3);
-    if (!ok) return;
+    var old = qs('.px-band'); if (old) old.remove();
     var hero = qs('.hero'); if (!hero) return;
-    var b = el('div', 'px-hs'); b.setAttribute('translate', 'no');
-    var bits = ['🌍 <b>' + esc(pat('countriesF', s.nc)) + '</b>', '👀 <b>' + esc(pat('viewsF', s.v)) + '</b>'];
-    if (s.l >= 1) bits.push('<span style="color:#c2255c">♥</span> <b>' + esc(fmt(s.l)) + '</b>');
-    if (s.live && s.live.n >= min('minLive', 2)) bits.push('<i class="px-dot"></i> <b>' + esc(pat('liveF', s.live.n)) + '</b>');
-    b.innerHTML = bits.join(' <span class="px-sep">|</span> ');
+    var day = 1;
+    try { day = Math.max(1, Math.floor((Date.now() - new Date(s.since + 'T00:00:00+09:00').getTime()) / 86400000) + 1); } catch (e) {}
+    var live = (s.live && s.live.n) || 0;
+    var b = el('a', 'px-band'); b.href = '/stats/'; b.setAttribute('translate', 'no');
+    var h = '<span class="pb-live"><i class="px-dot' + (live ? '' : ' off') + '"></i><b>' + esc(live ? fill(live === 1 && !blocked() ? t('bandLive1') : t('bandLive'), { n: fmt(live) }) : t('bandQuiet')) + '</b>' +
+      (live && s.live.cc && s.live.cc.length ? '<span class="pb-fl">' + s.live.cc.slice(0, 5).map(function (x) { return flag(x[0]); }).join('') + '</span>' : '') + '</span>';
+    h += '<span class="pb-nums"><span><em>' + esc(t('today')) + '</em><b>' + esc(fmt(s.vt || 0)) + '</b></span>' +
+      '<span><em>' + esc(t('allTime')) + '</em><b>' + esc(fmt(s.v || 0)) + '</b></span>' +
+      '<span><em>🌍</em><b>' + esc(pat('countriesF', s.nc || 0)) + '</b></span>' +
+      (s.l ? '<span><em style="color:#c2255c">♥</em><b>' + esc(fmt(s.l)) + '</b></span>' : '') + '</span>';
+    var d = (s.days || []).map(function (x) { return x[1]; });
+    if (d.length >= 2) {
+      var mx = Math.max.apply(null, d) || 1, w = 84, hh = 26, step = w / (d.length - 1);
+      var pts = d.map(function (v, i) { return (i * step).toFixed(1) + ',' + (hh - 2 - (v / mx) * (hh - 4)).toFixed(1); }).join(' ');
+      h += '<svg class="pb-spark" viewBox="0 0 ' + w + ' ' + hh + '" aria-hidden="true"><polyline points="' + pts + '"/></svg>';
+    }
+    h += '<span class="pb-go"><small>' + esc(fill(t('bandDay'), { n: fmt(day) })) + '</small>' + esc(t('bandSee')) + ' →</span>';
+    b.innerHTML = h;
     hero.parentNode.insertBefore(b, hero.nextSibling);
   }
   function bars(list, total, n) {
@@ -629,6 +675,7 @@
     if (cfg.demo) { var d = el('div', 'px-demo', esc(t('demo'))); d.setAttribute('translate', 'no'); doc.body.appendChild(d); }
     if (px.justToggled) toast(px.justToggled === 'off' ? t('offToast') : t('onToast'));
     if (kind === 'post') {
+      loadComments();
       /* 数えられない端末でも、数字は見せる（数えずに読むだけ） */
       var showOnly = function () { api('GET', '/v1/post?p=' + encodeURIComponent(slug) + '&v=' + vid()).then(function (r) { if (r && r.ok) { state.post = r.post; render(); } }).catch(function () {}); };
       if (mayCount()) whenReady(startCounting); else showOnly();
@@ -641,6 +688,24 @@
       var feed = qs('#feed');
       if (feed && window.MutationObserver) new MutationObserver(function () { decorateFeed(); }).observe(feed, { childList: true });
     }
+  }
+
+  /* 💬 コメント（assets/comments.js）：記事のいちばん下に近づいたときだけ読む（最初の表示を重くしない） */
+  var CM_SRC = '__CM_SRC__';
+  function loadComments() {
+    if (cfg.demo || /^__/.test(CM_SRC)) return;
+    var anchor = ensureEnd(); if (!anchor) return;
+    px.cm = { lang: LANG, esc: esc, flag: flag, country: country, langName: langName, api: api, vid: vid, slug: slug, anchor: anchor };
+    var done = false;
+    function go() {
+      if (done) return; done = true;
+      var sc = doc.createElement('script'); sc.src = CM_SRC; sc.async = true; doc.head.appendChild(sc);
+    }
+    if (loc.hash === '#comments' || !('IntersectionObserver' in window)) { go(); return; }
+    var io = new IntersectionObserver(function (es) {
+      if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); go(); }
+    }, { rootMargin: '900px 0px' });
+    io.observe(anchor);
   }
 
   function boot() {

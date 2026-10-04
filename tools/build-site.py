@@ -219,7 +219,7 @@ def main():
             continue
         # 言い換えパック：💻 it ☁️ gcp 🌐 net 🖥 srv 🔐 sec 💼 biz。「net:ja,en,ko」の形で、読める言語を書く
         toks = []
-        for pack in ("it", "gcp", "net", "srv", "sec", "biz"):
+        for pack in ("it", "gcp", "net", "srv", "sec", "biz", "fin", "med", "nur"):
             ls = sorted(f.name.split(".")[1] for f in d.glob(f"{pack}.*.json"))
             if ls:
                 toks.append(f"{pack}:{','.join(ls)}")

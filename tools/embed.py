@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-🐧 画像を縮小して index.html に base64 で埋め込む
+🐧 画像を縮小して、記事フォルダの img/ に置く（2026-10-04 までは index.html に base64 で埋め込んでいた）
 
   python3 tools/embed.py pawapuro            記事1本ぶん
 
 HTML側にこう書いておくだけ：
   <img src="IMAGE:switch.jpg" alt="...">
-        ↑ images/switch.jpg を 幅1400px・quality 84 に縮小して base64 で埋め込みます
+        ↑ images/switch.jpg を 幅1400px・quality 84 に縮小して img/<指紋>.jpg に置き、src を書き換えます
 
 チャットAIに数百KBのbase64を書かせると必ず途中で壊れるので、
 埋め込みはこのスクリプトの仕事にしてあります。
@@ -126,7 +126,12 @@ def main():
 
     idx.write_text(doc, encoding="utf-8")
     shutil.rmtree(tmp, ignore_errors=True)
-    size = len(doc.encode())
+    # 📱 2026-10-04：写真は HTML に埋め込んだままにせず、記事フォルダの img/ に出す（iPhone で重かったため。tools/unembed.py）
+    sys.path.insert(0, str(ROOT / "tools"))
+    import unembed
+    unembed.process(idx)
+    doc = idx.read_text(encoding="utf-8")
+    size = len(doc.encode()) + sum(f.stat().st_size for f in (work / "img").glob("*") if f.is_file())
     limit_kb = 1536 if args[0] in PHOTO_STORIES else 400
     print(f"\n✅ {idx.relative_to(ROOT)} = {size/1024:.0f}KB", end="")
     print(f"  ⚠️ {limit_kb}KBを超えています。画像を減らしてください。"

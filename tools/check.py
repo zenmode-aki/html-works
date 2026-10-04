@@ -138,25 +138,32 @@ def check(work: pathlib.Path, fix_badge: bool):
         notes.append("📷 複数写真のフォトストーリー")
 
     doc = idx.read_text(encoding="utf-8")
-    size = len(doc.encode())
+    # 📱 2026-10-04 から写真は記事フォルダの img/ に別ファイルで置く。重さは HTML ＋ 写真の合計で見る
+    img_dir = idx.parent / "img"
+    size = len(doc.encode()) + (sum(f.stat().st_size for f in img_dir.glob("*") if f.is_file()) if img_dir.is_dir() else 0)
 
     # 1. サイズ
     size_limit = PHOTO_STORY_MAX_BYTES if photo_story else MAX_BYTES
     if size > size_limit:
-        problems.append(f"{NG} 大きすぎます: {size/1024:.0f}KB（上限 {size_limit/1024:.0f}KB）→ 画像をさらに縮小してください")
+        problems.append(f"{NG} 大きすぎます（HTML＋写真）: {size/1024:.0f}KB（上限 {size_limit/1024:.0f}KB）→ 画像をさらに縮小してください")
     else:
         notes.append(f"{OK} サイズ {size/1024:.0f}KB / {size_limit/1024:.0f}KB")
 
     # 2. 画像の参照
-    bad_src = [s for s in re.findall(r'<img[^>]*\bsrc="([^"]*)"', doc) if not s.startswith("data:")]
+    # 📱 写真は img/ の別ファイル（tools/unembed.py）。小さい飾りだけ base64 のままでよい
+    srcs = re.findall(r'<img[^>]*?(?<![\w-])src="([^"]*)"', doc)
+    bad_src = [s for s in srcs if not s.startswith("data:") and not (s.startswith("img/") and (idx.parent / s).is_file())]
     if bad_src:
-        problems.append(f"{NG} base64になっていない画像があります: {bad_src}")
+        problems.append(f"{NG} 見つからない画像があります（写真は記事フォルダの img/ に置く）: {bad_src[:3]}")
+    big_b64 = [m for m in re.findall(r'data:image/[a-z+]+;base64,([A-Za-z0-9+/=]+)', doc) if len(m) * 3 // 4 >= 4096]
+    if big_b64:
+        problems.append(f"{NG} 写真が HTML に埋め込まれたままです（{len(big_b64)}枚）→ python3 tools/unembed.py {idx.parent.name}")
     abs_paths = re.findall(r"(/Users/[^\s\"'<>)]+|/mnt/data/[^\s\"'<>)]+)", doc)
     if abs_paths:
         problems.append(f"{NG} 絶対パスが残っています: {sorted(set(abs_paths))[:3]}")
-    n_img = doc.count("data:image/")
+    n_img = len(srcs)
     if not bad_src and not abs_paths:
-        notes.append(f"{OK} 画像 {n_img}枚すべて自己完結（リンク切れの余地なし）")
+        notes.append(f"{OK} 画像 {n_img}枚すべて見つかりました（写真は img/ に別ファイル）")
 
     # 外部URL（YouTubeサムネだけは許可。下地のグラデーションで崩れないため）
     ext = [u for u in re.findall(r'url\(["\']?(https?://[^)"\']+)', doc)

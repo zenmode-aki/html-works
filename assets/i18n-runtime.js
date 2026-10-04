@@ -72,6 +72,95 @@ fs.forEach(function (f) { io.observe(f); });
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
 })();
 (function () {
+var doc = document, still = false;
+try { still = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+var EMO;
+try { EMO = new RegExp('^(?:\\p{Extended_Pictographic}|\\p{Regional_Indicator}|[\\u200d\\ufe0f\\u20e3#*0-9\\u{1F3FB}-\\u{1F3FF}]|\\s)+$', 'u'); } catch (e) { return; }
+var layer = null, live = 0;
+function pop(x, y, list, n) {
+if (still || !doc.body || !list || !list.length) return;
+if (!layer) {
+layer = doc.createElement('div');
+layer.setAttribute('aria-hidden', 'true');
+layer.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:2147483000;overflow:hidden';
+doc.body.appendChild(layer);
+}
+n = Math.min(n || 9, 40 - live);
+for (var i = 0; i < n; i++) {
+var s = doc.createElement('span');
+s.textContent = list[i % list.length];
+var size = 18 + Math.random() * 16;
+s.style.cssText = 'position:absolute;left:' + x + 'px;top:' + y + 'px;font-size:' + size.toFixed(0) +
+'px;line-height:1;margin:-.5em 0 0 -.5em;will-change:transform,opacity';
+layer.appendChild(s); live++;
+var a = -Math.PI / 2 + (Math.random() - .5) * 2.2, v = 70 + Math.random() * 90;
+var dx = Math.cos(a) * v, up = Math.sin(a) * v, fall = 120 + Math.random() * 80, r = (Math.random() - .5) * 120;
+var done = (function (el) { return function () { if (el.parentNode) el.parentNode.removeChild(el); live--; }; })(s);
+if (s.animate) {
+var an = s.animate([
+{ transform: 'translate(0,0) scale(.4) rotate(0deg)', opacity: 1 },
+{ transform: 'translate(' + (dx * .55).toFixed(0) + 'px,' + up.toFixed(0) + 'px) scale(1.1) rotate(' + (r / 2).toFixed(0) + 'deg)', opacity: 1, offset: .4 },
+{ transform: 'translate(' + dx.toFixed(0) + 'px,' + (up + fall).toFixed(0) + 'px) scale(.9) rotate(' + r.toFixed(0) + 'deg)', opacity: 0 }
+], { duration: 900 + Math.random() * 400, easing: 'cubic-bezier(.2,.7,.4,1)', fill: 'forwards' });
+an.onfinish = done;
+} else { setTimeout(done, 50); }
+}
+}
+window.pengessoPop = pop;
+function hop(el, big) {
+if (!el.animate) return;
+el.animate(still ? [{ transform: 'scale(1)' }, { transform: 'scale(1.15)' }, { transform: 'scale(1)' }] : [
+{ transform: 'translate(0,0) scale(1) rotate(0)' },
+{ transform: 'translate(0,' + (big ? -14 : -7) + 'px) scale(' + (big ? 1.3 : 1.1) + ') rotate(-8deg)', offset: .35 },
+{ transform: 'translate(0,2px) scale(.95,1.05) rotate(4deg)', offset: .7 },
+{ transform: 'translate(0,0) scale(1) rotate(0)' }
+], { duration: big ? 520 : 700, easing: 'ease-out' });
+}
+var SKIP = 'a,button,input,select,textarea,label,summary,[role="button"],[contenteditable],nav,.post-tags,.px-strip,.px-end,.px-world,.lang-switch,.i18n-menu,.learn,.it-line,.sortbar';
+function setup() {
+var root = doc.querySelector('main') || doc.querySelector('article');
+if (!root) return;
+var css = doc.createElement('style');
+css.textContent = '.emo-pop{cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}' +
+'.emo-pop:not(.emo-inline){display:inline-block}';
+doc.head.appendChild(css);
+var all = [].slice.call(root.querySelectorAll('span,b,i,em,strong,div,p,small,figcaption,li,td,th,dt,dd'));
+var found = [];
+all.forEach(function (el) {
+if (el.children.length) return;
+var t = el.textContent;
+if (!t || t.length > 12 || !/\S/.test(t) || !EMO.test(t) || /^[\s#*0-9]+$/.test(t)) return;
+if (el.closest(SKIP)) return;
+el.classList.add('emo-pop');
+if (getComputedStyle(el).display === 'inline') el.classList.add('emo-inline');
+found.push(el);
+});
+if (!found.length) return;
+root.addEventListener('click', function (ev) {
+var el = ev.target.closest && ev.target.closest('.emo-pop');
+if (!el || !root.contains(el)) return;
+hop(el, true);
+var r = el.getBoundingClientRect();
+var list = (el.textContent.replace(/\s+/g, '').match(/(?:\p{Regional_Indicator}{2}|\p{Extended_Pictographic}(?:[\u{1F3FB}-\u{1F3FF}️]|‍\p{Extended_Pictographic}️?)*|[#*0-9]️?⃣)/gu) || [el.textContent.trim()]);
+pop(r.left + r.width / 2, r.top + r.height / 2, list, 10);
+});
+// 「押せるよ」の合図：画面に入った最初の3つだけ、1回ぴょんと跳ねる
+if (still || !('IntersectionObserver' in window)) return;
+var hinted = 0;
+var io = new IntersectionObserver(function (es) {
+es.forEach(function (e) {
+if (!e.isIntersecting) return;
+io.unobserve(e.target);
+if (hinted >= 3) return;
+hinted++;
+setTimeout(function () { hop(e.target, false); }, 500 + hinted * 250);
+});
+}, { threshold: 1, rootMargin: '0px 0px -15% 0px' });
+found.forEach(function (el) { io.observe(el); });
+}
+if (doc.readyState === 'loading') doc.addEventListener('DOMContentLoaded', setup); else setup();
+})();
+(function () {
 var holder = document.getElementById('i18n-data');
 if (!holder) return;
 var DATA;
@@ -162,7 +251,8 @@ if (EARLY) EARLY.catch(function () {});
 window.PENGESSO_LANG = lang;
 if (lang !== 'en') document.documentElement.setAttribute('lang', lang);
 var bold = document.createElement('style');
-bold.textContent = 'html body :where(p, li, a, span, div, figcaption, td, th, button, small, label, blockquote) { font-weight: 700; }';
+bold.textContent = 'html body :where(p, li, a, span, div, figcaption, td, th, button, small, label, blockquote) { font-weight: 700; }' +
+':where(img[width][height]) { height: auto; }';
 (document.head || document.getElementsByTagName('head')[0]).appendChild(bold);
 var jaWrap = document.createElement('style');
 jaWrap.textContent = 'html:lang(ja) :is(h1, h2, h3, .card-label, .next-title, .prev-title, .post-title, .big, .closing-line) ' +
@@ -746,18 +836,18 @@ if (switchMount.parentNode) switchMount.parentNode.insertBefore(box, switchMount
 var LEARN_KEY = 'pengesso-learn', NATIVE_KEY = 'pengesso-native-alpha', IT_KEY = 'pengesso-it', GCP_KEY = 'pengesso-gcp',
 STUDY_TIP_KEY = 'pengesso-study-tip', SUB_KEY = 'pengesso-learn-lang';
 var STUDY_WORDS = {
-ja: { en: '英語の勉強をする', say: '英語を聞く', it: 'IT用語で言うと', gcp: 'Google Cloud で言うと', dim: '日本語の濃さ', re: '言い換え', off: 'オフ',
-packs: { it: 'IT用語', gcp: 'Google Cloud', net: 'ネットワーク', srv: 'サーバー', sec: 'セキュリティ', biz: 'ビジネス横文字' },
-net: 'ネットワークで言うと', srv: 'サーバーで言うと', sec: 'セキュリティで言うと', biz: 'ビジネス横文字で言うと',
+ja: { en: '英語の勉強をする', say: '英語を聞く', it: 'IT用語で言うと', gcp: 'Google Cloud で言うと', dim: '日本語の濃さ', re: 'その他の勉強', off: 'なし', popT: 'ほかの言葉で、言い換えて読む', popS: 'AI が、日記をむりやりその分野の言葉で言い換えます。いちどに1つだけ',
+packs: { it: 'IT用語', gcp: 'Google Cloud', net: 'ネットワーク', srv: 'サーバー', sec: 'セキュリティ', biz: 'ビジネス横文字', fin: '金融', med: '医療', nur: '看護' },
+net: 'ネットワークで言うと', srv: 'サーバーで言うと', sec: 'セキュリティで言うと', biz: 'ビジネス横文字で言うと', fin: '金融で言うと', med: '医療で言うと', nur: '看護で言うと',
 tips: ['英語の勉強も、いっしょにしますか？ 🇬🇧 をオンにすると、日本語のすぐ下に英語が出ます',
-'IT業界の人ですか？ 飼い主もIT用語を勉強中。「✨ 言い換え」で「IT用語」を選ぶと、日記がめちゃくちゃ強引にIT用語に言い換わります'],
+'IT業界の人ですか？ 飼い主もIT用語を勉強中。「📚 その他の勉強」で「IT用語」を選ぶと、日記がめちゃくちゃ強引にIT用語に言い換わります'],
 itNote: '🤖 AIが、めちゃくちゃ強引に言い換えています。略語はフルスペルで書いています',
 about: '🐧 飼い主は、英語の勉強を続けたいと思っています。そして、IT企業で働いていてテクノロジーが好きなので、IT用語もついでに覚えたいと思っています。' +
 'だから、このブログには小さな勉強モードが2つあります。🇬🇧 をオンにすると、日本語のすぐ下にもとの英文が出ます（日本語を薄くすると、英語に集中できます）。' +
-'「✨ 言い換え」を選ぶと、AIが日記をめちゃくちゃ強引に IT用語などに言い換えます（いちどに1つだけ）。英語やIT用語に、ふわっとさわってみたい人は、よかったらどうぞ。' },
-ko: { en: '영어 공부하기', say: '영어 듣기', dim: '한국어 진하기', re: '바꿔 말하기', off: '끄기',
-packs: { net: '네트워크', srv: '서버', sec: '보안', biz: '비즈니스 용어' },
-net: '네트워크로 말하면', srv: '서버로 말하면', sec: '보안으로 말하면', biz: '비즈니스 용어로 말하면',
+'「📚 その他の勉強」を選ぶと、AIが日記をめちゃくちゃ強引に IT用語・金融・医療・看護などの言葉に言い換えます（いちどに1つだけ）。英語やIT用語に、ふわっとさわってみたい人は、よかったらどうぞ。' },
+ko: { en: '영어 공부하기', say: '영어 듣기', dim: '한국어 진하기', re: '다른 공부', off: '없음', popT: '다른 분야의 말로 바꿔 읽기', popS: 'AI가 일기를 억지로 그 분야의 말로 바꿔 말해요. 한 번에 하나만',
+packs: { net: '네트워크', srv: '서버', sec: '보안', biz: '비즈니스 용어', fin: '금융', med: '의료', nur: '간호' },
+net: '네트워크로 말하면', srv: '서버로 말하면', sec: '보안으로 말하면', biz: '비즈니스 용어로 말하면', fin: '금융으로 말하면', med: '의료로 말하면', nur: '간호로 말하면',
 itNote: '🤖 AI가 아주 억지로 각 분야의 말로 바꿔 말하고 있어요(베타). 약어는 풀어서 써요',
 tips: ['영어 공부도 같이 할까요? 🇬🇧 를 켜면 한국어 바로 아래에 영어가 나와요'],
 about: '🐧 주인은 영어 공부를 계속하고 싶어 합니다. 그리고 IT 회사에서 일하고 기술을 좋아해서, IT 용어도 같이 배우고 싶어 합니다. ' +
@@ -773,8 +863,8 @@ var STUDY_DEFAULT = { en: 'Study English', say: 'Listen', dim: 'My language',
 tips: ['Learning English too? Turn on 🇬🇧 to see the English under each sentence'],
 about: '🐧 Pengesso’s owner wants to keep studying English, and also works at an IT company and loves technology. ' +
 'So this blog has small study modes. Turn on 🇬🇧 to see the original English under each sentence. Make your language lighter to focus on the English.' };
-var STUDY_EN = { en: 'Study Japanese', furi: 'Furigana', rom: 'Romaji', say: 'Listen', other: 'Other language', dim: 'English', it: 'IT words', gcp: 'Google Cloud', re: 'Reword', off: 'Off',
-net: 'Network', srv: 'Server', sec: 'Security', biz: 'Business jargon',
+var STUDY_EN = { en: 'Study Japanese', furi: 'Furigana', rom: 'Romaji', say: 'Listen', other: 'Other language', dim: 'English', it: 'IT words', gcp: 'Google Cloud', re: 'Other study', off: 'None', popT: 'Read it in other words', popS: 'AI re-says each line, very forcibly, with words from one field. One at a time',
+net: 'Network', srv: 'Server', sec: 'Security', biz: 'Business jargon', fin: 'Finance', med: 'Medical', nur: 'Nursing',
 tips: ['Learning Japanese? Turn on 🇯🇵 to see the original Japanese under each line, with furigana (reading help)',
 'Work in IT? Pick “✨ Reword”, then “IT words”, to see this diary in IT words, in a very forced way'],
 itNote: '🤖 AI re-says each line in a very forced way. Short forms are spelled out',
@@ -815,8 +905,8 @@ var root = document.documentElement;
 var W = enMode ? STUDY_EN : (STUDY_WORDS[lang] || STUDY_DEFAULT);
 var itMeta = document.querySelector('meta[name="pengesso-it"]');
 var itLang = enMode ? 'en' : lang;
-var PACK_ORDER = ['it', 'gcp', 'net', 'srv', 'sec', 'biz'];
-var PACK_ICON = { it: '💻', gcp: '☁️', net: '🌐', srv: '🖥', sec: '🔐', biz: '💼' };
+var PACK_ORDER = ['it', 'gcp', 'net', 'srv', 'sec', 'biz', 'fin', 'med', 'nur'];
+var PACK_ICON = { it: '💻', gcp: '☁️', net: '🌐', srv: '🖥', sec: '🔐', biz: '💼', fin: '💴', med: '🩺', nur: '💉' };
 var GCP_MARK = '<img class="gcp-mark" src="/assets/gcp-mark.png" alt="Google Cloud" width="20" height="16" decoding="async">';
 function packIcon(kind) { return kind === 'gcp' ? GCP_MARK : PACK_ICON[kind]; }
 var packLangs = {};
@@ -870,6 +960,25 @@ st.textContent =
 '.study-re .re-ic{font-size:15px;line-height:1}.study-re .re-caret{font-size:11px;opacity:.7}' +
 '.study-re .re-sel{position:absolute;left:0;top:0;width:100%;height:100%;margin:0;padding:0;border:0;background:transparent;color:transparent;-webkit-text-fill-color:transparent;opacity:0;cursor:pointer;font-size:16px;-webkit-appearance:none;appearance:none}' +
 '.study-re:focus-within{outline:3px solid rgba(139,109,232,.45);outline-offset:2px}' +
+'.study-re{font:inherit;font-size:13px;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent}' +
+'.study-re:focus-visible{outline:3px solid rgba(139,109,232,.45);outline-offset:2px}' +
+'.study-pop{position:absolute;z-index:30;width:min(320px,calc(100vw - 32px));padding:14px 12px 10px;border-radius:22px;background:#fff;color:#2b2f45;' +
+'box-shadow:0 18px 48px rgba(35,44,72,.22),0 2px 6px rgba(35,44,72,.08);opacity:0;transform:translateY(-6px) scale(.97);transform-origin:20% 0;' +
+'transition:opacity .18s ease,transform .22s cubic-bezier(.2,.9,.3,1.2)}' +
+'.study-pop.in{opacity:1;transform:none}' +
+'.study-pop .sp-t{margin:0 6px 2px;font-size:14.5px;font-weight:900;color:#232c48}' +
+'.study-pop .sp-s{margin:0 6px 10px;font-size:12px;line-height:1.55;font-weight:700;color:#6b6585}' +
+'.sp-list{display:grid;gap:4px;max-height:min(60vh,420px);overflow:auto;overscroll-behavior:contain}' +
+'.sp-o{position:relative;display:grid;grid-template-columns:30px 1fr 22px;align-items:center;gap:8px;min-height:46px;padding:6px 10px;border-radius:14px;cursor:pointer;font-size:15px;font-weight:800;transition:background .15s}' +
+'.sp-o:hover{background:#f6f3ff}.sp-o input{position:absolute;opacity:0;pointer-events:none}' +
+'.sp-ic{display:grid;place-items:center;font-size:19px;line-height:1}.sp-ic .gcp-mark{width:20px;height:auto}' +
+'.sp-dot{width:20px;height:20px;border-radius:50%;border:2.5px solid #cfc7ea;box-sizing:border-box;transition:border-color .15s,border-width .15s}' +
+'.sp-o:has(input:checked){background:#f1ecff}.sp-o:has(input:checked) .sp-dot{border:6px solid #8b6de8}' +
+'.sp-o:has(input:focus-visible){outline:3px solid rgba(139,109,232,.45);outline-offset:-2px}' +
+'html[data-theme="dark"] .study-pop{background:#22242f;color:#ece8f8;box-shadow:0 18px 48px rgba(0,0,0,.5)}' +
+'html[data-theme="dark"] .study-pop .sp-t{color:#f4f0fa}html[data-theme="dark"] .study-pop .sp-s{color:#b8b3cc}' +
+'html[data-theme="dark"] .sp-o:hover,html[data-theme="dark"] .sp-o:has(input:checked){background:#2e2a44}html[data-theme="dark"] .sp-dot{border-color:#5a5378}' +
+'@media (prefers-reduced-motion:reduce){.study-pop{transition:none}}' +
 '@supports selector(:has(*)){.study-re:focus-within{outline:0}.study-re:has(.re-sel:focus-visible){outline:3px solid rgba(139,109,232,.45);outline-offset:2px}}' +
 '.study-re.on{border-color:var(--pc);background:var(--pb);color:var(--pc)}' +
 '.study-re.it{--pc:#1f7a55;--pb:#eaf7f0}.study-re.gcp{--pc:#1a56c4;--pb:#e8f0fe}.study-re.net{--pc:#0b6e78;--pb:#e4f6f6}' +
@@ -894,17 +1003,21 @@ st.textContent =
 '.gcp-say b{color:#0b3d91;background:linear-gradient(transparent 48%,#c2d7fb 48%);padding:0 .15em;border-radius:3px;font-weight:900}' +
 '.gcp-say small{display:block;margin-top:.15em;font-size:.88em;opacity:.85}' +
 'html.gcp-on .gcp-say{display:block;animation:learnIn .45s ease both}h1 .gcp-say{font-size:.5em;line-height:1.45}' +
-'.net-say,.srv-say,.sec-say,.biz-say{display:none;margin-top:.45em;padding:.45em .7em;border-radius:12px;font-size:.86em;line-height:1.6;font-weight:700;text-align:start}' +
-'.net-say small,.srv-say small,.sec-say small,.biz-say small{display:block;margin-top:.15em;font-size:.88em;opacity:.85}' +
-'h1 .net-say,h1 .srv-say,h1 .sec-say,h1 .biz-say{font-size:.5em;line-height:1.45}' +
+'.net-say,.srv-say,.sec-say,.biz-say,.fin-say,.med-say,.nur-say{display:none;margin-top:.45em;padding:.45em .7em;border-radius:12px;font-size:.86em;line-height:1.6;font-weight:700;text-align:start}' +
+'.net-say small,.srv-say small,.sec-say small,.biz-say small,.fin-say small,.med-say small,.nur-say small{display:block;margin-top:.15em;font-size:.88em;opacity:.85}' +
+'h1 .net-say,h1 .srv-say,h1 .sec-say,h1 .biz-say,h1 .fin-say,h1 .med-say,h1 .nur-say{font-size:.5em;line-height:1.45}' +
 '.net-say{background:#e4f6f6;color:#0b5e66}.net-say b{background:linear-gradient(transparent 48%,#aee2e5 48%)}' +
 '.srv-say{background:#eef0f7;color:#36406a}.srv-say b{background:linear-gradient(transparent 48%,#cbd2ec 48%)}' +
 '.sec-say{background:#fdeeee;color:#8a1f2b}.sec-say b{background:linear-gradient(transparent 48%,#f5c4c8 48%)}' +
 '.biz-say{background:#fff3e2;color:#87480a}.biz-say b{background:linear-gradient(transparent 48%,#ffd8a1 48%)}' +
-'.net-say b,.srv-say b,.sec-say b,.biz-say b{padding:0 .15em;border-radius:3px;font-weight:900;color:inherit}' +
-'html.net-on .net-say,html.srv-on .srv-say,html.sec-on .sec-say,html.biz-on .biz-say{display:block;animation:learnIn .45s ease both}' +
+'.fin-say{background:#eef7e2;color:#3c5a0e}.fin-say b{background:linear-gradient(transparent 48%,#cfe8a6 48%)}' +
+'.med-say{background:#e8f1ff;color:#1b4a8a}.med-say b{background:linear-gradient(transparent 48%,#bcd5fb 48%)}' +
+'.nur-say{background:#fdedf5;color:#8a1f5c}.nur-say b{background:linear-gradient(transparent 48%,#f6c3dd 48%)}' +
+'.net-say b,.srv-say b,.sec-say b,.biz-say b,.fin-say b,.med-say b,.nur-say b{padding:0 .15em;border-radius:3px;font-weight:900;color:inherit}' +
+'html.net-on .net-say,html.srv-on .srv-say,html.sec-on .sec-say,html.biz-on .biz-say,html.fin-on .fin-say,html.med-on .med-say,html.nur-on .nur-say{display:block;animation:learnIn .45s ease both}' +
 'html[data-theme="dark"] .net-say{background:#123236;color:#bdeef0}html[data-theme="dark"] .srv-say{background:#20243a;color:#d3d9f5}' +
 'html[data-theme="dark"] .sec-say{background:#3a1a20;color:#f8d0d5}html[data-theme="dark"] .biz-say{background:#3a2a14;color:#ffe2bd}' +
+'html[data-theme="dark"] .fin-say{background:#24321a;color:#dcefc0}html[data-theme="dark"] .med-say{background:#182a44;color:#cfe0fb}html[data-theme="dark"] .nur-say{background:#3a1a2e;color:#f8d0e6}' +
 'html[data-theme="dark"] .net-say b,html[data-theme="dark"] .srv-say b,html[data-theme="dark"] .sec-say b,html[data-theme="dark"] .biz-say b{background:rgba(255,255,255,.14)}' +
 'html[data-theme="dark"] .gcp-say{background:#16233d;color:#c6dafc}html[data-theme="dark"] .gcp-say b{background:linear-gradient(transparent 48%,#274b86 48%);color:#e3edff}' +
 '.it-note{display:none;width:fit-content;margin:-6px 0 14px;padding:6px 12px;border-radius:12px;background:#eaf7f0;font-size:12px;font-weight:700;color:#1d5c41}' +
@@ -919,6 +1032,7 @@ st.textContent =
 '.study-tip button{flex:none;width:28px;height:28px;margin:-4px 0;border:0;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font:inherit;cursor:pointer}' +
 '.study-tip .t{transition:opacity .25s}.study-tip .t.fade{opacity:0}' +
 '.study-tip.bye{opacity:0;transition:opacity .35s}' +
+'@media (max-width:640px){.study-tip{position:relative;left:auto;top:auto;flex:1 1 100%;max-width:none;margin-top:6px}}' +
 '@keyframes tipIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}' +
 'html[data-theme="dark"] .learn-en{color:#c9bbff;border-color:#7a66d8}' +
 'html[data-theme="dark"] :is(.study-btn,.study-sel,.study-q,.study-re,.study-chip,.dim-b){background:#22242f;border-color:#33364a;color:#c9bbff}' +
@@ -1117,17 +1231,52 @@ if (hasIt) {
 note = document.createElement('p');
 note.className = 'it-note'; note.setAttribute('translate', 'no');
 note.textContent = W.itNote || STUDY_EN.itNote;
-rePill = document.createElement('div');
-rePill.className = 'study-re';
+rePill = document.createElement('button');
+rePill.type = 'button'; rePill.className = 'study-re';
+rePill.setAttribute('aria-haspopup', 'dialog'); rePill.setAttribute('aria-expanded', 'false');
 rePill.innerHTML = '<span class="re-ic" aria-hidden="true"></span><span class="re-tx"></span><span class="re-caret" aria-hidden="true">▾</span>' +
-'<span class="study-beta" aria-hidden="true">BETA</span><select class="re-sel"></select>';
-reIc = rePill.children[0]; reTx = rePill.children[1]; reSel = rePill.lastChild;
-reSel.setAttribute('aria-label', W.re || STUDY_EN.re);
-var addOpt = function (v, t) { var o = document.createElement('option'); o.value = v; o.textContent = t; reSel.appendChild(o); };
-addOpt('off', '✨ ' + (W.off || STUDY_EN.off));
-packs.forEach(function (k) { addOpt(k, PACK_ICON[k] + ' ' + W[k]); });
-reSel.addEventListener('change', function () { setPack(reSel.value); });
+'<span class="study-beta" aria-hidden="true">BETA</span>';
+reIc = rePill.children[0]; reTx = rePill.children[1];
+var pop = document.createElement('div');
+pop.className = 'study-pop'; pop.hidden = true; pop.setAttribute('role', 'dialog'); pop.setAttribute('translate', 'no');
+pop.setAttribute('aria-label', W.re || STUDY_EN.re);
+var popHtml = '<p class="sp-t">' + esc(W.popT || STUDY_EN.popT) + '</p><p class="sp-s">' + esc(W.popS || STUDY_EN.popS) + '</p><div class="sp-list">';
+['off'].concat(packs).forEach(function (k) {
+var label = k === 'off' ? (W.off || STUDY_EN.off) : ((W.packs && W.packs[k]) || W[k]);
+popHtml += '<label class="sp-o sp-' + k + '"><input type="radio" name="pengesso-pack" value="' + k + '"><span class="sp-ic" aria-hidden="true">' +
+(k === 'off' ? '🚫' : packIcon(k)) + '</span><span class="sp-l">' + esc(label) + '</span><span class="sp-dot" aria-hidden="true"></span></label>';
+});
+pop.innerHTML = popHtml + '</div>';
+reSel = {
+set value(v) { [].forEach.call(pop.querySelectorAll('input'), function (r) { r.checked = r.value === v; }); },
+get value() { var c = pop.querySelector('input:checked'); return c ? c.value : 'off'; }
+};
+function openPop(on) {
+if (on === !pop.hidden) return;
+rePill.setAttribute('aria-expanded', on ? 'true' : 'false');
+if (on) {
+pop.hidden = false; pop.classList.remove('in');
+var br = bar.getBoundingClientRect(), rr = rePill.getBoundingClientRect();
+pop.style.top = (rr.bottom - br.top + 8) + 'px';
+pop.style.left = Math.max(0, Math.min(rr.left - br.left, br.width - pop.offsetWidth)) + 'px';
+void pop.offsetWidth; pop.classList.add('in');
+var cur = pop.querySelector('input:checked') || pop.querySelector('input'); if (cur) cur.focus({ preventScroll: true });
+} else {
+pop.classList.remove('in');
+setTimeout(function () { if (!pop.classList.contains('in')) pop.hidden = true; }, 180);
+}
+}
+rePill.addEventListener('click', function (e) { e.stopPropagation(); openPop(pop.hidden); closeTip(); });
+pop.addEventListener('click', function (e) { e.stopPropagation(); });
+pop.addEventListener('change', function (e) {
+if (!e.target || e.target.name !== 'pengesso-pack') return;
+setPack(e.target.value);
+setTimeout(function () { openPop(false); }, 260);   // 選んだ印が見えてから閉じる
+});
+document.addEventListener('click', function () { openPop(false); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !pop.hidden) { openPop(false); rePill.focus(); } });
 bar.appendChild(rePill);
+bar.appendChild(pop);
 pack = curPack();
 }
 var q = document.createElement('button');

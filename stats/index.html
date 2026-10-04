@@ -13,19 +13,18 @@
 <meta property="og:image" content="https://15-second-blog.com/assets/pengesso/pengesso-01.jpg">
 <meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://pengesso-stats.pengesso.workers.dev" crossorigin>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <!-- 📊 数字のページ（2026-10-04 本人：「どれだけ見られてるか、ちゃんとわかるブログに。プラットフォーム化していきたい」）
      数字は集計係（stats-worker）の /v1/stats から。偽の数字は出さない。?pxdemo=1 のときだけ「サンプル」と出して見本の数字
-     地図は world-atlas（jsdelivr）。記事の題は assets/moods.json、訳はトップの訳（i18n/top-data.<lang>.json） -->
+     地図は assets/worldmap-dots.json（点の世界地図）。記事の題は assets/moods.json、訳はトップの訳（i18n/top-data.<lang>.json） -->
 <style>
   :root {
     --navy:#232c48; --blue:#2f56c9; --blue-2:#567cf0; --purple:#8b6de8; --yellow:#ffc42e; --pink:#ff6b8b;
     --cream:#f6efe3; --paper:#fffdf8; --ink:#1b2138; --muted:#6d7593; --line:rgba(35,44,72,.10);
-    --land:#e6e1f2; --sea:#f3f8ff;
+    --land:#d8d2ec; --sea:#f6f4ff;
   }
   html[data-theme="dark"] {
     --cream:#15161d; --paper:#22242f; --ink:#f4f0fa; --muted:#b3aac4; --line:rgba(255,255,255,.12);
-    --land:#33364a; --sea:#1b1d27;
+    --land:#3b3e57; --sea:#1b1d27;
   }
   * { box-sizing:border-box; }
   html, body { overflow-x:clip; }
@@ -84,12 +83,16 @@
   .chart .gl { stroke:var(--line); }
 
   /* 地図 */
-  .map { position:relative; border-radius:18px; overflow:hidden; background:var(--sea); }
+  .map { position:relative; border-radius:18px; overflow:hidden; background:radial-gradient(120% 90% at 50% 40%, var(--paper), var(--sea)); padding:6px; }
   .map svg { display:block; width:100%; height:auto; }
-  .map .c { fill:var(--land); stroke:var(--paper); stroke-width:.4; transition:fill .3s; }
+  .map .c { fill:var(--land); transition:fill .4s; }
   .map .c.on { cursor:pointer; }
-  .map .dot { fill:#20c27a; }
-  .map .ring { fill:none; stroke:#20c27a; stroke-width:2; animation:mring 1.8s ease-out infinite; transform-box:fill-box; transform-origin:center; }
+  .map .c.on:hover, .map .c.on:active { filter:brightness(1.12); }
+  .map .c.live circle { animation:mglow 2.4s ease-in-out infinite; }
+  .map .dot { fill:#ffc42e; stroke:#fff; stroke-width:1.5; }
+  .map .ring { fill:none; stroke:#ffb400; stroke-width:2; opacity:0; animation:mring 2.4s ease-out infinite; transform-box:fill-box; transform-origin:center; }
+  .map .ring.r2 { animation-delay:1.2s; }
+  @keyframes mglow { 50% { filter:brightness(1.25) saturate(1.2); } }
   @keyframes mring { 0% { transform:scale(.4); opacity:.9; } 100% { transform:scale(2.2); opacity:0; } }
   .map .tip { position:absolute; pointer-events:none; padding:6px 10px; border-radius:10px; background:var(--navy); color:#fff; font-size:13px;
     white-space:nowrap; transform:translate(-50%, -130%); opacity:0; transition:opacity .15s; }
@@ -379,44 +382,47 @@
     [].forEach.call(document.querySelectorAll('#tabs button'), function (b) { b.setAttribute('aria-selected', String(b.getAttribute('data-tab') === tab)); });
   }
 
-  /* ── 地図（world-atlas の国の形。色＝閲覧の多さ、緑の点＝いま読んでいる人） ── */
-  var mapReady = null, geo = null, path = null, proj = null;
-  function loadScript(src) { return new Promise(function (ok, ng) { var s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = ng; document.head.appendChild(s); }); }
+  /* ── 地図（2026-10-05 本人「地図がちょっと汚い」→ 点で描いた世界地図に）
+     点の位置は assets/worldmap-dots.json（world-atlas の国の形から、手元で1回だけ計算した。外の CDN は読まない）
+     点の色＝その国からの閲覧の多さ。いま読んでいる人がいる国は、点が光って輪が広がる ── */
+  var mapReady = null, DOTS = null;
   function initMap() {
-    if (mapReady) return mapReady;
-    mapReady = loadScript('https://cdn.jsdelivr.net/npm/d3-array@3/dist/d3-array.min.js')
-      .then(function () { return loadScript('https://cdn.jsdelivr.net/npm/d3-geo@3/dist/d3-geo.min.js'); })
-      .then(function () { return loadScript('https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js'); })
-      .then(function () { return fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(function (r) { return r.json(); }); })
-      .then(function (topo) {
-        geo = topojson.feature(topo, topo.objects.countries).features.filter(function (f) { return f.id !== '010'; });   // 南極は外す
-        proj = d3.geoEqualEarth().fitSize([960, 470], { type: 'FeatureCollection', features: geo });
-        path = d3.geoPath(proj);
-      });
+    if (!mapReady) mapReady = fetch('../assets/worldmap-dots.json').then(function (r) { return r.json(); }).then(function (d) {
+      var by = {};
+      for (var i = 0; i < d.p.length; i += 3) { var a2 = d.cc[d.p[i + 2]]; (by[a2] = by[a2] || []).push([d.p[i] / 10, d.p[i + 1] / 10]); }
+      DOTS = { w: d.w, h: d.h, r: d.r, by: by };
+    });
     return mapReady;
   }
   function paintMap() {
     initMap().then(function () {
       var views = {}, max = 1; (S.cc || []).forEach(function (c) { views[c[0]] = c[1]; if (c[1] > max) max = c[1]; });
       var liveCc = {}; ((S.live && S.live.cc) || []).forEach(function (c) { liveCc[c[0]] = c[1]; });
-      function color(n) { if (!n) return ''; var f = Math.sqrt(n / max); var a = [217, 210, 245], b = [91, 69, 201];
+      function color(n) { var f = Math.pow(n / max, .45); var a = [196, 182, 242], b = [84, 56, 214];
         return 'rgb(' + a.map(function (x, i) { return Math.round(x + (b[i] - x) * f); }).join(',') + ')'; }
-      var h = '<svg viewBox="0 0 960 470" role="img" aria-label="' + esc(t('mapH')) + '">';
-      var dots = '';
-      geo.forEach(function (f) {
-        var a2 = NUM2A2[f.id] || ''; var n = views[a2] || 0;
-        h += '<path class="c' + (n ? ' on' : '') + '" d="' + path(f) + '"' + (n ? ' style="fill:' + color(n) + '"' : '') + ' data-cc="' + a2 + '"/>';
-        if (liveCc[a2]) { var c = path.centroid(f); if (isFinite(c[0])) dots += '<circle class="ring" cx="' + c[0].toFixed(1) + '" cy="' + c[1].toFixed(1) + '" r="7"/><circle class="dot" cx="' + c[0].toFixed(1) + '" cy="' + c[1].toFixed(1) + '" r="5"/>'; }
+      var h = '<svg viewBox="0 0 ' + DOTS.w + ' ' + DOTS.h + '" role="img" aria-label="' + esc(t('mapH')) + '">', top = '', rings = '';
+      Object.keys(DOTS.by).forEach(function (a2) {
+        var pts = DOTS.by[a2], n = views[a2] || 0, live = liveCc[a2], one = pts.length === 1;
+        var r = one ? DOTS.r * 1.25 : DOTS.r;
+        var g = '<g class="c' + (n ? ' on' : '') + (live ? ' live' : '') + '" data-cc="' + a2 + '"' + (n ? ' style="fill:' + color(n) + '"' : '') + '>' +
+          pts.map(function (q) { return '<circle cx="' + q[0] + '" cy="' + q[1] + '" r="' + r + '"/>'; }).join('') + '</g>';
+        if (n || live) top += g; else h += g;
+        if (live) {
+          var cx = 0, cy = 0; pts.forEach(function (q) { cx += q[0]; cy += q[1]; }); cx /= pts.length; cy /= pts.length;
+          var best = pts[0], bd = 1e9; pts.forEach(function (q) { var dd = (q[0] - cx) * (q[0] - cx) + (q[1] - cy) * (q[1] - cy); if (dd < bd) { bd = dd; best = q; } });
+          rings += '<circle class="ring" cx="' + best[0] + '" cy="' + best[1] + '" r="9"/><circle class="ring r2" cx="' + best[0] + '" cy="' + best[1] + '" r="9"/><circle class="dot" cx="' + best[0] + '" cy="' + best[1] + '" r="4.5"/>';
+        }
       });
-      $('map').innerHTML = h + dots + '</svg><div class="tip" id="tip"></div>';
+      $('map').innerHTML = h + top + rings + '</svg><div class="tip" id="tip"></div>';
       var tip = $('tip'), box = $('map');
-      box.onmousemove = function (e) {
-        var p = e.target.closest && e.target.closest('path'); if (!p) { tip.style.opacity = 0; return; }
-        var a2 = p.getAttribute('data-cc'); if (!a2) { tip.style.opacity = 0; return; }
-        var r = box.getBoundingClientRect();
+      function show(e) {
+        var p = e.target.closest && e.target.closest('g.c'); if (!p) { tip.style.opacity = 0; return; }
+        var a2 = p.getAttribute('data-cc'), r = box.getBoundingClientRect();
         tip.textContent = flag(a2) + ' ' + country(a2) + ' · ' + fmt(views[a2] || 0) + (liveCc[a2] ? ' · 🟢 ' + liveCc[a2] : '');
-        tip.style.left = (e.clientX - r.left) + 'px'; tip.style.top = (e.clientY - r.top) + 'px'; tip.style.opacity = 1;
-      };
+        var x = Math.max(70, Math.min(r.width - 70, e.clientX - r.left));
+        tip.style.left = x + 'px'; tip.style.top = (e.clientY - r.top) + 'px'; tip.style.opacity = 1;
+      }
+      box.onmousemove = show; box.onclick = show;
       box.onmouseleave = function () { tip.style.opacity = 0; };
     }).catch(function () { $('map').innerHTML = '<div class="empty">🌏</div>'; });
   }

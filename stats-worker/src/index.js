@@ -60,6 +60,13 @@ export class Stats extends DurableObject {
     q("CREATE TABLE IF NOT EXISTS likes(slug TEXT, vid TEXT, cc TEXT, ts INTEGER, PRIMARY KEY(slug, vid)) WITHOUT ROWID");
     q("CREATE TABLE IF NOT EXISTS t_like(slug TEXT PRIMARY KEY, n INTEGER NOT NULL) WITHOUT ROWID");
     q("CREATE TABLE IF NOT EXISTS rl_like(day TEXT, ih TEXT, n INTEGER NOT NULL, PRIMARY KEY(day, ih)) WITHOUT ROWID");
+    // 💬 コメント（2026-10-05）。st: wait（3日待ち）→ ok（そのまま）/ soft（AIがやさしく言い換えた）/ inbox（ご主人だけが読む）/ no（出さない）
+    q(`CREATE TABLE IF NOT EXISTS comments(id INTEGER PRIMARY KEY AUTOINCREMENT, slug TEXT NOT NULL, vid TEXT NOT NULL,
+        nick TEXT, home TEXT, cc TEXT, lang TEXT, kind TEXT, body TEXT NOT NULL, ts INTEGER NOT NULL,
+        st TEXT NOT NULL DEFAULT 'wait', shown TEXT, why TEXT, done INTEGER, seen INTEGER DEFAULT 0)`);
+    q("CREATE INDEX IF NOT EXISTS comments_slug ON comments(slug, st)");
+    q("CREATE INDEX IF NOT EXISTS comments_st ON comments(st, ts)");
+    q("CREATE TABLE IF NOT EXISTS rl_cm(day TEXT, ih TEXT, n INTEGER NOT NULL, PRIMARY KEY(day, ih)) WITHOUT ROWID");
     const has = this.sql.exec("SELECT v FROM meta WHERE k='secret'").toArray();
     if (!has.length) {
       const seed = [...crypto.getRandomValues(new Uint8Array(32))].map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -93,6 +100,7 @@ export class Stats extends DurableObject {
     this.cleanedDay = day;
     this.sql.exec("DELETE FROM seen WHERE day < ?", day);          // 「同じ人か」の判定は、その日のうちだけ
     this.sql.exec("DELETE FROM rl_like WHERE day < ?", day);
+    this.sql.exec("DELETE FROM rl_cm WHERE day < ?", day);
     const old = this.dayOf(Date.now() - 400 * DAY_MS);
     this.sql.exec("DELETE FROM d_slug WHERE day < ?", old);
   }
@@ -239,8 +247,115 @@ export class Stats extends DurableObject {
 
   async stats() {
     const s = this.siteStats();
-    return { ok: 1, site: { ...s, live: this.liveNow(Date.now(), "") } };
+    const inbox = num((this.sql.exec("SELECT COUNT(*) c FROM comments WHERE st='inbox' AND seen=0").toArray()[0] || {}).c);
+    const cm = num((this.sql.exec("SELECT COUNT(*) c FROM comments WHERE st IN ('ok','soft')").toArray()[0] || {}).c);
+    return { ok: 1, site: { ...s, cm, inbox: inbox ? 1 : 0, live: this.liveNow(Date.now(), "") } };
   }
+
+  /* ───────── 💬 コメント ─────────
+     ・書いたコメントは、すぐには出さない。3日おいてから AI が読む（勢いで書いたものを、そのまま出さないため）
+     ・AI の判断：そのまま出す（ok）／やさしい言い方に直して出す（soft）／ご主人への質問・お願いは、ご主人だけが読む（inbox）／出さない（no）
+     ・「ご主人へ」を選んで書いたものは、待たずにご主人の受け箱へ（みんなには見えない）
+     ・書いた人は、自分のコメントがいまどうなっているかを見られる（同じ端末の vid で） */
+  async commentAdd(a) {
+    const now = Date.now(), day = this.dayOf(now);
+    if (a.bot || !a.ua || BOT_RE.test(a.ua)) return { ok: 0, e: "bot" };
+    if (!VID_RE.test(a.vid || "")) return { ok: 0, e: "vid" };
+    const ih = (await sha(this.secret + "|ip|" + ipPrefix(a.ip))).slice(0, 16);
+    this.clean(day);
+    const used = num((this.sql.exec("SELECT n FROM rl_cm WHERE day=? AND ih=?", day, ih).toArray()[0] || {}).n);
+    if (used >= 8) return { ok: 0, e: "limit" };
+    const mine = num((this.sql.exec("SELECT COUNT(*) c FROM comments WHERE slug=? AND vid=? AND ts>?", a.slug, a.vid, now - DAY_MS).toArray()[0] || {}).c);
+    if (mine >= 3) return { ok: 0, e: "limit" };
+    const total = num(this.sql.exec("SELECT COUNT(*) c FROM comments WHERE st='wait'").one().c);
+    if (total >= 5000) return { ok: 0, e: "busy" };
+    this.upsert("rl_cm", ["day", "ih"], [day, ih]);
+    const kind = a.kind === "q" ? "q" : "c";
+    const st = kind === "q" ? "inbox" : "wait";
+    this.sql.exec("INSERT INTO comments(slug,vid,nick,home,cc,lang,kind,body,ts,st,done) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
+      a.slug, a.vid, a.nick, a.home, a.cc, a.lang, kind, a.body, now, st, kind === "q" ? now : null);
+    return { ok: 1, st, list: this.commentList(a.slug, a.vid) };
+  }
+
+  commentList(slug, vid) {
+    const pub = this.sql.exec("SELECT id, nick, home, lang, shown, st, done FROM comments WHERE slug=? AND st IN ('ok','soft') ORDER BY done DESC LIMIT 100", slug).toArray()
+      .map((r) => ({ id: r.id, n: r.nick || "", h: r.home || "", l: r.lang || "", t: r.shown || "", soft: r.st === "soft" ? 1 : 0, at: r.done }));
+    const mine = vid ? this.sql.exec("SELECT id, kind, body, st, ts FROM comments WHERE slug=? AND vid=? ORDER BY ts DESC LIMIT 20", slug, vid).toArray()
+      .map((r) => ({ id: r.id, k: r.kind, t: r.body, st: r.st === "soft" ? "ok" : r.st === "no" ? "wait" : r.st === "err" ? "wait" : r.st, at: r.ts })) : [];
+    // 出さないと決めたものも、書いた人には「待っている」と見せる（何度も書き直してすり抜けようとさせない）
+    return { pub, mine, hold: 3 };
+  }
+
+  async comments(a) { return { ok: 1, ...this.commentList(a.slug, VID_RE.test(a.vid || "") ? a.vid : "") }; }
+
+  /* 3日たったコメントを AI が読む（1時間に1回、cron から） */
+  async moderate(force) {
+    const now = Date.now();
+    const due = this.sql.exec("SELECT id, slug, nick, lang, body FROM comments WHERE st IN ('wait','err') AND ts<? ORDER BY ts LIMIT 25",
+      force ? now : now - 3 * DAY_MS).toArray();
+    let n = 0;
+    for (const c of due) {
+      const d = await judge(this.env, c);
+      if (!d) { this.sql.exec("UPDATE comments SET st='err' WHERE id=?", c.id); continue; }
+      this.sql.exec("UPDATE comments SET st=?, shown=?, why=?, done=? WHERE id=?", d.st, d.text, d.why, now, c.id);
+      n++;
+    }
+    return { ok: 1, n, left: due.length - n };
+  }
+
+  /* ご主人の受け箱（合言葉つき） */
+  async admin(a) {
+    if (a.op === "list") {
+      const rows = this.sql.exec("SELECT id, slug, nick, home, cc, lang, kind, body, ts, st, shown, why, done, seen FROM comments ORDER BY ts DESC LIMIT 300").toArray();
+      return { ok: 1, rows };
+    }
+    const id = Number(a.id) || 0;
+    if (a.op === "seen") this.sql.exec("UPDATE comments SET seen=1 WHERE id=?", id);
+    else if (a.op === "hide") this.sql.exec("UPDATE comments SET st='no', why='ご主人が非表示にした', done=? WHERE id=?", Date.now(), id);
+    else if (a.op === "show") this.sql.exec("UPDATE comments SET st='ok', shown=COALESCE(shown, body), why='ご主人が公開した', done=? WHERE id=?", Date.now(), id);
+    else if (a.op === "delete") this.sql.exec("DELETE FROM comments WHERE id=?", id);
+    else if (a.op === "run") return this.moderate(true);
+    else return { ok: 0, e: "op" };
+    return { ok: 1 };
+  }
+}
+
+/* ───────── 🤖 AI がコメントを読む（Cloudflare Workers AI・無料枠） ───────── */
+const JUDGE_PROMPT = `You moderate reader comments on "15-second blog", a friendly personal blog written by Pengesso, a felt penguin, on behalf of his owner (a Japanese man).
+Read ONE comment and decide:
+- "publish": friendly or neutral, safe to show as written.
+- "soften": the idea is fine but the tone is rude, harsh, sarcastic or too strong. Rewrite it kindly in the SAME language as the comment, keeping the meaning and the writer's voice, max 2 sentences longer than needed. Never add new facts.
+- "owner": the comment is mainly a question or a request to the owner or Pengesso (e.g. "where is this cafe?", "please write about…", "can I contact you?"), or it shares personal details. Only the owner will read it.
+- "reject": spam, ads, links to sell something, sexual content, hate, threats, personal attacks, private information about any person, or anything that names or guesses the owner's employer, workplace or job details.
+Return JSON only: {"decision": "...", "text": "<the text to publish: same as the comment for publish, the kind rewrite for soften, empty otherwise>", "reason": "<short reason in Japanese>"}`;
+
+async function judge(env, c) {
+  if (/https?:\/\/|www\.|\.com\b|@[a-z0-9_]{3,}/i.test(c.body)) return { st: "inbox", text: null, why: "リンク・連絡先があるので、ご主人だけに" };
+  if (!env.AI) return null;
+  const schema = {
+    type: "object",
+    properties: { decision: { type: "string", enum: ["publish", "soften", "owner", "reject"] }, text: { type: "string" }, reason: { type: "string" } },
+    required: ["decision", "text", "reason"],
+  };
+  const messages = [
+    { role: "system", content: JUDGE_PROMPT },
+    { role: "user", content: "Post: " + c.slug + "\nComment (" + (c.lang || "?") + "):\n" + c.body },
+  ];
+  for (const model of ["@cf/meta/llama-3.3-70b-instruct-fp8-fast", "@cf/meta/llama-3.1-8b-instruct-fast"]) {
+    try {
+      const r = await env.AI.run(model, { messages, response_format: { type: "json_schema", json_schema: schema }, max_tokens: 600 });
+      let o = r && r.response;
+      if (typeof o === "string") o = JSON.parse(o.slice(o.indexOf("{"), o.lastIndexOf("}") + 1));
+      if (!o || !o.decision) continue;
+      const why = String(o.reason || "").slice(0, 200);
+      const text = String(o.text || "").trim().slice(0, 800);
+      if (o.decision === "publish") return { st: "ok", text: c.body, why };
+      if (o.decision === "soften" && text) return { st: "soft", text, why };
+      if (o.decision === "owner") return { st: "inbox", text: null, why };
+      if (o.decision === "reject") return { st: "no", text: null, why };
+    } catch (e) { /* 次のモデルで試す */ }
+  }
+  return null;
 }
 
 /* ───────── 入口（Worker）：CORS・入力の確認・国の取り出し ───────── */
@@ -259,7 +374,7 @@ export default {
     if (okOrigin) {
       base["Access-Control-Allow-Origin"] = origin;
       base["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS";
-      base["Access-Control-Allow-Headers"] = "content-type";
+      base["Access-Control-Allow-Headers"] = "content-type, x-admin-key";
       base["Access-Control-Max-Age"] = "86400";
     }
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: base });
@@ -295,10 +410,55 @@ export default {
         const r = path === "/v1/hit" ? await stub.hit(a) : path === "/v1/ping" ? await stub.ping(a) : await stub.like(a);
         return json(r, 200, { ...base, "Cache-Control": "no-store" });
       }
+      if (request.method === "GET" && path === "/v1/comments") {
+        const slug = url.searchParams.get("p") || "";
+        if (!SLUG_RE.test(slug)) return json({ ok: 0, e: "slug" }, 400, base);
+        const r = await stub.comments({ slug, vid: url.searchParams.get("v") || "" });
+        return json(r, 200, { ...base, "Cache-Control": "private, max-age=15" });
+      }
+      if (request.method === "POST" && path === "/v1/comment") {
+        if (!okOrigin) return json({ ok: 0, e: "origin" }, 403, base);
+        const raw = (await request.text()).slice(0, 6000);
+        let b = {};
+        try { b = JSON.parse(raw); } catch (e) { return json({ ok: 0, e: "json" }, 400, base); }
+        const slug = String(b.p || "");
+        if (!SLUG_RE.test(slug)) return json({ ok: 0, e: "slug" }, 400, base);
+        if (b.hp) return json({ ok: 1, st: "wait", list: { pub: [], mine: [], hold: 3 } }, 200, base);   // 🍯 ロボットの入れ物には、成功したふりだけ
+        const clean = (s, n) => String(s || "").replace(/[\u0000-\u0008\u000b-\u001f\u007f‪-‮⁦-⁩]/g, "").trim().slice(0, n);
+        const body = clean(b.t, 1000).replace(/\n{3,}/g, "\n\n");
+        if (body.length < 2) return json({ ok: 0, e: "short" }, 400, base);
+        const home = /^[A-Z]{2}$/.test(String(b.h || "")) ? String(b.h) : "";
+        const lang = typeof b.l === "string" && LANG_RE.test(b.l) ? b.l : "";
+        const r = await stub.commentAdd({ slug, vid: typeof b.v === "string" ? b.v : "", ua, ip, cc, nick: clean(b.n, 24), home, lang, kind: b.k === "q" ? "q" : "c", body });
+        return json(r, 200, { ...base, "Cache-Control": "no-store" });
+      }
+      if (path === "/v1/admin") {
+        const key = request.headers.get("x-admin-key") || "";
+        if (!env.ADMIN_KEY || key.length < 16 || !(await same(key, env.ADMIN_KEY))) return json({ ok: 0, e: "key" }, 403, { ...base, "Cache-Control": "no-store" });
+        let b = {};
+        if (request.method === "POST") { try { b = JSON.parse((await request.text()).slice(0, 2000)); } catch (e) { b = {}; } }
+        else b = { op: "list" };
+        const r = await stub.admin(b);
+        return json(r, 200, { ...base, "Cache-Control": "no-store" });
+      }
       return json({ ok: 0, e: "not found" }, 404, base);
     } catch (e) {
       // 保存先の上限などで失敗しても、読む人の画面は壊さない
       return json({ ok: 0, e: "busy" }, 200, { ...base, "Cache-Control": "no-store" });
     }
   },
+
+  // ⏰ 1時間に1回：3日たったコメントを AI が読む
+  async scheduled(event, env, ctx) {
+    const stub = env.STATS.get(env.STATS.idFromName("main"), { locationHint: "apac" });
+    ctx.waitUntil(stub.moderate(false));
+  },
 };
+
+// 合言葉を、かかった時間で当てられないようにくらべる
+async function same(a, b) {
+  const [x, y] = await Promise.all([sha("k|" + a), sha("k|" + b)]);
+  let d = 0;
+  for (let i = 0; i < x.length; i++) d |= x.charCodeAt(i) ^ y.charCodeAt(i);
+  return d === 0;
+}

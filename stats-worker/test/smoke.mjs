@@ -69,5 +69,20 @@ for (let i = 0; i < 90 && !limited; i++) {
   if (x.j.e === "limit") limited = true;
 }
 ok(limited, "同じ回線からのいいねの連打は止まる");
+
+// 💬 コメント：すぐには出ない・書いた人には「待っている」と見える・「ご主人へ」は受け箱へ・ロボットの入れ物は捨てる
+r = await call("POST", "/v1/comment", { p: slug, v: vid, n: "ぺん", h: "JP", l: "ja", t: "おもしろかったです！", k: "c" });
+ok(r.j.ok === 1 && r.j.st === "wait", "コメントは3日待ち");
+ok(r.j.list.pub.length === 0 && r.j.list.mine.length === 1 && r.j.list.mine[0].st === "wait", "みんなにはまだ見えない・自分には見える");
+r = await call("POST", "/v1/comment", { p: slug, v: vid, n: "ぺん", h: "JP", l: "ja", t: "このお店はどこですか？", k: "q" });
+ok(r.j.ok === 1 && r.j.st === "inbox", "ご主人への質問は受け箱へ");
+r = await call("POST", "/v1/comment", { p: slug, v: vid, t: "spam", hp: "x" });
+ok(r.j.ok === 1 && (await call("GET", "/v1/comments?p=" + slug + "&v=" + vid)).j.mine.length === 2, "ロボットの入れ物に入ったものは保存しない");
+r = await call("POST", "/v1/comment", { p: slug, v: vid, t: "x" });
+ok(r.j.ok === 0 && r.j.e === "short", "短すぎるものは受け取らない");
+r = await call("POST", "/v1/comment", { p: slug, v: vid, t: "hello" }, { origin: "https://evil.example" });
+ok(r.s === 403, "ほかのサイトからは書けない");
+r = await call("GET", "/v1/admin");
+ok(r.s === 403, "合言葉なしでは受け箱は見えない");
 console.log(fails ? `\n❌ ${fails} 件失敗` : "\n✅ ぜんぶ通りました");
 process.exit(fails ? 1 : 0);

@@ -556,24 +556,23 @@ Part に割るのは、**本人が「これは分けて」と言ったときだ�
 **2本目以降のいちばん上に `.prev` リンク（BEFORE THIS）を置いて**、
 前の記事へ戻れるようにしてください（§4）。
 
-## 1️⃣1️⃣ 画像は必ず base64 で埋め込む 📸
+## 1️⃣1️⃣ 写真は記事フォルダの img/ に置く 📸（2026-10-04 に変えた）
 
-**分岐なし。例外なし。この1択です。**
+前は「base64 で HTML に埋め込む」決まりでした。**iPhone で重かった**ので変えました
+（記事の重さの91%が埋め込みの写真で、写真を読み終わるまで本文の訳も動きも始まらなかった）。
 
-* 画像は必ず `data:image/jpeg;base64,...` として HTML に埋め込む
-* **相対パスも外部URLも使わない**（`assets/photo.jpg` も `https://...` も禁止）
-* 埋め込む前に必ず縮小する：**幅1200px以内・JPEG quality 70〜75**
-* 完成した `index.html` は通常 **1MB以内**。複数写真のフォトストーリーは **1.5MB以内**
-* `/Users/...` `/mnt/data/...` のような絶対パスを1つも残さない
-
-**あなたが数百KBのbase64を書き出せない場合**は、埋め込まずにこう書いてください。
+* 写真は `works/<slug>/img/<指紋>.jpg` に置き、HTML からは `src="img/…"` で指す。**外部URLは使わない**
+* HTML にはこう書くだけでいい。`python3 tools/embed.py <slug>` が **幅1400px・JPEG q84** に縮めて img/ に置き、src を書き換える
 
 ```html
 <img src="IMAGE:photo.jpg" alt="...">
 ```
 
 `photo.jpg` は `images/` に入っているファイル名です。
-`python3 tools/embed.py <slug>` が、縮小して base64 に置き換えます。
+* `<img>` には `width` `height` を付け、1枚目（表紙）以外は `loading="lazy"`（embed.py → `tools/unembed.py` が自動で付ける）
+* HTML＋写真の合計は通常 **1MB以内**。複数写真のフォトストーリーは **1.5MB以内**（`check.py` が見る）
+* 4KB 未満の小さな飾りだけは base64 のままでよい
+* `/Users/...` `/mnt/data/...` のような絶対パスを1つも残さない
 
 ---
 
@@ -871,7 +870,7 @@ gentle face, centered, soft light, soft focus
 ```
 
 ```bash
-python3 tools/thumbs.py <slug>   # 240px正方形に縮めて base64 で埋め込む
+python3 tools/thumbs.py <slug>   # 240px正方形に縮めて assets/thumbs/ に置く
 ```
 
 **動物 × 質感を直近3記事と変える**ルールは、サムネにもそのまま効きます。
@@ -978,7 +977,8 @@ font-family:
 
 ```
 works/<slug>/   （下書き段階では drafts/<slug>/）
-├── index.html     ← 公開物。base64込み・自己完結。通常1MB以内／複数写真フォトストーリー1.5MB以内
+├── index.html     ← 公開物。写真は img/ に別ファイル。HTML＋写真で通常1MB以内／複数写真フォトストーリー1.5MB以内
+├── img/           ← 記事の写真（tools/embed.py が置く。名前は中身の指紋）
 ├── source.md      ← 私が渡した日本語の素材（S番号つき）。次にAIへ渡すのはこっち
 ├── i18n/ja.json   ← 🌐 日本語で見る人向けの訳 {"title": "…", "text": {"英文": "訳"}}
 └── images/        ← 縮小する前の画像の原本
@@ -1023,7 +1023,7 @@ works/<slug>/   （下書き段階では drafts/<slug>/）
 □ 動きがあるか。prefers-reduced-motion のブロックが残っているか
 □ 本人がくれた写真を1枚残らず使ったか            ← 落とすのは禁止
 □ 生成画像を1枚作ったか（表紙。もらった写真とは別枠）
-□ 画像はすべて base64 で埋め込まれているか
+□ 写真はすべて img/ にあり、`python3 tools/check.py` が「見つからない画像」を出していないか
 □ 生成画像の「動物 × 質感」は直近3本と違うか。source.md に記録したか
 □ 相対パス・外部URL・絶対パスが1つも残っていないか
 □ index.html は通常1MB以内、複数写真フォトストーリーは1.5MB以内か

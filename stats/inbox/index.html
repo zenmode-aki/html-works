@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>受け箱 · ペンゲッソ</title>
+<link rel="icon" href="../../assets/pengesso/pengesso-01.jpg">
+<!-- 📮 ご主人の受け箱（2026-10-05）
+     ・読者がコメント欄で「ご主人だけに」を選んで書いたもの、AI が「ご主人への質問・お願い」と判断したものが届く
+     ・3日待ちのコメント・公開したもの・出さなかったものも、ここで全部見られる。ご主人の判断で、出す／隠す／消す
+     ・合言葉（ADMIN_KEY）がないと何も見えない。合言葉はリポジトリには書かない。
+       Mac のキーチェーン「pengesso-admin-key」に入っている（ターミナル：security find-generic-password -s pengesso-admin-key -w）
+     ・この端末に一度入れれば、次からは自動（localStorage） -->
+<style>
+  :root { --navy:#232c48; --purple:#8b6de8; --cream:#f6efe3; --paper:#fffdf8; --ink:#1b2138; --muted:#6d7593; --line:rgba(35,44,72,.10); }
+  html[data-theme="dark"] { --cream:#15161d; --paper:#22242f; --ink:#f4f0fa; --muted:#b3aac4; --line:rgba(255,255,255,.12); }
+  * { box-sizing:border-box; }
+  body { margin:0; color:var(--ink); background:var(--cream); font-weight:800; -webkit-font-smoothing:antialiased;
+    font-family:"Arial Rounded MT Bold","Avenir Next Rounded","Hiragino Maru Gothic ProN","Trebuchet MS",sans-serif; }
+  .wrap { width:min(760px, calc(100% - 32px)); margin:0 auto; padding:18px 0 60px; }
+  a { color:inherit; }
+  .back { display:inline-flex; padding:10px 16px; border-radius:999px; background:var(--paper); border:1.5px solid var(--line); text-decoration:none; font-size:14px; }
+  h1 { margin:18px 0 4px; font-size:28px; font-weight:900; }
+  .lead { margin:0 0 18px; color:var(--muted); font-size:14px; line-height:1.7; }
+  .key { display:grid; gap:10px; padding:20px; border-radius:22px; background:var(--paper); border:1.5px solid var(--line); }
+  .key input { min-height:48px; padding:10px 14px; border-radius:14px; border:1.5px solid var(--line); background:var(--cream); color:var(--ink); font:inherit; font-size:16px; }
+  button { font:inherit; cursor:pointer; }
+  .btn { min-height:44px; padding:8px 18px; border:0; border-radius:999px; background:var(--purple); color:#fff; font-weight:900; box-shadow:0 4px 0 #6a50c9; }
+  .btn.ghost { background:var(--paper); color:var(--ink); border:1.5px solid var(--line); box-shadow:none; }
+  .btn.small { min-height:36px; padding:6px 13px; font-size:13px; }
+  .btn.warn { background:#fff0f3; color:#b52a55; box-shadow:none; border:1.5px solid #f5c3d1; }
+  .tabs { display:flex; gap:6px; overflow-x:auto; margin:4px 0 14px; padding-bottom:4px; scrollbar-width:none; }
+  .tabs button { flex:none; min-height:42px; padding:8px 14px; border-radius:999px; border:1.5px solid var(--line); background:var(--paper); color:var(--ink); font-weight:900; }
+  .tabs button[aria-pressed="true"] { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .tabs b { margin-left:4px; padding:1px 7px; border-radius:999px; background:#ff6b8b; color:#fff; font-size:12px; }
+  .tools { display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:space-between; margin-bottom:12px; font-size:13px; color:var(--muted); }
+  .item { margin:0 0 12px; padding:16px; border-radius:20px; background:var(--paper); border:1.5px solid var(--line); }
+  .item.new { border-color:#ff9fb4; box-shadow:0 0 0 3px rgba(255,107,139,.12); }
+  .meta { display:flex; flex-wrap:wrap; gap:4px 10px; font-size:12.5px; color:var(--muted); }
+  .meta a { color:var(--purple); }
+  .body { margin:10px 0 0; font-size:16px; line-height:1.75; white-space:pre-wrap; overflow-wrap:anywhere; }
+  .shown { margin:10px 0 0; padding:10px 12px; border-radius:14px; background:#fff6dc; color:#6a4b00; font-size:14px; line-height:1.7; white-space:pre-wrap; }
+  .why { margin:8px 0 0; font-size:12.5px; color:var(--muted); }
+  .acts { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .empty { padding:30px 16px; text-align:center; color:var(--muted); border-radius:20px; background:var(--paper); }
+  .msg { margin:10px 0; font-size:14px; color:#b52a55; }
+  html[data-theme="dark"] .shown { background:#3a3010; color:#ffe2a0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../">← 数字のページ</a>
+  <h1>📮 受け箱</h1>
+  <p class="lead">読者からの「ご主人だけに」のメッセージと、コメントぜんぶ。コメントは3日待ってから AI が読んで、そのまま出す・やさしく言い換えて出す・ここに回す・出さない、を決めます。</p>
+  <div id="app"></div>
+</div>
+<script>
+(function () {
+  var KEY = 'pengesso-admin-key';
+  var app = document.getElementById('app');
+  var endpoint = '', key = '', rows = [], tab = 'inbox';
+  function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function put(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function flag(cc) { return /^[A-Z]{2}$/.test(cc || '') ? String.fromCodePoint(0x1F1E6 + cc.charCodeAt(0) - 65, 0x1F1E6 + cc.charCodeAt(1) - 65) : ''; }
+  var rn = null; try { rn = new Intl.DisplayNames(['ja'], { type: 'region' }); } catch (e) {}
+  var ln = null; try { ln = new Intl.DisplayNames(['ja'], { type: 'language' }); } catch (e) {}
+  function cname(c) { try { return rn ? rn.of(c) : c; } catch (e) { return c; } }
+  function lname(l) { try { return ln ? ln.of(l) : l; } catch (e) { return l; } }
+  function when(ms) { var d = new Date(ms); return (d.getMonth() + 1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0'); }
+
+  function call(method, body) {
+    return fetch(endpoint + '/v1/admin', { method: method, headers: Object.assign({ 'x-admin-key': key }, body ? { 'content-type': 'application/json' } : {}),
+      body: body ? JSON.stringify(body) : undefined, credentials: 'omit', cache: 'no-store' }).then(function (r) { return r.json(); });
+  }
+
+  function askKey(msg) {
+    app.innerHTML = '<form class="key"><b>合言葉を入れてください</b>' +
+      '<span style="font-size:13px;color:var(--muted);line-height:1.7">Mac のキーチェーンアクセスで「pengesso-admin-key」を探すか、ターミナルで <code>security find-generic-password -s pengesso-admin-key -w</code>。この端末に一度入れれば、次からは自動です。</span>' +
+      '<input type="password" autocomplete="current-password" placeholder="合言葉">' + (msg ? '<p class="msg">' + esc(msg) + '</p>' : '') +
+      '<button class="btn" type="submit">ひらく</button></form>';
+    app.querySelector('form').addEventListener('submit', function (e) {
+      e.preventDefault(); key = app.querySelector('input').value.trim(); load(true);
+    });
+  }
+
+  var TABS = [['inbox', '📮 ご主人へ'], ['wait', '⏳ 3日待ち'], ['pub', '✅ 公開中'], ['no', '🚫 出さなかった'], ['all', 'ぜんぶ']];
+  function inTab(r) {
+    if (tab === 'all') return true;
+    if (tab === 'inbox') return r.st === 'inbox';
+    if (tab === 'wait') return r.st === 'wait' || r.st === 'err';
+    if (tab === 'pub') return r.st === 'ok' || r.st === 'soft';
+    return r.st === 'no';
+  }
+  function draw() {
+    var unseen = rows.filter(function (r) { return r.st === 'inbox' && !r.seen; }).length;
+    var html = '<div class="tabs">' + TABS.map(function (t) {
+      var n = rows.filter(function (r) { var o = tab; tab = t[0]; var x = inTab(r); tab = o; return x; }).length;
+      return '<button type="button" data-t="' + t[0] + '" aria-pressed="' + (tab === t[0]) + '">' + t[1] + ' ' + n + (t[0] === 'inbox' && unseen ? '<b>' + unseen + '</b>' : '') + '</button>';
+    }).join('') + '</div>';
+    html += '<div class="tools"><span>コメントは1時間に1回、3日たったものを AI が読みます。</span><span><button class="btn ghost small" data-op="reload">↻ 読み直す</button> <button class="btn ghost small" data-op="run">🤖 いますぐ AI に読ませる</button></span></div>';
+    var list = rows.filter(inTab);
+    if (!list.length) html += '<div class="empty">ここには、まだ何もありません 🐧</div>';
+    html += list.map(function (r) {
+      var st = { wait: '⏳ 3日待ち', err: '⏳ AI が読めなかった（また試す）', ok: '✅ そのまま公開', soft: '🪄 言い換えて公開', inbox: '📮 ご主人へ', no: '🚫 出さない' }[r.st] || r.st;
+      var meta = '<span>' + st + '</span><span>' + when(r.ts) + '</span><a href="/works/' + esc(r.slug) + '/" target="_blank" rel="noopener">' + esc(r.slug) + '</a>' +
+        '<span>' + esc(r.nick || '名無し') + '</span>' + (r.home ? '<span>' + flag(r.home) + ' ' + esc(cname(r.home)) + ' に住んでいる</span>' : '') +
+        (r.cc && r.cc !== 'ZZ' ? '<span>（いま ' + flag(r.cc) + ' から）</span>' : '') + (r.lang ? '<span>' + esc(lname(r.lang)) + 'で読んでいる</span>' : '') +
+        (r.kind === 'q' ? '<span>本人が「ご主人だけに」を選んだ</span>' : '');
+      var acts = '';
+      if (r.st === 'inbox' && !r.seen) acts += '<button class="btn small" data-op="seen" data-id="' + r.id + '">読んだ</button>';
+      if (r.st !== 'ok' && r.st !== 'soft' && r.kind !== 'q') acts += '<button class="btn ghost small" data-op="show" data-id="' + r.id + '">そのまま公開する</button>';
+      if (r.st === 'ok' || r.st === 'soft' || r.st === 'wait' || r.st === 'err') acts += '<button class="btn ghost small" data-op="hide" data-id="' + r.id + '">出さない</button>';
+      acts += '<button class="btn warn small" data-op="delete" data-id="' + r.id + '">消す</button>';
+      return '<div class="item' + (r.st === 'inbox' && !r.seen ? ' new' : '') + '"><div class="meta">' + meta + '</div><p class="body">' + esc(r.body) + '</p>' +
+        (r.st === 'soft' && r.shown ? '<p class="shown">🪄 公開した文：' + esc(r.shown) + '</p>' : '') +
+        (r.why ? '<p class="why">AI のメモ：' + esc(r.why) + '</p>' : '') + '<div class="acts">' + acts + '</div></div>';
+    }).join('');
+    html += '<p style="margin-top:24px;text-align:center"><button class="btn ghost small" data-op="logout">この端末から合言葉を消す</button></p>';
+    app.innerHTML = html;
+  }
+  app.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.t) { tab = b.dataset.t; draw(); return; }
+    var op = b.dataset.op; if (!op) return;
+    if (op === 'reload') return load();
+    if (op === 'logout') { put(KEY, null); key = ''; askKey(); return; }
+    if (op === 'delete' && !confirm('このコメントを消します。もとに戻せません。いいですか？')) return;
+    if (op === 'run' && !confirm('3日待っていないものも含めて、待っているコメントをいますぐ AI に読ませます。')) return;
+    b.disabled = true;
+    call('POST', { op: op, id: +b.dataset.id || 0 }).then(function (r) {
+      if (op === 'run' && r && r.ok) alert('AI が ' + r.n + '件 読みました' + (r.left ? '（' + r.left + '件は、AI が読めませんでした。あとでまた試します）' : ''));
+      load();
+    }).catch(function () { b.disabled = false; alert('うまくいきませんでした'); });
+  });
+
+  function load(first) {
+    if (!key) return askKey();
+    call('GET').then(function (r) {
+      if (!r || !r.ok) { put(KEY, null); askKey(r && r.e === 'key' ? '合言葉がちがいます' : 'うまく読めませんでした'); return; }
+      put(KEY, key); rows = r.rows || [];
+      if (first && !rows.some(function (x) { return x.st === 'inbox'; })) tab = 'all';
+      draw();
+    }).catch(function () { askKey('つながりませんでした。少したってから、もう一度どうぞ。'); });
+  }
+
+  fetch('../../assets/stats-config.json', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (c) {
+    endpoint = String(c.endpoint || '').replace(/\/+$/, '');
+    var q = new URLSearchParams(location.search).get('api');
+    if (q && /^(localhost|127\.0\.0\.1)$/.test(location.hostname)) endpoint = q;
+    key = get(KEY) || '';
+    load(true);
+  }).catch(function () { app.innerHTML = '<div class="empty">設定が読めませんでした</div>'; });
+})();
+</script>
+</body>
+</html>

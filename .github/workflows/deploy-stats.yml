@@ -41,6 +41,11 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: stats-worker
           command: deploy
+          # 🔑 ご主人の受け箱の合言葉（GitHub の secret から。リポジトリには書かない）
+          secrets: |
+            ADMIN_KEY
+        env:
+          ADMIN_KEY: ${{ secrets.PENGESSO_ADMIN_KEY }}
 
       - name: つなぎ先の URL と動作確認
         if: steps.key.outputs.has == 'yes'

@@ -324,10 +324,24 @@ def px_src():
     global _PX_SRC
     if _PX_SRC is None:
         js = minify(PX.read_text(encoding="utf-8")) + "\n"
+        js = js.replace("__CM_SRC__", cm_src())
         if not PX_OUT.exists() or PX_OUT.read_text(encoding="utf-8") != js:
             PX_OUT.write_text(js, encoding="utf-8")
         _PX_SRC = "/assets/px.js?v=" + hashlib.sha1(js.encode()).hexdigest()[:10]
     return _PX_SRC
+
+
+CM = ROOT / "tools" / "comments_runtime.js"
+CM_OUT = ROOT / "assets" / "comments.js"
+
+
+def cm_src():
+    """💬 コメント（2026-10-05）。px.js が、記事のいちばん下に近づいたときだけ読む。
+    中身が変わると ?v= が変わり、px.js の中の URL も変わる"""
+    js = minify(CM.read_text(encoding="utf-8")) + "\n"
+    if not CM_OUT.exists() or CM_OUT.read_text(encoding="utf-8") != js:
+        CM_OUT.write_text(js, encoding="utf-8")
+    return "/assets/comments.js?v=" + hashlib.sha1(js.encode()).hexdigest()[:10]
 
 
 PHRASE = ROOT / "tools" / "ja_phrase.js"

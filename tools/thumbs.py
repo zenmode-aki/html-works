@@ -16,7 +16,7 @@
 ⚠️ base64 で index.html に埋め込むのはやめました。
    トップページを 2つのAI（Claude と ChatGPT/Codex）が触るので、
    244KB の base64 を含む HTML だと衝突が直せなくなるためです。
-   記事（works/*/index.html）の中の画像は、いままで通り base64 のままです。
+   記事（works/*/index.html）の写真も、2026-10-04 から記事フォルダの img/ に別ファイルで置いています。
 
 macOS の sips を使うのでローカル専用。GitHub Actions では走らせません。
 """
