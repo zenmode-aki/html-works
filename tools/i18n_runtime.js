@@ -733,7 +733,7 @@
 
   /* ── 📚 勉強モード（2026-10-03 本人の要望）────────────────────────
      記事の言語ボタンの下に「勉強バー」を出す。
-       英語以外で読むとき … 🇬🇧 英語も見る（訳した文のすぐ下に、もとの英文）
+       英語以外で読むとき … 🇬🇧 英語の勉強をする（訳した文のすぐ下に、もとの英文）
        英語で読むとき     … 🌏 ほかの言語も見る（英文の下に、日本語・韓国語などの訳。言語は選べる）
        ○○の濃さ          … いま読んでいる言語の文を薄くして、下の言語に集中できる
        💻 IT用語で言うと   … works/<slug>/it.<lang>.json がある記事だけ。AIが文を強引に IT の言葉で言い換えたもの
@@ -744,7 +744,7 @@
   var LEARN_KEY = 'pengesso-learn', NATIVE_KEY = 'pengesso-native-alpha', IT_KEY = 'pengesso-it', GCP_KEY = 'pengesso-gcp',
       STUDY_TIP_KEY = 'pengesso-study-tip', SUB_KEY = 'pengesso-learn-lang';
   var STUDY_WORDS = {
-    ja: { en: '英語も見る', say: '英語を聞く', it: 'IT用語で言うと', gcp: 'Google Cloud で言うと', dim: '日本語の濃さ',
+    ja: { en: '英語の勉強をする', say: '英語を聞く', it: 'IT用語で言うと', gcp: 'Google Cloud で言うと', dim: '日本語の濃さ',
           net: 'ネットワークで言うと', srv: 'サーバーで言うと', sec: 'セキュリティで言うと', biz: 'ビジネス横文字で言うと',
           tips: ['英語の勉強も、いっしょにしますか？ 🇬🇧 をオンにすると、日本語のすぐ下に英語が出ます',
                  'IT業界の人ですか？ 飼い主もIT用語を勉強中。💻 をオンにすると、日記がめちゃくちゃ強引にIT用語に言い換わります'],
@@ -752,20 +752,20 @@
           about: '🐧 飼い主は、英語の勉強を続けたいと思っています。そして、IT企業で働いていてテクノロジーが好きなので、IT用語もついでに覚えたいと思っています。' +
                  'だから、このブログには小さな勉強モードが2つあります。🇬🇧 をオンにすると、日本語のすぐ下にもとの英文が出ます（日本語を薄くすると、英語に集中できます）。' +
                  '💻 をオンにすると、AIが日記をめちゃくちゃ強引に IT用語に言い換えます。英語やIT用語に、ふわっとさわってみたい人は、よかったらどうぞ。' },
-    ko: { en: '영어도 보기', say: '영어 듣기', dim: '한국어 진하기',
+    ko: { en: '영어 공부하기', say: '영어 듣기', dim: '한국어 진하기',
           net: '네트워크로 말하면', srv: '서버로 말하면', sec: '보안으로 말하면', biz: '비즈니스 용어로 말하면',
           itNote: '🤖 AI가 아주 억지로 각 분야의 말로 바꿔 말하고 있어요(베타). 약어는 풀어서 써요',
           tips: ['영어 공부도 같이 할까요? 🇬🇧 를 켜면 한국어 바로 아래에 영어가 나와요'],
           about: '🐧 주인은 영어 공부를 계속하고 싶어 합니다. 그리고 IT 회사에서 일하고 기술을 좋아해서, IT 용어도 같이 배우고 싶어 합니다. ' +
                  '그래서 이 블로그에는 작은 공부 모드가 있습니다. 🇬🇧 를 켜면 한국어 바로 아래에 원래 영어 문장이 나옵니다. 한국어를 연하게 하면 영어에 집중할 수 있어요.' },
-    zh: { en: '同时看英文', say: '听英文', dim: '中文的浓淡',
+    zh: { en: '学英语', say: '听英文', dim: '中文的浓淡',
           tips: ['要不要顺便学英语？打开 🇬🇧，中文下面就会出现英文'],
           about: '🐧 主人想继续学习英语。主人也在IT公司工作，喜欢科技，所以也想顺便学一些IT用语。所以这个博客有小小的学习模式。打开 🇬🇧，中文下面就会出现原来的英文。把中文调淡，就能专心看英文。' },
-    'zh-Hant': { en: '同時看英文', say: '聽英文', dim: '中文的濃淡',
+    'zh-Hant': { en: '學英語', say: '聽英文', dim: '中文的濃淡',
           tips: ['要不要順便學英文？打開 🇬🇧，中文下面就會出現英文'],
           about: '🐧 主人想繼續學習英文。主人也在IT公司工作，喜歡科技，所以也想順便學一些IT用語。所以這個部落格有小小的學習模式。打開 🇬🇧，中文下面就會出現原來的英文。把中文調淡，就能專心看英文。' }
   };
-  var STUDY_DEFAULT = { en: 'English too', say: 'Listen', dim: 'My language',
+  var STUDY_DEFAULT = { en: 'Study English', say: 'Listen', dim: 'My language',
     tips: ['Learning English too? Turn on 🇬🇧 to see the English under each sentence'],
     about: '🐧 Pengesso’s owner wants to keep studying English, and also works at an IT company and loves technology. ' +
            'So this blog has small study modes. Turn on 🇬🇧 to see the original English under each sentence. Make your language lighter to focus on the English.' };
