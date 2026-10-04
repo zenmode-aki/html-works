@@ -313,10 +313,28 @@ def runtime_src():
     return _RUNTIME_SRC
 
 
+PX = ROOT / "tools" / "px_runtime.js"
+PX_OUT = ROOT / "assets" / "px.js"
+_PX_SRC = None
+
+
+def px_src():
+    """📊 数える・いいね・世界の読者（2026-10-04）。切り替えの本体と同じしくみで、全ページ共通の1ファイル。
+    つなぎ先（集計係の URL）は assets/stats-config.json に書く。ページには入れない"""
+    global _PX_SRC
+    if _PX_SRC is None:
+        js = minify(PX.read_text(encoding="utf-8")) + "\n"
+        if not PX_OUT.exists() or PX_OUT.read_text(encoding="utf-8") != js:
+            PX_OUT.write_text(js, encoding="utf-8")
+        _PX_SRC = "/assets/px.js?v=" + hashlib.sha1(js.encode()).hexdigest()[:10]
+    return _PX_SRC
+
+
 def block(data):
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
     return (f"{START}\n<script type=\"application/json\" id=\"i18n-data\">{payload}</script>\n"
-            f"<script src=\"{runtime_src()}\"></script>\n{END}\n")
+            f"<script src=\"{runtime_src()}\"></script>\n"
+            f"<script src=\"{px_src()}\" defer></script>\n{END}\n")
 
 
 def inject(path, data):

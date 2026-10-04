@@ -1,0 +1,51 @@
+# 📊 集計係（閲覧数・いいね）を Cloudflare Workers に自動で公開する。
+#
+# stats-worker/ を直して main に push すると、ここが動く。
+# 合鍵（CLOUDFLARE_API_TOKEN）をまだ GitHub に登録していないときは、何もせずに終わる（赤くしない）。
+# つなぎかたは stats-worker/README.md（スマホで読める手順）
+
+name: deploy-stats
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "stats-worker/**"
+      - ".github/workflows/deploy-stats.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 合鍵が登録されているか
+        id: key
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then
+            echo "has=no" >> "$GITHUB_OUTPUT"
+            echo "⏸ CLOUDFLARE_API_TOKEN がまだありません。公開は、合鍵を登録してからです（stats-worker/README.md）"
+          else
+            echo "has=yes" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 集計係を公開する
+        id: deploy
+        if: steps.key.outputs.has == 'yes'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: stats-worker
+          command: deploy
+
+      - name: つなぎ先の URL と動作確認
+        if: steps.key.outputs.has == 'yes'
+        env:
+          URL: ${{ steps.deploy.outputs.deployment-url }}
+        run: |
+          echo "つなぎ先（assets/stats-config.json の endpoint に入れる）: $URL"
+          if [ -n "$URL" ]; then curl -fsS "$URL/v1/health" && echo; fi

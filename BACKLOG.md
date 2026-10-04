@@ -13,6 +13,13 @@
 > 例：「ちなみに、まだ残っているのは ① 韓国の記事 ② マレーシアの続き（予約の話）です」
 > 脱線しそうなときも、ここに戻してあげる。終わったものはこのファイルから消し、新しく出たものは足す。
 
+## 📊 数える・いいね（2026-10-04）
+
+- ⏳ **本人の作業（約10分）**：Cloudflare の無料アカウント → API トークン → GitHub に `CLOUDFLARE_API_TOKEN` と `CLOUDFLARE_ACCOUNT_ID` を登録 → Actions で deploy-stats を実行。手順は `stats-worker/README.md`。終わったら URL を Claude に伝える（`assets/stats-config.json` に入れる）
+- 自分のスマホ・パソコンで、それぞれ1回 `https://15-second-blog.com/?count=off` を開く（自分のアクセスを数えないため）
+- 数字は `?pxdemo=1` で見た目だけ先に確認できる（「サンプル」と出る）
+- 残りの優先9言語（es fr pt ru id hi ar bn ur）の言葉は、新しい画面の言葉がまとまってから訳す
+
 ---
 
 ## 🔥 いちばん先に書きたい

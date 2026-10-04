@@ -1,0 +1,21 @@
+# 📊 ペンゲッソの集計係（閲覧数・いいね・国・いま読んでいる人）
+# 置き場所：Cloudflare Workers の無料プラン。保存は Durable Object の SQLite（こちらも無料枠で使える）
+# 公開のしかた：GitHub に push すると .github/workflows/deploy-stats.yml が自動で公開する（手順は README.md）
+name = "pengesso-stats"
+main = "src/index.js"
+compatibility_date = "2025-10-01"
+workers_dev = true
+
+[vars]
+# この場所から来たブラウザだけ、書き込める（数える・いいねする）
+ALLOWED_ORIGINS = "https://15-second-blog.com,https://www.15-second-blog.com"
+# 「1日」の区切り。日本時間の0時（本人が日本にいるので、「今日」が朝9時に変わらないように）
+SITE_TZ_HOURS = "9"
+
+[[durable_objects.bindings]]
+name = "STATS"
+class_name = "Stats"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Stats"]
