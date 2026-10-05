@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow" /><!-- 📝 draft -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stand tall in 2 seconds: breathe in, pull in your chin, and smile</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（2026-10-05）。真面目な話 → ポップに（トーン反転）。空色とおひさま色。1→2→3を2秒で押すポーズ・ゲーム */
+  :root {
+    --bg: #f1f8ff;
+    --bg1: rgba(47,128,255,.20);
+    --bg2: rgba(255,196,0,.30);
+    --bg3: rgba(32,197,255,.16);
+    --text: #1f2a3d;
+    --muted: #66758c;
+    --a: #1f6fe0;
+    --h1: #14264a;
+    --big: #1d5bcc;
+    --soft: #dcecff;
+    --goodbg: #fff2c2;
+    --goodtx: #6b4b00;
+    --game: linear-gradient(155deg, #2f80ff 0%, #22b5ff 60%, #ffc21a 135%);
+    --shadow: 0 20px 55px rgba(40,90,170,.16);
+    --card: rgba(255,255,255,.95);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text); font-weight: 700;
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, var(--bg1), transparent 26%),
+      radial-gradient(circle at 92% 18%, var(--bg2), transparent 28%),
+      radial-gradient(circle at 50% 100%, var(--bg3), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--a);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(60,50,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,50,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,50,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--a); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--a); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: var(--h1); font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: var(--soft); border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,50,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--a); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-weight: 700; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; }
+  p + p { margin-top: 10px; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 900; line-height: 1.42; color: var(--big);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* 比べる札 */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 14px 12px; border-radius: 20px; text-align: center; font-weight: 900; font-size: 15px; line-height: 1.4; }
+  .vs .bad { background: #f1eef3; color: #7d7688; }
+  .vs .good { background: var(--goodbg); color: var(--goodtx); }
+  .vs b { display: block; font-size: 30px; margin-bottom: 4px; }
+
+  /* ════ ⚡ 触って遊べる部品（共通の入れ物）════
+     文字はぜんぶ HTML に置いて、JS は class・data-*・数字・絵文字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: var(--game); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .gbtn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 52px; padding: 12px 20px;
+    border: 0; border-radius: 999px; font: inherit; font-size: 17px; font-weight: 900; line-height: 1.25; color: #2a2238; background: #fff;
+    box-shadow: 0 6px 0 rgba(0,0,0,.18), 0 12px 22px rgba(0,0,0,.14); cursor: pointer;
+    transition: transform .08s ease, box-shadow .08s ease, opacity .2s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .gbtn:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.18), 0 4px 10px rgba(0,0,0,.14); }
+  .gbtn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .gbtn:disabled { opacity: .45; cursor: default; }
+  .gbtn.reset { margin-top: 16px; min-height: 48px; font-size: 15px; color: #fff; background: rgba(255,255,255,.16);
+    border: 2px solid rgba(255,255,255,.6); box-shadow: none; }
+  .gmeter { position: relative; height: 16px; margin: 10px auto 0; max-width: 360px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .gmeter i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; background: #fff; transition: width .5s cubic-bezier(.2,1.2,.4,1); }
+  .gmeter-name { margin-top: 14px; font-size: 13px; font-weight: 900; letter-spacing: .08em; opacity: .95; }
+  .msg { margin-top: 14px; min-height: 52px; font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .msg > div { display: none; }
+  @keyframes g-pop { 0% { transform: scale(.6); opacity: 0; } 70% { transform: scale(1.08); opacity: 1; } 100% { transform: none; } }
+  @keyframes g-shake { 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+  @keyframes g-hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-16px); } }
+  @keyframes g-pulse { 0%, 100% { box-shadow: 0 6px 0 rgba(0,0,0,.18), 0 0 0 0 rgba(255,255,255,.75); } 50% { box-shadow: 0 6px 0 rgba(0,0,0,.18), 0 0 0 9px rgba(255,255,255,0); } }
+  /* 🐧 2秒のポーズ：① 息を吸う → ② あごを引く → ③ 微笑む の順に押す。③を飛ばすと偉そうに見える */
+  .hint-top { margin-top: 6px; font-size: 15px; font-weight: 800; opacity: .95; }
+  .arena { position: relative; height: 180px; display: grid; place-items: center; margin: 14px auto 8px; max-width: 320px;
+    border-radius: 26px; background: rgba(255,255,255,.16); overflow: hidden; transition: background .4s ease; }
+  .aura { position: absolute; left: 50%; top: 50%; width: 260px; height: 260px; margin: -130px 0 0 -130px; border-radius: 50%; opacity: 0;
+    background: repeating-conic-gradient(rgba(255,255,255,.42) 0 12deg, rgba(255,255,255,0) 12deg 30deg); transition: opacity .4s ease; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .pose[data-r="gold"] .aura, .pose[data-r="ok"] .aura { opacity: 1; animation: spin 9s linear infinite; }
+  .pose[data-r="bossy"] .arena { background: rgba(40,30,70,.38); }
+  .pg { position: relative; display: inline-block; transform: rotate(10deg) translateY(14px) scale(.88);
+    transition: transform .4s cubic-bezier(.2,1.5,.4,1); }
+  .pose[data-step="1"] .pg { transform: rotate(4deg) translateY(-2px) scale(1.04); }
+  .pose[data-step="2"] .pg, .pose[data-r="bossy"] .pg { transform: rotate(0) translateY(-8px) scale(1.08); }
+  .pose[data-step="3"] .pg { transform: rotate(0) translateY(-10px) scale(1.14); }
+  .pg-body { display: block; font-size: 96px; line-height: 1; }
+  .face { position: absolute; top: -12px; right: -34px; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%;
+    background: #fff; font-size: 28px; line-height: 1; box-shadow: 0 6px 14px rgba(0,0,0,.16); }
+  .pose[data-step="1"] .face, .pose[data-step="2"] .face, .pose[data-step="3"] .face { animation: g-pop .4s ease both; }
+  .puff, .chin, .cloud { position: absolute; font-size: 32px; line-height: 1; opacity: 0; }
+  .puff { left: 16%; top: 46%; }
+  .chin { right: 14%; bottom: 18%; }
+  .cloud { left: 50%; top: 8px; margin-left: -18px; }
+  @keyframes puff { 0% { opacity: 0; transform: translateX(14px) scale(.6); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateX(-26px) scale(1.3); } }
+  .pose[data-step="1"] .puff { animation: puff 1s ease-out both; }
+  .pose[data-step="2"][data-r=""] .chin { opacity: 1; animation: g-hop .7s ease-in-out 2; }
+  .pose[data-r="bossy"] .cloud { opacity: 1; animation: g-shake .5s ease 2; }
+
+  .clock { display: flex; align-items: baseline; justify-content: center; gap: 10px; font-weight: 900; }
+  .clock .t { font-size: clamp(40px, 11vw, 56px); line-height: 1; letter-spacing: -.03em; }
+  .clock small { font-size: 16px; }
+  .clock .goal { font-size: 14px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.22); }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 440px; margin: 14px auto 0; }
+  .stepbtn { display: grid; justify-items: center; align-content: center; gap: 4px; min-height: 92px; padding: 10px 4px; border: 0; border-radius: 22px;
+    background: #fff; color: #183264; font: inherit; font-size: 14.5px; font-weight: 900; line-height: 1.25; cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0,0,0,.18); transition: transform .08s ease, background .2s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .stepbtn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.18); }
+  .stepbtn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .stepbtn .no { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: #1f6fe0; color: #fff; font-size: 16px; }
+  .pose[data-r=""][data-step="0"] .stepbtn[data-k="1"], .pose[data-r=""][data-step="1"] .stepbtn[data-k="2"], .pose[data-r=""][data-step="2"] .stepbtn[data-k="3"] {
+    background: #fff6c9; animation: g-pulse 1.2s ease-in-out infinite; }
+  .stepbtn.done { background: #d8fbe9; color: #0d5a37; }
+  .stepbtn.done .no { background: #1db87a; }
+  .stepbtn.nope { animation: g-shake .4s ease; }
+  .pose[data-r="bossy"] .stepbtn[data-k="3"] { opacity: .45; }
+
+  .gbtn.skip { display: none; margin-top: 10px; min-height: 48px; font-size: 15px; color: #fff; background: rgba(30,25,60,.32); box-shadow: none; }
+  .pose[data-step="2"][data-r=""] .gbtn.skip { display: inline-flex; }
+
+  .pose:not([data-oops="1"])[data-r=""][data-step="0"] .m-hint,
+  .pose:not([data-oops="1"])[data-r=""]:not([data-step="0"]) .m-go,
+  .pose[data-oops="1"][data-r=""] .m-oops,
+  .pose[data-r="gold"] .m-gold, .pose[data-r="ok"] .m-ok, .pose[data-r="bossy"] .m-bossy { display: block; }
+  .pose[data-r="gold"] .msg > div, .pose[data-r="ok"] .msg > div, .pose[data-r="bossy"] .msg > div { animation: g-pop .45s ease both; }
+  .best { margin-top: 8px; font-size: 13.5px; font-weight: 900; opacity: .92; }
+  .best[hidden] { display: none; }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding-left: 12px; padding-right: 12px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .photo { background: #2a2c38; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] .vs .bad { background: #2c2e3b; color: #b8b0c6; }
+  html[data-theme="dark"] .gbtn:not(.reset) { background: #f0ecf6; }
+  html[data-theme="dark"] .big { color: #9cc2ff; }
+  html[data-theme="dark"] .vs .good { background: #4a3c12; color: #ffe39a; }
+  html[data-theme="dark"] .face { background: #eef2f8; }
+  html[data-theme="dark"] .stepbtn { background: #eef2f8; }
+  html[data-theme="dark"] .stepbtn.done { background: #c9f0dc; }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="draft-css">
+  /* 📝 下書きの印（tools/draft.py）。本番に出すと消える */
+  .draft-ribbon { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 14px;
+    padding: 9px 14px; border-radius: 14px; background: repeating-linear-gradient(135deg, #fff4c2 0 14px, #ffeaa0 14px 28px);
+    color: #5b4300; font-size: 13.5px; font-weight: 900; letter-spacing: .02em; text-align: center; }
+  .draft-ribbon a { color: inherit; }
+  .stage-draft { background: #ffd54a !important; color: #4a3500 !important; }
+  /* 2026-09-30 幅390pxで「戻る」「○ words」「DRAFT」が6pxはみ出していた → 札を少し詰めて、それでも入らなければ折り返す */
+  @media (max-width: 600px) { .topbar { flex-wrap: wrap; row-gap: 8px; } .stage-draft { padding-inline: 8px !important; letter-spacing: .04em !important; } }
+  .draft-nav { display: grid; gap: 12px; margin-top: 26px; }
+  .draft-next { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-radius: 22px;
+    text-decoration: none; color: #3a2d00; background: #fff1b8; border: 2px dashed rgba(120,90,0,.35); font-weight: 900; }
+  .draft-next small { display: block; font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .draft-next span.t { display: block; font-size: 17px; line-height: 1.4; }
+  .draft-next small.en { margin-top: 4px; letter-spacing: 0; font-weight: 700; }
+  .draft-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .draft-prod { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
+  html[data-theme="dark"] .draft-next { background: #3a3320; color: #ffe9a8; border-color: rgba(255,233,168,.3); }
+  html[data-theme="dark"] .draft-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"b585c1a85f"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=f52e91ee86"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+  <!-- 📝 draft-ribbon:start（tools/draft.py） -->
+  <div class="draft-ribbon" translate="no">📝 DRAFT · 下書き — まだ本番に出していません · <a href="../index.html">下書き一覧</a></div>
+  <!-- 📝 draft-ribbon:end -->
+  <div class="topbar">
+    <a class="home" href="../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 41 words · 14 sec</div>
+      <div class="stage stage-draft">DRAFT</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 14 SEC</div>
+  <h1>Stand tall in 2 seconds: breathe in, pull in your chin, and smile <span class="float">🐧</span></h1>
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1168" height="880" src="img/bb57daa2e1f7.jpg" alt="A felted wool penguin standing tall beside a wooden height measuring stick" />
+  </figure>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">⏱️</span>
+      <span class="card-label">2 Seconds</span>
+    </div>
+    <p>It seems you can make a confident pose in 2 seconds.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌬️</span>
+      <span class="card-label">First Two Steps</span>
+    </div>
+    <p>First, take a big breath in.</p>
+    <p>Next, pull in your chin a little.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🙂</span>
+      <span class="card-label">The Last Step</span>
+    </div>
+    <p>Last, smile a little.</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：2秒のポーズ -->
+  <section class="game pose" data-step="0" data-r="" data-oops="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The 2-second pose</div>
+    <div class="arena" aria-hidden="true">
+      <div class="aura"></div>
+      <div class="puff">💨</div>
+      <div class="cloud">💢</div>
+      <div class="chin">⬇️</div>
+      <div class="pg"><span class="pg-body">🐧</span><span class="face">😔</span></div>
+    </div>
+    <div class="clock"><span class="t">0.00</span><small>sec</small><span class="goal">🎯 2.00</span></div>
+    <div class="steps">
+      <button class="stepbtn" data-k="1" type="button"><span class="no">1</span><span class="sl">🌬️ Breathe in</span></button>
+      <button class="stepbtn" data-k="2" type="button"><span class="no">2</span><span class="sl">⬇️ Chin in</span></button>
+      <button class="stepbtn" data-k="3" type="button"><span class="no">3</span><span class="sl">🙂 Smile</span></button>
+    </div>
+    <button class="gbtn skip" type="button">😤 Skip the smile</button>
+    <div class="msg">
+      <div class="m-hint">Tap 1 → 2 → 3 as fast as you can.</div>
+      <div class="m-go">Keep going! ⏱️</div>
+      <div class="m-oops">🙈 Follow the order: 1 → 2 → 3.</div>
+      <div class="m-gold">🥇 Confident in 2 seconds! Calm and friendly.</div>
+      <div class="m-ok">🙂 Confident and friendly! Next, try it in 2 seconds.</div>
+      <div class="m-bossy">😤 Hmm… without a smile, you look bossy. Do not skip step 3!</div>
+    </div>
+    <div class="best" hidden><span class="bl">🏆 Your best:</span> <span class="best-t">0.00</span> <span class="bu">sec</span></div>
+    <button class="gbtn reset" type="button">↺ Try again</button>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">⚠️</span>
+      <span class="card-label">Smile Matters</span>
+    </div>
+    <p class="big">Without a smile, you look bossy, not confident, so this part is important.</p>
+    <div class="vs" aria-hidden="true">
+      <div class="bad"><b class="e">😤</b>No smile = bossy</div>
+      <div class="good"><b class="e">😊</b>Smile = confident</div>
+    </div>
+  </section>
+
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+  <!-- 📝 draft-nav:start（tools/draft.py） -->
+  <nav class="draft-nav" translate="no">
+    <a class="draft-next" href="../speak-a-little-louder-and-slower/index.html"><span><small>NEXT DRAFT · 次の下書き</small><span class="t">少し大きな声で、ゆっくり話すと、軽く扱われない</span><small class="en">Speak a little louder and slower, and people will not take you lightly</small></span><span aria-hidden="true">📝</span></a>
+    <a class="draft-back" href="../index.html">📝 ← 下書き一覧 / All drafts</a>
+    <a class="draft-prod" href="../../index.html">本番のサイトへ ↗</a>
+  </nav>
+  <!-- 📝 draft-nav:end -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* 🐧 2秒のポーズ：JS は data-step / data-r / data-oops・数字・絵文字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.pose'); if (!g) return;
+  var KEY = 'pengesso-stand-tall-in-two-seconds-best';
+  var FACE = ['😔', '😮', '😐', '😊'];
+  var tEl = g.querySelector('.clock .t'), face = g.querySelector('.face'), best = g.querySelector('.best');
+  var btns = [].slice.call(g.querySelectorAll('.stepbtn'));
+  var step = 0, t0 = 0, raf = 0, running = false, oopsTimer = 0;
+  function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
+  function secs() { return Math.min(99.99, (now() - t0) / 1000); }
+  function tick() { if (!running) return; tEl.textContent = secs().toFixed(2); raf = requestAnimationFrame(tick); }
+  function showBest() {
+    var b = 0; try { b = parseFloat(localStorage.getItem(KEY)) || 0; } catch (e) {}
+    if (b) { best.hidden = false; best.querySelector('.best-t').textContent = b.toFixed(2); }
+  }
+  function finish(r) {
+    running = false; cancelAnimationFrame(raf);
+    var s = step > 0 ? secs() : 0;
+    tEl.textContent = s.toFixed(2);
+    g.setAttribute('data-r', r); g.setAttribute('data-oops', '0');
+    face.textContent = r === 'bossy' ? '😤' : '😊';
+    if (r !== 'bossy') {
+      try { var b = parseFloat(localStorage.getItem(KEY)) || 0; if (!b || s < b) localStorage.setItem(KEY, s.toFixed(2)); } catch (e) {}
+      showBest();
+      if (window.pengessoPop) {
+        var k = g.querySelector('.arena').getBoundingClientRect();
+        window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, r === 'gold' ? ['🥇', '🐧', '✨', '🌟'] : ['🐧', '✨'], r === 'gold' ? 18 : 10);
+      }
+      if (r === 'gold' && navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+    }
+  }
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (g.getAttribute('data-r')) return;
+      var k = +b.getAttribute('data-k');
+      if (k === step + 1) {
+        if (step === 0) { t0 = now(); running = true; raf = requestAnimationFrame(tick); }
+        step = k;
+        g.setAttribute('data-step', step); g.setAttribute('data-oops', '0');
+        face.textContent = FACE[step];
+        b.classList.add('done');
+        if (step === 3) finish(secs() <= 2 ? 'gold' : 'ok');
+      } else {
+        g.setAttribute('data-oops', '1');
+        b.classList.remove('nope'); void b.offsetWidth; b.classList.add('nope');
+        clearTimeout(oopsTimer);
+        oopsTimer = setTimeout(function () { g.setAttribute('data-oops', '0'); }, 1400);
+      }
+    });
+  });
+  g.querySelector('.skip').addEventListener('click', function () {
+    if (step === 2 && !g.getAttribute('data-r')) finish('bossy');
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    running = false; cancelAnimationFrame(raf); clearTimeout(oopsTimer);
+    step = 0; tEl.textContent = '0.00'; face.textContent = FACE[0];
+    g.setAttribute('data-step', '0'); g.setAttribute('data-r', ''); g.setAttribute('data-oops', '0');
+    btns.forEach(function (b) { b.classList.remove('done', 'nope'); });
+  });
+  showBest();
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード・.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label / h1 / 触って遊べる部品の文字 ← 本人の素材の要約・演出（word数対象外）
+-->

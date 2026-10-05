@@ -96,7 +96,8 @@ def main():
     if not args:
         print(__doc__)
         return 1
-    work = ROOT / "works" / args[0]
+    # 📝 --draft：下書き（draft/<slug>/）の写真も同じように縮めて置く（2026-10-05）
+    work = ROOT / ("draft" if "--draft" in sys.argv else "works") / args[0]
     idx = work / "index.html"
     if not idx.exists():
         print(f"❌ {idx} がありません")

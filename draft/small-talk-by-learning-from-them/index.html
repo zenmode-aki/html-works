@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow" /><!-- 📝 draft -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Decide to learn from people, and small talk becomes easy</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（2026-10-05）。真面目な話 → ポップに（トーン反転） */
+  :root {
+    --bg: #f2fbfb;
+    --card: rgba(255,255,255,.95);
+    --text: #2f2a3a;
+    --muted: #7a6f86;
+    --a: #0a8f95;
+    --b: #ffd23f;
+    --shadow: 0 20px 55px rgba(10,143,149,.18);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, rgba(255,210,63,.30), transparent 26%),
+      radial-gradient(circle at 92% 18%, rgba(10,143,149,.18), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(58,134,255,.16), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--a);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; font-weight: 900; text-decoration: none; box-shadow: 0 6px 16px rgba(10,143,149,.12); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; font-weight: 800; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(10,143,149,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(10,143,149,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--a); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--a); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: #0d3b3e; font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: #dff6f4; border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(10,143,149,.10); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--a); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-size: clamp(17px, 2.4vw, 21px); font-weight: 700; line-height: 1.72; }
+  p + p { margin-top: 10px; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: #087c82;
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品の入れ物 ════
+     文字はぜんぶ HTML に置いて、JS は class・data-*・数字・絵文字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: linear-gradient(150deg, #0aa6a6 0%, #1592c9 55%, #2563eb 100%); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; text-shadow: 0 2px 0 rgba(0,0,0,.12); }
+  .gbtn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 52px; padding: 10px 20px;
+    border: 0; border-radius: 999px; cursor: pointer; font: inherit; font-size: 17px; font-weight: 900; line-height: 1.25;
+    color: #2f2a3a; background: #fff; box-shadow: 0 6px 0 rgba(0,0,0,.20), 0 12px 22px rgba(0,0,0,.14);
+    transition: transform .08s ease, box-shadow .08s ease, opacity .2s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .gbtn:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.20), 0 4px 10px rgba(0,0,0,.14); }
+  .gbtn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .gbtn[disabled] { opacity: .45; cursor: default; transform: none; }
+  .gbtn.ghost { background: rgba(255,255,255,.18); color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.55); min-height: 48px; font-size: 15px; }
+  @keyframes boing { 0% { transform: scale(1); } 35% { transform: scale(1.12, .9); } 65% { transform: scale(.96, 1.06); } 100% { transform: scale(1); } }
+  @keyframes popin { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+  @keyframes shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+  .boing { animation: boing .42s ease; }
+  .shake { animation: shake .4s ease; }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(150deg, #0aa6a6 0%, #1592c9 55%, #2563eb 100%); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 12px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+
+  /* 🎓 だれに教えてもらう？ */
+  .ptabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0 14px; }
+  .ptab { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 76px;
+    padding: 8px 6px; border: 0; border-radius: 18px; cursor: pointer; font: inherit; font-size: 13.5px; font-weight: 900; line-height: 1.25;
+    color: #fff; background: rgba(255,255,255,.16); box-shadow: inset 0 0 0 2px rgba(255,255,255,.35);
+    transition: transform .15s ease, background .2s ease; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .ptab:active { transform: scale(.96); }
+  .ptab:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+  .ptab.on { background: #fff; color: #0b5563; box-shadow: 0 6px 0 rgba(0,0,0,.18); }
+  .pt-emo { font-size: 28px; line-height: 1; }
+  .pt-ok { display: none; position: absolute; top: -6px; right: -4px; font-size: 20px; }
+  .ptab.done .pt-ok { display: block; animation: popin .4s cubic-bezier(.2,1.5,.4,1) both; }
+  .person { display: none; }
+  .game[data-p="fish"] .person[data-p="fish"], .game[data-p="kid"] .person[data-p="kid"], .game[data-p="trip"] .person[data-p="trip"] { display: block; animation: popin .35s ease both; }
+  .who { display: grid; grid-template-columns: 88px 1fr; align-items: center; gap: 10px; text-align: left; }
+  .who-pic { position: relative; width: 84px; height: 84px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.22); }
+  .who-pg { font-size: 52px; line-height: 1; }
+  .who-face { position: absolute; top: -6px; right: -6px; font-size: 30px; line-height: 1; display: inline-block; }
+  .who-prop { position: absolute; bottom: -4px; left: -4px; font-size: 28px; line-height: 1; }
+  .who-say { padding: 11px 14px; border-radius: 18px 18px 18px 6px; background: #fff; color: #12343b; font-size: 16px; font-weight: 900; line-height: 1.45; }
+  .joy { display: flex; align-items: center; gap: 10px; margin: 14px 2px 12px; font-size: 12.5px; font-weight: 900; letter-spacing: .06em; }
+  .joy-bar { position: relative; flex: 1; height: 16px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .joy-bar i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; background: linear-gradient(90deg, #ffe066, #ff9f43);
+    transition: width .5s cubic-bezier(.2,1.3,.4,1); }
+  .qs { display: grid; gap: 10px; }
+  .q { display: block; width: 100%; min-height: 58px; padding: 12px 16px; border: 0; border-radius: 18px; cursor: pointer; text-align: left;
+    font: inherit; font-size: 17px; font-weight: 900; line-height: 1.4; color: #3d2c00; background: #ffe066;
+    box-shadow: 0 5px 0 #d4a900; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .q:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+  .q:active { transform: translateY(3px); box-shadow: 0 2px 0 #d4a900; }
+  .q-front { display: block; text-align: center; }
+  .q-back { display: none; }
+  .q.open { background: #fff; color: #0b5563; box-shadow: 0 5px 0 rgba(0,0,0,.15); cursor: default; animation: flip .45s ease both; }
+  .q.open .q-front { display: none; }
+  .q.open .q-back { display: block; }
+  @keyframes flip { from { transform: perspective(600px) rotateX(-90deg); } to { transform: none; } }
+  .q-ask { display: block; font-size: 16px; }
+  .q-ans { display: block; margin-top: 8px; padding: 9px 12px; border-radius: 12px; background: #e3faf4; color: #0b4d40; font-size: 16px; }
+  .result { margin-top: 16px; min-height: 48px; font-size: 16px; font-weight: 900; line-height: 1.45; }
+  .result > div { display: none; }
+  .game[data-all="0"][data-pc="0"] .r-hint, .game[data-all="0"][data-pc="1"] .r-person, .game[data-all="1"] .r-all { display: block; animation: popin .4s ease both; }
+  .r-all { font-size: 18px; }
+  .reset { margin-top: 12px; }
+  html[data-theme="dark"] .who-say, html[data-theme="dark"] .q.open { background: #f4f0fa; }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: #8fe6e6; }
+  html[data-theme="dark"] .gbtn:not(.ghost) { background: #f4f0fa; color: #2f2a3a; }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="draft-css">
+  /* 📝 下書きの印（tools/draft.py）。本番に出すと消える */
+  .draft-ribbon { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 14px;
+    padding: 9px 14px; border-radius: 14px; background: repeating-linear-gradient(135deg, #fff4c2 0 14px, #ffeaa0 14px 28px);
+    color: #5b4300; font-size: 13.5px; font-weight: 900; letter-spacing: .02em; text-align: center; }
+  .draft-ribbon a { color: inherit; }
+  .stage-draft { background: #ffd54a !important; color: #4a3500 !important; }
+  /* 2026-09-30 幅390pxで「戻る」「○ words」「DRAFT」が6pxはみ出していた → 札を少し詰めて、それでも入らなければ折り返す */
+  @media (max-width: 600px) { .topbar { flex-wrap: wrap; row-gap: 8px; } .stage-draft { padding-inline: 8px !important; letter-spacing: .04em !important; } }
+  .draft-nav { display: grid; gap: 12px; margin-top: 26px; }
+  .draft-next { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-radius: 22px;
+    text-decoration: none; color: #3a2d00; background: #fff1b8; border: 2px dashed rgba(120,90,0,.35); font-weight: 900; }
+  .draft-next small { display: block; font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .draft-next span.t { display: block; font-size: 17px; line-height: 1.4; }
+  .draft-next small.en { margin-top: 4px; letter-spacing: 0; font-weight: 700; }
+  .draft-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .draft-prod { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
+  html[data-theme="dark"] .draft-next { background: #3a3320; color: #ffe9a8; border-color: rgba(255,233,168,.3); }
+  html[data-theme="dark"] .draft-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"c29b05909e"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=f52e91ee86"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+  <!-- 📝 draft-ribbon:start（tools/draft.py） -->
+  <div class="draft-ribbon" translate="no">📝 DRAFT · 下書き — まだ本番に出していません · <a href="../index.html">下書き一覧</a></div>
+  <!-- 📝 draft-ribbon:end -->
+  <div class="topbar">
+    <a class="home" href="../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 57 words · 19 sec</div>
+      <div class="stage stage-draft">DRAFT</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 19 SEC</div>
+  <h1>Decide to learn from people, and small talk becomes easy <span class="float">🎓</span></h1>
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1400" height="1054" src="img/9a5b796e4439.jpg" alt="A crocheted penguin holding a small fishing rod and listening with curious eyes" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📋</span>
+      <span class="card-label">Too Many Rules</span>
+    </div>
+    <p>People say that being interested, asking questions, and praising are important in small talk.</p>
+    <p>But if you think about all of them at once, your head panics.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎓</span>
+      <span class="card-label">Just Learn</span>
+    </div>
+    <p>So you only decide, "I will learn from this person."</p>
+    <p class="big">Then questions and praise come out naturally.</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：教えてもらう雑談 -->
+  <section class="game" data-p="fish" data-pc="0" data-all="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">🎓 Who will you learn from?</div>
+    <div class="ptabs">
+      <button class="ptab on" type="button" data-p="fish" aria-pressed="true"><span class="pt-emo" aria-hidden="true">🎣</span><span class="pt-name">Fishing fan</span><span class="pt-ok" aria-hidden="true">✅</span></button>
+      <button class="ptab" type="button" data-p="kid" aria-pressed="false"><span class="pt-emo" aria-hidden="true">🐣</span><span class="pt-name">5-year-old</span><span class="pt-ok" aria-hidden="true">✅</span></button>
+      <button class="ptab" type="button" data-p="trip" aria-pressed="false"><span class="pt-emo" aria-hidden="true">🗺️</span><span class="pt-name">Local on a trip</span><span class="pt-ok" aria-hidden="true">✅</span></button>
+    </div>
+    <div class="person" data-p="fish" data-c="0">
+      <div class="who">
+        <div class="who-pic" aria-hidden="true"><span class="who-pg">🐧</span><span class="who-face">😐</span><span class="who-prop">🎣</span></div>
+        <div class="who-say">I went fishing again this weekend! 🎣</div>
+      </div>
+      <div class="joy"><span class="joy-name">Happy meter</span><span class="joy-bar"><i></i></span></div>
+      <div class="qs">
+        <button class="q" type="button"><span class="q-front">❓ Tap to ask</span><span class="q-back"><span class="q-ask">What fish do you catch?</span><span class="q-ans">Mostly mackerel! So fun! 🐟</span></span></button>
+        <button class="q" type="button"><span class="q-front">❓ Tap to ask</span><span class="q-back"><span class="q-ask">Where is a good spot?</span><span class="q-ans">The port, early in the morning! 🌅</span></span></button>
+        <button class="q" type="button"><span class="q-front">❓ Tap to ask</span><span class="q-back"><span class="q-ask">You clean the fish yourself?!</span><span class="q-ans">Of course! I can show you! 😆</span></span></button>
+      </div>
+    </div>
+    <div class="person" data-p="kid" data-c="0">
+      <div class="who">
+        <div class="who-pic" aria-hidden="true"><span class="who-pg">🐧</span><span class="who-face">😐</span><span class="who-prop">🐣</span></div>
+        <div class="who-say">Look! I got a new card! 🃏</div>
+      </div>
+      <div class="joy"><span class="joy-name">Happy meter</span><span class="joy-bar"><i></i></span></div>
+      <div class="qs">
+        <button class="q" type="button"><span class="q-front">❓ Tap to ask</span><span class="q-back"><span class="q-ask">What is popular now?</span><span class="q-ans">Dinosaur cards! 🦖</span></span></button>
+        <button class="q" type="button"><span class="q-front">❓ Tap to ask</span><span class="q-back"><span class="q-ask">Which one is the strongest?</span><span class="q-ans">Spinosaurus! It can swim! 🌊</span></span></button>
+        <button class="q" type="button"><span class="q-front">❓ Tap to ask</span><span class="q-back"><span class="q-ask">Can you teach me how to play?</span><span class="q-ans">Yes! Sit here! 😆</span></span></button>
+      </div>
+    </div>
+    <div class="person" data-p="trip" data-c="0">
+      <div class="who">
+        <div class="who-pic" aria-hidden="true"><span class="who-pg">🐧</span><span class="who-face">😐</span><span class="who-prop">🗺️</span></div>
+        <div class="who-say">Welcome to our town! 🏡</div>
+      </div>
+      <div class="joy"><span class="joy-name">Happy meter</span><span class="joy-bar"><i></i></span></div>
+      <div class="qs">
+        <button class="q" type="button"><span class="q-front">❓ Tap to ask</span><span class="q-back"><span class="q-ask">Are you from here?</span><span class="q-ans">Yes, born and raised! 🏡</span></span></button>
+        <button class="q" type="button"><span class="q-front">❓ Tap to ask</span><span class="q-back"><span class="q-ask">Any good places to eat?</span><span class="q-ans">The noodle shop behind the station! 🍜</span></span></button>
+        <button class="q" type="button"><span class="q-front">❓ Tap to ask</span><span class="q-back"><span class="q-ask">What should I not miss?</span><span class="q-ans">The night market on Friday! 🏮</span></span></button>
+      </div>
+    </div>
+    <div class="result">
+      <div class="r-hint">Tap the cards and ask like a student. 🎓</div>
+      <div class="r-person">✅ Lesson complete! Try another person.</div>
+      <div class="r-all">🏆 You learned from everyone! Small talk is easy when you are the student.</div>
+    </div>
+    <button class="gbtn ghost reset" type="button">↺ Start over</button>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎤</span>
+      <span class="card-label">Good Hosts</span>
+    </div>
+    <p>It is said that good TV hosts are actually good at being taught.</p>
+  </section>
+
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+  <!-- 📝 draft-nav:start（tools/draft.py） -->
+  <nav class="draft-nav" translate="no">
+    <a class="draft-next" href="../play-by-play-in-your-head/index.html"><span><small>NEXT DRAFT · 次の下書き</small><span class="t">頭の中で実況すると、言葉がすっと出るようになる</span><small class="en">Commentate in your head, and words come out easily</small></span><span aria-hidden="true">📝</span></a>
+    <a class="draft-back" href="../index.html">📝 ← 下書き一覧 / All drafts</a>
+    <a class="draft-prod" href="../../index.html">本番のサイトへ ↗</a>
+  </nav>
+  <!-- 📝 draft-nav:end -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* 🎓 だれに教えてもらう？：JS は data-*・class・幅・絵文字だけを変える */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var FACES = ['😐', '🙂', '😄', '🤩'];
+  var tabs = [].slice.call(g.querySelectorAll('.ptab')), people = [].slice.call(g.querySelectorAll('.person'));
+  function cur() { return g.getAttribute('data-p'); }
+  function personOf(k) { for (var i = 0; i < people.length; i++) if (people[i].getAttribute('data-p') === k) return people[i]; }
+  function count(p) { return parseInt(p.getAttribute('data-c'), 10) || 0; }
+  function bump(el) { el.classList.remove('boing'); void el.offsetWidth; el.classList.add('boing'); }
+  function sync() {
+    var p = personOf(cur());
+    g.setAttribute('data-pc', count(p) >= 3 ? '1' : '0');
+    var all = people.every(function (x) { return count(x) >= 3; });
+    g.setAttribute('data-all', all ? '1' : '0');
+  }
+  function paint(p) {
+    var c = count(p);
+    p.querySelector('.who-face').textContent = FACES[Math.min(c, 3)];
+    p.querySelector('.joy-bar i').style.width = Math.round(c / 3 * 100) + '%';
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      var k = t.getAttribute('data-p');
+      g.setAttribute('data-p', k);
+      tabs.forEach(function (x) { var on = x === t; x.classList.toggle('on', on); x.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+      sync();
+    });
+  });
+  people.forEach(function (p) {
+    [].slice.call(p.querySelectorAll('.q')).forEach(function (q) {
+      q.addEventListener('click', function () {
+        if (q.classList.contains('open')) return;
+        q.classList.add('open');
+        var c = count(p) + 1; p.setAttribute('data-c', String(c));
+        paint(p); bump(p.querySelector('.who-face'));
+        var r = q.getBoundingClientRect(), prop = p.querySelector('.who-prop').textContent;
+        if (window.pengessoPop) window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, c >= 3 ? [prop, '🎓', '✨', '🐧'] : ['✨', prop], c >= 3 ? 16 : 6);
+        if (c >= 3) {
+          tabs.forEach(function (t) { if (t.getAttribute('data-p') === p.getAttribute('data-p')) t.classList.add('done'); });
+        }
+        var was = g.getAttribute('data-all');
+        sync();
+        if (was === '0' && g.getAttribute('data-all') === '1' && window.pengessoPop) {
+          window.pengessoPop(window.innerWidth / 2, window.innerHeight / 2, ['🏆', '🎓', '🐧', '✨', '🎣', '🦖', '🍜'], 26);
+        }
+      });
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    people.forEach(function (p) {
+      p.setAttribute('data-c', '0');
+      [].slice.call(p.querySelectorAll('.q')).forEach(function (q) { q.classList.remove('open'); });
+      paint(p);
+    });
+    tabs.forEach(function (t, i) { t.classList.remove('done'); t.classList.toggle('on', i === 0); t.setAttribute('aria-pressed', i === 0 ? 'true' : 'false'); });
+    g.setAttribute('data-p', tabs[0].getAttribute('data-p'));
+    sync();
+  });
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（1枚目のカード）
+S3 → 使った（2枚目のカード）
+S4 → 使った（2枚目のカード・.big）
+S5 → 使った（3枚目のカード）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label 3個 / h1 / ゲームの文字 ← 本人の素材の要約・演出（word数対象外）
+-->

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow" /><!-- 📝 draft -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Speak a little louder and slower, and people will not take you lightly</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（2026-10-05）。真面目な話 → ポップに（トーン反転）。オレンジとティール。声のチューナーで遊べる */
+  :root {
+    --bg: #fff7ee;
+    --bg1: rgba(255,154,60,.32);
+    --bg2: rgba(19,181,166,.18);
+    --bg3: rgba(255,92,120,.14);
+    --text: #33261f;
+    --muted: #8a7466;
+    --a: #c9520a;
+    --h1: #3a2414;
+    --big: #c24d00;
+    --soft: #ffe9d4;
+    --goodbg: #d9f7f2;
+    --goodtx: #0b6e64;
+    --game: linear-gradient(150deg, #ff8a1f 0%, #ff5d5d 55%, #c2459c 100%);
+    --shadow: 0 20px 55px rgba(160,80,30,.16);
+    --card: rgba(255,255,255,.95);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text); font-weight: 700;
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, var(--bg1), transparent 26%),
+      radial-gradient(circle at 92% 18%, var(--bg2), transparent 28%),
+      radial-gradient(circle at 50% 100%, var(--bg3), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--a);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(60,50,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,50,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,50,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--a); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--a); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: var(--h1); font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: var(--soft); border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,50,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--a); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-weight: 700; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; }
+  p + p { margin-top: 10px; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 900; line-height: 1.42; color: var(--big);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* 比べる札 */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 14px 12px; border-radius: 20px; text-align: center; font-weight: 900; font-size: 15px; line-height: 1.4; }
+  .vs .bad { background: #f1eef3; color: #7d7688; }
+  .vs .good { background: var(--goodbg); color: var(--goodtx); }
+  .vs b { display: block; font-size: 30px; margin-bottom: 4px; }
+
+  /* ════ ⚡ 触って遊べる部品（共通の入れ物）════
+     文字はぜんぶ HTML に置いて、JS は class・data-*・数字・絵文字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: var(--game); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .gbtn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 52px; padding: 12px 20px;
+    border: 0; border-radius: 999px; font: inherit; font-size: 17px; font-weight: 900; line-height: 1.25; color: #2a2238; background: #fff;
+    box-shadow: 0 6px 0 rgba(0,0,0,.18), 0 12px 22px rgba(0,0,0,.14); cursor: pointer;
+    transition: transform .08s ease, box-shadow .08s ease, opacity .2s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .gbtn:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.18), 0 4px 10px rgba(0,0,0,.14); }
+  .gbtn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .gbtn:disabled { opacity: .45; cursor: default; }
+  .gbtn.reset { margin-top: 16px; min-height: 48px; font-size: 15px; color: #fff; background: rgba(255,255,255,.16);
+    border: 2px solid rgba(255,255,255,.6); box-shadow: none; }
+  .gmeter { position: relative; height: 16px; margin: 10px auto 0; max-width: 360px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .gmeter i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; background: #fff; transition: width .5s cubic-bezier(.2,1.2,.4,1); }
+  .gmeter-name { margin-top: 14px; font-size: 13px; font-weight: 900; letter-spacing: .08em; opacity: .95; }
+  .msg { margin-top: 14px; min-height: 52px; font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .msg > div { display: none; }
+  @keyframes g-pop { 0% { transform: scale(.6); opacity: 0; } 70% { transform: scale(1.08); opacity: 1; } 100% { transform: none; } }
+  @keyframes g-shake { 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+  @keyframes g-hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-16px); } }
+  @keyframes g-pulse { 0%, 100% { box-shadow: 0 6px 0 rgba(0,0,0,.18), 0 0 0 0 rgba(255,255,255,.75); } 50% { box-shadow: 0 6px 0 rgba(0,0,0,.18), 0 0 0 9px rgba(255,255,255,0); } }
+  /* 🎚 声のチューナー：声の大きさ（0.5〜2.5倍）と話す速さを ＋−で変えて「話す」 */
+  .tuner { --vol: .92; --spd: .45s; }
+  .scene { display: grid; grid-template-columns: 88px 1fr; align-items: center; gap: 10px; max-width: 440px; margin: 16px auto 4px; text-align: left; }
+  .speaker { position: relative; width: 88px; height: 88px; display: grid; place-items: center; }
+  .me { position: relative; z-index: 2; font-size: 56px; line-height: 1; }
+  .waves i { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%;
+    border: 4px solid rgba(255,255,255,.85); opacity: 0; }
+  @keyframes wave { from { transform: scale(.7); opacity: .95; } to { transform: scale(calc(.9 + var(--vol) * .9)); opacity: 0; } }
+  .tuner.talk .waves i { animation: wave var(--spd) ease-out 3 both; }
+  .tuner.talk .waves i:nth-child(2) { animation-delay: .15s; }
+  .tuner.talk .waves i:nth-child(3) { animation-delay: .3s; }
+  .say-bubble { position: relative; padding: 12px 16px; border-radius: 20px 20px 20px 6px; background: #fff; color: #33261f;
+    min-height: 66px; display: flex; align-items: center; box-shadow: 0 8px 18px rgba(0,0,0,.12); }
+  .say-text { font-size: calc(15px * var(--vol)); font-weight: 900; line-height: 1.25; transition: font-size .25s ease, letter-spacing .25s ease; }
+  .tuner[data-sp="0"] .say-text { letter-spacing: -.03em; font-style: italic; }
+  .tuner[data-sp="2"] .say-text { letter-spacing: .08em; }
+  .tuner.talk .say-bubble { animation: g-pop .45s ease both; }
+
+  .crowd { display: flex; justify-content: center; gap: 18px; margin: 12px 0 2px; }
+  .fan { display: grid; justify-items: center; gap: 2px; }
+  .react { font-size: 26px; line-height: 1; height: 30px; }
+  .fan-body { font-size: 40px; line-height: 1; }
+  .tuner.talk .react { animation: g-pop .5s .3s both; }
+  .tuner.talk[data-r="loud"] .fan-body { animation: g-shake .4s .3s 2; }
+  .tuner.talk[data-r="best"] .fan-body { animation: g-hop .5s .3s 2; }
+  .tuner.talk[data-r="best"] .fan:nth-child(2) .fan-body { animation-delay: .4s; }
+  .tuner.talk[data-r="best"] .fan:nth-child(3) .fan-body { animation-delay: .5s; }
+
+  .dials { display: grid; gap: 10px; max-width: 440px; margin: 14px auto 16px; }
+  .dial { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; padding: 8px 10px 8px 16px; border-radius: 22px;
+    background: rgba(255,255,255,.18); text-align: left; }
+  .dial-name { font-size: 15px; font-weight: 900; }
+  .dial-row { display: grid; grid-template-columns: 48px 96px 48px; align-items: center; gap: 4px; }
+  .step { width: 48px; height: 48px; border: 0; border-radius: 50%; background: #fff; color: #c2459c; font: inherit; font-size: 22px; font-weight: 900;
+    box-shadow: 0 4px 0 rgba(0,0,0,.2); cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .08s ease; }
+  .step:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.2); }
+  .step:disabled { opacity: .4; cursor: default; }
+  .dial-val { text-align: center; font-size: 22px; font-weight: 900; line-height: 1.15; }
+  .sp span { display: none; font-size: 15px; }
+  .tuner[data-sp="0"] .sp0, .tuner[data-sp="1"] .sp1, .tuner[data-sp="2"] .sp2 { display: inline; }
+  .gbtn.say { min-width: 230px; font-size: 20px; background: #fff3a6; color: #5a3a00; }
+  .tuner[data-r=""] .gbtn.say { animation: g-pulse 1.6s ease-in-out infinite; }
+
+  .tuner[data-r=""] .m-idle, .tuner[data-r="quiet"] .m-quiet, .tuner[data-r="loud"] .m-loud,
+  .tuner[data-r="fast"] .m-fast, .tuner[data-r="normal"] .m-normal, .tuner[data-r="best"] .m-best { display: block; }
+  .tuner.talk .msg > div { animation: g-pop .45s .35s both; }
+  .m-idle { font-size: 15px; opacity: .95; }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding-left: 12px; padding-right: 12px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .photo { background: #2a2c38; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] .vs .bad { background: #2c2e3b; color: #b8b0c6; }
+  html[data-theme="dark"] .gbtn:not(.reset) { background: #f0ecf6; }
+  html[data-theme="dark"] .big { color: #ffb27a; }
+  html[data-theme="dark"] .vs .good { background: #173a37; color: #9ff0e4; }
+  html[data-theme="dark"] .say-bubble { background: #f3ede6; }
+  html[data-theme="dark"] .step { background: #f3ede6; }
+  html[data-theme="dark"] .gbtn.say { background: #f2e49a; }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="draft-css">
+  /* 📝 下書きの印（tools/draft.py）。本番に出すと消える */
+  .draft-ribbon { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 14px;
+    padding: 9px 14px; border-radius: 14px; background: repeating-linear-gradient(135deg, #fff4c2 0 14px, #ffeaa0 14px 28px);
+    color: #5b4300; font-size: 13.5px; font-weight: 900; letter-spacing: .02em; text-align: center; }
+  .draft-ribbon a { color: inherit; }
+  .stage-draft { background: #ffd54a !important; color: #4a3500 !important; }
+  /* 2026-09-30 幅390pxで「戻る」「○ words」「DRAFT」が6pxはみ出していた → 札を少し詰めて、それでも入らなければ折り返す */
+  @media (max-width: 600px) { .topbar { flex-wrap: wrap; row-gap: 8px; } .stage-draft { padding-inline: 8px !important; letter-spacing: .04em !important; } }
+  .draft-nav { display: grid; gap: 12px; margin-top: 26px; }
+  .draft-next { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-radius: 22px;
+    text-decoration: none; color: #3a2d00; background: #fff1b8; border: 2px dashed rgba(120,90,0,.35); font-weight: 900; }
+  .draft-next small { display: block; font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .draft-next span.t { display: block; font-size: 17px; line-height: 1.4; }
+  .draft-next small.en { margin-top: 4px; letter-spacing: 0; font-weight: 700; }
+  .draft-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .draft-prod { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
+  html[data-theme="dark"] .draft-next { background: #3a3320; color: #ffe9a8; border-color: rgba(255,233,168,.3); }
+  html[data-theme="dark"] .draft-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"235f094fd2"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=f52e91ee86"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+  <!-- 📝 draft-ribbon:start（tools/draft.py） -->
+  <div class="draft-ribbon" translate="no">📝 DRAFT · 下書き — まだ本番に出していません · <a href="../index.html">下書き一覧</a></div>
+  <!-- 📝 draft-ribbon:end -->
+  <div class="topbar">
+    <a class="home" href="../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 59 words · 20 sec</div>
+      <div class="stage stage-draft">DRAFT</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 20 SEC</div>
+  <h1>Speak a little louder and slower, and people will not take you lightly <span class="float">🔊</span></h1>
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1168" height="880" src="img/b83806363ad0.jpg" alt="A plush corduroy penguin speaking calmly into a vintage microphone" />
+  </figure>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐭</span>
+      <span class="card-label">Small And Fast</span>
+    </div>
+    <p>It seems that if your voice is small and fast, people take you lightly for some reason.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔊</span>
+      <span class="card-label">The Trick</span>
+    </div>
+    <p>The trick is to talk slowly in a voice about 1.5 to 2 times louder than usual.</p>
+    <div class="vs" aria-hidden="true">
+      <div class="bad"><b class="e">🐭</b>Small and fast</div>
+      <div class="good"><b class="e">🦁</b>1.5× and slow</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎯</span>
+      <span class="card-label">To The End</span>
+    </div>
+    <p>Say your words clearly to the very end.</p>
+    <p>When you nod, nod big and slowly too.</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：声のチューナー -->
+  <section class="game tuner" data-v="1" data-sp="0" data-r="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Tune your voice to sound calm</div>
+    <div class="scene">
+      <div class="speaker" aria-hidden="true">
+        <div class="waves"><i></i><i></i><i></i></div>
+        <div class="me">🐧</div>
+      </div>
+      <div class="say-bubble"><span class="say-text">Nice to meet you.</span></div>
+    </div>
+    <div class="crowd" aria-hidden="true">
+      <div class="fan"><span class="react">❔</span><span class="fan-body">🐧</span></div>
+      <div class="fan"><span class="react">❔</span><span class="fan-body">🐧</span></div>
+      <div class="fan"><span class="react">❔</span><span class="fan-body">🐧</span></div>
+    </div>
+    <div class="dials">
+      <div class="dial">
+        <div class="dial-name">🔊 Volume</div>
+        <div class="dial-row">
+          <button class="step v-down" type="button" aria-label="Smaller voice">−</button>
+          <div class="dial-val"><span class="vol-num">1.0</span>×</div>
+          <button class="step v-up" type="button" aria-label="Bigger voice">＋</button>
+        </div>
+      </div>
+      <div class="dial">
+        <div class="dial-name">⏱ Speed</div>
+        <div class="dial-row">
+          <button class="step s-down" type="button" aria-label="Talk faster">◀</button>
+          <div class="dial-val sp"><span class="sp0">🐇 Fast</span><span class="sp1">🐕 Normal</span><span class="sp2">🐢 Slow</span></div>
+          <button class="step s-up" type="button" aria-label="Talk slower">▶</button>
+        </div>
+      </div>
+    </div>
+    <button class="gbtn say" type="button">🗣 Say it!</button>
+    <div class="gmeter-name">🤝 Trust meter</div>
+    <div class="gmeter" aria-hidden="true"><i></i></div>
+    <div class="msg">
+      <div class="m-idle">Set the volume and speed, then tap "Say it!"</div>
+      <div class="m-quiet">😶 "Sorry, what did you say?" Your voice is too small.</div>
+      <div class="m-loud">🙉 Too loud! It sounds like you are angry.</div>
+      <div class="m-fast">🐇 Good volume, but too fast. Slow down a little.</div>
+      <div class="m-normal">🙂 Nice! A little slower is even better.</div>
+      <div class="m-best">🥇 Calm and strong! "This person is solid."</div>
+    </div>
+    <button class="gbtn reset" type="button">↺ Reset</button>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍵</span>
+      <span class="card-label">Calm Look</span>
+    </div>
+    <p class="big">Just that makes people think, "This person is calm."</p>
+  </section>
+
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+  <!-- 📝 draft-nav:start（tools/draft.py） -->
+  <nav class="draft-nav" translate="no">
+    <a class="draft-next" href="../praise-three-criticize-one/index.html"><span><small>NEXT DRAFT · 次の下書き</small><span class="t">褒める3に批判1くらいなら、「正直な人」</span><small class="en">Praise 3 times for every 1 criticism, and you are an honest person</small></span><span aria-hidden="true">📝</span></a>
+    <a class="draft-back" href="../index.html">📝 ← 下書き一覧 / All drafts</a>
+    <a class="draft-prod" href="../../index.html">本番のサイトへ ↗</a>
+  </nav>
+  <!-- 📝 draft-nav:end -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* 🎚 声のチューナー：JS は data-v / data-sp / data-r・数字・絵文字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.tuner'); if (!g) return;
+  var VOL = [0.5, 1.0, 1.5, 2.0, 2.5], SIZE = [0.78, 0.92, 1.12, 1.3, 1.55], SPD = ['.45s', '.9s', '1.5s'];
+  var REACT = { quiet: ['🤔', '❓', '🤔'], loud: ['🙉', '💢', '🙉'], fast: ['💫', '🌀', '💫'], normal: ['🙂', '👍', '🙂'], best: ['🤩', '👏', '💯'] };
+  var TRUST = { quiet: 18, loud: 30, fast: 50, normal: 75, best: 100 };
+  var v = 1, sp = 0;
+  var num = g.querySelector('.vol-num'), bar = g.querySelector('.gmeter i');
+  var reacts = [].slice.call(g.querySelectorAll('.react'));
+  var vDown = g.querySelector('.v-down'), vUp = g.querySelector('.v-up'), sDown = g.querySelector('.s-down'), sUp = g.querySelector('.s-up');
+  var sayBtn = g.querySelector('.say');
+  function paint() {
+    g.setAttribute('data-v', v); g.setAttribute('data-sp', sp);
+    num.textContent = VOL[v].toFixed(1);
+    g.style.setProperty('--vol', SIZE[v]); g.style.setProperty('--spd', SPD[sp]);
+    vDown.disabled = v === 0; vUp.disabled = v === VOL.length - 1;
+    sDown.disabled = sp === 0; sUp.disabled = sp === SPD.length - 1;
+  }
+  function clear() {
+    g.setAttribute('data-r', ''); g.classList.remove('talk');
+    reacts.forEach(function (r) { r.textContent = '❔'; });
+    bar.style.width = '0';
+  }
+  function judge() {
+    if (v <= 1) return 'quiet';
+    if (v >= 4) return 'loud';
+    return sp === 0 ? 'fast' : sp === 1 ? 'normal' : 'best';
+  }
+  function change(dv, ds) {
+    v = Math.max(0, Math.min(VOL.length - 1, v + dv));
+    sp = Math.max(0, Math.min(SPD.length - 1, sp + ds));
+    paint(); clear();
+  }
+  vDown.addEventListener('click', function () { change(-1, 0); });
+  vUp.addEventListener('click', function () { change(1, 0); });
+  sDown.addEventListener('click', function () { change(0, -1); });
+  sUp.addEventListener('click', function () { change(0, 1); });
+  sayBtn.addEventListener('click', function () {
+    var r = judge();
+    g.classList.remove('talk'); void g.offsetWidth; g.classList.add('talk');
+    g.setAttribute('data-r', r);
+    reacts.forEach(function (el, i) { el.textContent = REACT[r][i]; });
+    bar.style.width = TRUST[r] + '%';
+    if (r === 'best') {
+      if (window.pengessoPop) {
+        var k = sayBtn.getBoundingClientRect();
+        window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['🔊', '🐧', '👏', '✨'], 16);
+      }
+      if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+    }
+  });
+  g.querySelector('.reset').addEventListener('click', function () { v = 1; sp = 0; paint(); clear(); });
+  paint();
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・1文目）
+S4 → 使った（3枚目のカード・2文目）
+S5 → 使った（4枚目のカード・.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label / h1 / 触って遊べる部品の文字 ← 本人の素材の要約・演出（word数対象外）
+-->

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow" /><!-- 📝 draft -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Anger comes from broken expectations, so lower them to feel more wow</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（2026-10-05）。真面目な話 → ポップに（オレンジとミント。期待ラインのゲーム） */
+  :root {
+    --bg: #fff8ef;
+    --card: rgba(255,255,255,.95);
+    --text: #3a2a22;
+    --muted: #8a7366;
+    --acc: #f2621f;
+    --acc2: #14b8a6;
+    --shadow: 0 20px 55px rgba(160,80,30,.16);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, rgba(255,170,90,.33), transparent 26%),
+      radial-gradient(circle at 92% 18%, rgba(20,184,166,.18), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(255,214,102,.2), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--acc);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(60,50,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,50,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,50,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--acc); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--acc); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: #3a2416; font-size: clamp(30px, 6.2vw, 54px); line-height: 1.1; letter-spacing: -.035em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: #ffeede; border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,50,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--acc); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; font-weight: 700; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: #d9480f;
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品：共通の入れ物 ════
+     文字はぜんぶ HTML に置いて、JS は data-* と class と数字・絵文字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: linear-gradient(155deg, #ff9a3d 0%, #ff5f6d 52%, #7b5cff 100%); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .game button { font: inherit; font-weight: 900; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    user-select: none; -webkit-user-select: none; }
+  .game button:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .game button[disabled] { cursor: default; }
+  .big-btn { display: block; width: min(330px, 100%); min-height: 64px; margin: 14px auto 0; padding: 12px 18px; border: 0; border-radius: 999px;
+    font-size: clamp(20px, 5.4vw, 26px); color: #4a2400; background: #ffe066;
+    box-shadow: 0 8px 0 #e0a800, 0 16px 26px rgba(0,0,0,.18); transition: transform .08s ease, box-shadow .08s ease, opacity .2s ease; }
+  .big-btn:active:not([disabled]) { transform: translateY(6px); box-shadow: 0 2px 0 #e0a800, 0 6px 12px rgba(0,0,0,.18); }
+  .big-btn[disabled] { opacity: .45; }
+  .big-btn > .st { display: none; }
+  .msg { display: none; }
+  .hint { font-size: 15px; font-weight: 800; opacity: .95; line-height: 1.5; }
+  .result { margin-top: 16px; min-height: 64px; }
+  .verdict { font-size: 18px; font-weight: 900; line-height: 1.45; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* 期待の上・下を並べて見せる */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 14px 10px; border-radius: 20px; text-align: center; font-weight: 900; font-size: 15px; line-height: 1.35; }
+  .vs .above { background: #e2fbf5; color: #0b6b5a; }
+  .vs .below { background: #ffe7dc; color: #a03a12; }
+  .vs b { display: block; font-size: 30px; margin-bottom: 4px; }
+
+  /* ⚡ 期待ライン */
+  .exp { display: grid; grid-template-columns: 98px 1fr; gap: 14px; max-width: 440px; margin: 18px auto 0; align-items: start; }
+  .scale { position: relative; height: 236px; border-radius: 22px; overflow: hidden; border: 3px solid rgba(255,255,255,.7);
+    display: flex; flex-direction: column; background: rgba(255,255,255,.12); }
+  .band { flex: 1; display: block; }
+  .band:nth-child(1) { background: rgba(255,255,255,.34); }
+  .band:nth-child(2) { background: rgba(255,255,255,.26); }
+  .band:nth-child(3) { background: rgba(255,255,255,.18); }
+  .band:nth-child(4) { background: rgba(255,255,255,.11); }
+  .band:nth-child(5) { background: rgba(255,255,255,.05); }
+  .end-hi, .end-lo { position: absolute; left: 0; right: 0; font-size: 10.5px; font-weight: 900; letter-spacing: .08em; opacity: .85; }
+  .end-hi { top: 4px; } .end-lo { bottom: 4px; }
+  .xline { position: absolute; left: 0; right: 0; height: 6px; background: #fff; bottom: calc(70% - 3px); z-index: 2;
+    box-shadow: 0 0 0 2px rgba(194,65,12,.35), 0 0 16px rgba(255,255,255,.8); transition: bottom .35s cubic-bezier(.2,1.5,.4,1); }
+  .xtag { position: absolute; left: 4px; right: 4px; bottom: 9px; padding: 2px 4px; border-radius: 10px; background: #fff; color: #c2410c;
+    font-size: 10.5px; font-weight: 900; line-height: 1.2; }
+  .ball { position: absolute; left: 50%; width: 40px; height: 40px; margin-left: -20px; bottom: 110%; z-index: 3; border-radius: 50%;
+    display: grid; place-items: center; font-size: 22px; background: #fff7c2; box-shadow: 0 6px 14px rgba(0,0,0,.2);
+    transition: bottom .6s cubic-bezier(.3,1.45,.5,1); }
+  .game[data-r="wow"] .ball { background: #b8ffe9; }
+  .game[data-r="angry"] .ball { background: #ffc9c9; }
+  .ud { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .ud button { min-height: 52px; border: 0; border-radius: 16px; font-size: 22px; color: #9a3412; background: #fff;
+    box-shadow: 0 5px 0 rgba(0,0,0,.18); transition: transform .08s ease; }
+  .ud button:active:not([disabled]) { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.18); }
+  .ud button[disabled] { opacity: .4; }
+  .side { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .face { font-size: 52px; line-height: 1; height: 58px; }
+  .face.boing { animation: bounce-in .45s ease; }
+  .ev-card { padding: 12px 12px 10px; border-radius: 20px; background: #fff; color: #3a2416; text-align: left; min-height: 128px; }
+  .ev-card.shake { animation: wobble .45s ease; }
+  .ev span, .react span { display: none; }
+  .ev { font-size: 16px; font-weight: 900; line-height: 1.35; }
+  .game[data-ev="0"] .ev-0, .game[data-ev="1"] .ev-1, .game[data-ev="2"] .ev-2, .game[data-ev="3"] .ev-3,
+  .game[data-ev="4"] .ev-4, .game[data-ev="5"] .ev-5, .game[data-ev="6"] .ev-6 { display: inline; }
+  .stars { margin-top: 6px; font-size: 18px; letter-spacing: .02em; min-height: 24px; }
+  .react { margin-top: 4px; font-size: 15px; font-weight: 900; line-height: 1.35; min-height: 22px; }
+  .game[data-r="wow"] .re-wow { display: inline; color: #0f8a6d; }
+  .game[data-r="ok"] .re-ok { display: inline; color: #6b5b4b; }
+  .game[data-r="angry"] .re-angry { display: inline; color: #d9480f; }
+  .tally { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { display: inline-flex; align-items: center; gap: 5px; padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,.24);
+    font-size: 17px; font-weight: 900; }
+  .chip .te { font-size: 18px; }
+  .chip.round { gap: 0; }
+  .game[data-s="idle"] .s-start, .game[data-s="play"] .s-next, .game[data-s="done"] .s-again { display: inline; }
+  .game[data-s="idle"] .hint, .game[data-s="play"] .hint,
+  .game[data-s="done"][data-res="volcano"] .r-volcano, .game[data-s="done"][data-res="mid"] .r-mid,
+  .game[data-s="done"][data-res="rainbow"] .r-rainbow { display: block; }
+  .game[data-s="done"] .verdict { animation: bounce-in .5s ease; }
+  @media (max-width: 380px) { .exp { grid-template-columns: 88px 1fr; gap: 10px; } .ev { font-size: 15px; } }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+  @keyframes bounce-in { 0% { transform: scale(.6); opacity: 0; } 60% { transform: scale(1.12); opacity: 1; } 100% { transform: scale(1); } }
+  @keyframes wobble { 20% { transform: translateX(-5px) rotate(-3deg); } 40% { transform: translateX(5px) rotate(3deg); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 12px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] body { background: #17181f; color: #ece8f8; }
+  html[data-theme="dark"] .credit { color: #b3aac4; }
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: #ffb08a; }
+  html[data-theme="dark"] .photo { background: #2a2c38; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .vs .above { background: #123a33; color: #9ff0da; }
+  html[data-theme="dark"] .vs .below { background: #43231a; color: #ffc2a8; }
+  html[data-theme="dark"] .ev-card { background: #2a2c38; color: #f4f0fa; }
+  html[data-theme="dark"] .game[data-r="wow"] .re-wow { color: #8ff0cf; }
+  html[data-theme="dark"] .game[data-r="ok"] .re-ok { color: #e6dccf; }
+  html[data-theme="dark"] .game[data-r="angry"] .re-angry { color: #ffab85; }
+  html[data-theme="dark"] .ud button, html[data-theme="dark"] .xtag { background: #2a2c38; color: #ffb08a; }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="draft-css">
+  /* 📝 下書きの印（tools/draft.py）。本番に出すと消える */
+  .draft-ribbon { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 14px;
+    padding: 9px 14px; border-radius: 14px; background: repeating-linear-gradient(135deg, #fff4c2 0 14px, #ffeaa0 14px 28px);
+    color: #5b4300; font-size: 13.5px; font-weight: 900; letter-spacing: .02em; text-align: center; }
+  .draft-ribbon a { color: inherit; }
+  .stage-draft { background: #ffd54a !important; color: #4a3500 !important; }
+  /* 2026-09-30 幅390pxで「戻る」「○ words」「DRAFT」が6pxはみ出していた → 札を少し詰めて、それでも入らなければ折り返す */
+  @media (max-width: 600px) { .topbar { flex-wrap: wrap; row-gap: 8px; } .stage-draft { padding-inline: 8px !important; letter-spacing: .04em !important; } }
+  .draft-nav { display: grid; gap: 12px; margin-top: 26px; }
+  .draft-next { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-radius: 22px;
+    text-decoration: none; color: #3a2d00; background: #fff1b8; border: 2px dashed rgba(120,90,0,.35); font-weight: 900; }
+  .draft-next small { display: block; font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .draft-next span.t { display: block; font-size: 17px; line-height: 1.4; }
+  .draft-next small.en { margin-top: 4px; letter-spacing: 0; font-weight: 700; }
+  .draft-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .draft-prod { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
+  html[data-theme="dark"] .draft-next { background: #3a3320; color: #ffe9a8; border-color: rgba(255,233,168,.3); }
+  html[data-theme="dark"] .draft-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"806db85488"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=f52e91ee86"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+  <!-- 📝 draft-ribbon:start（tools/draft.py） -->
+  <div class="draft-ribbon" translate="no">📝 DRAFT · 下書き — まだ本番に出していません · <a href="../index.html">下書き一覧</a></div>
+  <!-- 📝 draft-ribbon:end -->
+
+  <div class="topbar">
+    <a class="home" href="../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 51 words · 17 sec</div>
+      <div class="stage stage-draft">DRAFT</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 17 SEC</div>
+  <h1>Anger comes from broken expectations, so lower them to feel more wow <span class="float">📏</span></h1>
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1168" height="880" src="img/d588ef54a020.jpg" alt="A chubby felted wool penguin looking up at a real yellow measuring tape stretched up like a high bar" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💥</span>
+      <span class="card-label">The Real Reason</span>
+    </div>
+    <p>It seems anger is really just "less than I expected."</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📏</span>
+      <span class="card-label">Above Or Below</span>
+    </div>
+    <p>If it is above your expectation, you feel moved; if it is below, you get angry.</p>
+    <div class="vs" aria-hidden="true">
+      <div class="above"><b class="e">😍</b><span class="vl">Above the line = Wow!</span></div>
+      <div class="below"><b class="e">😡</b><span class="vl">Below the line = Anger</span></div>
+    </div>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：期待ラインを動かすゲーム -->
+  <section class="game" data-s="idle" data-r="" data-ev="0" data-res="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Move your expectation line</div>
+    <div class="exp">
+      <div class="col">
+        <div class="scale" aria-hidden="true">
+          <i class="band"></i><i class="band"></i><i class="band"></i><i class="band"></i><i class="band"></i>
+          <span class="end-hi">high</span><span class="end-lo">low</span>
+          <div class="xline"><span class="xtag">My expectation</span></div>
+          <div class="ball">⭐</div>
+        </div>
+        <div class="ud">
+          <button class="up" type="button">▲</button>
+          <button class="down" type="button">▼</button>
+        </div>
+      </div>
+      <div class="side">
+        <div class="face" aria-hidden="true">🐧</div>
+        <div class="ev-card">
+          <div class="ev">
+            <span class="ev-0">What will happen next?</span>
+            <span class="ev-1">☕ Coffee at a new cafe</span>
+            <span class="ev-2">🚃 The morning train</span>
+            <span class="ev-3">🍜 Ramen for lunch</span>
+            <span class="ev-4">📱 A reply from a friend</span>
+            <span class="ev-5">🌤️ Weather on your day off</span>
+            <span class="ev-6">🎁 A souvenir from a friend</span>
+          </div>
+          <div class="stars" aria-hidden="true">❔</div>
+          <div class="react">
+            <span class="re-wow">😍 Wow! Better than I thought!</span>
+            <span class="re-ok">🙂 Just as I thought.</span>
+            <span class="re-angry">😡 Huh?! That's it?</span>
+          </div>
+        </div>
+        <div class="tally">
+          <div class="chip"><span class="te">😍</span><span class="num w">0</span></div>
+          <div class="chip"><span class="te">😡</span><span class="num a">0</span></div>
+          <div class="chip round"><span class="num rn">0</span>/6</div>
+        </div>
+      </div>
+    </div>
+    <button class="big-btn go" type="button"><span class="st s-start">▶ Start</span><span class="st s-next">▶ Next thing</span><span class="st s-again">↺ Try again</span></button>
+    <div class="result">
+      <div class="msg hint">Move the line with ▲▼. Then 6 things will happen.</div>
+      <div class="msg r-volcano verdict">🌋 So much anger! Try a lower line ▼.</div>
+      <div class="msg r-mid verdict">🙂 Not bad! Maybe a little lower?</div>
+      <div class="msg r-rainbow verdict">🌈 So many wows! You are an easygoing penguin.</div>
+    </div>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">⬇️</span>
+      <span class="card-label">Lower The Line</span>
+    </div>
+    <p>So if you lower your expectations a little, you feel moved more and get angry less.</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌈</span>
+      <span class="card-label">Easygoing People</span>
+    </div>
+    <p class="big">Easygoing people may just be people with low expectations.</p>
+  </section>
+
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+
+
+  <!-- 📝 draft-nav:start（tools/draft.py） -->
+  <nav class="draft-nav" translate="no">
+    <a class="draft-next" href="../add-sorry-but-to-your-request/index.html"><span><small>NEXT DRAFT · 次の下書き</small><span class="t">「悪いけど」を付けると、頼みごとや断りが言いやすくなる</span><small class="en">Adding &quot;sorry, but&quot; makes it easier to ask or say no</small></span><span aria-hidden="true">📝</span></a>
+    <a class="draft-back" href="../index.html">📝 ← 下書き一覧 / All drafts</a>
+    <a class="draft-prod" href="../../index.html">本番のサイトへ ↗</a>
+  </nav>
+  <!-- 📝 draft-nav:end -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* ⚡ 期待ラインのゲーム：JS は data-* と数字・絵文字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var line = g.querySelector('.xline'), ball = g.querySelector('.ball'), stars = g.querySelector('.stars');
+  var face = g.querySelector('.face'), card = g.querySelector('.ev-card');
+  var go = g.querySelector('.go'), up = g.querySelector('.up'), down = g.querySelector('.down');
+  var wN = g.querySelector('.w'), aN = g.querySelector('.a'), rN = g.querySelector('.rn');
+  var L = 4, order = [], i = 0, wow = 0, ang = 0, busy = false, t1 = 0, t2 = 0;
+  function pos(n) { return 'calc(' + ((n - 0.5) * 20) + '% - '; }
+  function set(k, v) { g.setAttribute('data-' + k, v); }
+  function bump(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function setLine(n) {
+    L = Math.max(1, Math.min(5, n));
+    line.style.bottom = pos(L) + '3px)';
+    up.disabled = L >= 5; down.disabled = L <= 1;
+  }
+  function shuffle() {
+    var a = [1, 2, 3, 4, 5, 6];
+    for (var k = a.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)); var t = a[k]; a[k] = a[j]; a[j] = t; }
+    return a;
+  }
+  function reset() {
+    clearTimeout(t1); clearTimeout(t2);
+    i = 0; wow = 0; ang = 0; busy = false;
+    wN.textContent = '0'; aN.textContent = '0'; rN.textContent = '0';
+    set('ev', '0'); set('r', ''); set('res', '');
+    stars.textContent = '❔'; face.textContent = '🐧';
+    ball.style.bottom = '110%'; go.disabled = false;
+  }
+  function drop() {
+    if (busy || i >= 6) return;
+    busy = true; go.disabled = true;
+    var ev = order[i], R = 1 + Math.floor(Math.random() * 5), st = '';
+    for (var k = 0; k < R; k++) st += '⭐';
+    set('ev', ev); set('r', '');
+    stars.textContent = st; face.textContent = '🤔';
+    ball.style.transition = 'none'; ball.style.bottom = '110%'; void ball.offsetWidth; ball.style.transition = '';
+    ball.style.bottom = pos(R) + '20px)';
+    t1 = setTimeout(function () {
+      var r = R > L ? 'wow' : R === L ? 'ok' : 'angry';
+      if (r === 'wow') {
+        wow++; face.textContent = '😍';
+        if (window.pengessoPop) { var b = face.getBoundingClientRect(); window.pengessoPop(b.left + b.width / 2, b.top + b.height / 2, ['😍', '✨', '🐧'], 8); }
+      } else if (r === 'angry') { ang++; face.textContent = '😡'; bump(card, 'shake'); }
+      else { face.textContent = '🙂'; }
+      bump(face, 'boing');
+      set('r', r);
+      wN.textContent = wow; aN.textContent = ang; i++; rN.textContent = i;
+      busy = false; go.disabled = false;
+      if (i >= 6) { go.disabled = true; t2 = setTimeout(finish, 900); }
+    }, 700);
+  }
+  function finish() {
+    var res = ang >= 3 ? 'volcano' : wow >= 4 ? 'rainbow' : 'mid';
+    set('res', res); set('s', 'done'); go.disabled = false;
+    face.textContent = res === 'volcano' ? '🌋' : res === 'rainbow' ? '🥳' : '🙂';
+    bump(face, 'boing');
+    if (res === 'rainbow' && window.pengessoPop) {
+      var k = go.getBoundingClientRect();
+      window.pengessoPop(k.left + k.width / 2, k.top, ['🌈', '😍', '🐧', '✨'], 18);
+    }
+  }
+  go.addEventListener('click', function () {
+    var s = g.getAttribute('data-s');
+    if (s === 'idle' || s === 'done') { reset(); order = shuffle(); set('s', 'play'); drop(); return; }
+    drop();
+  });
+  up.addEventListener('click', function () { setLine(L + 1); });
+  down.addEventListener('click', function () { setLine(L - 1); });
+  setLine(4);
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label / h1 / ゲームの文字 ← 本人の素材の要約・演出（word数対象外）
+-->

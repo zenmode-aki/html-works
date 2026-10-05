@@ -482,7 +482,8 @@ def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     fix = "--fix-badge" in sys.argv
 
-    base = ROOT / "works"
+    # 📝 --draft：下書き（draft/<slug>/）も同じ検査にかける（2026-10-05）
+    base = ROOT / ("draft" if "--draft" in sys.argv else "works")
     if not base.exists():
         print(f"ℹ️  {base.relative_to(ROOT)}/ がありません")
         return 0

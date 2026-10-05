@@ -516,7 +516,7 @@ def status():
 
 
 def main():
-    args = sys.argv[1:]
+    args = [a for a in sys.argv[1:] if a != "--draft"]   # --draft はどこに書いてもいい（2026-10-05）
     langs = langs_available()
     uis = {l: load(I18N / f"ui.{l}.json") for l in langs}
     tops = {l: load(I18N / f"top.{l}.json") for l in langs}

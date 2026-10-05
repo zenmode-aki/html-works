@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow" /><!-- 📝 draft -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Say your weak point first, and it will not hurt when others say it</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（2026-10-05）。真面目な話 → ポップに（藍色とライム。からかいシールド） */
+  :root {
+    --bg: #f5f7ff;
+    --card: rgba(255,255,255,.95);
+    --text: #22214a;
+    --muted: #6b6a92;
+    --acc: #4f46e5;
+    --acc2: #65a30d;
+    --shadow: 0 20px 55px rgba(60,50,160,.16);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, rgba(132,204,22,.24), transparent 26%),
+      radial-gradient(circle at 92% 18%, rgba(79,70,229,.2), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(6,182,212,.16), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--acc);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(60,50,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,50,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,50,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--acc); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--acc); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: #1e1b4b; font-size: clamp(30px, 6.2vw, 54px); line-height: 1.1; letter-spacing: -.035em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: #e9ebff; border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,50,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--acc); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; font-weight: 700; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: #4338ca;
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品：共通の入れ物 ════
+     文字はぜんぶ HTML に置いて、JS は data-* と class と数字・絵文字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: linear-gradient(155deg, #4f46e5 0%, #0ea5e9 55%, #65c23a 100%); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .game button { font: inherit; font-weight: 900; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    user-select: none; -webkit-user-select: none; }
+  .game button:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .game button[disabled] { cursor: default; }
+  .big-btn { display: block; width: min(330px, 100%); min-height: 64px; margin: 14px auto 0; padding: 12px 18px; border: 0; border-radius: 999px;
+    font-size: clamp(20px, 5.4vw, 26px); color: #3b2c00; background: #ffd43b;
+    box-shadow: 0 8px 0 #d9a400, 0 16px 26px rgba(0,0,0,.18); transition: transform .08s ease, box-shadow .08s ease, opacity .2s ease; }
+  .big-btn:active:not([disabled]) { transform: translateY(6px); box-shadow: 0 2px 0 #d9a400, 0 6px 12px rgba(0,0,0,.18); }
+  .big-btn[disabled] { opacity: .45; }
+  .big-btn > .st { display: none; }
+  .msg { display: none; }
+  .hint { font-size: 15px; font-weight: 800; opacity: .95; line-height: 1.5; }
+  .result { margin-top: 16px; min-height: 64px; }
+  .verdict { font-size: 18px; font-weight: 900; line-height: 1.45; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .arena { position: relative; height: 170px; max-width: 460px; margin: 16px auto 0; border-radius: 24px; overflow: hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.26)); }
+  .hero { position: absolute; left: 10px; bottom: 12px; width: 76px; height: 76px; }
+  .hf { font-size: 58px; line-height: 76px; text-align: center; }
+  .hf.boing { animation: bounce-in .4s ease; }
+  .hf.ouch { animation: wobble .4s ease; }
+  .shield { position: absolute; right: -16px; top: 10px; font-size: 40px; display: none; }
+  .game[data-said="1"] .shield { display: block; animation: bounce-in .45s ease; }
+  .said-bub { position: absolute; left: 4px; bottom: 82px; width: 220px; padding: 8px 12px; border-radius: 16px 16px 16px 6px; background: #fff;
+    color: #312e81; font-size: 14px; font-weight: 900; line-height: 1.3; text-align: left; display: none; }
+  .game[data-said="1"][data-s="idle"] .said-bub { display: block; animation: bounce-in .45s ease; }
+  .tease { position: absolute; top: 34px; left: 100%; max-width: 62%; padding: 9px 13px; border-radius: 16px 16px 6px 16px;
+    background: #ffe3e3; color: #9f1239; font-size: 15px; font-weight: 900; line-height: 1.3; text-align: left; display: none;
+    box-shadow: 0 6px 14px rgba(0,0,0,.18); }
+  .tease span { display: none; }
+  .game[data-t="1"] .t-1, .game[data-t="2"] .t-2, .game[data-t="3"] .t-3, .game[data-t="4"] .t-4, .game[data-t="5"] .t-5 { display: inline; }
+  .game[data-s="play"] .tease.fly { display: block; }
+  .tease.bounced { display: block; animation: flyback .6s ease-in forwards; background: #dcfce7; color: #166534; }
+  .tease.hit { display: block; animation: splat .5s ease forwards; }
+  @keyframes flyback { to { transform: translate(260px, -120px) rotate(40deg) scale(.6); opacity: 0; } }
+  @keyframes splat { 40% { transform: scale(1.1); } to { transform: scale(.4); opacity: 0; } }
+  .fx { position: absolute; left: 70px; top: 40px; font-size: 34px; }
+
+  .stats { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .chip { display: inline-flex; align-items: center; gap: 0; padding: 7px 13px; border-radius: 999px; background: rgba(255,255,255,.22);
+    font-size: 15px; font-weight: 900; }
+  .chip .sk { margin-right: 8px; }
+  .chip .num { font-size: 18px; }
+  .hearts { letter-spacing: .05em; font-size: 16px; }
+
+  .say-first { display: block; width: min(330px, 100%); min-height: 54px; margin: 14px auto 0; border: 3px dashed #fff; border-radius: 999px;
+    background: rgba(255,255,255,.14); color: #fff; font-size: 18px; padding: 8px 14px; }
+  .say-first span { display: none; }
+  .game[data-said="0"] .sf-a, .game[data-said="1"] .sf-b { display: inline; }
+  .game[data-said="1"] .say-first { border-style: solid; background: #fff; color: #4338ca; }
+  .game[data-said="0"] .say-first { animation: wobble 1.6s ease 1s infinite; }
+  .game:not([data-s="idle"]) .say-first { display: none; }
+
+  .game[data-s="idle"] .s-start, .game[data-s="play"] .s-yep, .game[data-s="done"] .s-again { display: inline; }
+  .game[data-s="play"][data-said="0"] .go { background: #d9d6f5; color: #6b66a8; box-shadow: 0 8px 0 #a9a3df, 0 16px 26px rgba(0,0,0,.18); }
+  .go.no { animation: wobble .35s ease; }
+  .game[data-s="idle"] .hint, .game[data-s="play"][data-cant="0"] .hint, .game[data-s="play"][data-cant="1"] .cant,
+  .game[data-s="done"][data-res="hurt"] .r-hurt, .game[data-s="done"][data-res="gold"] .r-gold, .game[data-s="done"][data-res="ok"] .r-ok { display: block; }
+  .cant { font-size: 16px; font-weight: 900; color: #fff3bf; }
+  .game[data-s="done"] .verdict { animation: bounce-in .5s ease; }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+  @keyframes bounce-in { 0% { transform: scale(.6); opacity: 0; } 60% { transform: scale(1.12); opacity: 1; } 100% { transform: scale(1); } }
+  @keyframes wobble { 20% { transform: translateX(-5px) rotate(-3deg); } 40% { transform: translateX(5px) rotate(3deg); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 12px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] body { background: #17181f; color: #ece8f8; }
+  html[data-theme="dark"] .credit { color: #b3aac4; }
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: #b4b0ff; }
+  html[data-theme="dark"] .photo { background: #2a2c38; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .said-bub { background: #2a2c38; color: #c7c4ff; }
+  html[data-theme="dark"] .tease { background: #4a2430; color: #ffc2cf; }
+  html[data-theme="dark"] .tease.bounced { background: #1f3d2a; color: #a8f0bd; }
+  html[data-theme="dark"] .game[data-said="1"] .say-first { background: #2a2c38; color: #c7c4ff; }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="draft-css">
+  /* 📝 下書きの印（tools/draft.py）。本番に出すと消える */
+  .draft-ribbon { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 14px;
+    padding: 9px 14px; border-radius: 14px; background: repeating-linear-gradient(135deg, #fff4c2 0 14px, #ffeaa0 14px 28px);
+    color: #5b4300; font-size: 13.5px; font-weight: 900; letter-spacing: .02em; text-align: center; }
+  .draft-ribbon a { color: inherit; }
+  .stage-draft { background: #ffd54a !important; color: #4a3500 !important; }
+  /* 2026-09-30 幅390pxで「戻る」「○ words」「DRAFT」が6pxはみ出していた → 札を少し詰めて、それでも入らなければ折り返す */
+  @media (max-width: 600px) { .topbar { flex-wrap: wrap; row-gap: 8px; } .stage-draft { padding-inline: 8px !important; letter-spacing: .04em !important; } }
+  .draft-nav { display: grid; gap: 12px; margin-top: 26px; }
+  .draft-next { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-radius: 22px;
+    text-decoration: none; color: #3a2d00; background: #fff1b8; border: 2px dashed rgba(120,90,0,.35); font-weight: 900; }
+  .draft-next small { display: block; font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .draft-next span.t { display: block; font-size: 17px; line-height: 1.4; }
+  .draft-next small.en { margin-top: 4px; letter-spacing: 0; font-weight: 700; }
+  .draft-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .draft-prod { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
+  html[data-theme="dark"] .draft-next { background: #3a3320; color: #ffe9a8; border-color: rgba(255,233,168,.3); }
+  html[data-theme="dark"] .draft-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"10269492c5"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=f52e91ee86"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+  <!-- 📝 draft-ribbon:start（tools/draft.py） -->
+  <div class="draft-ribbon" translate="no">📝 DRAFT · 下書き — まだ本番に出していません · <a href="../index.html">下書き一覧</a></div>
+  <!-- 📝 draft-ribbon:end -->
+
+  <div class="topbar">
+    <a class="home" href="../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 47 words · 16 sec</div>
+      <div class="stage stage-draft">DRAFT</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 16 SEC</div>
+  <h1>Say your weak point first, and it will not hurt when others say it <span class="float">🛡️</span></h1>
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1168" height="880" src="img/38bf4e1a38ca.jpg" alt="A chubby hand-embroidered felt penguin holding a real folded paper map upside down and laughing" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📣</span>
+      <span class="card-label">Say It First</span>
+    </div>
+    <p>It seems good to say the weak point you worry about first, by yourself.</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧭</span>
+      <span class="card-label">For Example</span>
+    </div>
+    <p>For example, say first, "I am really bad with directions."</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：からかいシールド -->
+  <section class="game" data-s="idle" data-said="0" data-t="1" data-hit="" data-cant="0" data-res="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The "say it first" shield</div>
+    <div class="arena">
+      <div class="hero">
+        <div class="hf" aria-hidden="true">🐧</div>
+        <div class="shield" aria-hidden="true">🛡️</div>
+        <div class="said-bub">"I am really bad with directions!" 😅</div>
+      </div>
+      <div class="tease">
+        <span class="t-1">Lost again? 😏</span>
+        <span class="t-2">Wrong way, huh?</span>
+        <span class="t-3">Do you need a map?</span>
+        <span class="t-4">Going around in circles?</span>
+        <span class="t-5">Where are we going? 😂</span>
+      </div>
+      <div class="fx" aria-hidden="true"></div>
+    </div>
+    <div class="stats">
+      <div class="chip"><span class="sk">Bounced</span><span class="num bN">0</span>/5</div>
+      <div class="chip hearts" aria-hidden="true">💚💚💚💚💚</div>
+    </div>
+    <button class="say-first" type="button"><span class="sf-a">📣 Say it first</span><span class="sf-b">✅ You said it first!</span></button>
+    <button class="big-btn go" type="button"><span class="st s-start">▶ Start the teasing</span><span class="st s-yep">😆 Yep, yep!</span><span class="st s-again">↺ Try again</span></button>
+    <div class="result">
+      <div class="msg hint">Teasing will fly at you 5 times. Tap "Yep, yep!" to bounce it back.</div>
+      <div class="msg cant">😣 You can't laugh… It is a surprise attack!</div>
+      <div class="msg r-hurt verdict">😣 Ouch! It hurts when it comes as a surprise. Press "📣 Say it first" and try again.</div>
+      <div class="msg r-gold verdict">🛡️ Great! You said it first, so it is just a fact now.</div>
+      <div class="msg r-ok verdict">😅 It did not hurt! Now tap "Yep, yep!" sooner to bounce it.</div>
+    </div>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😆</span>
+      <span class="card-label">Yep, Yep</span>
+    </div>
+    <p>Then, even if someone says it later, you can laugh and say, "Yep, yep!"</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🛡️</span>
+      <span class="card-label">No Attack</span>
+    </div>
+    <p class="big">Something you said first is not an attack anymore.</p>
+  </section>
+
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+
+
+  <!-- 📝 draft-nav:start（tools/draft.py） -->
+  <nav class="draft-nav" translate="no">
+    <a class="draft-next" href="../take-care-of-your-own-mood/index.html"><span><small>NEXT DRAFT · 次の下書き</small><span class="t">自分の機嫌を自分でとると、人に優しくなれる</span><small class="en">Take care of your own mood, and you can be kind to others</small></span><span aria-hidden="true">📝</span></a>
+    <a class="draft-back" href="../index.html">📝 ← 下書き一覧 / All drafts</a>
+    <a class="draft-prod" href="../../index.html">本番のサイトへ ↗</a>
+  </nav>
+  <!-- 📝 draft-nav:end -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* ⚡ からかいシールド：JS は data-* と class と位置・数字・絵文字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var go = g.querySelector('.go'), sayBtn = g.querySelector('.say-first'), tease = g.querySelector('.tease');
+  var hf = g.querySelector('.hf'), fx = g.querySelector('.fx'), bN = g.querySelector('.bN'), hearts = g.querySelector('.hearts');
+  var arena = g.querySelector('.arena');
+  var n = 0, bounced = 0, hits = 0, flying = false, loop = 0, wait = 0, cantT = 0, t0 = 0, dur = 2400;
+  function set(k, v) { g.setAttribute('data-' + k, v); }
+  function bump(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
+  function drawHearts() { var s = ''; for (var i = 0; i < 5; i++) s += i < 5 - hits ? '💚' : '💔'; hearts.textContent = s; }
+  function launch() {
+    n++;
+    if (n > 5) { finish(); return; }
+    set('t', String(n));
+    tease.className = 'tease fly';
+    dur = 2500 - n * 220;
+    var W = arena.clientWidth, endX = 84, startX = W;
+    tease.style.left = startX + 'px'; t0 = now(); flying = true;
+    clearInterval(loop);
+    loop = setInterval(function () {
+      var p = Math.min(1, (now() - t0) / dur);
+      tease.style.left = (startX - (startX - endX) * p) + 'px';
+      if (p >= 1) arrive();
+    }, 30);
+  }
+  function arrive() {
+    clearInterval(loop); flying = false;
+    tease.className = 'tease hit';
+    if (g.getAttribute('data-said') === '1') { hf.textContent = '😅'; fx.textContent = '💨'; }
+    else { hits++; drawHearts(); hf.textContent = '😣'; fx.textContent = '💥'; bump(hf, 'ouch'); }
+    wait = setTimeout(launch, 800);
+  }
+  function yep() {
+    if (!flying) return;
+    if (g.getAttribute('data-said') !== '1') {
+      bump(go, 'no'); set('cant', '1'); hf.textContent = '😣';
+      clearTimeout(cantT); cantT = setTimeout(function () { set('cant', '0'); }, 1400);
+      return;
+    }
+    clearInterval(loop); flying = false;
+    bounced++; bN.textContent = bounced;
+    tease.className = 'tease bounced'; hf.textContent = '😆'; fx.textContent = '✨'; bump(hf, 'boing');
+    if (window.pengessoPop) { var b = tease.getBoundingClientRect(); window.pengessoPop(b.left + b.width / 2, b.top + b.height / 2, ['😆', '🛡️', '✨'], 7); }
+    wait = setTimeout(launch, 650);
+  }
+  function finish() {
+    clearInterval(loop); tease.className = 'tease'; fx.textContent = '';
+    var said = g.getAttribute('data-said') === '1';
+    var res = !said ? 'hurt' : bounced >= 4 ? 'gold' : 'ok';
+    set('res', res); set('s', 'done');
+    hf.textContent = res === 'hurt' ? '😣' : res === 'gold' ? '😎' : '🙂';
+    if (res === 'gold' && window.pengessoPop) { var k = go.getBoundingClientRect(); window.pengessoPop(k.left + k.width / 2, k.top, ['🛡️', '😆', '🧭', '🐧'], 18); }
+  }
+  function start() {
+    clearTimeout(wait); clearInterval(loop);
+    n = 0; bounced = 0; hits = 0; bN.textContent = '0'; drawHearts(); fx.textContent = '';
+    hf.textContent = '🐧'; set('res', ''); set('cant', '0'); set('s', 'play');
+    wait = setTimeout(launch, 400);
+  }
+  var skip = false;
+  go.addEventListener('pointerdown', function () { if (g.getAttribute('data-s') === 'play') { skip = true; yep(); } });   /* 指が触れた瞬間に返す */
+  go.addEventListener('click', function () {
+    if (skip) { skip = false; return; }
+    var s = g.getAttribute('data-s');
+    if (s === 'play') { yep(); return; }
+    if (s === 'done') { set('s', 'idle'); hf.textContent = '🐧'; return; }
+    start();
+  });
+  sayBtn.addEventListener('click', function () {
+    if (g.getAttribute('data-s') !== 'idle') return;
+    set('said', '1'); hf.textContent = '😅'; bump(hf, 'boing');
+  });
+  drawHearts();
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label / h1 / ゲームの文字 ← 本人の素材の要約・演出（word数対象外）
+-->

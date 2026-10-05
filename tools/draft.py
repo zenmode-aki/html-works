@@ -361,8 +361,14 @@ def coming_soon(infos, today):
 """
 
 
+def in_progress(slug):
+    """まだ書いている途中の下書き（テンプレートのまま・画像の置き場所 IMAGE: が残っている）は一覧に出さない（2026-10-05）"""
+    doc = (DRAFT / slug / "index.html").read_text(encoding="utf-8")
+    return "Title Goes Here" in doc or 'src="IMAGE:' in doc
+
+
 def build():
-    drafts, works = set(slugs(DRAFT)), set(slugs(WORKS))
+    drafts, works = {s for s in slugs(DRAFT) if not in_progress(s)}, set(slugs(WORKS))
     infos = order([info(s) for s in drafts])
     seq = [x["slug"] for x in infos]
     for i, s in enumerate(seq):
