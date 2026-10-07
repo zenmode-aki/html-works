@@ -546,6 +546,133 @@
   </section>
   </div>
 
+
+<style>
+.toy{--ta:#23845c;--tb:#8fd9b6;--tl:#dcf4e9;--tx:#233b31;--td:#175a3e;--tk:#1d352b}
+.toy{position:relative;box-sizing:border-box;margin:30px 0 12px;padding:14px 14px 18px;border-radius:30px;background:linear-gradient(165deg,var(--tl) 0%,#fff 92%);border:3px solid var(--ta);box-shadow:0 16px 36px rgba(0,0,0,.12);color:var(--tx);text-align:center;font-weight:800;line-height:1.2;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+.toy *,.toy *::before,.toy *::after{box-sizing:border-box}
+.toy .toy-kick{display:inline-block;font-size:30px;line-height:1;margin:0 0 8px;animation:toyKick 1.5s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes toyKick{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-12deg)}}
+.toy button{font-family:inherit;font-weight:900;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:inherit;margin:0;border:0;background:none;padding:0;line-height:1}
+.toy .toy-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:64px;min-height:58px;padding:6px 18px;border-radius:20px;background:var(--ta);color:#fff;font-size:28px;box-shadow:0 5px 0 var(--td);transition:transform .08s,box-shadow .08s,opacity .2s}
+.toy .toy-btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--td)}
+.toy .toy-btn[disabled]{opacity:.38;cursor:default;transform:none;box-shadow:0 5px 0 var(--td)}
+.toy .toy-reset{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#fff;border:3px solid var(--ta);color:var(--ta);font-size:26px;margin-top:14px;transition:transform .2s}
+.toy .toy-reset:active{transform:rotate(-120deg) scale(.92)}
+.toy .toy-n{font-variant-numeric:tabular-nums;font-weight:900}
+.toy .toy-row{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.toy .toy-meter{position:relative;height:20px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden;box-shadow:inset 0 2px 3px rgba(0,0,0,.1)}
+.toy .toy-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--tb),var(--ta));transition:width .35s cubic-bezier(.3,1.4,.5,1)}
+.toy .toy-win{display:block;font-size:40px;line-height:50px;min-height:50px;margin-top:6px;visibility:hidden}
+.toy .toy-win.on{visibility:visible;animation:toyWin .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes toyWin{0%{transform:scale(.2) rotate(-20deg)}100%{transform:scale(1) rotate(0)}}
+.toy .toy-bop{animation:toyBop .38s ease-out}
+@keyframes toyBop{0%{transform:scale(1)}40%{transform:scale(1.28) rotate(-8deg)}100%{transform:scale(1)}}
+.toy .toy-shake{animation:toyShake .42s}
+@keyframes toyShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+html[data-theme="dark"] .toy{background:linear-gradient(165deg,var(--tk) 0%,#1d1e27 92%);color:#f3eff7;border-color:var(--tb);box-shadow:0 16px 36px rgba(0,0,0,.45)}
+html[data-theme="dark"] .toy .toy-reset{background:#262834;color:#fff;border-color:var(--tb)}
+html[data-theme="dark"] .toy .toy-meter{background:rgba(255,255,255,.1)}
+.toy .toy-top{display:flex;justify-content:center;align-items:center;gap:16px;font-size:30px;margin:0 0 12px}
+.toy .toy-top .toy-n{font-size:26px}
+.toy .toy-hall{display:flex;justify-content:center;gap:8px;padding:14px 10px 0;margin:0 auto;max-width:340px;border-radius:22px 22px 8px 8px;background:linear-gradient(180deg,#f4fbf7,#e3f3ea);border:3px solid rgba(35,132,92,.3);border-bottom-width:8px}
+.toy .toy-door{position:relative;width:66px;height:104px;perspective:400px;border-radius:10px 10px 0 0;background:#fff;box-shadow:inset 0 0 0 3px rgba(35,132,92,.18)}
+.toy .toy-doc{position:absolute;left:0;right:0;top:12px;font-size:36px;line-height:1}
+.toy .toy-steth{position:absolute;left:0;right:0;top:50px;font-size:20px;line-height:1}
+.toy .toy-vibe{position:absolute;left:0;right:0;bottom:6px;font-size:24px;line-height:1;visibility:hidden}
+.toy .toy-door.open .toy-vibe{visibility:visible;animation:toyBop .4s ease-out}
+.toy .toy-panel{position:absolute;inset:0;border-radius:10px 10px 0 0;background:linear-gradient(180deg,#c98f5a,#a86d3c);border:3px solid #8a5529;transform-origin:0 50%;transition:transform .5s cubic-bezier(.3,1.2,.5,1);font-size:22px;line-height:1;color:#fff;display:flex;align-items:flex-start;justify-content:center;padding-top:10px}
+.toy .toy-panel::after{content:"";position:absolute;right:8px;top:52%;width:9px;height:9px;border-radius:50%;background:#ffd54d;box-shadow:0 1px 0 rgba(0,0,0,.3)}
+.toy .toy-door.open .toy-panel{transform:rotateY(-78deg)}
+.toy .toy-door.match{box-shadow:inset 0 0 0 4px #2fbf71;background:#eafff2}
+.toy .toy-sleep{display:flex;justify-content:center;align-items:center;gap:6px;margin:14px auto 0;height:64px;max-width:340px;border-radius:20px;background:linear-gradient(90deg,#e7f6ff,#f2ecff);font-size:34px;transition:background .6s}
+.toy .toy-sleep.night{background:linear-gradient(90deg,#1c2350,#3a2f6e)}
+.toy .toy-sleep .toy-zz{visibility:hidden}
+.toy .toy-sleep.night .toy-zz{visibility:visible;animation:toyZz 1.8s ease-in-out infinite}
+@keyframes toyZz{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+html[data-theme="dark"] .toy .toy-hall{background:linear-gradient(180deg,#22302a,#1b2622);border-color:rgba(143,217,182,.3)}
+html[data-theme="dark"] .toy .toy-door{background:#262834}
+html[data-theme="dark"] .toy .toy-door.match{background:#1d3a2b}
+html[data-theme="dark"] .toy .toy-sleep{background:linear-gradient(90deg,#26303a,#2c2840)}
+html[data-theme="dark"] .toy .toy-sleep.night{background:linear-gradient(90deg,#141a3d,#2a2257)}
+@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .toy *,html:not([data-motion="on"]) .toy *::before,html:not([data-motion="on"]) .toy *::after{animation:none !important}}
+html[data-motion="off"] .toy *,html[data-motion="off"] .toy *::before,html[data-motion="off"] .toy *::after{animation:none !important}
+</style>
+<section class="toy" aria-label="👆🏥🚪">
+  <div class="toy-kick" aria-hidden="true">👆</div>
+  <div class="toy-top" aria-hidden="true"><span>🏥</span><span>📅 <span class="toy-n toy-m">0</span></span></div>
+  <div class="toy-hall">
+    <button type="button" class="toy-door" aria-label="🚪"><span class="toy-doc">🦉</span><span class="toy-steth">🩺</span><span class="toy-vibe">😐</span><span class="toy-panel"><span class="toy-n">1</span></span></button>
+    <button type="button" class="toy-door" aria-label="🚪"><span class="toy-doc">🐻</span><span class="toy-steth">🩺</span><span class="toy-vibe">😐</span><span class="toy-panel"><span class="toy-n">2</span></span></button>
+    <button type="button" class="toy-door" aria-label="🚪"><span class="toy-doc">🐰</span><span class="toy-steth">🩺</span><span class="toy-vibe">😐</span><span class="toy-panel"><span class="toy-n">3</span></span></button>
+    <button type="button" class="toy-door" aria-label="🚪"><span class="toy-doc">🦊</span><span class="toy-steth">🩺</span><span class="toy-vibe">😐</span><span class="toy-panel"><span class="toy-n">4</span></span></button>
+  </div>
+  <div class="toy-sleep" aria-hidden="true"><span class="toy-sky">☀️</span><span class="toy-face">😶</span><span class="toy-zz">💤</span></div>
+  <div class="toy-win" aria-live="polite">🌙✨</div>
+  <button type="button" class="toy-reset" aria-label="↺">↺</button>
+</section>
+<script>
+(function () {
+  var root = document.querySelector('section.toy');
+  if (!root) return;
+  var SLUG = 'psychiatric-clinic-with-many-doctors';
+  function q(s) { return root.querySelector(s); }
+  function qa(s) { return Array.prototype.slice.call(root.querySelectorAll(s)); }
+  function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  function bop(el, c) { if (!el) return; c = c || 'toy-bop'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function boom(el, list, n) { if (!el || !window.pengessoPop) return; var r = el.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n || 16); }
+  function sget(k) { try { return window.localStorage.getItem('pengesso-toy-' + SLUG + '-' + k); } catch (e) { return null; } }
+  function sset(k, v) { try { window.localStorage.setItem('pengesso-toy-' + SLUG + '-' + k, String(v)); } catch (e) {} }
+  var doors = qa('.toy-door'), mEl = q('.toy-m'), sleep = q('.toy-sleep'), sky = q('.toy-sky'), face = q('.toy-face'), win = q('.toy-win'), reset = q('.toy-reset');
+  if (doors.length < 4 || !mEl || !sleep || !sky || !face || !win || !reset) return;
+  var good, visits, found;
+  function start() {
+    good = Math.floor(Math.random() * 4);
+    visits = 0; found = false;
+    doors.forEach(function (d) {
+      d.classList.remove('open', 'match');
+      d.disabled = false;
+      var v = d.querySelector('.toy-vibe');
+      if (v) v.textContent = '😐';
+    });
+    mEl.textContent = '0';
+    sleep.classList.remove('night');
+    sky.textContent = '☀️';
+    face.textContent = '😶';
+    win.classList.remove('on');
+  }
+  doors.forEach(function (d, i) {
+    d.addEventListener('click', function () {
+      if (found || d.classList.contains('open')) return;
+      visits++;
+      mEl.textContent = String(visits);
+      bop(mEl.parentNode);
+      d.classList.add('open');
+      d.disabled = true;
+      var v = d.querySelector('.toy-vibe');
+      if (i === good) {
+        found = true;
+        if (v) v.textContent = '💚';
+        d.classList.add('match');
+        doors.forEach(function (x) { x.disabled = true; });
+        setTimeout(function () {
+          sleep.classList.add('night');
+          sky.textContent = '🌙';
+          face.textContent = '😴';
+          bop(face);
+          win.classList.remove('on'); void win.offsetWidth; win.classList.add('on');
+          boom(sleep, ['🌙', '⭐', '💤', '✨'], 16);
+        }, still() ? 0 : 450);
+      } else {
+        face.textContent = '😐';
+        bop(face);
+      }
+    });
+  });
+  reset.addEventListener('click', start);
+  start();
+})();
+</script>
   <a class="next" href="../regret-running-machine/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>

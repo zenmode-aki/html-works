@@ -487,6 +487,142 @@
   </section>
   </div>
 
+
+<style>
+.toy{--ta:#1f9a78;--tb:#6fcf9f;--tl:#dcf5ea;--tx:#1f3a31;--td:#13614b;--tk:#1d3a31}
+.toy{position:relative;box-sizing:border-box;margin:30px 0 12px;padding:14px 14px 18px;border-radius:30px;background:linear-gradient(165deg,var(--tl) 0%,#fff 92%);border:3px solid var(--ta);box-shadow:0 16px 36px rgba(0,0,0,.12);color:var(--tx);text-align:center;font-weight:800;line-height:1.2;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+.toy *,.toy *::before,.toy *::after{box-sizing:border-box}
+.toy .toy-kick{display:inline-block;font-size:30px;line-height:1;margin:0 0 8px;animation:toyKick 1.5s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes toyKick{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-12deg)}}
+.toy button{font-family:inherit;font-weight:900;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:inherit;margin:0;border:0;background:none;padding:0;line-height:1}
+.toy .toy-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:64px;min-height:58px;padding:6px 18px;border-radius:20px;background:var(--ta);color:#fff;font-size:28px;box-shadow:0 5px 0 var(--td);transition:transform .08s,box-shadow .08s,opacity .2s}
+.toy .toy-btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--td)}
+.toy .toy-btn[disabled]{opacity:.38;cursor:default;transform:none;box-shadow:0 5px 0 var(--td)}
+.toy .toy-reset{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#fff;border:3px solid var(--ta);color:var(--ta);font-size:26px;margin-top:14px;transition:transform .2s}
+.toy .toy-reset:active{transform:rotate(-120deg) scale(.92)}
+.toy .toy-n{font-variant-numeric:tabular-nums;font-weight:900}
+.toy .toy-row{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.toy .toy-meter{position:relative;height:20px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden;box-shadow:inset 0 2px 3px rgba(0,0,0,.1)}
+.toy .toy-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--tb),var(--ta));transition:width .35s cubic-bezier(.3,1.4,.5,1)}
+.toy .toy-win{display:block;font-size:40px;line-height:50px;min-height:50px;margin-top:6px;visibility:hidden}
+.toy .toy-win.on{visibility:visible;animation:toyWin .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes toyWin{0%{transform:scale(.2) rotate(-20deg)}100%{transform:scale(1) rotate(0)}}
+.toy .toy-bop{animation:toyBop .38s ease-out}
+@keyframes toyBop{0%{transform:scale(1)}40%{transform:scale(1.28) rotate(-8deg)}100%{transform:scale(1)}}
+.toy .toy-shake{animation:toyShake .42s}
+@keyframes toyShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+html[data-theme="dark"] .toy{background:linear-gradient(165deg,var(--tk) 0%,#1d1e27 92%);color:#f3eff7;border-color:var(--tb);box-shadow:0 16px 36px rgba(0,0,0,.45)}
+html[data-theme="dark"] .toy .toy-reset{background:#262834;color:#fff;border-color:var(--tb)}
+html[data-theme="dark"] .toy .toy-meter{background:rgba(255,255,255,.1)}
+.toy .toy-yard{position:relative;height:230px;margin:0 auto 12px;max-width:360px}
+.toy .toy-core{position:absolute;left:50%;top:50%;width:0;height:0}
+.toy .toy-ring{position:absolute;border-radius:50%;border:7px solid #8fa3b8;background:rgba(143,163,184,.1);transition:transform .35s cubic-bezier(.2,1.5,.4,1),opacity .35s;opacity:0;transform:scale(1.6)}
+.toy .toy-ring.on{opacity:1;transform:scale(1)}
+.toy .toy-ring.r1{width:96px;height:96px;margin:-48px 0 0 -48px}
+.toy .toy-ring.r2{width:122px;height:122px;margin:-61px 0 0 -61px}
+.toy .toy-ring.r3{width:148px;height:148px;margin:-74px 0 0 -74px}
+.toy .toy-ring.r4{width:174px;height:174px;margin:-87px 0 0 -87px}
+.toy .toy-peng{position:absolute;left:-30px;top:-32px;width:60px;font-size:54px;line-height:60px;transition:transform .35s}
+.toy .toy-mood{position:absolute;left:14px;top:-52px;font-size:28px;line-height:1}
+.toy .toy-nb{position:absolute;width:58px;height:58px;border-radius:50%;background:#fff;border:3px solid rgba(31,154,120,.35);font-size:32px;line-height:52px;box-shadow:0 4px 0 rgba(0,0,0,.08)}
+.toy .toy-nb.n1{left:0;top:0}
+.toy .toy-nb.n2{right:0;top:0}
+.toy .toy-nb.n3{left:0;bottom:0}
+.toy .toy-nb.n4{right:0;bottom:0}
+.toy .toy-nb.got{border-color:var(--ta);background:#e4f8ee}
+.toy .toy-nb .toy-gift{position:absolute;right:-8px;top:-10px;font-size:22px;line-height:1;visibility:hidden}
+.toy .toy-nb.got .toy-gift{visibility:visible}
+.toy .toy-gauges{max-width:320px;margin:0 auto 14px;display:grid;grid-template-columns:36px 1fr;gap:8px 10px;align-items:center;font-size:26px}
+.toy .toy-gauges .toy-meter{height:20px}
+.toy .toy-air{background:linear-gradient(90deg,#9fd8ff,#4aa8e8)}
+.toy .toy-pow{background:linear-gradient(90deg,#ffe27a,#ffb020)}
+.toy .toy-shield{background:#7f8fa3;box-shadow:0 5px 0 #56616f}
+.toy .toy-shield:active{box-shadow:0 1px 0 #56616f}
+.toy .toy-help{background:#e85d8a;box-shadow:0 5px 0 #a83a60}
+.toy .toy-help:active{box-shadow:0 1px 0 #a83a60}
+html[data-theme="dark"] .toy .toy-nb{background:#262834;border-color:rgba(111,207,159,.3)}
+html[data-theme="dark"] .toy .toy-nb.got{background:#1f3a31}
+html[data-theme="dark"] .toy .toy-ring{border-color:#7c8da2}
+@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .toy *,html:not([data-motion="on"]) .toy *::before,html:not([data-motion="on"]) .toy *::after{animation:none !important}}
+html[data-motion="off"] .toy *,html[data-motion="off"] .toy *::before,html[data-motion="off"] .toy *::after{animation:none !important}
+</style>
+<section class="toy" aria-label="👆🛡️💝">
+  <div class="toy-kick" aria-hidden="true">👆</div>
+  <div class="toy-yard" aria-hidden="true">
+    <span class="toy-nb n1">🐱<span class="toy-gift">💝</span></span>
+    <span class="toy-nb n2">🐶<span class="toy-gift">💝</span></span>
+    <span class="toy-nb n3">🐦<span class="toy-gift">💝</span></span>
+    <span class="toy-nb n4">🐰<span class="toy-gift">💝</span></span>
+    <div class="toy-core">
+      <div class="toy-ring r4"></div><div class="toy-ring r3"></div><div class="toy-ring r2"></div><div class="toy-ring r1"></div>
+      <span class="toy-peng">🐧</span>
+      <span class="toy-mood">😊</span>
+    </div>
+  </div>
+  <div class="toy-gauges" aria-hidden="true">
+    <span>🌬️</span><div class="toy-meter"><div class="toy-fill toy-air"></div></div>
+    <span>⚡</span><div class="toy-meter"><div class="toy-fill toy-pow"></div></div>
+  </div>
+  <div class="toy-row">
+    <button type="button" class="toy-btn toy-shield" aria-label="🛡️">🛡️</button>
+    <button type="button" class="toy-btn toy-help" aria-label="💝">💝</button>
+  </div>
+  <div class="toy-win" aria-live="polite">😄⚡🎉</div>
+  <button type="button" class="toy-reset" aria-label="↺">↺</button>
+</section>
+<script>
+(function () {
+  var root = document.querySelector('section.toy');
+  if (!root) return;
+  var SLUG = 'protecting-myself-too-much-feels-stuffy';
+  function q(s) { return root.querySelector(s); }
+  function qa(s) { return Array.prototype.slice.call(root.querySelectorAll(s)); }
+  function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  function bop(el, c) { if (!el) return; c = c || 'toy-bop'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function boom(el, list, n) { if (!el || !window.pengessoPop) return; var r = el.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n || 16); }
+  function sget(k) { try { return window.localStorage.getItem('pengesso-toy-' + SLUG + '-' + k); } catch (e) { return null; } }
+  function sset(k, v) { try { window.localStorage.setItem('pengesso-toy-' + SLUG + '-' + k, String(v)); } catch (e) {} }
+  var rings = qa('.toy-ring'), peng = q('.toy-peng'), mood = q('.toy-mood'), nbs = qa('.toy-nb'), air = q('.toy-air'), pow = q('.toy-pow');
+  var shield = q('.toy-shield'), help = q('.toy-help'), win = q('.toy-win'), reset = q('.toy-reset');
+  if (rings.length < 4 || !peng || !mood || nbs.length < 4 || !air || !pow || !shield || !help || !win || !reset) return;
+  var shields, helped, done;
+  function paint() {
+    rings.forEach(function (r, i) { r.classList.toggle('on', 3 - i < shields); });
+    var a = Math.max(5, 100 - shields * 24), p = Math.min(100, 10 + helped * 22.5);
+    air.style.width = a + '%';
+    pow.style.width = p + '%';
+    peng.style.transform = 'scale(' + (1 - shields * 0.09).toFixed(2) + ')';
+    var m = done ? '😄' : shields >= 4 ? '😵' : shields === 3 ? '😣' : shields === 2 ? '😐' : '😊';
+    if (mood.textContent !== m) { mood.textContent = m; bop(mood); }
+    nbs.forEach(function (n, i) { n.classList.toggle('got', i < helped); });
+    shield.disabled = done || shields >= 4;
+    help.disabled = done;
+  }
+  shield.addEventListener('click', function () {
+    if (shields >= 4 || done) return;
+    shields++;
+    paint();
+    bop(peng, 'toy-shake');
+  });
+  help.addEventListener('click', function () {
+    if (done) return;
+    if (shields > 0) shields--;
+    var n = nbs[helped];
+    helped = Math.min(4, helped + 1);
+    paint();
+    if (n) { bop(n); boom(n, ['💝', '✨'], 8); }
+    if (helped >= 4) {
+      shields = 0; done = true;
+      paint();
+      win.classList.remove('on'); void win.offsetWidth; win.classList.add('on');
+      boom(peng, ['⚡', '💝', '😊', '✨'], 18);
+    }
+  });
+  reset.addEventListener('click', function () { shields = 2; helped = 0; done = false; win.classList.remove('on'); paint(); });
+  shields = 2; helped = 0; done = false;
+  paint();
+})();
+</script>
   <a class="next" href="../a-school-felt-like-a-country/index.html">
     <div>
       <div class="next-kicker">NEXT · 27 SEC</div>

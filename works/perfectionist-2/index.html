@@ -279,6 +279,141 @@
       <span class="card-emoji" aria-hidden="true">📌</span>
       <span class="card-label">The Boring Rule</span>
     </div><p>It is not exciting, but this is the rule.<br /> “When I can do XX” will not come.<br /> I should remember only that.<br /> Next, I will write another way.</p></section>
+
+<style>
+.toy{--ta:#bb664f;--tb:#d79d35;--tl:#fbeee0;--tx:#37332f;--td:#89462f;--tk:#35271f}
+.toy{position:relative;box-sizing:border-box;margin:30px 0 12px;padding:14px 14px 18px;border-radius:30px;background:linear-gradient(165deg,var(--tl) 0%,#fff 92%);border:3px solid var(--ta);box-shadow:0 16px 36px rgba(0,0,0,.12);color:var(--tx);text-align:center;font-weight:800;line-height:1.2;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+.toy *,.toy *::before,.toy *::after{box-sizing:border-box}
+.toy .toy-kick{display:inline-block;font-size:30px;line-height:1;margin:0 0 8px;animation:toyKick 1.5s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes toyKick{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-12deg)}}
+.toy button{font-family:inherit;font-weight:900;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:inherit;margin:0;border:0;background:none;padding:0;line-height:1}
+.toy .toy-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:64px;min-height:58px;padding:6px 18px;border-radius:20px;background:var(--ta);color:#fff;font-size:28px;box-shadow:0 5px 0 var(--td);transition:transform .08s,box-shadow .08s,opacity .2s}
+.toy .toy-btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--td)}
+.toy .toy-btn[disabled]{opacity:.38;cursor:default;transform:none;box-shadow:0 5px 0 var(--td)}
+.toy .toy-reset{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#fff;border:3px solid var(--ta);color:var(--ta);font-size:26px;margin-top:14px;transition:transform .2s}
+.toy .toy-reset:active{transform:rotate(-120deg) scale(.92)}
+.toy .toy-n{font-variant-numeric:tabular-nums;font-weight:900}
+.toy .toy-row{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.toy .toy-meter{position:relative;height:20px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden;box-shadow:inset 0 2px 3px rgba(0,0,0,.1)}
+.toy .toy-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--tb),var(--ta));transition:width .35s cubic-bezier(.3,1.4,.5,1)}
+.toy .toy-win{display:block;font-size:40px;line-height:50px;min-height:50px;margin-top:6px;visibility:hidden}
+.toy .toy-win.on{visibility:visible;animation:toyWin .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes toyWin{0%{transform:scale(.2) rotate(-20deg)}100%{transform:scale(1) rotate(0)}}
+.toy .toy-bop{animation:toyBop .38s ease-out}
+@keyframes toyBop{0%{transform:scale(1)}40%{transform:scale(1.28) rotate(-8deg)}100%{transform:scale(1)}}
+.toy .toy-shake{animation:toyShake .42s}
+@keyframes toyShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+html[data-theme="dark"] .toy{background:linear-gradient(165deg,var(--tk) 0%,#1d1e27 92%);color:#f3eff7;border-color:var(--tb);box-shadow:0 16px 36px rgba(0,0,0,.45)}
+html[data-theme="dark"] .toy .toy-reset{background:#262834;color:#fff;border-color:var(--tb)}
+html[data-theme="dark"] .toy .toy-meter{background:rgba(255,255,255,.1)}
+.toy .toy-count{display:flex;justify-content:center;gap:18px;font-size:24px;margin:0 0 10px}
+.toy .toy-pad{position:relative;margin:0 auto;max-width:360px;padding:10px 12px 8px 40px;border-radius:20px;background:#fffdf8 repeating-linear-gradient(180deg,transparent 0,transparent 59px,rgba(100,136,155,.25) 59px,rgba(100,136,155,.25) 61px);background-position:0 8px;border:3px solid #e7d6c2;box-shadow:0 8px 0 rgba(187,102,79,.15);min-height:264px;transition:opacity .4s,transform .4s}
+.toy .toy-pad::before{content:"";position:absolute;left:26px;top:0;bottom:0;width:3px;background:rgba(187,102,79,.35)}
+.toy .toy-item{display:flex;align-items:center;gap:12px;width:100%;height:56px;margin:0 0 5px;padding:0 10px;border-radius:14px;font-size:30px;text-align:left;transition:transform .3s,opacity .3s;animation:toyIn .35s cubic-bezier(.2,1.5,.4,1)}
+.toy .toy-item:active{background:rgba(215,157,53,.15)}
+.toy .toy-item .toy-box{font-size:26px}
+.toy .toy-item.done{opacity:0;transform:translateX(60px) rotate(4deg)}
+@keyframes toyIn{0%{transform:translateY(20px) scale(.8);opacity:0}100%{transform:none;opacity:1}}
+.toy .toy-more{font-size:22px;color:var(--ta);height:28px}
+.toy .toy-pad.gone{opacity:.25;transform:scale(.9) rotate(-3deg)}
+.toy .toy-go{margin-top:16px;min-width:180px;min-height:66px;font-size:36px;border-radius:999px}
+.toy .toy-rocket{display:block;height:64px;font-size:52px;line-height:64px;visibility:hidden}
+.toy .toy-rocket.on{visibility:visible;animation:toyLift 1.4s cubic-bezier(.4,0,.2,1) both}
+@keyframes toyLift{0%{transform:translateY(30px) scale(.6)}40%{transform:translateY(0) scale(1.1)}100%{transform:translateY(-12px) scale(1)}}
+html[data-theme="dark"] .toy .toy-pad{background:#2a2622 repeating-linear-gradient(180deg,transparent 0,transparent 59px,rgba(160,190,205,.18) 59px,rgba(160,190,205,.18) 61px);border-color:#4a3c30;background-position:0 8px}
+@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .toy *,html:not([data-motion="on"]) .toy *::before,html:not([data-motion="on"]) .toy *::after{animation:none !important}}
+html[data-motion="off"] .toy *,html[data-motion="off"] .toy *::before,html[data-motion="off"] .toy *::after{animation:none !important}
+</style>
+<section class="toy" aria-label="👆📝">
+  <div class="toy-kick" aria-hidden="true">👆</div>
+  <div class="toy-count" aria-hidden="true">
+    <span>✅ <span class="toy-n toy-done">0</span></span>
+    <span>📝 <span class="toy-n toy-left">4</span></span>
+  </div>
+  <div class="toy-pad"></div>
+  <button type="button" class="toy-btn toy-go" aria-label="▶️">▶️</button>
+  <div class="toy-rocket" aria-hidden="true">🚀</div>
+  <div class="toy-win" aria-live="polite">🎉🔥🎉</div>
+  <button type="button" class="toy-reset" aria-label="↺">↺</button>
+</section>
+<script>
+(function () {
+  var root = document.querySelector('section.toy');
+  if (!root) return;
+  var SLUG = 'perfectionist-2';
+  function q(s) { return root.querySelector(s); }
+  function qa(s) { return Array.prototype.slice.call(root.querySelectorAll(s)); }
+  function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  function bop(el, c) { if (!el) return; c = c || 'toy-bop'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function boom(el, list, n) { if (!el || !window.pengessoPop) return; var r = el.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n || 16); }
+  function sget(k) { try { return window.localStorage.getItem('pengesso-toy-' + SLUG + '-' + k); } catch (e) { return null; } }
+  function sset(k, v) { try { window.localStorage.setItem('pengesso-toy-' + SLUG + '-' + k, String(v)); } catch (e) {} }
+  var pad = q('.toy-pad'), nDone = q('.toy-done'), nLeft = q('.toy-left'), go = q('.toy-go');
+  var rocket = q('.toy-rocket'), win = q('.toy-win'), reset = q('.toy-reset');
+  if (!pad || !nDone || !nLeft || !go || !rocket || !win || !reset) return;
+  var POOL = ['📏', '🧹', '📚', '🖊️', '🗂️', '💡', '🔌', '🧼', '☕', '🪴', '🧽', '📎', '🖍️', '🔋', '🧺', '📐', '🗒️', '🎧', '🧴', '📦'];
+  var items, done, k, started;
+  function next() { k = (k + 7) % POOL.length; return POOL[k]; }
+  function draw() {
+    pad.textContent = '';
+    items.slice(0, 4).forEach(function (it, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'toy-item';
+      b.setAttribute('aria-label', '⬜' + it);
+      b.setAttribute('data-i', String(i));
+      b.innerHTML = '<span class="toy-box">⬜</span><span>' + it + '</span>';
+      pad.appendChild(b);
+    });
+    var more = document.createElement('div');
+    more.className = 'toy-more';
+    more.setAttribute('aria-hidden', 'true');
+    if (items.length > 4) more.innerHTML = '⋯ +<span class="toy-n">' + (items.length - 4) + '</span>';
+    pad.appendChild(more);
+    nDone.textContent = String(done);
+    nLeft.textContent = String(items.length);
+  }
+  pad.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.toy-item') : null;
+    if (!b || started || b.classList.contains('done')) return;
+    var i = +b.getAttribute('data-i');
+    var box = b.querySelector('.toy-box');
+    if (box) box.textContent = '✅';
+    b.classList.add('done');
+    setTimeout(function () {
+      if (started) return;
+      items.splice(i, 1);
+      done++;
+      items.push(next());
+      if (done % 2 === 1) items.push(next());
+      draw();
+      bop(nLeft.parentNode);
+    }, 260);
+  });
+  go.addEventListener('click', function () {
+    if (started) return;
+    started = true;
+    pad.classList.add('gone');
+    go.disabled = true;
+    rocket.classList.remove('on'); void rocket.offsetWidth; rocket.classList.add('on');
+    setTimeout(function () {
+      win.classList.remove('on'); void win.offsetWidth; win.classList.add('on');
+      boom(rocket, ['🚀', '✨', '🔥', '🎉'], 18);
+    }, still() ? 0 : 500);
+  });
+  function start() {
+    items = []; done = 0; k = 0; started = false;
+    for (var i = 0; i < 4; i++) items.push(next());
+    pad.classList.remove('gone');
+    go.disabled = false;
+    rocket.classList.remove('on');
+    win.classList.remove('on');
+    draw();
+  }
+  reset.addEventListener('click', start);
+  start();
+})();
+</script>
   <a class="next" href="../perfectionist-3/index.html">
     <div>
       <div class="next-kicker">NEXT · 60 SEC</div>

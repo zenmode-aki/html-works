@@ -470,6 +470,101 @@
     </div>
   </section>
 
+
+  <style>
+  .toy { position: relative; margin: 34px 0 0; padding: 20px 14px 22px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fff0e2, #f1e3ff 60%, #ffe9d6); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(0,0,0,.28); font-weight: 800; color: #1d2340; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-top { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 8px 0 14px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 999px; background: #1d2340; color: #fff;
+    font-size: 24px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #0b0f22; }
+  .toy-chip .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-chip.toy-sept { background: #ff8a3d; box-shadow: 0 5px 0 #b8541a; }
+  .toy-chip.toy-all { background: #2fa36b; box-shadow: 0 5px 0 #1b6b45; }
+  .toy-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 96px)); justify-content: center; gap: 10px; }
+  .toy-spot { position: relative; height: 96px; padding: 0; border: 0; border-radius: 20px; cursor: pointer; font: inherit;
+    background: #fff; box-shadow: 0 6px 0 #d6c6ea; overflow: hidden; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s; }
+  .toy-spot:active { transform: translateY(5px); box-shadow: 0 1px 0 #d6c6ea; }
+  .toy-spot .toy-place { position: absolute; left: 50%; top: 50%; font-size: 46px; line-height: 1; transform: translate(-50%, -50%);
+    transition: left .25s, top .25s, font-size .25s; }
+  .toy-spot .toy-poster { position: absolute; right: 8px; top: 8px; width: 54px; height: 66px; display: grid; place-items: center;
+    border-radius: 8px; background: linear-gradient(160deg, #ff8a3d, #c9a0ff); border: 3px solid #fff; box-shadow: 0 4px 8px rgba(29,35,64,.3);
+    font-size: 30px; line-height: 1; visibility: hidden; opacity: 0; transform: rotate(var(--r, 6deg)) scale(1.8);
+    transition: transform .2s cubic-bezier(.5,0,.6,1.6), opacity .1s; }
+  .toy-spot.toy-on .toy-poster { visibility: visible; opacity: 1; transform: rotate(var(--r, 6deg)) scale(1); }
+  .toy-spot.toy-on .toy-place { left: 30%; top: 72%; font-size: 34px; }
+  .toy-spot.toy-on { background: #fff6ec; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #b8541a; background: #fff;
+    box-shadow: 0 4px 0 #d6c6ea; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #d6c6ea; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #2a2236, #262a4a 60%, #33261e); border-color: rgba(255,255,255,.12); color: #f2eaff; }
+  html[data-theme="dark"] .toy-spot { background: #262c4c; box-shadow: 0 6px 0 #0b0f22; }
+  html[data-theme="dark"] .toy-spot.toy-on { background: #3a2c34; }
+  html[data-theme="dark"] .toy-chip { background: #0b0f22; box-shadow: 0 5px 0 #000; }
+  html[data-theme="dark"] .toy-chip.toy-sept { background: #ff8a3d; box-shadow: 0 5px 0 #8a3d10; }
+  html[data-theme="dark"] .toy-chip.toy-all { background: #2fa36b; box-shadow: 0 5px 0 #13492f; }
+  html[data-theme="dark"] .toy-reset { background: #262c4c; color: #ffb27d; box-shadow: 0 4px 0 #0b0f22; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🏅">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-top" aria-live="polite">
+      <span class="toy-chip toy-month"><span class="toy-cal" aria-hidden="true">🗓️</span> <span class="toy-n toy-m">8</span></span>
+      <span class="toy-chip toy-tally">🏅 <span class="toy-n toy-c">0</span>/6</span>
+    </div>
+    <div class="toy-grid">
+      <button type="button" class="toy-spot" aria-label="🏪" style="--r:-7deg"><span class="toy-place">🏪</span><span class="toy-poster">🏅</span></button>
+      <button type="button" class="toy-spot" aria-label="🚉" style="--r:6deg"><span class="toy-place">🚉</span><span class="toy-poster">🏅</span></button>
+      <button type="button" class="toy-spot" aria-label="🏪" style="--r:4deg"><span class="toy-place">🏪</span><span class="toy-poster">🏅</span></button>
+      <button type="button" class="toy-spot" aria-label="🚉" style="--r:-5deg"><span class="toy-place">🚉</span><span class="toy-poster">🏅</span></button>
+      <button type="button" class="toy-spot" aria-label="🗼" style="--r:8deg"><span class="toy-place">🗼</span><span class="toy-poster">🏅</span></button>
+      <button type="button" class="toy-spot" aria-label="🏪" style="--r:-4deg"><span class="toy-place">🏪</span><span class="toy-poster">🏅</span></button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var spots = [].slice.call(box.querySelectorAll('.toy-spot'));
+    var mEl = box.querySelector('.toy-m'), cEl = box.querySelector('.toy-c');
+    var month = box.querySelector('.toy-month'), tally = box.querySelector('.toy-tally'), reset = box.querySelector('.toy-reset');
+    if (!spots.length || !mEl || !cEl || !reset) return;
+    function draw() {
+      var n = spots.filter(function (s) { return s.classList.contains('toy-on'); }).length;
+      cEl.textContent = String(n);
+      mEl.textContent = n ? '9' : '8';
+      if (month) month.classList.toggle('toy-sept', n > 0);
+      if (tally) tally.classList.toggle('toy-all', n === spots.length);
+      return n;
+    }
+    spots.forEach(function (s) {
+      s.addEventListener('click', function () {
+        if (s.classList.contains('toy-on')) return;
+        s.classList.add('toy-on');
+        var n = draw();
+        if (window.pengessoPop) {
+          var r = s.getBoundingClientRect();
+          window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, n === spots.length ? ['🏅', '🎉', '✨', '🗼'] : ['🏅'], n === spots.length ? 18 : 4);
+        }
+      });
+    });
+    reset.addEventListener('click', function () {
+      spots.forEach(function (s) { s.classList.remove('toy-on'); });
+      draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../nishiki-at-6am-full-of-young-people/index.html">
     <div>
       <div class="next-kicker">NEXT · 101 SEC</div>

@@ -544,6 +544,126 @@
   </figure>
   </div>
 
+  <style>
+.toy{--ta:#c9962f;--ts:#f3d488;--tg:#fff4d6;--tk:#322536;position:relative;margin:30px 0 8px;padding:20px 14px 18px;border-radius:30px;background:var(--tbg,linear-gradient(170deg,var(--tg) 0%,#fff 92%));border:3px solid var(--ta);box-shadow:0 9px 0 var(--ts),0 24px 44px rgba(30,20,60,.13);color:var(--tk);font-weight:800;text-align:center;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.toy *{box-sizing:border-box}
+.toy-kick{position:absolute;top:12px;left:14px;font-size:30px;line-height:1;pointer-events:none;animation:toy-kick 1.3s ease-in-out infinite}
+@keyframes toy-kick{0%,100%{transform:translateY(0) rotate(-10deg)}50%{transform:translateY(7px) rotate(-10deg)}}
+.toy button{font-family:inherit;font-weight:900;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;margin:0}
+.toy .toy-reset{position:absolute;top:10px;right:10px;z-index:3;width:50px;height:50px;padding:0;border-radius:50%;border:3px solid var(--ta);background:#fff;color:var(--ta);font-size:26px;line-height:1;transition:transform .3s}
+.toy .toy-reset:active{transform:rotate(-120deg)}
+.toy-n{font-variant-numeric:tabular-nums;font-weight:900}
+html[data-theme="dark"] .toy{background:linear-gradient(170deg,#262236 0%,#17151f 92%);color:#f3eefc;box-shadow:0 9px 0 rgba(0,0,0,.45),0 24px 44px rgba(0,0,0,.35)}
+html[data-theme="dark"] .toy .toy-reset{background:#2b2738;color:#f3eefc}
+@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .toy,html:not([data-motion="on"]) .toy *{animation:none !important;transition:none !important}}
+html[data-motion="off"] .toy,html[data-motion="off"] .toy *{animation:none !important;transition:none !important}
+.toy .toy-head{display:flex;justify-content:center;align-items:center;gap:8px;min-height:52px;margin:0 54px 6px;font-size:26px;line-height:1}
+.toy .toy-sign{display:inline-flex;align-items:center;gap:4px;padding:7px 12px;border-radius:14px;background:#1d2740;color:#ffe08a;font-size:22px;box-shadow:0 4px 0 #0d1322}
+.toy .toy-marks{display:flex;justify-content:center;gap:6px;margin:4px 0 6px;font-size:22px;line-height:1;min-height:28px}
+.toy .toy-marks b{display:inline-block;width:30px;height:30px;line-height:30px;border-radius:9px;background:#fff;border:2px solid var(--ts);font-size:18px}
+.toy .toy-gate{position:relative;height:200px;margin:0 auto;max-width:320px;display:flex;align-items:flex-end;justify-content:center;gap:12px;padding-bottom:10px;border-radius:22px;background:linear-gradient(180deg,#eef5ff,#dfe9f7)}
+.toy .toy-gate::after{content:"";position:absolute;left:10%;right:10%;bottom:6px;height:6px;border-radius:6px;background:#b9c6d8}
+.toy .toy-bot{position:relative;display:flex;flex-direction:column;align-items:center;z-index:1;transition:transform .35s ease-in,opacity .35s}
+.toy .toy-capo{width:22px;height:14px;border-radius:5px 5px 2px 2px;background:#ff6b8b}
+.toy .toy-neck{width:16px;height:10px;background:rgba(255,255,255,.9);border:3px solid #7a8fb0;border-bottom:0}
+.toy .toy-body{position:relative;width:60px;height:100px;border-radius:16px 16px 12px 12px;border:3px solid #7a8fb0;background:rgba(255,255,255,.8);overflow:hidden;transition:width .3s,height .3s}
+.toy .toy-liq{position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(180deg,#9ee6ff,#3fb2f0)}
+.toy .toy-lab{position:absolute;left:4px;right:4px;top:30%;padding:3px 0;border-radius:6px;background:#fff;border:2px solid #ffd166;color:#2c3a5c;font-size:17px;line-height:1.1;z-index:1}
+.toy .toy-in{align-self:center;margin-bottom:24px;padding:6px 10px;border-radius:999px;background:#fff;border:3px solid #3fb2f0;color:#1f6fb0;font-size:20px;line-height:1}
+.toy .toy-bot.toy-gol{transform:translateX(-160px) rotate(-20deg);opacity:0}
+.toy .toy-bot.toy-gor{transform:translateX(160px) rotate(20deg);opacity:0}
+.toy .toy-bot.toy-new{animation:toy-new .35s cubic-bezier(.3,1.5,.5,1)}
+@keyframes toy-new{from{transform:translateY(-40px) scale(.6);opacity:0}}
+.toy .toy-gate.toy-no{animation:toy-no .4s}
+@keyframes toy-no{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.toy .toy-end{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;font-size:54px;line-height:1;visibility:hidden}
+.toy.toy-done .toy-end{visibility:visible;animation:toy-new .5s cubic-bezier(.3,1.5,.5,1)}
+.toy.toy-done .toy-bot,.toy.toy-done .toy-in{visibility:hidden}
+.toy .toy-end .toy-sc{font-size:34px;color:var(--ta)}
+.toy .toy-btns{display:flex;justify-content:center;gap:14px;margin-top:14px}
+.toy .toy-b{flex:1;max-width:150px;height:68px;border-radius:22px;border:3px solid #fff;font-size:38px;line-height:1}
+.toy .toy-ok{background:#2fbf71;box-shadow:0 6px 0 #1b7a47}
+.toy .toy-ng{background:#ff5a4f;box-shadow:0 6px 0 #a3302a}
+.toy .toy-b:active{transform:translateY(4px);box-shadow:none}
+.toy .toy-b[disabled]{opacity:.4}
+html[data-theme="dark"] .toy .toy-gate{background:linear-gradient(180deg,#2a3550,#1f2840)}
+html[data-theme="dark"] .toy .toy-marks b,html[data-theme="dark"] .toy .toy-in{background:#2b2738}
+html[data-theme="dark"] .toy .toy-body{background:rgba(255,255,255,.12)}
+</style>
+<section class="toy" aria-label="👆🧴">
+  <button type="button" class="toy-reset" aria-label="↺">↺</button>
+  <div class="toy-kick" aria-hidden="true">👆</div>
+  <div class="toy-head" aria-hidden="true"><span class="toy-sign">🧴 ≤ <span class="toy-n">100</span></span></div>
+  <div class="toy-marks" aria-hidden="true"><b></b><b></b><b></b><b></b><b></b></div>
+  <div class="toy-gate" aria-hidden="true">
+    <div class="toy-bot"><i class="toy-capo"></i><i class="toy-neck"></i><div class="toy-body"><i class="toy-liq"></i><span class="toy-lab"><span class="toy-n toy-cap">150</span></span></div></div>
+    <span class="toy-in">💧<span class="toy-n toy-amt">50</span></span>
+    <div class="toy-end"><span>✈️</span><span class="toy-sc">⭐<span class="toy-n toy-score">0</span>/5</span></div>
+  </div>
+  <div class="toy-btns">
+    <button type="button" class="toy-b toy-ok" aria-label="✅">✅</button>
+    <button type="button" class="toy-b toy-ng" aria-label="🛑">🛑</button>
+  </div>
+</section>
+<script>
+(function () {
+  var root = document.querySelector('.toy');
+  if (!root) return;
+  var q = function (s) { return root.querySelector(s); };
+  var bot = q('.toy-bot'), body = q('.toy-body'), liq = q('.toy-liq'), cap = q('.toy-cap'), amt = q('.toy-amt'),
+    gate = q('.toy-gate'), score = q('.toy-score'), ok = q('.toy-ok'), ng = q('.toy-ng'), reset = q('.toy-reset');
+  var marks = [].slice.call(root.querySelectorAll('.toy-marks b'));
+  if (!bot || !body || !liq || !cap || !amt || !gate || !score || !ok || !ng || !reset || marks.length !== 5) return;
+  var ITEMS = [[150, 50], [100, 100], [200, 20], [50, 30], [120, 90]];
+  var i = 0, good = 0, busy = false;
+  function bump(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function show() {
+    var it = ITEMS[i];
+    body.style.height = Math.round(48 + it[0] * 0.48) + 'px';
+    body.style.width = Math.round(44 + it[0] * 0.13) + 'px';
+    liq.style.height = Math.round(it[1] / it[0] * 100) + '%';
+    cap.textContent = String(it[0]);
+    amt.textContent = String(it[1]);
+    bot.classList.remove('toy-gol', 'toy-gor');
+    bump(bot, 'toy-new');
+  }
+  function answer(sayOk) {
+    if (busy || i >= ITEMS.length) return;
+    busy = true;
+    var right = ITEMS[i][0] <= 100;
+    var hit = sayOk === right;
+    if (hit) good++;
+    marks[i].textContent = hit ? '✅' : '❌';
+    if (!hit) bump(gate, 'toy-no');
+    bot.classList.add(right ? 'toy-gol' : 'toy-gor');
+    var b = (sayOk ? ok : ng).getBoundingClientRect();
+    if (window.pengessoPop) window.pengessoPop(b.left + b.width / 2, b.top, hit ? ['✨', right ? '✅' : '🛑'] : ['💦'], hit ? 8 : 4);
+    setTimeout(function () {
+      i++;
+      busy = false;
+      score.textContent = String(good);
+      if (i >= ITEMS.length) {
+        root.classList.add('toy-done');
+        ok.disabled = ng.disabled = true;
+        var g = gate.getBoundingClientRect();
+        if (window.pengessoPop) window.pengessoPop(g.left + g.width / 2, g.top + g.height / 2, ['✈️', '🧴', '⭐', '✨'], 18);
+      } else show();
+    }, hit ? 420 : 900);
+  }
+  ok.addEventListener('click', function () { answer(true); });
+  ng.addEventListener('click', function () { answer(false); });
+  reset.addEventListener('click', function () {
+    i = 0; good = 0; busy = false;
+    marks.forEach(function (m) { m.textContent = ''; });
+    root.classList.remove('toy-done');
+    ok.disabled = ng.disabled = false;
+    score.textContent = '0';
+    show();
+  });
+  show();
+})();
+</script>
+
   <a class="next" href="../i-got-my-name-wrong-on-a-plane-ticket/index.html">
     <div>
       <div class="next-kicker">NEXT · 34 SEC</div>

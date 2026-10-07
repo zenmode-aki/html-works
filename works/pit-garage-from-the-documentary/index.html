@@ -545,6 +545,147 @@
   </section>
   </div>
 
+
+<style>
+.toy{--ta:#d0271d;--tb:#ff8a7a;--tl:#ffe4df;--tx:#2e2222;--td:#8c1a13;--tk:#3a2222}
+.toy{position:relative;box-sizing:border-box;margin:30px 0 12px;padding:14px 14px 18px;border-radius:30px;background:linear-gradient(165deg,var(--tl) 0%,#fff 92%);border:3px solid var(--ta);box-shadow:0 16px 36px rgba(0,0,0,.12);color:var(--tx);text-align:center;font-weight:800;line-height:1.2;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+.toy *,.toy *::before,.toy *::after{box-sizing:border-box}
+.toy .toy-kick{display:inline-block;font-size:30px;line-height:1;margin:0 0 8px;animation:toyKick 1.5s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes toyKick{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-12deg)}}
+.toy button{font-family:inherit;font-weight:900;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:inherit;margin:0;border:0;background:none;padding:0;line-height:1}
+.toy .toy-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:64px;min-height:58px;padding:6px 18px;border-radius:20px;background:var(--ta);color:#fff;font-size:28px;box-shadow:0 5px 0 var(--td);transition:transform .08s,box-shadow .08s,opacity .2s}
+.toy .toy-btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--td)}
+.toy .toy-btn[disabled]{opacity:.38;cursor:default;transform:none;box-shadow:0 5px 0 var(--td)}
+.toy .toy-reset{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#fff;border:3px solid var(--ta);color:var(--ta);font-size:26px;margin-top:14px;transition:transform .2s}
+.toy .toy-reset:active{transform:rotate(-120deg) scale(.92)}
+.toy .toy-n{font-variant-numeric:tabular-nums;font-weight:900}
+.toy .toy-row{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.toy .toy-meter{position:relative;height:20px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden;box-shadow:inset 0 2px 3px rgba(0,0,0,.1)}
+.toy .toy-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--tb),var(--ta));transition:width .35s cubic-bezier(.3,1.4,.5,1)}
+.toy .toy-win{display:block;font-size:40px;line-height:50px;min-height:50px;margin-top:6px;visibility:hidden}
+.toy .toy-win.on{visibility:visible;animation:toyWin .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes toyWin{0%{transform:scale(.2) rotate(-20deg)}100%{transform:scale(1) rotate(0)}}
+.toy .toy-bop{animation:toyBop .38s ease-out}
+@keyframes toyBop{0%{transform:scale(1)}40%{transform:scale(1.28) rotate(-8deg)}100%{transform:scale(1)}}
+.toy .toy-shake{animation:toyShake .42s}
+@keyframes toyShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+html[data-theme="dark"] .toy{background:linear-gradient(165deg,var(--tk) 0%,#1d1e27 92%);color:#f3eff7;border-color:var(--tb);box-shadow:0 16px 36px rgba(0,0,0,.45)}
+html[data-theme="dark"] .toy .toy-reset{background:#262834;color:#fff;border-color:var(--tb)}
+html[data-theme="dark"] .toy .toy-meter{background:rgba(255,255,255,.1)}
+.toy .toy-board{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:12px;background:#2e2222;color:#fff;font-size:22px;margin-bottom:10px;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.toy .toy-board .toy-n{color:#ffd54d;font-size:26px}
+.toy .toy-pit{position:relative;margin:0 auto;max-width:360px;height:220px;border-radius:24px;overflow:hidden;background:repeating-linear-gradient(90deg,#d7d9de 0 38px,#cfd1d7 38px 40px);border:3px solid #b9bcc4}
+.toy .toy-pit::before{content:"";position:absolute;left:0;right:0;top:50%;height:4px;margin-top:-2px;background:repeating-linear-gradient(90deg,#fff 0 18px,transparent 18px 34px);opacity:.8}
+.toy .toy-car{position:absolute;left:50%;top:50%;width:120px;margin:-40px 0 0 -60px;font-size:80px;line-height:1;transform:translateX(340px);transition:transform .6s cubic-bezier(.2,.9,.3,1)}
+.toy .toy-car.in{transform:translateX(0)}
+.toy .toy-car.out{transform:translateX(-360px);transition:transform .5s cubic-bezier(.6,0,.9,.6)}
+.toy .toy-tire{position:absolute;width:62px;height:62px;border-radius:50%;background:#fff;border:3px solid #9aa0aa;font-size:34px;box-shadow:0 4px 0 rgba(0,0,0,.18);transition:transform .15s,background .2s,border-color .2s,opacity .2s}
+.toy .toy-tire[disabled]{opacity:.45}
+.toy .toy-tire.old{filter:grayscale(1)}
+.toy .toy-tire.new{background:#e9f9ec;border-color:#2fa84f;transform:scale(1.06)}
+.toy .toy-tire.new::after{content:"✓";position:absolute;right:-4px;top:-6px;width:24px;height:24px;border-radius:50%;background:#2fa84f;color:#fff;font-size:15px;line-height:24px}
+.toy .toy-tire.a{left:12px;top:12px}
+.toy .toy-tire.b{right:12px;top:12px}
+.toy .toy-tire.c{left:12px;bottom:12px}
+.toy .toy-tire.d{right:12px;bottom:12px}
+.toy .toy-clock{display:flex;justify-content:center;align-items:center;gap:18px;margin:14px 0 12px;font-size:28px}
+.toy .toy-clock .toy-best{font-size:20px;opacity:.85}
+.toy .toy-go{min-width:150px;font-size:34px;border-radius:999px}
+html[data-theme="dark"] .toy .toy-pit{background:repeating-linear-gradient(90deg,#3a3d46 0 38px,#353841 38px 40px);border-color:#4b4f5a}
+html[data-theme="dark"] .toy .toy-tire{background:#262834;border-color:#6b7180}
+html[data-theme="dark"] .toy .toy-tire.new{background:#1f3a27;border-color:#4cd27a}
+html[data-theme="dark"] .toy .toy-board{background:#14161c}
+@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .toy *,html:not([data-motion="on"]) .toy *::before,html:not([data-motion="on"]) .toy *::after{animation:none !important}}
+html[data-motion="off"] .toy *,html[data-motion="off"] .toy *::before,html[data-motion="off"] .toy *::after{animation:none !important}
+</style>
+<section class="toy" aria-label="👆🏎️🛞">
+  <div class="toy-kick" aria-hidden="true">👆</div>
+  <div><span class="toy-board" aria-hidden="true">🛠️ <span class="toy-n">36</span></span></div>
+  <div class="toy-pit">
+    <span class="toy-car" aria-hidden="true">🏎️</span>
+    <button type="button" class="toy-tire a old" aria-label="🛞" disabled>🛞</button>
+    <button type="button" class="toy-tire b old" aria-label="🛞" disabled>🛞</button>
+    <button type="button" class="toy-tire c old" aria-label="🛞" disabled>🛞</button>
+    <button type="button" class="toy-tire d old" aria-label="🛞" disabled>🛞</button>
+  </div>
+  <div class="toy-clock" aria-live="polite"><span>⏱️ <span class="toy-n toy-t">0.00</span></span><span class="toy-best">🏆 <span class="toy-n toy-b">-.--</span></span></div>
+  <button type="button" class="toy-btn toy-go" aria-label="🚦">🚦</button>
+  <div class="toy-win" aria-live="polite">🏁🎉</div>
+  <button type="button" class="toy-reset" aria-label="↺">↺</button>
+</section>
+<script>
+(function () {
+  var root = document.querySelector('section.toy');
+  if (!root) return;
+  var SLUG = 'pit-garage-from-the-documentary';
+  function q(s) { return root.querySelector(s); }
+  function qa(s) { return Array.prototype.slice.call(root.querySelectorAll(s)); }
+  function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  function bop(el, c) { if (!el) return; c = c || 'toy-bop'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function boom(el, list, n) { if (!el || !window.pengessoPop) return; var r = el.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n || 16); }
+  function sget(k) { try { return window.localStorage.getItem('pengesso-toy-' + SLUG + '-' + k); } catch (e) { return null; } }
+  function sset(k, v) { try { window.localStorage.setItem('pengesso-toy-' + SLUG + '-' + k, String(v)); } catch (e) {} }
+  var car = q('.toy-car'), tires = qa('.toy-tire'), tEl = q('.toy-t'), bEl = q('.toy-b'), go = q('.toy-go'), win = q('.toy-win'), reset = q('.toy-reset');
+  if (!car || tires.length < 4 || !tEl || !bEl || !go || !win || !reset) return;
+  var t0 = 0, timer = 0, left = 0, best = parseFloat(sget('best')) || 0, busy = false;
+  function showBest() { bEl.textContent = best ? best.toFixed(2) : '-.--'; }
+  function stopClock() { if (timer) { clearInterval(timer); timer = 0; } }
+  function setTires(on) { tires.forEach(function (b) { b.disabled = !on; }); }
+  function idle() {
+    stopClock(); busy = false; left = 0;
+    car.style.transition = 'none';
+    car.classList.remove('in', 'out');
+    void car.offsetWidth;
+    car.style.transition = '';
+    tires.forEach(function (b) { b.classList.add('old'); b.classList.remove('new'); b.textContent = '🛞'; });
+    setTires(false);
+    go.disabled = false;
+    tEl.textContent = '0.00';
+    win.classList.remove('on');
+  }
+  go.addEventListener('click', function () {
+    if (busy) return;
+    idle();
+    busy = true;
+    go.disabled = true;
+    void car.offsetWidth;
+    car.classList.add('in');
+    setTimeout(function () {
+      if (!busy) return;
+      left = 4;
+      setTires(true);
+      bop(car);
+      t0 = Date.now();
+      timer = setInterval(function () { tEl.textContent = ((Date.now() - t0) / 1000).toFixed(2); }, 40);
+    }, still() ? 50 : 600);
+  });
+  tires.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (!busy || !left || b.classList.contains('new')) return;
+      b.classList.remove('old');
+      b.classList.add('new');
+      bop(b);
+      left--;
+      if (left > 0) return;
+      stopClock();
+      var t = (Date.now() - t0) / 1000;
+      tEl.textContent = t.toFixed(2);
+      setTires(false);
+      car.classList.add('out');
+      var rec = !best || t < best;
+      if (rec) { best = t; sset('best', t.toFixed(2)); showBest(); bop(bEl.parentNode); }
+      win.textContent = rec ? '🏁🏆🎉' : '🏁🎉';
+      win.classList.remove('on'); void win.offsetWidth; win.classList.add('on');
+      boom(win, ['🏁', '🛞', '✨', '🏎️'], 18);
+      busy = false;
+      go.disabled = false;
+    });
+  });
+  reset.addEventListener('click', idle);
+  showBest();
+  idle();
+})();
+</script>
   <a class="next" href="../suzuka-circuit-cute-characters/index.html">
     <div>
       <div class="next-kicker">NEXT · 4 SEC</div>

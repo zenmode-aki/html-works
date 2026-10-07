@@ -587,6 +587,122 @@
   </section>
   </div>
 
+
+  <style>
+  .toy { position: relative; margin: 34px 0 0; padding: 20px 14px 22px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #dcecff, #c5ddff 55%, #eef6ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(47,103,201,.22); font-weight: 800; color: #1f2d44; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-scene { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 12px; }
+  .toy-phonewrap { position: relative; display: flex; align-items: center; }
+  .toy-phone { position: relative; width: 104px; height: 196px; border-radius: 24px; background: #1f2d44; padding: 9px;
+    box-shadow: 0 7px 0 #0e1626; }
+  .toy-screen { position: relative; height: 100%; border-radius: 16px; background: #2a3a55; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; transition: background .2s; }
+  .toy-card { font-size: 44px; line-height: 1; opacity: .25; transform: translateY(14px) scale(.9);
+    transition: opacity .2s, transform .3s cubic-bezier(.3,1.5,.5,1); }
+  .toy-step { font-size: 22px; font-weight: 900; color: #8cc4ff; line-height: 1; min-height: 24px; }
+  .toy-phone.toy-one .toy-screen { background: #3d5f96; }
+  .toy-phone.toy-one .toy-card { opacity: .8; transform: none; }
+  .toy-phone.toy-ok .toy-screen { background: #23a477; }
+  .toy-phone.toy-ok .toy-card { opacity: 1; transform: translateY(-4px) scale(1.08); }
+  .toy-phone.toy-ok .toy-step { color: #fff; }
+  .toy-side { position: relative; z-index: 2; width: 50px; height: 92px; margin-left: -12px; padding: 0 0 0 10px; border: 0;
+    border-radius: 0 18px 18px 0; cursor: pointer; font: inherit; font-size: 18px; font-weight: 900; color: #fff; background: #2f67c9;
+    box-shadow: 4px 6px 0 #1d438a; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .07s, box-shadow .07s; }
+  .toy-side:active { transform: translateX(-5px); box-shadow: 1px 4px 0 #1d438a; }
+  .toy-doorway { position: relative; width: 116px; height: 196px; border-radius: 14px 14px 6px 6px; perspective: 520px;
+    background: linear-gradient(#fffbe9, #ffeec2); box-shadow: inset 0 0 0 6px #8a5a3c, 0 7px 0 #5e3b25;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+  .toy-inside { font-size: 40px; line-height: 1; }
+  .toy-inside.toy-small { font-size: 30px; }
+  .toy-door { position: absolute; inset: 6px; border-radius: 10px 10px 2px 2px; background: linear-gradient(90deg, #c98b5c, #b0744a);
+    transform-origin: left center; transition: transform .7s cubic-bezier(.3,1.1,.4,1); box-shadow: inset 0 0 0 4px rgba(0,0,0,.08); }
+  .toy-door::before { content: ""; position: absolute; left: 14px; right: 14px; top: 16px; height: 62px; border-radius: 8px; border: 4px solid rgba(0,0,0,.12); }
+  .toy-door::after { content: ""; position: absolute; right: 12px; top: 50%; width: 14px; height: 14px; border-radius: 50%; background: #ffd34d; box-shadow: 0 2px 0 #b08a1a; }
+  .toy-doorway.toy-open .toy-door { transform: rotateY(-78deg); }
+  .toy-lock { position: absolute; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 26px; line-height: 1; transition: opacity .2s; }
+  .toy-doorway.toy-open .toy-lock { opacity: 0; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #2f67c9; background: #fff;
+    box-shadow: 0 4px 0 #a9c8f0; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #a9c8f0; }
+  .toy-shake { animation: toy-shake .35s ease-in-out; }
+  @keyframes toy-shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #1a2a44, #1f3354 55%, #16203a); border-color: rgba(255,255,255,.12); color: #e6efff; }
+  html[data-theme="dark"] .toy-doorway { background: linear-gradient(#3a3624, #3f3420); }
+  html[data-theme="dark"] .toy-reset { background: #22324c; color: #8cc4ff; box-shadow: 0 4px 0 #0c1424; }
+  html[data-theme="dark"] .toy-phone { background: #0c1424; box-shadow: 0 7px 0 #000; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-shake { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-shake { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆📱">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆👆</div>
+    <div class="toy-scene">
+      <div class="toy-phonewrap">
+        <div class="toy-phone" aria-hidden="true">
+          <div class="toy-screen"><span class="toy-card">💳</span><span class="toy-step">×2</span></div>
+        </div>
+        <button type="button" class="toy-side" aria-label="📱 ×2">×2</button>
+      </div>
+      <div class="toy-doorway" aria-hidden="true">
+        <span class="toy-inside">🐧</span>
+        <span class="toy-inside toy-small">🌍</span>
+        <span class="toy-door"></span>
+        <span class="toy-lock">🔒</span>
+      </div>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var phone = box.querySelector('.toy-phone'), step = box.querySelector('.toy-step');
+    var side = box.querySelector('.toy-side'), way = box.querySelector('.toy-doorway'), reset = box.querySelector('.toy-reset');
+    if (!phone || !step || !side || !way || !reset) return;
+    var last = 0, timer = 0, open = false;
+    function idle() {
+      phone.classList.remove('toy-one');
+      step.textContent = '×2';
+    }
+    side.addEventListener('click', function () {
+      if (open) return;
+      var now = Date.now();
+      clearTimeout(timer);
+      if (now - last < 700) {
+        open = true; last = 0;
+        phone.classList.remove('toy-one');
+        phone.classList.add('toy-ok');
+        step.textContent = '✓';
+        way.classList.add('toy-open');
+        if (window.pengessoPop) {
+          var r = way.getBoundingClientRect();
+          window.pengessoPop(r.left + r.width / 2, r.top + r.height / 3, ['🚪', '💳', '✨', '🎉'], 16);
+        }
+        return;
+      }
+      last = now;
+      phone.classList.add('toy-one');
+      step.textContent = '1/2';
+      timer = setTimeout(function () {
+        idle();
+        way.classList.remove('toy-shake'); void way.offsetWidth; way.classList.add('toy-shake');
+      }, 700);
+    });
+    reset.addEventListener('click', function () {
+      open = false; last = 0; clearTimeout(timer);
+      phone.classList.remove('toy-ok');
+      way.classList.remove('toy-open', 'toy-shake');
+      idle();
+    });
+  })();
+  </script>
+
   <a class="next" href="../trampoline-45-minutes-not-5/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>

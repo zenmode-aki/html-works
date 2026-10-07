@@ -578,6 +578,108 @@
   </section>
   </div>
 
+
+  <style>
+  .toy { position: relative; margin: 34px 0 0; padding: 20px 14px 22px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #e3e6ff, #d3d8ff 55%, #eef0ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(59,63,158,.22); font-weight: 800; color: #23243a; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-scene { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 10px; }
+  .toy-rack { width: 128px; padding: 10px; border-radius: 16px; background: #23243a; box-shadow: 0 7px 0 #101122; }
+  .toy-unit { display: flex; align-items: center; gap: 8px; height: 26px; margin: 6px 0; padding: 0 10px; border-radius: 8px;
+    background: #34365a; transition: background .25s; }
+  .toy-unit:first-child { margin-top: 0; }
+  .toy-unit:last-child { margin-bottom: 0; }
+  .toy-led { width: 12px; height: 12px; border-radius: 50%; background: #55587e; transition: background .25s, box-shadow .25s; }
+  .toy-slot { flex: 1; height: 6px; border-radius: 3px; background: #2a2c4a; }
+  .toy-unit.toy-on { background: #3b3f9e; }
+  .toy-unit.toy-on .toy-led { background: #76f2a6; box-shadow: 0 0 10px 2px rgba(118,242,166,.75); }
+  .toy-unit.toy-on .toy-slot { background: linear-gradient(90deg, #9aa8ff, #76f2a6); }
+  .toy-face { font-size: 78px; line-height: 1; }
+  .toy-face.toy-bump { animation: toy-bump .35s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2) rotate(6deg); } }
+  .toy-count { display: flex; align-items: center; justify-content: center; gap: 8px; max-width: 100%; margin: 16px auto 0; padding: 10px 14px;
+    border-radius: 18px; background: #23243a; color: #fff; box-shadow: 0 6px 0 #101122; }
+  .toy-count .toy-brain { font-size: 26px; line-height: 1; }
+  .toy-count .toy-n { font-size: clamp(19px, 6.4vw, 30px); font-weight: 900; letter-spacing: -.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .toy-count.toy-max { background: #2a9f6a; box-shadow: 0 6px 0 #17663f; }
+  .toy-go { display: inline-flex; align-items: center; justify-content: center; min-width: 150px; min-height: 66px; margin-top: 18px;
+    padding: 8px 26px; border: 0; border-radius: 24px; cursor: pointer; font: inherit; font-size: 32px; font-weight: 900; line-height: 1;
+    color: #fff; background: #3b3f9e; box-shadow: 0 7px 0 #22256a; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .07s, box-shadow .07s; }
+  .toy-go:active { transform: translateY(6px); box-shadow: 0 1px 0 #22256a; }
+  .toy-go[disabled] { background: #2a9f6a; box-shadow: 0 7px 0 #17663f; cursor: default; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #3b3f9e; background: #fff;
+    box-shadow: 0 4px 0 #b6bdf0; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #b6bdf0; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #1f2146, #262a5a 55%, #1a1b36); border-color: rgba(255,255,255,.12); color: #e9eaff; }
+  html[data-theme="dark"] .toy-rack, html[data-theme="dark"] .toy-count { background: #0f1024; box-shadow: 0 7px 0 #000; }
+  html[data-theme="dark"] .toy-reset { background: #2a2c4a; color: #9aa8ff; box-shadow: 0 4px 0 #0f1024; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-face { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-face { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🧠">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-scene" aria-hidden="true">
+      <div class="toy-rack">
+        <div class="toy-unit"><span class="toy-led"></span><span class="toy-slot"></span></div>
+        <div class="toy-unit"><span class="toy-led"></span><span class="toy-slot"></span></div>
+        <div class="toy-unit"><span class="toy-led"></span><span class="toy-slot"></span></div>
+        <div class="toy-unit"><span class="toy-led"></span><span class="toy-slot"></span></div>
+        <div class="toy-unit"><span class="toy-led"></span><span class="toy-slot"></span></div>
+      </div>
+      <div class="toy-face">😐</div>
+    </div>
+    <div class="toy-count" aria-live="polite"><span class="toy-brain" aria-hidden="true">🧠</span><span class="toy-n">1</span></div>
+    <button type="button" class="toy-go" aria-label="×10">×10</button>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var units = [].slice.call(box.querySelectorAll('.toy-unit'));
+    var face = box.querySelector('.toy-face'), num = box.querySelector('.toy-n'), count = box.querySelector('.toy-count');
+    var go = box.querySelector('.toy-go'), reset = box.querySelector('.toy-reset');
+    if (!units.length || !face || !num || !go || !reset) return;
+    var MAX = 11, e = 0;
+    var FACES = ['😐', '🙂', '😃', '😄', '😍', '🤩'];
+    function fmt(k) {
+      var s = '1';
+      for (var i = 0; i < k; i++) s += '0';
+      return s.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    function draw(bump) {
+      num.textContent = fmt(e);
+      var lit = Math.ceil(e / MAX * units.length);
+      units.forEach(function (u, i) { u.classList.toggle('toy-on', (units.length - 1 - i) < lit); });
+      var f = FACES[Math.min(FACES.length - 1, Math.floor(e / MAX * (FACES.length - 1)))];
+      if (face.textContent !== f) face.textContent = f;
+      var done = e >= MAX;
+      go.disabled = done;
+      go.textContent = done ? '✨' : '×10';
+      if (count) count.classList.toggle('toy-max', done);
+      if (bump) { face.classList.remove('toy-bump'); void face.offsetWidth; face.classList.add('toy-bump'); }
+    }
+    go.addEventListener('click', function () {
+      if (e >= MAX) return;
+      e += 1;
+      draw(true);
+      if (e >= MAX && window.pengessoPop) {
+        var r = face.getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🤩', '✨', '🧠', '💻'], 18);
+      }
+    });
+    reset.addEventListener('click', function () { e = 0; draw(false); });
+    draw(false);
+  })();
+  </script>
+
   <a class="next" href="../no-beer-after-9-at-seven-eleven/index.html">
     <div>
       <div class="next-kicker">NEXT · 65 SEC</div>

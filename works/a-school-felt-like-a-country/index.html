@@ -511,6 +511,96 @@
   </section>
   </div>
 
+
+  <style>
+  .toy { position: relative; margin: 34px 0 0; padding: 20px 16px 22px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #d9f7e8, #bff0da 55%, #eafaf3); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(31,154,120,.22); font-weight: 800; color: #12392f; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-book { position: relative; width: min(300px, 100%); margin: 10px auto 0; padding: 16px 14px 14px; border-radius: 18px 26px 26px 18px;
+    background: #fffdf5; border: 3px solid #1f9a78; box-shadow: -8px 8px 0 #1f9a78, -8px 8px 0 3px #12392f; }
+  .toy-book::before { content: ""; position: absolute; left: 10px; top: 12px; bottom: 12px; width: 3px; border-radius: 3px; background: rgba(31,154,120,.25); }
+  .toy-head { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 30px; line-height: 1; margin-bottom: 10px; }
+  .toy-head .toy-eq { font-size: 24px; font-weight: 900; color: #1f9a78; }
+  .toy-slots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding-left: 10px; }
+  .toy-slot { position: relative; width: 96px; height: 96px; margin: 0 auto; border-radius: 50%; border: 3px dashed rgba(31,154,120,.35); }
+  .toy-ink { position: absolute; inset: 4px; display: grid; place-items: center; border-radius: 50%; font-size: 40px; line-height: 1;
+    border: 4px solid var(--ink, #e0565b); box-shadow: inset 0 0 0 3px #fffdf5, inset 0 0 0 6px var(--ink, #e0565b);
+    background: #fffdf5; background: color-mix(in srgb, var(--ink, #e0565b) 12%, #fffdf5);
+    visibility: hidden; opacity: 0; transform: scale(1.9) rotate(var(--rot, -8deg)); transition: transform .22s cubic-bezier(.5,0,.6,1.6), opacity .12s; }
+  .toy-slot.toy-on { border-color: transparent; }
+  .toy-slot.toy-on .toy-ink { visibility: visible; opacity: 1; transform: scale(1) rotate(var(--rot, -8deg)); }
+  .toy-book.toy-thump { animation: toy-thump .25s ease-out; }
+  @keyframes toy-thump { 40% { transform: translateY(4px) scale(.985); } }
+  .toy-row { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 20px; }
+  .toy-go { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 150px; min-height: 66px;
+    padding: 8px 24px; border: 0; border-radius: 24px; cursor: pointer; font: inherit; font-size: 34px; font-weight: 900; line-height: 1;
+    color: #fff; background: #1f9a78; box-shadow: 0 7px 0 #136650; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s; }
+  .toy-go:active { transform: translateY(6px); box-shadow: 0 1px 0 #136650; }
+  .toy-go[disabled] { background: #f2b33d; box-shadow: 0 7px 0 #b07c16; cursor: default; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #1f9a78; background: #fff;
+    box-shadow: 0 4px 0 #a7dcc6; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #a7dcc6; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #173a30, #1c4438 55%, #142c26); border-color: rgba(255,255,255,.12); color: #e3fff3; }
+  html[data-theme="dark"] .toy-book { background: #22302c; box-shadow: -8px 8px 0 #1f9a78, -8px 8px 0 3px #0b1f19; }
+  html[data-theme="dark"] .toy-ink { background: color-mix(in srgb, var(--ink, #e0565b) 22%, #22302c); box-shadow: inset 0 0 0 3px #22302c, inset 0 0 0 6px var(--ink, #e0565b); }
+  html[data-theme="dark"] .toy-reset { background: #22302c; color: #6fcf9f; box-shadow: 0 4px 0 #0b1f19; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-book { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-book { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🛬">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-book" aria-hidden="true">
+      <div class="toy-head"><span class="toy-flag">🏫</span><span class="toy-eq">=</span><span class="toy-globe">🌍</span><span class="toy-q">❔</span></div>
+      <div class="toy-slots">
+        <div class="toy-slot" style="--ink:#e0565b;--rot:-9deg"><span class="toy-ink">🏫</span></div>
+        <div class="toy-slot" style="--ink:#2f67c9;--rot:7deg"><span class="toy-ink">🎪</span></div>
+        <div class="toy-slot" style="--ink:#1f9a78;--rot:5deg"><span class="toy-ink">📜</span></div>
+        <div class="toy-slot" style="--ink:#b06ad9;--rot:-6deg"><span class="toy-ink">🐦</span></div>
+      </div>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-go" aria-label="🛬">🛬</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var slots = [].slice.call(box.querySelectorAll('.toy-slot'));
+    var book = box.querySelector('.toy-book'), go = box.querySelector('.toy-go'), reset = box.querySelector('.toy-reset');
+    var q = box.querySelector('.toy-q');
+    if (!slots.length || !book || !go || !reset) return;
+    var n = 0;
+    function draw() {
+      slots.forEach(function (s, i) { s.classList.toggle('toy-on', i < n); });
+      var done = n >= slots.length;
+      go.disabled = done;
+      go.textContent = done ? '🎉' : '🛬';
+      if (q) q.textContent = done ? '✅' : '❔';
+    }
+    go.addEventListener('click', function () {
+      if (n >= slots.length) return;
+      n += 1;
+      draw();
+      book.classList.remove('toy-thump'); void book.offsetWidth; book.classList.add('toy-thump');
+      if (n >= slots.length && window.pengessoPop) {
+        var r = book.getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 3, ['🏫', '🎪', '🐦', '✨'], 18);
+      }
+    });
+    reset.addEventListener('click', function () { n = 0; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../the-instagram-post-that-got-to-me/index.html">
     <div>
       <div class="next-kicker">NEXT · 95 SEC</div>

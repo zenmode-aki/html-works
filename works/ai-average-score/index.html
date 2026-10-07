@@ -423,6 +423,147 @@
     </p>
   </section>
 
+
+  <style>
+  .toy { position: relative; margin: 34px 0 0; padding: 20px 16px 22px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #efe9ff, #ffe3f0 60%, #fff6e0); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(122,92,240,.22); font-weight: 800; color: #2b2140; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-score { display: inline-flex; align-items: center; gap: 12px; margin: 8px 0 14px; padding: 8px 22px; border-radius: 22px;
+    background: #2b2140; color: #fff; box-shadow: 0 6px 0 #160f24; }
+  .toy-score .toy-bot { font-size: 40px; line-height: 1; }
+  .toy-score .toy-n { min-width: 3ch; font-size: 46px; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; }
+  .toy-score.toy-win { background: #23c98a; box-shadow: 0 6px 0 #138a5c; }
+  .toy-gauge { position: relative; height: 92px; max-width: 380px; margin: 0 auto; }
+  .toy-track { position: absolute; left: 14px; right: 14px; top: 40px; height: 18px; border-radius: 99px;
+    background: linear-gradient(90deg, #ffd0e4, #e2dafc 35%, #c9bdf8 50%, #e2dafc 65%, #c8f3e2); box-shadow: inset 0 0 0 3px rgba(43,33,64,.1); }
+  .toy-mid { position: absolute; left: 50%; top: 4px; width: 4px; height: 50px; margin-left: -2px; border-radius: 2px; background: rgba(122,92,240,.55); }
+  .toy-tick { position: absolute; top: 66px; font-size: 15px; font-weight: 900; color: #7b6c8f; transform: translateX(-50%); }
+  .toy-goal { position: absolute; right: 14px; top: 0; font-size: 30px; line-height: 1; transform: translateX(50%) scale(.2);
+    visibility: hidden; opacity: 0; transition: transform .25s cubic-bezier(.3,1.6,.5,1), opacity .15s; }
+  .toy-gauge.toy-aim .toy-goal { visibility: visible; opacity: 1; transform: translateX(50%) scale(1); }
+  .toy-mark { position: absolute; top: 28px; left: 50%; width: 0; height: 0; transition: left .5s cubic-bezier(.3,1.25,.5,1); }
+  .toy-mark::before { content: ""; position: absolute; left: -15px; top: -4px; width: 30px; height: 30px; border-radius: 50%;
+    background: #7a5cf0; border: 4px solid #fff; box-shadow: 0 4px 10px rgba(43,33,64,.3); }
+  .toy-gauge.toy-won .toy-mark::before { background: #23c98a; }
+  .toy-hist { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; min-height: 38px; margin: 6px 0 0; }
+  .toy-chip { display: inline-block; min-width: 46px; padding: 7px 10px; border-radius: 12px; font-size: 18px; font-weight: 900; line-height: 1.1;
+    background: #e2dafc; color: #4b3a8f; animation: toy-in .3s cubic-bezier(.3,1.6,.5,1); }
+  .toy-chip.toy-top { background: #23c98a; color: #fff; }
+  @keyframes toy-in { from { transform: scale(.3); } }
+  .toy-row { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 16px; }
+  .toy-btn { min-width: 70px; min-height: 64px; padding: 8px 18px; border: 0; border-radius: 22px; cursor: pointer; font: inherit;
+    font-size: 30px; font-weight: 900; line-height: 1; color: #2b2140; background: #fff; box-shadow: 0 6px 0 #cbbff5;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #cbbff5; }
+  .toy-btn.toy-run { min-width: 140px; color: #fff; background: #7a5cf0; box-shadow: 0 6px 0 #4f37b0; }
+  .toy-btn.toy-run:active { box-shadow: 0 1px 0 #4f37b0; }
+  .toy-btn.toy-aimbtn[aria-pressed="true"] { background: #ffe066; box-shadow: 0 6px 0 #d4a514, inset 0 0 0 3px #ff5fa2; }
+  .toy-btn.toy-hint { animation: toy-wiggle .6s ease-in-out 3; }
+  @keyframes toy-wiggle { 25% { transform: rotate(-9deg) scale(1.08); } 75% { transform: rotate(9deg) scale(1.08); } }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #7a5cf0; background: #fff;
+    box-shadow: 0 4px 0 #cbbff5; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #cbbff5; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #2a2346, #3a2236 60%, #33301f); border-color: rgba(255,255,255,.12); color: #f1ecff; }
+  html[data-theme="dark"] .toy-track { background: linear-gradient(90deg, #5a2c44, #3d3566 35%, #4b3f86 50%, #3d3566 65%, #1f4d3c); }
+  html[data-theme="dark"] .toy-tick { color: #b9add6; }
+  html[data-theme="dark"] .toy-chip { background: #3d3566; color: #e2dafc; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2f2944; color: #e2dafc; box-shadow: 0 6px 0 #120e1d; }
+  html[data-theme="dark"] .toy-btn.toy-run { background: #7a5cf0; color: #fff; box-shadow: 0 6px 0 #3b2a8a; }
+  html[data-theme="dark"] .toy-btn.toy-aimbtn[aria-pressed="true"] { background: #6b5a14; box-shadow: 0 6px 0 #2e270a, inset 0 0 0 3px #ff5fa2; }
+  html[data-theme="dark"] .toy-score { background: #120e1d; box-shadow: 0 6px 0 #000; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-chip,
+    html:not([data-motion="on"]) .toy-btn.toy-hint { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-chip, html[data-motion="off"] .toy-btn.toy-hint { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🤖">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-score" aria-live="polite"><span class="toy-bot" aria-hidden="true">🤖</span><span class="toy-n">0</span></div>
+    <div class="toy-gauge" aria-hidden="true">
+      <span class="toy-goal">🎯</span>
+      <span class="toy-track"></span>
+      <span class="toy-mid"></span>
+      <span class="toy-mark" style="left: 14px"></span>
+      <span class="toy-tick" style="left: 14px">0</span>
+      <span class="toy-tick" style="left: 50%">50</span>
+      <span class="toy-tick" style="left: calc(100% - 14px)">100</span>
+    </div>
+    <div class="toy-hist" aria-hidden="true"></div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-aimbtn" aria-pressed="false" aria-label="🎯">🎯</button>
+      <button type="button" class="toy-btn toy-run" aria-label="🤖 ▶">🤖 ▶</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var gauge = box.querySelector('.toy-gauge'), mark = box.querySelector('.toy-mark'), hist = box.querySelector('.toy-hist');
+    var num = box.querySelector('.toy-n'), score = box.querySelector('.toy-score');
+    var aim = box.querySelector('.toy-aimbtn'), run = box.querySelector('.toy-run'), reset = box.querySelector('.toy-reset');
+    if (!gauge || !mark || !hist || !num || !aim || !run || !reset) return;
+    var shown = 0, raf = 0, plain = 0;
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function roll(to) {
+      cancelAnimationFrame(raf);
+      if (still()) { shown = to; num.textContent = String(to); return; }
+      var from = shown, t0 = 0;
+      function step(t) {
+        if (!t0) t0 = t;
+        var k = Math.min(1, (t - t0) / 500);
+        shown = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3)));
+        num.textContent = String(shown);
+        if (k < 1) raf = requestAnimationFrame(step);
+      }
+      raf = requestAnimationFrame(step);
+    }
+    function place(v) { mark.style.left = 'calc(14px + (100% - 28px) * ' + (v / 100) + ')'; }
+    function chip(v) {
+      var c = document.createElement('span');
+      c.className = 'toy-chip' + (v >= 100 ? ' toy-top' : '');
+      c.textContent = String(v);
+      hist.appendChild(c);
+      while (hist.children.length > 5) hist.removeChild(hist.firstChild);
+    }
+    aim.addEventListener('click', function () {
+      var on = aim.getAttribute('aria-pressed') !== 'true';
+      aim.setAttribute('aria-pressed', on ? 'true' : 'false');
+      aim.classList.remove('toy-hint');
+      gauge.classList.toggle('toy-aim', on);
+    });
+    run.addEventListener('click', function () {
+      var on = aim.getAttribute('aria-pressed') === 'true';
+      var v = on ? 100 : 45 + Math.floor(Math.random() * 11);
+      place(v); roll(v); chip(v);
+      score.classList.toggle('toy-win', v >= 100);
+      gauge.classList.toggle('toy-won', v >= 100);
+      if (!on) {
+        plain += 1;
+        if (plain === 2) { aim.classList.remove('toy-hint'); void aim.offsetWidth; aim.classList.add('toy-hint'); }
+      } else if (window.pengessoPop) {
+        var r = gauge.getBoundingClientRect();
+        window.pengessoPop(r.right - 20, r.top + 20, ['🎯', '✨', '🎉'], 16);
+      }
+    });
+    reset.addEventListener('click', function () {
+      plain = 0; place(0); roll(0);
+      while (hist.firstChild) hist.removeChild(hist.firstChild);
+      aim.setAttribute('aria-pressed', 'false');
+      aim.classList.remove('toy-hint');
+      gauge.classList.remove('toy-aim', 'toy-won');
+      score.classList.remove('toy-win');
+    });
+  })();
+  </script>
+
   <a class="next" href="../want-to-try-hermes-agent/index.html">
     <div>
       <div class="next-kicker">NEXT · 14 SEC</div>
