@@ -3087,5 +3087,33 @@ checkAbout();
   io.observe(box);
 })();
 </script>
+<style id="brand-wiggle-css">
+  .brand-mark { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .brand-mark.wig { animation: brandWig .6s ease; }
+  @keyframes brandWig { 0%,100% { transform: rotate(0); } 20% { transform: rotate(-14deg) scale(1.08); } 40% { transform: rotate(12deg) scale(1.08); } 60% { transform: rotate(-8deg); } 80% { transform: rotate(5deg); } }
+  .peng-pop { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%); z-index: 9999; padding: 10px 18px; border-radius: 999px; background: #fff; color: #222; border: 2px solid #222; font-size: 26px; font-weight: 800; pointer-events: none; opacity: 0; transition: opacity .2s; }
+  .peng-pop.on { opacity: 1; }
+  html[data-theme="dark"] .peng-pop { background: #222; color: #fff; border-color: #fff; }
+  @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) .brand-mark.wig, html:not([data-motion="on"]) .peng-pop { animation: none; transition: none; } }
+  html[data-motion="off"] .brand-mark.wig, html[data-motion="off"] .peng-pop { animation: none; transition: none; }
+</style>
+<script>
+(function () {
+  var m = document.querySelector('.brand-mark');
+  if (!m) return;
+  var lines = ['🐧🐟', '🐧✨', '🧊🐧🧊', '🐧💤', '🐟🐟🐟', '🐧🎩', '🐧❄️', '🐧👍'], last = -1, pop = null, t = null;
+  m.setAttribute('role', 'button'); m.setAttribute('tabindex', '0'); m.setAttribute('aria-label', '🐧');
+  function go() {
+    var i; do { i = Math.floor(Math.random() * lines.length); } while (i === last); last = i;
+    var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    m.classList.remove('wig'); if (!still) { void m.offsetWidth; m.classList.add('wig'); }
+    if (!pop) { pop = document.createElement('div'); pop.className = 'peng-pop'; pop.setAttribute('translate', 'no'); pop.setAttribute('aria-hidden', 'true'); document.body.appendChild(pop); }
+    pop.textContent = lines[i]; pop.classList.add('on');
+    clearTimeout(t); t = setTimeout(function () { pop.classList.remove('on'); }, 1500);
+  }
+  m.addEventListener('click', go);
+  m.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+})();
+</script>
 </body>
 </html>
