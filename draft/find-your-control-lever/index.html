@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow" /><!-- 📝 draft -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Finding the part you can control makes stress smaller</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（2026-10-05）。真面目な話 → ポップに（トーン反転） */
+  :root {
+    --card: rgba(255,255,255,.95);
+    --round: 28px;
+    --bg: #f3fbef; --text: #213021; --muted: #5f7a5f;
+    --accent: #2b8a3e; --accent2: #f59f00; --h1: #173d1f; --big: #2b8a3e; --big-dark: #8ce99a;
+    --glow1: rgba(47,158,68,.20); --glow2: rgba(250,176,5,.22); --glow3: rgba(32,201,151,.18);
+    --shadow: 0 20px 55px rgba(40,120,60,.18); --photo-bg: #dcf5d6;
+    --g1: #2f9e44; --g2: #20c997; --g3: #fab005; --pop: #ffe066; --pop-text: #4a3300; --btn-text: #237032;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, var(--glow1), transparent 26%),
+      radial-gradient(circle at 92% 18%, var(--glow2), transparent 28%),
+      radial-gradient(circle at 50% 100%, var(--glow3), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--accent);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(60,40,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,40,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,40,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--accent); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--accent); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: var(--h1); font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: var(--photo-bg); border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,40,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--accent); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; font-weight: 700; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: var(--big);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品の共通の形 ════
+     文字はぜんぶ HTML に置いて、JS は class / data-* / 数字 / 絵文字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: linear-gradient(150deg, var(--g1) 0%, var(--g2) 55%, var(--g3) 100%); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; text-shadow: 0 2px 0 rgba(0,0,0,.12); }
+  .game-hint { margin-top: 6px; font-size: 14.5px; font-weight: 800; opacity: .95; line-height: 1.45; }
+  .gbtn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 12px 22px; border: 0; border-radius: 999px;
+    cursor: pointer; font: inherit; font-size: 17px; font-weight: 900; line-height: 1.25; color: var(--btn-text); background: #fff;
+    box-shadow: 0 6px 0 rgba(0,0,0,.16), 0 12px 22px rgba(0,0,0,.12); transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; max-width: 100%; }
+  .gbtn:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.16), 0 4px 10px rgba(0,0,0,.12); }
+  .gbtn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .gbtn.pop { background: var(--pop); color: var(--pop-text); }
+  .gbtn.ghost { background: rgba(255,255,255,.2); color: #fff; box-shadow: 0 5px 0 rgba(0,0,0,.14); min-height: 48px; font-size: 15px; }
+  .gbtn[disabled] { opacity: .45; cursor: default; }
+  .again-row { margin-top: 14px; }
+  @keyframes bounce-in { 0% { transform: scale(.4); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); } }
+  @keyframes wiggle { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-9deg); } 75% { transform: rotate(9deg); } }
+  @keyframes shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+  @keyframes hop { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-14px); } }
+
+  /* 🐭 レバーあり／なし（2枚目のカード） */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 14px 10px; border-radius: 20px; text-align: center; font-weight: 900; font-size: 15.5px; line-height: 1.35; }
+  .vs .yes { background: #fff3bf; color: #5c4400; }
+  .vs .no { background: #eceef0; color: #5d6670; }
+  .vs .e { display: block; font-size: 30px; margin-bottom: 4px; }
+
+  /* 🎚️ 自分のレバーを探そう：3つの場面で「自分で動かせるもの」を選ぶ。動かせないものはカギがかかって動かない */
+  .hud { display: grid; grid-template-columns: 64px 1fr 58px; gap: 10px; align-items: center; max-width: 380px; margin: 16px auto 0; }
+  .mouse { position: relative; width: 60px; height: 60px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.28); font-size: 34px; line-height: 1; }
+  .m-s { position: absolute; right: -6px; top: -6px; font-size: 22px; line-height: 1; }
+  .game[data-say="ok"] .mouse, .game[data-say="end"] .mouse { animation: hop .55s ease both; }
+  .stress { text-align: left; }
+  .st-top { font-size: 15px; font-weight: 900; margin-bottom: 6px; }
+  .bar { height: 16px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 82%; border-radius: 999px; background: #ff6b6b; transition: width .6s cubic-bezier(.2,1.2,.4,1), background-color .5s ease; }
+  .game[data-ok="1"] .bar i { width: 20%; background: #b2f2bb; }
+  .lever { position: relative; width: 58px; height: 64px; }
+  .stick { position: absolute; left: 50%; bottom: 12px; width: 8px; height: 44px; margin-left: -4px; border-radius: 6px; background: #f1f3f5;
+    transform-origin: 50% 100%; transform: rotate(-38deg); transition: transform .45s cubic-bezier(.2,1.5,.4,1); }
+  .stick::after { content: ""; position: absolute; left: 50%; top: -9px; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: #ff6b6b; box-shadow: 0 2px 0 rgba(0,0,0,.2); }
+  .game[data-ok="1"] .stick { transform: rotate(38deg); }
+  .game[data-ok="1"] .stick::after { background: #ffe066; }
+  .lbase { position: absolute; left: 4px; right: 4px; bottom: 0; height: 16px; border-radius: 8px; background: #5c3b1e; }
+
+  .scene { display: none; margin-top: 16px; }
+  .game[data-r="1"] .sc1, .game[data-r="2"] .sc2, .game[data-r="3"] .sc3 { display: block; animation: bounce-in .4s both; }
+  .prob { max-width: 380px; margin: 0 auto 12px; padding: 12px 14px; border-radius: 18px; background: #fff; color: #173d1f; font-size: 17px; font-weight: 900; line-height: 1.4; }
+  .opts { display: grid; gap: 10px; max-width: 360px; margin: 0 auto; }
+  .opt { position: relative; width: 100%; }
+  .opt.locked, .opt.locked[disabled] { opacity: .55; background: rgba(255,255,255,.35); color: #173d1f; animation: shake .4s ease; }
+  .opt.locked::after { content: "🔒"; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 18px; }
+  .opt.right, .opt.right[disabled] { opacity: 1; background: var(--pop); color: var(--pop-text); }
+  .game[data-ok="1"] .opt:not(.right) { opacity: .4; }
+
+  .says { margin-top: 14px; min-height: 48px; font-size: 16.5px; font-weight: 900; line-height: 1.45; }
+  .says > div { display: none; }
+  .game[data-say="ask"] .s-ask, .game[data-say="no"] .s-no, .game[data-say="ok"] .s-ok, .game[data-say="end"] .s-end { display: block; }
+  .s-no { animation: shake .4s ease; }
+  .s-end { padding: 12px 14px; border-radius: 18px; background: #fff; color: #173d1f; animation: bounce-in .5s both; }
+  .found { margin-top: 6px; font-size: 15px; font-weight: 900; }
+  .found .num { font-size: 20px; }
+  .next-row { display: none; margin-top: 12px; }
+  .game[data-say="ok"] .next-row { display: block; }
+  .game:not([data-say="end"]) .again-row { display: none; }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 12px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] body { background: #17181f; color: #ece8f4; }
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); color: #ece8f4; }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: var(--big-dark); }
+  html[data-theme="dark"] .label { color: var(--big-dark); }
+  html[data-theme="dark"] .card-label { color: var(--big-dark); }
+  html[data-theme="dark"] .photo { background: #2c2e3b; }
+  html[data-theme="dark"] .vs .yes { background: #4a3c12; color: #ffe39a; }
+  html[data-theme="dark"] .vs .no { background: #2c2e3b; color: #c3c8d0; }
+  html[data-theme="dark"] .prob, html[data-theme="dark"] .s-end { background: #f4f0fa; color: #173d1f; }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="draft-css">
+  /* 📝 下書きの印（tools/draft.py）。本番に出すと消える */
+  .draft-ribbon { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 14px;
+    padding: 9px 14px; border-radius: 14px; background: repeating-linear-gradient(135deg, #fff4c2 0 14px, #ffeaa0 14px 28px);
+    color: #5b4300; font-size: 13.5px; font-weight: 900; letter-spacing: .02em; text-align: center; }
+  .draft-ribbon a { color: inherit; }
+  .stage-draft { background: #ffd54a !important; color: #4a3500 !important; }
+  /* 2026-09-30 幅390pxで「戻る」「○ words」「DRAFT」が6pxはみ出していた → 札を少し詰めて、それでも入らなければ折り返す */
+  @media (max-width: 600px) { .topbar { flex-wrap: wrap; row-gap: 8px; } .stage-draft { padding-inline: 8px !important; letter-spacing: .04em !important; } }
+  .draft-nav { display: grid; gap: 12px; margin-top: 26px; }
+  .draft-next { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-radius: 22px;
+    text-decoration: none; color: #3a2d00; background: #fff1b8; border: 2px dashed rgba(120,90,0,.35); font-weight: 900; }
+  .draft-next small { display: block; font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .draft-next span.t { display: block; font-size: 17px; line-height: 1.4; }
+  .draft-next small.en { margin-top: 4px; letter-spacing: 0; font-weight: 700; }
+  .draft-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .draft-prod { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
+  html[data-theme="dark"] .draft-next { background: #3a3320; color: #ffe9a8; border-color: rgba(255,233,168,.3); }
+  html[data-theme="dark"] .draft-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"54b935d0a4"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=f52e91ee86"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+  <!-- 📝 draft-ribbon:start（tools/draft.py） -->
+  <div class="draft-ribbon" translate="no">📝 DRAFT · 下書き — まだ本番に出していません · <a href="../index.html">下書き一覧</a></div>
+  <!-- 📝 draft-ribbon:end -->
+
+  <div class="topbar">
+    <a class="home" href="../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 51 words · 17 sec</div>
+      <div class="stage stage-draft">DRAFT</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 17 SEC</div>
+  <h1>Finding the part you can control makes stress smaller <span class="float">🎚️</span></h1>
+
+  <figure class="photo">
+    <img src="IMAGE:cover.jpg" alt="A chubby low-poly wood and paper penguin pulling a small realistic brass lever switch on a wooden base" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧪</span>
+      <span class="card-label">The Experiment</span>
+    </div>
+    <p>In an experiment, 2 mice got the same electric shocks.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎚️</span>
+      <span class="card-label">One Lever</span>
+    </div>
+    <p>But only 1 mouse had a lever to stop the shocks.</p>
+    <div class="vs" aria-hidden="true">
+      <div class="yes"><span class="e">🐭🎚️</span>With a lever</div>
+      <div class="no"><span class="e">🐭</span>No lever</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔬</span>
+      <span class="card-label">The Result</span>
+    </div>
+    <p>It is said the mouse with the lever stayed fine, but the mouse without it hurt its stomach.</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：自分のレバーを探そう -->
+  <section class="game" data-r="1" data-ok="0" data-say="ask" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Find your lever</div>
+    <div class="hud">
+      <div class="mouse" aria-hidden="true">🐭<span class="m-s">💦</span></div>
+      <div class="stress">
+        <div class="st-top">😣 Stress</div>
+        <div class="bar" aria-hidden="true"><i></i></div>
+      </div>
+      <div class="lever" aria-hidden="true"><span class="stick"></span><span class="lbase"></span></div>
+    </div>
+
+    <div class="scene sc1">
+      <div class="prob">☔ It rains on my day off.</div>
+      <div class="opts">
+        <button class="gbtn opt" data-good="0" type="button">☀️ Stop the rain</button>
+        <button class="gbtn opt" data-good="1" type="button">☕ Read a book at a cafe</button>
+        <button class="gbtn opt" data-good="0" type="button">😤 Get angry at the sky</button>
+      </div>
+    </div>
+    <div class="scene sc2">
+      <div class="prob">🚃 The train is 10 minutes late.</div>
+      <div class="opts">
+        <button class="gbtn opt" data-good="0" type="button">🚀 Make the train faster</button>
+        <button class="gbtn opt" data-good="0" type="button">😮‍💨 Sigh 20 times</button>
+        <button class="gbtn opt" data-good="1" type="button">📱 Tell my friend, "I will be a little late"</button>
+      </div>
+    </div>
+    <div class="scene sc3">
+      <div class="prob">📝 A big exam is next week.</div>
+      <div class="opts">
+        <button class="gbtn opt" data-good="1" type="button">✏️ Do 1 practice test today</button>
+        <button class="gbtn opt" data-good="0" type="button">📆 Move the exam day</button>
+        <button class="gbtn opt" data-good="0" type="button">🌙 Worry all night</button>
+      </div>
+    </div>
+
+    <div class="says">
+      <div class="s-ask">Which one can you move yourself?</div>
+      <div class="s-no">🔒 You can't move this one. Try another.</div>
+      <div class="s-ok">🎚️ Click! You found it. Stress went down.</div>
+      <div class="s-end">🐭 3 levers! There is always a small part you can move.</div>
+    </div>
+    <div class="found"><span class="fl">Levers found:</span> <span class="num">0</span> / 3</div>
+    <div class="next-row"><button class="gbtn pop nextb" type="button">Next ▶</button></div>
+    <div class="again-row"><button class="gbtn ghost again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💡</span>
+      <span class="card-label">Your Part</span>
+    </div>
+    <p class="big">Just finding "the part I can do something about" makes stress smaller.</p>
+  </section>
+
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+
+
+  <!-- 📝 draft-nav:start（tools/draft.py） -->
+  <nav class="draft-nav" translate="no">
+    <a class="draft-back" href="../index.html">📝 ← 下書き一覧 / All drafts</a>
+    <a class="draft-prod" href="../../index.html">本番のサイトへ ↗</a>
+  </nav>
+  <!-- 📝 draft-nav:end -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* 🎚️ 自分のレバーを探そう：JS は data-r・data-ok・data-say・class・disabled・数字・絵文字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var opts = [].slice.call(g.querySelectorAll('.opt'));
+  var num = g.querySelector('.found .num'), ms = g.querySelector('.m-s'), lever = g.querySelector('.lever');
+  var r = 1, found = 0;
+  function set(k, v) { g.setAttribute(k, String(v)); }
+  function say(v) { g.setAttribute('data-say', ''); void g.offsetWidth; g.setAttribute('data-say', v); }
+  opts.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.disabled || g.getAttribute('data-ok') === '1') return;
+      if (b.getAttribute('data-good') === '1') {
+        b.disabled = true; b.classList.add('right');
+        found += 1; num.textContent = String(found);
+        set('data-ok', 1); ms.textContent = '🍀';
+        say(r === 3 ? 'end' : 'ok');
+        if (window.pengessoPop) {
+          var k = lever.getBoundingClientRect();
+          window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, r === 3 ? ['🎚️', '🐭', '🍀', '✨'] : ['🎚️', '✨'], r === 3 ? 18 : 8);
+        }
+        if (navigator.vibrate) { try { navigator.vibrate(r === 3 ? 35 : 20); } catch (e) {} }
+      } else {
+        b.disabled = true; b.classList.add('locked');
+        say('no');
+      }
+    });
+  });
+  g.querySelector('.nextb').addEventListener('click', function () {
+    r += 1; set('data-r', r); set('data-ok', 0); say('ask'); ms.textContent = '💦';
+  });
+  g.querySelector('.again').addEventListener('click', function () {
+    r = 1; found = 0; num.textContent = '0'; ms.textContent = '💦';
+    opts.forEach(function (b) { b.disabled = false; b.classList.remove('locked', 'right'); });
+    set('data-r', 1); set('data-ok', 0); say('ask');
+  });
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label / h1 / 遊べる部品の文字 ← 本人の素材の要約・演出（word数対象外）
+-->

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow" /><!-- 📝 draft -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>You cannot choose where you grew up, but you can choose how to live</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（2026-10-05）。真面目な話 → ポップに（トーン反転） */
+  :root {
+    --card: rgba(255,255,255,.95);
+    --round: 28px;
+    --bg: #fbfbf0; --text: #2b3020; --muted: #6f7560;
+    --accent: #3e8e3a; --accent2: #f0a500; --h1: #22381a; --big: #2f7a2b; --big-dark: #b5ec9e;
+    --glow1: rgba(255,214,90,.3); --glow2: rgba(120,200,110,.22); --glow3: rgba(110,180,255,.18);
+    --shadow: 0 20px 55px rgba(60,100,30,.16); --photo-bg: #eef8dc;
+    --g1: #5ab24f; --g2: #3fb4a4; --g3: #f2b43a; --pop: #ffffff; --pop-text: #2f7a2b; --btn-text: #2f7a2b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, var(--glow1), transparent 26%),
+      radial-gradient(circle at 92% 18%, var(--glow2), transparent 28%),
+      radial-gradient(circle at 50% 100%, var(--glow3), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--accent);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(60,40,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,40,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,40,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--accent); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--accent); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: var(--h1); font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: var(--photo-bg); border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,40,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--accent); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; font-weight: 700; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: var(--big);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品の共通の形 ════
+     文字はぜんぶ HTML に置いて、JS は class / data-* / 数字 / 絵文字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: linear-gradient(150deg, var(--g1) 0%, var(--g2) 55%, var(--g3) 100%); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; text-shadow: 0 2px 0 rgba(0,0,0,.12); }
+  .game-hint { margin-top: 6px; font-size: 14.5px; font-weight: 800; opacity: .95; line-height: 1.45; }
+  .gbtn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 12px 22px; border: 0; border-radius: 999px;
+    cursor: pointer; font: inherit; font-size: 17px; font-weight: 900; line-height: 1.25; color: var(--btn-text); background: #fff;
+    box-shadow: 0 6px 0 rgba(0,0,0,.16), 0 12px 22px rgba(0,0,0,.12); transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; max-width: 100%; }
+  .gbtn:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.16), 0 4px 10px rgba(0,0,0,.12); }
+  .gbtn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .gbtn.pop { background: var(--pop); color: var(--pop-text); }
+  .gbtn.ghost { background: rgba(255,255,255,.2); color: #fff; box-shadow: 0 5px 0 rgba(0,0,0,.14); min-height: 48px; font-size: 15px; }
+  .gbtn[disabled] { opacity: .45; cursor: default; }
+  .again-row { margin-top: 14px; }
+  @keyframes bounce-in { 0% { transform: scale(.4); opacity: 0; } 60% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(1); } }
+  @keyframes wiggle { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-9deg); } 75% { transform: rotate(9deg); } }
+  @keyframes shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+  @keyframes hop { 0%,100% { transform: translateY(0); } 40% { transform: translateY(-14px); } }
+
+  /* 🪧 分かれ道：同じ家から出発。流されるか、自分で選ぶか */
+  .twin-says { display: grid; gap: 8px; margin-top: 14px; }
+  .twin-says > div { display: grid; grid-template-columns: 34px 1fr; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 16px;
+    font-weight: 900; font-size: 15px; line-height: 1.35; }
+  .twin-says .ta { background: #eef0f3; color: #5f6672; }
+  .twin-says .tb { background: #fff3c4; color: #6b4b00; }
+  .twin-says .tn { font-size: 13px; letter-spacing: .04em; }
+
+  .map { max-width: 440px; margin: 16px auto 0; padding: 14px 12px; border-radius: 24px; background: #fff; color: #2b3020; box-shadow: 0 10px 24px rgba(20,60,10,.18); }
+  .home-row { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 12px; border-radius: 16px; background: #f4efe4;
+    font-weight: 900; font-size: 15px; }
+  .home-row .hb { font-size: 30px; line-height: 1; }
+  .paths { display: grid; grid-template-columns: 1fr 1.35fr; gap: 10px; margin-top: 10px; }
+  .path { position: relative; padding-top: 30px; text-align: center; }
+  .path::before { content: ""; position: absolute; top: 2px; left: 50%; width: 4px; height: 24px; margin-left: -2px; border-radius: 4px; background: #c9c3b4; }
+  .path.b::before { background: #f2b43a; }
+  .who { font-size: 13px; font-weight: 900; letter-spacing: .06em; color: #6f7560; }
+  .flow { margin-top: 6px; padding: 12px 8px; border-radius: 16px; background: linear-gradient(180deg, #dbeefe, #c6e2fb); color: #2a4a6a; font-weight: 900; font-size: 14px; line-height: 1.35; }
+  .flow .fe { display: block; font-size: 30px; line-height: 1.1; }
+  .flow .wave { display: inline-block; animation: drift 2.4s ease-in-out infinite alternate; }
+  @keyframes drift { from { transform: translateX(-6px); } to { transform: translateX(6px); } }
+  .flow .end { display: block; margin-top: 6px; font-size: 13.5px; color: #44607e; }
+
+  .sign { margin-top: 6px; font-size: 14px; font-weight: 900; color: #8a5a00; }
+  .sign .se { display: block; font-size: 30px; line-height: 1.1; }
+  .sign .wait-pg { display: inline-block; transition: opacity .3s ease, transform .3s ease; }
+  .game[data-pick] .sign .wait-pg { opacity: .15; transform: scale(.7); }
+  .dests { display: grid; gap: 8px; margin-top: 8px; }
+  .dest { position: relative; width: 100%; min-height: 54px; justify-content: flex-start; padding: 8px 12px; font-size: 15px; text-align: left;
+    background: #f6f8ef; color: #2f7a2b; box-shadow: 0 4px 0 rgba(0,0,0,.1); }
+  .dest .here { position: absolute; right: 8px; top: 50%; margin-top: -14px; font-size: 26px; line-height: 1; opacity: 0; transform: translateY(-30px) scale(.4);
+    transition: opacity .3s ease, transform .5s cubic-bezier(.2,1.5,.4,1); }
+  .game[data-pick="0"] .d0, .game[data-pick="1"] .d1, .game[data-pick="2"] .d2 { background: #ffe58a; color: #5a3d00; padding-right: 44px; }
+  .game[data-pick="0"] .d0 .here, .game[data-pick="1"] .d1 .here, .game[data-pick="2"] .d2 .here { opacity: 1; transform: none; }
+
+  .result { margin-top: 14px; min-height: 84px; }
+  .result > div { display: none; font-size: 16px; font-weight: 900; line-height: 1.45; }
+  .game:not([data-pick]) .r-hint { display: block; }
+  .game[data-pick="0"] .r0, .game[data-pick="1"] .r1, .game[data-pick="2"] .r2 { display: block; animation: bounce-in .45s both; }
+  .result .same { display: block; margin-top: 6px; font-size: 14.5px; opacity: .95; }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 12px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] body { background: #17181f; color: #ece8f4; }
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); color: #ece8f4; }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: var(--big-dark); }
+  html[data-theme="dark"] .label { color: var(--big-dark); }
+  html[data-theme="dark"] .card-label { color: var(--big-dark); }
+  html[data-theme="dark"] .photo { background: #2c2e3b; }
+  html[data-theme="dark"] .twin-says .ta { background: #2c2e3b; color: #c3c8d2; }
+  html[data-theme="dark"] .twin-says .tb { background: #4a3f18; color: #ffe39a; }
+  html[data-theme="dark"] .map { background: #22242f; color: #eef2e6; }
+  html[data-theme="dark"] .home-row { background: #34302a; }
+  html[data-theme="dark"] .who { color: #b9bfac; }
+  html[data-theme="dark"] .flow { background: linear-gradient(180deg, #1f3347, #1a2c3e); color: #cfe6ff; }
+  html[data-theme="dark"] .flow .end { color: #a9c7e6; }
+  html[data-theme="dark"] .sign { color: #ffd27a; }
+  html[data-theme="dark"] .dest { background: #2c3326; color: #c4f0b0; }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="draft-css">
+  /* 📝 下書きの印（tools/draft.py）。本番に出すと消える */
+  .draft-ribbon { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 14px;
+    padding: 9px 14px; border-radius: 14px; background: repeating-linear-gradient(135deg, #fff4c2 0 14px, #ffeaa0 14px 28px);
+    color: #5b4300; font-size: 13.5px; font-weight: 900; letter-spacing: .02em; text-align: center; }
+  .draft-ribbon a { color: inherit; }
+  .stage-draft { background: #ffd54a !important; color: #4a3500 !important; }
+  /* 2026-09-30 幅390pxで「戻る」「○ words」「DRAFT」が6pxはみ出していた → 札を少し詰めて、それでも入らなければ折り返す */
+  @media (max-width: 600px) { .topbar { flex-wrap: wrap; row-gap: 8px; } .stage-draft { padding-inline: 8px !important; letter-spacing: .04em !important; } }
+  .draft-nav { display: grid; gap: 12px; margin-top: 26px; }
+  .draft-next { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-radius: 22px;
+    text-decoration: none; color: #3a2d00; background: #fff1b8; border: 2px dashed rgba(120,90,0,.35); font-weight: 900; }
+  .draft-next small { display: block; font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .draft-next span.t { display: block; font-size: 17px; line-height: 1.4; }
+  .draft-next small.en { margin-top: 4px; letter-spacing: 0; font-weight: 700; }
+  .draft-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .draft-prod { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
+  html[data-theme="dark"] .draft-next { background: #3a3320; color: #ffe9a8; border-color: rgba(255,233,168,.3); }
+  html[data-theme="dark"] .draft-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"52be3cb64f"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=f52e91ee86"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+  <!-- 📝 draft-ribbon:start（tools/draft.py） -->
+  <div class="draft-ribbon" translate="no">📝 DRAFT · 下書き — まだ本番に出していません · <a href="../index.html">下書き一覧</a></div>
+  <!-- 📝 draft-ribbon:end -->
+
+  <div class="topbar">
+    <a class="home" href="../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 58 words · 19 sec</div>
+      <div class="stage stage-draft">DRAFT</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 19 SEC</div>
+  <h1>You cannot choose where you grew up, but you can choose how to live <span class="float">🪧</span></h1>
+
+  <figure class="photo">
+    <img src="IMAGE:cover.jpg" alt="An alpaca wool penguin standing at a wooden signpost on a sunny path, looking ahead" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🏠</span>
+      <span class="card-label">Same House</span>
+    </div>
+    <p>There is a story about twins who grew up in the same hard home.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐧</span>
+      <span class="card-label">Two Answers</span>
+    </div>
+    <p>One said, "I grew up in that house, so of course I became like this." The other said, "That is why I decided not to become like that."</p>
+    <div class="twin-says" aria-hidden="true">
+      <div class="ta"><span class="te">🌊</span><span class="tn">Twin A: went with the flow</span></div>
+      <div class="tb"><span class="te">🪧</span><span class="tn">Twin B: decided for itself</span></div>
+    </div>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：分かれ道 -->
+  <section class="game" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The fork in the road</div>
+    <div class="game-hint">You are Twin B. Where will you go?</div>
+    <div class="map">
+      <div class="home-row"><span class="hb" aria-hidden="true">🏠</span><span class="hl">The same house</span></div>
+      <div class="paths">
+        <div class="path a">
+          <div class="who">TWIN A</div>
+          <div class="flow"><span class="fe" aria-hidden="true"><span class="wave">🌊</span></span>Went with the flow<span class="end">🌧️ "It can't be helped."</span></div>
+        </div>
+        <div class="path b">
+          <div class="who">TWIN B (YOU)</div>
+          <div class="sign"><span class="se" aria-hidden="true"><span class="wait-pg">🐧</span>🪧</span>Which way?</div>
+          <div class="dests">
+            <button class="gbtn dest d0" type="button" data-i="0">🌻 A warm home<span class="here" aria-hidden="true">🐧</span></button>
+            <button class="gbtn dest d1" type="button" data-i="1">📚 Keep learning<span class="here" aria-hidden="true">🐧</span></button>
+            <button class="gbtn dest d2" type="button" data-i="2">💛 Kind friends<span class="here" aria-hidden="true">🐧</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="result">
+      <div class="r-hint">Tap a road. You can change it any time.</div>
+      <div class="r0">🌻 "I will make my home a warm place."<span class="same">Same house. A different road. You chose it.</span></div>
+      <div class="r1">📚 "I will keep learning new things."<span class="same">Same house. A different road. You chose it.</span></div>
+      <div class="r2">💛 "I will be kind to the people around me."<span class="same">Same house. A different road. You chose it.</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌈</span>
+      <span class="card-label">You Choose</span>
+    </div>
+    <p class="big">You cannot choose where you grew up, but you can choose how to live from now.</p>
+  </section>
+
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+
+
+  <!-- 📝 draft-nav:start（tools/draft.py） -->
+  <nav class="draft-nav" translate="no">
+    <a class="draft-back" href="../index.html">📝 ← 下書き一覧 / All drafts</a>
+    <a class="draft-prod" href="../../index.html">本番のサイトへ ↗</a>
+  </nav>
+  <!-- 📝 draft-nav:end -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* 🪧 分かれ道：道を押すと、双子Bがそこへ移る。何度でも選び直せる（勝ち負けなし）。JS は data-pick だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var dests = [].slice.call(g.querySelectorAll('.dest'));
+  var picked = {};
+  dests.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var i = b.getAttribute('data-i');
+      g.setAttribute('data-pick', i);
+      if (!picked[i] && window.pengessoPop) {
+        var k = b.querySelector('.here').getBoundingClientRect();
+        window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, [['🌻', '✨'], ['📚', '✨'], ['💛', '✨']][+i].concat(['🐧']), 10);
+      }
+      picked[i] = true;
+    });
+  });
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード・.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label / h1 / 遊べる部品の文字 ← 本人の素材の要約・演出（word数対象外）
+-->

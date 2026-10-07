@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow" /><!-- 📝 draft -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sort your worries into 4 boxes, and you feel you can manage</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ その2（2026-10-05）。→ 見せ方：ポップに（オレンジと青緑。悩みを箱に投げ入れて遊べる。最後はお腹がすくオチ） */
+  :root {
+    --card: rgba(255,255,255,.95);
+    --round: 28px;
+    --bg: #fff7ee;
+    --text: #2b2a33;
+    --muted: #7d6f62;
+    --a: #d9601a;
+    --ink: #3a2412;
+    --bigc: #cc540e;
+    --bigdark: #ffc08a;
+    --photo: #ffe9d2;
+    --shadow: 0 20px 55px rgba(170,90,30,.17);
+    --glow1: rgba(255,170,90,.35);
+    --glow2: rgba(40,190,170,.2);
+    --glow3: rgba(255,210,90,.2);
+    --g1: #ff8a3d;
+    --g2: #f2655a;
+    --g3: #189f94;
+    --btnink: #a9440c;
+    --btnshadow: #e8a77a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, var(--glow1), transparent 26%),
+      radial-gradient(circle at 92% 18%, var(--glow2), transparent 28%),
+      radial-gradient(circle at 50% 100%, var(--glow3), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--a);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(60,50,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,50,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,50,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--a); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--a); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: var(--ink); font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: var(--photo); border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,50,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--a); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; font-weight: 700; }
+  p + p { margin-top: 8px; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: var(--bigc);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品（共通）════
+     文字はぜんぶ HTML に置いて、JS は class・data-*・数字・絵文字だけを変える（訳がそのまま効くように） */
+  .game { position: relative; overflow: hidden; margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: linear-gradient(150deg, var(--g1) 0%, var(--g2) 55%, var(--g3) 100%); box-shadow: var(--shadow); }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .game-sub { margin: 6px auto 0; max-width: 440px; font-size: 14.5px; font-weight: 800; line-height: 1.5; opacity: .95; }
+  .gbtn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 56px; padding: 12px 18px; border: 0; border-radius: 999px;
+    cursor: pointer; font: inherit; font-size: 17px; font-weight: 900; line-height: 1.25; color: var(--btnink); background: #fff;
+    box-shadow: 0 7px 0 var(--btnshadow), 0 14px 24px rgba(0,0,0,.16); transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .gbtn:active { transform: translateY(6px); box-shadow: 0 1px 0 var(--btnshadow), 0 5px 12px rgba(0,0,0,.16); }
+  .gbtn:focus-visible, .again:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .gbtn[disabled] { opacity: .45; cursor: default; }
+  .again { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; margin-top: 14px; padding: 10px 22px; border-radius: 999px;
+    border: 2px solid rgba(255,255,255,.7); background: rgba(255,255,255,.16); color: #fff; font: inherit; font-size: 15px; font-weight: 900; cursor: pointer;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .gmeter { position: relative; height: 16px; margin: 14px auto 0; max-width: 380px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .gmeter i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; background: #fff; transition: width .45s cubic-bezier(.2,1.2,.4,1); }
+  .gmeter-label { display: flex; justify-content: space-between; gap: 8px; max-width: 380px; margin: 5px auto 0; font-size: 12px; font-weight: 900; opacity: .9; }
+  @keyframes shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+  @keyframes boing { 0% { transform: scale(1); } 35% { transform: scale(1.22) rotate(-4deg); } 70% { transform: scale(.94) rotate(2deg); } 100% { transform: scale(1); } }
+  @keyframes popin { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }
+  .shake { animation: shake .4s ease; }
+  .boing { animation: boing .45s ease; }
+
+  /* 📦 4つの箱（カードの中の小さな図） */
+  .four { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+  .four > span { padding: 10px 8px; border-radius: 14px; text-align: center; font-weight: 900; font-size: 15px; line-height: 1.3; }
+  .four .f0 { background: #ffe8d6; color: #9a3f06; }
+  .four .f1 { background: #fff3c4; color: #7a5a00; }
+  .four .f2 { background: #dcf6f1; color: #0d6b62; }
+  .four .f3 { background: #eeebf3; color: #5c5468; }
+
+  /* 📦 仕分けゲーム */
+  .head { display: flex; align-items: flex-end; justify-content: center; gap: 4px; height: 76px; margin-top: 10px; }
+  .head .pg { font-size: 42px; line-height: 1; }
+  .head .cloud { display: inline-block; font-size: 52px; line-height: 1; transform-origin: 30% 100%; transition: transform .45s cubic-bezier(.2,1.3,.4,1); }
+  .stack { position: relative; max-width: 400px; min-height: 92px; margin: 10px auto 0; }
+  .wcard { display: none; padding: 16px 14px; border-radius: 18px; background: #fffdf7; color: #3a2412; font-size: 17px; font-weight: 900; line-height: 1.4;
+    box-shadow: 0 7px 0 rgba(0,0,0,.08), 0 12px 22px rgba(0,0,0,.14); transform: rotate(-1.2deg);
+    transition: transform .3s ease-in, opacity .3s ease-in; }
+  .wcard.now { display: block; animation: popin .28s ease; }
+  .wcard.fly { opacity: 0; }
+  .wcard.fly[data-to="0"] { transform: translate(-28%, 150px) scale(.25) rotate(-24deg); }
+  .wcard.fly[data-to="1"] { transform: translate(28%, 150px) scale(.25) rotate(24deg); }
+  .wcard.fly[data-to="2"] { transform: translate(-28%, 230px) scale(.25) rotate(-24deg); }
+  .wcard.fly[data-to="3"] { transform: translate(28%, 230px) scale(.2) rotate(200deg); }
+  .cnt { margin-top: 10px; font-size: 14px; font-weight: 900; opacity: .95; }
+  .cnt b { font-size: 18px; margin-left: 4px; }
+  .boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 400px; margin: 14px auto 0; }
+  .box { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 76px; padding: 10px 8px;
+    border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 15.5px; font-weight: 900; line-height: 1.25;
+    box-shadow: 0 6px 0 rgba(0,0,0,.14), 0 12px 20px rgba(0,0,0,.12); transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .box:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.14), 0 4px 10px rgba(0,0,0,.12); }
+  .box:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .box .be { font-size: 26px; line-height: 1; }
+  .box .bn { position: absolute; top: -8px; right: -6px; min-width: 30px; height: 30px; padding: 0 6px; display: grid; place-items: center; border-radius: 999px;
+    background: #2b2a33; color: #fff; font-size: 15px; font-weight: 900; box-shadow: 0 3px 8px rgba(0,0,0,.2); }
+  .box[data-k="0"] { background: #fff; color: #a9440c; }
+  .box[data-k="1"] { background: #fff3c4; color: #6e5100; }
+  .box[data-k="2"] { background: #dcf6f1; color: #0b5f57; }
+  .box[data-k="3"] { background: #eeebf3; color: #4f4760; }
+  .game[data-s="end"] .box, .game[data-s="hungry"] .box { cursor: default; }
+  .result { display: none; max-width: 400px; margin: 10px auto 0; }
+  .game[data-s="end"] .stack, .game[data-s="hungry"] .stack, .game[data-s="end"] .cnt, .game[data-s="hungry"] .cnt { display: none; }
+  .game[data-s="end"] .result, .game[data-s="hungry"] .result { display: block; }
+  .result > div { display: none; padding: 12px 14px; border-radius: 18px; font-size: 18px; font-weight: 900; line-height: 1.4; }
+  .result .r1 { background: rgba(255,255,255,.22); }
+  .result .r2 { margin-top: 8px; background: #fff; color: #a9440c; font-size: 20px; }
+  .game[data-s="end"] .r1, .game[data-s="hungry"] .r1, .game[data-s="hungry"] .r2 { display: block; animation: popin .35s ease; }
+  .again { display: none; }
+  .game[data-s="hungry"] .again { display: inline-flex; }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 12px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+    .gbtn { font-size: 15.5px; padding: 12px 14px; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: var(--bigdark); }
+  html[data-theme="dark"] .photo { background: #2a2c38; }
+  html[data-theme="dark"] .gbtn { background: #f1edf7; }
+  html[data-theme="dark"] .four .f0 { background: #4a2a12; color: #ffc99a; }
+  html[data-theme="dark"] .four .f1 { background: #463a10; color: #ffe39a; }
+  html[data-theme="dark"] .four .f2 { background: #143d38; color: #9cf0e2; }
+  html[data-theme="dark"] .four .f3 { background: #33303d; color: #d6cfe3; }
+  html[data-theme="dark"] .wcard { background: #f6efe4; }
+  html[data-theme="dark"] .box[data-k="0"] { background: #f6efe4; }
+  html[data-theme="dark"] .box[data-k="1"] { background: #f1e3a8; }
+  html[data-theme="dark"] .box[data-k="2"] { background: #bfe6de; }
+  html[data-theme="dark"] .box[data-k="3"] { background: #d9d4e2; }
+  html[data-theme="dark"] .result .r2 { background: #f6efe4; }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="draft-css">
+  /* 📝 下書きの印（tools/draft.py）。本番に出すと消える */
+  .draft-ribbon { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 14px;
+    padding: 9px 14px; border-radius: 14px; background: repeating-linear-gradient(135deg, #fff4c2 0 14px, #ffeaa0 14px 28px);
+    color: #5b4300; font-size: 13.5px; font-weight: 900; letter-spacing: .02em; text-align: center; }
+  .draft-ribbon a { color: inherit; }
+  .stage-draft { background: #ffd54a !important; color: #4a3500 !important; }
+  /* 2026-09-30 幅390pxで「戻る」「○ words」「DRAFT」が6pxはみ出していた → 札を少し詰めて、それでも入らなければ折り返す */
+  @media (max-width: 600px) { .topbar { flex-wrap: wrap; row-gap: 8px; } .stage-draft { padding-inline: 8px !important; letter-spacing: .04em !important; } }
+  .draft-nav { display: grid; gap: 12px; margin-top: 26px; }
+  .draft-next { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-radius: 22px;
+    text-decoration: none; color: #3a2d00; background: #fff1b8; border: 2px dashed rgba(120,90,0,.35); font-weight: 900; }
+  .draft-next small { display: block; font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .draft-next span.t { display: block; font-size: 17px; line-height: 1.4; }
+  .draft-next small.en { margin-top: 4px; letter-spacing: 0; font-weight: 700; }
+  .draft-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .draft-prod { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
+  html[data-theme="dark"] .draft-next { background: #3a3320; color: #ffe9a8; border-color: rgba(255,233,168,.3); }
+  html[data-theme="dark"] .draft-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"84b7d73fb7"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=f52e91ee86"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+  <!-- 📝 draft-ribbon:start（tools/draft.py） -->
+  <div class="draft-ribbon" translate="no">📝 DRAFT · 下書き — まだ本番に出していません · <a href="../index.html">下書き一覧</a></div>
+  <!-- 📝 draft-ribbon:end -->
+
+  <div class="topbar">
+    <a class="home" href="../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 65 words · 22 sec</div>
+      <div class="stage stage-draft">DRAFT</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 22 SEC</div>
+  <h1>Sort your worries into 4 boxes, and you feel you can manage <span class="float">📦</span></h1>
+
+  <figure class="photo">
+    <img src="IMAGE:cover.jpg" alt="A chubby round penguin made of layered cut paper sorting blank index cards into a small wooden card box" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📝</span>
+      <span class="card-label">Write It Down</span>
+    </div>
+    <p>When you feel stuck, it seems good to write all your worries on paper.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📇</span>
+      <span class="card-label">70 Worries</span>
+    </div>
+    <p>There is a famous story that Carnegie wrote down about 70 worries.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📦</span>
+      <span class="card-label">4 Boxes</span>
+    </div>
+    <p>He sorted them into 4 boxes: "do tomorrow," "do next week," "do next month," and "can't solve → trash."</p>
+    <div class="four" aria-hidden="true">
+      <span class="f0">📅 Do tomorrow</span><span class="f1">🗓️ Next week</span>
+      <span class="f2">📆 Next month</span><span class="f3">🗑️ Can't solve</span>
+    </div>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：悩みの仕分け（8枚を4つの箱へ） -->
+  <section class="game" data-s="play" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Sort the worries!</div>
+    <div class="game-sub">Tap a box for each worry. Any box is OK.</div>
+    <div class="head" aria-hidden="true"><span class="pg">🐧</span><span class="cloud">☁️</span></div>
+    <div class="gmeter" aria-hidden="true"><i></i></div>
+    <div class="gmeter-label" aria-hidden="true"><span>😵 Heavy head</span><span>😌 Light head</span></div>
+    <div class="stack">
+      <div class="wcard now">📱 I have not replied to a message.</div>
+      <div class="wcard">🧺 The laundry is piling up.</div>
+      <div class="wcard">🚲 My bike tire is flat.</div>
+      <div class="wcard">✂️ I need a haircut.</div>
+      <div class="wcard">📖 I want to study English again.</div>
+      <div class="wcard">✈️ I want to plan a trip.</div>
+      <div class="wcard">☔ It may rain on Sunday.</div>
+      <div class="wcard">💭 What do people think of me?</div>
+    </div>
+    <div class="cnt"><span class="cnt-l">Worry</span><b class="cnt-n">1</b><span class="cnt-of">/8</span></div>
+    <div class="result">
+      <div class="r1">🐧 Hmm… I can manage somehow!</div>
+      <div class="r2">🍙 …And now I am hungry.</div>
+    </div>
+    <div class="boxes">
+      <button class="box" type="button" data-k="0"><span class="be" aria-hidden="true">📅</span><span class="bl">Do tomorrow</span><b class="bn">0</b></button>
+      <button class="box" type="button" data-k="1"><span class="be" aria-hidden="true">🗓️</span><span class="bl">Next week</span><b class="bn">0</b></button>
+      <button class="box" type="button" data-k="2"><span class="be" aria-hidden="true">📆</span><span class="bl">Next month</span><b class="bn">0</b></button>
+      <button class="box" type="button" data-k="3"><span class="be" aria-hidden="true">🗑️</span><span class="bl">Can't solve</span><b class="bn">0</b></button>
+    </div>
+    <button class="again" type="button">↺ Sort again</button>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍙</span>
+      <span class="card-label">Hungry Ending</span>
+    </div>
+    <p class="big">Then he thought, "I can manage somehow," and he got hungry.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎈</span>
+      <span class="card-label">Lighter Now</span>
+    </div>
+    <p>Worries are lighter in a box than in your head.</p>
+  </section>
+
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* 📦 悩みの仕分け：JS は data-s・class・数字・style だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var cards = [].slice.call(g.querySelectorAll('.wcard'));
+  var boxes = [].slice.call(g.querySelectorAll('.box'));
+  var cntN = g.querySelector('.cnt-n'), bar = g.querySelector('.gmeter i'), cloud = g.querySelector('.cloud'), again = g.querySelector('.again');
+  var i = 0, counts = [0, 0, 0, 0], busy = false, t1 = 0, t2 = 0;
+  function paint() {
+    cards.forEach(function (c, k) { c.classList.toggle('now', k === i); c.classList.remove('fly'); c.removeAttribute('data-to'); });
+    cntN.textContent = String(Math.min(i + 1, cards.length));
+    bar.style.width = (i / cards.length * 100) + '%';
+    cloud.style.transform = 'scale(' + (0.35 + 0.65 * (cards.length - i) / cards.length).toFixed(2) + ')';
+    boxes.forEach(function (b, k) { b.querySelector('.bn').textContent = String(counts[k]); });
+  }
+  function bump(el) { el.classList.remove('boing'); void el.offsetWidth; el.classList.add('boing'); }
+  function sortInto(k) {
+    var s = g.getAttribute('data-s');
+    if (busy || s !== 'play') return;
+    busy = true;
+    var c = cards[i];
+    c.setAttribute('data-to', String(k)); c.classList.add('fly');
+    t1 = setTimeout(function () {
+      counts[k]++; i++;
+      bump(boxes[k]);
+      if (i >= cards.length) { paint(); finish(); } else { paint(); }
+      busy = false;
+    }, 300);
+  }
+  function finish() {
+    g.setAttribute('data-s', 'end');
+    t2 = setTimeout(function () {
+      g.setAttribute('data-s', 'hungry');
+      if (window.pengessoPop) {
+        var r = g.querySelector('.result').getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🍙', '🐧', '📦', '✨'], 16);
+      }
+    }, 1300);
+  }
+  boxes.forEach(function (b, k) { b.addEventListener('click', function () { sortInto(k); }); });
+  again.addEventListener('click', function () {
+    clearTimeout(t1); clearTimeout(t2); busy = false;
+    i = 0; counts = [0, 0, 0, 0]; g.setAttribute('data-s', 'play'); paint();
+  });
+  paint();
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+S5 → 使った（5枚目のカード）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label / h1 / 遊べる部品の文字 ← 本人の素材の要約・演出（word数対象外）
+-->

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow" /><!-- 📝 draft -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Do good things first, because your heart follows your body</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ その2（2026-10-05）。真面目な話 → ポップに。オレンジとラズベリー */
+  :root {
+    --bg: #fff8ec;
+    --card: rgba(255,255,255,.95);
+    --text: #3a2530;
+    --muted: #856a74;
+    --a: #d6336c;
+    --b: #ffb800;
+    --c: #3ac3ff;
+    --d: #8f5bff;
+    --big: #c2255c;
+    --h1: #3d1e2b;
+    --ink: #3a2530;
+    --shadow: 0 20px 55px rgba(170,60,90,.16);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, rgba(255,184,0,.28), transparent 26%),
+      radial-gradient(circle at 92% 18%, rgba(214,51,108,.14), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(143,91,255,.14), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--a);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(60,50,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,50,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,50,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--a); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--a); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: var(--h1); font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: #ffe8ef; border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,50,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--a); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-weight: 700; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; }
+  p + p { margin-top: 10px; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: var(--big);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品（共通）════
+     文字はぜんぶ HTML に置いて、JS は class・data-*・絵文字・数字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: linear-gradient(160deg, #f08c00 0%, #e8436a 55%, #9c42e8 100%); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .game-hint { margin: 8px auto 0; max-width: 440px; font-size: 15px; font-weight: 800; line-height: 1.5; opacity: .95; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 52px; padding: 12px 20px;
+    border: 0; border-radius: 999px; font: inherit; font-size: 17px; font-weight: 900; line-height: 1.25; cursor: pointer;
+    color: var(--ink); background: #fff; box-shadow: 0 6px 0 rgba(0,0,0,.16), 0 12px 22px rgba(0,0,0,.12);
+    transition: transform .08s ease, box-shadow .08s ease; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    user-select: none; -webkit-user-select: none; }
+  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.16), 0 6px 12px rgba(0,0,0,.12); }
+  .btn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .btn.ghost { background: rgba(255,255,255,.16); color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.7); }
+  .btn[disabled] { opacity: .45; cursor: default; }
+  .ctrl { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 16px; }
+  .msg { margin: 14px auto 0; max-width: 440px; padding: 12px 16px; border-radius: 18px; background: #fff; color: var(--ink);
+    font-weight: 900; font-size: 16px; line-height: 1.45; }
+  @keyframes g-pop { 0% { transform: scale(.6); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
+  @keyframes g-shake { 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(3px); } }
+  @keyframes g-bounce { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-14px); } 70% { transform: translateY(-4px); } }
+  @keyframes g-in { from { opacity: 0; transform: translateY(8px) scale(.97); } to { opacity: 1; transform: none; } }
+  .pop { animation: g-pop .45s cubic-bezier(.2,1.4,.4,1); }
+  .shake { animation: g-shake .4s ease; }
+
+
+  /* 🛗 気分エレベーター */
+  .lift { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 10px; max-width: 440px; margin: 14px auto 0; text-align: left; }
+  .floors { list-style: none; margin: 0; padding: 8px; border-radius: 20px; background: rgba(255,255,255,.18); display: grid; gap: 6px; }
+  .fl { position: relative; display: flex; align-items: center; gap: 6px; min-height: 40px; padding: 4px 8px; border-radius: 12px;
+    font-size: 13.5px; font-weight: 900; opacity: .6; transition: background .3s ease, opacity .3s ease; }
+  .fl-n { flex: 0 0 auto; min-width: 30px; padding: 2px 5px; border-radius: 8px; background: rgba(0,0,0,.18); text-align: center; font-size: 12px; }
+  .fl-w { min-width: 0; line-height: 1.2; }
+  .car { margin-left: auto; font-size: 20px; visibility: hidden; }
+  .fl.on { background: #fff; color: var(--ink); opacity: 1; }
+  .fl.on .fl-n { background: var(--a); color: #fff; }
+  .fl.on .car { visibility: visible; animation: g-pop .4s cubic-bezier(.2,1.4,.4,1); }
+  .stage-box { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 10px; border-radius: 20px; background: rgba(255,255,255,.18); }
+  .pg-wrap { position: relative; width: 96px; height: 96px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.25); }
+  .pg { font-size: 58px; line-height: 1; display: inline-block; transform-origin: 50% 100%; }
+  .face { position: absolute; right: -6px; top: -6px; font-size: 32px; line-height: 1; }
+  @keyframes skip { 0%, 100% { transform: translateY(0) rotate(0); } 25% { transform: translateY(-22px) rotate(-10deg); } 50% { transform: translateY(0) rotate(0); } 75% { transform: translateY(-22px) rotate(10deg); } }
+  @keyframes stretch { 0%, 100% { transform: scale(1, 1); } 45%, 70% { transform: scale(.92, 1.3); } }
+  @keyframes wiggle { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-12deg) scale(1.08); } 75% { transform: rotate(12deg) scale(1.08); } }
+  @keyframes droop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px) scale(1, .9); } }
+  .pg.a1 { animation: skip .9s ease-in-out; }
+  .pg.a2 { animation: stretch 1s ease-in-out; }
+  .pg.a3 { animation: wiggle .7s ease-in-out; }
+  .pg.a4 { animation: droop 1.2s ease-in-out; filter: grayscale(.5); }
+  .bubble { width: 100%; padding: 10px 12px; border-radius: 16px; background: #fff; color: var(--ink); font-size: 15px; font-weight: 900; line-height: 1.45; min-height: 74px; }
+  .bubble span { display: none; }
+  .game[data-a="0"] .b0, .game[data-a="1"] .b1, .game[data-a="2"] .b2, .game[data-a="3"] .b3, .game[data-a="4"] .b4, .game[data-a="5"] .b5 { display: inline; }
+  .game[data-a="5"] .bubble { background: #fff3a8; }
+  .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px; margin: 16px auto 0; }
+  .act { padding: 12px 10px; font-size: 16px; color: #b02a5b; }
+  .act-think { color: #5a5470; background: #ece9f3; }
+  .moves { margin-top: 12px; font-size: 15px; font-weight: 900; }
+  .mv { font-variant-numeric: tabular-nums; }
+  @media (max-width: 380px) { .lift { grid-template-columns: 1fr; } .floors { grid-template-columns: 1fr; } }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(135deg, var(--a), var(--b)); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 12px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: #ffb3cb; }
+  html[data-theme="dark"] .btn:not(.ghost) { background: #f1edf8; }
+  html[data-theme="dark"] .msg { background: #f1edf8; }
+
+  html[data-theme="dark"] .fl.on, html[data-theme="dark"] .bubble { background: #f1edf8; }
+  html[data-theme="dark"] .game[data-a="5"] .bubble { background: #fff3a8; }
+  html[data-theme="dark"] .act-think { background: #d9d5e3; }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="draft-css">
+  /* 📝 下書きの印（tools/draft.py）。本番に出すと消える */
+  .draft-ribbon { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 14px;
+    padding: 9px 14px; border-radius: 14px; background: repeating-linear-gradient(135deg, #fff4c2 0 14px, #ffeaa0 14px 28px);
+    color: #5b4300; font-size: 13.5px; font-weight: 900; letter-spacing: .02em; text-align: center; }
+  .draft-ribbon a { color: inherit; }
+  .stage-draft { background: #ffd54a !important; color: #4a3500 !important; }
+  /* 2026-09-30 幅390pxで「戻る」「○ words」「DRAFT」が6pxはみ出していた → 札を少し詰めて、それでも入らなければ折り返す */
+  @media (max-width: 600px) { .topbar { flex-wrap: wrap; row-gap: 8px; } .stage-draft { padding-inline: 8px !important; letter-spacing: .04em !important; } }
+  .draft-nav { display: grid; gap: 12px; margin-top: 26px; }
+  .draft-next { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-radius: 22px;
+    text-decoration: none; color: #3a2d00; background: #fff1b8; border: 2px dashed rgba(120,90,0,.35); font-weight: 900; }
+  .draft-next small { display: block; font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .draft-next span.t { display: block; font-size: 17px; line-height: 1.4; }
+  .draft-next small.en { margin-top: 4px; letter-spacing: 0; font-weight: 700; }
+  .draft-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .draft-prod { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
+  html[data-theme="dark"] .draft-next { background: #3a3320; color: #ffe9a8; border-color: rgba(255,233,168,.3); }
+  html[data-theme="dark"] .draft-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"11cbd29263"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=f52e91ee86"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+  <!-- 📝 draft-ribbon:start（tools/draft.py） -->
+  <div class="draft-ribbon" translate="no">📝 DRAFT · 下書き — まだ本番に出していません · <a href="../index.html">下書き一覧</a></div>
+  <!-- 📝 draft-ribbon:end -->
+
+  <div class="topbar">
+    <a class="home" href="../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 54 words · 18 sec</div>
+      <div class="stage stage-draft">DRAFT</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 18 SEC</div>
+  <h1>Do good things first, because your heart follows your body <span class="float">🎵</span></h1>
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1168" height="880" src="img/0d58e1f10aba.jpg" alt="A chubby felted wool penguin skipping happily next to a real pair of bright sneakers" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐾</span>
+      <span class="card-label">Do It First</span>
+    </div>
+    <p>Do not wait to become a good person; do good things first.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧲</span>
+      <span class="card-label">Body Leads</span>
+    </div>
+    <p>It seems your heart comes after the moves of your body.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎵</span>
+      <span class="card-label">Cannot Do Both</span>
+    </div>
+    <p>You cannot get angry while you laugh, and you cannot feel down while you skip.</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：気分エレベーター（体を動かすと1階ずつ上がる。座って考えこむと下がる） -->
+  <section class="game" data-f="0" data-a="0" data-top="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Can the penguin stay gloomy?</div>
+    <div class="game-hint">Move the body. Watch the mood elevator.</div>
+    <div class="lift">
+      <ol class="floors">
+        <li class="fl" data-n="4"><span class="fl-n">3F</span><span class="fl-w">☀️ Great</span><span class="car" aria-hidden="true">🐧</span></li>
+        <li class="fl" data-n="3"><span class="fl-n">2F</span><span class="fl-w">😊 Good</span><span class="car" aria-hidden="true">🐧</span></li>
+        <li class="fl" data-n="2"><span class="fl-n">1F</span><span class="fl-w">🙂 Okay</span><span class="car" aria-hidden="true">🐧</span></li>
+        <li class="fl" data-n="1"><span class="fl-n">B1</span><span class="fl-w">😐 Meh</span><span class="car" aria-hidden="true">🐧</span></li>
+        <li class="fl" data-n="0"><span class="fl-n">B2</span><span class="fl-w">😞 Gloomy</span><span class="car" aria-hidden="true">🐧</span></li>
+      </ol>
+      <div class="stage-box">
+        <div class="pg-wrap" aria-hidden="true"><span class="pg">🐧</span><span class="face">😞</span></div>
+        <div class="bubble">
+          <span class="b0">Today I will stay gloomy. Try to stop me… 😞</span>
+          <span class="b1">Gloomy… gloo… hop, hop! I cannot feel down while I skip! 🎵</span>
+          <span class="b2">Mmmmm… What a fresh morning! 🌅</span>
+          <span class="b3">I try to be grumpy… but I cannot while I smile. 😄</span>
+          <span class="b4">Hmm… why… and why… and why… 🌀 The elevator goes down.</span>
+          <span class="b5">☀️ Rooftop! My body moved first, and my heart came along.</span>
+        </div>
+      </div>
+    </div>
+    <div class="acts">
+      <button type="button" class="btn act" data-a="1">🎵 Skip</button>
+      <button type="button" class="btn act" data-a="2">🌅 Big stretch</button>
+      <button type="button" class="btn act" data-a="3">😄 Big smile</button>
+      <button type="button" class="btn act act-think" data-a="4">🛋️ Sit and think</button>
+    </div>
+    <div class="moves"><span class="mv-l">Moves:</span> <span class="mv">0</span></div>
+    <div class="ctrl"><button type="button" class="btn ghost b-reset">↺ Back to B2</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌅</span>
+      <span class="card-label">Morning Stretch</span>
+    </div>
+    <p class="big">In the morning, stretch and say, "What a fresh morning!" and your heart looks forward too.</p>
+  </section>
+
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+
+  <!-- 📝 draft-nav:start（tools/draft.py） -->
+  <nav class="draft-nav" translate="no">
+    <a class="draft-next" href="../personality-can-change/index.html"><span><small>NEXT DRAFT · 次の下書き</small><span class="t">性格は変えられる。よく使う考え方ほど、脳の道が太くなる</span><small class="en">Your personality can change, because the thoughts you use become wide roads</small></span><span aria-hidden="true">📝</span></a>
+    <a class="draft-back" href="../index.html">📝 ← 下書き一覧 / All drafts</a>
+    <a class="draft-prod" href="../../index.html">本番のサイトへ ↗</a>
+  </nav>
+  <!-- 📝 draft-nav:end -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* 🛗 気分エレベーター：JS は data-*・class・絵文字・数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var fls = [].slice.call(g.querySelectorAll('.fl')), pg = g.querySelector('.pg'), face = g.querySelector('.face'), mv = g.querySelector('.mv');
+  var FACE = ['😞', '😐', '🙂', '😊', '😆'];
+  var floor = 0, moves = 0;
+  function paint() {
+    fls.forEach(function (f) { f.classList.toggle('on', parseInt(f.getAttribute('data-n'), 10) === floor); });
+    face.textContent = FACE[floor];
+    face.classList.remove('pop'); void face.offsetWidth; face.classList.add('pop');
+    g.setAttribute('data-f', String(floor));
+    mv.textContent = String(moves);
+  }
+  function play(a) { pg.className = 'pg'; void pg.offsetWidth; pg.className = 'pg a' + a; }
+  [].forEach.call(g.querySelectorAll('.act'), function (b) {
+    b.addEventListener('click', function () {
+      var a = parseInt(b.getAttribute('data-a'), 10);
+      moves++;
+      play(a);
+      if (a === 4) { floor = Math.max(0, floor - 1); g.setAttribute('data-top', '0'); g.setAttribute('data-a', '4'); }
+      else {
+        floor = Math.min(4, floor + 1);
+        if (floor === 4) {
+          g.setAttribute('data-a', '5');
+          if (g.getAttribute('data-top') !== '1') {
+            g.setAttribute('data-top', '1');
+            if (window.pengessoPop) { var r = pg.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['☀️', '🎵', '🐧', '✨', '🌅'], 20); }
+            if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+          }
+        } else { g.setAttribute('data-a', String(a)); }
+      }
+      paint();
+    });
+  });
+  g.querySelector('.b-reset').addEventListener('click', function () {
+    floor = 0; moves = 0; pg.className = 'pg';
+    g.setAttribute('data-a', '0'); g.setAttribute('data-top', '0'); paint();
+  });
+  paint();
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label 4個 / h1 / 気分エレベーターの文字 ← 本人の素材の要約・演出（word数対象外）
+-->

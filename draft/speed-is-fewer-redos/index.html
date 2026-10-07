@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow" /><!-- 📝 draft -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Speed comes from fewer redos, not from fast hands</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（その3・2026-10-05）。真面目な話 → ポップに（トーン反転） */
+  :root {
+    --bg: #fff8ef;
+    --card: rgba(255,255,255,.95);
+    --text: #2f2a3a;
+    --muted: #776f86;
+    --c1: #ff7a1a;
+    --c2: #12b5a5;
+    --sun: #ffd23f;
+    --c1d: #c2510a;
+    --game: linear-gradient(150deg, #ff7a1a 0%, #ff9f1a 45%, #12b5a5 100%);
+    --shadow: 0 20px 55px rgba(70,60,120,.16);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, rgba(255,122,26,.22), transparent 26%),
+      radial-gradient(circle at 92% 18%, rgba(18,181,165,.18), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(255,210,63,.22), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--c1d);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(70,60,120,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(70,60,120,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(70,60,120,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--c1d); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--c1d); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: #2a2440; font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: #ffeedd; border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(70,60,120,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--c1d); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; font-weight: 700; }
+  p + p { margin-top: 10px; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 900; line-height: 1.42; color: var(--c1d);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品の共通（文字は HTML。JS は class・data・数字・絵文字だけ）════ */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: var(--game); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .game-hint { margin-top: 6px; font-size: 15px; font-weight: 800; opacity: .95; line-height: 1.45; }
+  .gbtn { display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 12px 22px; border: 0; border-radius: 999px;
+    font: inherit; font-size: 18px; font-weight: 900; color: #2b2100; background: var(--sun); cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0,0,0,.2), 0 12px 22px rgba(0,0,0,.14); transition: transform .08s ease, box-shadow .08s ease, opacity .2s;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; line-height: 1.25; }
+  .gbtn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.14); }
+  .gbtn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .gbtn.ghost { background: rgba(255,255,255,.94); color: var(--c1d); font-size: 16px; min-height: 50px; }
+  .gbtn[disabled] { opacity: .45; cursor: default; }
+  .gbtn.wide { width: min(340px, 100%); }
+  .g-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 14px; }
+  .msg { margin-top: 14px; min-height: 52px; font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .msg > div { display: none; }
+  @keyframes shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+  @keyframes popin { from { opacity: 0; transform: scale(.8); } to { opacity: 1; transform: none; } }
+  .msg > div { animation: popin .35s cubic-bezier(.2,1.4,.4,1) both; }
+
+
+  .bars { display: grid; gap: 8px; margin-top: 14px; }
+  .bar-row { display: grid; grid-template-columns: minmax(0, 8.5em) 1fr 3em; align-items: center; gap: 8px; font-weight: 900; font-size: 14px; }
+  .bar { height: 16px; border-radius: 999px; background: #fdebd9; overflow: hidden; }
+  .bar i { display: block; height: 100%; border-radius: 999px; }
+  .b-hand { width: 10%; background: #ffb27a; }
+  .b-redo { width: 90%; background: linear-gradient(90deg, #12b5a5, #2fd3a7); }
+  .bar-n { text-align: right; color: var(--c1d); }
+
+  .lanes { display: grid; gap: 10px; margin: 16px 0 4px; }
+  .lane { background: rgba(255,255,255,.96); color: var(--text); border-radius: 20px; padding: 10px 12px; text-align: left; transition: box-shadow .2s; }
+  .lane-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px 8px; font-weight: 900; font-size: 15px; }
+  .lane-note { font-size: 13px; color: var(--muted); }
+  .lane-note .rn, .lane-note .rn2 { color: var(--c1d); font-size: 16px; }
+  .track { position: relative; height: 46px; margin-top: 6px; border-radius: 999px;
+    background: repeating-linear-gradient(90deg, #ffe7d1 0 22px, #fff3e6 22px 44px); }
+  .runner { position: absolute; top: 4px; left: 0; width: 38px; text-align: center; font-size: 30px; line-height: 38px; transition: left .22s ease-out; }
+  .goalflag { position: absolute; right: 6px; top: 4px; font-size: 28px; line-height: 38px; }
+  .game[data-pick="a"] .lane-a, .game[data-pick="b"] .lane-b { box-shadow: 0 0 0 4px var(--sun); }
+  .lane.shake .runner { animation: shake .45s ease; }
+  .oops { min-height: 30px; margin-top: 8px; font-weight: 900; font-size: 16px; }
+  .oops span { display: none; }
+  .game[data-oops="1"] .oops .o1, .game[data-oops="2"] .oops .o2, .game[data-oops="3"] .oops .o3 { display: inline-block; animation: popin .3s both; }
+  .game .go, .game .again, .game .picks { display: none; }
+  .game[data-s="pick"] .picks { display: flex; }
+  .game[data-s="race"] .go { display: inline-flex; min-height: 84px; font-size: 24px; margin-top: 10px; }
+  .game[data-s="done"] .again { display: inline-flex; margin-top: 12px; }
+  .game[data-s="done"][data-r="win"] .m-win, .game[data-s="done"][data-r="lose"] .m-lose { display: block; }
+
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(135deg, var(--c1), var(--c2)); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: #ffb27a; }
+  html[data-theme="dark"] .gbtn.ghost { background: #2a2c38; color: #f4f0fa; }
+  html[data-theme="dark"] .game .lane { background: #22242f; color: #f4f0fa; }
+  html[data-theme="dark"] .game .track { background: repeating-linear-gradient(90deg, #3a3240 0 22px, #2e2a36 22px 44px); }
+  html[data-theme="dark"] .bar { background: #3a3240; }
+  html[data-theme="dark"] .bar-n, html[data-theme="dark"] .lane-note .rn, html[data-theme="dark"] .lane-note .rn2 { color: #ffb27a; }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="draft-css">
+  /* 📝 下書きの印（tools/draft.py）。本番に出すと消える */
+  .draft-ribbon { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 14px;
+    padding: 9px 14px; border-radius: 14px; background: repeating-linear-gradient(135deg, #fff4c2 0 14px, #ffeaa0 14px 28px);
+    color: #5b4300; font-size: 13.5px; font-weight: 900; letter-spacing: .02em; text-align: center; }
+  .draft-ribbon a { color: inherit; }
+  .stage-draft { background: #ffd54a !important; color: #4a3500 !important; }
+  /* 2026-09-30 幅390pxで「戻る」「○ words」「DRAFT」が6pxはみ出していた → 札を少し詰めて、それでも入らなければ折り返す */
+  @media (max-width: 600px) { .topbar { flex-wrap: wrap; row-gap: 8px; } .stage-draft { padding-inline: 8px !important; letter-spacing: .04em !important; } }
+  .draft-nav { display: grid; gap: 12px; margin-top: 26px; }
+  .draft-next { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-radius: 22px;
+    text-decoration: none; color: #3a2d00; background: #fff1b8; border: 2px dashed rgba(120,90,0,.35); font-weight: 900; }
+  .draft-next small { display: block; font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .draft-next span.t { display: block; font-size: 17px; line-height: 1.4; }
+  .draft-next small.en { margin-top: 4px; letter-spacing: 0; font-weight: 700; }
+  .draft-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .draft-prod { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
+  html[data-theme="dark"] .draft-next { background: #3a3320; color: #ffe9a8; border-color: rgba(255,233,168,.3); }
+  html[data-theme="dark"] .draft-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"eca0b0da5d"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=f52e91ee86"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+  <!-- 📝 draft-ribbon:start（tools/draft.py） -->
+  <div class="draft-ribbon" translate="no">📝 DRAFT · 下書き — まだ本番に出していません · <a href="../index.html">下書き一覧</a></div>
+  <!-- 📝 draft-ribbon:end -->
+
+  <div class="topbar">
+    <a class="home" href="../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 61 words · 20 sec</div>
+      <div class="stage stage-draft">DRAFT</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 20 SEC</div>
+  <h1>Speed comes from fewer redos, not from fast hands <span class="float">🏁</span></h1>
+
+  <figure class="photo">
+    <img src="IMAGE:cover.jpg" alt="A chubby felted wool penguin writing a real handmade birthday card with a pen on a small desk" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🏃</span>
+      <span class="card-label">The Habit</span>
+    </div>
+    <p>When I want to finish fast, I try to move my hands fast.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔑</span>
+      <span class="card-label">The Real Key</span>
+    </div>
+    <p class="big">But it seems that speed is decided by "fewer redos."</p>
+    <p>They say fast hands help only about 10%.</p>
+    <div class="bars" aria-hidden="true">
+      <div class="bar-row"><span class="bar-name">✋ Fast hands</span><span class="bar"><i class="b-hand"></i></span><span class="bar-n">10%</span></div>
+      <div class="bar-row"><span class="bar-name">↺ Fewer redos</span><span class="bar"><i class="b-redo"></i></span><span class="bar-n">90%</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐌</span>
+      <span class="card-label">Why So Slow</span>
+    </div>
+    <p>It gets slow because remaking, checking, and fixing mistakes pile up.</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：誕生日カード・レース -->
+  <section class="game" data-s="pick" data-pick="" data-oops="0" data-r="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The birthday card race</div>
+    <div class="game-hint">Who finishes the card first? Pick one, then tap fast!</div>
+    <div class="lanes">
+      <div class="lane lane-a">
+        <div class="lane-top"><span class="lane-name">💨 Fast Hands</span><span class="lane-note"><span class="rl">↺ Redos:</span> <span class="rn">0</span></span></div>
+        <div class="track"><span class="goalflag" aria-hidden="true">🎂</span><span class="runner ra" aria-hidden="true">🐧</span></div>
+      </div>
+      <div class="lane lane-b">
+        <div class="lane-top"><span class="lane-name">📝 Plan First</span><span class="lane-note"><span class="rl">↺ Redos:</span> <span class="rn2">0</span></span></div>
+        <div class="track"><span class="goalflag" aria-hidden="true">🎂</span><span class="runner rb" aria-hidden="true">🐧</span></div>
+      </div>
+    </div>
+    <div class="oops">
+      <span class="o1">✏️ Wrong name! Start again!</span>
+      <span class="o2">📏 No space left! Start again!</span>
+      <span class="o3">💧 The ink got smudged! Start again!</span>
+    </div>
+    <div class="g-row picks">
+      <button type="button" class="gbtn pa">💨 Fast Hands</button>
+      <button type="button" class="gbtn pb">📝 Plan First</button>
+    </div>
+    <button type="button" class="gbtn wide go">✏️ Tap to write!</button>
+    <div class="msg">
+      <div class="m-win">🎉 You win! "Plan First" wrote it in 1 try.</div>
+      <div class="m-lose">😅 "Fast Hands" had 3 redos. "Plan First" won!</div>
+    </div>
+    <button type="button" class="gbtn ghost again">↺ Race again</button>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎂</span>
+      <span class="card-label">Card Example</span>
+    </div>
+    <p>With a birthday card too, if you decide what to write first, you can finish it in 1 try.</p>
+  </section>
+
+  <div class="credit">📚 I wrote this from my notes on books and blogs I have read.</div>
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* 🏁 誕生日カード・レース：「手が速い」は2マス進むが3回やり直し、「先に決める」は1マスずつで1回 */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var ra = g.querySelector('.ra'), rb = g.querySelector('.rb'), la = g.querySelector('.lane-a');
+  var rn = g.querySelector('.rn'), go = g.querySelector('.go');
+  var LEN = 10, A = 0, B = 0, red = 0;
+  function pop(el, list) {
+    if (!window.pengessoPop || !el) return;
+    var r = el.getBoundingClientRect();
+    window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, 16);
+  }
+  function place(el, p) { var f = Math.min(p, LEN) / LEN; el.style.left = 'calc(' + (f * 100) + '% - ' + (f * 44) + 'px)'; }
+  function reset() { A = 0; B = 0; red = 0; place(ra, 0); place(rb, 0); rn.textContent = '0';
+    g.setAttribute('data-oops', '0'); g.setAttribute('data-r', ''); g.setAttribute('data-pick', ''); g.setAttribute('data-s', 'pick'); }
+  function pick(w) { g.setAttribute('data-pick', w); g.setAttribute('data-s', 'race'); }
+  g.querySelector('.pa').addEventListener('click', function () { pick('a'); });
+  g.querySelector('.pb').addEventListener('click', function () { pick('b'); });
+  go.addEventListener('click', function () {
+    if (g.getAttribute('data-s') !== 'race') return;
+    B += 1; A += 2;
+    if (A >= 6 && red < 3) {
+      red += 1; A = 0; rn.textContent = String(red);
+      g.setAttribute('data-oops', String(red));
+      la.classList.remove('shake'); void la.offsetWidth; la.classList.add('shake');
+    }
+    place(ra, A); place(rb, B);
+    if (B >= LEN) {
+      var win = g.getAttribute('data-pick') === 'b';
+      g.setAttribute('data-r', win ? 'win' : 'lose');
+      g.setAttribute('data-s', 'done');
+      pop(rb, ['🎂', '🐧', '✨', '📝'], 16);
+    }
+  });
+  g.querySelector('.again').addEventListener('click', reset);
+  reset();
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・.big）
+S3 → 使った（2枚目のカード）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label 4個 / h1 / 誕生日カード・レースの文字 ← 本人の素材の要約・演出（word数対象外）
+-->
