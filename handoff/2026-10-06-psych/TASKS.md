@@ -1,0 +1,25 @@
+# ✅ 残りのタスク（2026-10-07・すべて途中）
+
+終わったら [ ] を [x] にして、何をしたか1行書いて push する。
+
+## 1. 表紙のペンギンのデザインを変える
+- [ ] 本人：「今の表紙のペンギンがあまり好きじゃない。少しだけ変えてほしい」
+- [ ] 今の作り方：`COVERS.md`（ふわふわの丸いペンギン＋毎回ちがう素材＋本物の小物1つ）
+- [ ] 新しい案を3〜4通り試す → いちばんいいものに決める → `COVERS.md` と `SPEC.md` の表紙のルールを書き換える
+- [ ] 表紙がまだの下書き（`IMAGE:cover.jpg` が残っているもの、約150本）に新しいデザインで付ける
+- [ ] すでに付いている約150本を作り直すかどうかは、本人に1回だけ聞く（上書きになるため）
+
+## 2. 下書きを日・英・韓で本番に出す
+- [ ] 本人：「下書きは気に入っているので本番に出してよい。訳は日・英・韓の3つだけ。言い換えパックは今は作らない」
+- [ ] 表紙つき・チェック OK の下書きから順に `python3 tools/draft.py publish <slug>`
+- [ ] 韓国語の訳 `works/<slug>/i18n/ko.json`（英語本文から直訳）
+- [ ] `build-site.py` → `next-links.py` → `prev-links.py` → `i18n.py` → `furigana.py` → `check.py --site` → push
+- [ ] 注意：check.py や i18n.py が「14言語そろっていない」と止めるなら、3言語で通るようにするか本人に伝える
+
+## 3. ③④の書きかけの記事を確かめて仕上げる
+- [ ] 対象：seq 522〜590（③ X・Y・Z、④ BK1〜BK4）。書いている途中で API の上限で止まった
+- [ ] 1本ずつ：`python3 tools/i18n.py --draft --todo <slug>` が `[]`／`python3 tools/check.py --draft --fix-badge <slug>` が表紙以外 ✅
+- [ ] iPhone テスト：`node handoff/2026-10-06-psych/mtest.js <出力先> <slug>…`（リポジトリで `python3 -m http.server 8765`）
+- [ ] 裏返すカードがあれば、鏡文字の対策が入っているか（`SPEC2.md` の最後）
+- [ ] BK4：dailyish のカードのラベルを直す途中だった
+- [ ] ③のクレジットは「📚 I wrote this from my notes on books and blogs I have read.」
