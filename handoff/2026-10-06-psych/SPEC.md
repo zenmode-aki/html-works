@@ -93,7 +93,8 @@ dark mode lines) and change colors/game per article. Read it completely before s
   friends, feelings, mindset, happiness, productivity, money, sleep, health, rest, tips, books, fitness, walking,
   study, mistakes, school, english, family]; "room": "head"; "topic": "life"; "place": "nagoya";
   "label": 1–3 word English short label; "thumbAlt" = same as cover alt.
-- Cover prompt rules: hero is an "extremely cute, chubby round penguin" with gentle face and plain belly (no rings or
+- 🆕 2026-10-07 COVER DESIGN CHANGED: covers are no longer AI-generated. Run `python3 tools/cover/make-cover.py <slug> <one emoji> '<accent hex>' [--flip]` (the real Pengesso plush + a thought bubble with one Fluent 3D emoji). The old prompt rules below are kept only for reference.
+- (old) Cover prompt rules: hero is an "extremely cute, chubby round penguin" with gentle face and plain belly (no rings or
   patterns on belly, never pink penguin), texture = choose a different one per article from: soft felted wool, plush toy
   corduroy and felt, crocheted amigurumi yarn, matte plastic model kit, low-poly 3D wood and paper, layered cut paper
   diorama, hand-embroidered felt, brushed mohair, chenille yarn, boucle wool, alpaca wool. Include ONE realistic object

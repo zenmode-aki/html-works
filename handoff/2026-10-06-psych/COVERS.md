@@ -1,3 +1,10 @@
+# 🆕 2026-10-07：表紙のデザインを変えた
+
+画像生成AIのふわふわペンギンをやめて、**本家ペンゲッソ（紺・青い帽子・サングラス）＋考えごとの吹き出し（立体の絵文字1つ）**にした。
+作り方：`python3 tools/cover/make-cover.py <slug> <絵文字> '<色>' [--flip]`（くわしくはファイルの先頭）。下の古い手順は参考に残す。
+
+---
+
 # Cover job (draft articles). Folder P = this folder.
 For each slug you are given:
 1. Prompt: `cd /Users/ezakimasaaki/Desktop/html-works && python3 P/prompts.py <slugs…>` prints the English prompt from draft/<slug>/source.md (## 表紙のプロンプト).
