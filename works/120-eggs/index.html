@@ -453,7 +453,7 @@
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
 <style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
 <script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"12f556c6ab"},"bn":{"v":"aa1c02a3d1"},"ceb":{"v":"888a122038"},"cs":{"v":"c0277aa7ce"},"da":{"v":"af8efa0653"},"de":{"v":"dde848e8ee"},"el":{"v":"eb797f9ffc"},"es":{"v":"8289bd37e1"},"fa":{"v":"3a8b22f367"},"fi":{"v":"1ecc33b0f4"},"fil":{"v":"ed3862ec4b"},"fr":{"v":"1d645e4d83"},"he":{"v":"6f9aa4299c"},"hi":{"v":"13b965d6c5"},"id":{"v":"97491564d8"},"it":{"v":"f433633a9a"},"ja":{"v":"e41684c63a"},"ko":{"v":"df79a31b35"},"mr":{"v":"92badbd496"},"ms":{"v":"be43129a91"},"nb":{"v":"99bd699bf7"},"ne":{"v":"f686e71c4e"},"nl":{"v":"b8d38f92d1"},"pa":{"v":"bbac4b36fe"},"pl":{"v":"2c1c823da9"},"pt":{"v":"7215a26307"},"ro":{"v":"ab5e0c0df2"},"ru":{"v":"c9ac725e44"},"sv":{"v":"d2a31715c7"},"sw":{"v":"93cb4283d3"},"ta":{"v":"46ff3e4d7c"},"te":{"v":"fedb456be7"},"th":{"v":"53ad132e5e"},"tr":{"v":"7c32eaeebe"},"uk":{"v":"383081484c"},"ur":{"v":"a55f94c1da"},"vi":{"v":"dffece3a98"},"zh":{"v":"f213299d5d"},"zh-Hant":{"v":"cb8d9b6fd7"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
-<script src="/assets/i18n-runtime.js?v=4ec8701409"></script>
+<script src="/assets/i18n-runtime.js?v=e7bf3489d0"></script>
 <script src="/assets/px.js?v=10d546d761" defer></script>
 <!-- 🌐 i18n:end -->
 </head>
@@ -630,6 +630,153 @@
     </div>
   </section>
   </div>
+
+
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 18px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fff4c2, #ffe1d6 60%, #e3f3ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(176,138,26,.22); font-weight: 800; color: #3b2745; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-lives { display: inline-flex; align-items: center; gap: 8px; margin: 8px 0 12px; padding: 8px 20px;
+    border-radius: 999px; background: #3b2745; color: #fff; font-size: 30px; font-weight: 900; line-height: 1.1;
+    box-shadow: 0 5px 0 #1d1323; }
+  .toy-lives .toy-x { font-size: 22px; opacity: .8; }
+  .toy-lives .toy-n { min-width: 2.3ch; text-align: left; font-variant-numeric: tabular-nums; }
+  .toy-lives.toy-zero { background: #e2553f; box-shadow: 0 5px 0 #9c2f1f; animation: toy-shake .45s ease-in-out 2; }
+  .toy-lives.toy-full { background: #34b27d; box-shadow: 0 5px 0 #1f7a53; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  .toy-fridge { position: relative; width: min(240px, 100%); margin: 0 auto; padding: 12px 12px 10px;
+    border-radius: 26px 26px 18px 18px; background: #f7fbff; border: 4px solid #cfe0ef;
+    box-shadow: inset 0 0 0 4px #fff, 0 8px 0 #b9cde0; }
+  .toy-fridge::before { content: ""; position: absolute; right: 12px; top: 18px; width: 7px; height: 46px;
+    border-radius: 9px; background: #b9cde0; }
+  .toy-fridge.toy-glow { box-shadow: inset 0 0 0 4px #fff, 0 8px 0 #b9cde0, 0 0 0 8px rgba(52,178,125,.35); }
+  .toy-shelf { display: flex; align-items: center; justify-content: center; gap: 6px; height: 46px; margin: 6px 14px 6px 0;
+    border-radius: 14px; border: 3px dashed #cfe0ef; background: #eef6fd; }
+  .toy-shelf .toy-tray { font-size: 28px; line-height: 1; visibility: hidden; opacity: 0; transform: translateY(-26px) scale(.6);
+    transition: transform .35s cubic-bezier(.2,1.5,.4,1), opacity .2s; }
+  .toy-shelf .toy-t30 { font-size: 15px; font-weight: 900; color: #b08a1a; visibility: hidden; }
+  .toy-shelf.toy-on { border-style: solid; border-color: #f0d478; background: #fff8dc; }
+  .toy-shelf.toy-on .toy-tray { visibility: visible; opacity: 1; transform: none; }
+  .toy-shelf.toy-on .toy-t30 { visibility: visible; }
+  .toy-meter { height: 14px; margin: 16px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(59,39,69,.12); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px;
+    background: linear-gradient(90deg, #ff8a70, #f0d478, #34b27d); transition: width .35s ease-out; }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 26px; font-weight: 900; line-height: 1; color: #3b2745; background: #fff;
+    box-shadow: 0 6px 0 #d8c58a; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #d8c58a; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-btn.toy-add { background: #ffd66b; box-shadow: 0 6px 0 #c99a1e; }
+  .toy-btn.toy-add:active { box-shadow: 0 1px 0 #c99a1e; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; color: #876f84; box-shadow: 0 4px 0 #d8c58a; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #3a3220, #3a2626 60%, #1f2c3a); border-color: rgba(255,255,255,.12); color: #f4ecff; }
+  html[data-theme="dark"] .toy-fridge { background: #263241; border-color: #3d5068; box-shadow: inset 0 0 0 4px #1d2733, 0 8px 0 #3d5068; }
+  html[data-theme="dark"] .toy-fridge::before { background: #3d5068; }
+  html[data-theme="dark"] .toy-shelf { background: #1d2733; border-color: #3d5068; }
+  html[data-theme="dark"] .toy-shelf.toy-on { background: #3a3220; border-color: #b08a1a; }
+  html[data-theme="dark"] .toy-shelf .toy-t30 { color: #f0d478; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.12); }
+  html[data-theme="dark"] .toy-btn { background: #2d2838; color: #f4ecff; box-shadow: 0 6px 0 #14111a; }
+  html[data-theme="dark"] .toy-btn.toy-add { background: #b08a1a; color: #fff; box-shadow: 0 6px 0 #6e5410; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-lives,
+    html:not([data-motion="on"]) .toy-bump { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-lives, html[data-motion="off"] .toy-bump { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🥚">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-lives" aria-live="polite"><span class="toy-who">🐧</span><span class="toy-x">×</span><span class="toy-n">0</span></div>
+    <div class="toy-fridge" aria-hidden="true">
+      <div class="toy-shelf"><span class="toy-tray">🥚🥚🥚</span><span class="toy-t30">×30</span></div>
+      <div class="toy-shelf"><span class="toy-tray">🥚🥚🥚</span><span class="toy-t30">×30</span></div>
+      <div class="toy-shelf"><span class="toy-tray">🥚🥚🥚</span><span class="toy-t30">×30</span></div>
+      <div class="toy-shelf"><span class="toy-tray">🥚🥚🥚</span><span class="toy-t30">×30</span></div>
+    </div>
+    <div class="toy-meter" aria-hidden="true"><span class="toy-fill"></span></div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-add" aria-label="📦 +30">📦 <small>+30</small></button>
+      <button type="button" class="toy-btn toy-fry" aria-label="🍳 −1">🍳 <small>−1</small></button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var numEl = box.querySelector('.toy-n'), lives = box.querySelector('.toy-lives');
+    var fridge = box.querySelector('.toy-fridge'), fill = box.querySelector('.toy-fill');
+    var shelves = [].slice.call(box.querySelectorAll('.toy-shelf'));
+    var add = box.querySelector('.toy-add'), fry = box.querySelector('.toy-fry'), reset = box.querySelector('.toy-reset');
+    if (!numEl || !lives || !add || !fry || !reset) return;
+    var n = 0, shown = 0, raf = 0, celebrated = false, MAX = 120;
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el) { el.classList.remove('toy-bump'); void el.offsetWidth; el.classList.add('toy-bump'); }
+    function roll() {
+      cancelAnimationFrame(raf);
+      if (still()) { shown = n; numEl.textContent = String(n); return; }
+      var from = shown, to = n, t0 = 0;
+      function step(t) {
+        if (!t0) t0 = t;
+        var k = Math.min(1, (t - t0) / 380);
+        shown = Math.round(from + (to - from) * k);
+        numEl.textContent = String(shown);
+        if (k < 1) raf = requestAnimationFrame(step);
+      }
+      raf = requestAnimationFrame(step);
+    }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    function draw() {
+      var trays = Math.ceil(n / 30);
+      shelves.forEach(function (s, i) { s.classList.toggle('toy-on', (shelves.length - 1 - i) < trays); });
+      if (fill) fill.style.width = (n / MAX * 100) + '%';
+      add.disabled = n >= MAX;
+      fry.disabled = n <= 0;
+      lives.classList.toggle('toy-full', n >= MAX);
+      if (fridge) fridge.classList.toggle('toy-glow', n >= MAX);
+      roll();
+    }
+    add.addEventListener('click', function () {
+      if (n >= MAX) return;
+      n = Math.min(MAX, n + 30);
+      lives.classList.remove('toy-zero');
+      bump(lives);
+      draw();
+      if (n >= MAX && !celebrated) {
+        celebrated = true;
+        pop(fridge || lives, ['🥚', '🐧', '✨', '🎉'], 18);
+      }
+    });
+    fry.addEventListener('click', function () {
+      if (n <= 0) return;
+      n -= 1;
+      pop(fry, ['🍳'], 3);
+      draw();
+      if (n === 0) { lives.classList.remove('toy-zero'); void lives.offsetWidth; lives.classList.add('toy-zero'); }
+    });
+    reset.addEventListener('click', function () {
+      n = 0; celebrated = false;
+      lives.classList.remove('toy-zero');
+      draw();
+    });
+    draw();
+  })();
+  </script>
 
   <div class="chap-tracker" aria-hidden="true"><span data-c="c1" style="--c: #ff8a70">1</span><span data-c="c2" style="--c: #4d9de0">2</span><span data-c="c3" style="--c: #34b27d">3</span></div>
 

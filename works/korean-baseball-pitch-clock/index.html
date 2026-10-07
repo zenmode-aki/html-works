@@ -425,7 +425,7 @@
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
 <style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
 <script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"0f6a54d656"},"bn":{"v":"f875a7f32e"},"ceb":{"v":"040a8b7dd5"},"cs":{"v":"308f223233"},"da":{"v":"61a683c70b"},"de":{"v":"b1219302c9"},"el":{"v":"055e740e4b"},"es":{"v":"4204cbd120"},"fa":{"v":"bac1c7e00b"},"fi":{"v":"a85a8158c4"},"fil":{"v":"f46b5675c3"},"fr":{"v":"0ef4a621b9"},"he":{"v":"800dd26eec"},"hi":{"v":"a66252950a"},"id":{"v":"f5e7dda91a"},"it":{"v":"f764e8f706"},"ja":{"v":"60a3bfb521"},"ko":{"v":"32b916e002"},"mr":{"v":"7d16e23e98"},"ms":{"v":"e608829e8c"},"nb":{"v":"f2b526f7b3"},"ne":{"v":"1a52e23ae1"},"nl":{"v":"ea79cf54ac"},"pa":{"v":"ecbaddd6ff"},"pl":{"v":"187df90c71"},"pt":{"v":"d80e853747"},"ro":{"v":"4d961e10e6"},"ru":{"v":"7e4a068513"},"sv":{"v":"8a4766bc7a"},"sw":{"v":"a79e8dd478"},"ta":{"v":"327be9b274"},"te":{"v":"5c775f8cda"},"th":{"v":"0a5abf55f2"},"tr":{"v":"71230e77e7"},"uk":{"v":"a3e5f5fa68"},"ur":{"v":"ad77ad7fde"},"vi":{"v":"844ec1d021"},"zh":{"v":"eccc361f34"},"zh-Hant":{"v":"8347c3e2c5"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
-<script src="/assets/i18n-runtime.js?v=4ec8701409"></script>
+<script src="/assets/i18n-runtime.js?v=e7bf3489d0"></script>
 <script src="/assets/px.js?v=10d546d761" defer></script>
 <!-- 🌐 i18n:end -->
 </head>
@@ -554,6 +554,105 @@
   var el = document.getElementById('pc'); if (!el) return;
   if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = '13'; return; }
   var n = 20; setInterval(function () { n = n <= 0 ? 20 : n - 1; el.textContent = n; }, 1000);
+})();
+</script>
+
+<style>
+.toy{position:relative;margin:28px 0 0;padding:22px 14px 18px;border-radius:30px;background:linear-gradient(160deg,var(--tb),var(--tc));border:4px solid rgba(255,255,255,.95);box-shadow:0 16px 36px -10px rgba(40,40,90,.28);color:var(--tk);text-align:center;font-weight:900;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;font-family:"Arial Rounded MT Bold","Avenir Next Rounded","Trebuchet MS",sans-serif}
+.toy .toy-kick{position:absolute;top:12px;left:14px;font-size:28px;line-height:1;animation:toy-kick 1.3s ease-in-out infinite}
+@keyframes toy-kick{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(6px) rotate(4deg)}}
+.toy button{font:inherit;font-weight:900;color:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.toy .toy-reset{position:absolute;top:10px;right:10px;z-index:3;width:50px;height:50px;padding:0;border-radius:50%;border:3px solid #fff;background:var(--ta);color:#fff;font-size:26px;line-height:1;box-shadow:0 6px 0 rgba(0,0,0,.18);visibility:hidden;transition:transform .2s ease}
+.toy.toy-done .toy-reset{visibility:visible;animation:toy-in .5s cubic-bezier(.2,1.6,.4,1) both}
+.toy .toy-reset:active{transform:rotate(-120deg) scale(.9)}
+@keyframes toy-in{from{transform:scale(.2)}to{transform:none}}
+@keyframes toy-boing{0%{transform:scale(1)}30%{transform:scale(1.25,.8)}55%{transform:scale(.9,1.12)}80%{transform:scale(1.05,.97)}100%{transform:scale(1)}}
+@keyframes toy-wig{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px) rotate(-6deg)}40%{transform:translateX(8px) rotate(5deg)}60%{transform:translateX(-6px)}80%{transform:translateX(4px)}}
+.toy .toy-boing{animation:toy-boing .45s ease-out}
+.toy .toy-wig{animation:toy-wig .45s ease-out}
+html[data-theme="dark"] .toy{background:linear-gradient(160deg,var(--tbd),var(--tcd));border-color:rgba(255,255,255,.14);color:#f4f0fa;box-shadow:0 16px 36px -10px rgba(0,0,0,.6)}
+html[data-theme="dark"] .toy .toy-reset{border-color:rgba(255,255,255,.3)}
+@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .toy,html:not([data-motion="on"]) .toy *{animation:none !important;transition:none !important}}
+html[data-motion="off"] .toy,html[data-motion="off"] .toy *{animation:none !important;transition:none !important}
+.toy{--ta:#2f56c9;--tb:#e6eeff;--tc:#ffe9f1;--tk:#1f2744;--tbd:#1b2140;--tcd:#3a1d2c}
+.toy .toy-clock{display:inline-flex;align-items:center;justify-content:center;gap:10px;margin:8px auto 0;padding:10px 22px;border-radius:22px;background:#151a2e;box-shadow:inset 0 0 0 3px #2b3352,0 8px 0 rgba(21,26,46,.25)}
+.toy .toy-clock-ic{font-size:30px;line-height:1}
+.toy .toy-n{display:inline-block;min-width:2ch;font:900 60px/1 "Courier New",monospace;color:#ffa53d;text-shadow:0 0 16px rgba(255,165,61,.65);font-variant-numeric:tabular-nums}
+.toy.toy-hot .toy-n{color:#ff4d5e;text-shadow:0 0 18px rgba(255,77,94,.8)}
+.toy .toy-field{position:relative;height:64px;margin:16px 4px 0;border-radius:999px;background:linear-gradient(90deg,#8fd18a,#62b866);box-shadow:inset 0 -6px 0 rgba(0,0,0,.08)}
+.toy .toy-pit,.toy .toy-mitt{position:absolute;top:12px;font-size:40px;line-height:1}
+.toy .toy-pit{left:12px}
+.toy .toy-mitt{right:12px}
+.toy .toy-ball{position:absolute;top:18px;left:52px;font-size:28px;line-height:1;transition:transform .32s cubic-bezier(.3,.1,.6,1)}
+.toy.toy-throw .toy-ball{transform:translateX(var(--toy-dx,200px)) rotate(540deg)}
+.toy .toy-slots{display:flex;justify-content:center;gap:12px;margin:16px 0 0}
+.toy .toy-slot.toy-slot{width:66px;height:66px;border-radius:20px;display:grid;place-items:center;font-size:34px;line-height:1;background:rgba(255,255,255,.75);border:3px dashed rgba(47,86,201,.35)}
+.toy .toy-slot.toy-slot.toy-on{border-style:solid;border-color:#fff;background:#fff;animation:toy-boing .45s ease-out}
+.toy .toy-go{display:block;min-width:150px;min-height:72px;margin:18px auto 2px;padding:8px 26px;border:0;border-radius:999px;background:linear-gradient(135deg,var(--ta),#e0457b);color:#fff;font-size:40px;line-height:1;box-shadow:0 7px 0 #1b3a95}
+.toy .toy-go:active{transform:translateY(5px);box-shadow:0 2px 0 #1b3a95}
+.toy .toy-go:disabled{opacity:.55}
+.toy .toy-go.toy-ready{animation:toy-pulse 1s ease-in-out infinite}
+@keyframes toy-pulse{0%,100%{box-shadow:0 7px 0 #1b3a95,0 0 0 0 rgba(224,69,123,.55)}50%{box-shadow:0 7px 0 #1b3a95,0 0 0 12px rgba(224,69,123,0)}}
+.toy.toy-done .toy-n{animation:toy-in .5s cubic-bezier(.2,1.6,.4,1) both}
+html[data-theme="dark"] .toy .toy-slot.toy-slot{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.25)}
+html[data-theme="dark"] .toy .toy-slot.toy-slot.toy-on{background:#2a3157;border-color:rgba(255,255,255,.35)}
+html[data-theme="dark"] .toy .toy-field{background:linear-gradient(90deg,#2f6b3a,#24572f)}
+@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .toy .toy-ball{transition:none}}
+</style>
+<section class="toy" aria-label="👆⏱️⚾">
+  <div class="toy-kick" aria-hidden="true">👆</div>
+  <button type="button" class="toy-reset" aria-label="↺">↺</button>
+  <div class="toy-clock" aria-hidden="true"><span class="toy-clock-ic">⏱️</span><span class="toy-n">20</span></div>
+  <div class="toy-field" aria-hidden="true"><span class="toy-pit">🐧</span><span class="toy-ball"><span>⚾</span></span><span class="toy-mitt">🎯</span></div>
+  <div class="toy-slots" aria-live="polite"><span class="toy-slot">❔</span><span class="toy-slot">❔</span><span class="toy-slot">❔</span></div>
+  <button type="button" class="toy-go toy-ready" aria-label="⚾">▶️</button>
+</section>
+<script>
+(function () {
+  var box = document.querySelector('.toy'); if (!box) return;
+  var nEl = box.querySelector('.toy-n'), go = box.querySelector('.toy-go'), reset = box.querySelector('.toy-reset');
+  var slots = [].slice.call(box.querySelectorAll('.toy-slot'));
+  if (!nEl || !go || !reset || slots.length < 3) return;
+  var n = 20, timer = null, running = false, pitch = 0, busy = false, results = [];
+  function show() { nEl.textContent = n; box.classList.toggle('toy-hot', running && n <= 5); }
+  function stop() { if (timer) { clearInterval(timer); timer = null; } running = false; }
+  function start() {
+    stop(); n = 20; show(); running = true; go.textContent = '⚾'; go.classList.remove('toy-ready');
+    timer = setInterval(function () {
+      n -= 1; show();
+      if (n <= 0) { stop(); land(0); }
+    }, 190);
+  }
+  function land(at) {
+    busy = true;
+    var mark = at === 0 ? '⏰' : (at <= 3 ? '🔥' : '⚾');
+    var s = slots[pitch]; s.textContent = mark; s.classList.remove('toy-on'); void s.offsetWidth; s.classList.add('toy-on');
+    results.push(mark); pitch += 1;
+    if (at === 0) { box.classList.remove('toy-throw'); go.classList.remove('toy-wig'); void go.offsetWidth; go.classList.add('toy-wig'); }
+    setTimeout(function () {
+      box.classList.remove('toy-throw'); busy = false;
+      if (pitch >= 3) { finish(); return; }
+      n = 20; show(); go.textContent = '▶️'; go.classList.add('toy-ready');
+    }, 900);
+  }
+  function finish() {
+    var fire = results.filter(function (m) { return m === '🔥'; }).length;
+    nEl.textContent = fire === 3 ? '🏆' : '🎉';
+    box.classList.add('toy-done'); go.disabled = true; go.textContent = '⚾'; go.classList.remove('toy-ready');
+    if (window.pengessoPop) { var r = nEl.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, fire === 3 ? ['🔥', '🏆', '⚾'] : ['⚾', '⏱️', '✨'], 16); }
+  }
+  go.addEventListener('click', function () {
+    if (busy || pitch >= 3) return;
+    if (!running) { start(); return; }
+    var at = n; stop();
+    var f = box.querySelector('.toy-field'); if (f) box.style.setProperty('--toy-dx', Math.max(60, f.clientWidth - 112) + 'px');
+    box.classList.add('toy-throw'); land(at);
+  });
+  reset.addEventListener('click', function () {
+    stop(); n = 20; pitch = 0; results = []; busy = false; show();
+    slots.forEach(function (s) { s.textContent = '❔'; s.classList.remove('toy-on'); });
+    box.classList.remove('toy-done', 'toy-throw', 'toy-hot'); go.disabled = false; go.textContent = '▶️'; go.classList.add('toy-ready');
+  });
 })();
 </script>
 
