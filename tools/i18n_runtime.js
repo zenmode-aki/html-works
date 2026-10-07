@@ -1045,7 +1045,8 @@
     var itLang = enMode ? 'en' : lang;
     /* 🧩 言い換えパック（2026-10-03）。meta の content は「ja en gcp」（💻・☁️ の古い形）か「net:ja,en,ko」の形。
        どのパックが、どの言語で読めるかを決める。ボタンの並びも、文の下の並びもこの順 */
-    var PACK_ORDER = ['it', 'gcp', 'net', 'srv', 'sec', 'biz', 'fin', 'med', 'nur'];
+    /* 2026-10-07 本人：言い換えは 💻 IT用語 と 💼 ビジネス用語 の2つだけ。ほかは archive/rewording-packs/ にしまった */
+    var PACK_ORDER = ['it', 'biz'];
     var PACK_ICON = { it: '💻', gcp: '☁️', net: '🌐', srv: '🖥', sec: '🔐', biz: '💼', fin: '💴', med: '🩺', nur: '💉' };
     /* Google Cloud だけは絵文字の雲ではなく、本物のマークを絵文字の大きさで（2026-10-03 本人の要望） */
     var GCP_MARK = '<img class="gcp-mark" src="/assets/gcp-mark.png" alt="Google Cloud" width="20" height="16" decoding="async">';

@@ -905,7 +905,7 @@ var root = document.documentElement;
 var W = enMode ? STUDY_EN : (STUDY_WORDS[lang] || STUDY_DEFAULT);
 var itMeta = document.querySelector('meta[name="pengesso-it"]');
 var itLang = enMode ? 'en' : lang;
-var PACK_ORDER = ['it', 'gcp', 'net', 'srv', 'sec', 'biz', 'fin', 'med', 'nur'];
+var PACK_ORDER = ['it', 'biz'];
 var PACK_ICON = { it: '💻', gcp: '☁️', net: '🌐', srv: '🖥', sec: '🔐', biz: '💼', fin: '💴', med: '🩺', nur: '💉' };
 var GCP_MARK = '<img class="gcp-mark" src="/assets/gcp-mark.png" alt="Google Cloud" width="20" height="16" decoding="async">';
 function packIcon(kind) { return kind === 'gcp' ? GCP_MARK : PACK_ICON[kind]; }

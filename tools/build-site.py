@@ -217,9 +217,11 @@ def main():
         page = d / "index.html"
         if not page.exists():
             continue
-        # 言い換えパック：💻 it ☁️ gcp 🌐 net 🖥 srv 🔐 sec 💼 biz。「net:ja,en,ko」の形で、読める言語を書く
+        # 言い換えパック：💻 it 💼 biz の2つだけ（2026-10-07 本人：「IT用語と社会人のビジネス用語の2つだけでいい」）。
+        # ほかの gcp・net・srv・sec・fin・med・nur は archive/rewording-packs/ にしまってある（戻すときは README を読む）
+        # 「biz:ja,en,ko」の形で、読める言語を書く
         toks = []
-        for pack in ("it", "gcp", "net", "srv", "sec", "biz", "fin", "med", "nur"):
+        for pack in ("it", "biz"):
             ls = sorted(f.name.split(".")[1] for f in d.glob(f"{pack}.*.json"))
             if ls:
                 toks.append(f"{pack}:{','.join(ls)}")
