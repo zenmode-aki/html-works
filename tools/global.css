@@ -33,3 +33,10 @@ html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view
 }
 @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } }
 html[data-motion="off"] :active { scale: none !important; }
+
+/* 👆 指で押せる大きさ（2026-10-07）：タグ・言語の選択肢・ダークモードなどのボタンが高さ29〜34pxで、指で押しにくかった。
+   指でさわる端末（pointer: coarse）だけ、最低40pxにする（見た目の文字の大きさは変えない） */
+@media (pointer: coarse) {
+  :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; }
+  .post-tags a { display: inline-flex; align-items: center; }
+}
