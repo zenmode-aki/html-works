@@ -47,6 +47,20 @@
   html[data-theme="dark"] .ja, html[data-theme="dark"] p.say span { color: #c4bcd4; }
   html[data-theme="dark"] .code { color: #9db4ff; }
   html[data-theme="dark"] .sub { background: #2f3244; color: #f4f0fa; }
+  /* 🐧 4 · 🐧 · 4 のならび、雪 */
+  .big { display: flex; justify-content: center; align-items: center; gap: 6px; margin: 14px 0 0; font-size: clamp(54px, 18vw, 76px); line-height: 1; color: var(--blue); letter-spacing: -.04em; }
+  .big .o { display: inline-block; width: .85em; height: .85em; border-radius: 50%; background: url('/assets/pengesso/pengesso-01.jpg') center/cover; box-shadow: 0 6px 14px rgba(35,44,72,.22); animation: roll 4s ease-in-out infinite; }
+  .big .d { display: inline-block; animation: hop 1.6s ease-in-out infinite; } .big .o + .d { animation-delay: .4s; }
+  @keyframes roll { 0%, 100% { transform: rotate(-12deg); } 50% { transform: rotate(12deg); } }
+  @keyframes hop { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-9px); } }
+  main { position: relative; overflow: hidden; }
+  .snow { position: absolute; inset: 0; pointer-events: none; }
+  .snow i { position: absolute; top: -14px; font-style: normal; font-size: 14px; opacity: .55; animation: fall 7s linear infinite; }
+  .snow i:nth-child(1) { left: 8%; } .snow i:nth-child(2) { left: 28%; animation-delay: 2s; } .snow i:nth-child(3) { left: 52%; animation-delay: 4s; }
+  .snow i:nth-child(4) { left: 74%; animation-delay: 1s; } .snow i:nth-child(5) { left: 91%; animation-delay: 3s; }
+  @keyframes fall { to { transform: translateY(560px) rotate(180deg); } }
+  @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) .big .o, html:not([data-motion="on"]) .big .d { animation: none; } html:not([data-motion="on"]) .snow { display: none; } }
+  html[data-motion="off"] .big .o, html[data-motion="off"] .big .d { animation: none; } html[data-motion="off"] .snow { display: none; }
   @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) .pen { animation: none; } html:not([data-motion="on"]) a.btn { transition: none; } }
   /* ✨ 動きの設定が OFF のとき（端末が「減らさない」でも止める） */
   html[data-motion="off"] .pen { animation: none; } html[data-motion="off"] a.btn { transition: none; }
@@ -58,12 +72,14 @@
 </head>
 <body>
 <main>
+  <div class="snow" aria-hidden="true"><i>❄</i><i>❄</i><i>❄</i><i>❄</i><i>❄</i></div>
   <div class="pen"><img src="/assets/pengesso/pengesso-01.jpg" alt="Pengesso, a plush penguin in a blue cap and sunglasses" /></div>
+  <div class="big" aria-hidden="true"><span class="d">4</span><span class="o"></span><span class="d">4</span></div>
   <div class="code" id="code">404 · NOT FOUND</div>
   <h1 id="h">This page is not here.</h1>
   <div class="ja" lang="ja" id="hja">このページは、見つかりませんでした。</div>
-  <p class="say" id="say">Maybe the penguin moved it.
-    <span lang="ja">ペンギンがどこかへ持っていったのかもしれません。</span></p>
+  <p class="say" id="say">Maybe the penguin moved it. (He says it was not him.)
+    <span lang="ja">ペンギンがどこかへ持っていったのかもしれません。（本人は「私ではない」と言っています。）</span></p>
   <div class="btns">
     <a class="btn main" href="/">🐧 Go to the top<small lang="ja">トップへ</small></a>
     <a class="btn sub" href="/#find">🗺️ Pick a place on the map<small lang="ja">地図から選ぶ</small></a>
