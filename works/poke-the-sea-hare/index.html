@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Do small scary things many times, and your brain learns they are safe</title>
+<!-- ⬇️ OGP（tools/ogp.py） -->
+<meta name="description" content="A sea animal called a sea hare pulls in its body when you poke it." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
+<meta property="og:title" content="Do small scary things many times, and your brain learns they are safe" />
+<meta property="og:description" content="A sea animal called a sea hare pulls in its body when you poke it." />
+<meta property="og:url" content="https://15-second-blog.com/works/poke-the-sea-hare/" />
+<meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/poke-the-sea-hare.jpg" />
+<meta property="og:image:alt" content="A chubby chenille yarn penguin gently touching the water in a blue beach bucket" />
+<meta name="twitter:card" content="summary_large_image" />
+<!-- ⬆️ OGP -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（2026-10-05）。真面目な話 → ポップに（トーン反転） */
+  :root {
+    --bg: #f1fbfd;
+    --card: rgba(255,255,255,.95);
+    --text: #1d3340;
+    --muted: #64808c;
+    --a: #0a86a8;
+    --b: #8e4ce0;
+    --h1: #10394a;
+    --big: #0a7898;
+    --big-dark: #8fe3fa;
+    --photo: #ddf4fa;
+    --glow1: rgba(142,76,224,.18);
+    --glow2: rgba(10,134,168,.20);
+    --glow3: rgba(120,230,220,.24);
+    --sh1: rgba(20,90,120,.10);
+    --shadow: 0 20px 55px rgba(20,90,120,.18);
+    --game: radial-gradient(circle at 100% 0%, rgba(142,76,224,.7), transparent 46%), linear-gradient(170deg, #0a86a8 0%, #0e9fb8 55%, #19b7c0 100%);
+    --btn-ink: #0b4a5e;
+    --round: 28px;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, var(--glow1), transparent 26%),
+      radial-gradient(circle at 92% 18%, var(--glow2), transparent 28%),
+      radial-gradient(circle at 50% 100%, var(--glow3), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--a);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px var(--sh1); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px var(--sh1); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px var(--sh1); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--a); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--a); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: var(--h1); font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: var(--photo); border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px var(--sh1); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--a); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; font-weight: 700; }
+  p + p { margin-top: 10px; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: var(--big);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品の入れ物（文字はぜんぶ HTML。JS は class・data-*・数字・絵文字だけを変える） ════ */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: var(--game); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 52px; padding: 12px 20px; border: 0;
+    border-radius: 999px; cursor: pointer; font: inherit; font-size: 17px; font-weight: 900; line-height: 1.25; color: var(--btn-ink); background: #fff;
+    box-shadow: 0 6px 0 rgba(0,0,0,.2), 0 12px 22px rgba(0,0,0,.14); transition: transform .08s ease, box-shadow .08s ease, opacity .2s;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .btn:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.2), 0 4px 10px rgba(0,0,0,.14); }
+  .btn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .btn[disabled] { opacity: .45; cursor: default; }
+  :where(html[data-theme="dark"]) .btn { background: #f1eef8; } /* 記事ごとの色ボタンが後ろで上書きできるよう、強さを弱くしてある */
+  .hint { font-size: 15px; font-weight: 800; opacity: .95; line-height: 1.45; }
+  .bar { position: relative; height: 16px; border-radius: 999px; background: rgba(255,255,255,.28); overflow: hidden; }
+  .bar > i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; background: #fff; transition: width .45s cubic-bezier(.2,1.2,.4,1); }
+  .meter-row { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 10px; max-width: 420px; margin: 12px auto 0;
+    font-size: 14px; font-weight: 900; text-align: left; }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(135deg, var(--a), var(--b)); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 12px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+    .btn { font-size: 15.5px; padding: 12px 14px; }
+  }
+
+  /* ════ この記事だけの部品 ════ */
+
+  .pool { position: relative; max-width: 460px; height: 200px; margin: 16px auto 0; border-radius: 22px; overflow: hidden;
+    background: linear-gradient(180deg, #7fe0ef 0%, #38bfd6 80%, #f3dfae 80%, #e8cf96 100%); }
+  .wave { position: absolute; left: 0; right: 0; top: 18px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.35); }
+  .hare { position: absolute; left: 50%; bottom: 14px; width: 170px; height: 120px; margin-left: -85px; padding: 0; border: 0; background: none;
+    cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .hare:focus-visible { outline: 4px solid #fff; outline-offset: 4px; border-radius: 30px; }
+  .hb { position: absolute; left: 10px; right: 10px; bottom: 6px; height: 74px; border-radius: 50% 55% 42% 42% / 62% 66% 38% 38%;
+    background: linear-gradient(180deg, #b48af0 0%, #8e5ad8 100%); box-shadow: inset 0 -8px 0 rgba(60,20,120,.18);
+    transform-origin: 50% 100%; transition: transform .38s cubic-bezier(.2,1.5,.4,1); }
+  .ear { position: absolute; top: -22px; width: 20px; height: 30px; border-radius: 50% 50% 40% 40%; background: #a47ae8; }
+  .ear.e1 { left: 34px; transform: rotate(-16deg); } .ear.e2 { left: 62px; transform: rotate(12deg); }
+  .eye { position: absolute; top: 18px; left: 46px; width: 10px; height: 10px; border-radius: 50%; background: #2a1450; }
+  .cheek { position: absolute; top: 32px; left: 30px; width: 16px; height: 8px; border-radius: 50%; background: rgba(255,150,190,.75); }
+  .frill { position: absolute; top: -6px; right: 22px; width: 54px; height: 22px; border-radius: 50% 50% 0 0; background: #9c6ce4; }
+  .game[data-st="4"] .eye { height: 3px; top: 22px; }
+  .zz { position: absolute; right: 6%; top: 20%; font-size: 26px; opacity: 0; }
+  .game[data-st="4"] .zz { opacity: 1; animation: float 1.4s ease-in-out infinite alternate; }
+  .finger { position: absolute; left: 12%; bottom: 60px; font-size: 32px; animation: nudge 1s ease-in-out infinite alternate; }
+  .game:not([data-n="0"]) .finger { display: none; }
+  @keyframes nudge { from { transform: translateX(0); } to { transform: translateX(12px); } }
+
+  .think { max-width: 440px; margin: 12px auto 0; min-height: 50px; padding: 11px 14px; border-radius: 18px; background: #fff; color: #3b1d6e;
+    font-size: 17px; font-weight: 900; line-height: 1.4; display: flex; align-items: center; justify-content: center; }
+  .think span { display: none; }
+  .game[data-st="0"] .k0, .game[data-st="1"] .k1, .game[data-st="2"] .k2, .game[data-st="3"] .k3, .game[data-st="4"] .k4 { display: inline; }
+
+  .count { margin-top: 12px; font-size: 30px; font-weight: 900; line-height: 1; }
+  .count .of { font-size: 18px; opacity: .85; }
+  .chart { max-width: 440px; margin: 14px auto 0; padding: 12px 14px 10px; border-radius: 18px; background: rgba(255,255,255,.16); text-align: left; }
+  .cl { font-size: 13.5px; font-weight: 900; }
+  .bars { display: flex; align-items: flex-end; gap: 8px; height: 96px; margin-top: 8px; border-bottom: 3px solid rgba(255,255,255,.7); }
+  .bars i { flex: 1; height: 0; border-radius: 8px 8px 0 0; background: linear-gradient(180deg, #ffe066, #ffb347);
+    transition: height .5s cubic-bezier(.2,1.4,.4,1); }
+  .cx { display: flex; justify-content: space-between; margin-top: 4px; font-size: 12.5px; font-weight: 900; opacity: .9; }
+
+  .result { margin-top: 14px; }
+  .result > div { display: none; }
+  .game[data-s="play"] .r-hint, .game[data-s="done"] .r-done { display: block; }
+  .verdict { font-size: 19px; font-weight: 900; line-height: 1.4; }
+  .again { margin-top: 12px; display: none; }
+  .game[data-s="done"] .again { display: inline-flex; }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: var(--big-dark); }
+  html[data-theme="dark"] .photo { background: #2a2c38; border-color: rgba(255,255,255,.08); }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+
+  html[data-theme="dark"] .think { background: #eee8f8; }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"caed3f7639"},"ko":{"v":"406ec1b17e"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=4ec8701409"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <a class="home" href="../../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 64 words · 21 sec</div>
+      <div class="stage stage-public">PUBLIC</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 21 SEC</div>
+  <h1>Do small scary things many times, and your brain learns they are safe <span class="float">🌊</span></h1>
+  <!-- 🏷 タグ（tools/tags.py） -->
+  <style id="post-tags-css">.post-tags{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 18px}.post-tags a{display:inline-flex;align-items:center;padding:6px 11px;border-radius:999px;background:#fff;border:1.5px solid rgba(35,44,72,.12);color:#3a3550;font-size:12.5px;font-weight:800;line-height:1.2;text-decoration:none;transition:transform .15s,border-color .15s}.post-tags a:hover{transform:translateY(-1px);border-color:#8b6de8}.post-tags a.place{background:#f3effc}html[data-theme="dark"] .post-tags a{background:#22242f;border-color:#33364a;color:#e6e2ff}html[data-theme="dark"] .post-tags a.place{background:#2a2540}@media (prefers-reduced-motion:reduce){.post-tags a{transition:none}}</style><nav class="post-tags" aria-label="Tags"><a href="../../index.html?tag=psychology#posts">🧠 Psychology</a><a href="../../index.html?tag=mindset#posts">💭 Mindset</a><a href="../../index.html?tag=tips#posts">💡 Tips</a></nav>
+  <!-- /🏷 -->
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1400" height="1054" src="img/a43e1be3bfcc.jpg" alt="A chubby chenille yarn penguin gently touching the water in a blue beach bucket" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐚</span>
+      <span class="card-label">The Sea Hare</span>
+    </div>
+    <p>A sea animal called a sea hare pulls in its body when you poke it.</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔁</span>
+      <span class="card-label">Again and Again</span>
+    </div>
+    <p>But they say if you poke it again and again, it slowly stops doing that.</p>
+    <p>This is because it learns, "This is not dangerous."</p>
+  </section>
+  <!-- ⚡ 触って遊べる部品：アメフラシをつつこう -->
+  <section class="game" data-s="play" data-n="0" data-st="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Poke the sea hare 8 times</div>
+    <div class="pool">
+      <span class="wave" aria-hidden="true"></span>
+      <span class="finger" aria-hidden="true">👉</span>
+      <span class="zz" aria-hidden="true">💤</span>
+      <button class="hare" type="button" aria-label="Poke the sea hare">
+        <span class="hb"><i class="frill"></i><i class="ear e1"></i><i class="ear e2"></i><i class="eye"></i><i class="cheek"></i></span>
+      </button>
+    </div>
+    <div class="think">
+      <span class="k0">Hello. I am a sea hare. Poke me!</span>
+      <span class="k1">Eek! Danger!</span>
+      <span class="k2">Hmm… again?</span>
+      <span class="k3">Oh, it is just you.</span>
+      <span class="k4">Zzz… this is safe.</span>
+    </div>
+    <div class="count">👉 <span class="n">0</span><span class="of">/8</span></div>
+    <div class="chart" aria-hidden="true">
+      <div class="cl">📉 How much it shrank</div>
+      <div class="bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="cx"><span class="x1">1st poke</span><span class="x8">8th poke</span></div>
+    </div>
+    <div class="result">
+      <div class="r-hint hint">Tap the sea hare. Watch the bars.</div>
+      <div class="r-done verdict">🧠 It learned: "This is safe." Your brain can learn the same about shame.</div>
+    </div>
+    <button class="btn again" type="button">↺ Meet a new sea hare</button>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧠</span>
+      <span class="card-label">Same With Shame</span>
+    </div>
+    <p class="big">Shame is the same: do a little scary thing many times, and your brain learns, "Shame is safe."</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🗺️</span>
+      <span class="card-label">Try This</span>
+    </div>
+    <p>For example, try asking someone the way.</p>
+  </section>
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+
+  <a class="next" href="../jump-to-beat-stage-fright/index.html">
+    <div>
+      <div class="next-kicker">NEXT · 19 SEC</div>
+      <div class="next-title">When you get nervous, narrate it and hop lightly</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../laugh-off-a-hole-in-your-sock/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">Tell your embarrassing moment as a joke, and it gets lighter</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../have-to-into-lets/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/have-to-into-lets.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 18 SEC</span></div>
+            <div class="rel-title">Changing "I have to" into "let's" gives you more energy</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../four-things-to-stop-for-an-easy-life/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/four-things-to-stop-for-an-easy-life.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 20 SEC</span></div>
+            <div class="rel-title">Stop 4 heavy things, and life gets lighter</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../only-your-side-of-the-bowling-lane/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/only-your-side-of-the-bowling-lane.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 19 SEC</span></div>
+            <div class="rel-title">Your part ends when the bowling ball leaves your hand</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../the-magic-words-who-cares/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/the-magic-words-who-cares.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 19 SEC</span></div>
+            <div class="rel-title">Most bad things do not really matter, so say "Who cares!"</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../suzuka-700m-paddock-tunnel/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/suzuka-700m-paddock-tunnel.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 51 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">Suzuka Circuit has a long underground paddock tunnel</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* 🌊 アメフラシをつつこう：JS は data-s / data-n / data-st と数字・大きさだけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var hare = g.querySelector('.hare'), hb = g.querySelector('.hb'), nEl = g.querySelector('.n');
+  var bars = [].slice.call(g.querySelectorAll('.bars i'));
+  var AMT = [72, 56, 42, 30, 20, 12, 6, 2], n = 0, back = 0;
+  function stage(k) { return k === 0 ? 0 : k <= 3 ? 1 : k <= 6 ? 2 : k === 7 ? 3 : 4; }
+  function popAt(el, list, k) {
+    if (!window.pengessoPop) return;
+    var r = el.getBoundingClientRect();
+    window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, k);
+  }
+  hare.addEventListener('click', function () {
+    if (g.getAttribute('data-s') === 'done') {
+      hb.style.transform = 'scale(1.03, .97)';
+      clearTimeout(back); back = setTimeout(function () { hb.style.transform = ''; }, 200);
+      return;
+    }
+    var a = AMT[n];
+    hb.style.transform = 'scale(' + (1 - a / 100 * 0.35).toFixed(3) + ',' + (1 - a / 100 * 0.75).toFixed(3) + ')';
+    clearTimeout(back); back = setTimeout(function () { hb.style.transform = ''; }, 420);
+    bars[n].style.height = a + '%';
+    n++;
+    nEl.textContent = String(n);
+    g.setAttribute('data-n', String(n));
+    g.setAttribute('data-st', String(stage(n)));
+    if (n === 1 && navigator.vibrate) { try { navigator.vibrate(25); } catch (e) {} }
+    if (n >= 8) {
+      g.setAttribute('data-s', 'done'); g.setAttribute('data-st', '4');
+      setTimeout(function () { popAt(hare, ['💤', '🌊', '🧠', '✨', '🐧'], 18); }, 300);
+    }
+  });
+  g.querySelector('.again').addEventListener('click', function () {
+    n = 0; nEl.textContent = '0';
+    bars.forEach(function (b) { b.style.height = '0'; });
+    g.setAttribute('data-s', 'play'); g.setAttribute('data-n', '0'); g.setAttribute('data-st', '0');
+  });
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（2枚目のカード）
+S4 → 使った（3枚目のカード・.big）
+S5 → 使った（4枚目のカード）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label 4個 / h1 / アメフラシをつつこうの文字 ← 本人の素材の要約・演出（word数対象外）
+-->

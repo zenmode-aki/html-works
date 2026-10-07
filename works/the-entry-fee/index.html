@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A little tension or boredom is the entry fee for important things</title>
+<!-- ⬇️ OGP（tools/ogp.py） -->
+<meta name="description" content="Do you think important things should always feel comfortable?" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
+<meta property="og:title" content="A little tension or boredom is the entry fee for important things" />
+<meta property="og:description" content="Do you think important things should always feel comfortable?" />
+<meta property="og:url" content="https://15-second-blog.com/works/the-entry-fee/" />
+<meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/the-entry-fee.jpg" />
+<meta property="og:image:alt" content="A plush corduroy and felt penguin holding a paper admission ticket in front of a small striped ticket booth" />
+<meta name="twitter:card" content="summary_large_image" />
+<!-- ⬆️ OGP -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 📚 バークマンのメモ シリーズ（2026-10-05）。真面目な話 → ポップに（トーン反転） */
+  :root {
+    --bg: #fff7f2;
+    --card: rgba(255,255,255,.95);
+    --text: #2f2a3a;
+    --muted: #8a6a78;
+    --a: #d6337f;
+    --b: #ff9f1c;
+    --c: #ffd23f;
+    --big: #b8236a;
+    --big-dark: #ff9ccf;
+    --shadow: 0 20px 55px rgba(150,50,90,.16);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; font-weight: 700;
+    background:
+      radial-gradient(circle at 10% 6%, rgba(255,210,63,.34), transparent 26%),
+      radial-gradient(circle at 92% 18%, rgba(255,93,143,.18), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(255,159,28,.16), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--a);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(60,50,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,50,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,50,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--a); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--a); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: #3d1630; font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: #ffe9f1; border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,50,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--a); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-weight: 700; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: var(--big);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品（共通の外枠）════
+     文字はぜんぶ HTML に置いて、JS は class・data-*・数字・絵文字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: linear-gradient(150deg, #ff4f8b 0%, #ff7a3d 55%, #ffb21c 100%); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .game-sub { margin-top: 6px; font-size: 14.5px; font-weight: 800; opacity: .92; line-height: 1.5; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 54px; padding: 12px 18px; border: 0; border-radius: 999px;
+    cursor: pointer; font: inherit; font-size: 17px; font-weight: 900; line-height: 1.25; color: #2f2a3a; background: #fff;
+    box-shadow: 0 6px 0 rgba(0,0,0,.18), 0 12px 22px rgba(0,0,0,.14); transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .btn:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.18), 0 4px 10px rgba(0,0,0,.12); }
+  .btn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .btn[hidden] { display: none; }
+  .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 14px; }
+  .msg { margin-top: 14px; min-height: 52px; font-size: 16px; font-weight: 900; line-height: 1.5; }
+  .msg > div { display: none; }
+  .again { background: rgba(255,255,255,.22) !important; color: #fff !important; box-shadow: inset 0 0 0 2px rgba(255,255,255,.7) !important; }
+  @keyframes shake { 20% { transform: translateX(-4px); } 40% { transform: translateX(4px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+  @keyframes boing { 0% { transform: scale(1); } 40% { transform: scale(1.18); } 70% { transform: scale(.94); } 100% { transform: scale(1); } }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); line-height: 1.6; }
+  .credit-link { display: inline-block; padding: 8px 10px; color: var(--a); font-weight: 900; text-decoration: underline; text-underline-offset: 3px; }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(135deg, var(--a), var(--b)); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  .lane { position: relative; display: grid; grid-template-columns: 52px 46px 1fr; align-items: end; gap: 6px; max-width: 400px; margin: 16px auto 0;
+    padding: 14px 12px 12px; border-radius: 22px; background: rgba(255,255,255,.2); min-height: 112px; }
+  .walker, .ride-e, .lane .sign { display: inline-block; }
+  .walker { font-size: 40px; line-height: 1; transition: transform .8s cubic-bezier(.3,1.3,.5,1); justify-self: center; }
+  .game[data-r="in"] .walker { transform: translate(118px, -36px) scale(.8); }
+  .game[data-r="wrong"] .walker { transform: translateX(-6px) rotate(-10deg); }
+  .gate { position: relative; height: 64px; }
+  .post { position: absolute; left: 4px; bottom: 0; width: 10px; height: 64px; border-radius: 6px; background: #fff; }
+  .gate-bar { position: absolute; left: 8px; bottom: 30px; width: 42px; height: 9px; border-radius: 6px;
+    background: repeating-linear-gradient(90deg, #ff3d6e 0 10px, #fff 10px 20px); transform-origin: 2px 50%; transition: transform .5s cubic-bezier(.3,1.4,.5,1); }
+  .game[data-r="in"] .gate-bar, .game[data-r="free"] .gate-bar { transform: rotate(-80deg); }
+  .ride { display: grid; justify-items: center; gap: 2px; }
+  .ride-e { font-size: 54px; line-height: 1; }
+  .game[data-r="in"] .ride-e { animation: twirl 1.4s ease-in-out; }
+  @keyframes twirl { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+  .ride-t { font-size: 13.5px; font-weight: 900; line-height: 1.3; }
+  .lane .sign { position: absolute; top: 8px; right: 12px; font-size: 34px; opacity: 0; transform: translateY(-20px); transition: opacity .3s ease, transform .4s cubic-bezier(.3,1.5,.5,1); }
+  .game[data-r="wrong"] .lane .sign { opacity: 1; transform: none; animation: shake .5s .3s ease; }
+  .fee { max-width: 400px; margin: 12px auto 0; padding: 14px 12px; border-radius: 22px; background: rgba(255,255,255,.95); color: #3a2440; }
+  .fee-top { font-size: 14px; font-weight: 900; letter-spacing: .04em; color: #b0306e; }
+  .lv { display: inline-grid; place-items: center; min-width: 30px; height: 30px; margin-left: 4px; border-radius: 50%; background: #ff3d6e; color: #fff; font-size: 17px; }
+  .names { margin-top: 6px; min-height: 30px; font-size: 20px; font-weight: 900; }
+  .names span { display: none; }
+  .game[data-l="0"] .n0, .game[data-l="1"] .n1, .game[data-l="2"] .n2, .game[data-l="3"] .n3, .game[data-l="4"] .n4, .game[data-l="5"] .n5 { display: inline; }
+  .game .coins { display: flex; justify-content: center; gap: 6px; margin-top: 8px; font-size: 26px; line-height: 1; }
+  .game .coins .coin { opacity: .18; filter: grayscale(1); transform: scale(.85); transition: opacity .25s ease, transform .25s cubic-bezier(.3,1.6,.5,1), filter .25s ease; }
+  .game .coins .coin.on { opacity: 1; filter: none; transform: none; }
+  .game[data-l="4"] .coins .coin.on, .game[data-l="5"] .coins .coin.on { animation: shake .4s ease; }
+  .stepper { display: flex; justify-content: center; gap: 14px; margin-top: 12px; }
+  .stepper .btn { width: 72px; min-height: 56px; padding: 0; font-size: 32px; background: #ffe1ea; color: #b0306e; }
+  .btn.pay { min-height: 62px; font-size: 19px; background: #ffd23f; color: #4a2b00; }
+  .btn.again { display: none; }
+  .game[data-r]:not([data-r=""]) .btn.again { display: inline-flex; }
+  .game[data-r="in"] .btn.pay, .game[data-r="wrong"] .btn.pay, .game[data-r="free"] .btn.pay { display: none; }
+  .game[data-r=""] .r-hint, .game[data-r="free"] .r-free, .game[data-r="in"] .r-in, .game[data-r="wrong"] .r-wrong { display: block; }
+  .game[data-r="in"] .r-in { animation: boing .5s ease; }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 12px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] body { background: #17181f; color: #ece8f4; }
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); color: #ece8f4; }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big, html[data-theme="dark"] .label, html[data-theme="dark"] .card-label, html[data-theme="dark"] .credit-link { color: var(--big-dark); }
+  html[data-theme="dark"] .photo { background: #2c2e3b; }
+  html[data-theme="dark"] .btn { background: #f4f0fa; }
+
+  html[data-theme="dark"] .fee { background: #2a2230; color: #f4e8f0; }
+  html[data-theme="dark"] .fee-top { color: #ff9ccf; }
+  html[data-theme="dark"] .stepper .btn { background: #4a2a3a; color: #ffc4dc; }
+  html[data-theme="dark"] .btn.pay { background: #ffd23f; color: #4a2b00; }
+
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"28052ac9b2"},"ko":{"v":"5ec6678b2e"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=4ec8701409"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <a class="home" href="../../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 48 words · 16 sec</div>
+      <div class="stage stage-public">PUBLIC</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 16 SEC</div>
+  <h1>A little tension or boredom is the entry fee for important things <span class="float">🎟️</span></h1>
+  <!-- 🏷 タグ（tools/tags.py） -->
+  <style id="post-tags-css">.post-tags{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 18px}.post-tags a{display:inline-flex;align-items:center;padding:6px 11px;border-radius:999px;background:#fff;border:1.5px solid rgba(35,44,72,.12);color:#3a3550;font-size:12.5px;font-weight:800;line-height:1.2;text-decoration:none;transition:transform .15s,border-color .15s}.post-tags a:hover{transform:translateY(-1px);border-color:#8b6de8}.post-tags a.place{background:#f3effc}html[data-theme="dark"] .post-tags a{background:#22242f;border-color:#33364a;color:#e6e2ff}html[data-theme="dark"] .post-tags a.place{background:#2a2540}@media (prefers-reduced-motion:reduce){.post-tags a{transition:none}}</style><nav class="post-tags" aria-label="Tags"><a href="../../index.html?tag=books#posts">📖 Books</a><a href="../../index.html?tag=mindset#posts">💭 Mindset</a><a href="../../index.html?tag=productivity#posts">✅ Productivity</a></nav>
+  <!-- /🏷 -->
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1200" height="900" src="img/f6ab384ea11b.jpg" alt="A plush corduroy and felt penguin holding a paper admission ticket in front of a small striped ticket booth" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🛋️</span>
+      <span class="card-label">Always Comfy?</span>
+    </div>
+    <p>Do you think important things should always feel comfortable?</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎟️</span>
+      <span class="card-label">The Entry Fee</span>
+    </div>
+    <p class="big">A little tension or boredom is the "entry fee" for important things.</p>
+  </section>
+  <!-- ⚡ 触って遊べる部品 -->
+  <section class="game" data-l="2" data-r="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The ticket booth for important things</div>
+    <div class="game-sub">How hard does it feel? Set it, then try to go in.</div>
+    <div class="lane">
+      <span class="walker"><span class="e-w">🐧</span></span>
+      <div class="gate"><span class="post"></span><span class="gate-bar"></span></div>
+      <div class="ride"><span class="ride-e"><span class="e-r">🎡</span></span><span class="ride-t">Something important</span></div>
+      <span class="sign"><span class="e-s">🚧</span></span>
+    </div>
+    <div class="fee">
+      <div class="fee-top">Discomfort level <span class="lv">2</span></div>
+      <div class="names">
+        <span class="n0">😌 Nothing at all</span>
+        <span class="n1">🥱 A little boring</span>
+        <span class="n2">😬 A little nervous</span>
+        <span class="n3">😣 A bit hard</span>
+        <span class="n4">😫 Very hard</span>
+        <span class="n5">😱 Way too much</span>
+      </div>
+      <div class="coins" aria-hidden="true"><span class="coin">🪙</span><span class="coin">🪙</span><span class="coin">🪙</span><span class="coin">🪙</span><span class="coin">🪙</span></div>
+      <div class="stepper">
+        <button class="btn minus" type="button" aria-label="Less">−</button>
+        <button class="btn plus" type="button" aria-label="More">+</button>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn pay" type="button">🎟️ Pay the fee and enter</button>
+      <button class="btn again" type="button">↺ Try again</button>
+    </div>
+    <div class="msg">
+      <div class="r-hint">The fee is paid in 🪙. Tap + or − first.</div>
+      <div class="r-free">😌 Free entry? Lucky! But important things usually have a small fee.</div>
+      <div class="r-in">✅ Fee paid. Welcome in! The fun is inside. 🎉</div>
+      <div class="r-wrong">🚧 That fee is too high. Maybe this is the wrong ride. It is OK to stop and check.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎡</span>
+      <span class="card-label">Pay and Enter</span>
+    </div>
+    <p>If you pay it, you can go inside.</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🚧</span>
+      <span class="card-label">Too Much?</span>
+    </div>
+    <p>But if it is very, very hard, it may be a sign that you are doing the wrong thing.</p>
+  </section>
+  <div class="credit">📚 I learned this from Oliver Burkeman's newsletter. <a class="credit-link" href="https://www.oliverburkeman.com/distraction" target="_blank" rel="noopener">Read the original (English)</a></div>
+
+  <a class="next" href="../time-is-not-your-enemy/index.html">
+    <div>
+      <div class="next-kicker">NEXT · 21 SEC</div>
+      <div class="next-title">The real point of Pomodoro is to stop fighting time</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../distraction-is-an-escape/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">We open our phones to escape a tiny bit of discomfort</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../done-early-dont-rush/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/done-early-dont-rush.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 21 SEC</span></div>
+            <div class="rel-title">When you finish early, do not jump to the next task</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../there-is-no-control-tower/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/there-is-no-control-tower.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 20 SEC</span></div>
+            <div class="rel-title">There is no control tower above life, because we are already in the river</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../too-many-big-rocks/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/too-many-big-rocks.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 21 SEC</span></div>
+            <div class="rel-title">There are too many big rocks, so choose a few and let the rest go</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../you-can-only-do-one-thing/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/you-can-only-do-one-thing.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 22 SEC</span></div>
+            <div class="rel-title">Humans can only do one thing at a time anyway</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../turning-twenty-in-clark/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/turning-twenty-in-clark.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 37 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">I turned twenty in Clark and a lot of people celebrated with me</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* ⚡ 入場料のチケット売り場：JS は data-l / data-r と数字・class だけを変える */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var lv = g.querySelector('.lv'), coins = [].slice.call(g.querySelectorAll('.coin'));
+  var l = 2;
+  function draw() {
+    g.setAttribute('data-l', l); lv.textContent = l;
+    coins.forEach(function (c, i) { c.classList.toggle('on', i < l); });
+  }
+  function step(d) { l = Math.max(0, Math.min(5, l + d)); g.setAttribute('data-r', ''); draw(); }
+  g.querySelector('.minus').addEventListener('click', function () { step(-1); });
+  g.querySelector('.plus').addEventListener('click', function () { step(1); });
+  g.querySelector('.pay').addEventListener('click', function () {
+    var r = l === 0 ? 'free' : l <= 3 ? 'in' : 'wrong';
+    g.setAttribute('data-r', r);
+    if (r === 'in' && window.pengessoPop) {
+      var k = g.querySelector('.ride-e').getBoundingClientRect();
+      window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['🎟️', '🎡', '🐧', '✨'], 16);
+    }
+    if (r === 'in' && navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+  });
+  g.querySelector('.again').addEventListener('click', function () { l = 2; g.setAttribute('data-r', ''); draw(); });
+  draw();
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・.big）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label 4個 / h1 / 遊べる部品の文字 ← 本人の素材の要約・演出（word数対象外）
+-->

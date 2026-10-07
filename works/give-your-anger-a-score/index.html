@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Give your anger a score, and it stops growing bigger</title>
+<!-- ⬇️ OGP（tools/ogp.py） -->
+<meta name="description" content="When you feel angry, try giving that anger a score." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
+<meta property="og:title" content="Give your anger a score, and it stops growing bigger" />
+<meta property="og:description" content="When you feel angry, try giving that anger a score." />
+<meta property="og:url" content="https://15-second-blog.com/works/give-your-anger-a-score/" />
+<meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/give-your-anger-a-score.jpg" />
+<meta property="og:image:alt" content="A chubby matte plastic model kit penguin holding up a real analog thermometer with a calm face" />
+<meta name="twitter:card" content="summary_large_image" />
+<!-- ⬆️ OGP -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（2026-10-05）。真面目な話 → ポップに（空色から赤へ。怒りの温度計） */
+  :root {
+    --bg: #fff6f7;
+    --card: rgba(255,255,255,.95);
+    --text: #3b1f2a;
+    --muted: #8a6672;
+    --acc: #e23a5f;
+    --acc2: #3da9fc;
+    --shadow: 0 20px 55px rgba(160,40,70,.16);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, rgba(61,169,252,.24), transparent 26%),
+      radial-gradient(circle at 92% 18%, rgba(239,69,101,.2), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(255,200,120,.2), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--acc);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(60,50,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,50,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,50,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--acc); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--acc); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: #3b1220; font-size: clamp(30px, 6.2vw, 54px); line-height: 1.1; letter-spacing: -.035em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: #ffe6ec; border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,50,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--acc); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; font-weight: 700; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: #d62f55;
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品：共通の入れ物 ════
+     文字はぜんぶ HTML に置いて、JS は data-* と class と数字・絵文字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: linear-gradient(155deg, #3da9fc 0%, #7a5cff 50%, #ef4565 100%); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .game button { font: inherit; font-weight: 900; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    user-select: none; -webkit-user-select: none; }
+  .game button:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .game button[disabled] { cursor: default; }
+  .big-btn { display: block; width: min(330px, 100%); min-height: 64px; margin: 14px auto 0; padding: 12px 18px; border: 0; border-radius: 999px;
+    font-size: clamp(20px, 5.4vw, 26px); color: #3b2c00; background: #ffd43b;
+    box-shadow: 0 8px 0 #d9a400, 0 16px 26px rgba(0,0,0,.18); transition: transform .08s ease, box-shadow .08s ease, opacity .2s ease; }
+  .big-btn:active:not([disabled]) { transform: translateY(6px); box-shadow: 0 2px 0 #d9a400, 0 6px 12px rgba(0,0,0,.18); }
+  .big-btn[disabled] { opacity: .45; }
+  .big-btn > .st { display: none; }
+  .msg { display: none; }
+  .hint { font-size: 15px; font-weight: 800; opacity: .95; line-height: 1.5; }
+  .result { margin-top: 16px; min-height: 64px; }
+  .verdict { font-size: 18px; font-weight: 900; line-height: 1.45; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .thermo-wrap { display: grid; grid-template-columns: 84px 1fr; gap: 14px; max-width: 440px; margin: 18px auto 0; align-items: start; }
+  .thermo { position: relative; height: 262px; }
+  .tube { position: absolute; left: 22px; top: 0; width: 32px; height: 222px; border-radius: 18px 18px 0 0; background: rgba(255,255,255,.9);
+    border: 3px solid #fff; overflow: visible; }
+  .merc { position: absolute; left: 4px; right: 4px; bottom: 0; height: 30%; border-radius: 12px 12px 0 0;
+    background: linear-gradient(0deg, #ff3b5c, #ff8a3d); }
+  .game[data-s="lock"] .merc, .game[data-s="done"] .merc { background: linear-gradient(0deg, #3da9fc, #7cd4ff); }
+  .tk { position: absolute; left: 36px; transform: translateY(50%); font-size: 11px; font-weight: 900; color: #fff; opacity: .9; }
+  .bulb { position: absolute; left: 12px; bottom: 0; width: 52px; height: 52px; border-radius: 50%; background: #ff3b5c; border: 4px solid #fff;
+    box-shadow: 0 0 0 0 rgba(255,59,92,.6); }
+  .game[data-s="play"] .bulb { animation: throb 1s ease-in-out infinite; }
+  .game[data-s="lock"] .bulb, .game[data-s="done"] .bulb { background: #3da9fc; }
+  @keyframes throb { 50% { box-shadow: 0 0 0 10px rgba(255,59,92,0); transform: scale(1.06); } }
+  .tag { position: absolute; left: -8px; display: none; padding: 4px 8px; border-radius: 10px; background: #fff; color: #1d4ed8;
+    font-size: 16px; font-weight: 900; box-shadow: 0 4px 0 rgba(0,0,0,.18); transform: translateY(50%) rotate(-8deg); }
+  .tag::before { content: "🏷️"; margin-right: 2px; }
+  .game[data-s="lock"] .tag, .game[data-s="done"] .tag { display: block; animation: bounce-in .4s ease; }
+
+  .scene { display: flex; flex-direction: column; gap: 10px; min-width: 0; text-align: left; }
+  .ev-card { padding: 12px 14px; border-radius: 18px; background: #fff; color: #3b1220; }
+  .ev-n { font-size: 12px; font-weight: 900; letter-spacing: .1em; color: #ef4565; }
+  .ev { margin-top: 2px; font-size: 16px; font-weight: 900; line-height: 1.35; }
+  .ev span, .vbub span { display: none; }
+  .game[data-ev="1"] .ev-1, .game[data-ev="2"] .ev-2, .game[data-ev="3"] .ev-3 { display: inline; }
+  .voice { display: grid; grid-template-columns: 44px 1fr; gap: 8px; align-items: center; }
+  .vface { font-size: 34px; text-align: center; }
+  .vbub { padding: 10px 12px; border-radius: 16px 16px 16px 6px; background: rgba(255,255,255,.22); font-size: 15px; font-weight: 900;
+    line-height: 1.35; min-height: 46px; }
+  .game[data-v="a"] .v-a, .game[data-v="b"] .v-b, .game[data-v="c"] .v-c, .game[data-v="d"] .v-d, .game[data-v="e"] .v-e { display: inline; }
+  .game[data-v="c"] .vbub, .game[data-v="d"] .vbub { background: rgba(255,59,92,.45); }
+  .game[data-v="e"] .vbub { background: #ff3b5c; animation: wobble .4s ease; }
+  .game[data-s="idle"] .vbub { opacity: .5; }
+  .now { display: flex; align-items: baseline; gap: 6px; }
+  .now .lv { font-size: clamp(46px, 13vw, 64px); font-weight: 900; line-height: 1; }
+  .now .pt { font-size: 16px; font-weight: 900; opacity: .9; }
+  .now.pulse { animation: bounce-in .3s ease; }
+
+  .game[data-s="idle"] .s-start, .game[data-s="play"] .s-stop, .game[data-s="lock"] .s-next, .game[data-s="done"] .s-again { display: inline; }
+  .game[data-s="play"] .go { background: #fff; color: #c81e4a; box-shadow: 0 8px 0 #f3b5c3, 0 16px 26px rgba(0,0,0,.18); }
+  .game[data-s="idle"] .hint, .game[data-s="play"] .hint,
+  .game[data-s="lock"][data-res="lock"] .r-lock, .game[data-s="lock"][data-res="boom"] .r-boom,
+  .game[data-s="done"] .r-final, .game[data-s="done"][data-res="cool"] .r-cool,
+  .game[data-s="done"][data-res="ok"] .r-ok, .game[data-s="done"][data-res="hot"] .r-hot { display: block; }
+  .total { font-size: 20px; font-weight: 900; }
+  .total .tot { font-size: 34px; }
+  .game[data-s="done"] .verdict, .game[data-s="lock"] .verdict { animation: bounce-in .5s ease; }
+  @media (max-width: 380px) { .thermo-wrap { grid-template-columns: 76px 1fr; gap: 10px; } .ev { font-size: 15px; } }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+  @keyframes bounce-in { 0% { transform: scale(.6); opacity: 0; } 60% { transform: scale(1.12); opacity: 1; } 100% { transform: scale(1); } }
+  @keyframes wobble { 20% { transform: translateX(-5px) rotate(-3deg); } 40% { transform: translateX(5px) rotate(3deg); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 12px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] body { background: #17181f; color: #ece8f8; }
+  html[data-theme="dark"] .credit { color: #b3aac4; }
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: #ff9fb4; }
+  html[data-theme="dark"] .photo { background: #2a2c38; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .ev-card { background: #2a2c38; color: #f4f0fa; }
+  html[data-theme="dark"] .ev-n { color: #ff9fb4; }
+  html[data-theme="dark"] .tag { background: #2a2c38; color: #a9c8ff; }
+  html[data-theme="dark"] .tube { background: rgba(255,255,255,.25); }
+  html[data-theme="dark"] .game[data-s="play"] .go { background: #2a2c38; color: #ff9fb4; }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"e51e564282"},"bn":{"v":"c100f92ddd"},"es":{"v":"aa64cc85f2"},"fr":{"v":"f1ea2619ec"},"hi":{"v":"56529991da"},"id":{"v":"920e90672f"},"ja":{"v":"97d6535a46"},"ko":{"v":"2b27185bf0"},"pt":{"v":"15ccb2669c"},"ru":{"v":"8e71f149d8"},"ur":{"v":"683db55ba8"},"zh":{"v":"a65f9a8979"},"zh-Hant":{"v":"41de730a8c"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=4ec8701409"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <a class="home" href="../../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 65 words · 22 sec</div>
+      <div class="stage stage-public">PUBLIC</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 22 SEC</div>
+  <h1>Give your anger a score, and it stops growing bigger <span class="float">🌡️</span></h1>
+  <!-- 🏷 タグ（tools/tags.py） -->
+  <style id="post-tags-css">.post-tags{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 18px}.post-tags a{display:inline-flex;align-items:center;padding:6px 11px;border-radius:999px;background:#fff;border:1.5px solid rgba(35,44,72,.12);color:#3a3550;font-size:12.5px;font-weight:800;line-height:1.2;text-decoration:none;transition:transform .15s,border-color .15s}.post-tags a:hover{transform:translateY(-1px);border-color:#8b6de8}.post-tags a.place{background:#f3effc}html[data-theme="dark"] .post-tags a{background:#22242f;border-color:#33364a;color:#e6e2ff}html[data-theme="dark"] .post-tags a.place{background:#2a2540}@media (prefers-reduced-motion:reduce){.post-tags a{transition:none}}</style><nav class="post-tags" aria-label="Tags"><a href="../../index.html?tag=psychology#posts">🧠 Psychology</a><a href="../../index.html?tag=feelings#posts">🫧 Feelings</a><a href="../../index.html?tag=tips#posts">💡 Tips</a></nav>
+  <!-- /🏷 -->
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1168" height="880" src="img/ded0e6a76fcb.jpg" alt="A chubby matte plastic model kit penguin holding up a real analog thermometer with a calm face" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌡️</span>
+      <span class="card-label">Score It</span>
+    </div>
+    <p>When you feel angry, try giving that anger a score.</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔟</span>
+      <span class="card-label">The Scale</span>
+    </div>
+    <p>Make your angriest time in life 10 points, and think how many points this is.</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🏷️</span>
+      <span class="card-label">Decide First</span>
+    </div>
+    <p>For example, if a friend is late, decide first: "This is 3 points."</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：怒りの温度計（上がりきる前に点数を決める） -->
+  <section class="game" data-s="idle" data-ev="1" data-v="a" data-res="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Score it before it grows</div>
+    <div class="thermo-wrap">
+      <div class="thermo" aria-hidden="true">
+        <div class="tube"><i class="merc"></i><span class="tk" style="bottom:0%">0</span><span class="tk" style="bottom:20%">2</span><span class="tk" style="bottom:40%">4</span><span class="tk" style="bottom:60%">6</span><span class="tk" style="bottom:80%">8</span><span class="tk" style="bottom:100%">10</span></div>
+        <div class="bulb"></div>
+        <div class="tag"><span class="tag-n num">3</span></div>
+      </div>
+      <div class="scene">
+        <div class="ev-card">
+          <div class="ev-n"><span class="num rn">1</span>/3</div>
+          <div class="ev">
+            <span class="ev-1">⏰ Your friend is 10 minutes late.</span>
+            <span class="ev-2">🛒 Someone cuts in line at the store.</span>
+            <span class="ev-3">☕ The cafe forgot your order.</span>
+          </div>
+        </div>
+        <div class="voice">
+          <div class="vface" aria-hidden="true">🐧</div>
+          <div class="vbub">
+            <span class="v-a">Hmm, that is a little annoying.</span>
+            <span class="v-b">"Why does this always happen?!"</span>
+            <span class="v-c">"Sorry is not enough!"</span>
+            <span class="v-d">"I will never forgive this!"</span>
+            <span class="v-e">🌋 BOOM!</span>
+          </div>
+        </div>
+        <div class="now"><span class="num lv">3</span><span class="pt">points</span></div>
+      </div>
+    </div>
+    <button class="big-btn go" type="button"><span class="st s-start">▶ Start</span><span class="st s-stop">🏷️ Score it now!</span><span class="st s-next">▶ Next</span><span class="st s-again">↺ Try again</span></button>
+    <div class="result">
+      <div class="msg hint">Your anger grows by itself. Tap "Score it now!" as early as you can.</div>
+      <div class="msg r-lock verdict">🏷️ Locked! It stops here.</div>
+      <div class="msg r-boom verdict">🌋 It went up to 10 because you did not decide.</div>
+      <div class="msg r-final"><div class="total"><span class="tl">Total</span> <span class="num tot">0</span> <span class="tl">points</span></div></div>
+      <div class="msg r-cool verdict">🧊 Cool head! You decided early, so it stayed small.</div>
+      <div class="msg r-ok verdict">🙂 Not bad. Next time, score it even sooner.</div>
+      <div class="msg r-hot verdict">🔥 Hot, hot! Decide the score first, then it stops.</div>
+    </div>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📈</span>
+      <span class="card-label">It Grows</span>
+    </div>
+    <p>If you do not decide, 3 points becomes 5, then 6, and keeps going up.</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧊</span>
+      <span class="card-label">It Stops</span>
+    </div>
+    <p class="big">If you decide the score first, it does not go up easily.</p>
+  </section>
+
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+
+
+  <a class="next" href="../take-care-of-your-own-mood/index.html">
+    <div>
+      <div class="next-kicker">NEXT · 21 SEC</div>
+      <div class="next-title">Take care of your own mood, and you can be kind to others</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../people-are-imperfect-anyway/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">People are imperfect from the start, so do not expect too much</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../tell-your-flaw-first/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/tell-your-flaw-first.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 16 SEC</span></div>
+            <div class="rel-title">Say your weak point first, and it will not hurt when others say it</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../the-magic-words-who-cares/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/the-magic-words-who-cares.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 19 SEC</span></div>
+            <div class="rel-title">Most bad things do not really matter, so say "Who cares!"</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../let-anger-out-in-a-small-voice/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/let-anger-out-in-a-small-voice.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 21 SEC</span></div>
+            <div class="rel-title">Do not keep anger inside; let it out in a small voice, alone</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../jump-to-beat-stage-fright/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/jump-to-beat-stage-fright.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 19 SEC</span></div>
+            <div class="rel-title">When you get nervous, narrate it and hop lightly</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../korean-baseball-speaker-cheers/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/korean-baseball-speaker-cheers.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 14 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">At Korean ballparks, the cheer songs come out of speakers</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* ⚡ 怒りの温度計：JS は data-* と数字・高さだけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var go = g.querySelector('.go'), merc = g.querySelector('.merc'), tag = g.querySelector('.tag'), tagN = g.querySelector('.tag-n');
+  var lvEl = g.querySelector('.lv'), now = g.querySelector('.now'), vface = g.querySelector('.vface');
+  var rn = g.querySelector('.rn'), tot = g.querySelector('.tot');
+  var round = 0, total = 0, level = 3, raf = 0, t0 = 0, wait = 0, shown = 3;
+  var DELAY = 500, RISE = 3200;   /* 3点 → 10点まで 3.2秒で上がる */
+  function set(k, v) { g.setAttribute('data-' + k, v); }
+  function bump(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function voice(n) { return n >= 10 ? 'e' : n >= 8 ? 'd' : n >= 6 ? 'c' : n >= 5 ? 'b' : 'a'; }
+  function face(n) { return n >= 10 ? '🌋' : n >= 8 ? '🤬' : n >= 6 ? '😡' : n >= 5 ? '😠' : '😒'; }
+  function draw(x) {
+    merc.style.height = (x * 10) + '%';
+    var n = Math.floor(x);
+    if (n !== shown) { shown = n; lvEl.textContent = n; bump(now, 'pulse'); }
+    set('v', voice(n)); vface.textContent = face(n);
+  }
+  function now_() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
+  function tick() {
+    var t = now_() - t0 - DELAY;
+    level = 3 + Math.max(0, t) / RISE * 7;
+    if (level >= 10) { level = 10; draw(10); lock(true); return; }
+    draw(level);
+  }
+  function startRound() {
+    round++; rn.textContent = round; set('ev', String(round));
+    level = 3; shown = -1; draw(3);
+    set('res', ''); set('s', 'play');
+    t0 = now_(); clearInterval(raf); raf = setInterval(tick, 40);
+  }
+  function lock(boom) {
+    clearInterval(raf);
+    var n = Math.floor(level); total += n;
+    tagN.textContent = n; tag.style.bottom = 'calc(' + (n * 10 * 222 / 262) + '% + ' + 40 + 'px)';
+    if (!boom) { vface.textContent = '😮‍💨'; }
+    set('res', boom ? 'boom' : 'lock');
+    set('s', 'lock');
+    if (round >= 3) { go.disabled = true; wait = setTimeout(finish, 1200); }
+  }
+  function finish() {
+    go.disabled = false;
+    tot.textContent = total;
+    var res = total <= 11 ? 'cool' : total <= 18 ? 'ok' : 'hot';
+    set('res', res); set('s', 'done');
+    vface.textContent = res === 'cool' ? '😎' : res === 'ok' ? '🙂' : '🥵';
+    if (res === 'cool' && window.pengessoPop) {
+      var k = go.getBoundingClientRect();
+      window.pengessoPop(k.left + k.width / 2, k.top, ['🧊', '🐧', '✨', '🏷️'], 18);
+    }
+  }
+  function startPress() {
+    var s = g.getAttribute('data-s');
+    if (s === 'play') { lock(false); return true; }
+    return false;
+  }
+  var skip = false;
+  go.addEventListener('pointerdown', function () { if (startPress()) skip = true; });   /* 指が触れた瞬間に止める */
+  go.addEventListener('click', function () {
+    if (skip) { skip = false; return; }
+    var s = g.getAttribute('data-s');
+    if (s === 'play') { lock(false); return; }
+    if (s === 'idle') { round = 0; total = 0; startRound(); return; }
+    if (s === 'lock' && round < 3) { startRound(); return; }
+    if (s === 'done') { clearTimeout(wait); round = 0; total = 0; startRound(); }
+  });
+  draw(3);
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード）
+S5 → 使った（5枚目のカード・.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label / h1 / ゲームの文字 ← 本人の素材の要約・演出（word数対象外）
+-->

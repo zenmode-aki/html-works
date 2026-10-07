@@ -74,6 +74,10 @@ class H(http.server.SimpleHTTPRequestHandler):
 def browser():
     for p in sorted(pathlib.Path.home().glob("Library/Caches/ms-playwright/chromium_headless_shell-*/*/chrome-headless-shell")):
         return [str(p)]
+    import os, glob
+    if os.environ.get("CHROME"): return [os.environ["CHROME"], "--headless=new"]
+    for p in sorted(glob.glob("/opt/pw-browsers/chromium-*/chrome-linux/chrome")):   # Linux（クラウドの作業場所）
+        return [p, "--headless=new", "--no-sandbox"]
     return ["/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", "--headless=new"]
 
 

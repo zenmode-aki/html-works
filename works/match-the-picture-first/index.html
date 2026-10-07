@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Before you start, write 3 lines and show them to the person who asked</title>
+<!-- ⬇️ OGP（tools/ogp.py） -->
+<meta name="description" content="It is said that you should not start a request right away." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
+<meta property="og:title" content="Before you start, write 3 lines and show them to the person who asked" />
+<meta property="og:description" content="It is said that you should not start a request right away." />
+<meta property="og:url" content="https://15-second-blog.com/works/match-the-picture-first/" />
+<meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/match-the-picture-first.jpg" />
+<meta property="og:image:alt" content="A chubby hand-embroidered felt penguin holding a small note card next to a real strawberry shortcake" />
+<meta name="twitter:card" content="summary_large_image" />
+<!-- ⬆️ OGP -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（その3・2026-10-05）。真面目な話 → ポップに（トーン反転） */
+  :root {
+    --bg: #fff6f8;
+    --card: rgba(255,255,255,.95);
+    --text: #2f2a3a;
+    --muted: #776f86;
+    --c1: #e83e8c;
+    --c2: #8a5a44;
+    --sun: #ffd6e5;
+    --c1d: #c2185b;
+    --game: linear-gradient(150deg, #e83e8c 0%, #f06292 50%, #a1673f 100%);
+    --shadow: 0 20px 55px rgba(70,60,120,.16);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, rgba(232,62,140,.16), transparent 26%),
+      radial-gradient(circle at 92% 18%, rgba(138,90,68,.14), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(255,214,229,.45), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--c1d);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(70,60,120,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(70,60,120,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(70,60,120,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--c1d); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--c1d); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: #2a2440; font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: #ffe6ef; border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(70,60,120,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--c1d); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; font-weight: 700; }
+  p + p { margin-top: 10px; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 900; line-height: 1.42; color: var(--c1d);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品の共通（文字は HTML。JS は class・data・数字・絵文字だけ）════ */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: var(--game); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .game-hint { margin-top: 6px; font-size: 15px; font-weight: 800; opacity: .95; line-height: 1.45; }
+  .gbtn { display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 12px 22px; border: 0; border-radius: 999px;
+    font: inherit; font-size: 18px; font-weight: 900; color: #2b2100; background: var(--sun); cursor: pointer;
+    box-shadow: 0 6px 0 rgba(0,0,0,.2), 0 12px 22px rgba(0,0,0,.14); transition: transform .08s ease, box-shadow .08s ease, opacity .2s;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; line-height: 1.25; }
+  .gbtn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.14); }
+  .gbtn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .gbtn.ghost { background: rgba(255,255,255,.94); color: var(--c1d); font-size: 16px; min-height: 50px; }
+  .gbtn[disabled] { opacity: .45; cursor: default; }
+  .gbtn.wide { width: min(340px, 100%); }
+  .g-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 14px; }
+  .msg { margin-top: 14px; min-height: 52px; font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .msg > div { display: none; }
+  @keyframes shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+  @keyframes popin { from { opacity: 0; transform: scale(.8); } to { opacity: 1; transform: none; } }
+  .msg > div { animation: popin .35s cubic-bezier(.2,1.4,.4,1) both; }
+
+
+  .heads { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+  .head { padding: 10px 8px 12px; border-radius: 22px; background: rgba(255,255,255,.96); color: var(--text); }
+  .who { font-size: 13.5px; font-weight: 900; line-height: 1.35; }
+  .cake { margin-top: 6px; font-size: 40px; line-height: 1.1; white-space: nowrap; }
+  .cake .fl { display: inline-block; font-size: 30px; vertical-align: top; transition: transform .3s; }
+  .cake .fl.chg { animation: popin .45s cubic-bezier(.2,1.6,.4,1); }
+  .hf .cake { filter: blur(7px); transition: filter .5s; }
+  .game[data-s="note"] .hf .cake, .game[data-s="bake2"] .hf .cake, .game[data-s="done"] .hf .cake { filter: none; }
+  .game[data-s="done"] .head { box-shadow: 0 0 0 4px #7ee0a8; }
+  .oven { height: 12px; margin: 14px auto 0; max-width: 360px; border-radius: 999px; background: rgba(255,255,255,.28); overflow: hidden; }
+  .oven i { display: block; width: 0; height: 100%; border-radius: 999px; background: #ffd27a; }
+  .oven.go i { width: 100%; transition: width 1.1s linear; }
+  .note { display: none; margin: 12px auto 0; max-width: 420px; padding: 12px 14px; border-radius: 16px; background: #fffbe6; color: #3a2f20;
+    text-align: left; font-weight: 900; font-size: 15px; line-height: 1.55; transform: rotate(-.6deg); }
+  .game[data-s="note"] .note, .game[data-s="bake2"] .note, .game[data-s="done"] .note { display: block; animation: popin .4s both; }
+  .reply { margin-top: 6px; padding-top: 6px; border-top: 2px dashed #e8d9a8; color: var(--c1d); }
+  .score { margin-top: 8px; font-size: 14px; font-weight: 900; opacity: .95; }
+  .score .h, .score .rd { font-size: 18px; }
+  .game .gbtn { display: none; }
+  .game[data-s="idle"] .b-now, .game[data-s="idle"] .b-lines, .game[data-s="wrong"] .b-now, .game[data-s="wrong"] .b-lines,
+  .game[data-s="note"] .b-bake, .game[data-s="done"] .again, .game[data-s="wrong"] .again { display: inline-flex; }
+  .game[data-s="idle"] .m-idle, .game[data-s="bake1"] .m-bake, .game[data-s="bake2"] .m-bake, .game[data-s="wrong"] .m-wrong, .game[data-s="done"] .m-done { display: block; }
+  .game[data-s="wrong"] .hm { animation: shake .45s ease; }
+
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(135deg, var(--c1), var(--c2)); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: #ff9cc8; }
+  html[data-theme="dark"] .gbtn.ghost { background: #2a2c38; color: #f4f0fa; }
+  html[data-theme="dark"] .game .head { background: #22242f; color: #f4f0fa; }
+  html[data-theme="dark"] .game .note { background: #3a3320; color: #ffe9a8; }
+  html[data-theme="dark"] .game .reply { color: #ff9cc8; border-top-color: rgba(255,233,168,.3); }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"386361ae71"},"ko":{"v":"e81480685d"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=4ec8701409"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <a class="home" href="../../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 48 words · 16 sec</div>
+      <div class="stage stage-public">PUBLIC</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 16 SEC</div>
+  <h1>Before you start, write 3 lines and show them to the person who asked <span class="float">🎂</span></h1>
+  <!-- 🏷 タグ（tools/tags.py） -->
+  <style id="post-tags-css">.post-tags{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 18px}.post-tags a{display:inline-flex;align-items:center;padding:6px 11px;border-radius:999px;background:#fff;border:1.5px solid rgba(35,44,72,.12);color:#3a3550;font-size:12.5px;font-weight:800;line-height:1.2;text-decoration:none;transition:transform .15s,border-color .15s}.post-tags a:hover{transform:translateY(-1px);border-color:#8b6de8}.post-tags a.place{background:#f3effc}html[data-theme="dark"] .post-tags a{background:#22242f;border-color:#33364a;color:#e6e2ff}html[data-theme="dark"] .post-tags a.place{background:#2a2540}@media (prefers-reduced-motion:reduce){.post-tags a{transition:none}}</style><nav class="post-tags" aria-label="Tags"><a href="../../index.html?tag=psychology#posts">🧠 Psychology</a><a href="../../index.html?tag=productivity#posts">✅ Productivity</a><a href="../../index.html?tag=friends#posts">🤝 Friends</a></nav>
+  <!-- /🏷 -->
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1200" height="900" src="img/699403d4ed59.jpg" alt="A chubby hand-embroidered felt penguin holding a small note card next to a real strawberry shortcake" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">✋</span>
+      <span class="card-label">Wait First</span>
+    </div>
+    <p>It is said that you should not start a request right away.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📝</span>
+      <span class="card-label">3 Lines</span>
+    </div>
+    <p>First, write 3 lines (goal, wall, fix) and show them to the person who asked.</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：ケーキのイメージ合わせ -->
+  <section class="game" data-s="idle" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Bake a birthday cake for a friend</div>
+    <div class="heads">
+      <div class="head hf"><div class="who">💭 In my friend's head</div><div class="cake" aria-hidden="true"><span class="fl ff">🍓</span><span class="ck">🎂</span></div></div>
+      <div class="head hm"><div class="who">💭 In my head</div><div class="cake" aria-hidden="true"><span class="fl mf">🍫</span><span class="ck">🎂</span></div></div>
+    </div>
+    <div class="oven"><i></i></div>
+    <div class="note">
+      <div class="nl">🎯 Goal: a cake my friend loves</div>
+      <div class="nl">🧱 Wall: I do not know the flavor.</div>
+      <div class="nl">🔧 Fix: ask before I bake.</div>
+      <div class="reply">📮 Friend: "🍓 Strawberry, please!"</div>
+    </div>
+    <div class="msg">
+      <div class="m-idle">The birthday is tomorrow. What do you do first?</div>
+      <div class="m-bake">🔥 Baking…</div>
+      <div class="m-wrong">😮 Friend: "Oh… that is not it."</div>
+      <div class="m-done">🎉 Friend: "Yes! This is it!"</div>
+    </div>
+    <div class="score"><span class="sc-l">⏱️ Time used:</span> <span class="h">0</span> <span class="hu">hours</span> · <span class="sc-l2">↺ Redos:</span> <span class="rd">0</span></div>
+    <div class="g-row">
+      <button type="button" class="gbtn b-now">🔨 Start right away</button>
+      <button type="button" class="gbtn b-lines">📝 Send 3 lines first</button>
+      <button type="button" class="gbtn wide b-bake">🎂 Now bake it!</button>
+      <button type="button" class="gbtn ghost again">↺ Start over</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🖼️</span>
+      <span class="card-label">No Gap</span>
+    </div>
+    <p>There, you remove the gap between the pictures in your heads.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">✅</span>
+      <span class="card-label">No Redo</span>
+    </div>
+    <p class="big">Then you almost never hear "That is not it" later.</p>
+  </section>
+
+  <div class="credit">📚 I wrote this from my notes on books and blogs I have read.</div>
+  <a class="next" href="../the-immunity-map/index.html">
+    <div>
+      <div class="next-kicker">NEXT · 20 SEC</div>
+      <div class="next-title">You cannot change because not changing protects a hidden goal</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../split-the-goal-into-clear-words/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">Split a vague goal into words that everyone reads the same way</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../one-step-above-the-request/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/one-step-above-the-request.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 19 SEC</span></div>
+            <div class="rel-title">Make your goal one step above what you were asked to do</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../show-it-early/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/show-it-early.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 20 SEC</span></div>
+            <div class="rel-title">The more sure you feel, the earlier you should show it</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../outline-before-you-start/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/outline-before-you-start.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 22 SEC</span></div>
+            <div class="rel-title">Before you start, decide 3 things: the goal, the wall, and the fix</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../speed-is-fewer-redos/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/speed-is-fewer-redos.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 20 SEC</span></div>
+            <div class="rel-title">Speed comes from fewer redos, not from fast hands</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../khaosan-road-chaos/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/khaosan-road-chaos.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 28 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">Khaosan Road was the most fun part of my Thailand trip</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* 🎂 ケーキのイメージ合わせ：すぐ作るとズレてやり直し。3行を送ると頭の中の絵がそろう */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var oven = g.querySelector('.oven'), mf = g.querySelector('.mf'), hEl = g.querySelector('.h'), rdEl = g.querySelector('.rd');
+  var WRONG = ['🍫', '🍋', '🍵'], tries = 0, hours = 0, redo = 0, t = 0;
+  function pop(el, list) {
+    if (!window.pengessoPop || !el) return;
+    var r = el.getBoundingClientRect();
+    window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, 16);
+  }
+  function set(s) { g.setAttribute('data-s', s); }
+  function bake(next) {
+    oven.classList.remove('go'); void oven.offsetWidth; oven.classList.add('go');
+    hours += 3; hEl.textContent = String(hours);
+    t = setTimeout(next, 1200);
+  }
+  function flavor(e) { mf.textContent = e; mf.classList.remove('chg'); void mf.offsetWidth; mf.classList.add('chg'); }
+  g.querySelector('.b-now').addEventListener('click', function () {
+    flavor(WRONG[tries % WRONG.length]); tries++;
+    set('bake1');
+    bake(function () { redo++; rdEl.textContent = String(redo); set('wrong'); });
+  });
+  g.querySelector('.b-lines').addEventListener('click', function () { set('note'); setTimeout(function () { flavor('🍓'); }, 500); });
+  g.querySelector('.b-bake').addEventListener('click', function () {
+    set('bake2');
+    bake(function () { set('done'); pop(g.querySelector('.heads'), ['🍓', '🎂', '🐧', '🎉'], 18); });
+  });
+  g.querySelector('.again').addEventListener('click', function () {
+    clearTimeout(t); tries = 0; hours = 0; redo = 0; hEl.textContent = '0'; rdEl.textContent = '0';
+    mf.textContent = '🍫'; oven.classList.remove('go'); set('idle');
+  });
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label 4個 / h1 / ケーキのイメージ合わせの文字 ← 本人の素材の要約・演出（word数対象外）
+-->

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Step back from people with minus words, and get close to plus words</title>
+<!-- ⬇️ OGP（tools/ogp.py） -->
+<meta name="description" content="A fancy dinner with someone you dislike is less tasty than cup noodles with good friends." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
+<meta property="og:title" content="Step back from people with minus words, and get close to plus words" />
+<meta property="og:description" content="A fancy dinner with someone you dislike is less tasty than cup noodles with good friends." />
+<meta property="og:url" content="https://15-second-blog.com/works/people-with-minus-words/" />
+<meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/people-with-minus-words.jpg" />
+<meta property="og:image:alt" content="A cut paper penguin happily holding a cup of instant noodles in the sunshine" />
+<meta name="twitter:card" content="summary_large_image" />
+<!-- ⬆️ OGP -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（2026-10-05）。真面目な話 → ポップに（トーン反転） */
+  :root {
+
+    --bg: #f2faff;
+    --text: #1f3346;
+    --muted: #61788c;
+    --a: #0b8fd6;
+    --b: #ffb703;
+    --ink: #12324a;
+    --big: #0a7cc0;
+    --bigdark: #9fdcff;
+    --photo: #dff3ff;
+    --shadow: 0 20px 55px rgba(20,120,190,.17);
+    --game: linear-gradient(165deg, #1f9de8 0%, #45c0ff 55%, #ffc93c 100%);
+    --tapbg: #ffd23f;
+    --tapink: #5b3b00;
+    --tapedge: #d9a400;
+    --card: rgba(255,255,255,.95);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+
+      radial-gradient(circle at 10% 6%, rgba(255,210,63,.36), transparent 26%),
+      radial-gradient(circle at 92% 18%, rgba(56,189,248,.22), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(255,183,3,.14), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--a);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; font-weight: 800; text-decoration: none; box-shadow: 0 6px 16px rgba(60,40,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; font-weight: 800; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,40,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,40,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--a); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--a); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: var(--ink); font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: var(--photo); border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,40,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--a); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-weight: 700; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 900; line-height: 1.42; color: var(--big);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品の共通部分 ════
+     文字はぜんぶ HTML に置いて、JS は class・data-*・hidden・style・絵文字・数字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 18px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: var(--game); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game [hidden] { display: none !important; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .game button { font: inherit; font-weight: 900; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    user-select: none; -webkit-user-select: none; }
+  .game button:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .tap { display: block; width: min(320px, 100%); min-height: 64px; margin: 14px auto 0; padding: 12px 18px; border: 0; border-radius: 999px;
+    font-size: clamp(20px, 5.4vw, 26px); color: var(--tapink); background: var(--tapbg);
+    box-shadow: 0 8px 0 var(--tapedge), 0 16px 26px rgba(0,0,0,.18); transition: transform .08s ease, box-shadow .08s ease; }
+  .tap:active { transform: translateY(6px); box-shadow: 0 2px 0 var(--tapedge), 0 6px 14px rgba(0,0,0,.18); }
+  .result { margin-top: 16px; min-height: 54px; font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .result > div { display: none; }
+  .hint { font-size: 15px; font-weight: 800; opacity: .95; }
+  @keyframes shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+  @keyframes boing { 0% { transform: scale(1); } 35% { transform: scale(1.25); } 65% { transform: scale(.92); } 100% { transform: scale(1); } }
+  @keyframes glow { from { box-shadow: 0 0 0 0 rgba(255,255,255,.7); } to { box-shadow: 0 0 0 14px rgba(255,255,255,0); } }
+
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 14px 10px; border-radius: 20px; text-align: center; font-weight: 900; font-size: 15px; }
+  .vs .bad { background: #eef1f5; color: #6b7785; }
+  .vs .good { background: #fff1bf; color: #6b4b00; }
+  .vs .e { display: block; font-size: 30px; margin-bottom: 4px; }
+
+  /* ☀️ 言葉の雨 */
+  .sky { position: relative; height: 330px; max-width: 460px; margin: 16px auto 0; border-radius: 24px; overflow: hidden;
+    background: linear-gradient(180deg, #7fd3ff 0%, #c9efff 100%); transition: background .6s ease, filter .6s ease; }
+  .game[data-sky="1"] .sky { background: linear-gradient(180deg, #9fc3d8 0%, #d8e6ee 100%); }
+  .game[data-sky="2"] .sky { background: linear-gradient(180deg, #8d9eab 0%, #c7d0d6 100%); }
+  .game[data-sky="3"] .sky { background: linear-gradient(180deg, #6f7b85 0%, #aeb6bc 100%); }
+  .sun { position: absolute; right: 14px; top: 10px; font-size: 46px; line-height: 1; transition: transform .4s cubic-bezier(.2,1.3,.4,1), opacity .4s ease; transform-origin: center; }
+  .game[data-sky="2"] .sun, .game[data-sky="3"] .sun { opacity: .35; }
+  .cloud { position: absolute; top: 8px; font-size: 54px; line-height: 1; opacity: 0; transform: translateY(-20px); transition: opacity .5s ease, transform .5s ease; }
+  .cloud.c1 { left: 10px; } .cloud.c2 { left: 34%; top: 2px; } .cloud.c3 { right: 34px; top: 14px; }
+  .game[data-sky="1"] .c1, .game[data-sky="2"] .c1, .game[data-sky="2"] .c2, .game[data-sky="3"] .cloud { opacity: 1; transform: none; }
+  .me { position: absolute; left: 50%; bottom: 8px; margin-left: -30px; width: 60px; text-align: center; font-size: 48px; line-height: 1; }
+  .me.yay { animation: boing .45s ease; }
+  .me.ugh { animation: shake .45s ease; }
+  .drop { position: absolute; left: 0; top: 0; max-width: 34%; min-height: 48px; padding: 8px 12px; border: 3px solid #fff; border-radius: 18px;
+    background: #ffffff; color: #1f3346; font-size: 14.5px; line-height: 1.2; box-shadow: 0 6px 14px rgba(20,60,100,.18); will-change: transform; }
+  .drop.got { background: #ffd23f; border-color: #fff3b0; color: #5b3b00; }
+  .drop.bad { background: #8a96a0; border-color: #c3cad0; color: #fff; }
+  .sky-time { position: absolute; left: 0; bottom: 0; height: 6px; width: 0; background: #ffd23f; }
+  .hud { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
+  .hud > span { min-width: 76px; padding: 7px 12px; border-radius: 999px; background: rgba(255,255,255,.24); font-size: 17px; font-weight: 900; }
+  .hud b.bump { display: inline-block; animation: boing .35s ease; }
+  .tap > span { display: none; }
+  .game[data-s="idle"] .t-start, .game[data-s="done"] .t-again { display: inline; }
+  .game[data-s="play"] .tap { display: none; }
+  .game[data-s="idle"] .r-hint, .game[data-s="play"] .r-hint, .game[data-s="done"][data-r="gold"] .r-gold,
+  .game[data-s="done"][data-r="ok"] .r-ok, .game[data-s="done"][data-r="cloudy"] .r-cloudy { display: block; }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(135deg, var(--a), var(--b)); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 14px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .card p:not(.big) { color: #ece8f4; }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: var(--bigdark); }
+  html[data-theme="dark"] .photo { background: #2a2c38; border-color: rgba(255,255,255,.08); }
+
+  html[data-theme="dark"] .vs .bad { background: #2b3138; color: #c6ced6; }
+  html[data-theme="dark"] .vs .good { background: #3f3511; color: #ffe598; }
+  html[data-theme="dark"] .drop:not(.got):not(.bad) { background: #f4f8fb; }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"3d7ac5237d"},"ko":{"v":"c0c93ac12f"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=4ec8701409"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <a class="home" href="../../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 64 words · 21 sec</div>
+      <div class="stage stage-public">PUBLIC</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 21 SEC</div>
+  <h1>Step back from people with minus words, and get close to plus words <span class="float">☀️</span></h1>
+  <!-- 🏷 タグ（tools/tags.py） -->
+  <style id="post-tags-css">.post-tags{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 18px}.post-tags a{display:inline-flex;align-items:center;padding:6px 11px;border-radius:999px;background:#fff;border:1.5px solid rgba(35,44,72,.12);color:#3a3550;font-size:12.5px;font-weight:800;line-height:1.2;text-decoration:none;transition:transform .15s,border-color .15s}.post-tags a:hover{transform:translateY(-1px);border-color:#8b6de8}.post-tags a.place{background:#f3effc}html[data-theme="dark"] .post-tags a{background:#22242f;border-color:#33364a;color:#e6e2ff}html[data-theme="dark"] .post-tags a.place{background:#2a2540}@media (prefers-reduced-motion:reduce){.post-tags a{transition:none}}</style><nav class="post-tags" aria-label="Tags"><a href="../../index.html?tag=psychology#posts">🧠 Psychology</a><a href="../../index.html?tag=friends#posts">🤝 Friends</a><a href="../../index.html?tag=happiness#posts">😊 Happiness</a></nav>
+  <!-- /🏷 -->
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1168" height="880" src="img/212a691dc511.jpg" alt="A cut paper penguin happily holding a cup of instant noodles in the sunshine" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍜</span>
+      <span class="card-label">Who Matters</span>
+    </div>
+    <p>A fancy dinner with someone you dislike is less tasty than cup noodles with good friends.</p>
+    <div class="vs" aria-hidden="true">
+      <div class="bad"><b class="e">🍽️😑</b>Fancy dinner</div>
+      <div class="good"><b class="e">🍜😆</b>Cup noodles</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">☁️</span>
+      <span class="card-label">Minus Words</span>
+    </div>
+    <p>With people who use many minus words, like complaints, bad talk, and "It's no use anyway," keep a little distance.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">☀️</span>
+      <span class="card-label">Plus Words</span>
+    </div>
+    <p class="big">Get close to people who often say "I'm happy," "This is fun," and "Thank you."</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：言葉の雨 -->
+  <section class="game" data-s="idle" data-sky="0" data-r="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Catch only the plus words!</div>
+    <div class="sky">
+      <span class="sun" aria-hidden="true">☀️</span>
+      <span class="cloud c1" aria-hidden="true">☁️</span>
+      <span class="cloud c2" aria-hidden="true">☁️</span>
+      <span class="cloud c3" aria-hidden="true">☁️</span>
+      <button class="drop" type="button" data-k="plus" hidden>I'm happy!</button>
+      <button class="drop" type="button" data-k="plus" hidden>That's fun!</button>
+      <button class="drop" type="button" data-k="plus" hidden>Thank you!</button>
+      <button class="drop" type="button" data-k="plus" hidden>Let's try it!</button>
+      <button class="drop" type="button" data-k="plus" hidden>That's great!</button>
+      <button class="drop" type="button" data-k="minus" hidden>What a pain.</button>
+      <button class="drop" type="button" data-k="minus" hidden>It's no use.</button>
+      <button class="drop" type="button" data-k="minus" hidden>So boring.</button>
+      <button class="drop" type="button" data-k="minus" hidden>I hate this.</button>
+      <button class="drop" type="button" data-k="minus" hidden>Not again…</button>
+      <span class="me" aria-hidden="true">🐧</span>
+      <i class="sky-time" aria-hidden="true"></i>
+    </div>
+    <div class="hud" aria-hidden="true">
+      <span>☀️ <b class="n-plus">0</b></span>
+      <span>☁️ <b class="n-minus">0</b></span>
+    </div>
+    <button class="tap" type="button">
+      <span class="t-start">▶ Start</span>
+      <span class="t-again">↺ Try again</span>
+    </button>
+    <div class="result">
+      <div class="r-hint hint">Tap only the plus words. Let the minus words fall away.</div>
+      <div class="r-gold">☀️ Sunny heart! Only plus words came close.</div>
+      <div class="r-ok">⛅ Nice! Mostly plus words.</div>
+      <div class="r-cloudy">🌧 Cloudy… Minus words came too close.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🤝</span>
+      <span class="card-label">But Remember</span>
+    </div>
+    <p>But do not cut ties with people who helped you in hard times.</p>
+  </section>
+
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+
+  <a class="next" href="../two-six-two-rule/index.html">
+    <div>
+      <div class="next-kicker">NEXT · 19 SEC</div>
+      <div class="next-title">In every group, 2 people match you, 6 are neither, and 2 do not</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../let-anger-out-in-a-small-voice/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">Do not keep anger inside; let it out in a small voice, alone</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../kindness-echoes-back/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/kindness-echoes-back.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 17 SEC</span></div>
+            <div class="rel-title">What you do for others comes back to you like an echo</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../thank-you-is-rare-so-it-shines/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/thank-you-is-rare-so-it-shines.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 21 SEC</span></div>
+            <div class="rel-title">Saying thank you is rare, so people who say it really shine</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../praise-them-when-they-are-not-there/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/praise-them-when-they-are-not-there.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 19 SEC</span></div>
+            <div class="rel-title">Praise people when they are not there, and it reaches them bigger</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../silly-talk-is-the-best-small-talk/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/silly-talk-is-the-best-small-talk.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 18 SEC</span></div>
+            <div class="rel-title">Small talk does not need smart topics; silly talk is the best</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../taylors-right-in-front-of-campus/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/taylors-right-in-front-of-campus.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 36 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">At Taylor's University, even the area right in front of the campus was attractive</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* ☀️ 言葉の雨：JS は data-* / hidden / class / style / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var sky = g.querySelector('.sky'), sun = g.querySelector('.sun'), me = g.querySelector('.me'), bar = g.querySelector('.sky-time');
+  var nPlus = g.querySelector('.n-plus'), nMinus = g.querySelector('.n-minus'), tap = g.querySelector('.tap');
+  var drops = [].slice.call(g.querySelectorAll('.drop')).map(function (el) { return { el: el, on: false, t0: 0, x: 0, dur: 3400, k: el.getAttribute('data-k') }; });
+  var GAME = 15000, EVERY = 640;
+  var plus = 0, minus = 0, t0 = 0, lastSpawn = 0, lastLane = -1, run = 0, lastPtr = -9999, endAt = -9999;
+  function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
+  function set(k, v) { g.setAttribute('data-' + k, v); }
+  function bump(el, c) { el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function num(el, v) { el.textContent = v; bump(el, 'bump'); }
+  function pop(el, list, n) { if (!window.pengessoPop) return; var r = el.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n); }
+  function off(d) { d.on = false; d.el.hidden = true; d.el.classList.remove('got', 'bad'); d.el.style.transform = ''; }
+  function spawn(t) {
+    var free = drops.filter(function (d) { return !d.on; });
+    if (!free.length) return;
+    var want = Math.random() < 0.5 ? 'plus' : 'minus';
+    var pick = free.filter(function (d) { return d.k === want; });
+    if (!pick.length) pick = free;
+    var d = pick[Math.floor(Math.random() * pick.length)];
+    d.el.hidden = false;
+    var W = sky.clientWidth, bw = d.el.offsetWidth, lane;
+    do { lane = Math.floor(Math.random() * 3); } while (lane === lastLane);
+    lastLane = lane;
+    var slot = (W - bw - 16) / 2;
+    d.x = 8 + lane * slot + (Math.random() - .5) * 18;
+    d.x = Math.max(6, Math.min(W - bw - 6, d.x));
+    d.dur = 3600 - (t - t0) / GAME * 1100;
+    d.t0 = t; d.on = true; d.state = 'fall';
+    d.el.style.transform = 'translate(' + d.x.toFixed(0) + 'px,-60px)';
+  }
+  function tick() {
+    if (g.getAttribute('data-s') !== 'play') return;
+    var t = now(), H = sky.clientHeight;
+    if (t - t0 >= GAME) { end(); return; }
+    bar.style.width = ((t - t0) / GAME * 100).toFixed(1) + '%';
+    if (t - lastSpawn >= EVERY) { lastSpawn = t; spawn(t); }
+    drops.forEach(function (d) {
+      if (!d.on || d.state !== 'fall') return;
+      var p = (t - d.t0) / d.dur;
+      if (p >= 1) { off(d); return; }
+      d.el.style.transform = 'translate(' + d.x.toFixed(0) + 'px,' + (-60 + (H + 20) * p).toFixed(1) + 'px)';
+    });
+    requestAnimationFrame(tick);
+  }
+  function hit(d) {
+    if (!d.on || d.state !== 'fall' || g.getAttribute('data-s') !== 'play') return;
+    d.state = 'hit';
+    if (d.k === 'plus') {
+      plus++; num(nPlus, plus); d.el.classList.add('got');
+      var mx = sky.clientWidth / 2 - d.el.offsetWidth / 2, my = sky.clientHeight - 70;
+      d.el.style.transform = 'translate(' + mx.toFixed(0) + 'px,' + my + 'px) scale(.5)';
+      d.el.style.transition = 'transform .35s ease-in';
+      bump(me, 'yay');
+      sun.style.transform = 'scale(' + Math.min(1.9, 1 + plus * 0.08).toFixed(2) + ')';
+      pop(d.el, ['☀️', '✨'], 6);
+    } else {
+      minus++; num(nMinus, minus); d.el.classList.add('bad');
+      set('sky', String(Math.min(3, minus)));
+      bump(me, 'ugh');
+    }
+    setTimeout(function () { d.el.style.transition = ''; off(d); }, 380);
+  }
+  drops.forEach(function (d) {
+    d.el.addEventListener('pointerdown', function (e) { e.preventDefault(); lastPtr = now(); hit(d); });
+    d.el.addEventListener('click', function () { if (now() - lastPtr > 700) hit(d); });
+  });
+  function start() {
+    if (now() - endAt < 700) return;
+    run++; plus = 0; minus = 0; nPlus.textContent = '0'; nMinus.textContent = '0';
+    drops.forEach(off); sun.style.transform = ''; bar.style.width = '0';
+    set('sky', '0'); set('r', ''); set('s', 'play');
+    t0 = now(); lastSpawn = t0 - EVERY;
+    requestAnimationFrame(tick);
+  }
+  function end() {
+    endAt = now(); drops.forEach(off); bar.style.width = '100%';
+    var r = minus === 0 && plus >= 6 ? 'gold' : minus <= 1 ? 'ok' : 'cloudy';
+    set('r', r); set('s', 'done');
+    if (r === 'gold') pop(me, ['☀️', '🐧', '✨', '💛'], 18);
+  }
+  tap.addEventListener('click', start);
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・.big）
+S4 → 使った（4枚目のカード）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label 4個 / h1 / 言葉の雨の文字 ← 本人の素材の要約・演出（word数対象外）
+-->

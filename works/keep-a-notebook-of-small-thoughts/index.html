@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Write small thoughts in a notebook, and topics come to you</title>
+<!-- ⬇️ OGP（tools/ogp.py） -->
+<meta name="description" content="In a topic notebook, you write not only big events but also small thoughts." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
+<meta property="og:title" content="Write small thoughts in a notebook, and topics come to you" />
+<meta property="og:description" content="In a topic notebook, you write not only big events but also small thoughts." />
+<meta property="og:url" content="https://15-second-blog.com/works/keep-a-notebook-of-small-thoughts/" />
+<meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/keep-a-notebook-of-small-thoughts.jpg" />
+<meta property="og:image:alt" content="An embroidered felt penguin writing in a small kraft paper notebook with a pencil" />
+<meta name="twitter:card" content="summary_large_image" />
+<!-- ⬆️ OGP -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（2026-10-05）。真面目な話 → ポップに（トーン反転） */
+  :root {
+    --bg: #f3f8ff;
+    --card: rgba(255,255,255,.95);
+    --text: #2f2a3a;
+    --muted: #7a6f86;
+    --a: #2563c9;
+    --b: #ffcf33;
+    --shadow: 0 20px 55px rgba(37,99,201,.18);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, rgba(255,207,51,.30), transparent 26%),
+      radial-gradient(circle at 92% 18%, rgba(37,99,201,.18), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(0,168,232,.16), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--a);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; font-weight: 900; text-decoration: none; box-shadow: 0 6px 16px rgba(37,99,201,.12); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; font-weight: 800; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(37,99,201,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(37,99,201,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--a); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--a); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: #14284d; font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: #e2eeff; border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(37,99,201,.10); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--a); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-size: clamp(17px, 2.4vw, 21px); font-weight: 700; line-height: 1.72; }
+  p + p { margin-top: 10px; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: #1f56b5;
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品の入れ物 ════
+     文字はぜんぶ HTML に置いて、JS は class・data-*・数字・絵文字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: linear-gradient(160deg, #2b59c3 0%, #1f8fd6 60%, #00a8e8 100%); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; text-shadow: 0 2px 0 rgba(0,0,0,.12); }
+  .gbtn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 52px; padding: 10px 20px;
+    border: 0; border-radius: 999px; cursor: pointer; font: inherit; font-size: 17px; font-weight: 900; line-height: 1.25;
+    color: #2f2a3a; background: #fff; box-shadow: 0 6px 0 rgba(0,0,0,.20), 0 12px 22px rgba(0,0,0,.14);
+    transition: transform .08s ease, box-shadow .08s ease, opacity .2s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .gbtn:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.20), 0 4px 10px rgba(0,0,0,.14); }
+  .gbtn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .gbtn[disabled] { opacity: .45; cursor: default; transform: none; }
+  .gbtn.ghost { background: rgba(255,255,255,.18); color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.55); min-height: 48px; font-size: 15px; }
+  @keyframes boing { 0% { transform: scale(1); } 35% { transform: scale(1.12, .9); } 65% { transform: scale(.96, 1.06); } 100% { transform: scale(1); } }
+  @keyframes popin { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+  @keyframes shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+  .boing { animation: boing .42s ease; }
+  .shake { animation: shake .4s ease; }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(160deg, #2b59c3 0%, #1f8fd6 60%, #00a8e8 100%); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 12px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+
+  /* 🍜 2枚目のカード：ノートの1ページふう（線は1本だけ。細かい模様は使わない） */
+  .note { padding: 12px 14px 12px 18px; border-radius: 12px; background: #fff8dc; color: #4a3b10; border-left: 6px solid #ffcf33; }
+  html[data-theme="dark"] .card p.note { background: #3a3320; }
+
+  /* 💭 思ったことをつかまえろ！ */
+  .sky { position: relative; height: 270px; margin: 16px 0 12px; border-radius: 22px; overflow: hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.08)); box-shadow: inset 0 0 0 2px rgba(255,255,255,.35); }
+  .sky-idle { display: none; position: absolute; inset: 0; padding: 30px 22px; place-content: center; font-size: 17px; font-weight: 900; line-height: 1.5; }
+  .game[data-s="idle"] .sky-idle { display: grid; }
+  .sky-emo { display: block; font-size: 56px; margin-bottom: 8px; animation: float 3s ease-in-out infinite alternate; }
+  .th { position: absolute; max-width: 62%; display: flex; align-items: center; gap: 6px; min-height: 48px; padding: 9px 13px;
+    border: 0; border-radius: 20px 20px 20px 6px; cursor: pointer; text-align: left; font: inherit; font-size: 15px; font-weight: 900; line-height: 1.3;
+    color: #14284d; background: #fff; box-shadow: 0 8px 18px rgba(0,0,0,.18); -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    animation: popin .35s cubic-bezier(.2,1.4,.4,1) both, bob 1.6s .35s ease-in-out infinite alternate; }
+  .th[hidden] { display: none; }
+  .th-e { font-size: 24px; line-height: 1; flex: 0 0 auto; }
+  @keyframes bob { from { transform: translateY(0); } to { transform: translateY(-7px); } }
+  .th.got { pointer-events: none; animation: catchit .45s ease-in both; background: #fff36b; }
+  .th.gone { pointer-events: none; animation: flyaway .5s ease-in both; }
+  @keyframes catchit { to { transform: translateY(200px) scale(.25); opacity: 0; } }
+  @keyframes flyaway { to { transform: translateY(-40px) scale(.8); opacity: 0; filter: blur(2px); } }
+  .talk { display: none; position: absolute; inset: 0; padding: 18px 14px; }
+  .game[data-s="talk"] .talk { display: block; }
+  .msg { display: inline-flex; align-items: center; gap: 8px; max-width: 92%; padding: 11px 15px; border-radius: 20px 20px 20px 6px;
+    background: #fff; color: #14284d; font-size: 17px; font-weight: 900; line-height: 1.4; text-align: left; animation: popin .4s ease both; }
+  .msg-pg { font-size: 28px; line-height: 1; }
+  .timer { position: absolute; left: 12px; right: 12px; bottom: 10px; height: 8px; border-radius: 99px; background: rgba(255,255,255,.25); overflow: hidden; display: none; }
+  .game[data-s="play"] .timer { display: block; }
+  .timer i { position: absolute; inset: 0 auto 0 0; width: 100%; border-radius: 99px; background: #fff36b; }
+  .book { max-width: 460px; margin: 0 auto; padding: 14px; border-radius: 20px; background: #fffdf4; color: #3a2f12; text-align: left;
+    box-shadow: inset 6px 0 0 #ffcf33, 0 10px 22px rgba(0,0,0,.15); }
+  .book.boing { animation: boing .4s ease; }
+  .book-head { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 900; }
+  .book-emo { font-size: 26px; line-height: 1; }
+  .book-title { flex: 1; }
+  .book-cnt { padding: 3px 10px; border-radius: 99px; background: #2563c9; color: #fff; font-size: 14px; }
+  .book-empty { margin-top: 8px; font-size: 14.5px; font-weight: 800; color: #8a7a4a; }
+  .game:not([data-n="0"]) .book-empty { display: none; }
+  .book-list { list-style: none; margin: 6px 0 0; padding: 0; }
+  .bl { display: none; align-items: center; gap: 8px; padding: 7px 4px; border-top: 2px solid #f1e6bf; font-size: 15px; font-weight: 900; line-height: 1.35; }
+  .bl:last-child { border-bottom: 0; }
+  .bl.got { display: flex; animation: popin .35s ease both; }
+  .bl-e { font-size: 20px; line-height: 1; flex: 0 0 auto; }
+  .game[data-s="talk"] .bl.got { background: #e6f1ff; border-radius: 12px; margin-top: 6px; padding: 8px 10px; border: 0; animation: boing .5s ease both; }
+  .game[data-s="talk"] .bl.got:nth-child(2) { animation-delay: .15s; } .game[data-s="talk"] .bl.got:nth-child(3) { animation-delay: .3s; }
+  .game[data-s="talk"] .bl.got:nth-child(4) { animation-delay: .45s; } .game[data-s="talk"] .bl.got:nth-child(5) { animation-delay: .6s; }
+  .game[data-s="talk"] .bl.got:nth-child(6) { animation-delay: .75s; }
+  .go { width: min(320px, 100%); min-height: 64px; margin-top: 16px; font-size: 21px; background: #fff36b; color: #3b2c00; box-shadow: 0 8px 0 #d9a400, 0 14px 26px rgba(0,0,0,.18); }
+  .go span { display: none; }
+  .game[data-s="play"] .go { visibility: hidden; }
+  .game[data-s="idle"] .t-start, .game[data-s="play"] .t-start, .game[data-s="caught"] .t-chat, .game[data-s="talk"] .t-again { display: inline; }
+  .result { margin-top: 14px; min-height: 48px; font-size: 16.5px; font-weight: 900; line-height: 1.45; }
+  .result > div { display: none; }
+  .game[data-s="play"] .r-play, .game[data-s="caught"] .r-caught,
+  .game[data-s="talk"]:not([data-n="0"]) .r-ok, .game[data-s="talk"][data-n="0"] .r-ng { display: block; animation: popin .4s ease both; }
+  html[data-theme="dark"] .th, html[data-theme="dark"] .msg { background: #f4f0fa; }
+  html[data-theme="dark"] .book { background: #f7f1dc; }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: #a9c8ff; }
+  html[data-theme="dark"] .gbtn:not(.ghost) { background: #f4f0fa; color: #2f2a3a; }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"216486dc0a"},"ko":{"v":"36a606f39a"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=4ec8701409"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+  <div class="topbar">
+    <a class="home" href="../../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 63 words · 21 sec</div>
+      <div class="stage stage-public">PUBLIC</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 21 SEC</div>
+  <h1>Write small thoughts in a notebook, and topics come to you <span class="float">📓</span></h1>
+  <!-- 🏷 タグ（tools/tags.py） -->
+  <style id="post-tags-css">.post-tags{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 18px}.post-tags a{display:inline-flex;align-items:center;padding:6px 11px;border-radius:999px;background:#fff;border:1.5px solid rgba(35,44,72,.12);color:#3a3550;font-size:12.5px;font-weight:800;line-height:1.2;text-decoration:none;transition:transform .15s,border-color .15s}.post-tags a:hover{transform:translateY(-1px);border-color:#8b6de8}.post-tags a.place{background:#f3effc}html[data-theme="dark"] .post-tags a{background:#22242f;border-color:#33364a;color:#e6e2ff}html[data-theme="dark"] .post-tags a.place{background:#2a2540}@media (prefers-reduced-motion:reduce){.post-tags a{transition:none}}</style><nav class="post-tags" aria-label="Tags"><a href="../../index.html?tag=psychology#posts">🧠 Psychology</a><a href="../../index.html?tag=friends#posts">🤝 Friends</a><a href="../../index.html?tag=tips#posts">💡 Tips</a></nav>
+  <!-- /🏷 -->
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1168" height="880" src="img/f858e63d81a0.jpg" alt="An embroidered felt penguin writing in a small kraft paper notebook with a pencil" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📓</span>
+      <span class="card-label">Topic Notebook</span>
+    </div>
+    <p>In a topic notebook, you write not only big events but also small thoughts.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍜</span>
+      <span class="card-label">Small Thoughts</span>
+    </div>
+    <p class="note">"The new ramen shop by the station looks good." "What is that building behind the station?"</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：思ったことをつかまえる -->
+  <section class="game" data-s="idle" data-n="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">💭 Catch your thoughts!</div>
+    <div class="sky">
+      <div class="sky-idle"><b class="sky-emo" aria-hidden="true">💭</b>Little thoughts float by. Tap them before they fly away!</div>
+        <button class="th" type="button" hidden><span class="th-e" aria-hidden="true">🍜</span><span class="th-t">The new ramen shop looks good</span></button>
+        <button class="th" type="button" hidden><span class="th-e" aria-hidden="true">🏢</span><span class="th-t">What is that building behind the station?</span></button>
+        <button class="th" type="button" hidden><span class="th-e" aria-hidden="true">☁️</span><span class="th-t">That cloud looks like a penguin</span></button>
+        <button class="th" type="button" hidden><span class="th-e" aria-hidden="true">☕</span><span class="th-t">This coffee smells like chocolate</span></button>
+        <button class="th" type="button" hidden><span class="th-e" aria-hidden="true">🐈</span><span class="th-t">The same cat sits there every day</span></button>
+        <button class="th" type="button" hidden><span class="th-e" aria-hidden="true">🌰</span><span class="th-t">Chestnut sweets are everywhere now</span></button>
+      <div class="talk">
+        <div class="msg them"><span class="msg-pg" aria-hidden="true">🐧</span><span class="msg-t">So… anything new lately?</span></div>
+      </div>
+      <div class="timer" aria-hidden="true"><i></i></div>
+    </div>
+    <div class="book">
+      <div class="book-head"><span class="book-emo" aria-hidden="true">📓</span><span class="book-title">My topic notebook</span><span class="book-cnt"><span class="bn">0</span> / 6</span></div>
+      <div class="book-empty">Empty… for now.</div>
+      <ul class="book-list">
+        <li class="bl"><span class="bl-e" aria-hidden="true">🍜</span><span class="bl-t">The new ramen shop looks good</span></li>
+        <li class="bl"><span class="bl-e" aria-hidden="true">🏢</span><span class="bl-t">What is that building behind the station?</span></li>
+        <li class="bl"><span class="bl-e" aria-hidden="true">☁️</span><span class="bl-t">That cloud looks like a penguin</span></li>
+        <li class="bl"><span class="bl-e" aria-hidden="true">☕</span><span class="bl-t">This coffee smells like chocolate</span></li>
+        <li class="bl"><span class="bl-e" aria-hidden="true">🐈</span><span class="bl-t">The same cat sits there every day</span></li>
+        <li class="bl"><span class="bl-e" aria-hidden="true">🌰</span><span class="bl-t">Chestnut sweets are everywhere now</span></li>
+      </ul>
+    </div>
+    <button class="gbtn go" type="button"><span class="t-start">▶ Start</span><span class="t-chat">💬 Chat time!</span><span class="t-again">↺ Again</span></button>
+    <div class="result">
+      <div class="r-play">Tap, tap! Write them down!</div>
+      <div class="r-caught">📓 Your notebook is ready. Now a friend comes!</div>
+      <div class="r-ok">💡 Topics popped up from your notebook! Words come out easily.</div>
+      <div class="r-ng">😶 "Um… nothing much…" Your head is empty.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💡</span>
+      <span class="card-label">They Come Back</span>
+    </div>
+    <p>When you write them down, they stay in a corner of your head.</p>
+    <p>Then they suddenly come up during a conversation.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎭</span>
+      <span class="card-label">Ad-Lib Secret</span>
+    </div>
+    <p class="big">This may be the secret of people who are good at ad-libs.</p>
+  </section>
+
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+  <a class="next" href="../ask-a-question-after-you-nod/index.html">
+    <div>
+      <div class="next-kicker">NEXT · 16 SEC</div>
+      <div class="next-title">Ask a question after you nod, and the talk keeps going</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../decide-one-question-before-you-meet/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">Decide one question before you meet, and you will not get nervous</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../call-people-by-their-name/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/call-people-by-their-name.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 18 SEC</span></div>
+            <div class="rel-title">Call people by their name, and you get closer</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../small-talk-by-learning-from-them/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/small-talk-by-learning-from-them.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 19 SEC</span></div>
+            <div class="rel-title">Decide to learn from people, and small talk becomes easy</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../play-by-play-in-your-head/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/play-by-play-in-your-head.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 21 SEC</span></div>
+            <div class="rel-title">Commentate in your head, and words come out easily</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../dogs-that-come-to-you-are-cute/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/dogs-that-come-to-you-are-cute.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 15 SEC</span></div>
+            <div class="rel-title">People who come over and talk to you first look cute</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../japanese-subway-smell/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/japanese-subway-smell.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 18 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">I like the smell while waiting on Japanese subway platforms</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* 💭 思ったことをつかまえろ！：JS は data-*・class・hidden・数字だけを変える */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var ths = [].slice.call(g.querySelectorAll('.th')), lis = [].slice.call(g.querySelectorAll('.bl'));
+  var go = g.querySelector('.go'), bar = g.querySelector('.timer i'), book = g.querySelector('.book'), bn = g.querySelector('.bn');
+  var SLOTS = [[4, 6], [36, 38], [5, 66], [35, 4], [3, 36], [37, 68]];
+  var GAP = 1600, LIFE = 2600, FIRST = 400;
+  var END = FIRST + (ths.length - 1) * GAP + LIFE + 300;
+  var timers = [], n = 0;
+  function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+  function clear() { timers.forEach(clearTimeout); timers = []; }
+  function set(s) { g.setAttribute('data-s', s); }
+  function count() { g.setAttribute('data-n', String(n)); bn.textContent = String(n); }
+  function bump(el) { el.classList.remove('boing'); void el.offsetWidth; el.classList.add('boing'); }
+  function hideLater(el) { later(function () { el.hidden = true; }, 520); }
+  function reset() {
+    clear(); n = 0; count();
+    ths.forEach(function (t) { t.hidden = true; t.classList.remove('got', 'gone'); });
+    lis.forEach(function (l) { l.classList.remove('got'); });
+  }
+  ths.forEach(function (t, i) {
+    t.addEventListener('click', function () {
+      if (g.getAttribute('data-s') !== 'play' || t.hidden || t.classList.contains('got') || t.classList.contains('gone')) return;
+      t.classList.add('got'); hideLater(t);
+      lis[i].classList.add('got'); n++; count(); bump(book);
+      var r = t.getBoundingClientRect();
+      if (window.pengessoPop) window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['✏️', '✨', t.querySelector('.th-e').textContent], 6);
+    });
+  });
+  function play() {
+    reset(); set('play');
+    bar.style.transition = 'none'; bar.style.width = '100%'; void bar.offsetWidth;
+    bar.style.transition = 'width ' + (END - 300) + 'ms linear'; bar.style.width = '0%';
+    ths.forEach(function (t, i) {
+      later(function () {
+        var s = SLOTS[i % SLOTS.length];
+        t.style.left = (s[0] + Math.random() * 4).toFixed(1) + '%';
+        t.style.top = (s[1] + Math.random() * 3).toFixed(1) + '%';
+        t.hidden = false;
+      }, FIRST + i * GAP);
+      later(function () {
+        if (t.classList.contains('got')) return;
+        t.classList.add('gone'); hideLater(t);
+      }, FIRST + i * GAP + LIFE);
+    });
+    later(function () { set('caught'); }, END);
+  }
+  go.addEventListener('click', function () {
+    var s = g.getAttribute('data-s');
+    bump(go);
+    if (s === 'idle' || s === 'talk') play();
+    else if (s === 'caught') {
+      set('talk');
+      if (n > 0 && window.pengessoPop) {
+        var r = book.getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + 20, ['💡', '💬', '🐧', '✨'], 8 + n * 2);
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・ノートふう）
+S3 → 使った（3枚目のカード）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード・.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label 4個 / h1 / ゲームの文字 ← 本人の素材の要約・演出（word数対象外）
+-->

@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>There are too many big rocks, so choose a few and let the rest go</title>
+<!-- ⬇️ OGP（tools/ogp.py） -->
+<meta name="description" content="There is a famous story: &quot;Put the big rocks in the jar first.&quot; It means, &quot;Do the important things first.&quot;" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
+<meta property="og:title" content="There are too many big rocks, so choose a few and let the rest go" />
+<meta property="og:description" content="There is a famous story: &quot;Put the big rocks in the jar first.&quot; It means, &quot;Do the important things first.&quot;" />
+<meta property="og:url" content="https://15-second-blog.com/works/too-many-big-rocks/" />
+<meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/too-many-big-rocks.jpg" />
+<meta property="og:image:alt" content="A chubby matte plastic model kit penguin holding one big smooth stone over a real terracotta clay pot that already has three stones in it" />
+<meta name="twitter:card" content="summary_large_image" />
+<!-- ⬆️ OGP -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 📚 バークマンのメモ・シリーズ（2026-10-05）。真面目な話 → ポップに（トーン反転） */
+  :root {
+    --bg: #f6faf5;
+    --card: rgba(255,255,255,.95);
+    --text: #2f2a3a;
+    --muted: #64806f;
+    --acc: #2a8a63;
+    --acc2: #f2a541;
+    --shadow: 0 20px 55px rgba(40,110,80,.16);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, rgba(242,165,65,.24), transparent 26%),
+      radial-gradient(circle at 92% 18%, rgba(79,178,134,.22), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(120,160,255,.12), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--acc);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(60,50,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,50,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,50,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--acc); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--acc); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: #173a2a; font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: #e2f3e8; border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,50,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--acc); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-weight: 700; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: #227a55;
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品（共通の枠）════
+     文字はぜんぶ HTML に置いて、JS は class・data-*・数字だけを変える（訳がそのまま効くように） */
+  .game { margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: linear-gradient(155deg, #4fb286 0%, #2a8a63 50%, #f2a541 100%); box-shadow: var(--shadow); overflow: hidden; position: relative; }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .game-hint { margin: 6px auto 0; max-width: 440px; font-size: 14.5px; font-weight: 800; opacity: .95; line-height: 1.45; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 52px; padding: 10px 18px; border: 0; border-radius: 999px;
+    cursor: pointer; font: inherit; font-size: 16px; font-weight: 900; line-height: 1.25; color: #2f2a3a; background: #fff;
+    box-shadow: 0 6px 0 rgba(0,0,0,.18); transition: transform .08s ease, box-shadow .08s ease, opacity .2s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .btn:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.18); }
+  .btn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .btn[disabled] { opacity: .45; cursor: default; }
+  .btn.ghost { background: rgba(255,255,255,.2); color: #fff; box-shadow: inset 0 0 0 2px rgba(255,255,255,.7); }
+  @keyframes shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+  @keyframes boing { 0% { transform: scale(1); } 35% { transform: scale(1.18); } 65% { transform: scale(.94); } 100% { transform: scale(1); } }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); line-height: 1.6; }
+  .credit-link { display: inline-block; margin-top: 4px; padding: 6px 4px; color: var(--acc); font-weight: 900; text-underline-offset: 3px; }
+
+  .next { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none; background: linear-gradient(135deg, var(--acc), var(--acc2)); color: #fff; box-shadow: var(--shadow); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding-left: 12px; padding-right: 12px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+
+  /* 🫙 びんに石を入れる */
+  .jar-wrap { position: relative; width: 170px; margin: 18px auto 0; padding-top: 18px; }
+  .lid { position: absolute; left: 22px; right: 22px; top: -40px; height: 22px; border-radius: 10px; background: #ffe066; box-shadow: 0 5px 0 #d4a900;
+    opacity: 0; transition: top .45s cubic-bezier(.3,1.4,.5,1), opacity .2s ease; }
+  .game[data-s="closed"] .lid { top: 4px; opacity: 1; }
+  .jar { display: flex; flex-direction: column-reverse; align-items: center; justify-content: flex-start; gap: 4px; height: 196px; padding: 12px 8px;
+    border-radius: 26px 26px 34px 34px; background: rgba(255,255,255,.28); box-shadow: inset 0 0 0 5px rgba(255,255,255,.9), 0 10px 22px rgba(0,0,0,.12); }
+  .game[data-o="1"] .jar { animation: shake .45s ease 2; box-shadow: inset 0 0 0 5px #ffe066, 0 10px 22px rgba(0,0,0,.12); }
+  .slot { display: grid; place-items: center; width: 108px; height: 52px; border-radius: 26px; font-size: 30px; line-height: 1;
+    background: transparent; transform: scale(.4); opacity: 0; transition: transform .35s cubic-bezier(.2,1.5,.4,1), opacity .2s ease; }
+  .slot.on { background: linear-gradient(160deg, #e9e4dc, #b8afa3); box-shadow: inset 0 -6px 0 rgba(0,0,0,.12); transform: none; opacity: 1; }
+  .jar-n { margin-top: 8px; font-size: 18px; font-weight: 900; }
+  .rocks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 400px; margin: 16px auto 0; }
+  .rock { min-height: 72px; padding: 8px 4px; border: 0; border-radius: 40% 46% 38% 44% / 50% 44% 52% 46%; cursor: pointer; font: inherit; color: #3b3328;
+    background: linear-gradient(160deg, #f1ece4, #c9c0b3); box-shadow: 0 6px 0 rgba(0,0,0,.18); display: flex; flex-direction: column; align-items: center; gap: 2px;
+    transition: transform .3s ease, opacity .4s ease, box-shadow .2s ease; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .rock:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.18); }
+  .re { font-size: 26px; line-height: 1; }
+  .rt { font-size: 14px; font-weight: 900; }
+  .rock.sel { background: linear-gradient(160deg, #fff6c9, #ffd65a); box-shadow: 0 0 0 4px #fff, 0 6px 0 rgba(0,0,0,.18); }
+  .game[data-s="closed"] .rock:not(.sel) { opacity: .45; transform: translateY(6px) rotate(-8deg); }
+  .msg { margin-top: 14px; min-height: 52px; font-size: 16px; font-weight: 900; line-height: 1.45; }
+  .msg .m { display: none; }
+  .game[data-o="0"][data-s="pick"][data-k="0"] .m0, .game[data-o="0"][data-s="pick"]:not([data-k="0"]) .m1,
+  .game[data-o="0"][data-s="full"] .m3, .game[data-o="1"] .mo, .game[data-s="closed"] .mc { display: block; }
+  .btns { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 12px; }
+  .game .b-lid, .game .b-again { display: none; }
+  .game[data-s="full"] .b-lid { display: inline-flex; background: #ffe066; color: #4a3500; }
+  .game[data-s="closed"] .b-again { display: inline-flex; }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: #93e2bd; }
+  html[data-theme="dark"] .photo { background: #2a2c38; }
+  html[data-theme="dark"] .game .btn:not(.ghost) { background: #2b2d3a; color: #f4f0fa; }
+  html[data-theme="dark"] .game .b-lid { background: #ffe066; color: #4a3500; }
+  html[data-theme="dark"] .rock { color: #3b3328; }
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"99863d16a0"},"ko":{"v":"f02f8ad7ac"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=4ec8701409"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <a class="home" href="../../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 63 words · 21 sec</div>
+      <div class="stage stage-public">PUBLIC</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 21 SEC</div>
+  <h1>There are too many big rocks, so choose a few and let the rest go <span class="float">🪨</span></h1>
+  <!-- 🏷 タグ（tools/tags.py） -->
+  <style id="post-tags-css">.post-tags{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 18px}.post-tags a{display:inline-flex;align-items:center;padding:6px 11px;border-radius:999px;background:#fff;border:1.5px solid rgba(35,44,72,.12);color:#3a3550;font-size:12.5px;font-weight:800;line-height:1.2;text-decoration:none;transition:transform .15s,border-color .15s}.post-tags a:hover{transform:translateY(-1px);border-color:#8b6de8}.post-tags a.place{background:#f3effc}html[data-theme="dark"] .post-tags a{background:#22242f;border-color:#33364a;color:#e6e2ff}html[data-theme="dark"] .post-tags a.place{background:#2a2540}@media (prefers-reduced-motion:reduce){.post-tags a{transition:none}}</style><nav class="post-tags" aria-label="Tags"><a href="../../index.html?tag=books#posts">📖 Books</a><a href="../../index.html?tag=productivity#posts">✅ Productivity</a><a href="../../index.html?tag=mindset#posts">💭 Mindset</a></nav>
+  <!-- /🏷 -->
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1200" height="900" src="img/cd8cac288046.jpg" alt="A chubby matte plastic model kit penguin holding one big smooth stone over a real terracotta clay pot that already has three stones in it" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🫙</span>
+      <span class="card-label">The Jar Story</span>
+    </div>
+    <p>There is a famous story: "Put the big rocks in the jar first." It means, "Do the important things first."</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🪨</span>
+      <span class="card-label">Too Many Rocks</span>
+    </div>
+    <p>But really, there are too many big rocks to fit.</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：びんに石を入れる（3つしか入らない） -->
+  <section class="game" data-s="pick" data-k="0" data-o="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Fill your jar</div>
+    <div class="game-hint">All 6 rocks are important. Tap them to put them in the jar.</div>
+    <div class="jar-wrap">
+      <div class="lid" aria-hidden="true"></div>
+      <div class="jar">
+        <span class="slot"></span><span class="slot"></span><span class="slot"></span>
+      </div>
+      <div class="jar-n"><b class="kn">0</b><span class="of">/3</span></div>
+    </div>
+    <div class="rocks">
+      <button class="rock" type="button" data-e="📚"><span class="re">📚</span><span class="rt">Study</span></button>
+      <button class="rock" type="button" data-e="👟"><span class="re">👟</span><span class="rt">Health</span></button>
+      <button class="rock" type="button" data-e="🧡"><span class="re">🧡</span><span class="rt">Friends</span></button>
+      <button class="rock" type="button" data-e="✈️"><span class="re">✈️</span><span class="rt">Travel</span></button>
+      <button class="rock" type="button" data-e="🏠"><span class="re">🏠</span><span class="rt">Family</span></button>
+      <button class="rock" type="button" data-e="🎨"><span class="re">🎨</span><span class="rt">Hobby</span></button>
+    </div>
+    <div class="msg">
+      <div class="m m0">Tap the big rocks to put them in the jar.</div>
+      <div class="m m1">Good. Is there room for more?</div>
+      <div class="m m3">The jar is full. Close the lid?</div>
+      <div class="m mo">🫙💦 It does not fit! Impossible things are impossible. (Hint: it is in the name.)</div>
+      <div class="m mc">You chose 3. The others are still important… just not today. That is the rule. 🐧</div>
+    </div>
+    <div class="btns">
+      <button class="btn b-lid" type="button">🔒 Close the lid</button>
+      <button class="btn ghost b-again" type="button">↺ Try again</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">✂️</span>
+      <span class="card-label">Choose Some</span>
+    </div>
+    <p>So choose the most important ones, and be ready to leave the other important ones.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😂</span>
+      <span class="card-label">Best Trick</span>
+    </div>
+    <p class="big">Burkeman calls this his best trick: "Impossible things cannot actually be done. (Hint: it is in the name.)"</p>
+  </section>
+
+  <div class="credit">📚 I learned this from Oliver Burkeman's newsletter. <a class="credit-link" href="https://www.oliverburkeman.com/river" target="_blank" rel="noopener">Read the original (English)</a></div>
+
+  <a class="next" href="../dailyish/index.html">
+    <div>
+      <div class="next-kicker">NEXT · 18 SEC</div>
+      <div class="next-title">Doing it dailyish lasts longer than doing it every day</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../your-reading-pile-is-a-river/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">Your reading pile is not a bucket to empty, it is a river</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../no-magic-technique/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/no-magic-technique.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 21 SEC</span></div>
+            <div class="rel-title">There is no magic technique, so look at what you made</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../done-early-dont-rush/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/done-early-dont-rush.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 21 SEC</span></div>
+            <div class="rel-title">When you finish early, do not jump to the next task</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../time-is-not-your-enemy/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/time-is-not-your-enemy.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 21 SEC</span></div>
+            <div class="rel-title">The real point of Pomodoro is to stop fighting time</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../the-entry-fee/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/the-entry-fee.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 16 SEC</span></div>
+            <div class="rel-title">A little tension or boredom is the entry fee for important things</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../kfry-cheese-chicken-and-good-food-countries/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/kfry-cheese-chicken-and-good-food-countries.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 76 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">Cheese chicken at K Fry, and a hint that a country's food is good</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* ⚡ びんに石を入れる（3つしか入らない）：JS は class・data-*・数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var slots = [].slice.call(g.querySelectorAll('.slot')), rocks = [].slice.call(g.querySelectorAll('.rock')), kn = g.querySelector('.kn');
+  var chosen = [], ot = 0;
+  function draw() {
+    slots.forEach(function (s, i) { s.textContent = chosen[i] ? chosen[i].getAttribute('data-e') : ''; s.classList.toggle('on', !!chosen[i]); });
+    rocks.forEach(function (r) { r.classList.toggle('sel', chosen.indexOf(r) >= 0); });
+    kn.textContent = chosen.length;
+    g.setAttribute('data-k', String(chosen.length));
+    if (g.getAttribute('data-s') !== 'closed') g.setAttribute('data-s', chosen.length >= 3 ? 'full' : 'pick');
+  }
+  rocks.forEach(function (r) {
+    r.addEventListener('click', function () {
+      if (g.getAttribute('data-s') === 'closed') return;
+      var i = chosen.indexOf(r);
+      if (i >= 0) { chosen.splice(i, 1); g.setAttribute('data-o', '0'); draw(); return; }
+      if (chosen.length >= 3) {
+        g.setAttribute('data-o', '1'); clearTimeout(ot);
+        ot = setTimeout(function () { g.setAttribute('data-o', '0'); }, 3200);
+        if (navigator.vibrate) { try { navigator.vibrate([20, 40, 20]); } catch (e) {} }
+        return;
+      }
+      chosen.push(r); g.setAttribute('data-o', '0'); draw();
+    });
+  });
+  g.querySelector('.b-lid').addEventListener('click', function () {
+    clearTimeout(ot); g.setAttribute('data-o', '0'); g.setAttribute('data-s', 'closed');
+    var j = g.querySelector('.jar').getBoundingClientRect();
+    if (window.pengessoPop) window.pengessoPop(j.left + j.width / 2, j.top + 20, ['🪨', '✨', '🐧'], 16);
+  });
+  g.querySelector('.b-again').addEventListener('click', function () {
+    chosen = []; g.setAttribute('data-s', 'pick'); g.setAttribute('data-o', '0'); draw();
+  });
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（1枚目のカード）
+S3 → 使った（2枚目のカード）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード・.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label 4個 / h1 / 遊べる部品の文字 ← 本人の素材の要約・演出（word数対象外）
+-->
