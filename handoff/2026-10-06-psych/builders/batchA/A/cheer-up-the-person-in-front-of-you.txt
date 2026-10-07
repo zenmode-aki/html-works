@@ -1,0 +1,205 @@
+@@meta
+{"title": "Cheer up the person in front of you instead of trying to be liked", "label": "Cheer Them Up", "seq": 291, "mood": ["lift", "energy"], "tags": ["psychology", "friends", "mindset"], "thumbAlt": "A chubby mohair penguin holding out a small fully charged battery to cheer someone up"}
+@@ja_title
+「好かれよう」より「目の前の人を元気にしよう」
+@@ja_label
+元気にする
+@@h1emoji
+🔋
+@@section
+1-0「全部の土台：『好かれよう』より『目の前の人を元気にしよう』」
+@@vars
+    --bg: #f1f8ff; --text: #14243a; --muted: #5f7189;
+    --accent: #0a66f0; --accent2: #00b8f0; --h1: #0b2a55; --big: #0a58d6; --big-dark: #9ccaff;
+    --glow1: rgba(0,198,255,.22); --glow2: rgba(10,108,255,.16); --glow3: rgba(198,255,74,.26);
+    --shadow: 0 20px 55px rgba(20,80,180,.18); --photo-bg: #dcecff;
+    --g1: #00a8f0; --g2: #0a78ff; --g3: #3a50f0; --pop: #c6ff4a; --pop-text: #1d3a00; --btn-text: #0a66f0;
+@@css
+  /* 🔋 元気をうばうクセをパチン：6つの泡をつぶすと、友だちの電池がたまる */
+  .friend { display: flex; align-items: center; gap: 12px; max-width: 430px; margin: 16px auto 0; padding: 12px 14px; border-radius: 22px;
+    background: #fff; color: #14243a; box-shadow: 0 10px 24px rgba(0,30,90,.22); }
+  .fr-face { position: relative; flex: 0 0 64px; width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%; background: #e3efff; font-size: 38px; line-height: 1; }
+  .fr-badge { position: absolute; right: -6px; bottom: -4px; font-size: 26px; line-height: 1; }
+  .fr-badge.boing { animation: bounce-in .4s both; }
+  .game[data-stage="3"] .fr-face { animation: hop .5s ease 3; }
+  .fr-main { flex: 1; min-width: 0; text-align: left; }
+  .fr-say { font-size: 15.5px; font-weight: 900; line-height: 1.35; min-height: 22px; }
+  .fr-say span { display: none; }
+  .game[data-stage="0"] .fs0, .game[data-stage="1"] .fs1, .game[data-stage="2"] .fs2, .game[data-stage="3"] .fs3 { display: inline; }
+  .bat-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .bat { position: relative; flex: 1; display: flex; gap: 3px; height: 26px; padding: 3px; border: 3px solid #14243a; border-radius: 8px; }
+  .bat::after { content: ""; position: absolute; right: -9px; top: 50%; width: 5px; height: 10px; transform: translateY(-50%); border-radius: 0 3px 3px 0; background: #14243a; }
+  .bat i { flex: 1; border-radius: 3px; background: #e7edf5; transition: background .25s ease; }
+  .bat i.on { background: linear-gradient(180deg, #b6ff3a, #3fd35f); animation: bounce-in .3s both; }
+  .game[data-stage="0"] .bat i:first-child { background: #ff6b6b; }
+  .pct { flex: 0 0 auto; min-width: 48px; font-size: 18px; font-weight: 900; text-align: right; }
+
+  .bubbles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 10px; max-width: 430px; margin: 16px auto 0; }
+  .bub { position: relative; min-height: 76px; padding: 10px 10px; border: 0; border-radius: 999px; cursor: pointer; font: inherit; color: #0b2a55;
+    display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 15px; font-weight: 900; line-height: 1.25;
+    background: radial-gradient(circle at 30% 25%, #ffffff 0 18%, rgba(255,255,255,.92) 40%, rgba(214,236,255,.92) 100%);
+    box-shadow: inset 0 -6px 12px rgba(10,90,200,.18), 0 6px 14px rgba(0,20,80,.22);
+    animation: bob 2.6s ease-in-out infinite alternate; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .bub:nth-child(2) { animation-duration: 3.1s; animation-delay: -.6s; } .bub:nth-child(3) { animation-duration: 2.8s; animation-delay: -1.1s; }
+  .bub:nth-child(4) { animation-duration: 3.3s; animation-delay: -.3s; } .bub:nth-child(5) { animation-duration: 2.5s; animation-delay: -1.4s; }
+  .bub:nth-child(6) { animation-duration: 3s; animation-delay: -.9s; }
+  @keyframes bob { from { transform: translateY(0) rotate(-2deg); } to { transform: translateY(-6px) rotate(2deg); } }
+  .bub:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .bu-e { font-size: 24px; line-height: 1; flex: 0 0 auto; }
+  .bu-t { min-width: 0; }
+  .boom { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0); font-size: 40px; line-height: 1; opacity: 0; pointer-events: none; }
+  .bub.gone { animation: none; background: transparent; box-shadow: inset 0 0 0 3px rgba(255,255,255,.35); cursor: default; }
+  .bub.gone .bu-e, .bub.gone .bu-t { opacity: 0; transform: scale(1.6); transition: opacity .25s ease, transform .25s ease; }
+  .bub.gone .boom { animation: boom .6s ease-out forwards; }
+  @keyframes boom { 0% { opacity: 1; transform: translate(-50%, -50%) scale(.3); } 40% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1.6); } }
+  .bub.gone::after { content: "✨"; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 24px; line-height: 1; }
+
+  .done { display: none; max-width: 430px; margin: 14px auto 0; padding: 12px 14px; border-radius: 18px; background: var(--pop); color: #1d3a00; font-size: 16.5px; font-weight: 900; line-height: 1.4; }
+  .game[data-stage="3"] .done { display: block; animation: bounce-in .5s both; }
+@@dark
+  html[data-theme="dark"] .friend { background: #1f2a3a; color: #e6f0ff; }
+  html[data-theme="dark"] .fr-face { background: #2a3a52; }
+  html[data-theme="dark"] .bat { border-color: #e6f0ff; }
+  html[data-theme="dark"] .bat::after { background: #e6f0ff; }
+  html[data-theme="dark"] .bat i { background: #33425a; }
+  html[data-theme="dark"] .bub { color: #0b2a55; }
+@@sents
+S1 | When you think, "I want them to like me," somehow it does not go well. | 「好かれよう」と思うと、なぜか空回りしてしまいます。
+S2 | Instead, try thinking, "I will cheer up the person in front of me." | 代わりに、「目の前の人を元気にしよう」と思ってみます。
+S3 | Just by thinking this, bad habits like bragging, bad-mouthing, and cutting in go away naturally. | そう思うだけで、自慢や悪口、話をさえぎるクセは、自然と消えていきます。
+S4 | People like people who cheer them up. | 人は、自分を元気にしてくれる人を好きになります。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌀</span>
+      <span class="card-label">Trying Too Hard</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔋</span>
+      <span class="card-label">Change The Goal</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🫧</span>
+      <span class="card-label">Habits Disappear</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：元気をうばうクセをパチン（泡をつぶすと友だちの電池がたまる） -->
+  <section class="game" data-e="0" data-stage="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Pop the energy stealers</div>
+    <div class="game-hint">These habits steal your friend's energy. Tap to pop them!</div>
+    <div class="friend">
+      <div class="fr-face" aria-hidden="true">🐧<span class="fr-badge">😔</span></div>
+      <div class="fr-main">
+        <div class="fr-say">
+          <span class="fs0">"Sigh… I'm so tired."</span>
+          <span class="fs1">"Hmm, this is OK."</span>
+          <span class="fs2">"Hehe, this is fun!"</span>
+          <span class="fs3">"I feel great! Let's talk again!"</span>
+        </div>
+        <div class="bat-row">
+          <div class="bat" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="pct">0%</span>
+        </div>
+      </div>
+    </div>
+    <div class="bubbles">
+      <button class="bub" type="button"><span class="bu-e" aria-hidden="true">🏔</span><span class="bu-t">One-upping</span><span class="boom" aria-hidden="true">💥</span></button>
+      <button class="bub" type="button"><span class="bu-e" aria-hidden="true">✋</span><span class="bu-t">Cutting in</span><span class="boom" aria-hidden="true">💥</span></button>
+      <button class="bub" type="button"><span class="bu-e" aria-hidden="true">👎</span><span class="bu-t">"No, you're wrong!"</span><span class="boom" aria-hidden="true">💥</span></button>
+      <button class="bub" type="button"><span class="bu-e" aria-hidden="true">🐍</span><span class="bu-t">Bad-mouthing</span><span class="boom" aria-hidden="true">💥</span></button>
+      <button class="bub" type="button"><span class="bu-e" aria-hidden="true">🎤</span><span class="bu-t">Only my stories</span><span class="boom" aria-hidden="true">💥</span></button>
+      <button class="bub" type="button"><span class="bu-e" aria-hidden="true">🙉</span><span class="bu-t">No nodding</span><span class="boom" aria-hidden="true">💥</span></button>
+    </div>
+    <div class="done">⚡ Full power! Your friend feels great, and they like you more. 💛</div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Bring them back</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💛</span>
+      <span class="card-label">Liked Naturally</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Trying Too Hard ||| 空回り
+Change The Goal ||| 目標を変える
+Habits Disappear ||| クセが消える
+Liked Naturally ||| 自然と好かれる
+⚡ TRY IT ||| ⚡ やってみよう
+Pop the energy stealers ||| 元気どろぼうをパチン
+These habits steal your friend's energy. Tap to pop them! ||| このクセたちが、友だちの元気をうばっています。タップしてつぶそう！
+"Sigh… I'm so tired." ||| 「はぁ…つかれた。」
+"Hmm, this is OK." ||| 「うん、まあまあかな。」
+"Hehe, this is fun!" ||| 「ふふ、楽しいね！」
+"I feel great! Let's talk again!" ||| 「元気出た！また話そうね！」
+One-upping ||| マウントをとる
+Cutting in ||| 話をさえぎる
+"No, you're wrong!" ||| 「いや、それは違う！」
+Bad-mouthing ||| 悪口
+Only my stories ||| 自分の話ばかり
+No nodding ||| あいづちなし
+⚡ Full power! Your friend feels great, and they like you more. 💛 ||| ⚡ 満タン！友だちは元気いっぱい。そして、あなたのことをもっと好きになった。💛
+↺ Bring them back ||| ↺ 泡をもどす
+@@js
+/* 🔋 元気どろぼうをパチン：JS は data-* / class / disabled / 絵文字 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var bubs = [].slice.call(g.querySelectorAll('.bub'));
+  var segs = [].slice.call(g.querySelectorAll('.bat i'));
+  var face = g.querySelector('.fr-badge'), pct = g.querySelector('.pct');
+  var FACE = ['😔', '😐', '🙂', '🙂', '😊', '😄', '🤩'];
+  var n = 0;
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function draw() {
+    segs.forEach(function (s, i) { s.classList.toggle('on', i < n); });
+    face.textContent = FACE[n];
+    pct.textContent = Math.round(n / bubs.length * 100) + '%';
+    g.setAttribute('data-e', String(n));
+    g.setAttribute('data-stage', n === 0 ? '0' : n < 4 ? '1' : n < bubs.length ? '2' : '3');
+  }
+  bubs.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.classList.contains('gone')) return;
+      b.classList.add('gone'); b.disabled = true;
+      n++; draw(); restart(face, 'boing');
+      if (navigator.vibrate) { try { navigator.vibrate(12); } catch (e) {} }
+      if (n === bubs.length && window.pengessoPop) {
+        var r = g.querySelector('.fr-face').getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['⚡', '🔋', '🐧', '💛', '✨'], 22);
+      }
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    bubs.forEach(function (b) { b.classList.remove('gone'); b.disabled = false; });
+    n = 0; draw();
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+「好かれよう」より「目の前の人を元気にしよう」と思うと、うまくいく。
+@@tone
+素材の重さ：真面目（人間関係の土台）
+→ 見せ方：ポップに（青と黄緑。泡をつぶすゲーム）
+@@game_ja
+🔋 元気どろぼうをパチン：友だちペンギンの元気（電池）が0%。ゆらゆら浮かぶ6つの泡（マウントをとる・話をさえぎる・「いや、それは違う！」・悪口・自分の話ばかり・あいづちなし）をタップすると💥とつぶれて、電池が1つずつたまる。友だちの顔 😔→🤩、セリフも「はぁ…つかれた。」→「元気出た！また話そうね！」に変わる。6つぜんぶで満タン＋紙吹雪。「泡をもどす」でやり直し。
+@@combo
+ペンギン × 起毛したモヘア × 満タンの電池
+@@cover
+An extremely cute, chubby round penguin made of brushed mohair, with a gentle cheerful face and a plain white belly, holding out one realistic fully charged battery with a softly glowing green light as a friendly gift. Bright simple sky blue and fresh lime green background with soft depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

@@ -1,0 +1,1 @@
+setTimeout(function(){ for (var i=0;i<12;i++) __tap('.place', i%3); __tap('.fruit',0); __tap('.fruit',1); __tap('.fruit',2); __tap('.fruit',2); __log('done', __st()); __log('pops', window.__pops); __tap('.reset'); __log('reset', __st()); }, 300);

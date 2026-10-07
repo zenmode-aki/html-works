@@ -1,0 +1,229 @@
+@@meta
+{"title": "Getting bored easily means you are trying things on", "label": "Trying On", "seq": 494, "mood": ["lift", "laugh"], "tags": ["psychology", "mindset", "feelings"], "thumbAlt": "A plush corduroy and felt penguin peeking out from a fitting room curtain, holding a small ukulele"}
+@@ja_title
+飽きっぽいのは、試着中だから
+@@ja_label
+試着中
+@@h1emoji
+👗
+@@section
+125「飽きっぽい人は試着中」
+@@vars
+    --bg: #fff6fb; --text: #3a2433; --muted: #876a7c;
+    --accent: #e0428f; --accent2: #7b5cff; --h1: #4a1734; --big: #c2307a; --big-dark: #ffa3cf;
+    --glow1: rgba(255,120,190,.3); --glow2: rgba(130,100,255,.2); --glow3: rgba(255,200,90,.2);
+    --shadow: 0 20px 55px rgba(160,40,110,.18); --photo-bg: #ffe3f1;
+    --g1: #ff5fa8; --g2: #b25cff; --g3: #6a6cff; --pop: #ffd84d; --pop-text: #3b2b00; --btn-text: #c2307a;
+@@css
+  /* 👗 試着室：次々に試していい。ぴったりは、試した先にある */
+  .traits { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .traits span { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 999px; background: #ffe6f2; color: #8f1f5b;
+    font-weight: 900; font-size: 15px; }
+
+  .fit { position: relative; max-width: 360px; margin: 16px auto 0; padding: 14px 14px 12px; border-radius: 26px; background: #fff; color: #3a2433;
+    box-shadow: 0 10px 24px rgba(80,0,60,.2); }
+  .rod { height: 8px; margin: 0 6px; border-radius: 999px; background: #c9a227; }
+  .booth { position: relative; height: 170px; margin-top: 2px; border-radius: 0 0 18px 18px; overflow: hidden;
+    background: linear-gradient(180deg, #fff1f8, #ffe0ef); }
+  .model { position: absolute; inset: 0; display: grid; place-items: center; }
+  .model-in { position: relative; display: grid; place-items: center; }
+  .pg { font-size: 84px; line-height: 1; }
+  .prop { position: absolute; right: -34px; bottom: 6px; font-size: 44px; line-height: 1; }
+  .sparkle-box { position: absolute; left: -30px; top: -6px; font-size: 30px; line-height: 1; opacity: 0; transform: scale(.4); transition: opacity .25s ease, transform .35s cubic-bezier(.2,1.5,.4,1); }
+  .game[data-fit="3"] .sparkle-box { opacity: 1; transform: none; }
+  .curtain { position: absolute; top: 0; bottom: 0; width: 52%; transition: transform .32s ease;
+    background: repeating-linear-gradient(90deg, #e0428f 0 16px, #c8327c 16px 22px); }
+  .curtain.l { left: 0; transform: translateX(-88%); border-radius: 0 0 0 18px; }
+  .curtain.r { right: 0; transform: translateX(88%); border-radius: 0 0 18px 0; }
+  .game[data-c="1"] .curtain.l, .game[data-c="1"] .curtain.r { transform: none; }
+
+  .hname { min-height: 34px; margin-top: 10px; font-size: 20px; font-weight: 900; text-align: center; }
+  .hname > span { display: none; }
+  .game[data-h="0"] .hn0, .game[data-h="1"] .hn1, .game[data-h="2"] .hn2, .game[data-h="3"] .hn3,
+  .game[data-h="4"] .hn4, .game[data-h="5"] .hn5, .game[data-h="6"] .hn6, .game[data-h="7"] .hn7,
+  .game[data-h="-1"] .hn-q { display: inline; }
+  .stars { display: flex; justify-content: center; gap: 6px; height: 34px; font-size: 26px; line-height: 1; }
+  .stars .s { filter: grayscale(1); opacity: .3; transition: opacity .2s ease, transform .3s cubic-bezier(.2,1.5,.4,1); }
+  .game[data-fit="1"] .s1, .game[data-fit="2"] .s1, .game[data-fit="2"] .s2,
+  .game[data-fit="3"] .s1, .game[data-fit="3"] .s2, .game[data-fit="3"] .s3 { filter: none; opacity: 1; transform: scale(1.12); }
+
+  .rack { display: flex; justify-content: center; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
+  .hook { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 12px; background: rgba(255,255,255,.2); font-size: 20px; }
+  .hook .he { opacity: 0; transform: scale(.4); transition: opacity .2s ease, transform .3s ease; }
+  .hook[data-on="1"] { background: rgba(255,255,255,.9); }
+  .hook[data-on="1"] .he { opacity: 1; transform: none; }
+  .tried { margin-top: 8px; font-size: 14.5px; font-weight: 900; }
+
+  .trybtn { width: min(320px, 100%); min-height: 64px; margin-top: 14px; font-size: 19px; }
+  .trybtn > span { display: none; }
+  .game:not([data-fit="3"]) .tb-next, .game[data-fit="3"] .tb-again { display: inline; }
+
+  .result { margin-top: 12px; min-height: 76px; }
+  .result > div { display: none; font-size: 16px; font-weight: 900; line-height: 1.45; }
+  .game[data-fit="0"] .r-hint, .game[data-fit="1"] .r-1, .game[data-fit="2"] .r-2, .game[data-fit="3"] .r-3 { display: block; }
+  .game[data-fit="3"] .r-3 { animation: bounce-in .45s both; }
+  .r-3 .sub { display: block; margin-top: 4px; font-size: 14.5px; opacity: .95; }
+@@dark
+  html[data-theme="dark"] .traits span { background: #45213a; color: #ffc4e1; }
+  html[data-theme="dark"] .fit { background: #22242f; color: #f6eaf1; }
+  html[data-theme="dark"] .booth { background: linear-gradient(180deg, #3a2635, #2c2030); }
+@@sents
+S1 | Getting bored easily is not only a bad thing. | 飽きっぽいのは、悪いことばかりではありません。
+S2 | It seems such people are very curious, change quickly, and have high goals. | 好奇心が強くて、切り替えが早くて、理想が高い人なのだそうです。
+S3 | In other words, you are in a fitting room, trying on one thing after another to find your perfect fit. | つまり、自分にぴったりのものを探して、次々に試着しているところです。
+S4 | You do not have to keep wearing clothes that do not fit you. | 似合わない服を、無理に着続けなくていいのです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🥱</span>
+      <span class="card-label">Easily Bored</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔍</span>
+      <span class="card-label">Hidden Strengths</span>
+    </div>
+    <p>{S2}</p>
+    <div class="traits" aria-hidden="true">
+      <span>🔍 curious</span><span>⚡ quick to change</span><span>🌟 high goals</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">👗</span>
+      <span class="card-label">Fitting Room</span>
+    </div>
+    <p class="big">{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：趣味の試着室 -->
+  <section class="game" data-h="-1" data-fit="0" data-c="1" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The hobby fitting room</div>
+    <div class="game-hint">Try on hobbies. Switching fast is OK!</div>
+    <div class="fit">
+      <div class="rod" aria-hidden="true"></div>
+      <div class="booth" aria-hidden="true">
+        <div class="model"><div class="model-in"><span class="sparkle-box">✨</span><span class="pg">🐧</span><span class="prop">❔</span></div></div>
+        <div class="curtain l"></div><div class="curtain r"></div>
+      </div>
+      <div class="hname">
+        <span class="hn-q">Who knows what is inside?</span>
+        <span class="hn0">🎸 Guitar</span><span class="hn1">🎨 Painting</span><span class="hn2">🧶 Knitting</span><span class="hn3">📷 Photos</span>
+        <span class="hn4">🏸 Badminton</span><span class="hn5">🍳 Cooking</span><span class="hn6">♟️ Chess</span><span class="hn7">🌱 Gardening</span>
+      </div>
+      <div class="stars" aria-hidden="true"><span class="s s1">⭐</span><span class="s s2">⭐</span><span class="s s3">⭐</span></div>
+    </div>
+    <div class="rack" aria-hidden="true">
+      <span class="hook"><span class="he">🎸</span></span><span class="hook"><span class="he">🎨</span></span><span class="hook"><span class="he">🧶</span></span><span class="hook"><span class="he">📷</span></span>
+      <span class="hook"><span class="he">🏸</span></span><span class="hook"><span class="he">🍳</span></span><span class="hook"><span class="he">♟️</span></span><span class="hook"><span class="he">🌱</span></span>
+    </div>
+    <div class="tried"><span class="tl">👚 Tried on:</span> <span class="tn">0</span></div>
+    <button class="gbtn pop trybtn" type="button"><span class="tb-next">👗 Try the next one</span><span class="tb-again">↺ Start again</span></button>
+    <div class="result">
+      <div class="r-hint">Tap the button to open the curtain.</div>
+      <div class="r-1">🙂 Hmm, not quite. Next!</div>
+      <div class="r-2">😊 Close! But let's see one more.</div>
+      <div class="r-3">✨ It fits! This might be the one.<span class="sub">You were not giving up. You were searching.</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">👕</span>
+      <span class="card-label">No Need</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+@@ui
+Easily Bored ||| 飽きっぽい
+Hidden Strengths ||| かくれた長所
+Fitting Room ||| 試着室
+No Need ||| 無理しない
+🔍 curious ||| 🔍 好奇心が強い
+⚡ quick to change ||| ⚡ 切り替えが早い
+🌟 high goals ||| 🌟 理想が高い
+⚡ TRY IT ||| ⚡ やってみよう
+The hobby fitting room ||| 趣味の試着室
+Try on hobbies. Switching fast is OK! ||| 趣味を試着してみよう。すぐ着替えてもOK！
+Who knows what is inside? ||| 中には何があるかな？
+🎸 Guitar ||| 🎸 ギター
+🎨 Painting ||| 🎨 絵をかく
+🧶 Knitting ||| 🧶 あみもの
+📷 Photos ||| 📷 写真
+🏸 Badminton ||| 🏸 バドミントン
+🍳 Cooking ||| 🍳 料理
+♟️ Chess ||| ♟️ チェス
+🌱 Gardening ||| 🌱 家庭菜園
+👚 Tried on: ||| 👚 試着した数：
+👗 Try the next one ||| 👗 次のを着てみる
+↺ Start again ||| ↺ もう一回
+Tap the button to open the curtain. ||| ボタンを押して、カーテンを開けよう。
+🙂 Hmm, not quite. Next! ||| 🙂 うーん、ちょっと違う。次！
+😊 Close! But let's see one more. ||| 😊 おしい！もう1着見てみよう。
+✨ It fits! This might be the one. ||| ✨ ぴったり！これかもしれない。
+You were not giving up. You were searching. ||| あきらめていたんじゃない。探していたんです。
+@@js
+/* 👗 趣味の試着室：押すたびにカーテンが閉じて開き、次の趣味に着替える。3〜6着目で「ぴったり」。JS は data-* と数字と絵文字だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var btn = g.querySelector('.trybtn'), prop = g.querySelector('.prop'), tn = g.querySelector('.tn');
+  var hooks = [].slice.call(g.querySelectorAll('.hook'));
+  var PROPS = ['🎸', '🎨', '🧶', '📷', '🏸', '🍳', '♟️', '🌱'];
+  var order = [], tries = 0, goal = 0, busy = false;
+  function shuffle() {
+    order = [0, 1, 2, 3, 4, 5, 6, 7];
+    for (var i = order.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = order[i]; order[i] = order[j]; order[j] = t; }
+    goal = 3 + Math.floor(Math.random() * 4);   /* 3〜6着目でぴったり */
+  }
+  function reset() {
+    tries = 0; shuffle(); tn.textContent = 0; prop.textContent = '❔';
+    hooks.forEach(function (h) { h.removeAttribute('data-on'); });
+    g.setAttribute('data-h', '-1'); g.setAttribute('data-fit', '0'); g.setAttribute('data-c', '1');
+  }
+  reset();
+  btn.addEventListener('click', function () {
+    if (busy) return;
+    if (g.getAttribute('data-fit') === '3') { reset(); return; }
+    busy = true;
+    g.setAttribute('data-c', '1');
+    setTimeout(function () {
+      var h = order[tries % 8]; tries++;
+      var fit = tries >= goal ? 3 : (Math.random() < 0.5 ? 1 : 2);
+      prop.textContent = PROPS[h];
+      hooks[h].setAttribute('data-on', '1');
+      tn.textContent = tries;
+      g.setAttribute('data-h', h);
+      g.setAttribute('data-fit', fit);
+      g.setAttribute('data-c', '0');
+      busy = false;
+      if (fit === 3) {
+        if (window.pengessoPop) {
+          var k = prop.getBoundingClientRect();
+          window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['✨', '⭐', PROPS[h], '🐧'], 16);
+        }
+        if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+      }
+    }, 340);
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・.big）
+S4 → 使った（4枚目のカード）
+@@message
+飽きっぽいのは、自分にぴったりを探して試着しているところ。
+@@tone
+素材の重さ：ふつう（自分の欠点だと思っていること）
+→ 見せ方：ポップに（ピンクと紫の試着室。カーテンをシャッと開けて、趣味を次々に着替えて遊べる）
+@@game_ja
+👗 趣味の試着室：「👗 次のを着てみる」を押すと、カーテンがシャッと閉まって開き、ペンギンが次の趣味（ギター・絵・あみもの・写真・バドミントン・料理・チェス・家庭菜園）を持って出てくる。似合い度は星1〜2で「ちょっと違う。次！」「おしい！」。3〜6着目のどれかで星3つ「✨ ぴったり！」になり、「あきらめていたんじゃない。探していたんです。」。試したものはハンガーラックに並び、試着した数が数えられる。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of plush toy corduroy and felt, happily peeking out from behind a soft pink fitting room curtain, holding one realistic small wooden ukulele. A simple bright pink-to-lavender background with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × コーデュロイとフェルト × 試着室のカーテンとウクレレ

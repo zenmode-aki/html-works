@@ -1,0 +1,203 @@
+@@meta
+{"title": "Imagine the worst in detail, and the brain says \"Only this much\"", "label": "Worst In Detail", "seq": 455, "mood": ["lift", "think"], "tags": ["psychology", "feelings", "mindset"], "thumbAlt": "A chubby layered cut paper penguin shining a small realistic yellow flashlight at a soft gray cloud"}
+@@ja_title
+最悪をくわしく想像すると、脳は「この程度か」と安心する
+@@ja_label
+最悪をくわしく
+@@h1emoji
+🔦
+@@section
+66「最悪の事態を具体的に想像する」
+@@vars
+    --bg: #f2f6ff; --text: #222b45; --muted: #66708f;
+    --accent: #3b5bdb; --accent2: #15aabf; --h1: #1b2559; --big: #3b5bdb; --big-dark: #a5b8ff;
+    --glow1: rgba(76,110,245,.20); --glow2: rgba(21,170,191,.18); --glow3: rgba(255,224,102,.20);
+    --shadow: 0 20px 55px rgba(60,80,170,.18); --photo-bg: #dde6ff;
+    --g1: #5c6b8a; --g2: #4c6ef5; --g3: #22b8cf; --pop: #ffe066; --pop-text: #4a3a00; --btn-text: #364fc7;
+@@css
+  /* ☁️ ぼんやり＝大きい / 🔍 くっきり＝小さい（1枚目のカード） */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 14px 10px; border-radius: 20px; text-align: center; font-weight: 900; font-size: 15.5px; line-height: 1.35; }
+  .vs .fogv { background: #e9ecf3; color: #59627a; }
+  .vs .clearv { background: #fff3bf; color: #5c4400; }
+  .vs .e { display: block; font-size: 30px; margin-bottom: 4px; }
+
+  /* ☁️ もやもやおばけ：質問を押すたびに、霧が晴れて小さく・くっきりになる */
+  .fogstage { display: grid; place-items: center; min-height: 190px; margin: 16px auto 8px; max-width: 380px; border-radius: 24px;
+    background: rgba(40,48,70,.35); transition: background-color .7s ease; padding: 14px 8px; }
+  .game[data-n="1"] .fogstage { background: rgba(60,80,130,.28); }
+  .game[data-n="2"] .fogstage { background: rgba(120,170,230,.32); }
+  .game[data-n="3"] .fogstage { background: rgba(190,235,255,.45); }
+  .fog { position: relative; width: 260px; max-width: 100%; padding: 26px 18px 22px; border-radius: 46% 54% 42% 58% / 58% 48% 52% 42%;
+    background: #8a93a8; color: #1f2433; box-shadow: 0 0 28px 12px rgba(138,147,168,.85);
+    transition: width .6s cubic-bezier(.2,1.2,.4,1), background-color .6s ease, box-shadow .6s ease; }
+  .fface { display: block; font-size: 40px; line-height: 1; margin-bottom: 6px; }
+  .ftext { display: block; font-size: 17px; font-weight: 900; line-height: 1.35; filter: blur(2.6px); transition: filter .6s ease; }
+  .game.puff .fog { animation: wiggle .45s ease; }
+  .game[data-n="1"] .fog { width: 228px; background: #a3abbd; box-shadow: 0 0 22px 9px rgba(163,171,189,.75); }
+  .game[data-n="1"] .ftext { filter: blur(1.7px); }
+  .game[data-n="2"] .fog { width: 200px; background: #c4cad8; box-shadow: 0 0 14px 6px rgba(196,202,216,.65); }
+  .game[data-n="2"] .ftext { filter: blur(.8px); }
+  .game[data-n="3"] .fog { width: 178px; background: #fff; box-shadow: 0 6px 16px rgba(0,0,0,.12); }
+  .game[data-n="3"] .ftext { filter: none; }
+
+  .fogmeter { font-size: 15px; font-weight: 900; }
+  .fogmeter .num { display: inline-block; min-width: 1.8em; font-size: 22px; }
+  .qs { display: grid; gap: 10px; max-width: 360px; margin: 12px auto 0; }
+  .q.done, .q.done[disabled] { opacity: 1; background: var(--pop); color: var(--pop-text); }
+  .answers { list-style: none; display: grid; gap: 8px; max-width: 360px; margin: 14px auto 0; padding: 0; text-align: left; }
+  .ans { padding: 11px 14px; border-radius: 16px; background: #fff; color: #1b2559; font-size: 15.5px; font-weight: 900; line-height: 1.4;
+    box-shadow: 0 6px 14px rgba(0,0,0,.12); animation: bounce-in .45s both; }
+  .ans[hidden] { display: none; }
+  .says { margin-top: 14px; min-height: 30px; font-size: 16.5px; font-weight: 900; line-height: 1.45; }
+  .says > div { display: none; }
+  .game:not([data-n="3"]) .s-play { display: block; }
+  .game[data-n="3"] .s-done { display: block; font-size: 19px; animation: bounce-in .5s both; }
+  .game:not([data-n="3"]) .again-row { display: none; }
+@@dark
+  html[data-theme="dark"] .vs .fogv { background: #2c2f3b; color: #c3c8d6; }
+  html[data-theme="dark"] .vs .clearv { background: #4a3c12; color: #ffe39a; }
+  html[data-theme="dark"] .ans { background: #f4f0fa; color: #1b2559; }
+  html[data-theme="dark"] .game[data-n="3"] .fog { background: #f4f0fa; }
+@@sents
+S1 | A worry looks bigger when it is blurry. | 心配ごとは、ぼんやりしているほど大きく見えます。
+S2 | So I try to imagine the worst thing in detail, on purpose. | そこで、最悪のことを、わざと細かく想像してみます。
+S3 | For example, if I fail an exam: When is the next exam? Who can I ask? Will it be a funny story in 3 years? | たとえば試験に落ちたら、次の試験はいつ？だれに聞ける？3年後には笑い話？
+S4 | Then it is said the brain feels safe: "Oh, even the worst is only this much." | すると脳が「なんだ、最悪でもこの程度か」と安心するそうです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">☁️</span>
+      <span class="card-label">Blurry Worry</span>
+    </div>
+    <p>{S1}</p>
+    <div class="vs" aria-hidden="true">
+      <div class="fogv"><span class="e">☁️</span>Blurry = big</div>
+      <div class="clearv"><span class="e">🔍</span>Clear = small</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔍</span>
+      <span class="card-label">Look Closely</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📝</span>
+      <span class="card-label">For Example</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：もやもやおばけを小さくする -->
+  <section class="game" data-n="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Shrink the fog monster</div>
+    <div class="fogstage">
+      <div class="fog">
+        <span class="fface" aria-hidden="true">😱</span>
+        <span class="ftext">What if I fail the exam?!</span>
+      </div>
+    </div>
+    <div class="fogmeter"><span class="fl">☁️ Fog:</span> <span class="num">100</span><span class="pct">%</span></div>
+    <div class="qs">
+      <button class="gbtn q" data-q="0" type="button">📅 When is the next exam?</button>
+      <button class="gbtn q" data-q="1" type="button">🐧 Who can I ask?</button>
+      <button class="gbtn q" data-q="2" type="button">🗓️ How about in 3 years?</button>
+    </div>
+    <ul class="answers">
+      <li class="ans" hidden>📅 Next month. I can try again.</li>
+      <li class="ans" hidden>🐧 A friend who passed it, and a good book.</li>
+      <li class="ans" hidden>😂 "I failed once!" It is a funny story now.</li>
+    </ul>
+    <div class="says">
+      <div class="s-play">Tap the questions. Look at the worst in detail.</div>
+      <div class="s-done">😌 Oh… even the worst is only this much.</div>
+    </div>
+    <div class="again-row"><button class="gbtn ghost again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😌</span>
+      <span class="card-label">Only This</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Blurry Worry ||| ぼんやりの心配
+Look Closely ||| くわしく見る
+For Example ||| たとえば
+Only This ||| この程度
+Blurry = big ||| ぼんやり＝大きい
+Clear = small ||| くっきり＝小さい
+⚡ TRY IT ||| ⚡ やってみよう
+Shrink the fog monster ||| もやもやおばけを小さくしよう
+What if I fail the exam?! ||| 試験に落ちたらどうしよう？！
+☁️ Fog: ||| ☁️ もや：
+📅 When is the next exam? ||| 📅 次の試験はいつ？
+🐧 Who can I ask? ||| 🐧 だれに聞ける？
+🗓️ How about in 3 years? ||| 🗓️ 3年後は？
+📅 Next month. I can try again. ||| 📅 来月。もう一回受けられる。
+🐧 A friend who passed it, and a good book. ||| 🐧 合格した友だちと、いい本。
+😂 "I failed once!" It is a funny story now. ||| 😂「1回落ちたんだよね！」もう笑い話。
+Tap the questions. Look at the worst in detail. ||| 質問を押して、最悪をくわしく見てみよう。
+😌 Oh… even the worst is only this much. ||| 😌 なんだ…最悪でもこの程度か。
+↺ Try again ||| ↺ もう一回
+@@js
+/* ☁️ もやもやおばけ：JS は data-n・class・hidden・数字・絵文字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var qs = [].slice.call(g.querySelectorAll('.q'));
+  var ans = g.querySelectorAll('.ans');
+  var face = g.querySelector('.fface'), num = g.querySelector('.num'), fog = g.querySelector('.fog');
+  var FACES = ['😱', '😟', '😐', '🙂'], FOG = ['100', '66', '33', '0'];
+  var n = 0;
+  function puff() { g.classList.remove('puff'); void g.offsetWidth; g.classList.add('puff'); }
+  qs.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.disabled) return;
+      var i = +b.getAttribute('data-q');
+      b.disabled = true; b.classList.add('done');
+      ans[i].hidden = false;
+      n += 1;
+      g.setAttribute('data-n', String(n));
+      face.textContent = FACES[n]; num.textContent = FOG[n];
+      puff();
+      if (n === 3) {
+        if (window.pengessoPop) {
+          var r = fog.getBoundingClientRect();
+          window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['☀️', '🐧', '✨', '🔍'], 16);
+        }
+        if (navigator.vibrate) { try { navigator.vibrate(25); } catch (e) {} }
+      }
+    });
+  });
+  g.querySelector('.again').addEventListener('click', function () {
+    n = 0; g.setAttribute('data-n', '0'); g.classList.remove('puff');
+    face.textContent = FACES[0]; num.textContent = FOG[0];
+    qs.forEach(function (b) { b.disabled = false; b.classList.remove('done'); });
+    [].forEach.call(ans, function (a) { a.hidden = true; });
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+最悪をぼんやりさせず、くわしく想像すると、脳は「この程度か」と安心する。
+@@tone
+素材の重さ：真面目（不安とのつきあい方）
+→ 見せ方：ポップに（灰色の霧が、青空と白い雲に変わる）
+※元のメモの「泊めてくれる人は？使える制度は？」は重い場面（住まい・お金）を思わせるので、身近な「試験に落ちたら」に置きかえた。仕事の例は使っていない。
+@@game_ja
+☁️ もやもやおばけを小さくしよう：灰色にぼやけた大きな霧（😱「試験に落ちたらどうしよう？！」の文字がにじんで読めない）。「📅 次の試験はいつ？」「🐧 だれに聞ける？」「🗓️ 3年後は？」の質問を押すたびに、答え（来月もう一回／合格した友だちといい本／もう笑い話）が1枚ずつ出て、霧は小さく・白く・くっきりになり、もやメーターが100→66→33→0％。背景も暗い色から青空に。3つで「😌 なんだ…最悪でもこの程度か」。
+@@cover
+An extremely cute, chubby round penguin made of layered cut paper, like a paper diorama, with a gentle face and a plain belly, holding a small, realistic yellow plastic flashlight and shining a soft warm beam at a small fluffy gray cloud floating in front of it, so the lit part of the cloud looks bright and harmless. Bright sky-blue background with layered paper depth and warm sunlight. Simple and clean, no clutter. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × 切り絵の紙ジオラマ × 懐中電灯（もやもやを照らしてくわしく見る）

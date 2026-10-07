@@ -1,0 +1,245 @@
+@@meta
+{"title": "Words that make you feel guilty often just mean \"do what I want\"", "label": "Guilt Words", "seq": 443, "mood": ["lift", "learn"], "tags": ["psychology", "friends", "tips"], "thumbAlt": "A matte plastic model kit penguin wearing realistic headphones and listening carefully"}
+@@ja_title
+「ガッカリした」「友達でしょ？」は、思い通りにしたいだけの言葉
+@@ja_label
+罪悪感の言葉
+@@h1emoji
+🔍
+@@section
+53「罪悪感で操ってくる人」
+@@vars
+    --bg: #f3fbfb; --text: #20323a; --muted: #5f7a84;
+    --accent: #0f9c9a; --accent2: #6a5cff; --h1: #133a44; --big: #0b8583; --big-dark: #7fe3df;
+    --glow1: rgba(15,156,154,.22); --glow2: rgba(106,92,255,.18); --glow3: rgba(255,200,87,.22);
+    --shadow: 0 20px 55px rgba(20,90,110,.18); --photo-bg: #dff4f3;
+    --g1: #13a8a4; --g2: #3f7cf0; --g3: #7b5cff; --pop: #ffd84d; --pop-text: #4a3500; --btn-text: #0b6f6d;
+@@css
+  /* 🔍 罪悪感ことばの翻訳機：カードをめくると本音が出る → 最後は「イヤなものはイヤ」 */
+  .guilt { display: flex; align-items: center; gap: 10px; max-width: 360px; margin: 14px auto 0; font-size: 13.5px; font-weight: 900; }
+  .bar { flex: 1; height: 14px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 100%; border-radius: 999px; background: #ffb4c4; transition: width .5s cubic-bezier(.2,1.2,.4,1); }
+
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px; margin: 14px auto 0; }
+  .flip { position: relative; min-height: 138px; padding: 0; border: 0; background: none; cursor: pointer; font: inherit; perspective: 700px;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .flip:focus-visible { outline: 4px solid #fff; outline-offset: 3px; border-radius: 20px; }
+  .inner { position: absolute; inset: 0; transform-style: preserve-3d; -webkit-transform-style: preserve-3d; transition: transform .55s cubic-bezier(.3,1.3,.5,1); }
+  .flip.open .inner { transform: rotateY(180deg); }
+  .face { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px 8px;
+    border-radius: 20px; backface-visibility: hidden; -webkit-backface-visibility: hidden; font-weight: 900; line-height: 1.3; }
+  .front { background: #fff; color: #2b3b55; font-size: 15px; box-shadow: 0 6px 0 rgba(10,40,80,.22); }
+  .front .who { font-size: 26px; line-height: 1; }
+  .front .tapme { font-size: 11.5px; letter-spacing: .08em; color: #0f9c9a; }
+  .back { background: #ffd84d; color: #4a3500; font-size: 14.5px; transform: rotateY(180deg); box-shadow: 0 6px 0 rgba(120,80,0,.3); }
+  .back .rm { font-size: 11.5px; letter-spacing: .08em; color: #8a5a00; }
+  .back .angry { font-size: 24px; line-height: 1; }
+  .count { margin-top: 12px; font-size: 14px; font-weight: 900; }
+
+  .ask { display: none; max-width: 420px; margin: 16px auto 0; padding: 14px 14px 12px; border-radius: 22px; background: rgba(255,255,255,.18); }
+  .game[data-done="1"] .ask { display: block; animation: bounce-in .45s both; }
+  .ask-row { display: grid; grid-template-columns: 54px 1fr; gap: 10px; align-items: center; text-align: left; }
+  .ask-face { position: relative; width: 54px; height: 54px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.25); font-size: 32px; }
+  .ask-face .mark { position: absolute; right: -6px; top: -8px; font-size: 20px; }
+  .ask-bub { padding: 10px 13px; border-radius: 16px 16px 16px 5px; background: #fff; color: #2b3b55; font-weight: 900; font-size: 15.5px; line-height: 1.35; min-height: 48px; display: flex; align-items: center; }
+  .ask-bub span { display: none; }
+  .ask-bub.boing { animation: shake .4s ease; }
+  .game[data-loop="0"] .a0, .game[data-loop="1"] .a1, .game[data-loop="2"] .a2, .game[data-loop="3"] .a3 { display: inline; }
+  .game[data-end="1"] .ask-bub .a0, .game[data-end="1"] .ask-bub .a1, .game[data-end="1"] .ask-bub .a2, .game[data-end="1"] .ask-bub .a3 { display: none; }
+  .game[data-end="1"] .ask-bub .a-end { display: inline; }
+  .loopline { margin-top: 10px; font-size: 14px; font-weight: 900; }
+  .loopline .spin { display: inline-block; }
+  .loopline .spin.go { animation: spin .6s ease; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+  .two .gbtn { width: 100%; padding: 12px 10px; font-size: 15.5px; }
+  .game[data-end="1"] .two { display: none; }
+  .free { display: none; margin-top: 12px; padding: 12px; border-radius: 16px; background: #fff; color: #0b6f6d; font-weight: 900; line-height: 1.4; }
+  .game[data-end="1"] .free { display: block; animation: bounce-in .5s both; }
+@@dark
+  html[data-theme="dark"] .front { background: #1f2a33; color: #e2eef5; }
+  html[data-theme="dark"] .front .tapme { color: #7fe3df; }
+  html[data-theme="dark"] .ask-bub { background: #1f2a33; color: #e2eef5; }
+  html[data-theme="dark"] .free { background: #1f2a33; color: #7fe3df; }
+@@sents
+S1 | When people say "I'm disappointed" or "Aren't we friends?", it gets hard to say no, right? | 「ガッカリした」「友達でしょ？」と言われると、断りにくくなりますよね。
+S2 | But it seems the true meaning is, "I'm upset because you don't do what I want." | でも、その本音は「思い通りにならなくて、ムカつく」らしいです。
+S3 | If you do what they say once, it keeps happening again and again. | 一度言うことを聞くと、それが何度も続きます。
+S4 | If you say, "No means no," it seems they give up. | 「イヤなものはイヤ」と断れば、相手はあきらめるそうです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💬</span>
+      <span class="card-label">Hard To Refuse</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔍</span>
+      <span class="card-label">True Meaning</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：罪悪感ことばの翻訳機（4枚めくる → 「もう一回だけ」のループ → 「イヤなものはイヤ」） -->
+  <section class="game" data-done="0" data-loop="0" data-end="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The guilt-word translator</div>
+    <div class="game-hint">Tap a card. What do they really mean?</div>
+    <div class="guilt"><span class="gl">😣 Guilt</span><span class="bar" aria-hidden="true"><i></i></span></div>
+    <div class="cards">
+      <button class="flip" type="button" aria-pressed="false"><span class="inner">
+        <span class="face front"><span class="who" aria-hidden="true">🐧💬</span><span class="fl">"I'm so disappointed in you."</span><span class="tapme">TAP 🔍</span></span>
+        <span class="face back"><span class="rm">🔍 REAL MEANING</span><span class="bl">"I wanted you to say yes."</span><span class="angry" aria-hidden="true">😤</span></span>
+      </span></button>
+      <button class="flip" type="button" aria-pressed="false"><span class="inner">
+        <span class="face front"><span class="who" aria-hidden="true">🐧💬</span><span class="fl">"Aren't we friends?"</span><span class="tapme">TAP 🔍</span></span>
+        <span class="face back"><span class="rm">🔍 REAL MEANING</span><span class="bl">"Friends should do what I say."</span><span class="angry" aria-hidden="true">😤</span></span>
+      </span></button>
+      <button class="flip" type="button" aria-pressed="false"><span class="inner">
+        <span class="face front"><span class="who" aria-hidden="true">🐧💬</span><span class="fl">"Wow, you're so cold."</span><span class="tapme">TAP 🔍</span></span>
+        <span class="face back"><span class="rm">🔍 REAL MEANING</span><span class="bl">"I'm upset that you said no."</span><span class="angry" aria-hidden="true">😤</span></span>
+      </span></button>
+      <button class="flip" type="button" aria-pressed="false"><span class="inner">
+        <span class="face front"><span class="who" aria-hidden="true">🐧💬</span><span class="fl">"I bought you lunch last time!"</span><span class="tapme">TAP 🔍</span></span>
+        <span class="face back"><span class="rm">🔍 REAL MEANING</span><span class="bl">"So now you must do what I want."</span><span class="angry" aria-hidden="true">😤</span></span>
+      </span></button>
+    </div>
+    <div class="count"><span class="cl">🔍 Translated:</span> <span class="cn">0/4</span></div>
+    <div class="ask">
+      <div class="ask-row">
+        <div class="ask-face" aria-hidden="true">🐧<b class="mark">💬</b></div>
+        <div class="ask-bub">
+          <span class="a0">"Come on, just this once!"</span>
+          <span class="a1">"You said yes last time, so… again!"</span>
+          <span class="a2">"You always say yes, right? One more!"</span>
+          <span class="a3">"Of course you will do it. You always do."</span>
+          <span class="a-end">"…OK. Never mind." 🐧💨</span>
+        </div>
+      </div>
+      <div class="loopline"><span class="spin" aria-hidden="true">🔁</span> <span class="ll">Asked again:</span> <span class="ln">0</span></div>
+      <div class="two">
+        <button class="gbtn ghost give" type="button">😣 OK, fine…</button>
+        <button class="gbtn pop say-no" type="button">🛡 No means no.</button>
+      </div>
+      <div class="free">🛡 The loop is over. You can say no without feeling guilty.</div>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔁</span>
+      <span class="card-label">It Repeats</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🛡️</span>
+      <span class="card-label">No Means No</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Hard To Refuse ||| 断りにくい
+True Meaning ||| 本音
+It Repeats ||| くり返す
+No Means No ||| イヤなものはイヤ
+⚡ TRY IT ||| ⚡ やってみよう
+The guilt-word translator ||| 罪悪感ことばの翻訳機
+Tap a card. What do they really mean? ||| カードを押してね。本当は何と言っている？
+😣 Guilt ||| 😣 罪悪感
+"I'm so disappointed in you." ||| 「ガッカリしたよ。」
+"Aren't we friends?" ||| 「友達でしょ？」
+"Wow, you're so cold." ||| 「冷たいなあ。」
+"I bought you lunch last time!" ||| 「この前おごってあげたじゃん！」
+TAP 🔍 ||| 押してね 🔍
+🔍 REAL MEANING ||| 🔍 本音
+"I wanted you to say yes." ||| 「私の思い通りにしてほしかった。」
+"Friends should do what I say." ||| 「友達なら、言うことを聞いてよ。」
+"I'm upset that you said no." ||| 「断られて、ムカッとした。」
+"So now you must do what I want." ||| 「だから、言うことを聞いてよ。」
+🔍 Translated: ||| 🔍 翻訳した：
+"Come on, just this once!" ||| 「ねえ、今回だけ！」
+"You said yes last time, so… again!" ||| 「この前やってくれたし…また！」
+"You always say yes, right? One more!" ||| 「いつもやってくれるよね？もう一回！」
+"Of course you will do it. You always do." ||| 「やってくれるに決まってるよね。いつもだし。」
+"…OK. Never mind." 🐧💨 ||| 「…わかった。もういいよ。」🐧💨
+Asked again: ||| また頼まれた：
+😣 OK, fine… ||| 😣 わかったよ…
+🛡 No means no. ||| 🛡 イヤなものはイヤ。
+🛡 The loop is over. You can say no without feeling guilty. ||| 🛡 ループはおしまい。罪悪感をもたずに、断っていいんです。
+↺ Start over ||| ↺ 最初から
+@@js
+/* 🔍 罪悪感ことばの翻訳機：JS は class / data-* / 数字 / 絵文字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var flips = [].slice.call(g.querySelectorAll('.flip'));
+  var bar = g.querySelector('.bar i'), cn = g.querySelector('.cn'), ln = g.querySelector('.ln');
+  var bub = g.querySelector('.ask-bub'), spin = g.querySelector('.spin'), mark = g.querySelector('.mark');
+  var loops = 0;
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function opened() { return flips.filter(function (f) { return f.classList.contains('open'); }).length; }
+  function draw() {
+    var n = opened();
+    cn.textContent = n + '/4';
+    bar.style.width = Math.max(4, 100 - n * 22 - (g.getAttribute('data-end') === '1' ? 30 : 0)) + '%';
+    if (n === 4 && g.getAttribute('data-done') !== '1') g.setAttribute('data-done', '1');
+  }
+  flips.forEach(function (f) {
+    f.addEventListener('click', function () {
+      var was = opened();
+      f.classList.toggle('open');
+      f.setAttribute('aria-pressed', f.classList.contains('open') ? 'true' : 'false');
+      draw();
+      if (was < 4 && opened() === 4 && window.pengessoPop) {
+        var k = f.getBoundingClientRect();
+        window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['🔍', '💡', '🐧'], 12);
+      }
+    });
+  });
+  g.querySelector('.give').addEventListener('click', function () {
+    loops = Math.min(loops + 1, 9);
+    ln.textContent = String(loops);
+    g.setAttribute('data-loop', String(Math.min(loops, 3)));
+    mark.textContent = loops >= 3 ? '😤' : '💬';
+    restart(bub, 'boing'); restart(spin, 'go');
+    if (navigator.vibrate) { try { navigator.vibrate(20); } catch (e) {} }
+  });
+  g.querySelector('.say-no').addEventListener('click', function (e) {
+    g.setAttribute('data-end', '1');
+    mark.textContent = '💨';
+    draw();
+    if (window.pengessoPop) {
+      var k = e.currentTarget.getBoundingClientRect();
+      window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['🛡️', '🐧', '✨', '💪'], 18);
+    }
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    flips.forEach(function (f) { f.classList.remove('open'); f.setAttribute('aria-pressed', 'false'); });
+    loops = 0; ln.textContent = '0'; mark.textContent = '💬';
+    g.setAttribute('data-done', '0'); g.setAttribute('data-loop', '0'); g.setAttribute('data-end', '0');
+    draw();
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+「ガッカリした」「友達だろ」は、思い通りにしたいだけの言葉。「イヤなものはイヤ」と断れば、相手はあきらめる。
+@@tone
+素材の重さ：真面目（人間関係の悩み）
+→ 見せ方：ポップに（青緑とむらさき。ことばを翻訳機にかけて遊べる）
+@@game_ja
+🔍 罪悪感ことばの翻訳機：4枚のカード（「ガッカリしたよ」「友達でしょ？」「冷たいなあ」「この前おごってあげたじゃん！」）を押すと、くるっとめくれて黄色い裏に「本音」が出る（「私の思い通りにしてほしかった」など）。めくるたびに😣罪悪感のメーターがへる。4枚ぜんぶめくると「ねえ、今回だけ！」と頼まれる。「😣 わかったよ…」を押すと🔁が回って、頼みごとが「この前やってくれたし…」「いつもやってくれるよね？」とエスカレートする（一度聞くと続く）。「🛡 イヤなものはイヤ。」を押すと、相手は「…わかった。もういいよ。」🐧💨 とあきらめて、🎉。「最初から」で戻せる。
+@@combo
+ペンギン × つや消しプラモデル × ヘッドホン（翻訳機のつもり）
+@@cover
+An extremely cute, chubby round penguin made like a matte plastic model kit, with a gentle curious face and a plain white belly, wearing realistic black over-ear headphones and listening very carefully with one flipper on the ear cup, as if translating what it hears. Bright simple teal and soft lavender background with soft depth, clean daylight. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

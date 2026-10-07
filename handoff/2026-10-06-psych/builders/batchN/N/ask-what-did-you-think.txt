@@ -1,0 +1,216 @@
+@@meta
+{"title": "Even for a story you know, ask \"And what did you think?\"", "label": "Ask Feelings", "seq": 430, "mood": ["lift", "think"], "tags": ["psychology", "friends", "feelings"], "thumbAlt": "A chubby boucle wool penguin smiling next to a glowing vintage brass lantern"}
+@@ja_title
+知っている話でも「それで、どう思った？」と聞く
+@@ja_label
+どう思った？
+@@h1emoji
+💭
+@@section
+37「好かれる人の対比：知っている話でも『それでどう思った？』⇔『その話、知ってる』」
+@@vars
+    --bg: #f7f6ff; --text: #24223f; --muted: #6e6b92;
+    --accent: #4f46e5; --accent2: #fb923c; --h1: #1e1b4b; --big: #4338ca; --big-dark: #b4b0ff;
+    --glow1: rgba(99,102,241,.22); --glow2: rgba(251,146,60,.22); --glow3: rgba(139,92,246,.16);
+    --shadow: 0 20px 55px rgba(70,60,200,.18); --photo-bg: #e6e5ff;
+    --g1: #6366f1; --g2: #8b5cf6; --g3: #fb923c; --pop: #fed7aa; --pop-text: #5a2a00; --btn-text: #4338ca;
+@@css
+  /* 💭 カード3：同じ話の中の「気持ち」 */
+  .layers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .layers > span { padding: 12px 10px; border-radius: 18px; text-align: center; font-weight: 900; font-size: 15px; line-height: 1.3; }
+  .layers .k1 { background: #eceaf6; color: #6e6b92; }
+  .layers .k2 { background: #ffe9d2; color: #9a3d00; }
+  .layers .ke { display: block; font-size: 26px; margin-bottom: 4px; }
+
+  /* ⚡ 知ってる話の、知らない気持ち：「どう思った？」と聞くと、友だちの頭の上に💭が出る。押すと割れて、新しい話 */
+  .friend { display: flex; flex-direction: column; align-items: center; margin: 14px auto 0; max-width: 440px; }
+  .clouds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; min-height: 0; }
+  .tb { position: relative; display: none; min-height: 84px; padding: 8px; border: 0; border-radius: 26px; background: #fff; color: var(--btn-text); font: inherit; font-weight: 900;
+    cursor: pointer; box-shadow: 0 5px 0 rgba(40,30,120,.28); -webkit-tap-highlight-color: transparent; touch-action: manipulation; line-height: 1.25; font-size: 13.5px; }
+  .game[data-s="open"] .tb { display: flex; align-items: center; justify-content: center; animation: bounce-in .45s both; }
+  .game[data-s="open"] .tb:nth-child(2) { animation-delay: .12s; }
+  .game[data-s="open"] .tb:nth-child(3) { animation-delay: .24s; }
+  .tb .closed { font-size: 34px; line-height: 1; animation: hop 1.6s ease-in-out infinite; }
+  .tb .said { display: none; }
+  .tb.popped { background: var(--pop); color: #5a2a00; cursor: default; }
+  .tb.popped .closed { display: none; }
+  .tb.popped .said { display: block; animation: bounce-in .4s both; }
+  .tb:focus-visible, .ch:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .me { position: relative; width: 84px; height: 84px; margin-top: 12px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.25);
+    font-size: 50px; line-height: 1; transition: transform .4s ease, filter .4s ease, background .4s ease; }
+  .me .fx { position: absolute; right: -8px; top: -8px; font-size: 28px; line-height: 1; }
+  .game[data-s="cold"] .me { transform: scale(.78); filter: grayscale(.8); }
+  .game[data-s="open"] .me { background: rgba(255,237,180,.55); box-shadow: 0 0 30px rgba(255,220,120,.7); }
+  .bub { width: 100%; margin-top: 12px; min-height: 56px; display: flex; align-items: center; justify-content: center; padding: 10px 14px; border-radius: 18px; background: #fff; color: #24223f;
+    font-size: 16px; font-weight: 900; line-height: 1.35; }
+  .bub span { display: none; }
+  .game[data-s="idle"] .b-idle, .game[data-s="cold"] .b-cold, .game[data-s="open"] .b-open { display: inline; }
+  .game[data-s="cold"] .bub { background: #e5e7eb; color: #6b7280; }
+
+  .choices { display: grid; gap: 10px; max-width: 440px; margin: 16px auto 0; }
+  .ch { min-height: 56px; padding: 12px 14px; border: 0; border-radius: 18px; background: #fff; color: var(--btn-text); font: inherit; font-size: 17px; font-weight: 900; cursor: pointer;
+    box-shadow: 0 5px 0 rgba(40,30,120,.28); -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: transform .08s ease, box-shadow .08s ease; }
+  .ch:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(40,30,120,.28); }
+  .ch.know { background: rgba(255,255,255,.22); color: #fff; box-shadow: 0 5px 0 rgba(0,0,0,.14); }
+  .game:not([data-s="idle"]) .choices { display: none; }
+
+  .found { display: none; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 14px; font-size: 14.5px; font-weight: 900; }
+  .game[data-s="open"] .found { display: flex; }
+  .fn { font-size: 20px; }
+  .result { display: none; max-width: 440px; margin: 12px auto 0; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.22); font-weight: 900; line-height: 1.4; }
+  .game[data-s="cold"] .r-cold, .game[data-s="open"][data-all="1"] .r-all { display: block; animation: bounce-in .45s both; }
+  .again-row { display: none; margin-top: 12px; }
+  .game:not([data-s="idle"]) .again-row { display: block; }
+@@dark
+  html[data-theme="dark"] .layers .k1 { background: #2b2a3a; color: #b6b3d4; }
+  html[data-theme="dark"] .layers .k2 { background: #4a2a12; color: #ffc896; }
+  html[data-theme="dark"] .tb, html[data-theme="dark"] .ch:not(.know) { background: #221f3d; color: #c9c6ff; }
+  html[data-theme="dark"] .tb.popped { background: #fed7aa; color: #4a2200; }
+  html[data-theme="dark"] .bub { background: #221f3d; color: #ecebff; }
+  html[data-theme="dark"] .game[data-s="cold"] .bub { background: #374151; color: #c4c9d1; }
+@@sents
+S1 | It seems likable people ask, "And what did you think?" even about a story they already know. | 好かれる人は、知っている話でも「それで、どう思った？」と聞くそうです。
+S2 | If you say, "I know that story," the other person feels let down. | 「その話、知ってる」と言うと、相手はしゅんとしてしまいます。
+S3 | But even in the same story, you have not heard how they felt yet. | でも同じ話でも、相手がどう感じたかは、まだ聞いていません。
+S4 | When you ask about feelings, stories you did not know come out. | 気持ちを聞くと、知らなかった話が出てきます。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💭</span>
+      <span class="card-label">Ask Anyway</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😔</span>
+      <span class="card-label">I Know That</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔦</span>
+      <span class="card-label">Not Heard Yet</span>
+    </div>
+    <p>{S3}</p>
+    <div class="layers" aria-hidden="true">
+      <span class="k1"><span class="ke">📖</span>What happened</span>
+      <span class="k2"><span class="ke">💓</span>How they felt</span>
+    </div>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：知ってる話の、知らない気持ち（「どう思った？」→ 💭を押して割ると、新しい話が3つ） -->
+  <section class="game" data-s="idle" data-all="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">A story you know, feelings you don't</div>
+    <div class="game-hint">Your friend starts a story you already heard. What will you say?</div>
+    <div class="friend">
+      <div class="clouds">
+        <button class="tb" type="button"><span class="closed" aria-hidden="true">💭</span><span class="said">"On the plane, my heart was beating so fast!"</span></button>
+        <button class="tb" type="button"><span class="closed" aria-hidden="true">💭</span><span class="said">"The cheering at the stadium gave me goosebumps!"</span></button>
+        <button class="tb" type="button"><span class="closed" aria-hidden="true">💭</span><span class="said">"Next time, I want to go with you!"</span></button>
+      </div>
+      <div class="me" aria-hidden="true">🐧<span class="fx">😊</span></div>
+      <div class="bub">
+        <span class="b-idle">"You know my trip to Korea? I went to a baseball game there…"</span>
+        <span class="b-cold">"Oh… right. I told you already." 😔</span>
+        <span class="b-open">"Hmm, what did I think? Let me remember… Tap my 💭!"</span>
+      </div>
+    </div>
+    <div class="choices">
+      <button class="ch know" type="button">😑 "I know that story."</button>
+      <button class="ch ask" type="button">🤔 "And what did you think?"</button>
+    </div>
+    <div class="found"><span class="fl">🎁 New things you learned:</span><span class="fn">0/3</span></div>
+    <div class="result r-cold">🍂 The talk ended, and your friend felt a little lonely. Try the other words!</div>
+    <div class="result r-all">🎉 Same story, 3 new things! Feelings are always new.</div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎁</span>
+      <span class="card-label">New Stories</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Ask Anyway ||| それでも聞く
+I Know That ||| 知ってる
+Not Heard Yet ||| まだ聞いていない
+New Stories ||| 知らなかった話
+What happened ||| あったこと
+How they felt ||| 感じたこと
+⚡ TRY IT ||| ⚡ やってみよう
+A story you know, feelings you don't ||| 知ってる話の、知らない気持ち
+Your friend starts a story you already heard. What will you say? ||| 友だちが、前にも聞いた話を始めました。なんて言う？
+"On the plane, my heart was beating so fast!" ||| 「飛行機の中で、ずっとドキドキしてたんだ！」
+"The cheering at the stadium gave me goosebumps!" ||| 「球場の応援で、鳥肌が立ったの！」
+"Next time, I want to go with you!" ||| 「今度は、いっしょに行きたいな！」
+"You know my trip to Korea? I went to a baseball game there…" ||| 「私の韓国旅行の話、覚えてる？向こうで野球を見に行って…」
+"Oh… right. I told you already." 😔 ||| 「あ…そっか。もう話したよね。」😔
+"Hmm, what did I think? Let me remember… Tap my 💭!" ||| 「うーん、どう思ったかな？思い出してみるね…私の💭を押して！」
+😑 "I know that story." ||| 😑「その話、知ってる。」
+🤔 "And what did you think?" ||| 🤔「それで、どう思った？」
+🎁 New things you learned: ||| 🎁 新しく知ったこと：
+🍂 The talk ended, and your friend felt a little lonely. Try the other words! ||| 🍂 話が終わって、友だちはちょっとさみしそう。もう1つの言葉も試してみて！
+🎉 Same story, 3 new things! Feelings are always new. ||| 🎉 同じ話から、新しいことが3つ！気持ちは、いつも新しい。
+↺ Start over ||| ↺ 最初から
+@@js
+/* 💭 知ってる話の、知らない気持ち：JS は data-* / class / 絵文字 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var tbs = [].slice.call(g.querySelectorAll('.tb'));
+  var fx = g.querySelector('.me .fx'), fn = g.querySelector('.fn');
+  var FACES = ['🤔', '😊', '😄', '🤩'];
+  function count() { return tbs.filter(function (t) { return t.classList.contains('popped'); }).length; }
+  function draw() {
+    var n = count();
+    fn.textContent = n + '/3';
+    g.setAttribute('data-all', n === 3 ? '1' : '0');
+    if (g.getAttribute('data-s') === 'open') fx.textContent = FACES[n];
+    return n;
+  }
+  g.querySelector('.know').addEventListener('click', function () {
+    g.setAttribute('data-s', 'cold'); fx.textContent = '😔';
+  });
+  g.querySelector('.ask').addEventListener('click', function () {
+    g.setAttribute('data-s', 'open'); draw();
+    if (window.pengessoPop) { var r = g.querySelector('.me').getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['💡', '✨'], 8); }
+  });
+  tbs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      if (t.classList.contains('popped')) return;
+      t.classList.add('popped');
+      var n = draw();
+      if (!window.pengessoPop) return;
+      var r = t.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+      if (n === 3) window.pengessoPop(x, y, ['🎁', '🎉', '🐧', '💭', '✨'], 22);
+      else window.pengessoPop(x, y, ['💭', '✨'], 10);
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    tbs.forEach(function (t) { t.classList.remove('popped'); });
+    g.setAttribute('data-s', 'idle'); fx.textContent = '😊'; draw();
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+知っている話でも「それで、どう思った？」と聞くと、知らなかった話が出てくる。
+@@tone
+素材の重さ：真面目（好かれる人の聞き方）
+→ 見せ方：ポップに（藍色とピーチ。💭を割ると、知らなかった気持ちが出てくる）
+@@game_ja
+💭 知ってる話の、知らない気持ち：友だちのペンギンが「私の韓国旅行の話、覚えてる？向こうで野球を見に行って…」と、前にも聞いた話を始める。「😑 その話、知ってる。」を押すと、友だちは小さく灰色になって「あ…そっか。もう話したよね。」😔。「🤔 それで、どう思った？」を押すと、友だちが光って頭の上に💭が3つ。押すと割れて、知らなかった話（飛行機でドキドキ／球場の応援で鳥肌／今度はいっしょに行きたい）が出てくる。3つで🎉「同じ話から、新しいことが3つ！」。
+@@combo
+ペンギン × ブークレ（ループ）ウール × 灯りのついた真ちゅうのランタン
+@@cover
+An extremely cute, chubby round penguin made of cozy boucle wool, with a gentle delighted face and a plain white belly, sitting beside a realistic vintage brass lantern glowing with warm light, as if a happy memory just lit up. Bright simple soft indigo and peach background with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

@@ -1,0 +1,231 @@
+@@meta
+{"title": "When you get more praise, you also get more criticism", "label": "Half and Half", "seq": 445, "mood": ["lift", "think"], "tags": ["psychology", "mindset", "feelings"], "thumbAlt": "A low-poly wood and paper penguin standing next to a realistic brass balance scale"}
+@@ja_title
+褒められる量が増えると、批判される量も増える
+@@ja_label
+半分半分
+@@h1emoji
+⚖️
+@@section
+56「賞賛50％・批判50％」
+@@vars
+    --bg: #f2f6ff; --text: #24293d; --muted: #67708c;
+    --accent: #2f62e8; --accent2: #ff7a59; --h1: #1b2550; --big: #2554d6; --big-dark: #a9c0ff;
+    --glow1: rgba(47,98,232,.20); --glow2: rgba(255,122,89,.22); --glow3: rgba(255,214,90,.24);
+    --shadow: 0 20px 55px rgba(40,70,160,.18); --photo-bg: #e2eaff;
+    --g1: #3a6df0; --g2: #6b5cf6; --g3: #ff7a59; --pop: #ffd65a; --pop-text: #4a3500; --btn-text: #2554d6;
+@@css
+  /* ⚖️ 人気のてんびん：人気が上がるたびに、💐褒め言葉と🌵批判が同じ数だけ乗る。「褒め言葉だけ聞く」と、うぬぼれ風船がふくらんで割れる */
+  .lvrow { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.2); font-size: 14px; font-weight: 900; }
+  .lv { font-size: 20px; }
+  .lv.bump { animation: bounce-in .35s both; }
+  .scale { position: relative; max-width: 360px; height: 210px; margin: 10px auto 0; }
+  .post { position: absolute; left: 50%; bottom: 0; width: 14px; height: 120px; margin-left: -7px; border-radius: 8px 8px 0 0; background: #fff; }
+  .base { position: absolute; left: 50%; bottom: 0; width: 120px; height: 14px; margin-left: -60px; border-radius: 10px; background: #fff; }
+  .me { position: absolute; left: 50%; bottom: 126px; transform: translateX(-50%); font-size: 34px; line-height: 1; z-index: 2; }
+  .ego { position: absolute; left: calc(50% + 16px); bottom: 134px; font-size: 22px; line-height: 1; transform-origin: 0 100%; transform: scale(0); transition: transform .3s cubic-bezier(.2,1.4,.4,1); z-index: 3; }
+  .ego.boom { animation: boom .5s ease both; }
+  @keyframes boom { 0% { transform: scale(2.6); } 40% { transform: scale(3.4); } 100% { transform: scale(2.2); opacity: .9; } }
+  .beam { position: absolute; left: 6%; right: 6%; bottom: 116px; height: 10px; border-radius: 6px; background: #fff; transform-origin: 50% 50%; transition: transform .45s cubic-bezier(.3,1.4,.5,1); }
+  .pan { position: absolute; top: 4px; width: 40%; transform: translateX(-50%); transform-origin: 50% 0; text-align: center; transition: transform .45s cubic-bezier(.3,1.4,.5,1); }
+  .pan.l { left: 18%; } .pan.r { left: 82%; }
+  .pan .rope { display: block; width: 2px; height: 26px; margin: 0 auto; background: rgba(255,255,255,.75); }
+  .dish { display: flex; align-items: flex-end; justify-content: center; flex-wrap: wrap; gap: 0; min-height: 46px; padding: 4px 6px 6px; border-radius: 0 0 40px 40px;
+    background: rgba(255,255,255,.95); color: #24293d; box-shadow: 0 6px 0 rgba(20,30,90,.22); }
+  .stack { font-size: 17px; line-height: 1.05; letter-spacing: -2px; word-break: break-all; }
+  .pn { display: block; margin-top: 4px; font-size: 13px; font-weight: 900; }
+  .pn .n { font-size: 18px; }
+  .pn .n.bump { display: inline-block; animation: bounce-in .35s both; }
+
+  .msg { min-height: 64px; display: flex; align-items: center; justify-content: center; max-width: 420px; margin: 10px auto 0; padding: 10px 14px;
+    border-radius: 18px; background: #fff; color: #24293d; font-weight: 900; font-size: 15.5px; line-height: 1.4; }
+  .msg span { display: none; }
+  .game[data-m="start"] .m-start, .game[data-m="even"] .m-even, .game[data-m="big"] .m-big,
+  .game[data-m="only"] .m-only, .game[data-m="pop"] .m-pop { display: inline; }
+  .game[data-m="pop"] .msg { background: #ffe1d8; color: #7a2410; animation: shake .45s ease; }
+  .btns { display: grid; gap: 10px; max-width: 380px; margin: 14px auto 0; }
+  .btns .gbtn { width: 100%; }
+  .fame { min-height: 64px; font-size: 19px; }
+  .only span { display: none; }
+  .game[data-only="0"] .o-off, .game[data-only="1"] .o-on { display: inline; }
+  .game[data-only="1"] .only { background: #ffd65a; color: #4a3500; }
+@@dark
+  html[data-theme="dark"] .dish { background: #232842; color: #e6eaff; }
+  html[data-theme="dark"] .msg { background: #232842; color: #e6eaff; }
+  html[data-theme="dark"] .game[data-m="pop"] .msg { background: #4a2a22; color: #ffd2c4; }
+@@sents
+S1 | If people only praise you, you become too proud. | 褒められてばかりだと、人は天狗になります。
+S2 | If people only criticize you, your heart dries up. | けなされてばかりだと、心が枯れてしまいます。
+S3 | Even a person everyone loves outside may hear "Put your clothes in the washing machine!" at home. | 外でチヤホヤされる人も、家では「脱いだ服くらい、洗濯機に入れて！」と言われていたりします。
+S4 | When you get more praise, you also get more criticism. | 褒められる量が増えれば、批判される量も増えます。
+S5 | About half and half is just right. | 半分半分くらいが、ちょうどいいんです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎈</span>
+      <span class="card-label">Only One Side</span>
+    </div>
+    <p>{S1} {S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧺</span>
+      <span class="card-label">At Home</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：人気のてんびん（押すたびに 💐 と 🌵 が同じ数だけ乗る。褒め言葉だけにすると、うぬぼれ風船が割れる） -->
+  <section class="game" data-m="start" data-only="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The fame scale</div>
+    <div class="game-hint">Tap to get more famous. What comes with the praise?</div>
+    <div class="lvrow"><span class="lvl">⭐ Fame level</span> <span class="lv">0</span></div>
+    <div class="scale" aria-hidden="true">
+      <span class="base"></span><span class="post"></span>
+      <span class="me">🐧</span><span class="ego">🎈</span>
+      <div class="beam">
+        <div class="pan l"><span class="rope"></span><div class="dish"><span class="stack s-praise"></span></div></div>
+        <div class="pan r"><span class="rope"></span><div class="dish"><span class="stack s-crit"></span></div></div>
+      </div>
+    </div>
+    <div class="pans-n">
+      <span class="pn"><span class="pl">💐 Praise</span> <span class="n n-praise">0</span> <span class="vsx">·</span> <span class="pl2">🌵 Criticism</span> <span class="n n-crit">0</span></span>
+    </div>
+    <div class="msg">
+      <span class="m-start">Tap the star button 👇</span>
+      <span class="m-even">⚖️ Praise +1, criticism +1. Still balanced!</span>
+      <span class="m-big">🌟 So famous! More praise… and more criticism. Still balanced.</span>
+      <span class="m-only">🎈 Only praise… The "I'm great" balloon is getting bigger!</span>
+      <span class="m-pop">💥 Pop! Only praise made you too proud. Half and half is just right.</span>
+    </div>
+    <div class="btns">
+      <button class="gbtn pop fame" type="button">⭐ Get more famous!</button>
+      <button class="gbtn ghost only" type="button" aria-pressed="false"><span class="o-off">🙉 Hear only praise: OFF</span><span class="o-on">🙉 Hear only praise: ON</span></button>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📈</span>
+      <span class="card-label">Both Grow</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">⚖️</span>
+      <span class="card-label">Just Right</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+Only One Side ||| 片方だけ
+At Home ||| 家では
+Both Grow ||| 両方ふえる
+Just Right ||| ちょうどいい
+⚡ TRY IT ||| ⚡ やってみよう
+The fame scale ||| 人気のてんびん
+Tap to get more famous. What comes with the praise? ||| 押して人気者になろう。褒め言葉といっしょに、何が来る？
+⭐ Fame level ||| ⭐ 人気レベル
+💐 Praise ||| 💐 褒め言葉
+🌵 Criticism ||| 🌵 批判
+Tap the star button 👇 ||| 星のボタンを押してね 👇
+⚖️ Praise +1, criticism +1. Still balanced! ||| ⚖️ 褒め言葉 +1、批判 +1。つり合ってる！
+🌟 So famous! More praise… and more criticism. Still balanced. ||| 🌟 大人気！褒め言葉がふえて…批判もふえた。でも、つり合ってる。
+🎈 Only praise… The "I'm great" balloon is getting bigger! ||| 🎈 褒め言葉だけ…「私ってすごい」風船がふくらんできた！
+💥 Pop! Only praise made you too proud. Half and half is just right. ||| 💥 パーン！褒め言葉だけで、天狗になっちゃった。半分半分が、ちょうどいい。
+⭐ Get more famous! ||| ⭐ もっと人気者に！
+🙉 Hear only praise: OFF ||| 🙉 褒め言葉だけ聞く：オフ
+🙉 Hear only praise: ON ||| 🙉 褒め言葉だけ聞く：オン
+↺ Start over ||| ↺ 最初から
+@@js
+/* ⚖️ 人気のてんびん：JS は data-m / data-only / class / style / 絵文字 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var lv = g.querySelector('.lv'), beam = g.querySelector('.beam'), ego = g.querySelector('.ego');
+  var sP = g.querySelector('.s-praise'), sC = g.querySelector('.s-crit');
+  var nP = g.querySelector('.n-praise'), nC = g.querySelector('.n-crit');
+  var fame = g.querySelector('.fame'), only = g.querySelector('.only');
+  var pans = [].slice.call(g.querySelectorAll('.pan'));
+  var level = 0, praise = 0, crit = 0, puff = 0, busy = false;
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function rep(e, n) { var s = ''; for (var i = 0; i < Math.min(n, 6); i++) s += e; return s; }
+  function setOnly(on) {
+    g.setAttribute('data-only', on ? '1' : '0');
+    only.setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+  function draw() {
+    lv.textContent = String(level);
+    nP.textContent = String(praise); nC.textContent = String(crit);
+    sP.textContent = rep('💐', praise); sC.textContent = rep('🌵', crit);
+    var tilt = Math.max(-16, Math.min(16, (crit - praise) * 4));
+    beam.style.transform = 'rotate(' + tilt + 'deg)';
+    pans.forEach(function (p) { p.style.transform = 'translateX(-50%) rotate(' + (-tilt) + 'deg)'; });  /* お皿は、いつも下にぶら下がる */
+    ego.textContent = '🎈';
+    ego.style.transform = 'scale(' + (puff ? 0.8 + puff * 0.45 : 0) + ')';
+  }
+  fame.addEventListener('click', function () {
+    if (busy) return;
+    level++; restart(lv, 'bump');
+    if (g.getAttribute('data-only') === '1') {
+      praise++; puff++; restart(nP, 'bump');
+      draw();
+      if (puff >= 5) {
+        busy = true;
+        g.setAttribute('data-m', 'pop');
+        ego.style.transform = ''; ego.textContent = '💥'; restart(ego, 'boom');
+        if (window.pengessoPop) {
+          var k = ego.getBoundingClientRect();
+          window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['💥', '🎈', '💨'], 14);
+        }
+        if (navigator.vibrate) { try { navigator.vibrate([30, 30, 60]); } catch (e) {} }
+        setTimeout(function () {
+          ego.classList.remove('boom');
+          puff = 0; crit = praise; setOnly(false); busy = false; draw();
+        }, 1300);
+      } else {
+        g.setAttribute('data-m', 'only');
+      }
+    } else {
+      praise++; crit++; restart(nP, 'bump'); restart(nC, 'bump');
+      g.setAttribute('data-m', level >= 6 ? 'big' : 'even');
+      draw();
+      if (level === 6 && window.pengessoPop) {
+        var r = fame.getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top, ['⭐', '💐', '🌵', '🐧'], 16);
+      }
+    }
+  });
+  only.addEventListener('click', function () {
+    if (busy) return;
+    var on = g.getAttribute('data-only') !== '1';
+    setOnly(on);
+    if (!on) { puff = 0; draw(); }
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    level = 0; praise = 0; crit = 0; puff = 0; busy = false;
+    ego.classList.remove('boom'); setOnly(false); g.setAttribute('data-m', 'start'); draw();
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（1枚目のカード）
+S3 → 使った（2枚目のカード）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード・.big）
+@@message
+褒められる量が増えると、批判される量も増える。半分半分がちょうどいい。
+@@tone
+素材の重さ：真面目（批判がこわい）
+→ 見せ方：ポップに（青とコーラル。てんびんと風船で遊べる）
+@@game_ja
+⚖️ 人気のてんびん：「⭐ もっと人気者に！」を押すたびに人気レベルが上がり、てんびんの左に💐褒め言葉、右に🌵批判が同じ数だけ乗る（てんびんはずっとつり合ったまま）。レベル6で🎉「大人気！批判もふえた。でも、つり合ってる」。「🙉 褒め言葉だけ聞く」をオンにして押すと、💐だけがふえて、てんびんがかたむき、ペンギンの横の🎈「私ってすごい」風船がふくらむ。5回で💥パーン！「天狗になっちゃった。半分半分が、ちょうどいい」→ つり合いに戻る。「最初から」で0に。
+@@combo
+ペンギン × ローポリの木と紙 × 真ちゅうのてんびん
+@@cover
+An extremely cute, chubby round penguin made in low-poly 3D style from wood and paper, with a gentle calm face and a plain white belly, standing next to a realistic antique brass balance scale whose two pans are perfectly level. Bright simple sky blue and soft coral background with soft depth, clean daylight. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

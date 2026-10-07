@@ -1,0 +1,227 @@
+@@meta
+{"title": "Say hello first in a big voice, and grumpy people pass you by", "label": "Big Hello", "seq": 447, "mood": ["lift", "energy"], "tags": ["psychology", "tips", "friends"], "thumbAlt": "A chenille yarn penguin cheerfully holding a small realistic red megaphone in the morning sun"}
+@@ja_title
+大きな声で先に挨拶すると、イヤミな人に狙われにくい
+@@ja_label
+大きな挨拶
+@@h1emoji
+📣
+@@section
+58「嫌味な人に狙われにくくなる」
+@@vars
+    --bg: #fffaea; --text: #3a2c12; --muted: #8a7550;
+    --accent: #f07800; --accent2: #ff4f7b; --h1: #4a2a00; --big: #e06a00; --big-dark: #ffc27a;
+    --glow1: rgba(255,200,40,.32); --glow2: rgba(255,79,123,.16); --glow3: rgba(90,200,255,.20);
+    --shadow: 0 20px 55px rgba(200,120,20,.20); --photo-bg: #fff0c8;
+    --g1: #ffb000; --g2: #ff8a1f; --g3: #ff4f7b; --pop: #ffffff; --pop-text: #c25400; --btn-text: #c25400;
+@@css
+  /* 📣 不機嫌雲パトロール：雲が来る前に、連打で「おはようございます！」の声メーターをためる */
+  .sky { position: relative; height: 210px; max-width: 420px; margin: 14px auto 0; border-radius: 24px; overflow: hidden;
+    background: linear-gradient(180deg, #8fd6ff 0%, #c9ecff 62%, #ffe7a8 62%, #ffd77a 100%); }
+  .sun { position: absolute; right: 10px; top: 8px; font-size: 40px; line-height: 1; opacity: .35; transition: opacity .4s, transform .5s; }
+  .game[data-s="win"] .sun { opacity: 1; transform: scale(1.3) rotate(20deg); }
+  .cloud { position: absolute; top: 18px; left: -2%; font-size: 52px; line-height: 1; transform: translateX(-50%); transition: top .8s ease, opacity .8s ease; }
+  .cloud .mad { position: absolute; right: -6px; top: -4px; font-size: 22px; }
+  .game[data-s="win"] .cloud { top: -70px; opacity: 0; transition-delay: .9s; }
+  .cloud-bub { position: absolute; top: 72px; left: 50%; transform: translateX(-50%); padding: 5px 9px; border-radius: 12px; background: #fff; color: #4a4a5a;
+    font-size: 12.5px; font-weight: 900; white-space: normal; width: max-content; max-width: 150px; line-height: 1.25; display: none; }
+  .cloud-bub span { display: none; }
+  .game[data-s="win"] .cloud-bub, .game[data-s="miss"] .cloud-bub { display: block; }
+  .game[data-s="win"] .cb-win, .game[data-s="miss"] .cb-miss { display: inline; }
+  .row { position: absolute; left: 0; right: 0; bottom: 14px; display: flex; justify-content: space-around; align-items: flex-end; }
+  .pg { position: relative; font-size: 38px; line-height: 1; text-align: center; }
+  .pg .t { position: absolute; right: -10px; top: -10px; font-size: 20px; }
+  .me { transform-origin: 50% 100%; transition: transform .15s ease; }
+  .me .you { display: block; margin-top: 2px; font-size: 11.5px; font-weight: 900; color: #7a4a00; letter-spacing: .06em; }
+  .hello { position: absolute; right: 4px; bottom: 82px; padding: 6px 10px; border-radius: 14px 14px 4px 14px; background: #fff; color: #c25400;
+    font-size: 14px; font-weight: 900; transform-origin: 100% 100%; transform: scale(0); transition: transform .12s ease; max-width: 60%; }
+
+  .voice { display: flex; align-items: center; gap: 10px; max-width: 380px; margin: 14px auto 0; font-size: 13.5px; font-weight: 900; }
+  .bar { flex: 1; height: 16px; border-radius: 999px; background: rgba(255,255,255,.3); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; border-radius: 999px; background: #fff; transition: width .12s ease; }
+  .game[data-s="win"] .bar i { background: #fff27a; }
+
+  .tapbig { display: block; width: min(330px, 100%); min-height: 96px; margin: 14px auto 0; border: 0; border-radius: 999px; cursor: pointer;
+    font: inherit; font-size: clamp(22px, 6vw, 30px); font-weight: 900; color: #c25400; background: #fff;
+    box-shadow: 0 9px 0 #d98200, 0 16px 26px rgba(0,0,0,.16); transition: transform .06s ease, box-shadow .06s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; line-height: 1.2; padding: 10px 16px; }
+  .tapbig:active { transform: translateY(7px); box-shadow: 0 2px 0 #d98200, 0 6px 12px rgba(0,0,0,.16); }
+  .tapbig:focus-visible { outline: 4px solid #fff; outline-offset: 4px; }
+  .tapbig span { display: none; }
+  .game[data-s="idle"] .k-start, .game[data-s="run"] .k-go, .game[data-s="win"] .k-again, .game[data-s="miss"] .k-again { display: inline; }
+  .game[data-s="run"] .tapbig { background: #fff27a; color: #6b3a00; }
+
+  .result { min-height: 60px; max-width: 420px; margin: 14px auto 0; font-weight: 900; font-size: 16px; line-height: 1.4; }
+  .result span { display: none; }
+  .game[data-s="idle"] .r-idle, .game[data-s="run"] .r-run, .game[data-s="win"] .r-win, .game[data-s="miss"] .r-miss { display: inline; }
+  .game[data-s="win"] .result { animation: bounce-in .5s both; }
+@@dark
+  html[data-theme="dark"] .sky { background: linear-gradient(180deg, #2f5a7a 0%, #3f6f8f 62%, #6b5a2a 62%, #7a6530 100%); }
+  html[data-theme="dark"] .cloud-bub, html[data-theme="dark"] .hello { background: #2b2618; color: #ffd9a8; }
+  html[data-theme="dark"] .me .you { color: #ffe0a8; }
+  html[data-theme="dark"] .tapbig { background: #2b2618; color: #ffc27a; }
+  html[data-theme="dark"] .game[data-s="run"] .tapbig { background: #fff27a; color: #6b3a00; }
+@@sents
+S1 | It seems people who say mean things are just grumpy to begin with. | イヤミを言う人は、もともと不機嫌なだけらしいです。
+S2 | And it seems people with a small voice who look down get picked more often. | そして、声が小さくて、しょんぼりしている人が狙われやすいそうです。
+S3 | Of course, the people who get picked did nothing wrong. | もちろん、狙われる人は何も悪くありません。
+S4 | So say "Good morning!" first, in a big voice with a smile. | だから、大きな声と笑顔で、自分から先に「おはようございます！」。
+S5 | At a shop too, a big voice may get you a happy "Yes!" | お店でも、大きな声で注文すると「はい！」と気持ちよく返ってきたりします。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌩️</span>
+      <span class="card-label">Just Grumpy</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎯</span>
+      <span class="card-label">Who Gets Picked</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🤍</span>
+      <span class="card-label">Not Your Fault</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：不機嫌雲パトロール（雲が来る前に、連打で声メーターをためる） -->
+  <section class="game" data-s="idle" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The grumpy cloud is coming!</div>
+    <div class="game-hint">Tap fast to fill your "Good morning!" before the cloud gets to you.</div>
+    <div class="sky" aria-hidden="true">
+      <span class="sun">☀️</span>
+      <div class="cloud"><span class="ce">🌩️</span><b class="mad">💢</b><span class="cloud-bub"><span class="cb-win">"…m-morning." 😳</span><span class="cb-miss">"Hmph." 💢</span></span></div>
+      <div class="hello"><span class="hl">Good morning!</span></div>
+      <div class="row">
+        <div class="pg">🐧<b class="t">🙂</b></div>
+        <div class="pg">🐧<b class="t">🙂</b></div>
+        <div class="pg me"><span class="ic">🐧</span><b class="t">😶</b><span class="you">YOU</span></div>
+      </div>
+    </div>
+    <div class="voice"><span class="vl">📣 Voice</span><span class="bar"><i></i></span></div>
+    <button class="tapbig" type="button"><span class="k-start">▶ Start the morning</span><span class="k-go">📣 Good morning!</span><span class="k-again">↺ Try again</span></button>
+    <div class="result">
+      <span class="r-idle">The cloud is looking for someone to grumble at…</span>
+      <span class="r-run">Faster! Bigger! 📣</span>
+      <span class="r-win">☀️ "Good morning!" The cloud went past you!</span>
+      <span class="r-miss">Not your fault at all. Next time, a bigger hello first!</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📣</span>
+      <span class="card-label">Big Hello</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">☕</span>
+      <span class="card-label">At A Shop</span>
+    </div>
+    <p>{S5}</p>
+  </section>
+@@ui
+Just Grumpy ||| 不機嫌なだけ
+Who Gets Picked ||| 狙われやすい人
+Not Your Fault ||| あなたは悪くない
+Big Hello ||| 大きな挨拶
+At A Shop ||| お店でも
+⚡ TRY IT ||| ⚡ やってみよう
+The grumpy cloud is coming! ||| 不機嫌な雲が来た！
+Tap fast to fill your "Good morning!" before the cloud gets to you. ||| 雲が来る前に、連打して「おはようございます！」をためよう。
+"…m-morning." 😳 ||| 「…お、おはよう。」😳
+"Hmph." 💢 ||| 「フン。」💢
+Good morning! ||| おはようございます！
+YOU ||| あなた
+📣 Voice ||| 📣 声
+▶ Start the morning ||| ▶ 朝をはじめる
+📣 Good morning! ||| 📣 おはようございます！
+↺ Try again ||| ↺ もう一回
+The cloud is looking for someone to grumble at… ||| 雲が、イヤミを言う相手をさがしています…
+Faster! Bigger! 📣 ||| もっと速く！大きく！📣
+☀️ "Good morning!" The cloud went past you! ||| ☀️「おはようございます！」雲は通りすぎていった！
+Not your fault at all. Next time, a bigger hello first! ||| あなたは何も悪くありません。次は、もっと大きな挨拶を先に！
+@@js
+/* 📣 不機嫌雲パトロール：JS は data-s / class / style / 絵文字 だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var NEED = 8, TIME = 4600;
+  var btn = g.querySelector('.tapbig'), bar = g.querySelector('.bar i'), cloud = g.querySelector('.cloud');
+  var ce = g.querySelector('.ce'), me = g.querySelector('.me'), face = g.querySelector('.me .t'), hello = g.querySelector('.hello'), mad = g.querySelector('.mad');
+  var taps = 0, t0 = 0, raf = 0, skip = false;
+  function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
+  function set(s) { g.setAttribute('data-s', s); }
+  function drawVoice() {
+    var p = Math.min(1, taps / NEED);
+    bar.style.width = (p * 100) + '%';
+    me.style.transform = 'scale(' + (1 + p * 0.35) + ')';
+    hello.style.transform = 'scale(' + (taps ? 0.75 + p * 0.55 : 0) + ')';
+    face.textContent = p >= 1 ? '😄' : p >= 0.5 ? '🙂' : '😶';
+  }
+  function place(x) { cloud.style.left = x + '%'; }
+  function reset() {
+    cancelAnimationFrame(raf); taps = 0; drawVoice();
+    ce.textContent = '🌩️'; mad.textContent = '💢'; place(-2);
+  }
+  function tick() {
+    var k = (now() - t0) / TIME;           /* 0 → 1：左のはしから、あなたの上（右から3番目の位置）まで */
+    place(-2 + Math.min(1, k) * 85);
+    if (k >= 1) { set('miss'); mad.textContent = '💢'; return; }
+    raf = requestAnimationFrame(tick);
+  }
+  function start() {
+    reset(); set('run'); t0 = now(); raf = requestAnimationFrame(tick);
+  }
+  function win() {
+    cancelAnimationFrame(raf); set('win');
+    ce.textContent = '☁️'; mad.textContent = '😳';
+    if (window.pengessoPop) {
+      var k = btn.getBoundingClientRect();
+      window.pengessoPop(k.left + k.width / 2, k.top, ['☀️', '📣', '🐧', '✨'], 18);
+    }
+    if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+  }
+  function hit() {
+    taps++; drawVoice();
+    if (taps >= NEED) win();
+  }
+  btn.addEventListener('pointerdown', function () {
+    if (g.getAttribute('data-s') !== 'run') return;
+    skip = true; hit();                       /* 連打は指が触れた瞬間に数える */
+  });
+  btn.addEventListener('click', function () {
+    if (skip) { skip = false; return; }
+    var s = g.getAttribute('data-s');
+    if (s === 'run') hit(); else start();
+  });
+  reset();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+S5 → 使った（5枚目のカード）
+@@message
+大きな声と笑顔で、自分から先に挨拶すると、イヤミな人に狙われにくい。（狙われる人は何も悪くない）
+@@tone
+素材の重さ：真面目（イヤミを言われるのがつらい）
+→ 見せ方：ポップに（朝の黄色とオレンジ。雲が来る前に連打する早押しゲーム）
+@@game_ja
+📣 不機嫌雲パトロール：「▶ 朝をはじめる」を押すと、💢つきの🌩️雲が左から、イヤミを言う相手をさがして近づいてくる（約4.6秒）。「📣 おはようございます！」を連打すると声メーターがたまり、自分のペンギンが大きくなって「おはようございます！」の吹き出しもふくらみ、顔が😶→🙂→😄。8回たまれば雲は☁️になって「…お、おはよう。」😳 と上へ消え、☀️が光って🎉。間に合わなければ雲は「フン。」と止まるが、結果は「あなたは何も悪くありません。次は、もっと大きな挨拶を先に！」（責めない言い方）。「もう一回」で何度でも。
+@@combo
+ペンギン × シェニール糸 × 赤いメガホン
+@@cover
+An extremely cute, chubby round penguin made of soft chenille yarn, with a gentle bright smiling face and a plain white belly, cheerfully holding a small realistic red handheld megaphone in one flipper as if saying good morning. Bright simple sunny yellow and sky blue background with soft depth, fresh morning sunlight. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

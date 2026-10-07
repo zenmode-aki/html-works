@@ -1,0 +1,253 @@
+@@meta
+{"title": "Happiness depends on where you look, not on what you have", "label": "Look Up", "seq": 466, "mood": ["lift", "think"], "tags": ["psychology", "happiness", "mindset"], "thumbAlt": "A chubby round hand-embroidered felt penguin happily looking up at a blooming cherry blossom branch"}
+@@ja_title
+幸せは、何を持っているかより、どこを見るかで決まる
+@@ja_label
+桜を見る
+@@h1emoji
+🌸
+@@section
+78「幸せは目を向ける方向」
+@@vars
+--bg: #fff5f8;
+--text: #33263a;
+--muted: #8a6f80;
+--a: #d4447f;
+--ink: #4a1a33;
+--bigc: #c93a75;
+--bigdark: #ffb3d1;
+--photo: #ffe3ee;
+--shadow: 0 20px 55px rgba(200,70,130,.15);
+--glow1: rgba(255,160,200,.34);
+--glow2: rgba(120,190,255,.24);
+--glow3: rgba(255,220,240,.3);
+--g1: #ea5f97;
+--g2: #c06ad0;
+--g3: #3f97de;
+--btnink: #b8306a;
+--btnshadow: #f2b0cc;
+@@css
+  /* ♨️ 慣れる（カードの中の小さな図） */
+  .fade { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .fade > span { padding: 9px 12px; border-radius: 16px; font-weight: 900; font-size: 15px; }
+  .fade .f1 { background: #fff0c2; color: #7a5600; }
+  .fade .f2 { background: #ffe0ec; color: #a32a5e; }
+  .fade .f3 { background: #eef0f4; color: #5a6070; }
+  .fade .arr { padding: 0; font-size: 20px; }
+
+  /* 🌸 同じ公園で、どこを見る？ */
+  .park { position: relative; height: 240px; max-width: 420px; margin: 16px auto 0; border-radius: 24px; overflow: hidden;
+    background: linear-gradient(180deg, #9fd8ff 0%, #d8f0ff 52%, #b7dd8f 52%, #93c66f 100%); }
+  .branch { position: absolute; top: -6px; left: -10px; right: -10px; height: 40px; border-radius: 0 0 50% 50%; background: #8a5a3c; opacity: .85; }
+  .sky-dim, .ground-dim { position: absolute; left: 0; right: 0; background: rgba(40,30,60,.5); opacity: 0; transition: opacity .35s ease; z-index: 4; pointer-events: none; }
+  .sky-dim { top: 0; height: 52%; }
+  .ground-dim { bottom: 0; height: 48%; }
+  .park[data-look="down"] .sky-dim { opacity: 1; }
+  .park[data-look="up"] .ground-dim { opacity: 1; }
+  .park .it { position: absolute; font-size: 30px; line-height: 1; opacity: 0; transform: scale(.3); transition: opacity .3s ease, transform .4s cubic-bezier(.2,1.6,.4,1); z-index: 3; }
+  .park .it.on { opacity: 1; transform: none; }
+  .park .n0 { left: 8%; top: 30px; } .park .n1 { left: 28%; top: 62px; } .park .n2 { left: 48%; top: 28px; }
+  .park .n3 { left: 68%; top: 64px; } .park .n4 { left: 84%; top: 32px; }
+  .park .t0 { left: 12%; bottom: 22px; } .park .t1 { left: 72%; bottom: 40px; } .park .t2 { left: 84%; bottom: 12px; }
+  .park .pg { position: absolute; left: 50%; bottom: 30px; width: 70px; margin-left: -35px; font-size: 60px; line-height: 1; text-align: center; z-index: 5;
+    transition: transform .35s cubic-bezier(.2,1.4,.4,1); }
+  .park[data-look="up"] .pg { transform: translateY(-6px) rotate(-14deg); }
+  .park[data-look="down"] .pg { transform: translateY(4px) rotate(16deg); }
+  .petal { position: absolute; top: -20px; font-size: 18px; z-index: 2; animation: fall 6s linear infinite; }
+  .petal.p2 { left: 62%; animation-delay: 2s; animation-duration: 7s; } .petal.p1 { left: 22%; }
+  .petal.p3 { left: 40%; animation-delay: 4s; }
+  @keyframes fall { from { transform: translate(0, 0) rotate(0); } to { transform: translate(-30px, 270px) rotate(300deg); } }
+  .hrow { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; font-size: 15px; font-weight: 900; }
+  .hrow b { font-size: 22px; min-width: 2.2em; text-align: left; }
+  .meter-h { margin-top: 6px; }
+  .meter-h i { background: #fff2a8; }
+  .meter-h.slow i { transition: width 2.4s ease-in-out; }
+  .looks { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 400px; margin: 16px auto 0; }
+  .looks .gbtn { width: 100%; }
+  .lotto { margin-top: 12px; min-height: 52px; font-size: 15.5px; background: #fff7d1; color: #7a5600; box-shadow: 0 6px 0 #e8c95a, 0 12px 20px rgba(0,0,0,.14); }
+  .lotto:active { box-shadow: 0 1px 0 #e8c95a, 0 4px 10px rgba(0,0,0,.14); }
+  .msg { min-height: 54px; max-width: 420px; margin: 12px auto 0; }
+  .msg > div { display: none; font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .game[data-r=""] .m-idle, .game[data-r="up"] .m-up, .game[data-r="down"] .m-down, .game[data-r="lotto"] .m-lotto,
+  .game[data-r="fade"] .m-fade, .game[data-r="full"] .m-full { display: block; animation: popin .3s ease; }
+  .again { display: none; }
+  .game[data-r="full"] .again { display: inline-flex; }
+@@dark
+  html[data-theme="dark"] .fade .f1 { background: #463a10; color: #ffe39a; }
+  html[data-theme="dark"] .fade .f2 { background: #4a1f33; color: #ffbfd8; }
+  html[data-theme="dark"] .fade .f3 { background: #2c2e3b; color: #c8ccd8; }
+  html[data-theme="dark"] .lotto { background: #f3e7b8; }
+@@sents
+S1 | At cherry blossom viewing, it seems happy people look at the flowers. | お花見で、幸せな人は桜を見ているそうです。
+S2 | Less happy people seem to look at the trash on the ground. | 幸せを感じにくい人は、足元のゴミを見ているそうです。
+S3 | They are in the same park, but they see different things. | 同じ公園にいても、見ているものが違うんです。
+S4 | Even lottery winners go back to almost the same happiness after a while. | 宝くじに当たった人も、しばらくすると、幸せの度合いはほぼ元に戻るそうです。
+S5 | It is like getting used to hot bath water. | お風呂のお湯に慣れるのと同じです。
+S6 | Happiness depends on where you look. | 幸せは、目を向ける方向で決まります。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌸</span>
+      <span class="card-label">Looking Up</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🥫</span>
+      <span class="card-label">Looking Down</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🏞️</span>
+      <span class="card-label">Same Park</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：同じ公園で「上を見る／下を見る」＋ 宝くじ（すぐ慣れる） -->
+  <section class="game" data-r="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Same park. Where will you look?</div>
+    <div class="game-sub">Fill the happiness meter to 100.</div>
+    <div class="park" data-look="" aria-hidden="true">
+      <div class="branch"></div>
+      <span class="petal p1">🌸</span><span class="petal p2">🌸</span><span class="petal p3">🌸</span>
+      <span class="it nice n0">🌸</span><span class="it nice n1">🐦</span><span class="it nice n2">☀️</span><span class="it nice n3">🦋</span><span class="it nice n4">🌸</span>
+      <span class="it trash t0">🥫</span><span class="it trash t1">🛍️</span><span class="it trash t2">🧃</span>
+      <div class="sky-dim"></div><div class="ground-dim"></div>
+      <div class="pg">🐧</div>
+    </div>
+    <div class="hrow"><span class="h-l">😊 Happiness</span><b class="h-n">30</b></div>
+    <div class="gmeter meter-h" aria-hidden="true"><i></i></div>
+    <div class="looks">
+      <button class="gbtn up" type="button">⬆️ Look up</button>
+      <button class="gbtn down" type="button">⬇️ Look down</button>
+    </div>
+    <button class="gbtn lotto" type="button">🎫 Win the lottery!</button>
+    <div class="msg">
+      <div class="m-idle">Tap a button and see what you find.</div>
+      <div class="m-up">🌸 Oh, pretty!</div>
+      <div class="m-down">🥫 Ugh, trash…</div>
+      <div class="m-lotto">🎫 You won the lottery! Super happy!!</div>
+      <div class="m-fade">♨️ …but you got used to it, like hot bath water.</div>
+      <div class="m-full">🌸 Happiness 100! The park did not change. Only where you looked.</div>
+    </div>
+    <button class="again" type="button">↺ Try again</button>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎫</span>
+      <span class="card-label">Lottery Winners</span>
+    </div>
+    <p>{S4}</p>
+    <p>{S5}</p>
+    <div class="fade" aria-hidden="true">
+      <span class="f1">🎫 WIN!</span><span class="arr">→</span><span class="f2">♨️ used to it</span><span class="arr">→</span><span class="f3">😐 same as before</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">👀</span>
+      <span class="card-label">Where You Look</span>
+    </div>
+    <p class="big">{S6}</p>
+  </section>
+@@ui
+Looking Up ||| 上を見る人
+Looking Down ||| 下を見る人
+Same Park ||| 同じ公園
+Lottery Winners ||| 宝くじ
+Where You Look ||| 見る方向
+Same park. Where will you look? ||| 同じ公園。どこを見る？
+Fill the happiness meter to 100. ||| 幸せメーターを100にしよう。
+😊 Happiness ||| 😊 幸せ
+⬆️ Look up ||| ⬆️ 上を見る
+⬇️ Look down ||| ⬇️ 下を見る
+🎫 Win the lottery! ||| 🎫 宝くじに当たる！
+Tap a button and see what you find. ||| ボタンを押して、何が見つかるか見てみよう。
+🌸 Oh, pretty! ||| 🌸 わあ、きれい！
+🥫 Ugh, trash… ||| 🥫 うわ、ゴミだ…
+🎫 You won the lottery! Super happy!! ||| 🎫 宝くじに当たった！最高に幸せ！！
+♨️ …but you got used to it, like hot bath water. ||| ♨️ …でも、お風呂のお湯みたいに慣れちゃった。
+🌸 Happiness 100! The park did not change. Only where you looked. ||| 🌸 幸せ100！公園は何も変わっていない。変わったのは、見る方向だけ。
+↺ Try again ||| ↺ もう一回
+🎫 WIN! ||| 🎫 当たった！
+♨️ used to it ||| ♨️ 慣れる
+😐 same as before ||| 😐 元どおり
+@@js
+/* 🌸 同じ公園：JS は data-*・class・数字・style だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var park = g.querySelector('.park'), meter = g.querySelector('.meter-h'), bar = meter.querySelector('i'), hn = g.querySelector('.h-n');
+  var nice = [].slice.call(g.querySelectorAll('.it.nice')), trash = [].slice.call(g.querySelectorAll('.it.trash'));
+  var up = g.querySelector('.up'), down = g.querySelector('.down'), lotto = g.querySelector('.lotto'), again = g.querySelector('.again');
+  var START = 30, h = START, ni = 0, ti = 0, timers = [], done = false;
+  function clear() { timers.forEach(clearTimeout); timers = []; meter.classList.remove('slow'); }
+  function show(v) { bar.style.width = v + '%'; hn.textContent = String(v); }
+  function set(r) { g.setAttribute('data-r', ''); void g.offsetWidth; g.setAttribute('data-r', r); }
+  function bounce(el) { el.classList.remove('boing'); void el.offsetWidth; el.classList.add('boing'); }
+  function pop(el, list, n) {
+    if (!window.pengessoPop) return;
+    var r = el.getBoundingClientRect();
+    window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+  }
+  function lookUp() {
+    if (done) return;
+    clear(); park.setAttribute('data-look', 'up');
+    var el = nice[ni % nice.length]; el.classList.add('on'); bounce(el); ni++;
+    h = Math.min(100, h + 14); show(h);
+    if (h >= 100) { done = true; set('full'); up.disabled = down.disabled = lotto.disabled = true; pop(park, ['🌸', '🐧', '✨', '🌸'], 18); }
+    else { set('up'); pop(el, ['🌸'], 5); }
+  }
+  function lookDown() {
+    if (done) return;
+    clear(); park.setAttribute('data-look', 'down');
+    var el = trash[ti % trash.length]; el.classList.add('on'); bounce(el); ti++;
+    h = Math.max(0, h - 14); show(h); set('down');
+  }
+  function win() {
+    if (done) return;
+    clear(); set('lotto'); show(100); bounce(lotto);
+    pop(lotto, ['🎫', '💰', '✨'], 14);
+    timers.push(setTimeout(function () {
+      meter.classList.add('slow'); set('fade'); show(h);
+    }, 1800));
+    timers.push(setTimeout(function () { meter.classList.remove('slow'); }, 4400));
+  }
+  function reset() {
+    clear(); done = false; h = START; ni = 0; ti = 0;
+    nice.concat(trash).forEach(function (el) { el.classList.remove('on'); });
+    park.setAttribute('data-look', ''); up.disabled = down.disabled = lotto.disabled = false;
+    show(h); set('');
+  }
+  up.addEventListener('click', lookUp);
+  down.addEventListener('click', lookDown);
+  lotto.addEventListener('click', win);
+  again.addEventListener('click', reset);
+  show(h);
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・1文目）
+S5 → 使った（4枚目のカード・2文目）
+S6 → 使った（5枚目のカード・.big）
+@@message
+幸せは、何を持っているかより、目を向ける方向で決まる。
+@@tone
+素材の重さ：真面目（幸せの研究）
+→ 見せ方：ポップに（桜のピンクと空の青。同じ公園で「上を見る／下を見る」と、幸せメーターが動く。宝くじはすぐ慣れる）
+@@game_ja
+🌸 同じ公園。どこを見る？：お花見の公園にペンギン。「⬆️ 上を見る」を押すと、ペンギンが上を向いて、桜・鳥・お日さま・ちょうちょが1つずつ見つかり、幸せメーターが上がる（地面は暗くなる）。「⬇️ 下を見る」を押すと、空き缶・袋・ジュースのパックが見つかってメーターが下がる。「🎫 宝くじに当たる！」はメーターが一気に100になるけど、少しすると「…でも、お風呂のお湯みたいに慣れちゃった」とゆっくり元に戻る（点数は増えない）。上を見続けて100になると「公園は何も変わっていない。変わったのは、見る方向だけ。」。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of hand-embroidered felt, standing and happily looking up at one realistic blooming cherry blossom branch above it, a few soft petals in the air. Simple bright pastel-pink background that fades into clear sky blue, with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × 手刺しゅうのフェルト × 桜の枝

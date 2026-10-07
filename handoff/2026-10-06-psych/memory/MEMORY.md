@@ -1,0 +1,3 @@
+- [One public repo is fine](one-public-repo-is-fine.md) — don't propose privatizing/splitting html-works; drafts reachable by URL is accepted
+- [Autonomy, quality first](autonomy-quality-first.md) — don't ask questions; decide the best idea yourself, take time, exceed expectations
+- [Interactivity delights](interactivity-delights.md) — every article needs a tap/game-like interaction; smartphone-first

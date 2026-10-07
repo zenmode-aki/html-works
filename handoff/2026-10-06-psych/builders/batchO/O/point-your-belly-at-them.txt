@@ -1,0 +1,245 @@
+@@meta
+{"title": "Point your belly at them, move your hands, and smile when you talk", "label": "Belly Forward", "seq": 435, "mood": ["lift", "laugh"], "tags": ["psychology", "friends", "tips"], "thumbAlt": "A matte plastic model kit penguin facing forward and talking next to a ceramic coffee mug on a small round table"}
+@@ja_title
+おへそを相手に向けて、手を動かして、笑顔で話す
+@@ja_label
+おへそを向ける
+@@h1emoji
+🐧
+@@section
+39「好印象な話し方3つ」
+@@vars
+    --bg: #fff6f2; --text: #3a2230; --muted: #87697a;
+    --accent: #e8364f; --accent2: #7b5cff; --h1: #3d1530; --big: #d9264a; --big-dark: #ffa0b0;
+    --glow1: rgba(255,95,109,.25); --glow2: rgba(123,92,255,.2); --glow3: rgba(255,179,71,.28);
+    --shadow: 0 20px 55px rgba(190,50,90,.18); --photo-bg: #ffe2e2;
+    --g1: #6f5cff; --g2: #ff5f6d; --g3: #ffb347; --pop: #ffe066; --pop-text: #5a3a00; --btn-text: #c42345;
+@@css
+  /* 🐧 3つのスイッチ：おへそ・手・笑顔をオンにする → 聞いているペンギンの「あったかさ」が上がる */
+  .scene { display: flex; align-items: flex-end; justify-content: center; gap: 18px; max-width: 420px; margin: 14px auto 0; }
+  .spk { position: relative; width: 110px; height: 140px; }
+  /* CSS で描いたペンギン（話す人） */
+  .pen { position: absolute; left: 50%; bottom: 0; width: 96px; height: 124px; margin-left: -48px; }
+  .pen .body { position: absolute; inset: 0; border-radius: 48% 48% 44% 44% / 58% 58% 42% 42%; background: #2c2f4a; box-shadow: inset -6px -8px 0 rgba(0,0,0,.18); }
+  .pen .belly { position: absolute; left: 18%; width: 64%; top: 30%; height: 64%; border-radius: 50% 50% 46% 46%; background: #fffdf7;
+    transition: transform .5s cubic-bezier(.3,1.3,.5,1); }
+  .pen .eye { position: absolute; top: 20%; width: 11px; height: 13px; border-radius: 50%; background: #fff; transition: transform .5s cubic-bezier(.3,1.3,.5,1), border-radius .2s, height .2s; }
+  .pen .eye::after { content: ""; position: absolute; left: 3px; top: 3px; width: 6px; height: 7px; border-radius: 50%; background: #1b1b2b; }
+  .pen .eye.l { left: 30%; } .pen .eye.r { right: 30%; }
+  .pen .beak { position: absolute; left: 50%; top: 31%; width: 18px; height: 11px; margin-left: -9px; border-radius: 50% 50% 60% 60%; background: #ffa62b;
+    transition: transform .5s cubic-bezier(.3,1.3,.5,1); }
+  .pen .cheek { position: absolute; top: 33%; width: 13px; height: 8px; border-radius: 50%; background: #ff8fab; opacity: 0; transition: opacity .3s; }
+  .pen .cheek.l { left: 16%; } .pen .cheek.r { right: 16%; }
+  .pen .fl { position: absolute; top: 40%; width: 20px; height: 50px; border-radius: 50%; background: #23263d; transition: transform .4s; }
+  .pen .fl.l { left: -9px; transform-origin: 70% 10%; transform: rotate(14deg); }
+  .pen .fl.r { right: -9px; transform-origin: 30% 10%; transform: rotate(-14deg); }
+  .pen .foot { position: absolute; bottom: -5px; width: 26px; height: 10px; border-radius: 50%; background: #ffa62b; }
+  .pen .foot.l { left: 22%; } .pen .foot.r { right: 22%; }
+  .phone { position: absolute; left: -12px; top: 44%; font-size: 28px; line-height: 1; transition: opacity .3s, transform .3s; }
+  /* おへそがオフ＝スマホのほうを向いている（おなかが横にずれる） */
+  .game[data-b="0"] .pen .belly { transform: translateX(-26%) scaleX(.6); }
+  .game[data-b="0"] .pen .eye { transform: translateX(-13px); }
+  .game[data-b="0"] .pen .eye.r { transform: translateX(-13px) scale(.75); }
+  .game[data-b="0"] .pen .beak { transform: translateX(-24px) rotate(-8deg); }
+  .game[data-b="1"] .phone { opacity: 0; transform: translateY(14px) scale(.6); }
+  /* 手がオン＝ぱたぱた */
+  .game[data-h="1"] .pen .fl.l { animation: flap-l .5s ease-in-out infinite alternate; }
+  .game[data-h="1"] .pen .fl.r { animation: flap-r .5s ease-in-out infinite alternate .25s; }
+  @keyframes flap-l { from { transform: rotate(14deg); } to { transform: rotate(58deg); } }
+  @keyframes flap-r { from { transform: rotate(-14deg); } to { transform: rotate(-58deg); } }
+  /* 笑顔がオン＝目が「^ ^」・ほっぺ */
+  .game[data-s="1"] .pen .eye { height: 7px; border-radius: 10px 10px 0 0; background: transparent; border: 3px solid #fff; border-bottom: 0; }
+  .game[data-s="1"] .pen .eye::after { display: none; }
+  .game[data-s="1"] .pen .cheek { opacity: .9; }
+
+  .lis { width: 110px; text-align: center; }
+  .lis-face { position: relative; width: 78px; height: 78px; margin: 0 auto; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.25); font-size: 46px; line-height: 1; }
+  .lis-face .react { position: absolute; right: -10px; top: -12px; font-size: 30px; line-height: 1; }
+  .lis-face .react.boing { animation: bounce-in .45s both; }
+  .tag { margin-top: 6px; font-size: 13px; font-weight: 900; }
+
+  .say { max-width: 420px; margin: 12px auto 0; padding: 11px 14px; border-radius: 18px 18px 6px 18px; background: #fff; color: #3d1530;
+    font-weight: 900; font-size: clamp(15.5px, 4.2vw, 18px); line-height: 1.4; min-height: 52px; display: flex; align-items: center; justify-content: center; }
+  .say span { display: none; }
+  .game[data-n="0"] .y0, .game[data-n="1"] .y1, .game[data-n="2"] .y2, .game[data-n="3"] .y3 { display: inline; }
+  .say.show { animation: bounce-in .4s both; }
+
+  .thermo { max-width: 380px; margin: 14px auto 0; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; font-size: 22px; }
+  .tube { position: relative; height: 18px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .tube i { position: absolute; inset: 0 auto 0 0; width: 6%; border-radius: 999px; background: linear-gradient(90deg, #8fd3ff, #ffe066, #ff7a45); background-size: 380px 100%;
+    transition: width .6s cubic-bezier(.2,1.2,.4,1); }
+  .game[data-n="1"] .tube i { width: 36%; } .game[data-n="2"] .tube i { width: 68%; } .game[data-n="3"] .tube i { width: 100%; }
+  .th-l { margin-top: 4px; font-size: 13px; font-weight: 900; opacity: .95; }
+
+  .switches { display: grid; gap: 10px; max-width: 420px; margin: 16px auto 0; }
+  .sw { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 58px; padding: 8px 12px 8px 16px; border: 0; border-radius: 18px;
+    background: rgba(255,255,255,.95); color: var(--btn-text); font: inherit; font-size: 16.5px; font-weight: 900; line-height: 1.3; text-align: left; cursor: pointer;
+    box-shadow: 0 5px 0 rgba(90,20,50,.28); -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: transform .08s ease, box-shadow .08s ease; }
+  .sw:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(90,20,50,.28); }
+  .sw:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .knob { flex: 0 0 auto; position: relative; width: 58px; height: 32px; border-radius: 999px; background: #d9d2dc; transition: background .25s; }
+  .knob::after { content: ""; position: absolute; left: 4px; top: 4px; width: 24px; height: 24px; border-radius: 50%; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,.25);
+    transition: transform .25s cubic-bezier(.3,1.4,.5,1); }
+  .sw[aria-pressed="true"] .knob { background: #ff5f6d; }
+  .sw[aria-pressed="true"] .knob::after { transform: translateX(26px); }
+  .all-on { display: none; max-width: 420px; margin: 12px auto 0; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.24); font-weight: 900; line-height: 1.4; }
+  .game[data-n="3"] .all-on { display: block; animation: bounce-in .5s both; }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 12px 8px; border-radius: 18px; text-align: center; font-size: 28px; line-height: 1.2; font-weight: 900; }
+  .vs .vs-t { display: block; margin-top: 4px; font-size: 15px; letter-spacing: .04em; }
+  .vs-cold { background: #e6f0ff; color: #35558a; }
+  .vs-warm { background: #ffe6d6; color: #a83a14; }
+@@dark
+  html[data-theme="dark"] .vs-cold { background: #243049; color: #b5ccff; }
+  html[data-theme="dark"] .vs-warm { background: #4a2a1e; color: #ffc4a3; }
+  html[data-theme="dark"] .say { background: #2c2030; color: #ffe2ea; }
+  html[data-theme="dark"] .sw { background: #2c2030; color: #ffc2cc; }
+  html[data-theme="dark"] .knob { background: #5a4a5e; }
+@@sents
+S1 | It seems there are 3 tips for a nice way of talking. | 感じのいい話し方には、3つのコツがあるそうです。
+S2 | 1st, point your belly button at the person. | 1つめは、おへそを相手に向けることです。
+S3 | If you talk while looking at a screen, people may feel you are a little cold. | 画面を見ながら話すと、ちょっと冷たく感じられてしまいます。
+S4 | 2nd, move your hands when you talk, and 3rd, smile. | 2つめは手を動かしながら話すこと、3つめは笑顔です。
+S5 | Moving your hands also helps you relax, they say. | 手を動かすと、自分の緊張もほぐれるそうです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🗣️</span>
+      <span class="card-label">Three Tips</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎯</span>
+      <span class="card-label">Belly First</span>
+    </div>
+    <p>{S2}</p>
+    <p>{S3}</p>
+    <div class="vs" aria-hidden="true">
+      <div class="vs-cold">📱🐧<b class="vs-t">Cold</b></div>
+      <div class="vs-warm">🐧💬<b class="vs-t">Warm</b></div>
+    </div>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：3つのスイッチ（おへそ・手・笑顔 → 聞いている人のあったかさ） -->
+  <section class="game" data-b="0" data-h="0" data-s="0" data-n="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Turn on the 3 tips</div>
+    <div class="game-hint">Penguins have big bellies, so tip 1 is easy!</div>
+    <div class="scene">
+      <div class="spk" aria-hidden="true">
+        <div class="pen">
+          <div class="fl l"></div><div class="fl r"></div>
+          <div class="body"></div><div class="belly"></div>
+          <div class="eye l"></div><div class="eye r"></div>
+          <div class="cheek l"></div><div class="cheek r"></div>
+          <div class="beak"></div>
+          <div class="foot l"></div><div class="foot r"></div>
+        </div>
+        <span class="phone">📱</span>
+      </div>
+      <div class="lis">
+        <div class="lis-face" aria-hidden="true">🐧<span class="react">🥶</span></div>
+        <div class="tag">Listener</div>
+      </div>
+    </div>
+    <div class="say">
+      <span class="y0">🥶 "…Are you even talking to me?"</span>
+      <span class="y1">😐 "Hmm. OK."</span>
+      <span class="y2">🙂 "Oh, that sounds fun!"</span>
+      <span class="y3">🥰 "I love talking with you!"</span>
+    </div>
+    <div class="thermo" aria-hidden="true"><span>🥶</span><div class="tube"><i></i></div><span>🔥</span></div>
+    <div class="th-l">🌡️ How warm the listener feels</div>
+    <div class="switches">
+      <button class="sw" type="button" data-k="b" aria-pressed="false"><span class="sw-t">① 🎯 Belly to them</span><span class="knob" aria-hidden="true"></span></button>
+      <button class="sw" type="button" data-k="h" aria-pressed="false"><span class="sw-t">② 🪶 Move your flippers</span><span class="knob" aria-hidden="true"></span></button>
+      <button class="sw" type="button" data-k="s" aria-pressed="false"><span class="sw-t">③ 😊 Smile</span><span class="knob" aria-hidden="true"></span></button>
+    </div>
+    <div class="all-on">🔥 So warm! All 3 tips are on.</div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😊</span>
+      <span class="card-label">Hands and Smile</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌿</span>
+      <span class="card-label">Relax Bonus</span>
+    </div>
+    <p>{S5}</p>
+  </section>
+@@ui
+Three Tips ||| 3つのコツ
+Belly First ||| まず、おへそ
+Hands and Smile ||| 手と笑顔
+Relax Bonus ||| おまけ：緊張がほぐれる
+Cold ||| 冷たい
+Warm ||| あたたかい
+⚡ TRY IT ||| ⚡ やってみよう
+Turn on the 3 tips ||| 3つのコツをオンにしよう
+Penguins have big bellies, so tip 1 is easy! ||| ペンギンはおなかが大きいので、1つめは得意です！
+Listener ||| 聞く人
+🥶 "…Are you even talking to me?" ||| 🥶「…それ、私に話してる？」
+😐 "Hmm. OK." ||| 😐「ふーん。そう。」
+🙂 "Oh, that sounds fun!" ||| 🙂「へえ、楽しそう！」
+🥰 "I love talking with you!" ||| 🥰「あなたと話すの、大好き！」
+🌡️ How warm the listener feels ||| 🌡️ 聞く人のあったかさ
+① 🎯 Belly to them ||| ① 🎯 おへそを相手に
+② 🪶 Move your flippers ||| ② 🪶 手（つばさ）を動かす
+③ 😊 Smile ||| ③ 😊 笑顔
+🔥 So warm! All 3 tips are on. ||| 🔥 あったか〜い！3つぜんぶオン。
+↺ Start over ||| ↺ 最初から
+@@js
+/* 🐧 3つのスイッチ：JS は data-b / data-h / data-s / data-n / aria-pressed / 絵文字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var REACT = ['🥶', '😐', '🙂', '🥰'];
+  var sws = [].slice.call(g.querySelectorAll('.sw'));
+  var react = g.querySelector('.react'), say = g.querySelector('.say');
+  var st = { b: 0, h: 0, s: 0 };
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function draw(anim) {
+    var n = st.b + st.h + st.s;
+    g.setAttribute('data-b', String(st.b)); g.setAttribute('data-h', String(st.h)); g.setAttribute('data-s', String(st.s));
+    var before = +g.getAttribute('data-n');
+    g.setAttribute('data-n', String(n));
+    sws.forEach(function (w) { w.setAttribute('aria-pressed', st[w.getAttribute('data-k')] ? 'true' : 'false'); });
+    react.textContent = REACT[n];
+    if (anim) { restart(react, 'boing'); restart(say, 'show'); }
+    if (anim && n === 3 && before < 3 && window.pengessoPop) {
+      var r = react.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🔥', '💖', '🐧', '✨'], 20);
+    }
+  }
+  sws.forEach(function (w) {
+    w.addEventListener('click', function () { var k = w.getAttribute('data-k'); st[k] = st[k] ? 0 : 1; draw(true); });
+  });
+  g.querySelector('.reset').addEventListener('click', function () { st = { b: 0, h: 0, s: 0 }; draw(true); });
+  draw(false);
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード・.big）
+S5 → 使った（4枚目のカード）
+@@message
+おへそを相手に向けて、手を動かして、笑顔で話すと、あたたかく伝わる。
+@@tone
+素材の重さ：真面目（話し方のコツ）
+→ 見せ方：ポップに（紫から夕焼け色へ＝冷たい→あたたかい。CSS で描いたペンギンが、スイッチで向き・つばさ・表情を変える）
+@@game_ja
+🐧 3つのスイッチ：CSS で描いた「話すペンギン」と、聞くペンギン。最初は話すペンギンがスマホ（📱）のほうを向いていて、聞く人は 🥶「…それ、私に話してる？」。①おへそを相手に（体がこっちを向いて、おなかが正面に）②手（つばさ）を動かす（ぱたぱた動く）③笑顔（目が「^ ^」になってほっぺが出る）のスイッチをオンにするたびに、温度計が 🥶→🔥 に伸びて、聞く人の反応が 😐→🙂→🥰「あなたと話すの、大好き！」に変わる。3つぜんぶオンで 🔥。
+@@combo
+ペンギン × つや消しのプラモデル × 陶器のマグカップと小さな丸テーブル
+@@cover
+An extremely cute, chubby round penguin built like a matte plastic model kit, with a gentle smiling face and a plain white belly turned straight toward the viewer, both flippers open in a friendly talking gesture, standing beside a realistic ceramic coffee mug on a small round wooden table. Bright simple coral and warm yellow background with soft depth and cozy light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

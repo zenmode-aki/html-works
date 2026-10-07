@@ -1,0 +1,214 @@
+@@meta
+{"title": "Money is a thank-you ticket, and using it helps someone too", "label": "Thank-You Ticket", "seq": 502, "mood": ["lift", "think"], "tags": ["psychology", "money", "happiness"], "thumbAlt": "A soft felted wool penguin holding up one shiny gold coin with both flippers, smiling"}
+@@ja_title
+お金は「ありがとう」のチケット。使うことも、だれかの役に立つ
+@@ja_label
+ありがとう券
+@@h1emoji
+🪙
+@@section
+144「お金の考え方」
+@@vars
+    --bg: #fffbea; --text: #33290f; --muted: #7a6a45;
+    --accent: #b36b00; --accent2: #1f9d55; --h1: #3d2c00; --big: #a35f00; --big-dark: #ffd36b;
+    --glow1: rgba(255,200,50,.38); --glow2: rgba(60,200,120,.2); --glow3: rgba(255,150,60,.18);
+    --shadow: 0 20px 55px rgba(150,100,0,.18); --photo-bg: #fff3c4;
+    --g1: #f2a20c; --g2: #e8781c; --g3: #189c52; --pop: #fff27a; --pop-text: #4a3500; --btn-text: #a35f00;
+@@css
+  /* 🪙 コインのリレー：パンを買う → パン屋 → 小麦農家 → トラック → また自分へ。止まるたびに「ありがとう」が1つ増える */
+  .ticket { display: flex; align-items: center; gap: 12px; margin-top: 14px; padding: 12px 14px; border-radius: 18px;
+    background: #fff4c9; border: 3px dashed #e3b23c; color: #5b4300; font-weight: 900; }
+  .ticket .tk-e { font-size: 30px; line-height: 1; }
+  .ticket .tk-t { font-size: 15.5px; line-height: 1.4; }
+
+  .ring { position: relative; width: min(310px, 100%); aspect-ratio: 1 / 1; margin: 14px auto 6px; }
+  .ring::before { content: ""; position: absolute; inset: 27%; border-radius: 50%; border: 4px dashed rgba(255,255,255,.6); }
+  .st { position: absolute; width: 45%; display: grid; justify-items: center; gap: 2px; padding: 8px 4px 7px; border-radius: 20px;
+    background: rgba(255,255,255,.18); transition: background .3s ease, transform .3s ease; }
+  .st0 { top: 0; left: 0; } .st1 { top: 0; right: 0; } .st2 { bottom: 0; right: 0; } .st3 { bottom: 0; left: 0; }
+  .st-e { font-size: 30px; line-height: 1.1; }
+  .st-n { font-size: 14px; font-weight: 900; line-height: 1.25; }
+  .st-ty { font-size: 13px; font-weight: 900; line-height: 1.25; padding: 2px 8px; border-radius: 999px; background: #fff; color: #a35f00;
+    visibility: hidden; opacity: 0; transform: scale(.6); transition: opacity .25s ease, transform .3s cubic-bezier(.2,1.4,.4,1); }
+  .st.lit { background: rgba(255,255,255,.34); animation: hop .45s ease; }
+  .st.lit .st-ty { visibility: visible; opacity: 1; transform: none; }
+  .coin { position: absolute; left: 38%; top: 38%; width: 52px; height: 52px; margin: -26px 0 0 -26px; display: grid; place-items: center;
+    border-radius: 50%; background: #fff27a; box-shadow: 0 6px 0 #d1a800, 0 10px 18px rgba(0,0,0,.18);
+    transition: left .6s cubic-bezier(.4,1.4,.5,1), top .6s cubic-bezier(.4,1.4,.5,1); }
+  .coin-e { font-size: 30px; line-height: 1; }
+  .game[data-at="1"] .coin { left: 62%; top: 38%; }
+  .game[data-at="2"] .coin { left: 62%; top: 62%; }
+  .game[data-at="3"] .coin { left: 38%; top: 62%; }
+  .coin.spin { animation: wiggle .5s ease; }
+
+  .tally { display: flex; justify-content: center; align-items: baseline; gap: 6px; margin-top: 6px; font-weight: 900; }
+  .tally .ty-l { font-size: 15.5px; }
+  .tally .ty-n { font-size: 34px; line-height: 1; }
+
+  .hint { min-height: 48px; margin: 8px auto 0; max-width: 420px; font-size: 15px; font-weight: 800; line-height: 1.45; }
+  .hint > span { display: none; }
+  .game[data-step="0"] .h0, .game[data-step="1"] .h1, .game[data-step="2"] .h2, .game[data-step="3"] .h3 { display: inline; }
+  .game[data-s="done"] .hint { display: none; }
+
+  .go { width: min(340px, 100%); min-height: 64px; margin-top: 8px; font-size: 18px; }
+  .go > span { display: none; }
+  .game[data-step="0"] .g0, .game[data-step="1"] .g1, .game[data-step="2"] .g2, .game[data-step="3"] .g3 { display: inline; }
+  .game[data-s="done"] .go { display: none; }
+
+  .result { display: none; margin-top: 10px; padding: 14px 12px; border-radius: 20px; background: rgba(255,255,255,.2); }
+  .game[data-s="done"] .result { display: block; animation: bounce-in .5s both; }
+  .r-big { font-size: 19px; font-weight: 900; line-height: 1.4; }
+  .r-sub { margin-top: 6px; font-size: 15px; font-weight: 800; line-height: 1.45; opacity: .95; }
+  .again { display: none; }
+  .game[data-s="done"] .again { display: inline-flex; }
+@@dark
+  html[data-theme="dark"] .ticket { background: #3d3417; border-color: #8a6d1f; color: #ffe39a; }
+  html[data-theme="dark"] .st-ty { background: #2a2416; color: #ffd36b; }
+@@sents
+S1 | It seems a 10,000 yen bill is a thank-you ticket that says, "You helped people this much." | 1万円札は、「これだけ人の役に立ちました」という「ありがとう」のチケットなんだそうです。
+S2 | You get money because you helped someone. | お金をもらえるのは、だれかの役に立ったからです。
+S3 | And using money also helps someone. | そして、お金を使うことも、だれかの役に立っています。
+S4 | For example, if you buy bread, a "thank you" goes to the baker and to the wheat farmer. | たとえばパンを買うと、パン屋さんにも小麦農家さんにも「ありがとう」が届きます。
+S5 | Money is a ticket that carries "thank you." | お金は、「ありがとう」を運ぶチケットです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💴</span>
+      <span class="card-label">The Ticket</span>
+    </div>
+    <p>{S1}</p>
+    <div class="ticket" aria-hidden="true"><span class="tk-e">🎫</span><span class="tk-t">10,000 yen = "You helped people this much."</span></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔁</span>
+      <span class="card-label">Both Ways</span>
+    </div>
+    <p>{S2}</p>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：コインのリレー -->
+  <section class="game" data-s="play" data-step="0" data-at="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Follow 1 coin</div>
+    <div class="ring">
+      <div class="st st0"><span class="st-e">🐧</span><span class="st-n">You</span><span class="st-ty">💛 Thank you!</span></div>
+      <div class="st st1"><span class="st-e">🥐</span><span class="st-n">Bakery</span><span class="st-ty">💛 Thank you!</span></div>
+      <div class="st st2"><span class="st-e">🌾</span><span class="st-n">Wheat farm</span><span class="st-ty">💛 Thank you!</span></div>
+      <div class="st st3"><span class="st-e">🚚</span><span class="st-n">Truck driver</span><span class="st-ty">💛 Thank you!</span></div>
+      <div class="coin" aria-hidden="true"><span class="coin-e">🪙</span></div>
+    </div>
+    <div class="tally"><span class="ty-l">💛 Thank-yous:</span> <span class="ty-n">0</span></div>
+    <div class="hint">
+      <span class="h0">You have 1 coin. Let's use it!</span>
+      <span class="h1">The baker is happy. Now the bakery needs wheat.</span>
+      <span class="h2">The farm is happy. A truck carried the wheat.</span>
+      <span class="h3">The driver is happy. Where does the coin go next?</span>
+    </div>
+    <button class="gbtn pop go" type="button">
+      <span class="g0">🥐 Buy bread</span>
+      <span class="g1">🌾 The bakery buys wheat</span>
+      <span class="g2">🚚 The farm pays the truck</span>
+      <span class="g3">🔁 Keep it moving</span>
+    </button>
+    <div class="result">
+      <div class="r-big">🎉 1 coin made 4 thank-yous!</div>
+      <div class="r-sub">It came back to you, because you helped someone too.</div>
+    </div>
+    <div class="again-row"><button class="gbtn again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🥐</span>
+      <span class="card-label">Buy Bread</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎫</span>
+      <span class="card-label">Thank You</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+The Ticket ||| チケット
+Both Ways ||| どちらも
+Buy Bread ||| パンを買う
+Thank You ||| ありがとう
+10,000 yen = "You helped people this much." ||| 1万円 ＝「これだけ人の役に立ちました」
+⚡ TRY IT ||| ⚡ やってみよう
+Follow 1 coin ||| 1枚のコインを追いかけよう
+You ||| あなた
+Bakery ||| パン屋さん
+Wheat farm ||| 小麦農家さん
+Truck driver ||| トラックの運転手さん
+💛 Thank you! ||| 💛 ありがとう！
+💛 Thank-yous: ||| 💛 ありがとうの数：
+You have 1 coin. Let's use it! ||| コインが1枚あります。使ってみよう！
+The baker is happy. Now the bakery needs wheat. ||| パン屋さんがうれしそう。今度はパン屋さんが小麦を買います。
+The farm is happy. A truck carried the wheat. ||| 農家さんがうれしそう。小麦はトラックが運んでくれました。
+The driver is happy. Where does the coin go next? ||| 運転手さんがうれしそう。コインは次にどこへ行くかな？
+🥐 Buy bread ||| 🥐 パンを買う
+🌾 The bakery buys wheat ||| 🌾 パン屋さんが小麦を買う
+🚚 The farm pays the truck ||| 🚚 農家さんがトラックにはらう
+🔁 Keep it moving ||| 🔁 コインをまわす
+🎉 1 coin made 4 thank-yous! ||| 🎉 1枚のコインが「ありがとう」を4つ生みました！
+It came back to you, because you helped someone too. ||| あなたもだれかの役に立ったから、コインが戻ってきました。
+↺ Try again ||| ↺ もう一回
+@@js
+/* 🪙 コインのリレー：ボタンを押すたびにコインが次の人へ動き、その人に「ありがとう」が灯る。JS は data-* と class と数字だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var go = g.querySelector('.go'), again = g.querySelector('.again'), n = g.querySelector('.ty-n');
+  var coin = g.querySelector('.coin'), st = [].slice.call(g.querySelectorAll('.st'));
+  var step = 0;
+  function pop(el, list, k) {
+    if (!window.pengessoPop) return;
+    var b = el.getBoundingClientRect();
+    window.pengessoPop(b.left + b.width / 2, b.top + b.height / 2, list, k);
+  }
+  go.addEventListener('click', function () {
+    if (g.getAttribute('data-s') !== 'play') return;
+    step++;
+    var at = step % 4;
+    g.setAttribute('data-at', at);
+    coin.classList.remove('spin'); void coin.offsetWidth; coin.classList.add('spin');
+    st[at].classList.remove('lit'); void st[at].offsetWidth; st[at].classList.add('lit');
+    n.textContent = step;
+    if (step >= 4) {
+      g.setAttribute('data-s', 'done');
+      setTimeout(function () { pop(coin, ['🪙', '💛', '🥐', '🐧', '✨'], 18); }, 450);
+      if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+    } else {
+      g.setAttribute('data-step', step);
+      pop(st[at], ['💛'], 6);
+    }
+  });
+  again.addEventListener('click', function () {
+    step = 0; n.textContent = '0';
+    st.forEach(function (s) { s.classList.remove('lit'); });
+    g.setAttribute('data-at', '0'); g.setAttribute('data-step', '0'); g.setAttribute('data-s', 'play');
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード・.big）
+@@message
+お金は「人の役に立った」ことを表すチケット。稼ぐことも使うことも、だれかの「ありがとう」になる。
+@@tone
+素材の重さ：真面目（お金の考え方。投資やお金の増やし方の話はしない）
+→ 見せ方：ポップに（金色とオレンジと緑。1枚のコインがぐるっと町を回り、止まるたびに「ありがとう」が灯る）
+@@game_ja
+🪙 1枚のコインを追いかけよう：4つの場所（あなた・パン屋さん・小麦農家さん・トラックの運転手さん）が輪になって並ぶ。ボタンを押すたびにコインが次の場所へぴょんと動き、そこに「💛 ありがとう！」が灯る（ボタンの文字も「パンを買う」→「パン屋さんが小麦を買う」→「農家さんがトラックにはらう」→「コインをまわす」と変わる）。4回でコインが自分に戻ってきて「1枚のコインが『ありがとう』を4つ生みました！」。お金の増やし方などのアドバイスはしない。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of soft felted wool, smiling and holding up one realistic shiny gold coin with both flippers like a treasure. A simple bright warm-yellow background that fades into soft mint green with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × ふわふわ羊毛フェルト × 金色のコイン

@@ -1,0 +1,230 @@
+@@meta
+{"title": "A short nap is said to be better than a long one", "label": "Short Nap", "seq": 484, "mood": ["lift", "energy"], "tags": ["psychology", "sleep", "rest"], "thumbAlt": "A chubby corduroy and felt penguin napping sitting up next to a small classic twin-bell alarm clock"}
+@@ja_title
+昼寝は、短いほうがいい
+@@ja_label
+短い昼寝
+@@h1emoji
+⏰
+@@section
+105「昼寝のコツ」
+@@vars
+    --bg: #fffbea; --text: #33301f; --muted: #7d7558;
+    --accent: #d97d00; --accent2: #22b98c; --h1: #3d2f00; --big: #b86400; --big-dark: #ffd27a;
+    --glow1: rgba(255,210,80,.32); --glow2: rgba(70,210,170,.2); --glow3: rgba(255,160,90,.18);
+    --shadow: 0 20px 55px rgba(170,120,20,.18); --photo-bg: #fff1c4;
+    --g1: #ffb020; --g2: #ff8a3d; --g3: #22b98c; --pop: #3b2fa8; --pop-text: #fff; --btn-text: #b86400;
+@@css
+  /* ⏰ 昼寝アラーム：時計が早送りで進む → ちょうどいいところで「起きて！」 */
+  .nap { position: relative; max-width: 420px; margin: 16px auto 0; padding: 14px 14px 12px; border-radius: 24px;
+    background: linear-gradient(180deg, #fff7d6, #ffffff); color: #3d2f00; box-shadow: 0 10px 24px rgba(120,70,0,.18); }
+  .nap-top { display: grid; grid-template-columns: 84px 1fr; align-items: center; gap: 10px; text-align: left; }
+  .game .bed { position: relative; height: 76px; display: grid; place-items: center; font-size: 56px; line-height: 1; }
+  .bed .pg { display: inline-block; transition: transform .4s ease; }
+  .game[data-s="run"] .bed .pg { transform: rotate(-80deg) translateX(-6px); }
+  .bed .zz { position: absolute; right: 0; top: -4px; font-size: 24px; opacity: 0; }
+  .game[data-s="run"] .bed .zz { opacity: 1; animation: zz 1s ease-in-out infinite alternate; }
+  @keyframes zz { from { transform: translateY(0) scale(.9); } to { transform: translateY(-8px) scale(1.1); } }
+  .bed .face { position: absolute; right: -2px; top: -2px; font-size: 28px; line-height: 1; }
+  .game[data-s="run"] .bed .face { opacity: 0; }
+  .mins-l { font-size: 12.5px; font-weight: 900; color: #b86400; letter-spacing: .04em; }
+  .mins { font-size: 46px; font-weight: 900; line-height: 1; letter-spacing: -.02em; }
+  .mins small { font-size: .38em; margin-left: 4px; letter-spacing: .02em; }
+  .zones { position: relative; display: flex; height: 22px; margin-top: 14px; border-radius: 999px; overflow: hidden; }
+  .zones span { display: block; height: 100%; }
+  .z-short { width: 11.1%; background: #d9d4c4; }
+  .z-good { width: 16.7%; background: #2fd3a0; }
+  .z-heavy { width: 27.8%; background: #ffcf4a; }
+  .z-long { width: 44.4%; background: #ff8a70; }
+  .marker { position: absolute; top: -6px; left: 0; width: 6px; height: 34px; margin-left: -3px; border-radius: 4px; background: #2b2050;
+    box-shadow: 0 0 0 2px #fff; }
+  .zone-wrap { position: relative; }
+  .scale { display: flex; justify-content: space-between; margin-top: 4px; font-size: 12px; font-weight: 900; color: #8a7a50; }
+  .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 12px; margin-top: 6px; font-size: 12.5px; font-weight: 900; color: #5a4a20; }
+  .legend i { display: inline-block; width: 12px; height: 12px; margin-right: 4px; border-radius: 4px; vertical-align: -1px; font-style: normal; }
+  .legend .lg-g i { background: #2fd3a0; } .legend .lg-h i { background: #ffcf4a; } .legend .lg-l i { background: #ff8a70; }
+
+  .wakebtn { display: block; width: min(320px, 100%); min-height: 84px; margin: 16px auto 0; font-size: clamp(22px, 6vw, 28px); }
+  .wakebtn span { display: none; }
+  .game[data-s="idle"] .w-start, .game[data-s="run"] .w-wake, .game[data-s="done"] .w-again { display: inline; }
+  .game[data-s="run"] .wakebtn { background: #ff5a4f; color: #fff; animation: ring .5s ease-in-out infinite; }
+  @keyframes ring { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-2deg); } 75% { transform: rotate(2deg); } }
+
+  .result { margin-top: 14px; min-height: 84px; }
+  .result > div { display: none; }
+  .game:not([data-s="done"]) .r-hint { display: block; font-size: 15px; font-weight: 800; opacity: .95; padding-top: 6px; line-height: 1.45; }
+  .game[data-s="done"][data-r="short"] .r-short, .game[data-s="done"][data-r="good"] .r-good,
+  .game[data-s="done"][data-r="heavy"] .r-heavy, .game[data-s="done"][data-r="long"] .r-long { display: block; animation: bounce-in .45s both; }
+  .verdict { font-size: 18px; font-weight: 900; line-height: 1.4; }
+  .tonight { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 6px 14px; border-radius: 999px; background: rgba(255,255,255,.22);
+    font-size: 15px; font-weight: 900; }
+  .tonight b { font-size: 22px; }
+  .streak { margin-top: 10px; font-size: 14px; font-weight: 900; opacity: .95; }
+  .streak .sn { font-size: 20px; }
+@@dark
+  html[data-theme="dark"] .nap { background: linear-gradient(180deg, #2f2a1c, #22242f); color: #f4ecd6; }
+  html[data-theme="dark"] .mins-l { color: #ffd27a; }
+  html[data-theme="dark"] .scale, html[data-theme="dark"] .legend { color: #d9cfae; }
+  html[data-theme="dark"] .z-short { background: #57524a; }
+  html[data-theme="dark"] .marker { background: #fff; box-shadow: 0 0 0 2px #2b2050; }
+@@sents
+S1 | It is said that a short nap is better. | 昼寝は、短いほうがいいと言われています。
+S2 | It seems about 15 to 20 minutes is just right. | 15〜20分くらいがちょうどいいそうです。
+S3 | If you sleep too long, your sleep at night may get worse. | 長く寝すぎると、夜の眠りにひびくことがあります。
+S4 | So that "5 more minutes" does not become "2 more hours," let an alarm help you. | 「あと5分」が「あと2時間」にならないように、アラームを味方につけましょう。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😴</span>
+      <span class="card-label">Short Is Better</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">⏱️</span>
+      <span class="card-label">Just Right</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：昼寝アラーム -->
+  <section class="game" data-s="idle" data-r="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Nap alarm: wake up at the right time!</div>
+    <div class="game-hint">Time runs fast here. 1 second = 10 minutes.</div>
+    <div class="nap">
+      <div class="nap-top">
+        <div class="bed" aria-hidden="true"><span class="pg">🐧</span><span class="zz">💤</span><span class="face">🙂</span></div>
+        <div>
+          <div class="mins-l">😴 Nap time</div>
+          <div class="mins"><span class="mm">0</span><small>min</small></div>
+        </div>
+      </div>
+      <div class="zone-wrap" aria-hidden="true">
+        <div class="zones"><span class="z-short"></span><span class="z-good"></span><span class="z-heavy"></span><span class="z-long"></span></div>
+        <div class="marker"></div>
+      </div>
+      <div class="scale" aria-hidden="true"><span>0</span><span>30</span><span>60</span><span>90</span></div>
+      <div class="legend" aria-hidden="true"><span class="lg-g"><i></i>Fresh</span><span class="lg-h"><i></i>Heavy</span><span class="lg-l"><i></i>Too long</span></div>
+    </div>
+    <button class="gbtn pop wakebtn" type="button">
+      <span class="w-start">😴 Start the nap</span>
+      <span class="w-wake">⏰ Wake up!</span>
+      <span class="w-again">↺ Nap again</span>
+    </button>
+    <div class="result">
+      <div class="r-hint">Stop the alarm in the green zone.</div>
+      <div class="r-short"><div class="verdict">😅 That was just a blink! A little longer is OK.</div><div class="tonight"><span class="tn">Tonight:</span> <b>🌙</b></div></div>
+      <div class="r-good"><div class="verdict">🔋 Fresh! Your head feels clear.</div><div class="tonight"><span class="tn">Tonight:</span> <b>🌙✨</b></div></div>
+      <div class="r-heavy"><div class="verdict">😪 A little long. Your body feels heavy.</div><div class="tonight"><span class="tn">Tonight:</span> <b>🌥️</b></div></div>
+      <div class="r-long"><div class="verdict">☁️ Too long! Tonight's sleep may get cloudy.</div><div class="tonight"><span class="tn">Tonight:</span> <b>☁️</b></div></div>
+    </div>
+    <div class="streak"><span class="sl">🔋 Fresh naps in a row:</span> <span class="sn">0</span></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌙</span>
+      <span class="card-label">Too Long</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">⏰</span>
+      <span class="card-label">Alarm Friend</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Short Is Better ||| 短いほうがいい
+Just Right ||| ちょうどいい長さ
+Too Long ||| 長すぎると
+Alarm Friend ||| アラームは味方
+⚡ TRY IT ||| ⚡ やってみよう
+Nap alarm: wake up at the right time! ||| 昼寝アラーム：ちょうどいいところで起きよう！
+Time runs fast here. 1 second = 10 minutes. ||| ここでは時間が早送りです。1秒＝10分。
+😴 Nap time ||| 😴 昼寝の時間
+min ||| 分
+Fresh ||| スッキリ
+Heavy ||| だるい
+Too long ||| 長すぎ
+😴 Start the nap ||| 😴 昼寝をはじめる
+⏰ Wake up! ||| ⏰ 起きて！
+↺ Nap again ||| ↺ もう一回寝る
+Stop the alarm in the green zone. ||| 緑のところでアラームを止めてね。
+😅 That was just a blink! A little longer is OK. ||| 😅 まばたきくらいでした！もう少し寝てもいいよ。
+Tonight: ||| 今夜の眠り：
+🔋 Fresh! Your head feels clear. ||| 🔋 スッキリ！頭が晴れました。
+😪 A little long. Your body feels heavy. ||| 😪 ちょっと長め。体がだるい。
+☁️ Too long! Tonight's sleep may get cloudy. ||| ☁️ 長すぎ！今夜の眠りがくもりそう。
+🔋 Fresh naps in a row: ||| 🔋 スッキリ昼寝の連続記録：
+@@js
+/* ⏰ 昼寝アラーム：1秒＝10分で時計が進む。止めた分数で結果を出す。JS は data-s / data-r と数字と style だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var btn = g.querySelector('.wakebtn'), mm = g.querySelector('.mm'), marker = g.querySelector('.marker');
+  var face = g.querySelector('.bed .face'), sn = g.querySelector('.sn');
+  var MAX = 90, PER_SEC = 10, t0 = 0, raf = 0, mins = 0, streak = 0, skip = false;
+  function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
+  function set(s, r) { g.setAttribute('data-s', s); g.setAttribute('data-r', r || ''); }
+  function show(m) {
+    mm.textContent = Math.floor(m);
+    marker.style.left = (Math.min(m, MAX) / MAX * 100) + '%';
+  }
+  function tick() {
+    mins = (now() - t0) / 1000 * PER_SEC;
+    if (mins >= MAX) { mins = MAX; show(mins); finish(); return; }
+    show(mins);
+    raf = requestAnimationFrame(tick);
+  }
+  function start() {
+    set('run'); mins = 0; show(0); t0 = now();
+    raf = requestAnimationFrame(tick);
+  }
+  function finish() {
+    if (g.getAttribute('data-s') !== 'run') return;
+    cancelAnimationFrame(raf);
+    var m = Math.floor(mins);
+    var r = m < 10 ? 'short' : m <= 25 ? 'good' : m < 50 ? 'heavy' : 'long';
+    show(m);
+    face.textContent = r === 'good' ? '😊' : r === 'short' ? '🙂' : r === 'heavy' ? '😪' : '😵';
+    streak = r === 'good' ? streak + 1 : 0;
+    sn.textContent = streak;
+    set('done', r);
+    if (r === 'good' && window.pengessoPop) {
+      var k = btn.getBoundingClientRect();
+      window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['🔋', '⏰', '🐧', '✨'], 16);
+      if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+    }
+  }
+  btn.addEventListener('pointerdown', function () {
+    if (g.getAttribute('data-s') !== 'run') return;
+    skip = true; finish();   /* 指が触れた瞬間に止める */
+  });
+  btn.addEventListener('click', function () {
+    if (skip) { skip = false; return; }
+    var s = g.getAttribute('data-s');
+    if (s === 'run') finish();
+    else start();
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+昼寝は短いのがいい（15〜20分くらい）。長すぎると夜の眠りにひびく。
+@@tone
+素材の重さ：ふつう（昼寝のコツ）
+→ 見せ方：ポップに（昼下がりの黄色とミント。早送りの昼寝アラームを、ちょうどいいところで止めて遊べる）
+@@game_ja
+⏰ 昼寝アラーム：「😴 昼寝をはじめる」を押すと、ペンギンが横になって、時計が早送り（1秒＝10分）で進む。下のバーは「グレー（短すぎ）→ 緑 10〜25分（スッキリ）→ 黄色（だるい）→ 赤（長すぎ）」。「⏰ 起きて！」で止めると、緑なら「🔋 スッキリ！」と今夜の眠りが 🌙✨、長いと「今夜の眠りがくもりそう ☁️」。90分で勝手に止まる。スッキリ昼寝の連続記録が数えられる。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of plush toy corduroy and felt, taking a peaceful little nap while sitting up, head tilted, eyes closed, next to one realistic small classic red twin-bell alarm clock. Warm early-afternoon sunlight, a simple bright butter-yellow background that fades into soft mint green with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × コーデュロイとフェルト × 目覚まし時計

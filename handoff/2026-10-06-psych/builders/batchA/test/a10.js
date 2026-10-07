@@ -1,0 +1,1 @@
+setTimeout(function(){ __tap('.b-go'); __log('locked', __st()); __tap('.wa'); __tap('.wa'); __tap('.wb'); __log('both', __st()); __tap('.b-wait'); __log('wait', __st()); __tap('.b-go'); __log('go', __st()); }, 300);

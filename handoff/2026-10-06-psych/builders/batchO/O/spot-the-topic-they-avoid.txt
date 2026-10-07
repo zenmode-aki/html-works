@@ -1,0 +1,259 @@
+@@meta
+{"title": "A slow answer often means a topic they do not want to talk about", "label": "Slow Answers", "seq": 439, "mood": ["lift", "learn"], "tags": ["psychology", "friends", "tips"], "thumbAlt": "A chenille yarn penguin listening kindly next to a small wooden metronome"}
+@@ja_title
+返事が遅い話題は、触れてほしくない話題
+@@ja_label
+遅い返事
+@@h1emoji
+⏱️
+@@section
+43「触れてほしくない話題」の見分け方
+@@vars
+    --bg: #fff5fa; --text: #33213a; --muted: #806a86;
+    --accent: #a63fa0; --accent2: #f08a4b; --h1: #34163a; --big: #9b2f95; --big-dark: #f2a8ec;
+    --glow1: rgba(166,63,160,.2); --glow2: rgba(240,138,75,.25); --glow3: rgba(255,214,90,.25);
+    --shadow: 0 20px 55px rgba(140,50,130,.18); --photo-bg: #f8e2f3;
+    --g1: #8e3fb0; --g2: #c2408f; --g3: #f08a4b; --pop: #ffe066; --pop-text: #4a3500; --btn-text: #9b2f95;
+@@css
+  /* ⏱️ サインを読もう：質問する → 返事の速さバーを見る → 「もっと聞く」か「話題を変える」 */
+  .topic { max-width: 420px; margin: 14px auto 0; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.2); font-weight: 900; font-size: 16.5px; line-height: 1.4; }
+  .topic span { display: none; }
+  .game[data-t="0"] .q0, .game[data-t="1"] .q1, .game[data-t="2"] .q2, .game[data-t="3"] .q3 { display: inline; }
+  .round { margin-top: 10px; font-size: 13px; font-weight: 900; letter-spacing: .08em; opacity: .9; }
+  .chat { display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 10px; max-width: 420px; margin: 12px auto 0; text-align: left; }
+  .face { position: relative; width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.25); font-size: 38px; line-height: 1; }
+  .face .react { position: absolute; right: -8px; top: -10px; font-size: 24px; line-height: 1; }
+  .reply { min-height: 56px; padding: 10px 14px; border-radius: 18px 18px 18px 6px; background: #fff; color: #34163a; font-weight: 900; font-size: 16px; line-height: 1.4; display: flex; align-items: center; }
+  .reply span { display: none; }
+  .game[data-p="q"] .r-q, .game[data-p="wait"] .r-wait { display: inline; }
+  .game[data-p="ans"][data-t="0"] .a0, .game[data-p="ans"][data-t="1"] .a1, .game[data-p="ans"][data-t="2"] .a2, .game[data-p="ans"][data-t="3"] .a3,
+  .game[data-p="fb"][data-t="0"] .a0, .game[data-p="fb"][data-t="1"] .a1, .game[data-p="fb"][data-t="2"] .a2, .game[data-p="fb"][data-t="3"] .a3 { display: inline; }
+  .r-q { color: #9a86a0; font-size: 14.5px; }
+  .r-wait { letter-spacing: .2em; animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: .3; } }
+  .speed { max-width: 380px; margin: 14px auto 0; }
+  .sp-l { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 900; opacity: .95; }
+  .sp-bar { position: relative; height: 16px; margin-top: 5px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .sp-bar i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; background: linear-gradient(90deg, #8af5c8, #ffe066 45%, #ff7a7a); background-size: 340px 100%; }
+  .sp-sec { margin-top: 6px; font-size: 14px; font-weight: 900; }
+  .sp-sec .sec-n { font-size: 20px; }
+
+  .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 420px; margin: 14px auto 0; }
+  .acts .gbtn { width: 100%; min-height: 60px; font-size: 16px; padding: 10px 12px; }
+  .ask { grid-column: 1 / -1; min-height: 64px !important; font-size: 19px !important; }
+  .dig, .chg { display: none !important; }
+  .game[data-p="ans"] .dig, .game[data-p="ans"] .chg { display: inline-flex !important; }
+  .game:not([data-p="q"]) .ask { display: none !important; }
+  .fb { max-width: 420px; margin: 12px auto 0; }
+  .fb > div { display: none; font-weight: 900; font-size: 15.5px; line-height: 1.45; }
+  .game[data-p="fb"][data-f="dig-ok"] .f1, .game[data-p="fb"][data-f="chg-ok"] .f2, .game[data-p="fb"][data-f="dig-bad"] .f3, .game[data-p="fb"][data-f="chg-bad"] .f4 { display: block; animation: bounce-in .4s both; }
+  .nextb { display: none !important; margin-top: 12px; }
+  .game[data-p="fb"] .nextb { display: inline-flex !important; }
+  .stars { margin-top: 12px; font-size: 22px; letter-spacing: 3px; }
+  .stars i { font-style: normal; opacity: .45; filter: grayscale(1) brightness(1.4); }
+  .stars i.ok { opacity: 1; filter: none; animation: bounce-in .4s both; }
+  .stars i.ng { opacity: .9; filter: none; }
+  .end { display: none; max-width: 420px; margin: 12px auto 0; padding: 12px 14px; border-radius: 16px; background: rgba(255,255,255,.24); font-weight: 900; line-height: 1.45; }
+  .game[data-p="end"] .end { display: block; animation: bounce-in .5s both; }
+  .game[data-p="end"] .chat, .game[data-p="end"] .speed, .game[data-p="end"] .topic, .game[data-p="end"] .round { display: none; }
+  .end .big-n { font-size: 34px; display: block; }
+@@dark
+  html[data-theme="dark"] .reply { background: #2c2030; color: #fbe6f7; }
+  html[data-theme="dark"] .r-q { color: #c9b4cf; }
+@@sents
+S1 | It seems the slower the answer, the less they want to talk about that topic. | 返事が遅い話題ほど、触れてほしくない話題だそうです。
+S2 | There are 3 signs: "Hmm, uh…", "Huh, what?", and an unclear answer. | サインは、「ん〜、え〜っと」と迷う、「えっ、なに？」と聞き返す、あいまいに答える、の3つです。
+S3 | If you notice it, change the topic with "Oh, by the way…" | 気づいたら、「あっ、そういえば…」と話題を変えましょう。
+S4 | And remember that topic for next time. | そして、その話題は覚えておきます。
+S5 | If the answer comes back fast, you can ask more and more. | すぐに返事が返ってくる話題は、どんどん聞いていいです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐢</span>
+      <span class="card-label">Slow Means No</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🚦</span>
+      <span class="card-label">Three Signs</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：サインを読もう（質問 → 返事の速さバー → もっと聞く／話題を変える。4問） -->
+  <section class="game" data-t="0" data-p="q" data-f="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Read the signs</div>
+    <div class="game-hint">Ask a question. Watch how fast the answer comes.</div>
+    <div class="round"><span class="rd-l">QUESTION</span> <span class="rd-n">1/4</span></div>
+    <div class="topic">
+      <span class="q0">🍜 "Do you like ramen?"</span>
+      <span class="q1">📝 "How was your test?"</span>
+      <span class="q2">✈️ "Any trip plans?"</span>
+      <span class="q3">🧹 "Is your room clean now?"</span>
+    </div>
+    <div class="chat">
+      <div class="face" aria-hidden="true">🐧<span class="react">🙂</span></div>
+      <div class="reply">
+        <span class="r-q">👇 Tap "Ask".</span>
+        <span class="r-wait">…</span>
+        <span class="a a0">"Yes! I eat it every week!"</span>
+        <span class="a a1">"Hmm, uh… well… it was… OK?"</span>
+        <span class="a a2">"Yes! Korea, next month!"</span>
+        <span class="a a3">"Huh, what? …My room?"</span>
+      </div>
+    </div>
+    <div class="speed">
+      <div class="sp-l"><span>⚡ fast</span><span>🐢 slow</span></div>
+      <div class="sp-bar" aria-hidden="true"><i></i></div>
+      <div class="sp-sec"><span class="sec-l">⏱️ Reply time:</span> <span class="sec-n">0.0</span> <span class="sec-u">sec</span></div>
+    </div>
+    <div class="acts">
+      <button class="gbtn pop ask" type="button">💬 Ask</button>
+      <button class="gbtn dig" type="button">🔍 Ask more</button>
+      <button class="gbtn chg" type="button">🔀 "Oh, by the way…"</button>
+    </div>
+    <div class="fb">
+      <div class="f1">✅ Nice! They love this topic. Ask away!</div>
+      <div class="f2">✅ Good catch! You changed the topic. Phew.</div>
+      <div class="f3">😬 Ouch… they did not want to talk about that.</div>
+      <div class="f4">😅 Oh! They wanted to talk more about it.</div>
+    </div>
+    <button class="gbtn ghost nextb" type="button">Next ▶</button>
+    <div class="stars" aria-hidden="true"><i>⭐</i><i>⭐</i><i>⭐</i><i>⭐</i></div>
+    <div class="end"><span class="big-n">0/4</span>🏆 Signs you read right. Fast answers: ask more. Slow answers: change the topic.</div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔀</span>
+      <span class="card-label">By the Way</span>
+    </div>
+    <p class="big">{S3}</p>
+    <p>{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">⚡</span>
+      <span class="card-label">Fast Means Go</span>
+    </div>
+    <p>{S5}</p>
+  </section>
+@@ui
+Slow Means No ||| 遅い＝ふれないで
+Three Signs ||| 3つのサイン
+By the Way ||| 「そういえば」
+Fast Means Go ||| 速い＝どんどん聞く
+⚡ TRY IT ||| ⚡ やってみよう
+Read the signs ||| サインを読もう
+Ask a question. Watch how fast the answer comes. ||| 質問してみよう。返事がどれくらい速く来るかを見てね。
+QUESTION ||| 質問
+🍜 "Do you like ramen?" ||| 🍜「ラーメン好き？」
+📝 "How was your test?" ||| 📝「テスト、どうだった？」
+✈️ "Any trip plans?" ||| ✈️「旅行の予定ある？」
+🧹 "Is your room clean now?" ||| 🧹「部屋、片づいた？」
+👇 Tap "Ask". ||| 👇「聞く」を押してね。
+"Yes! I eat it every week!" ||| 「うん！毎週食べてる！」
+"Hmm, uh… well… it was… OK?" ||| 「ん〜、え〜っと…まあ…ふつう？」
+"Yes! Korea, next month!" ||| 「うん！来月、韓国！」
+"Huh, what? …My room?" ||| 「えっ、なに？…部屋？」
+⚡ fast ||| ⚡ はやい
+🐢 slow ||| 🐢 おそい
+⏱️ Reply time: ||| ⏱️ 返事までの時間：
+sec ||| 秒
+💬 Ask ||| 💬 聞く
+🔍 Ask more ||| 🔍 もっと聞く
+🔀 "Oh, by the way…" ||| 🔀「あっ、そういえば…」
+✅ Nice! They love this topic. Ask away! ||| ✅ いいね！この話題は大好きみたい。どんどん聞こう！
+✅ Good catch! You changed the topic. Phew. ||| ✅ よく気づいた！話題を変えてくれて、ほっ。
+😬 Ouch… they did not want to talk about that. ||| 😬 あいたた…その話はしたくなかったみたい。
+😅 Oh! They wanted to talk more about it. ||| 😅 あれっ！もっと話したかったみたい。
+Next ▶ ||| 次へ ▶
+🏆 Signs you read right. Fast answers: ask more. Slow answers: change the topic. ||| 🏆 読めたサインの数。速い返事は、もっと聞く。遅い返事は、話題を変える。
+↺ Start over ||| ↺ 最初から
+@@js
+/* ⏱️ サインを読もう：JS は data-t / data-p / data-f / class / style の幅 / 絵文字 / 数字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var SLOW = [false, true, false, true];
+  var SEC = [0.4, 2.6, 0.3, 2.2];
+  var order = [0, 1, 2, 3], r = 0, score = 0, timer = 0, t0 = 0, raf = 0;
+  var bar = g.querySelector('.sp-bar i'), secN = g.querySelector('.sec-n'), react = g.querySelector('.react');
+  var stars = [].slice.call(g.querySelectorAll('.stars i')), rdN = g.querySelector('.rd-n'), bigN = g.querySelector('.big-n');
+  function shuffle() { for (var k = order.length - 1; k > 0; k--) { var j = Math.floor(Math.random() * (k + 1)), x = order[k]; order[k] = order[j]; order[j] = x; } if (SLOW[order[0]]) { order.push(order.shift()); } }
+  function setP(p) { g.setAttribute('data-p', p); }
+  function startRound() {
+    var t = order[r];
+    g.setAttribute('data-t', String(t)); g.setAttribute('data-f', ''); setP('q');
+    bar.style.width = '0'; secN.textContent = '0.0'; react.textContent = '🙂';
+    rdN.textContent = (r + 1) + '/4';
+  }
+  function tick() {
+    var t = order[r], s = Math.min(SEC[t], ((window.performance ? performance.now() : Date.now()) - t0) / 1000);
+    secN.textContent = s.toFixed(1);
+    bar.style.width = Math.min(100, s / 3 * 100) + '%';
+    if (s < SEC[t]) raf = requestAnimationFrame(tick);
+  }
+  g.querySelector('.ask').addEventListener('click', function () {
+    var t = order[r];
+    setP('wait'); react.textContent = SLOW[t] ? '😶' : '😃';
+    t0 = window.performance ? performance.now() : Date.now();
+    cancelAnimationFrame(raf); raf = requestAnimationFrame(tick);
+    clearTimeout(timer);
+    timer = setTimeout(function () {
+      cancelAnimationFrame(raf);
+      secN.textContent = SEC[t].toFixed(1); bar.style.width = Math.min(100, SEC[t] / 3 * 100) + '%';
+      react.textContent = SLOW[t] ? '😅' : '😄';
+      setP('ans');
+    }, SEC[t] * 1000);
+  });
+  function judge(dig) {
+    var t = order[r], ok = dig ? !SLOW[t] : SLOW[t];
+    g.setAttribute('data-f', (dig ? 'dig' : 'chg') + (ok ? '-ok' : '-bad'));
+    setP('fb');
+    if (ok) score++;
+    stars[r].classList.add(ok ? 'ok' : 'ng'); stars[r].textContent = ok ? '⭐' : '💦';
+    react.textContent = ok ? (dig ? '🤩' : '😌') : (dig ? '😣' : '🙁');
+    if (ok && window.pengessoPop) { var b = stars[r].getBoundingClientRect(); window.pengessoPop(b.left + b.width / 2, b.top + b.height / 2, ['⭐', '✨'], 8); }
+  }
+  g.querySelector('.dig').addEventListener('click', function () { judge(true); });
+  g.querySelector('.chg').addEventListener('click', function () { judge(false); });
+  g.querySelector('.nextb').addEventListener('click', function () {
+    r++;
+    if (r >= 4) {
+      bigN.textContent = score + '/4'; setP('end');
+      if (score === 4 && window.pengessoPop) { var b = bigN.getBoundingClientRect(); window.pengessoPop(b.left + b.width / 2, b.top + b.height / 2, ['🏆', '🐧', '⭐', '✨'], 22); }
+      return;
+    }
+    startRound();
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    clearTimeout(timer); cancelAnimationFrame(raf);
+    r = 0; score = 0; shuffle();
+    stars.forEach(function (s) { s.className = ''; s.textContent = '⭐'; });
+    startRound();
+  });
+  shuffle(); startRound();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・.big）
+S4 → 使った（3枚目のカード・2文目）
+S5 → 使った（4枚目のカード）
+@@message
+返事が遅い話題は、触れてほしくない話題。気づいたら「あっ、そういえば…」で話題を変える。
+@@tone
+素材の重さ：真面目（相手の気持ちを読む）
+→ 見せ方：ポップに（紫とオレンジ。返事の速さバーを見て判断するゲーム）
+@@game_ja
+⏱️ サインを読もう：4つの質問（🍜ラーメン好き？／📝テストどうだった？／✈️旅行の予定ある？／🧹部屋、片づいた？）が順番を変えて出る。「💬 聞く」を押すと、友達ペンギンが考えているあいだ「返事までの時間」のバーと秒数が伸びる（好きな話題は0.3〜0.4秒で「うん！毎週食べてる！」、触れてほしくない話題は2秒以上かかって「ん〜、え〜っと…まあ…ふつう？」「えっ、なに？…部屋？」）。そのあと「🔍 もっと聞く」か「🔀『あっ、そういえば…』」を選ぶ。合っていれば⭐、ちがえば💦。4問で、読めたサインの数が出る。
+@@combo
+ペンギン × シェニール糸 × 木のメトロノーム
+@@cover
+An extremely cute, chubby round penguin made of soft chenille yarn, with a gentle kind face and a plain white belly, tilting its head as if listening carefully, standing next to a realistic small wooden metronome. Bright simple plum pink and warm apricot background with soft depth and gentle light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

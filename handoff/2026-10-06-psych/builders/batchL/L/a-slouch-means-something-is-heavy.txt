@@ -1,0 +1,243 @@
+@@meta
+{"title": "A slouching back can be a sign that something feels heavy", "label": "Heavy Back", "seq": 405, "mood": ["lift", "laugh"], "tags": ["psychology", "feelings", "mindset"], "thumbAlt": "A chubby brushed mohair penguin standing tall with its chest out next to a canvas backpack it just put down"}
+@@ja_title
+猫背は、何かが「重い」というサイン
+@@ja_label
+重い背中
+@@h1emoji
+🎒
+@@section
+4「猫背は『気が重い』サイン」
+@@vars
+    --bg: #f7f4ff; --text: #2a2240; --muted: #7a7094;
+    --accent: #7a4dff; --accent2: #2fc7a0; --h1: #2d1a5e; --big: #6a3cf0; --big-dark: #c6b3ff;
+    --glow1: rgba(122,77,255,.20); --glow2: rgba(47,199,160,.20); --glow3: rgba(255,205,90,.22);
+    --shadow: 0 20px 55px rgba(100,60,200,.16); --photo-bg: #ebe4ff;
+    --g1: #7a4dff; --g2: #a46bff; --g3: #2fc7a0; --pop: #ffe45c; --pop-text: #4a3300; --btn-text: #6a3cf0;
+@@css
+  .card p + p { margin-top: 10px; }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 12px 10px; border-radius: 20px; text-align: center; font-weight: 900; font-size: 15px; line-height: 1.35; }
+  .vs .cat { background: #efecf5; color: #6f6680; }
+  .vs .dog { background: #dcfbf0; color: #0f6b52; }
+  .card .vs b { display: block; font-size: 32px; margin-bottom: 4px; }
+
+  /* 🎡 軽い言葉ルーレット：回すたびに重い考えが1つ落ちて、背中がのびる */
+  .carry { display: grid; grid-template-columns: 96px 1fr; align-items: end; gap: 8px; max-width: 420px; margin: 14px auto 0; min-height: 190px; }
+  .bags { display: flex; flex-direction: column; gap: 6px; align-items: stretch; }
+  .bag { display: block; padding: 8px 10px; border-radius: 14px; background: #5b4a7a; color: #fff; font-size: 13px; font-weight: 900; line-height: 1.3; text-align: left;
+    box-shadow: 0 4px 0 rgba(0,0,0,.25); transition: transform .55s cubic-bezier(.5,-.3,.8,.6), opacity .55s ease; }
+  .bag.drop { transform: translateY(70px) rotate(-14deg); opacity: 0; }
+  .pen { font-size: 72px; line-height: 1; text-align: center; transform-origin: 50% 90%; transition: transform .5s cubic-bezier(.2,1.4,.4,1); }
+  .game[data-left="4"] .pen { transform: rotate(-28deg) translateY(10px) scale(.92); }
+  .game[data-left="3"] .pen { transform: rotate(-20deg) translateY(7px) scale(.95); }
+  .game[data-left="2"] .pen { transform: rotate(-13deg) translateY(4px); }
+  .game[data-left="1"] .pen { transform: rotate(-6deg) translateY(2px); }
+  .game[data-left="0"] .pen { transform: rotate(4deg) scale(1.12); }
+  .game[data-left="0"] .carry { min-height: 110px; }
+
+  .ladder { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; max-width: 420px; margin: 14px auto 0; font-size: 13px; font-weight: 900; }
+  .track { position: relative; height: 12px; border-radius: 999px; background: rgba(255,255,255,.3); }
+  .mark { position: absolute; top: 50%; left: 0; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; background: #fff; box-shadow: 0 3px 8px rgba(0,0,0,.2);
+    transition: left .5s cubic-bezier(.2,1.4,.4,1); }
+
+  .wheel-wrap { position: relative; width: 210px; height: 210px; margin: 16px auto 0; }
+  .pointer { position: absolute; left: 50%; top: -8px; z-index: 2; transform: translateX(-50%); width: 0; height: 0;
+    border-left: 13px solid transparent; border-right: 13px solid transparent; border-top: 22px solid #fff; filter: drop-shadow(0 2px 2px rgba(0,0,0,.25)); }
+  .wheel { position: absolute; inset: 0; border-radius: 50%; border: 6px solid #fff; box-shadow: 0 10px 24px rgba(0,0,0,.2);
+    background: conic-gradient(#ffd84d 0 60deg, #7ee0c3 60deg 120deg, #ff9ec4 120deg 180deg, #9fc4ff 180deg 240deg, #ffb36b 240deg 300deg, #c8b3ff 300deg 360deg);
+    transition: transform 1.5s cubic-bezier(.15,.85,.25,1); }
+  .seg { position: absolute; left: 50%; top: 50%; width: 40px; height: 40px; margin: -20px 0 0 -20px; display: grid; place-items: center; text-align: center; font-size: 28px; line-height: 40px;
+    transform: rotate(var(--a)) translateY(-66px) rotate(calc(-1 * var(--a))); }
+  .hub { position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%; background: #fff;
+    display: grid; place-items: center; text-align: center; line-height: 46px; font-size: 24px; box-shadow: 0 2px 6px rgba(0,0,0,.2); }
+
+  .said { max-width: 420px; min-height: 58px; margin: 14px auto 0; padding: 10px 14px; border-radius: 18px; background: #fff; color: #4b2db3;
+    display: flex; align-items: center; justify-content: center; font-size: clamp(18px, 5vw, 22px); font-weight: 900; line-height: 1.35; }
+  .said span { display: none; }
+  .game[data-w="0"] .w0, .game[data-w="1"] .w1, .game[data-w="2"] .w2, .game[data-w="3"] .w3,
+  .game[data-w="4"] .w4, .game[data-w="5"] .w5, .game[data-w="6"] .w6 { display: inline; }
+  .game[data-w="0"] .w0 { font-size: 15px; color: #7a7094; }
+  .said.show { animation: bounce-in .45s both; }
+  .spin-row { margin-top: 14px; }
+  .game[data-left="0"] .spin-row { display: none; }
+  .res { display: none; max-width: 420px; margin: 14px auto 0; font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .game[data-left="0"] .res { display: block; animation: bounce-in .5s both; }
+@@dark
+  html[data-theme="dark"] .vs .cat { background: #2c2a38; color: #c4bcd6; }
+  html[data-theme="dark"] .vs .dog { background: #163c33; color: #9ff0d6; }
+  html[data-theme="dark"] .said { background: #2a2440; color: #d8ccff; }
+  html[data-theme="dark"] .game[data-w="0"] .w0 { color: #b9b0cc; }
+  html[data-theme="dark"] .hub { background: #2a2440; }
+@@sents
+S1 | When you carry a child on your back, your back gets round. | 子どもをおんぶすると、背中が丸くなります。
+S2 | So a person with a round "cat back" may be carrying something heavy. | だから猫背の人は、何か重いものを背負っているのかもしれません。
+S3 | The heavy thing is not a bag, but a feeling. | 重いのは、荷物ではなく気持ちです。
+S4 | When you feel worried, try light words: "It's OK! It's OK!" or "Not real, not real!" | 不安なときは、「大丈夫！大丈夫！」「まぼろし、まぼろし」と、軽い言葉を言ってみます。
+S5 | Then your chest opens, and your "cat back" becomes a "dog back." | すると胸が張れて、猫背が犬背になります。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎒</span>
+      <span class="card-label">Carry Something</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐈</span>
+      <span class="card-label">Cat Back</span>
+    </div>
+    <p>{S2}</p>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🪶</span>
+      <span class="card-label">Light Words</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：軽い言葉ルーレット（回すたびに重い考えが1つ落ち、猫背 → 犬背） -->
+  <section class="game" data-left="4" data-w="0" data-st="idle" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Spin a light word</div>
+    <div class="game-hint">The penguin carries 4 heavy thoughts. Spin, say a light word, and 1 thought falls off.</div>
+    <div class="carry">
+      <div class="pen" aria-hidden="true">🐧</div>
+      <div class="bags">
+        <span class="bag">🪨 My shoelace broke. Bad luck?</span>
+        <span class="bag">🪨 Things are too good. Something bad is coming?</span>
+        <span class="bag">🪨 What if… what if…?</span>
+        <span class="bag">🪨 I failed today.</span>
+      </div>
+    </div>
+    <div class="ladder" aria-hidden="true">
+      <span class="lc">🐈 Cat back</span>
+      <div class="track"><i class="mark"></i></div>
+      <span class="ld">🐕 Dog back</span>
+    </div>
+    <div class="wheel-wrap" aria-hidden="true">
+      <div class="pointer"></div>
+      <div class="wheel">
+        <span class="seg" style="--a:30deg">👌</span>
+        <span class="seg" style="--a:90deg">💭</span>
+        <span class="seg" style="--a:150deg">🫧</span>
+        <span class="seg" style="--a:210deg">📚</span>
+        <span class="seg" style="--a:270deg">😎</span>
+        <span class="seg" style="--a:330deg">🍀</span>
+        <span class="hub">🐧</span>
+      </div>
+    </div>
+    <div class="said">
+      <span class="w0">Tap "Spin" to pick a light word 👇</span>
+      <span class="w1">👌 "It's OK! It's OK!"</span>
+      <span class="w2">💭 "I'm thinking too much!"</span>
+      <span class="w3">🫧 "Not real, not real!"</span>
+      <span class="w4">📚 "That was a good lesson!"</span>
+      <span class="w5">😎 "No big deal!"</span>
+      <span class="w6">🍀 "Lucky it was only this much!"</span>
+    </div>
+    <div class="spin-row"><button class="gbtn pop spin" type="button">🎡 Spin</button></div>
+    <div class="res">🐕 Dog back! Chest up, and your back feels light.</div>
+    <div class="again-row"><button class="gbtn ghost again" type="button">↺ Carry them again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐕</span>
+      <span class="card-label">Dog Back</span>
+    </div>
+    <p class="big">{S5}</p>
+    <div class="vs" aria-hidden="true">
+      <div class="cat"><b class="e">🐈</b>Heavy thoughts</div>
+      <div class="dog"><b class="e">🐕</b>Light words</div>
+    </div>
+  </section>
+@@ui
+Carry Something ||| おんぶ
+Cat Back ||| 猫背
+Light Words ||| 軽い言葉
+Dog Back ||| 犬背
+⚡ TRY IT ||| ⚡ やってみよう
+Spin a light word ||| 軽い言葉ルーレット
+The penguin carries 4 heavy thoughts. Spin, say a light word, and 1 thought falls off. ||| ペンギンが重い考えを4つ背負っています。回して軽い言葉を言うと、1つ落ちます。
+🪨 My shoelace broke. Bad luck? ||| 🪨 靴ひもが切れた。縁起が悪い？
+🪨 Things are too good. Something bad is coming? ||| 🪨 いい事が続きすぎ。そろそろ悪い事が起こる？
+🪨 What if… what if…? ||| 🪨 もしも…もしも…？
+🪨 I failed today. ||| 🪨 今日、失敗しちゃった。
+🐈 Cat back ||| 🐈 猫背
+🐕 Dog back ||| 🐕 犬背
+Tap "Spin" to pick a light word 👇 ||| 「回す」で軽い言葉を選ぼう 👇
+👌 "It's OK! It's OK!" ||| 👌「大丈夫！大丈夫！」
+💭 "I'm thinking too much!" ||| 💭「考えすぎ！」
+🫧 "Not real, not real!" ||| 🫧「まぼろし、まぼろし！」
+📚 "That was a good lesson!" ||| 📚「いい勉強になった！」
+😎 "No big deal!" ||| 😎「ヘッチャラ！」
+🍀 "Lucky it was only this much!" ||| 🍀「この程度で済んでよかった！」
+🎡 Spin ||| 🎡 回す
+🐕 Dog back! Chest up, and your back feels light. ||| 🐕 犬背になった！胸が張れて、背中が軽い。
+↺ Carry them again ||| ↺ もう一回背負う
+Heavy thoughts ||| 重い考え
+Light words ||| 軽い言葉
+@@js
+/* 🎡 軽い言葉ルーレット：JS は data-* / class / style / hidden だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var wheel = g.querySelector('.wheel'), spin = g.querySelector('.spin'), said = g.querySelector('.said'), mark = g.querySelector('.mark'),
+      bags = [].slice.call(g.querySelectorAll('.bag')), again = g.querySelector('.again');
+  var rot = 0, last = -1, left = 4, busy = false, t1 = 0, t2 = 0;
+  g.querySelector('.again-row').hidden = true;
+  function paint() {
+    g.setAttribute('data-left', left);
+    mark.style.left = ((4 - left) / 4 * 100) + '%';
+  }
+  spin.addEventListener('click', function () {
+    if (busy || left <= 0) return;
+    busy = true; spin.disabled = true;
+    var k; do { k = Math.floor(Math.random() * 6); } while (k === last);
+    last = k;
+    var target = 360 - (k * 60 + 30);
+    var cur = ((rot % 360) + 360) % 360;
+    rot += 360 * 3 + ((target - cur + 360) % 360);
+    wheel.style.transform = 'rotate(' + rot + 'deg)';
+    t1 = setTimeout(function () {
+      g.setAttribute('data-w', k + 1);
+      said.classList.remove('show'); void said.offsetWidth; said.classList.add('show');
+      var b = bags.filter(function (x) { return !x.hidden && !x.classList.contains('drop'); });
+      var bag = b[b.length - 1];
+      if (bag) { bag.classList.add('drop'); t2 = setTimeout(function () { bag.hidden = true; }, 560); }
+      left -= 1; paint();
+      var r = g.querySelector('.pen').getBoundingClientRect();
+      if (window.pengessoPop) window.pengessoPop(r.left + r.width / 2, r.top + r.height / 3, left ? ['🪶', '✨'] : ['🐕', '🪶', '✨', '🐧'], left ? 8 : 20);
+      if (left === 0) { g.querySelector('.again-row').hidden = false; if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} } }
+      busy = false; spin.disabled = false;
+    }, 1550);
+  });
+  again.addEventListener('click', function () {
+    clearTimeout(t1); clearTimeout(t2); busy = false; spin.disabled = false;
+    left = 4; bags.forEach(function (x) { x.hidden = false; x.classList.remove('drop'); });
+    g.setAttribute('data-w', '0'); g.querySelector('.again-row').hidden = true; paint();
+  });
+  paint();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード・.big）
+@@message
+猫背は「気が重い」サイン。肩の荷を降ろす軽い言葉で、猫背が犬背になる。
+@@tone
+素材の重さ：ふつう（気持ちの重さ）
+→ 見せ方：ポップに（紫とミント。ルーレットで遊ぶ。猫背→犬背のダジャレ）
+@@game_ja
+🎡 軽い言葉ルーレット：前かがみのペンギンが、重い考えを4つ背負っている（靴ひもが切れた＝縁起が悪い？／いい事が続きすぎ＝悪い事が起こる？／もしも…／今日失敗した）。ルーレットを回すと、メモにあった軽い言葉（大丈夫！大丈夫！・考えすぎ・まぼろし・いい勉強になった・ヘッチャラ・この程度で済んでよかった）のどれかが出て、重い考えが1つ落ち、背中が少しずつのびる（🐈猫背 → 🐕犬背のはしご）。4回で胸を張った犬背に。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain white belly (no rings or patterns on the belly), made of soft brushed mohair, standing tall with its chest proudly out and a relieved smile, next to one realistic canvas backpack that it has just put down on the floor. Soft lavender background with gentle depth and a hint of mint light, simple and uncluttered. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × モヘア × 下ろしたリュック

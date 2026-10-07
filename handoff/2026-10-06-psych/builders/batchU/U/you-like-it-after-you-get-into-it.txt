@@ -1,0 +1,237 @@
+@@meta
+{"title": "You start to like something after you get into it", "label": "Get Into It", "seq": 495, "mood": ["lift", "energy"], "tags": ["psychology", "mindset", "study"], "thumbAlt": "A matte plastic model kit penguin happily holding up one big wooden jigsaw puzzle piece"}
+@@ja_title
+夢中になったから、好きになる
+@@ja_label
+夢中になる
+@@h1emoji
+🧩
+@@section
+131「没頭したから好きになる」
+@@vars
+    --bg: #f1f8ff; --text: #20303f; --muted: #627488;
+    --accent: #1f7fe0; --accent2: #ff8a1f; --h1: #102c4a; --big: #1767bd; --big-dark: #9fd0ff;
+    --glow1: rgba(255,170,60,.3); --glow2: rgba(60,150,255,.22); --glow3: rgba(255,120,160,.16);
+    --shadow: 0 20px 55px rgba(20,80,150,.18); --photo-bg: #dcecff;
+    --g1: #ff9a2e; --g2: #ff6b6b; --g3: #3d8bff; --pop: #ffffff; --pop-text: #1767bd; --btn-text: #1767bd;
+@@css
+  /* 🧩 パズル：最初は退屈。手を動かしているうちに「好き」がふくらむ */
+  .flip { display: grid; gap: 8px; margin-top: 14px; }
+  .flip > div { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 10px 12px; border-radius: 18px;
+    font-weight: 900; font-size: 15.5px; line-height: 1.35; text-align: center; }
+  .flip .f-old { background: #eef1f5; color: #6e7886; }
+  .flip .f-new { background: #fff0d9; color: #8a4a00; }
+
+  .work { max-width: 400px; margin: 16px auto 0; padding: 14px; border-radius: 24px; background: #fff; color: #20303f; box-shadow: 0 10px 24px rgba(0,30,80,.2); }
+  .frame { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 6px; border-radius: 16px; background: #e9eef5; }
+  .slot { position: relative; height: 64px; border-radius: 10px; border: 2px dashed #b8c4d3; display: grid; place-items: center; font-size: 34px; line-height: 1; }
+  .slot.sky { background: #eef6ff; }
+  .slot.sea { background: #e8f4ff; }
+  .slot .pe { opacity: 0; transform: scale(.3) rotate(-30deg); transition: opacity .2s ease, transform .4s cubic-bezier(.2,1.5,.4,1); }
+  .slot[data-on="1"] { border: 2px solid transparent; }
+  .slot.sky[data-on="1"] { background: #9fd3ff; }
+  .slot.sea[data-on="1"] { background: #3d8bff; }
+  .slot[data-on="1"] .pe { opacity: 1; transform: none; }
+
+  .mood-row { display: grid; grid-template-columns: 52px 1fr; align-items: center; gap: 10px; margin-top: 12px; text-align: left; }
+  .pfaceb { width: 52px; height: 52px; display: grid; place-items: center; border-radius: 50%; background: #fff1dc; font-size: 30px; }
+  .pface { line-height: 1; }
+  .pface.hop { animation: hop .4s ease; }
+  .say { font-weight: 900; font-size: 15.5px; line-height: 1.4; }
+  .say > span { display: none; }
+  .work[data-l="0"] .sy0, .work[data-l="1"] .sy1, .work[data-l="2"] .sy2, .work[data-l="3"] .sy3, .work[data-l="4"] .sy4 { display: inline; }
+  .bars { display: grid; gap: 6px; margin-top: 12px; }
+  .bar { display: grid; grid-template-columns: 92px 1fr; align-items: center; gap: 8px; font-size: 13px; font-weight: 900; text-align: left; }
+  .track { position: relative; height: 14px; border-radius: 999px; background: #e7ecf3; overflow: hidden; }
+  .track i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; transition: width .5s cubic-bezier(.2,1.2,.4,1); }
+  .b-work .track i { background: #3d8bff; }
+  .b-like .track i { background: linear-gradient(90deg, #ff9a2e, #ff4f8b); }
+
+  .tray { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 400px; margin: 14px auto 0; }
+  .piece { min-height: 64px; border: 0; border-radius: 16px; cursor: pointer; font: inherit; font-size: 32px; line-height: 1;
+    background: #fff; box-shadow: 0 5px 0 rgba(0,0,0,.18); transform: rotate(var(--r, 0deg)); transition: transform .08s ease, opacity .2s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .piece:active { transform: translateY(4px) rotate(var(--r, 0deg)); box-shadow: 0 1px 0 rgba(0,0,0,.18); }
+  .piece:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .piece[data-used="1"] { opacity: 0; visibility: hidden; }
+  .game[data-done="1"] .tray { display: none; }
+
+  .result { margin-top: 12px; min-height: 56px; }
+  .result > div { display: none; font-size: 16px; font-weight: 900; line-height: 1.45; }
+  .game:not([data-done="1"]) .r-hint, .game[data-done="1"] .r-done { display: block; }
+  .game[data-done="1"] .r-done { animation: bounce-in .45s both; }
+  .again { display: none; }
+  .game[data-done="1"] .again { display: inline-flex; }
+@@dark
+  html[data-theme="dark"] .flip .f-old { background: #2c2e3b; color: #b8c0cc; }
+  html[data-theme="dark"] .flip .f-new { background: #45331a; color: #ffd39a; }
+  html[data-theme="dark"] .work { background: #22242f; color: #eaf2fb; }
+  html[data-theme="dark"] .frame { background: #2c3240; }
+  html[data-theme="dark"] .slot.sky, html[data-theme="dark"] .slot.sea { background: #262c38; border-color: #4a5568; }
+  html[data-theme="dark"] .pfaceb { background: #45331a; }
+  html[data-theme="dark"] .track { background: #353b49; }
+  html[data-theme="dark"] .piece { background: #2c2e3b; }
+@@sents
+S1 | There is an idea: you do not get into something because you like it; you like it because you got into it. | 「好きだから夢中になる」のではなく、「夢中になったから好きになる」という考え方があります。
+S2 | At first, everything is a little boring. | 最初は、どんなことも少し退屈です。
+S3 | But a puzzle or English words become fun while you keep working on them. | でも、パズルでも英単語でも、手を動かしているうちに面白くなってきます。
+S4 | If it is not fun, you can make it fun yourself. | 楽しくないなら、自分で楽しくしてしまえばいいのです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔄</span>
+      <span class="card-label">The Order</span>
+    </div>
+    <p class="big">{S1}</p>
+    <div class="flip" aria-hidden="true">
+      <div class="f-old">💖 like it → 🔥 get into it</div>
+      <div class="f-new">🔥 get into it → 💖 like it</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🥱</span>
+      <span class="card-label">At First</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：パズルと「好き」メーター -->
+  <section class="game" data-done="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Just start the puzzle</div>
+    <div class="game-hint">Tap the pieces. Watch the "Like" meter.</div>
+    <div class="work" data-l="0">
+      <div class="frame" aria-hidden="true">
+        <div class="slot sky"><span class="pe">☁️</span></div><div class="slot sky"><span class="pe">☀️</span></div><div class="slot sky"><span class="pe">🕊️</span></div>
+        <div class="slot sea"><span class="pe">🐳</span></div><div class="slot sea"><span class="pe">⛵</span></div><div class="slot sea"><span class="pe">🐧</span></div>
+      </div>
+      <div class="mood-row">
+        <div class="pfaceb" aria-hidden="true"><span class="pface">😐</span></div>
+        <div class="say">
+          <span class="sy0">"A puzzle? I don't like puzzles…"</span>
+          <span class="sy1">"Hmm. Still boring."</span>
+          <span class="sy2">"Wait… where does this one go?"</span>
+          <span class="sy3">"Oh! This is kind of fun!"</span>
+          <span class="sy4">"I love puzzles now! One more!"</span>
+        </div>
+      </div>
+      <div class="bars" aria-hidden="true">
+        <div class="bar b-work"><span class="bl">🧩 Work</span><span class="track"><i></i></span></div>
+        <div class="bar b-like"><span class="bl">💖 Like</span><span class="track"><i></i></span></div>
+      </div>
+    </div>
+    <div class="tray">
+      <button class="piece" type="button" data-to="4" aria-label="sailboat piece" style="--r:-6deg">⛵</button>
+      <button class="piece" type="button" data-to="0" aria-label="cloud piece" style="--r:5deg">☁️</button>
+      <button class="piece" type="button" data-to="5" aria-label="penguin piece" style="--r:-3deg">🐧</button>
+      <button class="piece" type="button" data-to="1" aria-label="sun piece" style="--r:7deg">☀️</button>
+      <button class="piece" type="button" data-to="3" aria-label="whale piece" style="--r:-8deg">🐳</button>
+      <button class="piece" type="button" data-to="2" aria-label="bird piece" style="--r:4deg">🕊️</button>
+    </div>
+    <div class="result">
+      <div class="r-hint">You don't have to like it yet. Just tap.</div>
+      <div class="r-done">🎉 Done! The "like" came after you started.</div>
+    </div>
+    <div class="again-row"><button class="gbtn again" type="button">↺ One more puzzle</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📖</span>
+      <span class="card-label">Keep Going</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎈</span>
+      <span class="card-label">Make It Fun</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+@@ui
+The Order ||| 順番
+At First ||| 最初は
+Keep Going ||| 続けるうちに
+Make It Fun ||| 楽しくする
+💖 like it → 🔥 get into it ||| 💖 好き → 🔥 夢中
+🔥 get into it → 💖 like it ||| 🔥 夢中 → 💖 好き
+⚡ TRY IT ||| ⚡ やってみよう
+Just start the puzzle ||| とりあえずパズルを始めよう
+Tap the pieces. Watch the "Like" meter. ||| ピースを押してね。「好き」メーターに注目。
+"A puzzle? I don't like puzzles…" ||| 「パズル？パズルは好きじゃないんだけど…」
+"Hmm. Still boring." ||| 「うーん。まだ退屈。」
+"Wait… where does this one go?" ||| 「あれ…これはどこに入るんだろう？」
+"Oh! This is kind of fun!" ||| 「おっ！なんか楽しいかも！」
+"I love puzzles now! One more!" ||| 「パズル、好きになっちゃった！もう1回！」
+🧩 Work ||| 🧩 手を動かす
+💖 Like ||| 💖 好き
+sailboat piece ||| ヨットのピース
+cloud piece ||| 雲のピース
+penguin piece ||| ペンギンのピース
+sun piece ||| 太陽のピース
+whale piece ||| クジラのピース
+bird piece ||| 鳥のピース
+You don't have to like it yet. Just tap. ||| まだ好きじゃなくていいよ。とりあえず押してみて。
+🎉 Done! The "like" came after you started. ||| 🎉 完成！「好き」は、始めたあとからやってきた。
+↺ One more puzzle ||| ↺ もう1回パズル
+@@js
+/* 🧩 パズル：ピースを押すと枠にはまる。「好き」メーターは最初は0のまま → 後半で一気に上がる。JS は data-* と style と絵文字だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var work = g.querySelector('.work'), slots = [].slice.call(g.querySelectorAll('.slot'));
+  var pieces = [].slice.call(g.querySelectorAll('.piece')), tray = g.querySelector('.tray');
+  var wbar = g.querySelector('.b-work .track i'), lbar = g.querySelector('.b-like .track i');
+  var face = g.querySelector('.pface'), again = g.querySelector('.again');
+  var LIKE = [0, 0, 5, 25, 60, 85, 100], FACE = ['😐', '😐', '🤔', '🤔', '🙂', '😄', '😍'], SAY = [0, 1, 1, 2, 3, 3, 4];
+  var n = 0;
+  function draw() {
+    wbar.style.width = (n / 6 * 100) + '%';
+    lbar.style.width = LIKE[n] + '%';
+    face.textContent = FACE[n];
+    work.setAttribute('data-l', SAY[n]);
+    face.classList.remove('hop'); void face.offsetWidth; face.classList.add('hop');
+  }
+  pieces.forEach(function (p) {
+    p.addEventListener('click', function () {
+      if (p.getAttribute('data-used') === '1') return;
+      p.setAttribute('data-used', '1');
+      slots[+p.getAttribute('data-to')].setAttribute('data-on', '1');
+      n++; draw();
+      if (n === 6) {
+        g.setAttribute('data-done', '1');
+        if (window.pengessoPop) {
+          var k = work.getBoundingClientRect();
+          window.pengessoPop(k.left + k.width / 2, k.top + k.height / 3, ['🧩', '💖', '🐧', '✨'], 18);
+        }
+        if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+      }
+    });
+  });
+  again.addEventListener('click', function () {
+    n = 0;
+    slots.forEach(function (s) { s.removeAttribute('data-on'); });
+    pieces.sort(function () { return Math.random() - 0.5; }).forEach(function (p) { p.removeAttribute('data-used'); tray.appendChild(p); });
+    g.setAttribute('data-done', '0');
+    draw();
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード・.big）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード）
+@@message
+好きだから夢中になるのではなく、夢中になったから好きになる。
+@@tone
+素材の重さ：ふつう（やる気の順番）
+→ 見せ方：ポップに（オレンジと空色。パズルを押してはめていくと、「好き」メーターが後から一気に上がる）
+@@game_ja
+🧩 とりあえずパズル：海の絵の6ピース（雲・太陽・鳥・クジラ・ヨット・ペンギン）をトレイから押すと、枠にはまっていく。「🧩 手を動かす」バーはピースごとに伸びるが、「💖 好き」バーは最初の2ピースは0のまま。3ピース目あたりから「あれ…これはどこに入るんだろう？」→「おっ！なんか楽しいかも！」と一気に上がり、完成で「パズル、好きになっちゃった！もう1回！」😍。「もう1回パズル」でピースの並びが入れかわる。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of a matte plastic model kit, happily holding up one realistic big wooden jigsaw puzzle piece painted sky blue, with a proud little smile. A simple bright warm orange and sky-blue background with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × プラモデル × ジグソーパズル

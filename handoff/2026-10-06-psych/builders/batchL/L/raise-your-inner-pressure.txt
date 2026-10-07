@@ -1,0 +1,225 @@
+@@meta
+{"title": "Push back strong stress with feelings that are just as strong", "label": "Inner Pressure", "seq": 407, "mood": ["lift", "energy"], "tags": ["psychology", "mindset", "feelings"], "thumbAlt": "A chubby chenille yarn penguin floating in calm blue water holding a round red balloon"}
+@@ja_title
+強いストレスには、同じくらい強い気持ちで押し返す
+@@ja_label
+心の内圧
+@@h1emoji
+🎈
+@@section
+6「心が弱い＝心の内圧が下がっている」
+@@vars
+    --bg: #f0f9ff; --text: #14283d; --muted: #5f7891;
+    --accent: #0077d9; --accent2: #00c2c7; --h1: #062b4f; --big: #0068c0; --big-dark: #8fd0ff;
+    --glow1: rgba(0,194,199,.22); --glow2: rgba(0,119,217,.16); --glow3: rgba(255,120,120,.16);
+    --shadow: 0 20px 55px rgba(0,90,170,.18); --photo-bg: #dff1ff;
+    --g1: #34b6ff; --g2: #1f6fe0; --g3: #12307a; --pop: #ffd84d; --pop-text: #3d2a00; --btn-text: #0068c0;
+@@css
+  .card p + p { margin-top: 10px; }
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 12px 10px; border-radius: 20px; text-align: center; font-weight: 900; font-size: 14.5px; line-height: 1.35; }
+  .vs .weak { background: #eef1f5; color: #6a7686; }
+  .vs .strong { background: #fff1c2; color: #6b4b00; }
+  .card .vs b { display: block; font-size: 28px; margin-bottom: 4px; }
+
+  /* 🎈 深海の風船：外の圧（深さ）と、中の圧（強気の言葉）をつり合わせる */
+  .sea { position: relative; height: 230px; max-width: 420px; margin: 14px auto 0; border-radius: 26px; overflow: hidden; transition: background .5s ease;
+    background: linear-gradient(180deg, #7fd3ff, #2f8ee8); }
+  .game[data-d="2"] .sea { background: linear-gradient(180deg, #4fb2f0, #1d6cc8); }
+  .game[data-d="3"] .sea { background: linear-gradient(180deg, #2f8ad6, #154fa0); }
+  .game[data-d="4"] .sea { background: linear-gradient(180deg, #1d62b0, #0f3878); }
+  .game[data-d="5"] .sea { background: linear-gradient(180deg, #15488a, #0a2556); }
+  .depth { position: absolute; left: 12px; top: 10px; padding: 4px 10px; border-radius: 999px; background: rgba(0,0,0,.25); font-size: 14px; font-weight: 900; }
+  .dv { margin-left: 4px; }
+  .arr { position: absolute; font-size: 26px; line-height: 1; opacity: var(--p, .2); transition: opacity .4s ease; }
+  .arr.t { left: 50%; top: 34px; transform: translateX(-50%); }
+  .arr.b { left: 50%; bottom: 10px; transform: translateX(-50%); }
+  .arr.l { left: 16%; top: 50%; transform: translateY(-50%); }
+  .arr.r { right: 16%; top: 50%; transform: translateY(-50%); }
+  .balloon { position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; margin: -56px 0 0 -60px; border-radius: 50%;
+    background: radial-gradient(circle at 34% 30%, #ffb3b8 0 12%, #ff5c6c 40%, #d9314a 100%); box-shadow: 0 10px 24px rgba(0,0,0,.25);
+    display: grid; place-items: center; transform: scale(var(--sx, 1), var(--sy, 1)); transition: transform .45s cubic-bezier(.2,1.5,.4,1); }
+  .balloon::after { content: ""; position: absolute; left: 50%; bottom: -10px; width: 12px; height: 12px; margin-left: -6px; background: #d9314a; border-radius: 3px; transform: rotate(45deg); }
+  .bf { font-size: 40px; line-height: 1; }
+  .bub { position: absolute; bottom: -30px; width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,.6); animation: rise-b 5s linear infinite; }
+  .bub.b1 { left: 14%; } .bub.b2 { left: 80%; animation-delay: -2.5s; width: 12px; height: 12px; }
+  @keyframes rise-b { to { transform: translateY(-280px); } }
+
+  .gauges { display: grid; gap: 6px; max-width: 420px; margin: 12px auto 0; }
+  .gg { display: grid; grid-template-columns: 110px 1fr; align-items: center; gap: 8px; text-align: left; font-size: 14px; font-weight: 900; }
+  .bar { height: 14px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; border-radius: 999px; transition: width .35s ease; }
+  .bar.out i { background: #9fd8ff; }
+  .bar.in i { background: #ffd84d; }
+
+  .state { min-height: 48px; margin-top: 12px; font-size: 16px; font-weight: 900; line-height: 1.4; }
+  .state > span { display: none; }
+  .game[data-s="ok"] .s-ok, .game[data-s="sq"] .s-sq, .game[data-s="big"] .s-big, .game[data-s="done"] .s-done { display: inline; }
+  .game[data-s="sq"] .s-sq { animation: shake .4s ease; display: inline-block; }
+  .game[data-s="done"] .s-done { animation: bounce-in .5s both; display: inline-block; }
+  .ctrls { display: grid; gap: 10px; max-width: 420px; margin: 12px auto 0; }
+  .ctrls .gbtn { width: 100%; }
+  .strong span { display: none; }
+  .game[data-w="1"] .strong .w1, .game[data-w="2"] .strong .w2, .game[data-w="3"] .strong .w3,
+  .game[data-w="4"] .strong .w4, .game[data-w="5"] .strong .w5 { display: inline; }
+  .game[data-s="done"] .ctrls { display: none; }
+  .again-row { display: none; margin-top: 12px; }
+  .game[data-s="done"] .again-row { display: block; }
+@@dark
+  html[data-theme="dark"] .vs .weak { background: #2a2f38; color: #b9c3d0; }
+  html[data-theme="dark"] .vs .strong { background: #4a3c12; color: #ffe39a; }
+@@sents
+S1 | A tire with little air goes flat even on a small bump. | 空気の抜けたタイヤは、小さな段差でもパンクします。
+S2 | Deep in the sea, strong pressure crushes a balloon. | 深い海では、強い圧力で風船がつぶれます。
+S3 | But if the air inside is just as strong, it does not get crushed. | でも、中の空気も同じくらい強ければ、つぶれません。
+S4 | So answer stress with strong words, like "I'm looking forward to it!" | だからストレスには、「楽しみです！」のような強気の言葉で返します。
+S5 | It is OK even if you are only acting strong and your legs are shaking. | 強がりでも、足が震えていても、大丈夫です。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🛞</span>
+      <span class="card-label">Flat Tire</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌊</span>
+      <span class="card-label">Deep Sea</span>
+    </div>
+    <p>{S2}</p>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：深海の風船（深く潜るほど外の圧が上がる → 強気の言葉で中の圧を上げて、まるいまま） -->
+  <section class="game" data-d="1" data-s="ok" data-w="1" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Keep the balloon round</div>
+    <div class="game-hint">Dive deeper, and the sea pushes harder. Push back from the inside with strong words.</div>
+    <div class="sea" aria-hidden="true">
+      <span class="bub b1"></span><span class="bub b2"></span>
+      <div class="depth"><span class="dl">🌊 Depth</span><span class="dv">10</span><span class="du">m</span></div>
+      <span class="arr t">⬇️</span><span class="arr b">⬆️</span><span class="arr l">➡️</span><span class="arr r">⬅️</span>
+      <div class="balloon"><span class="bf">😊</span></div>
+    </div>
+    <div class="gauges" aria-hidden="true">
+      <div class="gg"><span class="gl">🌊 Outside</span><div class="bar out"><i></i></div></div>
+      <div class="gg"><span class="gl">🎈 Inside</span><div class="bar in"><i></i></div></div>
+    </div>
+    <div class="state">
+      <span class="s-ok">✅ Balanced! The balloon stays round. Now dive.</span>
+      <span class="s-sq">😣 Squish! Push back with a strong word.</span>
+      <span class="s-big">🔥 Strong inside! You can dive deeper.</span>
+      <span class="s-done">🏆 50 m deep, and still round!</span>
+    </div>
+    <div class="ctrls">
+      <button class="gbtn dive" type="button">⬇️ Dive deeper</button>
+      <button class="gbtn pop strong" type="button"><span class="w1">📣 "Bring it on!"</span><span class="w2">📣 "I'm looking forward to it!"</span><span class="w3">📣 "I can't wait to see what happens!"</span><span class="w4">📣 "No problem at all!"</span><span class="w5">📣 "OK, let's go!"</span></button>
+      <button class="gbtn ghost weak" type="button">😰 "I'm so scared…"</button>
+    </div>
+    <div class="again-row"><button class="gbtn ghost again" type="button">↺ Back to the top</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📣</span>
+      <span class="card-label">Strong Words</span>
+    </div>
+    <p>{S4}</p>
+    <div class="vs" aria-hidden="true">
+      <div class="weak"><b class="e">😰</b>"I'm so worried I can't sleep."</div>
+      <div class="strong"><b class="e">😄</b>"I'm excited to see what happens!"</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎈</span>
+      <span class="card-label">Acting Is OK</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+Flat Tire ||| パンク
+Deep Sea ||| 深い海
+Strong Words ||| 強気の言葉
+Acting Is OK ||| 強がりでいい
+⚡ TRY IT ||| ⚡ やってみよう
+Keep the balloon round ||| 風船をまるいままに
+Dive deeper, and the sea pushes harder. Push back from the inside with strong words. ||| 深く潜るほど、海が強く押してきます。強気の言葉で、内側から押し返そう。
+🌊 Depth ||| 🌊 深さ
+m ||| m
+🌊 Outside ||| 🌊 外の圧
+🎈 Inside ||| 🎈 中の圧
+✅ Balanced! The balloon stays round. Now dive. ||| ✅ つり合った！風船はまるいまま。さあ、潜ろう。
+😣 Squish! Push back with a strong word. ||| 😣 むぎゅっ！強気の言葉で押し返そう。
+🔥 Strong inside! You can dive deeper. ||| 🔥 中が強い！もっと深く潜れます。
+🏆 50 m deep, and still round! ||| 🏆 深さ50m、それでもまるい！
+⬇️ Dive deeper ||| ⬇️ もっと潜る
+📣 "Bring it on!" ||| 📣「どんと来い！」
+📣 "I'm looking forward to it!" ||| 📣「楽しみです！」
+📣 "I can't wait to see what happens!" ||| 📣「どうなるか、ワクワクする！」
+📣 "No problem at all!" ||| 📣「ぜんぜん平気！」
+📣 "OK, let's go!" ||| 📣「よし、行こう！」
+😰 "I'm so scared…" ||| 😰「こわいなあ…」
+↺ Back to the top ||| ↺ 海の上に戻る
+"I'm so worried I can't sleep." ||| 「不安で眠れません」
+"I'm excited to see what happens!" ||| 「どんな体験ができるか楽しみです！」
+@@js
+/* 🎈 深海の風船：JS は data-* / style / 絵文字 / 数字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var ball = g.querySelector('.balloon'), face = g.querySelector('.bf'), dv = g.querySelector('.dv'),
+      outBar = g.querySelector('.bar.out i'), inBar = g.querySelector('.bar.in i'), arrs = [].slice.call(g.querySelectorAll('.arr'));
+  var d = 1, inn = 1, words = 0;
+  function paint() {
+    var diff = inn - d, sx = 1, sy = 1, s;
+    if (diff < 0) { var k = Math.min(3, -diff); sx = 1 + 0.16 * k; sy = Math.max(0.42, 1 - 0.2 * k); face.textContent = k >= 2 ? '😖' : '😣'; s = 'sq'; }
+    else if (diff > 0) { sx = sy = 1.1; face.textContent = '😄'; s = 'big'; }
+    else { face.textContent = '😊'; s = 'ok'; }
+    if (d === 5 && inn >= 5) { s = 'done'; face.textContent = '😎'; }
+    ball.style.setProperty('--sx', sx); ball.style.setProperty('--sy', sy);
+    g.setAttribute('data-d', d); g.setAttribute('data-s', s);
+    g.setAttribute('data-w', (words % 5) + 1);
+    dv.textContent = d * 10;
+    outBar.style.width = (d / 6 * 100) + '%';
+    inBar.style.width = (Math.min(inn, 6) / 6 * 100) + '%';
+    arrs.forEach(function (a) { a.style.setProperty('--p', (0.12 + d * 0.17).toFixed(2)); });
+    return s;
+  }
+  g.querySelector('.dive').addEventListener('click', function () {
+    if (d < 5) d++;
+    paint();
+    if (navigator.vibrate && inn < d) { try { navigator.vibrate(15); } catch (e) {} }
+  });
+  g.querySelector('.strong').addEventListener('click', function (e) {
+    inn = Math.min(d + 1, inn + 1); words++;
+    var s = paint();
+    if (window.pengessoPop) {
+      var r = ball.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, s === 'done' ? ['🎈', '🏆', '🐧', '✨'] : ['🔥', '✨'], s === 'done' ? 20 : 6);
+    }
+  });
+  g.querySelector('.weak').addEventListener('click', function () { inn = Math.max(0, inn - 1); paint(); });
+  g.querySelector('.again').addEventListener('click', function () { d = 1; inn = 1; words = 0; paint(); });
+  paint();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード・.big）
+@@message
+ストレス（圧力）には、同じくらいの気持ちの圧で返す。強がりでもいい。
+@@tone
+素材の重さ：真面目（ストレスに弱くなっているとき）
+→ 見せ方：ポップに（海の青と赤い風船。深く潜るゲーム。風船は割れない）
+@@game_ja
+🎈 風船をまるいままに：海の中の赤い風船。「もっと潜る」を押すと深さが10m→50mになり、外の圧が上がって風船がむぎゅっとつぶれる（😣）。「強気の言葉」ボタン（どんと来い！／楽しみです！／どうなるかワクワクする！／ぜんぜん平気！／よし、行こう！）を押すと中の圧が上がって、まるく戻る（😊）。「こわいなあ…」を押すと中の圧が下がる。50mでもまるいままなら 🏆。風船は割れない。
+（元のメモの「入院」の例は使わず、「不安で眠れない」→「どんな体験ができるか楽しみ」の言い方だけを比べる図にした）
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain white belly (no rings or patterns on the belly), made of soft chenille yarn, floating calmly underwater with a brave little smile, holding the string of one realistic round red latex balloon that stays perfectly round. Clear, calm blue water with soft light rays from above and gentle depth, clean and uncluttered, no bubbles. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × シェニール糸 × 赤い風船

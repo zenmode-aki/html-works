@@ -1,0 +1,227 @@
+@@meta
+{"title": "Sleeping until noon on a day off gives your body a kind of jet lag", "label": "Weekend Jet Lag", "seq": 483, "mood": ["lift", "laugh"], "tags": ["psychology", "sleep", "rest"], "thumbAlt": "A chubby crocheted amigurumi penguin yawning with a soft gray travel neck pillow around its neck"}
+@@ja_title
+休みの日に昼まで寝ると、体は時差ボケのようになる
+@@ja_label
+週末の時差ボケ
+@@h1emoji
+✈️
+@@section
+104「睡眠の質を上げるコツ」（休日に昼まで寝ると時差ボケのようになる）
+@@vars
+    --bg: #f2f8ff; --text: #1f2d44; --muted: #6a7a92;
+    --accent: #1f74d8; --accent2: #ff8a3d; --h1: #16304f; --big: #1663bd; --big-dark: #9cc8ff;
+    --glow1: rgba(80,160,255,.22); --glow2: rgba(255,170,90,.24); --glow3: rgba(120,220,200,.18);
+    --shadow: 0 20px 55px rgba(30,90,170,.18); --photo-bg: #e1efff;
+    --g1: #1f74d8; --g2: #44a0ff; --g3: #ffad5c; --pop: #ffe45e; --pop-text: #3d2a00; --btn-text: #1663bd;
+@@css
+  /* ✈️ 日曜に起きる時間を変えると、体の時計が外国へ飛んでいく */
+  .wake { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 16px; }
+  .step { width: 64px; height: 64px; min-height: 64px; padding: 0; font-size: 34px; border-radius: 50%; }
+  .clock { min-width: 128px; padding: 8px 12px 10px; border-radius: 22px; background: rgba(255,255,255,.95); color: #16304f; }
+  .clock-l { font-size: 12.5px; font-weight: 900; letter-spacing: .04em; color: #1663bd; }
+  .clock-t { font-size: 40px; font-weight: 900; line-height: 1.05; letter-spacing: -.02em; }
+  .clock-t.tick { animation: bounce-in .35s both; }
+
+  .route { position: relative; max-width: 400px; height: 78px; margin: 18px auto 0; }
+  .route::before { content: ""; position: absolute; left: 16px; right: 16px; top: 52px; border-top: 4px dashed rgba(255,255,255,.7); }
+  .stops { position: absolute; left: 0; right: 0; top: 38px; display: flex; justify-content: space-between; }
+  .game .stops span { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.92);
+    font-size: 19px; line-height: 1; box-shadow: 0 3px 0 rgba(0,0,0,.12); transition: transform .3s ease; }
+  .game .stops span.here { transform: scale(1.3); box-shadow: 0 0 0 4px var(--pop), 0 3px 0 rgba(0,0,0,.12); }
+  .plane { position: absolute; top: 0; left: 0; width: 32px; text-align: center; font-size: 28px; line-height: 1;
+    transition: left .6s cubic-bezier(.3,1.3,.5,1); }
+  .plane i { display: inline-block; font-style: normal; }
+  .route-scale { display: flex; justify-content: space-between; max-width: 400px; margin: 6px auto 0; font-size: 12px; font-weight: 900; opacity: .9; }
+
+  .where { max-width: 420px; margin: 14px auto 0; padding: 14px 14px 12px; border-radius: 22px; background: #fff; color: #1f2d44;
+    box-shadow: 0 10px 24px rgba(10,50,110,.18); }
+  .where-l { font-size: 13px; font-weight: 900; color: #1663bd; }
+  .place { min-height: 34px; margin-top: 2px; font-size: clamp(20px, 5.4vw, 24px); font-weight: 900; line-height: 1.3; }
+  .place span, .verdict span { display: none; }
+  .game[data-h="0"] .p0, .game[data-h="1"] .p1, .game[data-h="2"] .p2, .game[data-h="3"] .p3, .game[data-h="4"] .p4, .game[data-h="5"] .p5,
+  .game[data-h="0"] .v0, .game[data-h="1"] .v1, .game[data-h="2"] .v2, .game[data-h="3"] .v3, .game[data-h="4"] .v4, .game[data-h="5"] .v5 { display: inline; }
+  .place.swap { animation: bounce-in .4s both; }
+  .times { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .times > div { padding: 8px 6px; border-radius: 16px; background: #eef5ff; }
+  .times .tl { display: block; font-size: 12.5px; font-weight: 900; color: #4a6283; line-height: 1.3; }
+  .times .tv { display: block; font-size: 26px; font-weight: 900; line-height: 1.15; }
+  .times .body-t { background: #fff3df; }
+  .lag { position: relative; height: 14px; margin: 12px 0 0; border-radius: 999px; background: #e3ebf6; overflow: hidden; }
+  .lag i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; background: linear-gradient(90deg, #ffc94a, #ff6b4a); transition: width .5s ease; }
+  .verdict { min-height: 50px; margin-top: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 900; line-height: 1.4; }
+  .game[data-h="5"] .where { animation: shake .4s ease; }
+  .again-row[hidden] { display: none; }
+@@dark
+  html[data-theme="dark"] .clock { background: #22242f; color: #f4f0fa; }
+  html[data-theme="dark"] .clock-l, html[data-theme="dark"] .where-l { color: #9cc8ff; }
+  html[data-theme="dark"] .where { background: #22242f; color: #ece8f4; }
+  html[data-theme="dark"] .times > div { background: #2c3446; }
+  html[data-theme="dark"] .times .tl { color: #b9c8de; }
+  html[data-theme="dark"] .times .body-t { background: #46391f; }
+  html[data-theme="dark"] .lag { background: #343849; }
+  html[data-theme="dark"] .game .stops span { background: #2c2e3b; }
+@@sents
+S1 | It is said that sleeping until noon on a day off gives your body a kind of jet lag. | 休みの日に昼まで寝ると、体が時差ボケのようになると言われています。
+S2 | It is like your body clock goes to a faraway country by itself. | 体の時計だけが、勝手に遠くの国へ旅行してしまうイメージです。
+S3 | Then on Monday morning, it must suddenly fly back to Japan, so it is hard. | そして月曜の朝、急に日本へ帰ってこないといけないので、つらいのです。
+S4 | On days off too, waking up near your usual time may make Monday a little easier. | 休みの日も、いつもに近い時間に起きると、月曜日が少し楽になるかもしれません。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😴</span>
+      <span class="card-label">Sleeping In</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧳</span>
+      <span class="card-label">Body Clock Trip</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：体の時計は、どこまで飛ぶ？ -->
+  <section class="game" data-h="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">How far does your body clock fly?</div>
+    <div class="game-hint">Change the time you wake up on Sunday. Your usual time is 7:00.</div>
+    <div class="wake">
+      <button class="gbtn step minus" type="button" aria-label="Wake up 1 hour earlier">−</button>
+      <div class="clock"><div class="clock-l">☀️ Sunday wake-up</div><div class="clock-t"><span class="hh">7</span>:00</div></div>
+      <button class="gbtn pop step plus" type="button" aria-label="Wake up 1 hour later">+</button>
+    </div>
+    <div class="route" aria-hidden="true">
+      <div class="plane"><i>✈️</i></div>
+      <div class="stops"><span class="here">🇯🇵</span><span>🇵🇭</span><span>🇹🇭</span><span>🇧🇩</span><span>🇲🇻</span><span>🇦🇪</span></div>
+    </div>
+    <div class="route-scale" aria-hidden="true"><span class="rs1">🏠 Home</span><span class="rs2">5 hours away</span></div>
+    <div class="where">
+      <div class="where-l">💤 Your body clock is now in:</div>
+      <div class="place">
+        <span class="p0">🇯🇵 Japan. It stayed home!</span>
+        <span class="p1">🇵🇭 The Philippines</span>
+        <span class="p2">🇹🇭 Thailand</span>
+        <span class="p3">🇧🇩 Bangladesh</span>
+        <span class="p4">🇲🇻 The Maldives</span>
+        <span class="p5">🇦🇪 Dubai</span>
+      </div>
+      <div class="times">
+        <div><span class="tl">⏰ Monday alarm</span><span class="tv">7:00</span></div>
+        <div class="body-t"><span class="tl">🐧 Your body thinks it is</span><span class="tv"><span class="bt">7</span>:00</span></div>
+      </div>
+      <div class="lag" aria-hidden="true"><i></i></div>
+      <div class="verdict">
+        <span class="v0">😊 Same as usual. Monday is easy.</span>
+        <span class="v1">🙂 Only 1 hour away. Almost OK.</span>
+        <span class="v2">😐 2 hours away. Monday feels a little heavy.</span>
+        <span class="v3">😪 3 hours away. Your body is still in bed.</span>
+        <span class="v4">😩 4 hours away. Why is the alarm so early?!</span>
+        <span class="v5">😵 5 hours away! Monday feels like the middle of the night.</span>
+      </div>
+    </div>
+    <div class="again-row" hidden><button class="gbtn ghost again" type="button">↺ Back to 7:00</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📅</span>
+      <span class="card-label">Hard Monday</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌅</span>
+      <span class="card-label">Usual Time</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Sleeping In ||| 昼まで寝る
+Body Clock Trip ||| 体の時計の旅
+Hard Monday ||| つらい月曜日
+Usual Time ||| いつもの時間
+⚡ TRY IT ||| ⚡ やってみよう
+How far does your body clock fly? ||| 体の時計は、どこまで飛んでいく？
+Change the time you wake up on Sunday. Your usual time is 7:00. ||| 日曜日に起きる時間を変えてみて。いつもは7:00に起きています。
+Wake up 1 hour earlier ||| 1時間早く起きる
+Wake up 1 hour later ||| 1時間おそく起きる
+☀️ Sunday wake-up ||| ☀️ 日曜に起きる時間
+🏠 Home ||| 🏠 家
+5 hours away ||| 5時間先
+💤 Your body clock is now in: ||| 💤 いま、体の時計がいる場所：
+🇯🇵 Japan. It stayed home! ||| 🇯🇵 日本。おうちにいます！
+🇵🇭 The Philippines ||| 🇵🇭 フィリピン
+🇹🇭 Thailand ||| 🇹🇭 タイ
+🇧🇩 Bangladesh ||| 🇧🇩 バングラデシュ
+🇲🇻 The Maldives ||| 🇲🇻 モルディブ
+🇦🇪 Dubai ||| 🇦🇪 ドバイ
+⏰ Monday alarm ||| ⏰ 月曜の目覚まし
+🐧 Your body thinks it is ||| 🐧 体が思っている時間
+😊 Same as usual. Monday is easy. ||| 😊 いつもどおり。月曜日も楽ちん。
+🙂 Only 1 hour away. Almost OK. ||| 🙂 1時間だけ。ほぼ大丈夫。
+😐 2 hours away. Monday feels a little heavy. ||| 😐 2時間。月曜日がちょっと重い。
+😪 3 hours away. Your body is still in bed. ||| 😪 3時間。体はまだベッドの中。
+😩 4 hours away. Why is the alarm so early?! ||| 😩 4時間。なんで目覚ましがこんなに早いの？！
+😵 5 hours away! Monday feels like the middle of the night. ||| 😵 5時間！月曜の朝が、真夜中みたい。
+↺ Back to 7:00 ||| ↺ 7:00に戻す
+@@js
+/* ✈️ 日曜に起きる時間（7〜12時）→ 体の時計が飛んでいく国・体が思っている時間・時差ボケのメーター。JS は data-h と数字と style だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var minus = g.querySelector('.minus'), plus = g.querySelector('.plus'), again = g.querySelector('.again');
+  var hh = g.querySelector('.hh'), bt = g.querySelector('.bt'), clockT = g.querySelector('.clock-t'), place = g.querySelector('.place');
+  var plane = g.querySelector('.plane'), bar = g.querySelector('.lag i'), stops = g.querySelectorAll('.stops span');
+  var againRow = g.querySelector('.again-row');
+  var h = 0, far = 0;
+  function bump(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function pop(el, list, k) {
+    if (!window.pengessoPop || !el) return;
+    var r = el.getBoundingClientRect();
+    window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, k);
+  }
+  function render(moved) {
+    g.setAttribute('data-h', h);
+    hh.textContent = 7 + h;
+    bt.textContent = 7 - h;
+    plane.style.left = 'calc((100% - 32px) * ' + (h / 5) + ')';
+    bar.style.width = (h * 20) + '%';
+    for (var i = 0; i < stops.length; i++) stops[i].classList.toggle('here', i === h);
+    minus.disabled = h === 0;
+    plus.disabled = h === 5;
+    againRow.hidden = h === 0;
+    if (moved) { bump(clockT, 'tick'); bump(place, 'swap'); }
+  }
+  function go(d) {
+    var nh = Math.max(0, Math.min(5, h + d));
+    if (nh === h) return;
+    h = nh; far = Math.max(far, h);
+    render(true);
+    if (h === 5) pop(plane, ['✈️', '💤', '😵'], 12);
+    if (h === 0 && far >= 3) { pop(stops[0], ['🏠', '✨', '🐧', '😊'], 16); far = 0; }
+  }
+  minus.addEventListener('click', function () { go(-1); });
+  plus.addEventListener('click', function () { go(1); });
+  again.addEventListener('click', function () { far = Math.max(far, h); go(-h); });
+  render(false);
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+休みの日に昼まで寝ると、体の時計が外国へ行ったようになり、月曜がつらくなる（時差ボケのよう）。
+@@tone
+素材の重さ：ふつう（睡眠のコツ）
+→ 見せ方：ポップに（空の青と夕焼けのオレンジ。日曜に起きる時間を変えると、飛行機が飛んでいく）
+@@game_ja
+✈️ 体の時計は、どこまで飛んでいく？：日曜日に起きる時間を「−」「＋」で7:00〜12:00に変える。1時間おそくなるごとに、体の時計の飛行機が 🇯🇵 日本 → 🇵🇭 フィリピン → 🇹🇭 タイ → 🇧🇩 バングラデシュ → 🇲🇻 モルディブ → 🇦🇪 ドバイ へ飛んでいく（どれも日本との時差がちょうど1〜5時間の国）。「月曜の目覚まし 7:00」と「体が思っている時間」（7:00 → 2:00）が並び、時差ボケのメーターと月曜の顔（😊 → 😵）が変わる。12時まで寝ると「月曜の朝が、真夜中みたい」。3時間以上離れてから7:00に戻すと「おかえり」の🏠✨。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of crocheted amigurumi yarn, sitting and giving a big sleepy yawn with one realistic soft gray memory-foam travel neck pillow around its neck. A simple bright sky-blue background that fades into a warm sunrise orange with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × あみぐるみの毛糸 × 旅行用ネックピロー

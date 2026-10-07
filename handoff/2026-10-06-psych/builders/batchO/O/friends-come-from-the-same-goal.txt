@@ -1,0 +1,252 @@
+@@meta
+{"title": "Friends come naturally from the same goal or the same interest", "label": "Same Interest", "seq": 432, "mood": ["lift", "think"], "tags": ["psychology", "friends", "happiness"], "thumbAlt": "A crocheted amigurumi penguin hugging a small red rubber ball"}
+@@ja_title
+友達は、目的か興味が同じ人と自然にできる
+@@ja_label
+同じ「好き」
+@@h1emoji
+🧲
+@@section
+35「友達ができる法則＝目的か興味が同じ」
+@@vars
+    --bg: #f2fff8; --text: #1f3a31; --muted: #5f7d72;
+    --accent: #0e9f6e; --accent2: #22b8c9; --h1: #12392c; --big: #08875c; --big-dark: #7ff0c3;
+    --glow1: rgba(46,214,140,.28); --glow2: rgba(34,184,201,.22); --glow3: rgba(255,214,90,.22);
+    --shadow: 0 20px 55px rgba(14,120,90,.18); --photo-bg: #dcf7ea;
+    --g1: #0fae74; --g2: #1fb7a6; --g3: #3aa7e0; --pop: #ffe066; --pop-text: #5a4000; --btn-text: #0b7d57;
+@@css
+  /* 🧲 自分の輪を見つけよう：好きなものを選ぶ → 同じものが好きなペンギンが寄ってきて輪になる */
+  .field { position: relative; height: 270px; max-width: 440px; margin: 16px auto 0; border-radius: 26px;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.26), rgba(255,255,255,.1) 70%); border: 3px solid rgba(255,255,255,.35); overflow: hidden; }
+  .ring { position: absolute; left: 50%; top: 47%; width: 74%; height: 62%; border-radius: 50%; border: 4px dashed rgba(255,255,255,.85);
+    transform: translate(-50%, -50%) scale(.3); opacity: 0; transition: transform .6s cubic-bezier(.2,1.3,.4,1) .35s, opacity .3s ease .35s; }
+  .game:not([data-pick="0"]) .ring { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  .pg { position: absolute; width: 58px; height: 58px; margin: -29px 0 0 -29px; display: grid; place-items: center; font-size: 40px; line-height: 1;
+    border-radius: 50%; background: rgba(255,255,255,.2); transition: left .75s cubic-bezier(.3,1.25,.5,1), top .75s cubic-bezier(.3,1.25,.5,1), opacity .4s ease, filter .4s ease; }
+  .pg .hob { position: absolute; right: -6px; top: -8px; font-style: normal; font-size: 22px; line-height: 1; }
+  .pg.dim { opacity: .42; filter: grayscale(.7); }
+  .pg.close { background: rgba(255,255,255,.38); box-shadow: 0 0 0 3px rgba(255,255,255,.7); }
+  .pg.hop { animation: hop .45s ease 2; }
+  .me { position: absolute; left: 50%; top: 47%; width: 70px; height: 70px; margin: -35px 0 0 -35px; display: grid; place-items: center;
+    font-size: 48px; line-height: 1; border-radius: 50%; background: var(--pop); box-shadow: 0 6px 0 rgba(0,0,0,.14); z-index: 2; }
+  .me .hob { position: absolute; right: -8px; top: -10px; font-style: normal; font-size: 26px; line-height: 1; }
+  .me .hob.boing { animation: bounce-in .45s both; }
+  .me-tag { position: absolute; left: 50%; top: calc(47% + 40px); transform: translateX(-50%); padding: 2px 10px; border-radius: 999px;
+    background: #fff; color: var(--btn-text); font-size: 12.5px; font-weight: 900; z-index: 2; }
+
+  .talk { max-width: 440px; margin: 14px auto 0; padding: 12px 14px; border-radius: 20px; background: #fff; color: #1f3a31;
+    box-shadow: 0 10px 22px rgba(0,60,40,.16); min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+  .talk .q, .talk .starts { display: none; font-weight: 900; line-height: 1.4; }
+  .talk .q { font-size: clamp(17px, 4.6vw, 20px); }
+  .talk .starts { font-size: 14px; color: var(--btn-text); }
+  .talk.show { animation: bounce-in .4s both; }
+  .game[data-pick="0"] .q0 { display: block; color: #6d8a80; }
+  .game[data-pick="ball"] .q-ball, .game[data-pick="cafe"] .q-cafe, .game[data-pick="book"] .q-book, .game[data-pick="play"] .q-play { display: block; }
+  .game:not([data-pick="0"]) .starts { display: block; }
+  .note { display: none; max-width: 440px; margin: 10px auto 0; padding: 9px 12px; border-radius: 16px; background: rgba(255,255,255,.2);
+    font-size: 14px; font-weight: 900; line-height: 1.45; }
+  .game:not([data-pick="0"]) .note { display: block; }
+
+  .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px; margin: 14px auto 0; }
+  .chip { min-height: 56px; padding: 8px 10px; border: 0; border-radius: 18px; background: rgba(255,255,255,.95); color: var(--btn-text);
+    font: inherit; font-size: 16px; font-weight: 900; line-height: 1.25; cursor: pointer; box-shadow: 0 5px 0 rgba(0,70,50,.28);
+    transition: transform .08s ease, box-shadow .08s ease; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .chip:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,70,50,.28); }
+  .chip.sel { background: var(--pop); color: var(--pop-text); box-shadow: 0 0 0 3px #fff, 0 5px 0 rgba(0,70,50,.28); }
+  .chip:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+
+  .found { display: flex; align-items: center; justify-content: center; gap: 6px 10px; flex-wrap: wrap; margin-top: 14px; font-size: 14.5px; font-weight: 900; }
+  .stamps { display: inline-flex; gap: 5px; }
+  .stamp { font-size: 21px; line-height: 1; filter: grayscale(1); opacity: .35; }
+  .stamp.on { filter: none; opacity: 1; animation: bounce-in .4s both; }
+  .all-found { display: none; max-width: 420px; margin: 10px auto 0; padding: 10px 14px; background: rgba(255,255,255,.24); border-radius: 16px; font-weight: 900; line-height: 1.4; }
+  .game[data-all="1"] .all-found { display: block; animation: bounce-in .5s both; }
+  @media (max-width: 380px) { .field { height: 250px; } .pg { font-size: 34px; width: 50px; height: 50px; margin: -25px 0 0 -25px; } }
+@@dark
+  html[data-theme="dark"] .talk { background: #1f2b28; color: #e3fff4; }
+  html[data-theme="dark"] .game[data-pick="0"] .q0 { color: #a8c9bd; }
+  html[data-theme="dark"] .talk .starts { color: #7ff0c3; }
+  html[data-theme="dark"] .chip { background: #1f2b28; color: #b8ffe3; }
+  html[data-theme="dark"] .chip.sel { background: #ffe066; color: #4a3500; }
+  html[data-theme="dark"] .me-tag { background: #1f2b28; color: #b8ffe3; }
+@@sents
+S1 | It seems friends come naturally from people with the same goal or interest. | 友達は、目的か興味が同じ人と、自然にできるそうです。
+S2 | When we were children, dodgeball lovers became friends with dodgeball lovers. | 子どものころ、ドッジボール好きは、ドッジボール好きと仲良くなっていました。
+S3 | Maybe friends near home just went home the same way. | 近所の友達も、ただ帰り道が同じだっただけかもしれません。
+S4 | If you do what you like, you will meet people who like the same thing. | 好きなことをしていれば、同じものが好きな人と、自然に出会えます。
+S5 | Someone who did not become your friend did not hate you; you just did not match. | 仲良くなれなかった人は、あなたを嫌ったのではなく、ただ馬が合わなかっただけです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧲</span>
+      <span class="card-label">The Rule</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🏐</span>
+      <span class="card-label">Dodgeball Days</span>
+    </div>
+    <p>{S2}</p>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：自分の輪を見つけよう（好きなものを選ぶ → 同じ「好き」のペンギンが寄ってくる） -->
+  <section class="game" data-pick="0" data-all="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Find your circle</div>
+    <div class="game-hint">Pick something you like. Who comes over?</div>
+    <div class="field" aria-hidden="true">
+      <div class="ring"></div>
+      <div class="pg" data-h="ball" style="left:12%;top:16%">🐧<i class="hob">⚾</i></div>
+      <div class="pg" data-h="cafe" style="left:38%;top:12%">🐧<i class="hob">☕</i></div>
+      <div class="pg" data-h="book" style="left:64%;top:13%">🐧<i class="hob">📚</i></div>
+      <div class="pg" data-h="play" style="left:88%;top:18%">🐧<i class="hob">🎮</i></div>
+      <div class="pg" data-h="cafe" style="left:11%;top:80%">🐧<i class="hob">☕</i></div>
+      <div class="pg" data-h="play" style="left:34%;top:87%">🐧<i class="hob">🎮</i></div>
+      <div class="pg" data-h="ball" style="left:67%;top:87%">🐧<i class="hob">⚾</i></div>
+      <div class="pg" data-h="book" style="left:89%;top:79%">🐧<i class="hob">📚</i></div>
+      <div class="me">🐧<i class="hob">❔</i></div>
+      <div class="me-tag">You</div>
+    </div>
+    <div class="talk">
+      <span class="q q0">Pick one below 👇</span>
+      <span class="q q-ball">⚾ "Did you see the game last night?"</span>
+      <span class="q q-cafe">☕ "I found a nice cafe!"</span>
+      <span class="q q-book">📚 "What are you reading now?"</span>
+      <span class="q q-play">🎮 "Which level are you on?"</span>
+      <span class="starts">💬 The talk starts by itself!</span>
+    </div>
+    <div class="note">🐴 The others did not hate you. They just like other things.</div>
+    <div class="chips">
+      <button class="chip" type="button" data-h="ball" aria-pressed="false">⚾ Baseball</button>
+      <button class="chip" type="button" data-h="cafe" aria-pressed="false">☕ Cafes</button>
+      <button class="chip" type="button" data-h="book" aria-pressed="false">📚 Books</button>
+      <button class="chip" type="button" data-h="play" aria-pressed="false">🎮 Games</button>
+    </div>
+    <div class="found">
+      <span class="f-l">🔍 Circles found:</span>
+      <span class="stamps" aria-hidden="true"><span class="stamp" data-h="ball">⚾</span><span class="stamp" data-h="cafe">☕</span><span class="stamp" data-h="book">📚</span><span class="stamp" data-h="play">🎮</span></span>
+      <span class="f-n">0/4</span>
+    </div>
+    <div class="all-found">🎉 Every "like" has its own circle!</div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💡</span>
+      <span class="card-label">Your Favorites</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐴</span>
+      <span class="card-label">Just No Match</span>
+    </div>
+    <p>{S5}</p>
+  </section>
+@@ui
+The Rule ||| ルール
+Dodgeball Days ||| ドッジボールのころ
+Your Favorites ||| 好きなこと
+Just No Match ||| 馬が合わないだけ
+⚡ TRY IT ||| ⚡ やってみよう
+Find your circle ||| 自分の輪を見つけよう
+Pick something you like. Who comes over? ||| 好きなものを選んでね。だれが寄ってくるかな？
+You ||| あなた
+Pick one below 👇 ||| 下から選んでね 👇
+⚾ "Did you see the game last night?" ||| ⚾「昨日の試合、見た？」
+☕ "I found a nice cafe!" ||| ☕「いいカフェ見つけたよ！」
+📚 "What are you reading now?" ||| 📚「いま何読んでるの？」
+🎮 "Which level are you on?" ||| 🎮「いま何ステージ？」
+💬 The talk starts by itself! ||| 💬 話が勝手に始まった！
+🐴 The others did not hate you. They just like other things. ||| 🐴 ほかのペンギンは、あなたを嫌ったわけじゃないよ。好きなものがちがうだけ。
+⚾ Baseball ||| ⚾ 野球
+☕ Cafes ||| ☕ カフェ
+📚 Books ||| 📚 本
+🎮 Games ||| 🎮 ゲーム
+🔍 Circles found: ||| 🔍 見つけた輪：
+🎉 Every "like" has its own circle! ||| 🎉 どの「好き」にも、ちゃんと輪がある！
+↺ Start over ||| ↺ 最初から
+@@js
+/* 🧲 自分の輪を見つけよう：JS は data-pick / data-all / class / style の位置 / 絵文字 / 数字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var KEY = 'pengesso-friends-come-from-the-same-goal-found';
+  var ICON = { ball: '⚾', cafe: '☕', book: '📚', play: '🎮' };
+  var SLOTS = [[25, 44], [75, 44]];
+  var pgs = [].slice.call(g.querySelectorAll('.pg'));
+  var chips = [].slice.call(g.querySelectorAll('.chip'));
+  var stamps = [].slice.call(g.querySelectorAll('.stamp'));
+  var me = g.querySelector('.me'), meHob = g.querySelector('.me .hob'), talk = g.querySelector('.talk'), fN = g.querySelector('.f-n');
+  var homes = pgs.map(function (p) { return [p.style.left, p.style.top]; });
+  var found = {}, hopTimer = 0;
+  try { found = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { found = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(found)); } catch (e) {} }
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function drawFound() {
+    var n = 0;
+    stamps.forEach(function (s) { var on = !!found[s.getAttribute('data-h')]; s.classList.toggle('on', on); if (on) n++; });
+    fN.textContent = n + '/4';
+    g.setAttribute('data-all', n === 4 ? '1' : '0');
+    return n;
+  }
+  function pick(h) {
+    g.setAttribute('data-pick', h || '0');
+    chips.forEach(function (c) { var on = c.getAttribute('data-h') === h; c.classList.toggle('sel', on); c.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+    var k = 0;
+    clearTimeout(hopTimer);
+    pgs.forEach(function (p, i) {
+      p.classList.remove('hop');
+      var match = h && p.getAttribute('data-h') === h;
+      if (match) { p.style.left = SLOTS[k][0] + '%'; p.style.top = SLOTS[k][1] + '%'; k++; }
+      else { p.style.left = homes[i][0]; p.style.top = homes[i][1]; }
+      p.classList.toggle('close', !!match);
+      p.classList.toggle('dim', !!h && !match);
+    });
+    meHob.textContent = h ? ICON[h] : '❔';
+    if (h) {
+      restart(meHob, 'boing'); restart(talk, 'show');
+      hopTimer = setTimeout(function () { pgs.forEach(function (p) { if (p.classList.contains('close')) restart(p, 'hop'); }); }, 760);
+    }
+  }
+  drawFound();
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      var h = c.getAttribute('data-h');
+      pick(h);
+      var before = drawFound();
+      found[h] = 1; save();
+      var after = drawFound();
+      if (!window.pengessoPop) return;
+      var r = me.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+      setTimeout(function () {
+        if (after === 4 && before < 4) window.pengessoPop(x, y, ['🎉', '🐧', ICON[h], '✨'], 22);
+        else window.pengessoPop(x, y, [ICON[h], '🐧', '✨'], 12);
+      }, 650);
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () { found = {}; save(); pick(''); drawFound(); });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード・.big）
+S5 → 使った（4枚目のカード）
+@@message
+友達は、目的か興味が同じ人と、自然にできる。
+@@tone
+素材の重さ：真面目（友達づくり・人間関係）
+→ 見せ方：ポップに（緑と青緑。好きなものを選ぶと、同じ「好き」のペンギンが寄ってきて輪になる）
+@@game_ja
+🧲 自分の輪を見つけよう：広場にペンギンが8羽ちらばっている（頭の上に ⚾☕📚🎮 のどれか）。下の4つ（野球／カフェ／本／ゲーム）から好きなものを選ぶと、同じものが好きな2羽が、まんなかの「あなた」の両どなりにぴょんと寄ってきて、点線の輪ができる。ほかのペンギンは少し薄くなるが、「嫌ったわけじゃないよ。好きなものがちがうだけ」と出る（馬が合わないだけ）。選ぶたびに、その「好き」らしい話しかけ（「昨日の試合、見た？」など）と「話が勝手に始まった！」が出る。4つぜんぶ試すと🎉。見つけた輪は端末に覚える。「最初から」で消せる。
+@@combo
+ペンギン × かぎ針編みのあみぐるみ × 赤いゴムボール
+@@cover
+An extremely cute, chubby round penguin made of crocheted amigurumi yarn, with a gentle happy face and a plain white belly, hugging a realistic small red rubber playground ball with both flippers. Bright simple mint green background with soft depth and a gentle warm light, like a sunny schoolyard far behind, softly blurred. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

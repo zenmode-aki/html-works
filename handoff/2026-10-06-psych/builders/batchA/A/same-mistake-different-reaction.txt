@@ -1,0 +1,258 @@
+@@meta
+{"title": "People who chat every day get forgiven for the same mistake", "label": "Same Mistake", "seq": 293, "mood": ["lift", "think"], "tags": ["psychology", "friends", "mistakes"], "thumbAlt": "A chubby embroidered felt penguin hurrying with a small alarm clock under its flipper"}
+@@ja_title
+雑談している人は、同じミスでも許される
+@@ja_label
+同じミス
+@@h1emoji
+⏰
+@@section
+1-2「雑談で得すること：同じミスでも扱いが違う」
+@@vars
+    --bg: #effbf9; --text: #15302f; --muted: #5d7a78;
+    --accent: #0a857f; --accent2: #2f80ed; --h1: #0d3b3a; --big: #0a7a75; --big-dark: #8ff0e6;
+    --glow1: rgba(11,171,159,.22); --glow2: rgba(47,128,237,.16); --glow3: rgba(255,224,102,.24);
+    --shadow: 0 20px 55px rgba(10,110,120,.18); --photo-bg: #d9f5f1;
+    --g1: #0aa79b; --g2: #1590c6; --g3: #2f6fed; --pop: #ffe066; --pop-text: #4a3500; --btn-text: #0a857f;
+@@css
+  /* ⏰ 同じミス、2つの世界：雑談してきた世界／してこなかった世界で、同じ遅刻への反応をめくる */
+  .worlds { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 430px; margin: 16px auto 0; }
+  .world { min-height: 70px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 8px 8px; border: 0; border-radius: 20px;
+    cursor: pointer; font: inherit; font-size: 15px; font-weight: 900; line-height: 1.25; color: #fff; background: rgba(255,255,255,.18);
+    box-shadow: 0 5px 0 rgba(0,0,0,.14); -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: transform .08s ease; }
+  .world:active { transform: translateY(3px); }
+  .world:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .world .we { font-size: 26px; line-height: 1; }
+  .world[aria-pressed="true"] { background: #fff; color: #0a6f6a; box-shadow: 0 0 0 3px #ffe066, 0 5px 0 rgba(0,0,0,.14); }
+
+  .room { max-width: 430px; margin: 12px auto 0; padding: 12px 12px 14px; border-radius: 24px; background: #fff; color: #15302f; box-shadow: 0 10px 24px rgba(0,40,60,.25); }
+  .cal { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .cal-l { font-size: 12.5px; font-weight: 900; color: #5d7a78; }
+  .days { display: grid; grid-template-columns: repeat(7, 22px); gap: 3px; }
+  .days i { font-style: normal; font-size: 16px; line-height: 22px; text-align: center; border-radius: 6px; background: #e6f7f4; transition: filter .3s, opacity .3s; }
+  .game[data-w="none"] .days i { filter: grayscale(1); opacity: .18; }
+
+  .arena { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 12px; min-height: 150px; }
+  .runner { position: relative; flex: 0 0 64px; font-size: 44px; line-height: 1; text-align: center; opacity: .25; }
+  .runner .flip { display: inline-block; transform: scaleX(-1); }
+  .runner .sweat { position: absolute; right: 0; top: -6px; font-size: 22px; opacity: 0; }
+  .game[data-s="late"] .runner { opacity: 1; animation: run-in .6s cubic-bezier(.3,1.3,.5,1) both; }
+  .game[data-s="late"] .runner .sweat { opacity: 1; }
+  @keyframes run-in { from { transform: translateX(-70px); } to { transform: none; } }
+  .you-tag { display: block; margin-top: 4px; font-size: 12px; font-weight: 900; color: #5d7a78; }
+
+  .flipcard { flex: 1; min-width: 0; height: 150px; }
+  .fc-in { position: relative; width: 100%; height: 100%; }
+  .face { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; border-radius: 20px;
+    font-weight: 900; line-height: 1.35; text-align: center; }
+  .front { background: #eef6ff; color: #1d3f6e; font-size: 15.5px; }
+  .back { display: none; font-size: 16.5px; }
+  .game[data-s="late"] .front { display: none; }
+  .game[data-s="late"] .back { display: flex; animation: flip-in .5s cubic-bezier(.3,1.4,.5,1) both; }
+  @keyframes flip-in { from { transform: perspective(600px) rotateY(-90deg); } to { transform: perspective(600px) rotateY(0); } }
+  .game[data-w="chat"] .back { background: #ffeef5; color: #a3134f; }
+  .game[data-w="none"] .back { background: #fff0e6; color: #b23a00; }
+  .t-pg { position: relative; font-size: 40px; line-height: 1; }
+  .t-badge { position: absolute; right: -16px; top: -8px; font-size: 24px; }
+  .back span.r { display: none; }
+  .game[data-w="chat"] .r-chat, .game[data-w="none"] .r-none { display: inline; }
+  .t-tag { font-size: 12px; font-weight: 900; opacity: .8; }
+
+  .trust { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .tr-l { flex: 0 0 auto; font-size: 13px; font-weight: 900; color: #a3134f; }
+  .tr-bar { position: relative; flex: 1; height: 14px; border-radius: 999px; background: #edf3f2; overflow: hidden; }
+  .tr-bar i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; transition: width .6s .25s cubic-bezier(.2,1.2,.4,1); }
+  .game[data-w="chat"] .tr-bar i { background: linear-gradient(90deg, #ff8fb8, #ff3d8b); }
+  .game[data-w="none"] .tr-bar i { background: linear-gradient(90deg, #ffb366, #ff6a3d); }
+  .tr-n { flex: 0 0 44px; font-size: 16px; font-weight: 900; text-align: right; }
+
+  .tap { display: block; width: min(340px, 100%); min-height: 76px; margin: 14px auto 0; padding: 10px 16px; border: 0; border-radius: 999px; cursor: pointer;
+    font: inherit; font-size: clamp(19px, 5vw, 23px); font-weight: 900; line-height: 1.25; color: #4a3500; background: var(--pop);
+    box-shadow: 0 8px 0 #d9a400, 0 14px 26px rgba(0,0,0,.18); transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .tap:active { transform: translateY(6px); box-shadow: 0 2px 0 #d9a400; }
+  .tap:focus-visible { outline: 4px solid #fff; outline-offset: 4px; }
+  .tap span { display: none; }
+  .game[data-s="ready"] .t-go, .game[data-s="late"] .t-other { display: inline; }
+  .game[data-s="late"] .tap { background: #fff; color: #0a6f6a; box-shadow: 0 8px 0 #9fd9d3, 0 14px 26px rgba(0,0,0,.14); }
+
+  .log { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .lg { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 999px; background: rgba(255,255,255,.18); font-size: 14px; font-weight: 900; }
+  .lg-e { font-size: 20px; line-height: 1; }
+  .lg-e.boing { animation: bounce-in .4s both; }
+  .both { display: none; max-width: 430px; margin: 12px auto 0; padding: 10px 14px; border-radius: 18px; background: var(--pop); color: #4a3500; font-size: 16.5px; font-weight: 900; line-height: 1.4; }
+  .game[data-both="1"] .both { display: block; animation: bounce-in .5s both; }
+@@dark
+  html[data-theme="dark"] .room { background: #1e2c2c; color: #def5f2; }
+  html[data-theme="dark"] .cal-l, html[data-theme="dark"] .you-tag { color: #a9c9c6; }
+  html[data-theme="dark"] .days i { background: #2a3d3c; }
+  html[data-theme="dark"] .front { background: #22324a; color: #d6e6ff; }
+  html[data-theme="dark"] .game[data-w="chat"] .back { background: #4a2234; color: #ffc2da; }
+  html[data-theme="dark"] .game[data-w="none"] .back { background: #4a2e1c; color: #ffc9a3; }
+  html[data-theme="dark"] .tr-l { color: #ff9cc4; }
+  html[data-theme="dark"] .tr-bar { background: #2a3d3c; }
+@@sents
+S1 | It seems people react differently to the same mistake, depending on whether you usually chat. | 同じミスをしても、ふだん雑談しているかどうかで、まわりの反応が変わるそうです。
+S2 | For example, when you are late, if you often talk, people worry: "Did something happen? Are you OK?" | たとえば遅刻したとき、よく話す人なら「何かあったの？大丈夫？」と心配されます。
+S3 | If you do not talk much, people think, "So lazy!" | あまり話さない人だと、「たるんでる！」と思われてしまいます。
+S4 | Small talk becomes a lucky charm for hard times. | 雑談は、いざというときのお守りになります。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">⚖️</span>
+      <span class="card-label">Same Mistake</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🥺</span>
+      <span class="card-label">They Worry</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😤</span>
+      <span class="card-label">So Lazy</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：同じミス、2つの世界（世界を選んで遅刻 → 先生の反応をめくる） -->
+  <section class="game" data-w="chat" data-s="ready" data-both="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Same mistake, 2 worlds</div>
+    <div class="game-hint">Pick a world. Then be late, and flip the teacher's reaction.</div>
+    <div class="worlds">
+      <button class="world" type="button" data-w="chat" aria-pressed="true"><span class="we" aria-hidden="true">💬</span><span class="wt">I chatted every day</span></button>
+      <button class="world" type="button" data-w="none" aria-pressed="false"><span class="we" aria-hidden="true">🤐</span><span class="wt">I never chatted</span></button>
+    </div>
+    <div class="room">
+      <div class="cal">
+        <span class="cal-l">💬 Chats in the last 2 weeks:</span>
+        <span class="days" aria-hidden="true"><i>💬</i><i>💬</i><i>💬</i><i>💬</i><i>💬</i><i>💬</i><i>💬</i><i>💬</i><i>💬</i><i>💬</i><i>💬</i><i>💬</i><i>💬</i><i>💬</i></span>
+      </div>
+      <div class="arena">
+        <div class="runner"><span class="flip" aria-hidden="true">🐧</span><span class="sweat" aria-hidden="true">💦</span><span class="you-tag">You</span></div>
+        <div class="flipcard">
+          <div class="fc-in">
+            <div class="face front">
+              <span class="t-pg" aria-hidden="true">🐧<span class="t-badge">⏰</span></span>
+              <span class="ft">"Class starts at 9:00."</span>
+              <span class="t-tag">Teacher</span>
+            </div>
+            <div class="face back">
+              <span class="t-pg" aria-hidden="true">🐧<span class="t-badge rb">🥺</span></span>
+              <span class="r r-chat">"Did something happen? Are you OK?"</span>
+              <span class="r r-none">"So lazy!"</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="trust">
+        <span class="tr-l">💗 Trust</span>
+        <span class="tr-bar" aria-hidden="true"><i></i></span>
+        <span class="tr-n">?</span>
+      </div>
+    </div>
+    <button class="tap" type="button">
+      <span class="t-go">⏰ Be 10 minutes late!</span>
+      <span class="t-other">🔁 Try the other world</span>
+    </button>
+    <div class="log">
+      <span class="lg"><span class="lg-l">💬 world:</span> <span class="lg-e lg-chat">❔</span></span>
+      <span class="lg"><span class="lg-l">🤐 world:</span> <span class="lg-e lg-none">❔</span></span>
+    </div>
+    <div class="both">🔍 Same mistake. A totally different reaction!</div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍀</span>
+      <span class="card-label">Lucky Charm</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Same Mistake ||| 同じミス
+They Worry ||| 心配される
+So Lazy ||| たるんでる
+Lucky Charm ||| お守り
+⚡ TRY IT ||| ⚡ やってみよう
+Same mistake, 2 worlds ||| 同じミス、2つの世界
+Pick a world. Then be late, and flip the teacher's reaction. ||| 世界を選んでね。それから遅刻して、先生の反応をめくろう。
+I chatted every day ||| 毎日、雑談してきた
+I never chatted ||| 雑談したことがない
+💬 Chats in the last 2 weeks: ||| 💬 この2週間の雑談：
+You ||| あなた
+"Class starts at 9:00." ||| 「9時から授業です。」
+Teacher ||| 先生
+"Did something happen? Are you OK?" ||| 「何かあったの？大丈夫？」
+"So lazy!" ||| 「たるんでる！」
+💗 Trust ||| 💗 信頼
+⏰ Be 10 minutes late! ||| ⏰ 10分遅刻する！
+🔁 Try the other world ||| 🔁 もう1つの世界でやってみる
+💬 world: ||| 💬 の世界：
+🤐 world: ||| 🤐 の世界：
+🔍 Same mistake. A totally different reaction! ||| 🔍 同じミスなのに、反応がぜんぜん違う！
+↺ Start over ||| ↺ 最初から
+@@js
+/* ⏰ 同じミス、2つの世界：JS は data-* / aria-pressed / 幅 / 絵文字 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var worlds = [].slice.call(g.querySelectorAll('.world'));
+  var bar = g.querySelector('.tr-bar i'), num = g.querySelector('.tr-n'), badge = g.querySelector('.rb');
+  var log = { chat: g.querySelector('.lg-chat'), none: g.querySelector('.lg-none') };
+  var TRUST = { chat: 90, none: 15 }, FACE = { chat: '🥺', none: '😤' };
+  var w = 'chat', seen = { chat: false, none: false };
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function setW(x) {
+    w = x;
+    g.setAttribute('data-w', x);
+    g.setAttribute('data-s', 'ready');
+    worlds.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-w') === x ? 'true' : 'false'); });
+    bar.style.width = '0'; num.textContent = '?';
+  }
+  worlds.forEach(function (b) { b.addEventListener('click', function () { setW(b.getAttribute('data-w')); }); });
+  g.querySelector('.tap').addEventListener('click', function () {
+    if (g.getAttribute('data-s') === 'late') { setW(w === 'chat' ? 'none' : 'chat'); return; }
+    g.setAttribute('data-s', 'late');
+    badge.textContent = FACE[w];
+    bar.style.width = TRUST[w] + '%'; num.textContent = TRUST[w] + '%';
+    var first = !seen[w]; seen[w] = true;
+    log[w].textContent = FACE[w]; restart(log[w], 'boing');
+    var both = seen.chat && seen.none;
+    var fresh = both && g.getAttribute('data-both') !== '1';
+    g.setAttribute('data-both', both ? '1' : '0');
+    if (!window.pengessoPop) return;
+    var r = g.querySelector('.flipcard').getBoundingClientRect();
+    if (fresh) window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🔍', '💬', '🐧', '✨', '🍀'], 20);
+    else if (w === 'chat' && first) window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['💗', '🐧', '💬'], 12);
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    seen = { chat: false, none: false };
+    log.chat.textContent = '❔'; log.none.textContent = '❔';
+    g.setAttribute('data-both', '0');
+    setW('chat');
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+ふだん雑談している人は、同じミスをしても許される。雑談はお守り。
+@@tone
+素材の重さ：真面目（人間関係のコツ）
+→ 見せ方：ポップに（ミントと青。2つの世界をくらべてめくる）
+@@game_ja
+⏰ 同じミス、2つの世界：「毎日、雑談してきた」世界か「雑談したことがない」世界を選ぶ（この2週間の💬カレンダーが満杯／空っぽになる）。「10分遅刻する！」を押すと、自分のペンギンが💦をかいて走ってきて、先生ペンギンのカードがくるっとめくれる。雑談の世界は「何かあったの？大丈夫？」🥺（信頼90%）、雑談なしの世界は「たるんでる！」😤（信頼15%）。「もう1つの世界でやってみる」で切り替え、両方見ると「同じミスなのに、反応がぜんぜん違う！」と紙吹雪。※元のメモの例は職場（上司）だったので、ブログ憲法 第1条にふれないよう「授業に遅刻」に置きかえた。
+@@combo
+ペンギン × 手刺しゅうのフェルト × 目覚まし時計
+@@cover
+An extremely cute, chubby round penguin made of hand-embroidered felt, with a gentle slightly flustered face and a plain white belly, hurrying forward on its little feet while holding a realistic small vintage twin-bell alarm clock with a plain dial and no numbers. Bright simple mint green and soft sky blue background with soft depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

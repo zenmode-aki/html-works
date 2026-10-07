@@ -1,0 +1,204 @@
+@@meta
+{"title": "If you expect to wait, waiting does not make you angry", "label": "Expect Wait", "seq": 459, "mood": ["lift", "laugh"], "tags": ["psychology", "feelings", "tips"], "thumbAlt": "A chubby brushed mohair penguin sitting on a small waiting-room chair reading a realistic paperback book"}
+@@ja_title
+待つと予想しておけば、待ってもイライラしない
+@@ja_label
+待つと予想する
+@@h1emoji
+📖
+@@section
+70「ストレス予期（自分でくすぐってもくすぐったくない）」
+@@vars
+    --bg: #effaff; --text: #1d3040; --muted: #5d7688;
+    --accent: #0b7bc0; --accent2: #f06595; --h1: #0f2f4a; --big: #0b6fae; --big-dark: #8fd3ff;
+    --glow1: rgba(14,165,233,.20); --glow2: rgba(240,101,149,.16); --glow3: rgba(167,139,250,.18);
+    --shadow: 0 20px 55px rgba(20,110,170,.18); --photo-bg: #d6f0ff;
+    --g1: #0ea5e9; --g2: #3b82f6; --g3: #a78bfa; --pop: #ffe066; --pop-text: #4a3300; --btn-text: #0b6fae;
+@@css
+  /* 🏥 待合室：「何も考えずに行く」と「30分待つと思って本を持っていく」をくらべる */
+  .room { display: grid; grid-template-columns: 76px 1fr; gap: 12px; align-items: center; max-width: 380px; margin: 16px auto 0; padding: 14px;
+    border-radius: 22px; background: rgba(255,255,255,.18); text-align: left; }
+  .pg { position: relative; width: 70px; height: 70px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.3); font-size: 40px; line-height: 1; }
+  .pg .face { position: absolute; right: -6px; top: -6px; font-size: 24px; line-height: 1; }
+  .pg .book { position: absolute; left: -6px; bottom: -4px; font-size: 24px; line-height: 1; display: none; }
+  .game[data-mode="expect"] .pg .book { display: block; }
+  .game.tock .pg { animation: wiggle .4s ease; }
+  .clock { font-size: 15px; font-weight: 900; }
+  .clock .num { font-size: 26px; }
+  .meter { margin-top: 8px; }
+  .mt { font-size: 14.5px; font-weight: 900; margin-bottom: 4px; }
+  .bar { height: 14px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 0; border-radius: 999px; background: #ff6b6b; transition: width .5s cubic-bezier(.2,1.2,.4,1); }
+  .game[data-mode="expect"] .bar i { background: #8ce99a; }
+  .pages { display: none; margin-top: 8px; font-size: 14.5px; font-weight: 900; }
+  .game[data-mode="expect"] .pages { display: block; }
+  .pages .num { font-size: 18px; }
+
+  .call { display: none; max-width: 380px; margin: 12px auto 0; padding: 12px 14px; border-radius: 18px; background: var(--pop); color: var(--pop-text);
+    font-size: 17px; font-weight: 900; line-height: 1.35; }
+  .game[data-s="done"] .call { display: block; animation: bounce-in .45s both; }
+
+  .acts { display: grid; gap: 10px; max-width: 360px; margin: 14px auto 0; }
+  .acts > button { display: none; width: 100%; }
+  .game[data-s="choose"] .mode { display: inline-flex; }
+  .game[data-s="wait"] .wait { display: inline-flex; }
+  .game[data-s="done"] .again { display: inline-flex; }
+  .wait { background: var(--pop); color: var(--pop-text); font-size: 19px; min-height: 60px; }
+
+  .says { margin-top: 12px; min-height: 48px; font-size: 16.5px; font-weight: 900; line-height: 1.45; }
+  .says > div { display: none; }
+  .game[data-s="choose"] .s-choose { display: block; }
+  .game[data-s="wait"][data-mode="plain"] .s-wp, .game[data-s="wait"][data-mode="expect"] .s-we { display: block; }
+  .game[data-s="done"][data-res="plain"] .s-rp, .game[data-s="done"][data-res="lucky"] .s-rl, .game[data-s="done"][data-res="calm"] .s-rc { display: block; animation: bounce-in .5s both; }
+@@dark
+@@sents
+S1 | When you tickle yourself, it does not tickle. | 自分で自分をくすぐっても、くすぐったくありません。
+S2 | It is said this is because your brain knows first what will come. | 何が来るか、脳が先にわかっているからだそうです。
+S3 | Stress is the same: if you expect it first, it gets smaller. | ストレスも同じで、先に予想しておくと小さくなります。
+S4 | So, for example, for the dentist, I think "I will wait 30 minutes" and take a book. | だから、たとえば歯医者なら「30分は待つもの」と思って、本を持っていきます。
+S5 | If they call me on time, I am lucky! | 時間どおりに呼ばれたら、ラッキーです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🪶</span>
+      <span class="card-label">Self Tickle</span>
+    </div>
+    <p>{S1} {S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧠</span>
+      <span class="card-label">Expect It</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🦷</span>
+      <span class="card-label">For Example</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：待合室 -->
+  <section class="game" data-s="choose" data-mode="" data-res="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The waiting room</div>
+    <div class="room">
+      <div class="pg" aria-hidden="true">🐧<span class="face">🙂</span><span class="book">📖</span></div>
+      <div>
+        <div class="clock">⏱ <span class="num">0</span> <span class="u">min</span></div>
+        <div class="meter">
+          <div class="mt">😤 Irritation</div>
+          <div class="bar" aria-hidden="true"><i></i></div>
+        </div>
+        <div class="pages"><span class="pl">📖 Pages read:</span> <span class="num">0</span></div>
+      </div>
+    </div>
+    <div class="call">🔔 Penguin-san, please come in!</div>
+    <div class="acts">
+      <button class="gbtn mode" data-m="plain" type="button">😐 Just go</button>
+      <button class="gbtn mode" data-m="expect" type="button">📖 Think "30 min" and take a book</button>
+      <button class="gbtn wait" type="button">⏩ Wait 10 minutes</button>
+      <button class="gbtn ghost again" type="button">↺ Try the other way</button>
+    </div>
+    <div class="says">
+      <div class="s-choose">First, choose how you go.</div>
+      <div class="s-wp">Hmm… when will they call me?</div>
+      <div class="s-we">📖 As expected. Reading time.</div>
+      <div class="s-rp">😤 "Finally…" You are tired before it even starts.</div>
+      <div class="s-rl">🍀 Lucky! They called you sooner than you expected.</div>
+      <div class="s-rc">🙂 Just as expected. And you read a good book.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍀</span>
+      <span class="card-label">Lucky Day</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+Self Tickle ||| 自分でくすぐる
+Expect It ||| 先に予想する
+For Example ||| たとえば
+Lucky Day ||| ラッキー
+⚡ TRY IT ||| ⚡ やってみよう
+The waiting room ||| 待合室
+min ||| 分
+😤 Irritation ||| 😤 イライラ
+📖 Pages read: ||| 📖 読んだページ：
+🔔 Penguin-san, please come in! ||| 🔔 ペンギンさーん、どうぞ！
+😐 Just go ||| 😐 何も考えずに行く
+📖 Think "30 min" and take a book ||| 📖「30分待つ」と思って本を持っていく
+⏩ Wait 10 minutes ||| ⏩ 10分待つ
+↺ Try the other way ||| ↺ もう一つのほうでも
+First, choose how you go. ||| まず、どうやって行くか選んでね。
+Hmm… when will they call me? ||| まだかな…いつ呼ばれるの？
+📖 As expected. Reading time. ||| 📖 予想どおり。読書タイム。
+😤 "Finally…" You are tired before it even starts. ||| 😤「やっと…」始まる前から疲れちゃった。
+🍀 Lucky! They called you sooner than you expected. ||| 🍀 ラッキー！思ったより早く呼ばれた。
+🙂 Just as expected. And you read a good book. ||| 🙂 予想どおり。しかも、いい本が読めた。
+@@js
+/* 🏥 待合室：JS は data-s・data-mode・data-res・class・幅・数字・絵文字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var minEl = g.querySelector('.clock .num'), pagesEl = g.querySelector('.pages .num'), bar = g.querySelector('.bar i'), face = g.querySelector('.face');
+  var MAD = { plain: [0, 35, 65, 90, 100], expect: [0, 5, 10, 15, 30] };
+  var FACE = { plain: ['🙂', '😐', '😒', '😤', '💢'], expect: ['🙂', '🙂', '😊', '😊', '🙂'] };
+  var mode = '', min = 0, callAt = 30, last = '';
+  function set(k, v) { g.setAttribute(k, v); }
+  function pickCall() { var x = Math.random(); return x < 0.15 ? 10 : x < 0.4 ? 20 : x < 0.8 ? 30 : 40; }
+  function draw() {
+    var step = min / 10;
+    bar.style.width = MAD[mode][step] + '%';
+    face.textContent = FACE[mode][step];
+    minEl.textContent = String(min);
+    pagesEl.textContent = String(step * 12);
+  }
+  [].forEach.call(g.querySelectorAll('.mode'), function (b) {
+    b.addEventListener('click', function () {
+      mode = b.getAttribute('data-m'); last = mode; min = 0; callAt = pickCall();
+      set('data-mode', mode); set('data-res', ''); set('data-s', 'wait'); draw();
+    });
+  });
+  g.querySelector('.wait').addEventListener('click', function () {
+    if (min >= 40) return;
+    min += 10; draw();
+    g.classList.remove('tock'); void g.offsetWidth; g.classList.add('tock');
+    if (min >= callAt) {
+      var res = mode === 'plain' ? 'plain' : (min < 30 ? 'lucky' : 'calm');
+      set('data-res', res); set('data-s', 'done');
+      if (res !== 'plain' && window.pengessoPop) {
+        var r = g.querySelector('.call').getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, res === 'lucky' ? ['🍀', '🔔', '🐧', '✨'] : ['📖', '🔔', '✨'], res === 'lucky' ? 18 : 10);
+      }
+      if (navigator.vibrate) { try { navigator.vibrate(25); } catch (e) {} }
+    }
+  });
+  g.querySelector('.again').addEventListener('click', function () {
+    mode = last === 'plain' ? 'expect' : 'plain'; min = 0; callAt = pickCall();
+    set('data-mode', mode); set('data-res', ''); set('data-s', 'wait'); draw();
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード・1文目）
+S2 → 使った（1枚目のカード・2文目）
+S3 → 使った（2枚目のカード）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード・.big）
+@@message
+「待つもの」と先に予想しておけば、待ってもイライラしない。時間どおりならラッキー。
+@@tone
+素材の重さ：ふつう（日常のイライラ）
+→ 見せ方：ポップに（水色と青。待合室で10分ずつ早送り）
+※「ストレス温度計（点数をつける）」は前の記事（give-your-anger-a-score の考え方）と重なるので、この記事には入れていない。
+@@game_ja
+🏥 待合室：まず「😐 何も考えずに行く」か「📖『30分待つ』と思って本を持っていく」を選ぶ。「⏩ 10分待つ」を押すたびに時計が10分進み、何も考えないほうはイライラメーターが赤くぐんぐん伸びて顔が 😐→😒→😤→💢。本を持っていったほうはメーターがほとんど動かず、読んだページが12ずつ増える。呼ばれる時間は毎回ランダム（10〜40分）。「🔔 ペンギンさーん、どうぞ！」で結果：何も考えないと「やっと…始まる前から疲れた」、予想していると、早ければ「🍀 ラッキー！」、予想どおりでも「いい本が読めた」。「↺ もう一つのほうでも」で反対の行き方をすぐ試せる。
+@@cover
+An extremely cute, chubby round penguin made of soft brushed mohair, with a gentle face and a plain belly, sitting calmly on a small simple waiting-room chair and reading a small, realistic open paperback book with a plain cover. Bright clean sky-blue background with soft depth and gentle light. Simple and clean, no clutter. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × ブラッシュドモヘア × 文庫本（待ち時間の読書）

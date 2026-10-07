@@ -1,0 +1,234 @@
+@@meta
+{"title": "Say good feelings out loud to really taste them", "label": "Savoring", "seq": 467, "mood": ["lift", "laugh"], "tags": ["psychology", "happiness", "tips"], "thumbAlt": "A chubby round plush corduroy and felt penguin holding a steaming cup of green tea with its eyes happily closed"}
+@@ja_title
+いい気持ちは、口に出すと、しっかり味わえる
+@@ja_label
+味わう
+@@h1emoji
+🍤
+@@section
+79「セイバリング＝味わう」
+@@vars
+--bg: #fffaf0;
+--text: #33291f;
+--muted: #85725a;
+--a: #d0700a;
+--ink: #3d2608;
+--bigc: #c4620a;
+--bigdark: #ffd08a;
+--photo: #fff0d2;
+--shadow: 0 20px 55px rgba(180,110,20,.16);
+--glow1: rgba(255,200,80,.36);
+--glow2: rgba(255,120,90,.18);
+--glow3: rgba(140,210,120,.18);
+--g1: #f39a1c;
+--g2: #f06b4a;
+--g3: #e0457a;
+--btnink: #b0520a;
+--btnshadow: #f0bf80;
+@@css
+  /* 言った言葉の吹き出し（カードの中） */
+  .quotes { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .quotes span { align-self: flex-start; padding: 9px 14px; border-radius: 18px 18px 18px 6px; background: #fff1d6; color: #8a4a00; font-size: 15.5px; font-weight: 900; }
+  .quotes span:nth-child(2) { align-self: center; background: #ffe2d9; color: #a3341c; }
+  .quotes span:nth-child(3) { align-self: flex-end; border-radius: 18px 18px 6px 18px; background: #e8f6df; color: #2e6a1c; }
+
+  /* 🍯 しあわせのびん */
+  .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 360px; margin: 16px auto 0; padding: 6px; border-radius: 999px; background: rgba(0,0,0,.14); }
+  .mode { min-height: 50px; border: 0; border-radius: 999px; cursor: pointer; font: inherit; font-size: 16px; font-weight: 900; color: #fff; background: transparent;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .mode[aria-pressed="true"] { background: #fff; color: var(--btnink); box-shadow: 0 4px 10px rgba(0,0,0,.18); }
+  .mode:focus-visible { outline: 4px solid #fff; outline-offset: 2px; }
+  .stage2 { display: grid; grid-template-columns: 1fr 110px; align-items: end; gap: 12px; max-width: 400px; margin: 16px auto 0; }
+  .eater { position: relative; min-height: 150px; }
+  .eater .pg { font-size: 64px; line-height: 1; }
+  .bub { position: relative; margin-bottom: 10px; padding: 10px 12px; border-radius: 18px; background: #fff; color: #3d2608; font-size: 16px; font-weight: 900; line-height: 1.35; min-height: 46px;
+    display: flex; align-items: center; justify-content: center; }
+  .bub::after { content: ""; position: absolute; left: 50%; bottom: -8px; margin-left: -8px; border: 8px solid transparent; border-bottom: 0; border-top-color: #fff; }
+  .bub span { display: none; }
+  .game[data-say=""] .w-idle, .game[data-say="quiet"] .w-quiet,
+  .game[data-say="0"] .w0, .game[data-say="1"] .w1, .game[data-say="2"] .w2, .game[data-say="3"] .w3 { display: inline; animation: popin .25s ease; }
+  .jar { position: relative; width: 104px; height: 140px; border: 5px solid rgba(255,255,255,.9); border-top-width: 12px; border-radius: 20px 20px 34px 34px; overflow: hidden;
+    background: rgba(255,255,255,.18); }
+  .jar .fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: linear-gradient(180deg, #ffe27a, #ffb52e); transition: height .45s cubic-bezier(.2,1.3,.4,1); }
+  .jar .hearts { position: absolute; left: 0; right: 0; bottom: 6px; text-align: center; font-size: 22px; line-height: 1.1; }
+  .jar-l { margin-top: 6px; font-size: 13px; font-weight: 900; }
+  .jar-l b { font-size: 17px; margin-left: 3px; }
+  .foods { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 400px; margin: 16px auto 0; }
+  .foods .gbtn { width: 100%; padding: 12px 8px; }
+  .msg { min-height: 50px; max-width: 420px; margin: 14px auto 0; }
+  .msg > div { display: none; font-size: 16.5px; font-weight: 900; line-height: 1.45; }
+  .game[data-r="hint"] .m-hint, .game[data-r="full"] .m-full { display: block; animation: popin .3s ease; }
+  .game[data-r="hint"] .mode.m-say { animation: boing .6s ease 2; }
+  .again { display: none; }
+  .game[data-r="full"] .again { display: inline-flex; }
+@@dark
+  html[data-theme="dark"] .quotes span { background: #45330f; color: #ffd99a; }
+  html[data-theme="dark"] .quotes span:nth-child(2) { background: #4a2219; color: #ffbcaa; }
+  html[data-theme="dark"] .quotes span:nth-child(3) { background: #1f3a18; color: #bff0a8; }
+  html[data-theme="dark"] .bub, html[data-theme="dark"] .mode[aria-pressed="true"] { background: #f4efe6; }
+  html[data-theme="dark"] .bub::after { border-top-color: #f4efe6; }
+@@sents
+S1 | It seems you can enjoy good feelings more when you put them into words. | いい気持ちは、言葉にすると、もっと味わえるそうです。
+S2 | This is called "savoring." | これを「セイバリング（味わうこと）」といいます。
+S3 | "Tea, nice smell, so warm." "Fried shrimp, so plump!" "Futon, feels so good." | 「お茶、いい香り。あったまる」「エビフライ、プリップリ！」「布団、気持ちいいなぁ」。
+S4 | People say bad things out loud, but they don't say good things much. | 人は、イヤなことは口にするのに、いいことはあまり口にしません。
+S5 | Why not try saying good things out loud for 2 weeks? | まずは2週間、いいことを口に出してみませんか。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💬</span>
+      <span class="card-label">Into Words</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍵</span>
+      <span class="card-label">Its Name</span>
+    </div>
+    <p>{S2}</p>
+    <p class="big">{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：だまって食べる／口に出す → しあわせのびん -->
+  <section class="game" data-mode="quiet" data-say="" data-r="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Fill the happy jar</div>
+    <div class="game-sub">Tap the good things. Does the jar fill?</div>
+    <div class="modes">
+      <button class="mode m-quiet" type="button" aria-pressed="true">🤐 Silent</button>
+      <button class="mode m-say" type="button" aria-pressed="false">💬 Say it</button>
+    </div>
+    <div class="stage2">
+      <div class="eater">
+        <div class="bub">
+          <span class="w-idle">What shall I enjoy?</span>
+          <span class="w-quiet">… (munch munch) 💨</span>
+          <span class="w0">Tea, nice smell! So warm…</span>
+          <span class="w1">Fried shrimp, so plump!</span>
+          <span class="w2">Futon, feels so good…</span>
+          <span class="w3">Sunshine, so cozy!</span>
+        </div>
+        <div class="pg" aria-hidden="true">🐧</div>
+      </div>
+      <div>
+        <div class="jar" aria-hidden="true"><div class="fill"></div><div class="hearts"> </div></div>
+        <div class="jar-l"><span class="jl">🍯 Happy</span><b class="jn">0</b><span class="jp">%</span></div>
+      </div>
+    </div>
+    <div class="foods">
+      <button class="gbtn food" type="button">🍵 Tea</button>
+      <button class="gbtn food" type="button">🍤 Fried shrimp</button>
+      <button class="gbtn food" type="button">🛏️ Futon</button>
+      <button class="gbtn food" type="button">☀️ Sunshine</button>
+    </div>
+    <div class="msg">
+      <div class="m-hint">Hmm, the jar is still empty… Try 💬 Say it!</div>
+      <div class="m-full">🍯 Full jar! Same things, more happiness.</div>
+    </div>
+    <button class="again" type="button">↺ Empty the jar</button>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🤐</span>
+      <span class="card-label">We Stay Quiet</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📅</span>
+      <span class="card-label">2 Weeks</span>
+    </div>
+    <p>{S5}</p>
+  </section>
+@@ui
+Into Words ||| 言葉にする
+Its Name ||| その名前
+We Stay Quiet ||| いいことは言わない
+2 Weeks ||| 2週間
+Fill the happy jar ||| しあわせのびんを満たそう
+Tap the good things. Does the jar fill? ||| いいものを押してみて。びんはたまるかな？
+🤐 Silent ||| 🤐 だまって
+💬 Say it ||| 💬 口に出す
+What shall I enjoy? ||| なにを味わおうかな？
+… (munch munch) 💨 ||| …（もぐもぐ） 💨
+Tea, nice smell! So warm… ||| お茶、いい香り！あったまる…
+Fried shrimp, so plump! ||| エビフライ、プリップリ！
+Futon, feels so good… ||| 布団、気持ちいいなぁ…
+Sunshine, so cozy! ||| お日さま、ぽかぽか！
+🍯 Happy ||| 🍯 しあわせ
+🍵 Tea ||| 🍵 お茶
+🍤 Fried shrimp ||| 🍤 エビフライ
+🛏️ Futon ||| 🛏️ 布団
+☀️ Sunshine ||| ☀️ お日さま
+Hmm, the jar is still empty… Try 💬 Say it! ||| あれ、びんが空っぽのまま…「💬 口に出す」にしてみて！
+🍯 Full jar! Same things, more happiness. ||| 🍯 びんがいっぱい！同じものでも、しあわせが増えた。
+↺ Empty the jar ||| ↺ びんを空にする
+@@js
+/* 🍯 しあわせのびん：JS は data-*・aria-pressed・数字・絵文字・style だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var mQuiet = g.querySelector('.m-quiet'), mSay = g.querySelector('.m-say');
+  var foods = [].slice.call(g.querySelectorAll('.food'));
+  var fill = g.querySelector('.jar .fill'), hearts = g.querySelector('.jar .hearts'), jn = g.querySelector('.jn'), pg = g.querySelector('.pg');
+  var again = g.querySelector('.again');
+  var EMO = ['🍵', '🍤', '🛏️', '☀️'];
+  var STEP = 13, v = 0, quietTaps = 0, list = [];
+  function set(k, val) { g.setAttribute('data-' + k, val); }
+  function again2(k, val) { set(k, ''); void g.offsetWidth; set(k, val); }
+  function mode(m) {
+    set('mode', m);
+    mQuiet.setAttribute('aria-pressed', m === 'quiet' ? 'true' : 'false');
+    mSay.setAttribute('aria-pressed', m === 'say' ? 'true' : 'false');
+    if (g.getAttribute('data-r') === 'hint') set('r', '');
+  }
+  function paint() {
+    fill.style.height = v + '%'; jn.textContent = String(v);
+    hearts.textContent = list.slice(-4).join('') || ' ';
+  }
+  function bounce(el) { el.classList.remove('boing'); void el.offsetWidth; el.classList.add('boing'); }
+  function eat(k) {
+    if (g.getAttribute('data-r') === 'full') return;
+    bounce(pg);
+    if (g.getAttribute('data-mode') === 'quiet') {
+      again2('say', 'quiet');
+      quietTaps++;
+      if (quietTaps >= 2) set('r', 'hint');
+      return;
+    }
+    again2('say', String(k));
+    v = Math.min(100, v + STEP); list.push(EMO[k]); paint();
+    if (window.pengessoPop) { var r = fill.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + 10, ['💛', EMO[k]], 5); }
+    if (v >= 100) {
+      set('r', 'full');
+      if (window.pengessoPop) { var r2 = fill.getBoundingClientRect(); window.pengessoPop(r2.left + r2.width / 2, r2.top + r2.height / 2, ['🍯', '💛', '🐧', '✨'], 18); }
+    }
+  }
+  mQuiet.addEventListener('click', function () { mode('quiet'); });
+  mSay.addEventListener('click', function () { mode('say'); });
+  foods.forEach(function (b, k) { b.addEventListener('click', function () { eat(k); }); });
+  again.addEventListener('click', function () { v = 0; quietTaps = 0; list = []; set('r', ''); set('say', ''); mode('quiet'); paint(); });
+  paint();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目・.big）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード）
+@@message
+いい気持ちは、口に出して言葉にすると、しっかり味わえる（セイバリング）。
+@@tone
+素材の重さ：真面目（ポジティブ心理学）
+→ 見せ方：ポップに（はちみつの黄色とトマトの赤。だまって食べても、びんはたまらない。口に出すと、たまる）
+@@game_ja
+🍯 しあわせのびんを満たそう：「🤐 だまって」と「💬 口に出す」の切りかえ（最初は「だまって」）。お茶・エビフライ・布団・お日さまを押すと、ペンギンが味わう。だまってのときは「…（もぐもぐ） 💨」だけで、びんは空っぽのまま。2回押すと「あれ、びんが空っぽのまま…『💬 口に出す』にしてみて！」。口に出すにすると「エビフライ、プリップリ！」などと言って、びんにはちみつ色がたまる。8回でいっぱい →「同じものでも、しあわせが増えた。」
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of plush toy corduroy and felt, holding one realistic steaming Japanese ceramic cup of green tea with both flippers, eyes happily closed, enjoying the smell. Simple bright honey-yellow background that fades into soft warm coral, with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × コーデュロイとフェルトのぬいぐるみ × 湯のみのお茶

@@ -1,0 +1,249 @@
+@@meta
+{"title": "Lucky people find the good side in anything, even in natto", "label": "I Have Natto", "seq": 503, "mood": ["lift", "laugh"], "tags": ["psychology", "mindset", "happiness"], "thumbAlt": "A plush corduroy and felt penguin happily holding a small white pack of Japanese natto in front of an open fridge"}
+@@ja_title
+運のいい人は、何にでもプラスを見つける。納豆にも
+@@ja_label
+納豆がある
+@@h1emoji
+🍀
+@@section
+145「運のいい人＝何にでも価値を見つける人」
+@@vars
+    --bg: #f3fff0; --text: #20311c; --muted: #5d7457;
+    --accent: #2f8f2a; --accent2: #ff8a3d; --h1: #173513; --big: #2a7f25; --big-dark: #a9f59b;
+    --glow1: rgba(120,220,90,.32); --glow2: rgba(255,170,80,.22); --glow3: rgba(255,230,90,.2);
+    --shadow: 0 20px 55px rgba(40,120,30,.18); --photo-bg: #e3fadb;
+    --g1: #35b24a; --g2: #7cc93b; --g3: #ffae3d; --pop: #fff27a; --pop-text: #3b3000; --btn-text: #2a7f25;
+@@css
+  /* 🍀 プラスのスイッチ：同じ場面でも、スイッチを入れると見え方が変わる。3つの場面で「運のいい目」を集める */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 14px 10px; border-radius: 20px; text-align: center; font-weight: 900; font-size: 16px; line-height: 1.35; }
+  .vs .minus { background: #eef0ee; color: #6f776d; }
+  .vs .plus { background: #fff3b8; color: #5e4600; }
+  .vs .ve { display: block; font-size: 30px; margin-bottom: 4px; }
+
+  .scene { max-width: 440px; margin: 16px auto 0; padding: 16px 14px 14px; border-radius: 24px; background: #ffffff; color: #20311c;
+    box-shadow: 0 10px 24px rgba(0,60,0,.18); transition: background .35s ease; }
+  .game[data-plus="1"] .scene { background: #fffbe0; }
+  .sc-no { font-size: 12.5px; font-weight: 900; letter-spacing: .12em; color: #6c8a66; }
+  .sc-t { margin-top: 2px; font-size: 17px; font-weight: 900; line-height: 1.35; }
+  .sc-t > span, .think > span { display: none; }
+  .game[data-sc="0"] .t0, .game[data-sc="1"] .t1, .game[data-sc="2"] .t2 { display: inline; }
+  .pic { margin: 10px auto 6px; font-size: 64px; line-height: 1.1; transition: filter .35s ease, transform .35s ease; filter: grayscale(1) brightness(.95); }
+  .game[data-plus="1"] .pic { filter: none; transform: scale(1.08); }
+  .who { display: grid; grid-template-columns: 56px 1fr; gap: 10px; align-items: center; text-align: left; }
+  .who-av { position: relative; width: 56px; height: 56px; display: grid; place-items: center; border-radius: 50%; background: #e8f6e4; font-size: 32px; }
+  .who-face { position: absolute; right: -6px; top: -6px; font-size: 22px; line-height: 1; }
+  .think { min-height: 52px; padding: 10px 14px; border-radius: 18px 18px 18px 6px; background: #eef0ee; color: #4f574d; font-weight: 900;
+    font-size: 16px; line-height: 1.4; display: flex; align-items: center; transition: background .3s ease; }
+  .game[data-plus="0"][data-sc="0"] .m0, .game[data-plus="0"][data-sc="1"] .m1, .game[data-plus="0"][data-sc="2"] .m2,
+  .game[data-plus="1"][data-sc="0"] .q0, .game[data-plus="1"][data-sc="1"] .q1, .game[data-plus="1"][data-sc="2"] .q2 { display: inline; }
+  .game[data-plus="1"] .think { background: #ffe680; color: #4a3600; animation: bounce-in .4s both; }
+
+  .swrow { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 16px; font-weight: 900; font-size: 15px; }
+  .swrow .sl { opacity: .7; transition: opacity .2s ease; }
+  .game[data-plus="0"] .sl-m, .game[data-plus="1"] .sl-p { opacity: 1; }
+  .sw { position: relative; width: 112px; height: 60px; flex: 0 0 auto; border: 0; border-radius: 999px; cursor: pointer; background: rgba(0,0,0,.25);
+    box-shadow: inset 0 3px 8px rgba(0,0,0,.25); -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: background .25s ease; }
+  .sw .knob { position: absolute; top: 6px; left: 6px; width: 48px; height: 48px; border-radius: 50%; background: #fff; display: grid; place-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,.25); transition: left .25s cubic-bezier(.3,1.5,.5,1); }
+  .sw .ke { font-size: 24px; line-height: 1; }
+  .game[data-plus="1"] .sw { background: #fff27a; }
+  .game[data-plus="1"] .sw .knob { left: 58px; }
+  .sw:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+
+  .luck { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; font-weight: 900; }
+  .luck .lk-l { font-size: 15px; }
+  .clover { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,.22); }
+  .clover .cv { font-size: 24px; line-height: 1; }
+  .clover.got { background: #fff; animation: hop .45s ease; }
+  .nextsc { margin-top: 12px; }
+  .game[data-plus="0"] .nextsc { visibility: hidden; }
+  .game[data-s="done"] .nextsc { display: none; }
+  .hint { margin-top: 10px; font-size: 15px; font-weight: 800; line-height: 1.45; }
+  .game[data-s="done"] .hint { display: none; }
+  .result { display: none; margin-top: 10px; padding: 14px 12px; border-radius: 20px; background: rgba(255,255,255,.22); }
+  .game[data-s="done"] .result { display: block; animation: bounce-in .5s both; }
+  .r-big { font-size: 19px; font-weight: 900; line-height: 1.4; }
+  .r-sub { margin-top: 6px; font-size: 15px; font-weight: 800; line-height: 1.45; }
+  .again { display: none; }
+  .game[data-s="done"] .again { display: inline-flex; }
+@@dark
+  html[data-theme="dark"] .vs .minus { background: #2c2f2c; color: #b7beb5; }
+  html[data-theme="dark"] .vs .plus { background: #45401a; color: #ffeaa0; }
+  html[data-theme="dark"] .scene { background: #22242f; color: #eef6ec; }
+  html[data-theme="dark"] .game[data-plus="1"] .scene { background: #2f2c1c; }
+  html[data-theme="dark"] .sc-no { color: #a9c9a2; }
+  html[data-theme="dark"] .who-av { background: #24382a; }
+  html[data-theme="dark"] .think { background: #30333a; color: #d9dfd7; }
+  html[data-theme="dark"] .game[data-plus="1"] .think { background: #5a4a14; color: #fff1b8; }
+@@sents
+S1 | A study found that people who feel lucky and people who feel unlucky win lotteries about the same. | 「自分は運がいい」と思う人も「運が悪い」と思う人も、くじの当たり方はほとんど同じだった、という研究があります。
+S2 | The difference is a habit of finding the good side. | ちがうのは、プラスの面を見つける癖です。
+S3 | When you open the fridge, do you think "Only natto…" or "I have natto!"? | 冷蔵庫を開けて、「納豆しかない…」と思うか、「納豆がある！」と思うか。
+S4 | Lucky people are people who find the good side in anything. | 運のいい人は、何にでもプラスを見つける人です。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎟️</span>
+      <span class="card-label">Same Luck</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">👀</span>
+      <span class="card-label">The Difference</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧊</span>
+      <span class="card-label">The Fridge</span>
+    </div>
+    <p>{S3}</p>
+    <div class="vs" aria-hidden="true">
+      <div class="minus"><span class="ve">😞</span><span class="vt">"Only natto…"</span></div>
+      <div class="plus"><span class="ve">😄</span><span class="vt">"I have natto!"</span></div>
+    </div>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：プラスのスイッチ -->
+  <section class="game" data-s="play" data-sc="0" data-plus="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Turn on your "plus eyes"</div>
+    <div class="scene">
+      <div class="sc-no"><span class="sc-l">SCENE</span> <span class="sc-n">1</span> <span class="sc-of">/ 3</span></div>
+      <div class="sc-t"><span class="t0">You open the fridge.</span><span class="t1">You walk down a quiet shopping street.</span><span class="t2">Your train is 10 minutes late.</span></div>
+      <div class="pic" aria-hidden="true"><span class="pe">🍚</span></div>
+      <div class="who">
+        <div class="who-av" aria-hidden="true">🐧<span class="who-face">😞</span></div>
+        <div class="think">
+          <span class="m0">"Only natto… again."</span>
+          <span class="q0">"I have natto! Natto rice is the best."</span>
+          <span class="m1">"All the shops are closed. So sad…"</span>
+          <span class="q1">"The rent here must be cheap! A cafe, maybe?"</span>
+          <span class="m2">"Ugh. 10 minutes lost."</span>
+          <span class="q2">"10 more minutes for my book!"</span>
+        </div>
+      </div>
+    </div>
+    <div class="swrow">
+      <span class="sl sl-m">➖ Minus</span>
+      <button class="sw" type="button" aria-pressed="false" aria-label="Plus eyes switch"><span class="knob"><span class="ke">🙁</span></span></button>
+      <span class="sl sl-p">➕ Plus</span>
+    </div>
+    <div class="luck"><span class="lk-l">🍀 Lucky eyes:</span>
+      <span class="clover"><span class="cv">🌱</span></span><span class="clover"><span class="cv">🌱</span></span><span class="clover"><span class="cv">🌱</span></span>
+    </div>
+    <div class="hint">The scene does not change. Only your eyes change.</div>
+    <button class="gbtn ghost nextsc" type="button">Next scene →</button>
+    <div class="result">
+      <div class="r-big">🍀 Lucky eyes 3/3!</div>
+      <div class="r-sub">The fridge, the street, and the train are the same. Only your day became lucky.</div>
+    </div>
+    <div class="again-row"><button class="gbtn again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍀</span>
+      <span class="card-label">Lucky People</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Same Luck ||| 運は同じ
+The Difference ||| ちがい
+The Fridge ||| 冷蔵庫
+Lucky People ||| 運のいい人
+"Only natto…" ||| 「納豆しかない…」
+"I have natto!" ||| 「納豆がある！」
+⚡ TRY IT ||| ⚡ やってみよう
+Turn on your "plus eyes" ||| 「プラスの目」をオンにしよう
+SCENE ||| 場面
+/ 3 ||| / 3
+You open the fridge. ||| 冷蔵庫を開けました。
+You walk down a quiet shopping street. ||| シャッターの閉まった商店街を歩いています。
+Your train is 10 minutes late. ||| 電車が10分おくれています。
+"Only natto… again." ||| 「また納豆しかない…」
+"I have natto! Natto rice is the best." ||| 「納豆がある！納豆ごはん最高。」
+"All the shops are closed. So sad…" ||| 「お店が全部閉まってる。さみしい…」
+"The rent here must be cheap! A cafe, maybe?" ||| 「ここなら家賃が安そう！カフェとか、どうかな？」
+"Ugh. 10 minutes lost." ||| 「うわ、10分ムダになった。」
+"10 more minutes for my book!" ||| 「本があと10分読める！」
+➖ Minus ||| ➖ マイナス
+➕ Plus ||| ➕ プラス
+Plus eyes switch ||| プラスの目のスイッチ
+🍀 Lucky eyes: ||| 🍀 運のいい目：
+The scene does not change. Only your eyes change. ||| 場面は変わりません。変わるのは、見る目だけ。
+Next scene → ||| 次の場面へ →
+🍀 Lucky eyes 3/3! ||| 🍀 運のいい目 3/3！
+The fridge, the street, and the train are the same. Only your day became lucky. ||| 冷蔵庫も、商店街も、電車も同じまま。あなたの1日だけが、運のいい日になりました。
+↺ Try again ||| ↺ もう一回
+@@js
+/* 🍀 プラスのスイッチ：同じ場面でスイッチを入れると、ひとことがプラスに変わってクローバーが1つ育つ。JS は data-* と class と絵文字だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var sw = g.querySelector('.sw'), ke = g.querySelector('.ke'), face = g.querySelector('.who-face');
+  var nx = g.querySelector('.nextsc'), again = g.querySelector('.again'), scn = g.querySelector('.sc-n');
+  var pe = g.querySelector('.pe'), PICS = ['🍚', '🏚️', '🚃'];
+  var cl = [].slice.call(g.querySelectorAll('.clover')), sc = 0, got = [false, false, false];
+  function pop(el, list, k) {
+    if (!window.pengessoPop) return;
+    var b = el.getBoundingClientRect();
+    window.pengessoPop(b.left + b.width / 2, b.top + b.height / 2, list, k);
+  }
+  function setPlus(on) {
+    g.setAttribute('data-plus', on ? '1' : '0');
+    sw.setAttribute('aria-pressed', on ? 'true' : 'false');
+    ke.textContent = on ? '😄' : '🙁';
+    face.textContent = on ? '😄' : '😞';
+  }
+  sw.addEventListener('click', function () {
+    if (g.getAttribute('data-s') !== 'play') return;
+    var on = g.getAttribute('data-plus') !== '1';
+    setPlus(on);
+    if (on && !got[sc]) {
+      got[sc] = true;
+      cl[sc].classList.add('got'); cl[sc].querySelector('.cv').textContent = '🍀';
+      pop(cl[sc], ['🍀', '✨'], 8);
+      if (got[0] && got[1] && got[2]) {
+        g.setAttribute('data-s', 'done');
+        setTimeout(function () { pop(sw, ['🍀', '🐧', '🍚', '✨', '🌈'], 18); }, 300);
+        if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+      }
+    }
+  });
+  nx.addEventListener('click', function () {
+    if (sc >= 2) return;
+    sc++; scn.textContent = sc + 1;
+    g.setAttribute('data-sc', sc); pe.textContent = PICS[sc];
+    setPlus(false);
+  });
+  again.addEventListener('click', function () {
+    sc = 0; got = [false, false, false]; scn.textContent = '1';
+    cl.forEach(function (c) { c.classList.remove('got'); c.querySelector('.cv').textContent = '🌱'; });
+    g.setAttribute('data-sc', '0'); g.setAttribute('data-s', 'play'); pe.textContent = PICS[0];
+    setPlus(false);
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+運のいい人は、何にでもプラスを見つける人。「納豆しかない」ではなく「納豆がある！」。
+@@tone
+素材の重さ：ふつう（運と見方の話）
+→ 見せ方：ポップに（クローバーの緑とオレンジ。スイッチを入れると、同じ場面のひとことがプラスに変わる）
+@@game_ja
+🍀「プラスの目」をオンにしよう：3つの場面（冷蔵庫を開ける／シャッターの閉まった商店街／電車が10分おくれる）。最初は灰色の絵と「また納豆しかない…」などのマイナスのひとこと。大きなスイッチを押すと、絵に色がついて「納豆がある！納豆ごはん最高。」「ここなら家賃が安そう！」「本があと10分読める！」に変わり、🌱が🍀に育つ。場面は変わらず、変わるのは見る目だけ。3つそろうと「運のいい目 3/3！」。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of plush toy corduroy and felt, beaming happily while holding up one realistic small white foam pack of Japanese natto with its lid closed, standing in front of the softly glowing light of an open refrigerator. A simple bright clover-green background that fades into warm orange with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × コーデュロイとフェルトのぬいぐるみ × 納豆のパック

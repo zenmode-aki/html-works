@@ -1,0 +1,1 @@
+__tap('.b-start'); var n=0; function go(){ var s=document.querySelector('.game').getAttribute('data-s'); if(s==='done'){__log('st',__st()); return;} if(s==='fall') __tap('.b-up'); else __tap('.b-run'); n++; if(n<60) setTimeout(go,120);} setTimeout(go,200);

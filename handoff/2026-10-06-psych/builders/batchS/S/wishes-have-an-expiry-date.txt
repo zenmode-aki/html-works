@@ -1,0 +1,253 @@
+@@meta
+{"title": "The things you want to do have a best-before date", "label": "Wish Dates", "seq": 476, "mood": ["lift", "energy"], "tags": ["psychology", "mindset", "happiness"], "thumbAlt": "A low-poly wood and paper penguin wearing a small hiking backpack in front of a soft snowy mountain"}
+@@ja_title
+やりたいことには、賞味期限がある
+@@ja_label
+やりたいことの期限
+@@h1emoji
+🎈
+@@section
+93「やりたいことには賞味期限がある」
+@@vars
+    --bg: #f5f3ff; --text: #241a46; --muted: #6e6690;
+    --accent: #6a4cff; --accent2: #14b8a0; --h1: #22184a; --big: #5a3ee6; --big-dark: #c4b5ff;
+    --glow1: rgba(106,76,255,.20); --glow2: rgba(20,200,170,.22); --glow3: rgba(255,120,200,.16);
+    --shadow: 0 20px 55px rgba(80,60,200,.18); --photo-bg: #e9e4ff;
+    --g1: #5b5bff; --g2: #9a4dff; --g3: #17c3a5; --pop: #b9ffe9; --pop-text: #0f4a3e; --btn-text: #5a3ee6;
+@@css
+  /* ⏳ やりたいことタイムマシン：＋で年をすすめると、風船（やりたい気持ち）がしぼむ。📌でことしやると決める */
+  .clock { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 16px auto 0; }
+  .step { width: 60px; height: 60px; flex: 0 0 auto; border: 0; border-radius: 50%; background: #fff; color: #5a3ee6; font: inherit; font-size: 34px;
+    font-weight: 900; line-height: 1; cursor: pointer; box-shadow: 0 5px 0 rgba(40,20,120,.3); transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .step:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(40,20,120,.3); }
+  .step:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .step[disabled] { opacity: .4; cursor: default; }
+  .yr { min-width: 128px; padding: 8px 12px; border-radius: 18px; background: rgba(255,255,255,.22); }
+  .y-l { display: block; font-size: 12.5px; font-weight: 900; letter-spacing: .04em; }
+  .yn { display: block; font-size: 40px; font-weight: 900; line-height: 1.05; }
+  .yn.tick { animation: bounce-in .35s both; }
+  .legend { margin-top: 10px; font-size: 13px; font-weight: 800; opacity: .92; }
+
+  .wishes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px; margin: 12px auto 0; }
+  .wish { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 8px 10px; border-radius: 20px; background: rgba(255,255,255,.96);
+    color: #2a1d63; box-shadow: 0 5px 0 rgba(40,20,120,.22); }
+  .bal-box { position: relative; height: 84px; width: 84px; display: grid; place-items: center; }
+  .bal { width: 72px; height: 78px; display: grid; place-items: center; border-radius: 50% 50% 46% 46%; font-size: 34px; line-height: 1;
+    background: radial-gradient(circle at 35% 30%, #ffd1f0, #ff6fb5 70%); box-shadow: inset -6px -8px 0 rgba(0,0,0,.08);
+    transform-origin: 50% 90%; transition: transform .35s cubic-bezier(.2,1.2,.4,1), filter .3s ease; }
+  .w2 .bal { background: radial-gradient(circle at 35% 30%, #cfe8ff, #4c9bff 70%); }
+  .w3 .bal { background: radial-gradient(circle at 35% 30%, #c8fff0, #17c3a5 70%); }
+  .w4 .bal { background: radial-gradient(circle at 35% 30%, #fff1c4, #ffb020 70%); }
+  .zz { position: absolute; right: 0; top: 0; font-size: 22px; line-height: 1; display: none; }
+  .wish[data-st="gone"] .bal { filter: grayscale(1); opacity: .55; }
+  .wish[data-st="gone"] .zz { display: block; animation: hop 1.6s ease-in-out infinite; }
+  .wish[data-st="pin"] .bal { box-shadow: 0 0 0 4px #fff, 0 0 18px rgba(255,255,255,.9); }
+  .w-name { font-size: 14.5px; font-weight: 900; line-height: 1.25; min-height: 36px; display: flex; align-items: center; text-align: center; }
+  .want { display: block; width: 88%; height: 10px; border-radius: 999px; background: #e7e2ff; overflow: hidden; }
+  .want i { display: block; width: 100%; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #ff6fb5, #9a4dff); transition: width .35s ease; }
+  .pin { width: 100%; min-height: 48px; padding: 8px 6px; border: 0; border-radius: 14px; background: #efeaff; color: #4a2fd0; font: inherit; font-size: 14.5px;
+    font-weight: 900; line-height: 1.2; cursor: pointer; transition: transform .08s ease, background .2s ease; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .pin:active { transform: translateY(2px); }
+  .pin:focus-visible { outline: 3px solid #5a3ee6; outline-offset: 2px; }
+  .pin span { display: none; }
+  .wish[data-st="ok"] .p-off, .wish[data-st="pin"] .p-on, .wish[data-st="gone"] .p-gone { display: inline; }
+  .wish[data-st="pin"] .pin { background: var(--pop); color: #0f4a3e; }
+  .wish[data-st="gone"] .pin { background: #eeeeee; color: #8a8a99; cursor: default; }
+
+  .say { min-height: 52px; display: flex; align-items: center; justify-content: center; max-width: 440px; margin: 14px auto 0; padding: 10px 14px;
+    border-radius: 18px; background: rgba(255,255,255,.22); font-size: 16.5px; font-weight: 900; line-height: 1.4; }
+  .say span { display: none; }
+  .game[data-r="start"] .r-start, .game[data-r="fade"] .r-fade, .game[data-r="gone"] .r-gone, .game[data-r="all"] .r-all { display: inline; }
+  .game[data-r="all"] .say { background: var(--pop); color: #0f4a3e; }
+  .say.show { animation: bounce-in .45s both; }
+@@dark
+  html[data-theme="dark"] .step { background: #262140; color: #c4b5ff; }
+  html[data-theme="dark"] .wish { background: #221d38; color: #e6e0ff; }
+  html[data-theme="dark"] .want { background: #352d58; }
+  html[data-theme="dark"] .pin { background: #352d58; color: #d8ceff; }
+  html[data-theme="dark"] .wish[data-st="pin"] .pin { background: #b9ffe9; color: #0f4a3e; }
+  html[data-theme="dark"] .wish[data-st="gone"] .pin { background: #2c2b33; color: #9a99a8; }
+  html[data-theme="dark"] .game[data-r="all"] .say { background: #b9ffe9; color: #0f4a3e; }
+@@sents
+S1 | It seems the things you want to do have a "best before" date. | やりたいことには、賞味期限があるそうです。
+S2 | Seeing the aurora, climbing Mt. Fuji, diving in the sea. | オーロラを見る、富士山に登る、海に潜る。
+S3 | This is because, as you get older, the "I want to" feeling itself gets smaller. | 年をとると、「やりたい」という気持ちそのものが小さくなっていくからです。
+S4 | It is the same as a 3-year-old saying, "I will buy a kiddie pool when I grow up." | それは、3歳の子が「ビニールプールは大人になってから買おう」と言っているのと同じです。
+S5 | I want to try it "this year," not "someday." | 「いつか」ではなく、「今年」やってみたいです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🗓️</span>
+      <span class="card-label">Best Before</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌌</span>
+      <span class="card-label">Big Wishes</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎈</span>
+      <span class="card-label">Getting Smaller</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：やりたいことタイムマシン（＋で5年ずつ進むと風船がしぼむ。📌で「今年やる」と決めると、しぼまない） -->
+  <section class="game" data-y="0" data-r="start" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The wish time machine</div>
+    <div class="game-hint">Tap + to move time. Pin the wishes you will do this year.</div>
+    <div class="clock">
+      <button class="step minus" type="button" aria-label="Go back 5 years">−</button>
+      <div class="yr"><span class="y-l">⏳ Years from now</span><span class="yn">0</span></div>
+      <button class="step plus" type="button" aria-label="Go forward 5 years">+</button>
+    </div>
+    <div class="legend">🎈 Balloon size = how much you want it</div>
+    <div class="wishes">
+      <div class="wish w1" data-st="ok">
+        <div class="bal-box" aria-hidden="true"><span class="bal">🌌</span><span class="zz">💤</span></div>
+        <div class="w-name">See the aurora</div>
+        <span class="want" aria-hidden="true"><i></i></span>
+        <button class="pin" type="button" aria-pressed="false"><span class="p-off">📌 This year!</span><span class="p-on">✅ Pinned</span><span class="p-gone">💤 Asleep</span></button>
+      </div>
+      <div class="wish w2" data-st="ok">
+        <div class="bal-box" aria-hidden="true"><span class="bal">🗻</span><span class="zz">💤</span></div>
+        <div class="w-name">Climb Mt. Fuji</div>
+        <span class="want" aria-hidden="true"><i></i></span>
+        <button class="pin" type="button" aria-pressed="false"><span class="p-off">📌 This year!</span><span class="p-on">✅ Pinned</span><span class="p-gone">💤 Asleep</span></button>
+      </div>
+      <div class="wish w3" data-st="ok">
+        <div class="bal-box" aria-hidden="true"><span class="bal">🤿</span><span class="zz">💤</span></div>
+        <div class="w-name">Dive in the sea</div>
+        <span class="want" aria-hidden="true"><i></i></span>
+        <button class="pin" type="button" aria-pressed="false"><span class="p-off">📌 This year!</span><span class="p-on">✅ Pinned</span><span class="p-gone">💤 Asleep</span></button>
+      </div>
+      <div class="wish w4" data-st="ok">
+        <div class="bal-box" aria-hidden="true"><span class="bal">🏕️</span><span class="zz">💤</span></div>
+        <div class="w-name">Camp under the stars</div>
+        <span class="want" aria-hidden="true"><i></i></span>
+        <button class="pin" type="button" aria-pressed="false"><span class="p-off">📌 This year!</span><span class="p-on">✅ Pinned</span><span class="p-gone">💤 Asleep</span></button>
+      </div>
+    </div>
+    <div class="say">
+      <span class="r-start">Now, every balloon is big. What happens later?</span>
+      <span class="r-fade">🎈 Some balloons are getting small…</span>
+      <span class="r-gone">💤 Some wishes fell asleep. Go back and pin them!</span>
+      <span class="r-all">📌 All 4 pinned! A busy, fun year. 🐧✨</span>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Back to now</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🏊</span>
+      <span class="card-label">Kiddie Pool</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📌</span>
+      <span class="card-label">This Year</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+Best Before ||| 賞味期限
+Big Wishes ||| 大きな夢
+Getting Smaller ||| 小さくなる
+Kiddie Pool ||| ビニールプール
+This Year ||| 今年
+⚡ TRY IT ||| ⚡ やってみよう
+The wish time machine ||| やりたいことタイムマシン
+Tap + to move time. Pin the wishes you will do this year. ||| ＋を押すと時間が進むよ。今年やることには📌をさそう。
+Go back 5 years ||| 5年もどる
+Go forward 5 years ||| 5年すすむ
+⏳ Years from now ||| ⏳ 今から何年後
+🎈 Balloon size = how much you want it ||| 🎈 風船の大きさ＝やりたい気持ち
+See the aurora ||| オーロラを見る
+Climb Mt. Fuji ||| 富士山に登る
+Dive in the sea ||| 海に潜る
+Camp under the stars ||| 星空の下でキャンプ
+📌 This year! ||| 📌 今年やる！
+✅ Pinned ||| ✅ 決めた
+💤 Asleep ||| 💤 眠っちゃった
+Now, every balloon is big. What happens later? ||| 今は、どの風船も大きい。何年かたつと…？
+🎈 Some balloons are getting small… ||| 🎈 しぼんできた風船がある…
+💤 Some wishes fell asleep. Go back and pin them! ||| 💤 眠ってしまった夢がある。もどって📌をさそう！
+📌 All 4 pinned! A busy, fun year. 🐧✨ ||| 📌 4つとも決めた！いそがしくて楽しい1年に 🐧✨
+↺ Back to now ||| ↺ 今にもどる
+@@js
+/* ⏳ やりたいことタイムマシン：JS は data-y / data-r / data-st / class / style / 数字 / disabled だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var RATE = [0.03, 0.045, 0.035, 0.022];
+  var wishes = [].slice.call(g.querySelectorAll('.wish'));
+  var yn = g.querySelector('.yn'), say = g.querySelector('.say');
+  var minus = g.querySelector('.minus'), plus = g.querySelector('.plus');
+  var y = 0, pinned = [false, false, false, false];
+  function restart(el, c) { el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function draw() {
+    yn.textContent = String(y); g.setAttribute('data-y', String(y));
+    var anyGone = false, anyLow = false, all = true;
+    wishes.forEach(function (w, i) {
+      var f = pinned[i] ? 1 : Math.max(0, 1 - RATE[i] * y);
+      var st = pinned[i] ? 'pin' : f <= 0 ? 'gone' : 'ok';
+      w.setAttribute('data-st', st);
+      w.querySelector('.want i').style.width = (f * 100) + '%';
+      w.querySelector('.bal').style.transform = 'scale(' + (0.4 + 0.6 * f).toFixed(3) + ')';
+      var p = w.querySelector('.pin');
+      p.setAttribute('aria-pressed', pinned[i] ? 'true' : 'false');
+      p.disabled = st === 'gone';
+      if (!pinned[i]) all = false;
+      if (st === 'gone') anyGone = true; else if (f < 0.6) anyLow = true;
+    });
+    var r = all ? 'all' : anyGone ? 'gone' : anyLow ? 'fade' : 'start';
+    if (r !== g.getAttribute('data-r')) { g.setAttribute('data-r', r); restart(say, 'show'); }
+    minus.disabled = y <= 0; plus.disabled = y >= 40;
+    return r;
+  }
+  draw();
+  plus.addEventListener('click', function () { if (y < 40) { y += 5; draw(); restart(yn, 'tick'); } });
+  minus.addEventListener('click', function () { if (y > 0) { y -= 5; draw(); restart(yn, 'tick'); } });
+  wishes.forEach(function (w, i) {
+    w.querySelector('.pin').addEventListener('click', function () {
+      if (w.getAttribute('data-st') === 'gone') return;
+      pinned[i] = !pinned[i];
+      var r = draw();
+      if (!pinned[i] || !window.pengessoPop) return;
+      var b = w.querySelector('.bal').getBoundingClientRect(), x = b.left + b.width / 2, yy = b.top + b.height / 2;
+      if (r === 'all') window.pengessoPop(x, yy, ['📌', '🎈', '🐧', '✨', '🌌'], 24);
+      else window.pengessoPop(x, yy, ['📌', '✨', w.querySelector('.bal').textContent], 10);
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    y = 0; pinned = [false, false, false, false]; draw();
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード）
+S5 → 使った（5枚目のカード・.big）
+@@message
+やりたいことには賞味期限がある。「いつか」ではなく「今年」やる。
+@@tone
+素材の重さ：ふつう（人生の時間）
+→ 見せ方：ポップに（オーロラの紫とミント。風船がしぼむタイムマシン。年をとることをからかわない）
+@@game_ja
+⏳ やりたいことタイムマシン：「−」「＋」で今から0〜40年後まで5年ずつ動かす。4つの夢の風船（🌌 オーロラ／🗻 富士山／🤿 海に潜る／🏕️ 星空の下でキャンプ）が、ちがう速さでしぼんでいき（＝やりたい気持ちが小さくなる）、0になると灰色で💤「眠っちゃった」。「📌 今年やる！」を押した夢は、何年たっても大きいまま。4つぜんぶ📌すると「いそがしくて楽しい1年に」とはじける。眠ってしまっても「−」でもどれば、また📌できる。
+@@combo
+ペンギン × ローポリの木と紙 × 登山用のリュック
+@@cover
+An extremely cute, chubby round penguin made of low-poly 3D wood and paper, with a gentle excited face and a plain white belly, wearing one realistic small hiking backpack and looking up with wonder. Behind it, a soft distant snowy mountain under a bright pastel sky with a gentle green and violet glow. Bright simple background with soft depth, clean light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

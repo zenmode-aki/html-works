@@ -1,0 +1,265 @@
+@@meta
+{"title": "Listen with about the same feeling level as the speaker", "label": "Same Feeling", "seq": 427, "mood": ["lift", "learn"], "tags": ["psychology", "friends", "feelings"], "thumbAlt": "A chubby hand-embroidered felt penguin listening closely beside a shiny brass tuning fork"}
+@@ja_title
+相手の喜怒哀楽に、同じくらいの気持ちで合わせて聞く
+@@ja_label
+気持ちを合わせる
+@@h1emoji
+🎚️
+@@section
+28「喜怒哀楽を相手に合わせる」
+@@vars
+    --bg: #fff6fa; --text: #3a1f2e; --muted: #8a6578;
+    --accent: #db2777; --accent2: #f59e0b; --h1: #4a1230; --big: #be185d; --big-dark: #ff9cc8;
+    --glow1: rgba(236,72,153,.24); --glow2: rgba(245,158,11,.22); --glow3: rgba(244,63,94,.16);
+    --shadow: 0 20px 55px rgba(190,40,110,.18); --photo-bg: #ffe2ef;
+    --g1: #ec4899; --g2: #f43f5e; --g3: #f59e0b; --pop: #fde68a; --pop-text: #5a3500; --btn-text: #be185d;
+@@css
+  /* 🎚️ カード2：30％には30％、80％には80％ */
+  .levels { display: grid; gap: 8px; margin-top: 14px; }
+  .lv { display: grid; grid-template-columns: 34px 1fr; gap: 10px; align-items: center; }
+  .lv .le { font-size: 24px; line-height: 1; text-align: center; }
+  .lv .lb { position: relative; height: 26px; border-radius: 999px; background: #f6e3ec; overflow: hidden; }
+  .lv .lb i, .lv .lb b { position: absolute; left: 0; height: 50%; border-radius: 999px; }
+  .lv .lb i { top: 0; background: #f472b6; }
+  .lv .lb b { bottom: 0; background: #fbbf24; }
+
+  /* ⚡ 気持ちのチューナー：友だちの気持ちの大きさに、自分の反応を − / ＋ で合わせる */
+  .rounds { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
+  .rounds i { font-style: normal; font-size: 22px; line-height: 1; filter: grayscale(1); opacity: .35; }
+  .rounds i.on { filter: none; opacity: 1; animation: bounce-in .4s both; }
+  .talk { display: grid; grid-template-columns: 62px 1fr; gap: 10px; align-items: center; max-width: 440px; margin: 14px auto 0; text-align: left; }
+  .face { position: relative; width: 62px; height: 62px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.25); font-size: 36px; line-height: 1; }
+  .face .fx { position: absolute; right: -8px; top: -10px; font-size: 25px; line-height: 1; }
+  .face .fx.boing { animation: bounce-in .4s both; }
+  .bub { min-height: 62px; display: flex; align-items: center; padding: 10px 14px; border-radius: 18px 18px 18px 6px; background: #fff; color: #3a1f2e;
+    font-size: 16px; font-weight: 900; line-height: 1.35; }
+  .bub span { display: none; }
+  .game[data-r="0"] .q0, .game[data-r="1"] .q1, .game[data-r="2"] .q2 { display: inline; }
+
+  .meters { display: grid; gap: 10px; max-width: 440px; margin: 16px auto 0; }
+  .mrow { display: grid; grid-template-columns: 92px 1fr 52px; gap: 8px; align-items: center; font-weight: 900; text-align: left; }
+  .mname { font-size: 13.5px; line-height: 1.2; }
+  .mname span { display: none; }
+  .game[data-f="happy"] .f-happy, .game[data-f="angry"] .f-angry, .game[data-f="sad"] .f-sad { display: inline; }
+  .mbar { position: relative; height: 18px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .mbar i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; background: #fff; transition: width .3s cubic-bezier(.2,1.3,.4,1); }
+  .mine .mbar i { background: var(--pop); }
+  .mnum { font-size: 17px; text-align: right; }
+  .mnum small { font-size: .65em; }
+
+  .stepper { display: grid; grid-template-columns: 76px 1fr 76px; gap: 10px; align-items: center; max-width: 440px; margin: 16px auto 0; }
+  .st { min-height: 64px; border: 0; border-radius: 22px; background: #fff; color: var(--btn-text); font: inherit; font-size: 34px; font-weight: 900; line-height: 1;
+    cursor: pointer; box-shadow: 0 6px 0 rgba(110,20,60,.3); -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    transition: transform .08s ease, box-shadow .08s ease; }
+  .st:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(110,20,60,.3); }
+  .st:focus-visible, .listen:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .me-face { position: relative; justify-self: center; width: 76px; height: 76px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.28); font-size: 46px; line-height: 1; }
+  .me-face .fx { position: absolute; right: -8px; top: -8px; font-size: 28px; line-height: 1; }
+  .listen { margin-top: 14px; }
+
+  .verdict { max-width: 440px; margin: 14px auto 0; min-height: 48px; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.2); font-weight: 900; line-height: 1.4;
+    display: flex; align-items: center; justify-content: center; }
+  .verdict span { display: none; }
+  .game[data-v=""] .v-hint, .game[data-v="tuning"] .v-tune, .game[data-v="flat"] .v-flat, .game[data-v="match"] .v-match, .game[data-v="over"] .v-over, .game[data-v="under"] .v-under, .game[data-v="end"] .v-end { display: inline; }
+  .game[data-v="match"] .verdict, .game[data-v="end"] .verdict { background: var(--pop); color: #5a3500; animation: bounce-in .45s both; }
+  .game[data-v="flat"] .verdict, .game[data-v="over"] .verdict { animation: shake .35s ease; }
+  .row2 { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+  .nextr, .again { display: none; }
+  .game[data-v="match"] .nextr { display: inline-flex; }
+  .game[data-v="end"] .again { display: inline-flex; }
+  .game[data-v="match"] .listen, .game[data-v="end"] .listen { display: none; }
+@@dark
+  html[data-theme="dark"] .lv .lb { background: #3a2530; }
+  html[data-theme="dark"] .bub { background: #2c1d26; color: #fbe7f0; }
+  html[data-theme="dark"] .st { background: #2c1d26; color: #ff9cc8; }
+  html[data-theme="dark"] .game[data-v="match"] .verdict, html[data-theme="dark"] .game[data-v="end"] .verdict { background: #fde68a; color: #3f2600; }
+@@sents
+S1 | It seems it is good to listen with about the same feeling as the speaker. | 人の話は、相手と同じくらいの気持ちで聞くといいそうです。
+S2 | If they are 30% angry, you are 30%, and if they are 80% happy, you are 80%. | 相手の怒りが30％なら30％、楽しさが80％なら80％です。
+S3 | If you listen with a straight face, the speaker worries, "Are you listening? Are you angry?" | 真顔で聞いていると、話している人は「聞いてる？怒ってる？」と不安になります。
+S4 | A straight-faced person hears the "words," and a matching person feels the "feelings." | 真顔の人は「言葉」を聞き、合わせる人は「気持ち」を感じているのです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">👂</span>
+      <span class="card-label">Same Feeling</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎚️</span>
+      <span class="card-label">Match The Level</span>
+    </div>
+    <p>{S2}</p>
+    <div class="levels" aria-hidden="true">
+      <div class="lv"><span class="le">😠</span><span class="lb"><i style="width:30%"></i><b style="width:30%"></b></span></div>
+      <div class="lv"><span class="le">😄</span><span class="lb"><i style="width:80%"></i><b style="width:80%"></b></span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😶</span>
+      <span class="card-label">Straight Face</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：気持ちのチューナー（友だちの気持ちの大きさに、− / ＋ で自分の反応を合わせる。3場面） -->
+  <section class="game" data-r="0" data-f="happy" data-v="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Feeling tuner</div>
+    <div class="game-hint">Your friend tells you something. Set your reaction with − and +, then tap "Listen."</div>
+    <div class="rounds" aria-hidden="true"><i>💞</i><i>💞</i><i>💞</i></div>
+    <div class="talk">
+      <div class="face" aria-hidden="true">🐧<span class="fx">😄</span></div>
+      <div class="bub">
+        <span class="q0">"I got a ticket to the baseball game!"</span>
+        <span class="q1">"The train was late, so I missed the start of the movie."</span>
+        <span class="q2">"My favorite cafe closed down."</span>
+      </div>
+    </div>
+    <div class="meters">
+      <div class="mrow">
+        <span class="mname">Friend: <span class="f-happy">happy</span><span class="f-angry">angry</span><span class="f-sad">sad</span></span>
+        <div class="mbar" aria-hidden="true"><i class="t-bar"></i></div>
+        <span class="mnum"><span class="t-n">80</span><small>%</small></span>
+      </div>
+      <div class="mrow mine">
+        <span class="mname">You</span>
+        <div class="mbar" aria-hidden="true"><i class="m-bar"></i></div>
+        <span class="mnum"><span class="m-n">0</span><small>%</small></span>
+      </div>
+    </div>
+    <div class="stepper">
+      <button class="st minus" type="button" aria-label="Less">−</button>
+      <div class="me-face" aria-hidden="true">🐧<span class="fx my-fx">😐</span></div>
+      <button class="st plus" type="button" aria-label="More">+</button>
+    </div>
+    <button class="gbtn pop listen" type="button">👂 Listen</button>
+    <div class="verdict">
+      <span class="v-hint">Right now you have a straight face. 😐</span>
+      <span class="v-tune">Now tap "👂 Listen."</span>
+      <span class="v-flat">😶 "…Are you listening? Are you angry?"</span>
+      <span class="v-match">💞 "You get me!" Your friend feels heard.</span>
+      <span class="v-over">😅 Too much! Now your friend worries about you.</span>
+      <span class="v-under">🙂 A little more. Their feeling is bigger.</span>
+      <span class="v-end">🏅 3 out of 3! You listened with your heart.</span>
+    </div>
+    <div class="row2">
+      <button class="gbtn nextr" type="button">Next friend ▶</button>
+      <button class="gbtn again" type="button">↺ Play again</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💞</span>
+      <span class="card-label">Words Or Feelings</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Same Feeling ||| 同じくらいの気持ち
+Match The Level ||| 大きさを合わせる
+Straight Face ||| 真顔
+Words Or Feelings ||| 言葉か、気持ちか
+⚡ TRY IT ||| ⚡ やってみよう
+Feeling tuner ||| 気持ちのチューナー
+Your friend tells you something. Set your reaction with − and +, then tap "Listen." ||| 友だちが話しかけてきます。−と＋で自分の反応の大きさを決めて、「聞く」を押してね。
+"I got a ticket to the baseball game!" ||| 「野球のチケットが取れたの！」
+"The train was late, so I missed the start of the movie." ||| 「電車が遅れて、映画の最初を見のがしちゃった。」
+"My favorite cafe closed down." ||| 「お気に入りのカフェが、閉店しちゃった。」
+Friend: ||| 友だち：
+happy ||| 楽しい
+angry ||| 怒り
+sad ||| 悲しい
+You ||| あなた
+Less ||| 小さく
+More ||| 大きく
+👂 Listen ||| 👂 聞く
+Now tap "👂 Listen." ||| 「👂 聞く」を押してね。
+Right now you have a straight face. 😐 ||| いまは真顔です。😐
+😶 "…Are you listening? Are you angry?" ||| 😶「…聞いてる？怒ってる？」
+💞 "You get me!" Your friend feels heard. ||| 💞「わかってくれる！」友だちは、ちゃんと聞いてもらえたと感じています。
+😅 Too much! Now your friend worries about you. ||| 😅 大きすぎ！今度は友だちがあなたを心配しています。
+🙂 A little more. Their feeling is bigger. ||| 🙂 もう少し。相手の気持ちはもっと大きいよ。
+🏅 3 out of 3! You listened with your heart. ||| 🏅 3人ぜんぶ！気持ちで聞けました。
+Next friend ▶ ||| 次の友だち ▶
+↺ Play again ||| ↺ もう一回
+@@js
+/* 🎚️ 気持ちのチューナー：JS は data-* / class / style / 絵文字 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var R = [{ f: 'happy', t: 80, face: '😄' }, { f: 'angry', t: 30, face: '😕' }, { f: 'sad', t: 60, face: '😢' }];
+  var FACES = { happy: ['😐', '🙂', '😊', '😄', '🤩'], angry: ['😐', '😕', '😤', '😠', '😡'], sad: ['😐', '🙁', '😟', '😢', '😭'] };
+  var r = 0, v = 0, got = [false, false, false];
+  var tBar = g.querySelector('.t-bar'), tN = g.querySelector('.t-n'), mBar = g.querySelector('.m-bar'), mN = g.querySelector('.m-n');
+  var frFx = g.querySelector('.face .fx'), myFx = g.querySelector('.my-fx');
+  var stars = [].slice.call(g.querySelectorAll('.rounds i'));
+  function restart(el, c) { el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function drawMe() {
+    mBar.style.width = v + '%'; mN.textContent = String(v);
+    var f = FACES[R[r].f][Math.round(v / 25)];
+    if (myFx.textContent !== f) { myFx.textContent = f; restart(myFx, 'boing'); }
+  }
+  function load(k) {
+    r = k; v = 0;
+    g.setAttribute('data-r', String(r)); g.setAttribute('data-f', R[r].f); g.setAttribute('data-v', '');
+    tBar.style.width = R[r].t + '%'; tN.textContent = String(R[r].t);
+    frFx.textContent = R[r].face; restart(frFx, 'boing');
+    drawMe();
+  }
+  function step(d) {
+    if (g.getAttribute('data-v') === 'match' || g.getAttribute('data-v') === 'end') return;
+    v = Math.max(0, Math.min(100, v + d));
+    g.setAttribute('data-v', v === 0 ? '' : 'tuning');
+    drawMe();
+  }
+  g.querySelector('.minus').addEventListener('click', function () { step(-10); });
+  g.querySelector('.plus').addEventListener('click', function () { step(10); });
+  g.querySelector('.listen').addEventListener('click', function () {
+    var t = R[r].t, d = v - t, res;
+    if (v === 0) res = 'flat';
+    else if (Math.abs(d) <= 10) res = 'match';
+    else if (d > 0) res = 'over';
+    else res = 'under';
+    if (res === 'match') {
+      got[r] = true; stars[r].classList.add('on');
+      var all = got[0] && got[1] && got[2];
+      res = all ? 'end' : 'match';
+      if (window.pengessoPop) {
+        var b = g.querySelector('.verdict').getBoundingClientRect();
+        window.pengessoPop(b.left + b.width / 2, b.top, all ? ['🏅', '💞', '🐧', '✨'] : ['💞', '✨'], all ? 22 : 10);
+      }
+      frFx.textContent = { happy: '🥰', angry: '😌', sad: '🥲' }[R[r].f]; restart(frFx, 'boing');
+    } else if (res === 'flat' || res === 'over') { frFx.textContent = res === 'flat' ? '😟' : '😳'; restart(frFx, 'boing'); }
+    g.setAttribute('data-v', res);
+  });
+  g.querySelector('.nextr').addEventListener('click', function () {
+    for (var k = 1; k <= 3; k++) { var n = (r + k) % 3; if (!got[n]) { load(n); return; } }
+  });
+  g.querySelector('.again').addEventListener('click', function () {
+    got = [false, false, false]; stars.forEach(function (s) { s.classList.remove('on'); }); load(0);
+  });
+  load(0);
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+相手の喜怒哀楽に、同じくらいの気持ちで合わせて聞く。
+@@tone
+素材の重さ：真面目（聞き方のコツ）
+→ 見せ方：ポップに（マゼンタとオレンジ。− と ＋ で気持ちの大きさを合わせるチューナー）
+@@game_ja
+🎚️ 気持ちのチューナー：友だちのペンギンが3つの話をする（野球のチケットが取れた＝楽しい80％／電車が遅れて映画の最初を見のがした＝怒り30％／お気に入りのカフェが閉店した＝悲しい60％）。友だちの気持ちの大きさはバーで見える。自分の反応を「−」「＋」で10％ずつ変えると、自分のペンギンの顔が😐→🤩（怒りなら😡、悲しみなら😭）に変わる。「👂 聞く」を押すと判定：0％のまま＝「…聞いてる？怒ってる？」、±10％以内＝💞「わかってくれる！」、大きすぎ＝「今度は友だちが心配」、小さすぎ＝「もう少し」。3人ぜんぶ合わせると🏅。
+@@combo
+ペンギン × 手刺しゅうのフェルト × 真ちゅうの音叉
+@@cover
+An extremely cute, chubby round penguin made of hand-embroidered felt, with a gentle attentive face and a plain white belly, tilting its head as if listening carefully, standing beside a realistic shiny brass tuning fork on a small wooden stand. Bright simple pink and warm amber background with soft depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

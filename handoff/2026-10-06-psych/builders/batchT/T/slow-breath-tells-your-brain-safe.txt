@@ -1,0 +1,233 @@
+@@meta
+{"title": "When your breathing is slow, your brain thinks you are safe", "label": "Slow Breath", "seq": 487, "mood": ["lift", "learn"], "tags": ["psychology", "feelings", "rest"], "thumbAlt": "A chubby boucle wool penguin gently blowing a single soft white feather floating in front of its beak"}
+@@ja_title
+呼吸がゆっくりなら、脳は「今は安全だ」と思う
+@@ja_label
+ゆっくり呼吸
+@@h1emoji
+🌬️
+@@section
+109「呼吸＝自らの心」
+@@vars
+    --bg: #f3f6ff; --text: #232a4a; --muted: #6b7396;
+    --accent: #5159d6; --accent2: #2fbcab; --h1: #1e2552; --big: #474ec4; --big-dark: #b9bdff;
+    --glow1: rgba(110,120,255,.2); --glow2: rgba(60,200,180,.2); --glow3: rgba(255,200,230,.22);
+    --shadow: 0 20px 55px rgba(60,70,170,.18); --photo-bg: #e6e9ff;
+    --g1: #2a2f6e; --g2: #5159d6; --g3: #2fbcab; --pop: #ffe27a; --pop-text: #3a2a00; --btn-text: #474ec4;
+@@css
+  /* 🌬 「息」＝自＋心 */
+  .kanji { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 14px; font-weight: 900; }
+  .kanji .k { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 18px; background: #eef0ff; color: #2a2f6e; font-size: 36px; line-height: 1; }
+  .kanji .k.main { background: #474ec4; color: #fff; }
+  .kanji .op { font-size: 24px; color: #6b7396; }
+
+  /* 🧠 外が見えない部屋の脳に、ゆっくりの呼吸で「安全」を知らせる */
+  .darkroom { position: relative; max-width: 420px; margin: 16px auto 0; padding: 14px 12px 12px; border-radius: 24px; background: #12142e;
+    transition: background .8s ease; overflow: hidden; }
+  .game[data-k="1"] .darkroom { background: #2b2f63; }
+  .game[data-k="2"] .darkroom { background: #4a4f97; }
+  .game[data-k="3"] .darkroom { background: #8a90e0; }
+  .darkroom-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .lamps { display: flex; gap: 6px; font-size: 22px; line-height: 1; }
+  .lamps span { filter: grayscale(1) brightness(.5); opacity: .5; transition: filter .4s, opacity .4s; }
+  .lamps span.on { filter: none; opacity: 1; animation: bounce-in .45s both; }
+  .sign { padding: 6px 12px; border-radius: 999px; background: rgba(255,255,255,.14); font-size: 14px; font-weight: 900; line-height: 1.3; }
+  .sign span { display: none; }
+  .game[data-s="idle"] .s-q, .game[data-s="slow"][data-k="0"] .s-q, .game[data-s="slow"]:not([data-k="0"]) .s-better,
+  .game[data-s="fast"] .s-danger, .game[data-s="done"] .s-safe { display: inline; }
+  .game[data-s="fast"] .sign { background: #ff4f5e; animation: shake .4s ease infinite; }
+  .game[data-s="done"] .sign { background: #2fd39b; color: #06331f; }
+  .brain-wrap { position: relative; height: 170px; display: grid; place-items: center; }
+  .breath { position: absolute; left: 50%; top: 50%; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(140,255,230,.55), rgba(140,255,230,.08) 70%); transform: scale(.55); }
+  .game[data-s="slow"][data-ph="in"] .breath { transform: scale(1); transition: transform 3s ease-in-out; }
+  .game[data-s="slow"][data-ph="out"] .breath { transform: scale(.55); transition: transform 4s ease-in-out; }
+  .game[data-s="fast"] .breath { background: radial-gradient(circle, rgba(255,120,130,.6), rgba(255,120,130,.08) 70%); animation: gasp .35s ease-in-out infinite alternate; }
+  @keyframes gasp { from { transform: scale(.5); } to { transform: scale(.7); } }
+  .brain { position: relative; font-size: 58px; line-height: 1; }
+  .brain .alarm { position: absolute; right: -18px; top: -14px; font-size: 26px; opacity: 0; }
+  .game[data-s="fast"] .brain .alarm { opacity: 1; }
+  .game[data-s="done"] .brain { animation: hop .7s 2 ease-in-out; }
+  .cue { position: relative; margin-top: 4px; min-height: 30px; font-size: 18px; font-weight: 900; }
+  .cue span { display: none; }
+  .game[data-s="idle"] .c-idle, .game[data-s="slow"][data-ph="in"] .c-in, .game[data-s="slow"][data-ph="out"] .c-out,
+  .game[data-s="fast"] .c-fast, .game[data-s="done"] .c-done { display: inline; }
+  .cue .sec { display: inline; margin-left: 6px; font-size: 22px; }
+  .game:not([data-s="slow"]) .cue .sec { display: none; }
+
+  .btns { display: grid; gap: 10px; max-width: 340px; margin: 16px auto 0; }
+  .btns .gbtn { width: 100%; }
+  .btns .slowbtn { min-height: 60px; font-size: 19px; }
+  .game[data-s="slow"] .btns, .game[data-s="fast"] .btns, .game[data-s="done"] .btns { display: none; }
+  .again-row { display: none; }
+  .game[data-s="done"] .again-row { display: block; }
+  .result { margin-top: 12px; min-height: 26px; font-size: 15.5px; font-weight: 900; line-height: 1.45; }
+  .result > div { display: none; }
+  .game:not([data-s="done"]) .r-hint { display: block; opacity: .95; }
+  .game[data-s="done"] .r-done { display: block; font-size: 18px; animation: bounce-in .5s both; }
+@@dark
+  html[data-theme="dark"] .kanji .k { background: #2c2e3b; color: #e6e8ff; }
+  html[data-theme="dark"] .kanji .k.main { background: #5159d6; }
+  html[data-theme="dark"] .kanji .op { color: #b9bdff; }
+@@sents
+S1 | The kanji for "breath," 息, is made of 自 (self) and 心 (heart). | 「息」という字は、「自（みずから）」と「心」でできています。
+S2 | Your brain is inside your head, so it cannot see outside. | 脳は頭の中にいるので、外の様子が見えません。
+S3 | So it seems the brain watches your breathing, and when it is slow, it thinks, "I am safe now." | だから脳は呼吸を見ていて、ゆっくりなら「今は安全だ」と判断するそうです。
+S4 | When you feel worried, maybe breathe out slowly and tell your brain, "It is OK." | 不安なときは、ゆっくり息を吐いて、脳に「大丈夫だよ」と知らせてあげるといいかもしれません。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📝</span>
+      <span class="card-label">Self And Heart</span>
+    </div>
+    <p>{S1}</p>
+    <div class="kanji" aria-hidden="true"><span class="k">自</span><span class="op">+</span><span class="k">心</span><span class="op">=</span><span class="k main">息</span></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧠</span>
+      <span class="card-label">No Windows</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：外が見えない脳に「安全」を知らせよう -->
+  <section class="game" data-s="idle" data-ph="in" data-k="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Tell the brain in the dark room, "You are safe"</div>
+    <div class="game-hint">The brain cannot see outside. It only feels your breathing.</div>
+    <div class="darkroom">
+      <div class="darkroom-top">
+        <div class="lamps" aria-hidden="true"><span>💡</span><span>💡</span><span>💡</span></div>
+        <div class="sign">
+          <span class="s-q">❓ Am I safe?</span>
+          <span class="s-better">🙂 Getting safer…</span>
+          <span class="s-danger">🚨 Danger?!</span>
+          <span class="s-safe">✅ I am safe now</span>
+        </div>
+      </div>
+      <div class="brain-wrap" aria-hidden="true"><span class="breath"></span><span class="brain">🧠<span class="alarm">‼️</span></span></div>
+      <div class="cue">
+        <span class="c-idle">Which breathing will you show the brain?</span>
+        <span class="c-in">Breathe in…</span>
+        <span class="c-out">Breathe out slowly…</span>
+        <span class="c-fast">Huff, huff, huff!</span>
+        <span class="c-done">The brain relaxed. 😌</span>
+        <span class="sec">3</span>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="gbtn pop slowbtn" type="button">🌬️ Breathe slowly with me</button>
+      <button class="gbtn ghost fastbtn" type="button">💨 Try fast breathing</button>
+    </div>
+    <div class="result">
+      <div class="r-hint">3 slow breaths light 3 lamps.</div>
+      <div class="r-done">✨ Slow breath = "safe" message for your brain.</div>
+    </div>
+    <div class="again-row"><button class="gbtn ghost again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🛡️</span>
+      <span class="card-label">Safe Signal</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌬️</span>
+      <span class="card-label">Breathe Out</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Self And Heart ||| 自と心
+No Windows ||| 窓がない
+Safe Signal ||| 安全の合図
+Breathe Out ||| ゆっくり吐く
+⚡ TRY IT ||| ⚡ やってみよう
+Tell the brain in the dark room, "You are safe" ||| 暗い部屋にいる脳に「安全だよ」と知らせよう
+The brain cannot see outside. It only feels your breathing. ||| 脳は外が見えません。わかるのは、あなたの呼吸だけ。
+❓ Am I safe? ||| ❓ 安全かな？
+🙂 Getting safer… ||| 🙂 安全っぽくなってきた…
+🚨 Danger?! ||| 🚨 危険？！
+✅ I am safe now ||| ✅ 今は安全だ
+Which breathing will you show the brain? ||| 脳に、どんな呼吸を見せる？
+Breathe in… ||| 吸って…
+Breathe out slowly… ||| ゆっくり吐いて…
+Huff, huff, huff! ||| ハッ、ハッ、ハッ！
+The brain relaxed. 😌 ||| 脳がほっとしました。😌
+🌬️ Breathe slowly with me ||| 🌬️ いっしょにゆっくり呼吸する
+💨 Try fast breathing ||| 💨 速い呼吸を試す
+3 slow breaths light 3 lamps. ||| ゆっくり3回呼吸すると、ランプが3つともります。
+✨ Slow breath = "safe" message for your brain. ||| ✨ ゆっくりの呼吸＝脳への「安全だよ」のメッセージ。
+↺ Try again ||| ↺ もう一回
+@@js
+/* 🌬 ゆっくり呼吸（吸う3秒・吐く4秒 × 3回）で部屋のランプがつき、脳が「安全」。速い呼吸だと警報。JS は data-* / class / 数字だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var slowBtn = g.querySelector('.slowbtn'), fastBtn = g.querySelector('.fastbtn'), again = g.querySelector('.again');
+  var lamps = g.querySelectorAll('.lamps span'), sec = g.querySelector('.cue .sec'), brain = g.querySelector('.brain');
+  var IN = 3, OUT = 4, ROUNDS = 3, timers = [];
+  function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+  function clear() { while (timers.length) clearTimeout(timers.pop()); }
+  function set(s) { g.setAttribute('data-s', s); }
+  function lamp(k) {
+    g.setAttribute('data-k', k);
+    for (var i = 0; i < lamps.length; i++) lamps[i].classList.toggle('on', i < k);
+  }
+  function count(n, done) {
+    sec.textContent = n;
+    if (n <= 1) { later(done, 1000); return; }
+    later(function () { count(n - 1, done); }, 1000);
+  }
+  function round(r) {
+    g.setAttribute('data-ph', 'in');
+    count(IN, function () {
+      g.setAttribute('data-ph', 'out');
+      count(OUT, function () {
+        lamp(r + 1);
+        if (r + 1 >= ROUNDS) { finish(); return; }
+        round(r + 1);
+      });
+    });
+  }
+  function finish() {
+    set('done');
+    if (window.pengessoPop) {
+      var b = brain.getBoundingClientRect();
+      window.pengessoPop(b.left + b.width / 2, b.top + b.height / 2, ['💡', '🧠', '✨', '🐧', '🌬️'], 18);
+    }
+    if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+  }
+  slowBtn.addEventListener('click', function () {
+    clear(); lamp(0); set('slow');
+    g.setAttribute('data-ph', 'out');
+    later(function () { round(0); }, 60);   /* 小さい円から始めて、吸うと大きくなる */
+  });
+  fastBtn.addEventListener('click', function () {
+    clear(); lamp(0); set('fast');
+    if (navigator.vibrate) { try { navigator.vibrate([40, 60, 40, 60, 40]); } catch (e) {} }
+    later(function () { set('idle'); }, 2600);
+  });
+  again.addEventListener('click', function () { clear(); lamp(0); set('idle'); g.setAttribute('data-ph', 'in'); });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+呼吸がゆっくりなら、外が見えない脳は「今は安全だ」と判断する。
+@@tone
+素材の重さ：ふつう（呼吸と心の話）
+→ 見せ方：ポップに（夜の藍色とミント。暗い部屋の脳に、ゆっくりの呼吸を見せてランプをつけて遊べる）
+@@game_ja
+🌬 暗い部屋にいる脳に「安全だよ」と知らせよう：外が見えない暗い部屋に 🧠 がいて、「❓ 安全かな？」。「🌬️ いっしょにゆっくり呼吸する」を押すと、ミント色の円が「吸って…（3秒）」で大きく、「ゆっくり吐いて…（4秒）」で小さくなる（秒数も出る）。1回ごとにランプ 💡 が1つともって、部屋が明るくなる。3回で「✅ 今は安全だ」。「💨 速い呼吸を試す」を押すと、円が赤くハッハッと小さく速く動いて、「🚨 危険？！」の札がぷるぷる（2.6秒で元に戻る）。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of soft boucle wool, eyes half closed and calm, gently breathing out toward one realistic soft white feather floating in the air just in front of its beak. A simple bright lavender background that fades into calm mint with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × ブークレウール × 羽根

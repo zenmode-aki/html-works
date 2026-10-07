@@ -1,0 +1,211 @@
+@@meta
+{"title": "You do not need to hold back because it is \"not your character\"", "label": "Drop Character", "seq": 474, "mood": ["lift", "laugh"], "tags": ["psychology", "mindset", "feelings"], "thumbAlt": "An embroidered felt penguin in a bright rainbow knit hat next to a steamed shumai with a green pea on top"}
+@@ja_title
+「キャラじゃない」で、ガマンしなくていい
+@@ja_label
+キャラを捨てる
+@@h1emoji
+🥟
+@@section
+89「自分を好きになる」の後半（自分の「キャラ」を捨てる）
+@@vars
+    --bg: #f6fff0; --text: #1f3320; --muted: #5f7a5c;
+    --accent: #23a046; --accent2: #ff8a3d; --h1: #1b3a1a; --big: #1d963c; --big-dark: #8ff0a4;
+    --glow1: rgba(140,220,90,.30); --glow2: rgba(255,138,61,.18); --glow3: rgba(124,92,255,.14);
+    --shadow: 0 20px 55px rgba(40,130,60,.18); --photo-bg: #e6f8dc;
+    --g1: #2fbf5c; --g2: #16b3a3; --g3: #6e63ff; --pop: #ffe45c; --pop-text: #5a3a00; --btn-text: #1d8a3a;
+@@css
+  /* 🥟 グリンピースを取る → それでもおいしい → ガマンしていたカギを開ける */
+  .plate { position: relative; width: 230px; height: 170px; margin: 16px auto 4px; }
+  .plate::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 48px; border-radius: 50%; background: #ffffff;
+    box-shadow: 0 8px 18px rgba(0,0,0,.18); }
+  .shumai { position: absolute; left: 50%; bottom: 22px; width: 122px; height: 96px; transform: translateX(-50%);
+    border-radius: 46% 46% 36px 36px / 34% 34% 42px 42px; background: linear-gradient(180deg, #fff3bd, #f2d16e);
+    box-shadow: inset 0 -12px 0 rgba(200,150,40,.22), 0 6px 10px rgba(120,80,0,.15); }
+  .meat { position: absolute; display: block; left: 6px; right: 6px; top: -10px; height: 36px; border-radius: 50%;
+    background: radial-gradient(circle at 50% 45%, #eba67f, #c97a55); border: 5px solid #fbe7a1; }
+  .pea { position: absolute; left: 50%; top: 18px; width: 58px; height: 58px; margin-left: -29px; padding: 0; border: 0; border-radius: 50%;
+    background: transparent; cursor: pointer; display: grid; place-items: center; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .pea-ball { display: block; width: 32px; height: 32px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #c4f78a, #3fae2a 70%);
+    box-shadow: 0 3px 0 #2a7a1c; }
+  .pea:focus-visible { outline: 4px solid #fff; outline-offset: 2px; }
+  .game[data-step="pea"] .pea-ball { animation: pea-pulse 1.2s ease-in-out infinite; }
+  @keyframes pea-pulse { 50% { transform: scale(1.16); } }
+  .pea.gone { animation: roll .8s ease-in forwards; pointer-events: none; }
+  @keyframes roll { 0% { transform: none; } 30% { transform: translate(34px, -24px) rotate(140deg); } 100% { transform: translate(150px, 130px) rotate(560deg); opacity: 0; } }
+  .game:not([data-step="pea"]) .pea, .game:not([data-step="pea"]) .pea-tag { visibility: hidden; }
+  .pea-tag { position: absolute; left: calc(50% + 32px); top: 26px; max-width: 96px; font-size: 13px; font-weight: 900; line-height: 1.25; text-align: left; }
+  .taste { display: flex; align-items: center; justify-content: center; gap: 6px 8px; flex-wrap: wrap; font-size: 15px; font-weight: 900; }
+  .stars { font-size: 20px; letter-spacing: 1px; }
+  .stars.twinkle { animation: bounce-in .6s both; }
+  .say { min-height: 52px; display: flex; align-items: center; justify-content: center; max-width: 440px; margin: 12px auto 0; padding: 10px 14px;
+    border-radius: 18px; background: rgba(255,255,255,.22); font-size: 17px; font-weight: 900; line-height: 1.4; }
+  .say span { display: none; }
+  .game[data-step="pea"] .s-pea, .game[data-step="wish"] .s-wish, .game[data-step="done"] .s-done { display: inline; }
+  .game[data-step="done"] .say { background: var(--pop); color: #5a3a00; animation: bounce-in .5s both; }
+
+  .wish-area { display: none; margin-top: 16px; }
+  .game:not([data-step="pea"]) .wish-area { display: block; animation: bounce-in .5s both; }
+  .me { position: relative; width: 96px; height: 96px; margin: 18px auto 10px; display: grid; place-items: center; font-size: 66px; line-height: 1;
+    border-radius: 50%; background: rgba(255,255,255,.22); }
+  .me.hop-me { animation: hop .5s ease; }
+  .acc { position: absolute; font-size: 34px; line-height: 1; opacity: 0; transform: scale(.3); transition: opacity .3s ease, transform .35s cubic-bezier(.2,1.4,.4,1); }
+  .acc.on { opacity: 1; transform: none; }
+  .a1 { top: -24px; left: 50%; margin-left: -17px; }
+  .a2 { right: -26px; top: 30px; }
+  .a3 { bottom: -8px; left: 50%; margin-left: -17px; }
+  .locks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; max-width: 440px; margin: 0 auto; }
+  .lock { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-height: 76px; padding: 8px 6px; border: 0;
+    border-radius: 18px; background: rgba(255,255,255,.95); color: #1d6e33; font: inherit; font-size: 14px; font-weight: 900; line-height: 1.25; cursor: pointer;
+    box-shadow: 0 5px 0 rgba(10,70,40,.28); transition: transform .08s ease, background .2s ease; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .lock .lk { font-size: 26px; line-height: 1; }
+  .lock:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(10,70,40,.28); }
+  .lock.open { background: var(--pop); color: #5a3a00; }
+  .lock.open .lk { animation: wiggle .4s ease; }
+  .lock:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+@@dark
+  html[data-theme="dark"] .plate::before { background: #dfe4ea; }
+  html[data-theme="dark"] .lock { background: #21302a; color: #b8f5c8; }
+  html[data-theme="dark"] .lock.open { background: #ffe45c; color: #4a3000; }
+  html[data-theme="dark"] .game[data-step="done"] .say { background: #ffe45c; color: #4a3000; }
+@@sents
+S1 | Is there something you really want to try, but you hold back because "It is not my character"? | 本当はやってみたいのに、「私のキャラじゃないし」とガマンしていることはありませんか？
+S2 | For example, bright hair color, or singing your favorite song out loud. | たとえば、派手な髪の色や、好きな歌を思いきり歌うこと。
+S3 | Your "character" is like the green pea on top of a shumai. | 「キャラ」は、シューマイの上のグリンピースみたいなものです。
+S4 | Without it, it is still tasty. | なくても、ちゃんとおいしいんです。
+S5 | Throw away your character, and try what you really want to do. | キャラは捨てて、本当にやりたいことをやってみましょう。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🤐</span>
+      <span class="card-label">Holding Back</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌈</span>
+      <span class="card-label">For Example</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🟢</span>
+      <span class="card-label">The Green Pea</span>
+    </div>
+    <p>{S3}</p>
+    <p>{S4}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：グリンピースを取る → それでもおいしい → ガマンしていたカギを3つ開ける -->
+  <section class="game" data-step="pea" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Take off the green pea</div>
+    <div class="plate">
+      <div class="shumai" aria-hidden="true"><span class="meat"></span></div>
+      <button class="pea" type="button" aria-label="Take off the green pea"><span class="pea-ball"></span></button>
+      <span class="pea-tag">← "my character"</span>
+    </div>
+    <div class="taste"><span class="t-l">😋 Taste:</span><span class="stars" aria-hidden="true">⭐⭐⭐⭐⭐</span></div>
+    <div class="say">
+      <span class="s-pea">Tap the green pea 👆</span>
+      <span class="s-wish">😋 Still tasty! Now open the locks you kept shut.</span>
+      <span class="s-done">🐧 This is me, the way I like! ✨</span>
+    </div>
+    <div class="wish-area">
+      <div class="me" aria-hidden="true">🐧<span class="acc a1">🌈</span><span class="acc a2">🎤</span><span class="acc a3">🧣</span></div>
+      <div class="locks">
+        <button class="lock" type="button" aria-pressed="false"><span class="lk" aria-hidden="true">🔒</span><span class="lt">Bright hair</span></button>
+        <button class="lock" type="button" aria-pressed="false"><span class="lk" aria-hidden="true">🔒</span><span class="lt">Sing out loud</span></button>
+        <button class="lock" type="button" aria-pressed="false"><span class="lk" aria-hidden="true">🔒</span><span class="lt">Colorful clothes</span></button>
+      </div>
+      <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Put the pea back</button></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎤</span>
+      <span class="card-label">Just Try It</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+Holding Back ||| ガマン
+For Example ||| たとえば
+The Green Pea ||| グリンピース
+Just Try It ||| やってみる
+⚡ TRY IT ||| ⚡ やってみよう
+Take off the green pea ||| グリンピースを取ってみよう
+← "my character" ||| ←「私のキャラ」
+😋 Taste: ||| 😋 おいしさ：
+Tap the green pea 👆 ||| グリンピースを押してね 👆
+😋 Still tasty! Now open the locks you kept shut. ||| 😋 ちゃんとおいしい！じゃあ、ガマンしていたカギを開けよう。
+🐧 This is me, the way I like! ✨ ||| 🐧 これが、私の好きな私！✨
+Bright hair ||| 派手な髪
+Sing out loud ||| 思いきり歌う
+Colorful clothes ||| カラフルな服
+↺ Put the pea back ||| ↺ グリンピースを戻す
+@@js
+/* 🥟 グリンピース：JS は data-step / class / 絵文字 / aria だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var pea = g.querySelector('.pea'), stars = g.querySelector('.stars'), me = g.querySelector('.me');
+  var locks = [].slice.call(g.querySelectorAll('.lock'));
+  var accs = [].slice.call(g.querySelectorAll('.acc'));
+  var timer = 0;
+  function restart(el, c) { el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function center(el) { var r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }
+  pea.addEventListener('click', function () {
+    if (g.getAttribute('data-step') !== 'pea') return;
+    pea.classList.add('gone');
+    var p = center(pea);
+    if (window.pengessoPop) window.pengessoPop(p[0], p[1], ['🟢', '✨'], 8);
+    clearTimeout(timer);
+    timer = setTimeout(function () { g.setAttribute('data-step', 'wish'); restart(stars, 'twinkle'); }, 700);
+  });
+  locks.forEach(function (b, i) {
+    b.addEventListener('click', function () {
+      if (b.classList.contains('open') || g.getAttribute('data-step') === 'pea') return;
+      b.classList.add('open'); b.setAttribute('aria-pressed', 'true');
+      b.querySelector('.lk').textContent = '🔓';
+      accs[i].classList.add('on'); restart(me, 'hop-me');
+      var p = center(b);
+      var n = g.querySelectorAll('.lock.open').length;
+      if (n === 3) {
+        g.setAttribute('data-step', 'done');
+        var m = center(me);
+        if (window.pengessoPop) window.pengessoPop(m[0], m[1], ['🌈', '🎤', '🧣', '🐧', '✨'], 24);
+      } else if (window.pengessoPop) {
+        window.pengessoPop(p[0], p[1], [accs[i].textContent, '✨'], 10);
+      }
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    clearTimeout(timer);
+    pea.classList.remove('gone');
+    locks.forEach(function (b) { b.classList.remove('open'); b.setAttribute('aria-pressed', 'false'); b.querySelector('.lk').textContent = '🔒'; });
+    accs.forEach(function (a) { a.classList.remove('on'); });
+    g.setAttribute('data-step', 'pea');
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・1文目）
+S4 → 使った（3枚目のカード・2文目）
+S5 → 使った（4枚目のカード・.big）
+@@message
+「キャラじゃない」でガマンしなくていい。キャラはシューマイの上のグリンピース。なくてもおいしい。
+@@tone
+素材の重さ：ふつう（自分を好きになる）
+→ 見せ方：ポップに・ちょっと笑える（グリンピースの緑と、虹色。シューマイからグリンピースを取って遊ぶ）
+@@game_ja
+🥟 グリンピースを取ってみよう：シューマイの上で「私のキャラ」の札がついたグリンピースがぴょこぴょこ動いている。押すと、コロコロ転がって落ちていく → 「😋 おいしさ ⭐⭐⭐⭐⭐」は変わらない（ちゃんとおいしい！）。次に、ガマンしていた3つのカギ（派手な髪／思いきり歌う／カラフルな服）が出る。押すと🔒が🔓になり、ペンギンに🌈🎤🧣が1つずつ付く。3つぜんぶ開けると「これが、私の好きな私！」とはじける。「グリンピースを戻す」で最初から。
+@@combo
+ペンギン × 手刺しゅうのフェルト × 蒸したてのシューマイ（グリンピースのせ）
+@@cover
+An extremely cute, chubby round penguin made of hand-embroidered felt, with a gentle cheerful face and a plain white belly, wearing a bright rainbow-colored knit hat and happily raising one flipper. Next to it on a small white plate is one realistic steamed shumai dumpling with a single green pea on top. Bright simple fresh mint-green background with soft depth, cheerful light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

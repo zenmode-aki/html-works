@@ -1,0 +1,248 @@
+@@meta
+{"title": "If you pass on bad gossip, people start to dislike you too", "label": "Bad News", "seq": 437, "mood": ["lift", "think"], "tags": ["psychology", "friends", "feelings"], "thumbAlt": "A layered cut paper penguin gently putting a paper envelope into a small wooden drawer"}
+@@ja_title
+悪いうわさを伝えると、伝えた人まで嫌われてしまう
+@@ja_label
+悪い知らせ
+@@h1emoji
+📮
+@@section
+42「知らぬ間に嫌われる習慣」の①悪い知らせを伝える
+@@vars
+    --bg: #f6f4ff; --text: #2a2545; --muted: #6f6a8f;
+    --accent: #5b4bdb; --accent2: #f2a900; --h1: #221c4a; --big: #4a3cc9; --big-dark: #b9b0ff;
+    --glow1: rgba(110,95,255,.22); --glow2: rgba(255,200,60,.28); --glow3: rgba(120,200,255,.2);
+    --shadow: 0 20px 55px rgba(70,55,170,.18); --photo-bg: #e8e4ff;
+    --g1: #5b4bdb; --g2: #7d6bff; --g3: #4aa8ff; --pop: #ffe066; --pop-text: #4a3500; --btn-text: #4a3cc9;
+@@css
+  /* 📮 郵便屋さんゲーム：手紙を「届ける」か「しまっておく」か → 友達の「あなたの思い出」に ☀️ か ☁️ がたまる */
+  .post { display: flex; align-items: center; justify-content: space-between; gap: 8px; max-width: 420px; margin: 14px auto 0; }
+  .who { width: 84px; flex: 0 0 auto; text-align: center; }
+  .face { position: relative; width: 70px; height: 70px; margin: 0 auto; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.25); font-size: 42px; line-height: 1; }
+  .face .badge { position: absolute; right: -8px; bottom: -6px; font-size: 26px; line-height: 1; }
+  .face .react { position: absolute; right: -8px; top: -10px; font-size: 26px; line-height: 1; }
+  .face .react.boing { animation: bounce-in .45s both; }
+  .tag { margin-top: 5px; font-size: 13px; font-weight: 900; }
+  .letter { position: relative; flex: 1; min-width: 0; min-height: 96px; padding: 12px 12px 12px; border-radius: 14px; background: #fffdf5; color: #2a2545;
+    box-shadow: 0 8px 18px rgba(20,10,80,.22); font-weight: 900; font-size: 15px; line-height: 1.4; display: flex; align-items: center; justify-content: center; text-align: center; }
+  .letter::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; border-radius: 14px 14px 0 0;
+    background: repeating-linear-gradient(90deg, #ff6b6b 0 10px, #fff 10px 16px, #4a8cff 16px 26px, #fff 26px 32px); }
+  .letter span { display: none; }
+  .game[data-i="0"] .l0, .game[data-i="1"] .l1, .game[data-i="2"] .l2, .game[data-i="3"] .l3, .game[data-i="4"] .l4, .game[data-i="5"] .l5 { display: inline; }
+  .letter.in-a { animation: bounce-in .4s both; }
+  .letter.go { animation: send .45s ease-in both; }
+  .letter.keep { animation: drop .45s ease-in both; }
+  @keyframes send { to { transform: translateX(70%) rotate(12deg) scale(.4); opacity: 0; } }
+  @keyframes drop { to { transform: translateY(80px) scale(.5); opacity: 0; } }
+  .lcount { margin-top: 6px; font-size: 13px; font-weight: 900; opacity: .9; }
+
+  .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 420px; margin: 14px auto 0; }
+  .btns .gbtn { width: 100%; min-height: 62px; font-size: 17px; }
+  .game[data-i="5"] .btns { display: none; }
+
+  .fb { max-width: 420px; margin: 12px auto 0; min-height: 44px; }
+  .fb > div { display: none; font-size: 15px; font-weight: 900; line-height: 1.45; }
+  .game[data-f="dg"] .f-dg, .game[data-f="db"] .f-db, .game[data-f="kb"] .f-kb, .game[data-f="kg"] .f-kg, .game[data-f=""] .f-0 { display: block; }
+  .fb.show > div { animation: bounce-in .4s both; }
+
+  .memory { max-width: 420px; margin: 8px auto 0; padding: 12px; border-radius: 20px; background: #fff; color: #2a2545; box-shadow: 0 10px 22px rgba(20,10,80,.2); }
+  .mem-l { font-size: 12.5px; font-weight: 900; letter-spacing: .08em; color: var(--btn-text); }
+  .mem-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; min-height: 44px; flex-wrap: wrap; }
+  .mem-me { font-size: 34px; line-height: 1; padding-right: 6px; border-right: 3px dotted #d7d2f0; }
+  .mem-row i { font-style: normal; font-size: 28px; line-height: 1; }
+  .mem-row i.new { animation: bounce-in .45s both; }
+  .mem-empty { font-size: 13.5px; font-weight: 900; color: #8a85a8; }
+  .mem-row.has .mem-empty { display: none; }
+  .end { display: none; max-width: 420px; margin: 12px auto 0; padding: 12px 14px; border-radius: 16px; background: rgba(255,255,255,.24); font-weight: 900; line-height: 1.45; }
+  .end > div:not(.score) { display: none; }
+  .game[data-i="5"] .end { display: block; animation: bounce-in .5s both; }
+  .game[data-end="sun"] .e-sun, .game[data-end="cloud"] .e-cloud { display: block; }
+  .score { margin-top: 6px; font-size: 14px; }
+@@dark
+  html[data-theme="dark"] .letter { background: #2a2740; color: #ece9ff; }
+  html[data-theme="dark"] .memory { background: #23203a; color: #ece9ff; }
+  html[data-theme="dark"] .mem-l { color: #b9b0ff; }
+  html[data-theme="dark"] .mem-empty { color: #a9a4c8; }
+  html[data-theme="dark"] .mem-me { border-right-color: #4a4570; }
+@@sents
+S1 | Some people tell you, "Someone said bad things about you." | 「〇〇さんが、あなたの悪口を言ってたよ」と教えてくれる人がいます。
+S2 | Even if they mean to be kind, it seems people start to dislike the messenger too. | 親切のつもりでも、伝えた人まで嫌われてしまうそうです。
+S3 | This is because the brain remembers the bad feeling and the person in front of it together. | 脳は、イヤな気分と、目の前にいる人を、セットで覚えるからです。
+S4 | Let's keep bad gossip to ourselves. | 悪いうわさは、自分のところで止めておきましょう。
+S5 | On the other hand, with good news, they may remember you with a happy feeling. | 反対に、いい知らせなら、うれしい気分と一緒に覚えてもらえるかもしれません。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">✉️</span>
+      <span class="card-label">The Messenger</span>
+    </div>
+    <p>{S1}</p>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧠</span>
+      <span class="card-label">A Set Memory</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：郵便屋さんゲーム（届ける／しまっておく → 友達の「あなたの思い出」に ☀️ か ☁️） -->
+  <section class="game" data-i="0" data-f="" data-end="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Mail penguin: deliver or keep?</div>
+    <div class="game-hint">5 letters came for your friend. Which ones do you carry?</div>
+    <div class="post">
+      <div class="who">
+        <div class="face" aria-hidden="true">🐧<span class="badge">📮</span></div>
+        <div class="tag">You</div>
+      </div>
+      <div class="letter">
+        <span class="l0">💌 "Everyone loved your cookies!"</span>
+        <span class="l1">☁️ "Someone said your laugh is too loud."</span>
+        <span class="l2">🎉 "The teacher said your English got better!"</span>
+        <span class="l3">☁️ "Someone said you are a little slow."</span>
+        <span class="l4">☁️ "Someone said your bag looks strange."</span>
+        <span class="l5">📭 No more letters!</span>
+      </div>
+      <div class="who">
+        <div class="face" aria-hidden="true">🐧<span class="react">🙂</span></div>
+        <div class="tag">Friend</div>
+      </div>
+    </div>
+    <div class="lcount"><span class="lc-l">✉️ Letter</span> <span class="lc-n">1/5</span></div>
+    <div class="btns">
+      <button class="gbtn pop deliver" type="button">📮 Deliver</button>
+      <button class="gbtn keepb" type="button">🗄️ Keep it</button>
+    </div>
+    <div class="fb">
+      <div class="f-0">👆 Read the letter, then choose.</div>
+      <div class="f-dg">☀️ Happy news! They remember it with your face.</div>
+      <div class="f-db">☁️ Ouch. They remember the cloud with YOUR face.</div>
+      <div class="f-kb">🗄️ It stopped with you. Nice!</div>
+      <div class="f-kg">🤔 That one was good news. You can carry it!</div>
+    </div>
+    <div class="memory">
+      <div class="mem-l">🧠 YOUR FRIEND'S MEMORY OF YOU</div>
+      <div class="mem-row"><span class="mem-me" aria-hidden="true">🐧</span><span class="mem-empty">Nothing yet.</span></div>
+    </div>
+    <div class="end">
+      <div class="e-sun">☀️ When your friend sees you, they think of sunny things!</div>
+      <div class="e-cloud">☁️ Now when your friend sees you, the clouds come back too…</div>
+      <div class="score"><span class="sc-l">⭐ Good choices:</span> <span class="sc-n">0/5</span></div>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🗄️</span>
+      <span class="card-label">Stop It Here</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">☀️</span>
+      <span class="card-label">Carry Good News</span>
+    </div>
+    <p>{S5}</p>
+  </section>
+@@ui
+The Messenger ||| 伝える人
+A Set Memory ||| セットで覚える
+Stop It Here ||| ここで止める
+Carry Good News ||| いい知らせを運ぶ
+⚡ TRY IT ||| ⚡ やってみよう
+Mail penguin: deliver or keep? ||| 郵便屋さんペンギン：届ける？しまっておく？
+5 letters came for your friend. Which ones do you carry? ||| 友達あての手紙が5通。どれを届ける？
+You ||| あなた
+Friend ||| 友達
+💌 "Everyone loved your cookies!" ||| 💌「あなたのクッキー、みんな大好きだって！」
+☁️ "Someone said your laugh is too loud." ||| ☁️「あなたの笑い声がうるさいって、言ってる人がいたよ。」
+🎉 "The teacher said your English got better!" ||| 🎉「先生が、英語が上手になったって言ってたよ！」
+☁️ "Someone said you are a little slow." ||| ☁️「あなたがちょっと遅いって、言ってる人がいたよ。」
+☁️ "Someone said your bag looks strange." ||| ☁️「あなたのカバンが変だって、言ってる人がいたよ。」
+📭 No more letters! ||| 📭 手紙はもうないよ！
+✉️ Letter ||| ✉️ 手紙
+📮 Deliver ||| 📮 届ける
+🗄️ Keep it ||| 🗄️ しまっておく
+👆 Read the letter, then choose. ||| 👆 手紙を読んでから選んでね。
+☀️ Happy news! They remember it with your face. ||| ☀️ うれしい知らせ！あなたの顔と一緒に覚えてくれる。
+☁️ Ouch. They remember the cloud with YOUR face. ||| ☁️ あいたた。その雲を「あなたの顔」と一緒に覚えちゃった。
+🗄️ It stopped with you. Nice! ||| 🗄️ あなたのところで止まった。いいね！
+🤔 That one was good news. You can carry it! ||| 🤔 それはいい知らせだったよ。届けていいんだよ！
+🧠 YOUR FRIEND'S MEMORY OF YOU ||| 🧠 友達の中の「あなた」の思い出
+Nothing yet. ||| まだ何もない。
+☀️ When your friend sees you, they think of sunny things! ||| ☀️ 友達はあなたを見ると、晴れた気分を思い出す！
+☁️ Now when your friend sees you, the clouds come back too… ||| ☁️ 友達はあなたを見るたびに、雲まで思い出してしまう…
+⭐ Good choices: ||| ⭐ いい選択：
+↺ Start over ||| ↺ 最初から
+@@js
+/* 📮 郵便屋さんゲーム：JS は data-i / data-f / data-end / class / 絵文字 / 数字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var GOOD = [true, false, true, false, false];
+  var i = 0, ok = 0, clouds = 0, busy = 0;
+  var letter = g.querySelector('.letter'), react = g.querySelector('.react'), fb = g.querySelector('.fb');
+  var row = g.querySelector('.mem-row'), lcN = g.querySelector('.lc-n'), scN = g.querySelector('.sc-n');
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function addMem(e) { var m = document.createElement('i'); m.className = 'new'; m.textContent = e; row.appendChild(m); row.classList.add('has'); }
+  function choose(deliver) {
+    if (busy || i > 4) return; busy = 1;
+    var good = GOOD[i], f = (deliver ? 'd' : 'k') + (good ? 'g' : 'b');
+    if ((deliver && good) || (!deliver && !good)) ok++;
+    restart(letter, deliver ? 'go' : 'keep');
+    setTimeout(function () {
+      letter.classList.remove('go', 'keep');
+      g.setAttribute('data-f', f); restart(fb, 'show');
+      if (deliver) {
+        addMem(good ? '☀️' : '🌧️');
+        if (!good) clouds++;
+        react.textContent = good ? '😊' : '😣'; restart(react, 'boing');
+      }
+      i++;
+      g.setAttribute('data-i', String(i));
+      lcN.textContent = Math.min(i + 1, 5) + '/5';
+      if (i > 4) {
+        g.setAttribute('data-end', clouds ? 'cloud' : 'sun');
+        scN.textContent = ok + '/5';
+        react.textContent = clouds ? '😟' : '😊';
+        if (!clouds && window.pengessoPop) {
+          var r = row.getBoundingClientRect();
+          window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['☀️', '🐧', '💌', '✨'], 20);
+        }
+      } else { restart(letter, 'in-a'); }
+      busy = 0;
+    }, 430);
+  }
+  g.querySelector('.deliver').addEventListener('click', function () { choose(true); });
+  g.querySelector('.keepb').addEventListener('click', function () { choose(false); });
+  g.querySelector('.reset').addEventListener('click', function () {
+    i = 0; ok = 0; clouds = 0; busy = 0;
+    [].slice.call(row.querySelectorAll('i')).forEach(function (m) { m.remove(); });
+    row.classList.remove('has');
+    react.textContent = '🙂';
+    g.setAttribute('data-i', '0'); g.setAttribute('data-f', ''); g.setAttribute('data-end', '');
+    lcN.textContent = '1/5'; restart(letter, 'in-a');
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード・1文目）
+S2 → 使った（1枚目のカード・2文目）
+S3 → 使った（2枚目のカード）
+S4 → 使った（3枚目のカード・.big）
+S5 → 使った（4枚目のカード）
+@@message
+悪いうわさを伝えると、伝えた人まで嫌われてしまう。悪い知らせは自分のところで止める。
+@@tone
+素材の重さ：真面目（うわさ・悪口。人を傷つけない話）
+→ 見せ方：ポップに（紫と青に、晴れの黄色。郵便屋さんペンギンになって手紙を仕分ける）
+@@game_ja
+📮 郵便屋さんペンギン：友達あての手紙が5通（いい知らせ2通・悪いうわさ3通。悪口の中身は「笑い声がうるさい」「カバンが変」など軽いもの。言った人は「言ってる人がいたよ」で、名前は出さない）。1通ずつ「📮 届ける」か「🗄️ しまっておく」を選ぶ。届けると、手紙が友達のほうへ飛んでいき、下の「友達の中の『あなた』の思い出」に、あなた（🐧）と並んで ☀️（いい知らせ）か ☁️（悪いうわさ）がたまる（脳はイヤな気分と目の前の人をセットで覚える）。しまうと手紙は引き出しへ落ちる。5通終わると、雲がなければ「友達はあなたを見ると、晴れた気分を思い出す！」、雲があれば「雲まで思い出してしまう…」と、いい選択の数（⭐ ◯/5）。
+@@combo
+ペンギン × 切り絵を重ねたジオラマ × 封筒と小さな木の引き出し
+@@cover
+An extremely cute, chubby round penguin made as a layered cut paper diorama, with a gentle calm face and a plain white belly, wearing a tiny mail carrier cap and quietly putting a realistic paper envelope into a small open wooden drawer. Bright simple lavender and soft sunny yellow background with layered paper depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

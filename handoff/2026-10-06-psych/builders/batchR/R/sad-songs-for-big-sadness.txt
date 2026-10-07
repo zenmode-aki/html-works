@@ -1,0 +1,260 @@
+@@meta
+{"title": "For deep sadness, a sad song may help more than a bright one", "label": "Sad Songs", "seq": 464, "mood": ["lift", "learn"], "tags": ["psychology", "feelings", "tips"], "thumbAlt": "A chubby round crocheted amigurumi penguin wearing big soft headphones, eyes closed, listening quietly"}
+@@ja_title
+深い落ち込みには、明るい曲より暗い曲がいいらしい
+@@ja_label
+暗い曲
+@@h1emoji
+🎻
+@@section
+75「大きな落ち込みには暗い曲」
+@@vars
+--bg: #f4f6ff;
+--text: #262a40;
+--muted: #6f7590;
+--a: #4757d0;
+--ink: #1f2a5c;
+--bigc: #3f4fc9;
+--bigdark: #b8c2ff;
+--photo: #e3e8ff;
+--shadow: 0 20px 55px rgba(60,70,160,.16);
+--glow1: rgba(120,140,255,.28);
+--glow2: rgba(255,170,110,.24);
+--glow3: rgba(140,200,255,.2);
+--g1: #3d4fc4;
+--g2: #5d5cc8;
+--g3: #8a6fc0;
+--btnink: #3a44a8;
+--btnshadow: #aab3ec;
+@@css
+  /* 🎺 と 🎻（カードの中の小さな図） */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 12px 10px; border-radius: 18px; text-align: center; font-weight: 900; font-size: 15px; line-height: 1.35; }
+  .vs .v1 { background: #fff1d6; color: #8a5200; }
+  .vs .v2 { background: #e6e9ff; color: #3a44a8; }
+  .vs b { display: block; font-size: 26px; margin-bottom: 4px; }
+
+  /* 🎵 曲を気持ちにそろえる */
+  .game[data-lv="1"] { --g1: #ec6a3a; --g2: #ee862a; --g3: #d48612; }
+  .game[data-lv="2"] { --g1: #d4607f; --g2: #e3814f; --g3: #d99a3a; }
+  .game[data-lv="3"] { --g1: #7a63d6; --g2: #9b6cc4; --g3: #cf8584; }
+  .game[data-lv="4"] { --g1: #3d4fc4; --g2: #5d5cc8; --g3: #8a6fc0; }
+  .game[data-lv="5"] { --g1: #2b3570; --g2: #3c437f; --g3: #55598f; }
+  .heart { display: grid; grid-template-columns: 60px 1fr 60px; align-items: center; gap: 10px; max-width: 360px; margin: 16px auto 0; }
+  .step { width: 60px; height: 60px; border: 0; border-radius: 50%; cursor: pointer; font: inherit; font-size: 30px; font-weight: 900; line-height: 1;
+    color: var(--btnink); background: #fff; box-shadow: 0 6px 0 var(--btnshadow), 0 10px 18px rgba(0,0,0,.16);
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; transition: transform .08s ease, box-shadow .08s ease; }
+  .step:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--btnshadow), 0 4px 10px rgba(0,0,0,.16); }
+  .step:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .step[disabled] { opacity: .45; cursor: default; }
+  .wx { display: flex; flex-direction: column; align-items: center; }
+  .wx .we { font-size: 56px; line-height: 1.05; }
+  .wx .wl { font-size: 13px; font-weight: 900; letter-spacing: .06em; opacity: .95; }
+  .wx .wn { font-size: 22px; font-weight: 900; margin-left: 4px; }
+  .songs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 400px; margin: 16px auto 0; }
+  .songs .gbtn { width: 100%; padding: 12px 10px; }
+  .eq { display: flex; align-items: flex-end; justify-content: center; gap: 6px; height: 46px; margin: 16px auto 0; }
+  .eq i { display: block; width: 12px; height: 8px; border-radius: 6px; background: rgba(255,255,255,.85); }
+  .game[data-song="bright"] .eq i { animation: eqf .32s ease-in-out infinite alternate; }
+  .game[data-song="slow"] .eq i { animation: eqs 1.4s ease-in-out infinite alternate; }
+  .eq i:nth-child(2) { animation-delay: .1s !important; } .eq i:nth-child(3) { animation-delay: .25s !important; } .eq i:nth-child(4) { animation-delay: .05s !important; } .eq i:nth-child(5) { animation-delay: .18s !important; }
+  @keyframes eqf { from { height: 8px; } to { height: 44px; } }
+  @keyframes eqs { from { height: 8px; } to { height: 24px; } }
+  .now-song { font-size: 34px; line-height: 1; margin-top: 6px; min-height: 34px; }
+  .msg { min-height: 54px; max-width: 420px; margin: 10px auto 0; }
+  .msg > div { display: none; font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .game[data-r=""] .m-idle, .game[data-r="up"] .m-up, .game[data-r="empty"] .m-empty, .game[data-r="sync"] .m-sync,
+  .game[data-r="slowok"] .m-slowok, .game[data-r="rise"] .m-rise, .game[data-r="sun"] .m-sun { display: block; animation: popin .3s ease; }
+  .game[data-r="empty"] .now-song { animation: shake .4s ease; }
+  .pctl { font-size: 13px; font-weight: 900; margin-top: 4px; opacity: .95; }
+  .pctl b { font-size: 18px; margin-left: 4px; }
+  .again { display: none; }
+  .game[data-r="sun"] .again { display: inline-flex; }
+@@dark
+  html[data-theme="dark"] .vs .v1 { background: #45330f; color: #ffd99a; }
+  html[data-theme="dark"] .vs .v2 { background: #262c5a; color: #c4cbff; }
+  html[data-theme="dark"] .step { background: #f1edf7; }
+@@sents
+S1 | When you are a little down, a bright song seems to give you energy. | 少し落ち込んだときは、明るい曲で元気が出るそうです。
+S2 | But when you are very down, a bright song can make you feel empty. | でも深く落ち込んだときは、明るい曲で、逆にむなしくなることがあります。
+S3 | At times like that, it seems good to first match your feeling with a sad song. | そんなときは、まず暗い曲で、今の気持ちにそろえるといいそうです。
+S4 | This is called the "iso principle." | これを「同質の原理」といいます。
+S5 | When your feeling matches, you can change to brighter songs little by little. | 気持ちがそろったら、少しずつ明るい曲にしていけばいいんです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎺</span>
+      <span class="card-label">A Little Down</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌧️</span>
+      <span class="card-label">Very Down</span>
+    </div>
+    <p>{S2}</p>
+    <div class="vs" aria-hidden="true">
+      <div class="v1"><b class="ve">⛅ + 🎺</b>A little down: OK!</div>
+      <div class="v2"><b class="ve">⛈️ + 🎺</b>Very down: empty…</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎻</span>
+      <span class="card-label">Match First</span>
+    </div>
+    <p class="big">{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：落ち込み度（ステッパー）× 曲 → そろったら、少しずつ明るく -->
+  <section class="game" data-lv="4" data-song="" data-r="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Match the song to your heart</div>
+    <div class="game-sub">Set your sadness, then pick a song.</div>
+    <div class="heart">
+      <button class="step minus" type="button" aria-label="Less sad">−</button>
+      <div class="wx"><span class="we" aria-hidden="true">🌧️</span><span class="wl"><span class="wl-t">Sadness</span><b class="wn">4</b></span></div>
+      <button class="step plus" type="button" aria-label="More sad">+</button>
+    </div>
+    <div class="songs">
+      <button class="gbtn s-bright" type="button">🎺 Bright song</button>
+      <button class="gbtn s-slow" type="button">🎻 Sad song</button>
+    </div>
+    <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="now-song" aria-hidden="true"> </div>
+    <div class="gmeter" aria-hidden="true"><i></i></div>
+    <div class="gmeter-label" aria-hidden="true"><span>🙉 Not matching</span><span>🎵 In sync</span></div>
+    <div class="msg">
+      <div class="m-idle">Which song fits your heart now?</div>
+      <div class="m-up">🎺 In sync! The bright song lifts you up.</div>
+      <div class="m-empty">😶 Too bright… You feel a little empty.</div>
+      <div class="m-slowok">🥱 A little too slow for today. A bright song is OK!</div>
+      <div class="m-sync">🎻 In sync. The song understands you.</div>
+      <div class="m-rise">🎶 …and little by little, brighter songs.</div>
+      <div class="m-sun">🌤️ Now a bright song feels good!</div>
+    </div>
+    <button class="again" type="button">↺ Try again</button>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📖</span>
+      <span class="card-label">The Name</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌤️</span>
+      <span class="card-label">Little By Little</span>
+    </div>
+    <p>{S5}</p>
+  </section>
+@@ui
+A Little Down ||| 少しの落ち込み
+Very Down ||| 深い落ち込み
+Match First ||| まずそろえる
+The Name ||| 名前
+Little By Little ||| 少しずつ
+A little down: OK! ||| 少しの落ち込み：OK！
+Very down: empty… ||| 深い落ち込み：むなしい…
+Match the song to your heart ||| 曲を、気持ちにそろえよう
+Set your sadness, then pick a song. ||| 落ち込み度を決めて、曲を選んでね。
+Less sad ||| 落ち込みを小さく
+More sad ||| 落ち込みを大きく
+Sadness ||| 落ち込み度
+🎺 Bright song ||| 🎺 明るい曲
+🎻 Sad song ||| 🎻 暗い曲
+🙉 Not matching ||| 🙉 合ってない
+🎵 In sync ||| 🎵 そろってる
+Which song fits your heart now? ||| いまの気持ちに合うのは、どっちの曲？
+🎺 In sync! The bright song lifts you up. ||| 🎺 そろった！明るい曲で元気が出る。
+😶 Too bright… You feel a little empty. ||| 😶 明るすぎて…ちょっとむなしい。
+🥱 A little too slow for today. A bright song is OK! ||| 🥱 今日の気持ちには、ちょっとゆっくりすぎるかも。明るい曲でOK！
+🎻 In sync. The song understands you. ||| 🎻 そろった。曲が気持ちをわかってくれる。
+🎶 …and little by little, brighter songs. ||| 🎶 …そして少しずつ、明るい曲へ。
+🌤️ Now a bright song feels good! ||| 🌤️ いまなら、明るい曲が気持ちいい！
+↺ Try again ||| ↺ もう一回
+@@js
+/* 🎵 曲を気持ちにそろえる：JS は data-*・数字・絵文字・style だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var minus = g.querySelector('.minus'), plus = g.querySelector('.plus'), we = g.querySelector('.we'), wn = g.querySelector('.wn');
+  var bBright = g.querySelector('.s-bright'), bSlow = g.querySelector('.s-slow'), again = g.querySelector('.again');
+  var bar = g.querySelector('.gmeter i'), nowSong = g.querySelector('.now-song');
+  var WX = ['', '🌤️', '⛅', '☁️', '🌧️', '⛈️'];
+  var RISE = ['🎻', '🎸', '🎹', '🎺'];
+  var lv = 4, busy = false, timers = [];
+  function set(k, v) { g.setAttribute('data-' + k, v); }
+  function clear() { timers.forEach(clearTimeout); timers = []; }
+  function paintLv() {
+    set('lv', String(lv)); we.textContent = WX[lv]; wn.textContent = String(lv);
+    minus.disabled = busy || lv <= 1; plus.disabled = busy || lv >= 5;
+  }
+  function lock(on) { busy = on; bBright.disabled = on; bSlow.disabled = on; paintLv(); }
+  function match(song) { var mood = song === 'bright' ? 1 : 4.5; return Math.max(6, Math.min(100, Math.round(100 - Math.abs(lv - mood) * 22))); }
+  function bounce(el) { el.classList.remove('boing'); void el.offsetWidth; el.classList.add('boing'); }
+  function play(song) {
+    if (busy) return;
+    clear();
+    var m = match(song);
+    set('song', song); bar.style.width = m + '%';
+    nowSong.textContent = song === 'bright' ? '🎺' : '🎻';
+    bounce(nowSong);
+    if (song === 'bright') { set('r', ''); void g.offsetWidth; set('r', m >= 60 ? 'up' : 'empty'); if (m >= 60) pop(['🎺', '✨', '🐧'], 10); return; }
+    if (m < 60) { set('r', 'slowok'); return; }
+    set('r', 'sync');
+    lock(true);
+    var k = 0;
+    function stepUp() {
+      if (lv > 1) {
+        lv--; k = Math.min(RISE.length - 1, k + 1);
+        nowSong.textContent = RISE[k]; bounce(nowSong); set('r', 'rise'); set('song', lv <= 2 ? 'bright' : 'slow');
+        bar.style.width = '100%'; paintLv();
+        timers.push(setTimeout(stepUp, 1300));
+      } else {
+        nowSong.textContent = '🎺'; set('song', 'bright'); set('r', 'sun'); lock(false);
+        pop(['🌤️', '🎶', '🐧', '✨'], 16);
+      }
+    }
+    timers.push(setTimeout(stepUp, 1700));
+  }
+  function pop(list, n) {
+    if (!window.pengessoPop) return;
+    var r = nowSong.getBoundingClientRect();
+    window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+  }
+  function change(d) {
+    if (busy) return;
+    lv = Math.max(1, Math.min(5, lv + d)); clear();
+    set('r', ''); set('song', ''); bar.style.width = '0'; nowSong.textContent = ' ';
+    paintLv(); bounce(we);
+  }
+  minus.addEventListener('click', function () { change(-1); });
+  plus.addEventListener('click', function () { change(1); });
+  bBright.addEventListener('click', function () { play('bright'); });
+  bSlow.addEventListener('click', function () { play('slow'); });
+  again.addEventListener('click', function () { clear(); lock(false); lv = 4; change(0); });
+  paintLv();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・.big）
+S4 → 使った（4枚目のカード）
+S5 → 使った（5枚目のカード）
+@@message
+深い落ち込みには、明るい曲より、まず暗い曲で気持ちをそろえてから。
+@@tone
+素材の重さ：真面目（落ち込みと音楽）
+→ 見せ方：ポップに（夜の藍色 → 朝のオレンジ。落ち込み度を決めて曲を選ぶと、そろったところから少しずつ明るくなる）
+@@game_ja
+🎵 曲を気持ちにそろえよう：落ち込み度（1〜5。🌤️⛅☁️🌧️⛈️）を −/＋ で決めて、「🎺 明るい曲」か「🎻 暗い曲」を押す。最初は落ち込み度4。深い落ち込みで明るい曲を押すと、メーターが低く「明るすぎて…ちょっとむなしい」と揺れる。暗い曲を押すと「そろった。曲が気持ちをわかってくれる」→ 少しずつ落ち込み度が下がり、曲も 🎻→🎸→🎹→🎺 と明るくなって、画面の色も藍色からオレンジへ。最後は「いまなら、明るい曲が気持ちいい！」。少しの落ち込みなら、明るい曲でそろう。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of crocheted amigurumi yarn, wearing one pair of realistic soft over-ear headphones, eyes gently closed, swaying quietly to music. Simple bright background that fades from calm deep blue on one side to warm sunrise orange on the other, with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × あみぐるみ（かぎ針編み） × ヘッドホン

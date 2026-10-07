@@ -1,0 +1,212 @@
+@@meta
+{"title": "The more \"shoulds\" you carry, the stricter you are with everyone", "label": "Too Many Shoulds", "seq": 411, "mood": ["lift", "think"], "tags": ["psychology", "mindset", "feelings"], "thumbAlt": "A chubby layered cut paper penguin floating up with a few colorful balloons, leaving a small grey stone on the ground"}
+@@ja_title
+「べき」が多いほど、自分にも人にも厳しくなる
+@@ja_label
+べきの呪い
+@@h1emoji
+🎈
+@@section
+12「ベキの呪い」
+@@vars
+    --bg: #f5f8ff; --text: #1e2440; --muted: #6b7394;
+    --accent: #2d7ff0; --accent2: #ff5fa2; --h1: #1c2550; --big: #2a6fe0; --big-dark: #9ec5ff;
+    --glow1: rgba(255,95,162,.18); --glow2: rgba(45,127,240,.18); --glow3: rgba(255,214,102,.24);
+    --shadow: 0 20px 55px rgba(50,80,180,.16); --photo-bg: #e8eeff;
+    --g1: #7d8bab; --g2: #6c86d6; --g3: #ff8ac1; --pop: #ffe96b; --pop-text: #4a3500; --btn-text: #2a6fe0;
+@@css
+  .card p + p { margin-top: 10px; }
+
+  /* 🪨→🎈 「べき」の石を「〜だといいな」の風船に変えると、ペンギンが浮く */
+  .sky { position: relative; height: 170px; max-width: 420px; margin: 14px auto 0; border-radius: 26px; overflow: hidden;
+    background: linear-gradient(180deg, rgba(255,255,255,.32), rgba(255,255,255,.08)); }
+  .sky::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 22px; background: rgba(60,50,40,.28); }
+  .rider { position: absolute; left: 50%; bottom: 18px; z-index: 1; display: flex; flex-direction: column; align-items: center;
+    transform: translateX(-50%) translateY(calc(var(--up, 0) * -1px)); transition: transform .6s cubic-bezier(.2,1.4,.4,1); }
+  .balloons { display: flex; gap: 0; height: 34px; font-size: 28px; line-height: 1; }
+  .game .balloons i { font-style: normal; display: none; }  /* .game を付けて、絵文字の「押すと弾ける」の inline-block に負けないようにする */
+  .game .balloons i.on { display: inline-block; animation: bounce-in .4s both; }
+  .pen { position: relative; font-size: 56px; line-height: 1; }
+  .face { position: absolute; right: -24px; top: -4px; font-size: 26px; line-height: 1; }
+  .rocks { position: absolute; left: 50%; bottom: 2px; z-index: 2; transform: translateX(-50%); display: flex; font-size: 22px; line-height: 1; }
+  .rocks i { font-style: normal; transition: opacity .3s ease, transform .3s ease; }
+  .rocks i.off { opacity: 0; transform: scale(.3); }
+  .game[data-n="5"] .rider { animation: none; }
+
+  .meters { display: grid; gap: 6px; max-width: 420px; margin: 12px auto 0; }
+  .mrow { display: grid; grid-template-columns: 130px 1fr; align-items: center; gap: 8px; text-align: left; font-size: 13.5px; font-weight: 900; }
+  .bar { height: 12px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 100%; border-radius: 999px; background: #3b3f52; transition: width .4s ease; }
+
+  .stones { display: grid; gap: 8px; max-width: 420px; margin: 14px auto 0; }
+  .stone { position: relative; display: block; width: 100%; min-height: 54px; padding: 10px 14px; border: 0; border-radius: 18px; text-align: left; cursor: pointer;
+    background: #5b6072; color: #fff; font: inherit; font-size: 15px; font-weight: 900; line-height: 1.35; box-shadow: 0 5px 0 rgba(0,0,0,.28);
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: background .25s ease; }
+  .stone:active { transform: translateY(3px); box-shadow: 0 2px 0 rgba(0,0,0,.28); }
+  .stone:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+  .stone .bk { display: none; }
+  .stone.on { background: #fff; color: #d63d86; cursor: default; box-shadow: 0 5px 0 rgba(214,61,134,.3); }
+  .stone.on .fr { display: none; }
+  .stone.on .bk { display: inline; }
+  .stone.flip { animation: flip .4s ease; }
+  @keyframes flip { 50% { transform: scaleY(.1); } }
+  .who { float: right; margin-left: 8px; padding: 1px 8px; border-radius: 999px; background: rgba(255,255,255,.2); font-size: 11.5px; }
+  .stone.on .who { background: #ffe1ef; }
+
+  .res { display: none; max-width: 420px; margin: 14px auto 0; padding: 12px 14px; border-radius: 18px; background: rgba(255,255,255,.22); font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .game[data-n="5"] .res { display: block; animation: bounce-in .5s both; }
+  .again-row { display: none; margin-top: 12px; }
+  .game[data-n="5"] .again-row { display: block; }
+@@dark
+  html[data-theme="dark"] .stone.on { background: #2c2440; color: #ffb3d6; }
+  html[data-theme="dark"] .stone.on .who { background: #4a2a44; }
+@@sents
+S1 | We have many "shoulds," like "It should be this way" and "I should finish what I start." | 私たちは、「こうあるべき」「始めたことは最後までやるべき」のような「べき」を、たくさん持っています。
+S2 | The more "shoulds" you have, the harder it is to accept yourself when you are not perfect. | 「べき」が多いほど、完璧にできない自分を認められなくなります。
+S3 | And you become strict with people around you, too. | そして、まわりの人にも厳しくなってしまいます。
+S4 | For a perfectionist like me, this is hard to hear. | 完璧主義の私には、耳が痛い話です。
+S5 | There is nothing you gain from "shoulds." | 「べき」で得をすることは、1つもありません。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🪨</span>
+      <span class="card-label">Should Stones</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😣</span>
+      <span class="card-label">Never Enough</span>
+    </div>
+    <p>{S2}</p>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：「べき」の石を「〜だといいな」の風船に裏返す（5つでペンギンが浮く） -->
+  <section class="game" data-n="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Turn "should" into "it would be nice"</div>
+    <div class="game-hint">"Should" stones hold the penguin down. Tap a stone to change the words.</div>
+    <div class="sky" aria-hidden="true">
+      <div class="rider">
+        <div class="balloons"><i>🎈</i><i>🎈</i><i>🎈</i><i>🎈</i><i>🎈</i></div>
+        <div class="pen">🐧<span class="face">😣</span></div>
+      </div>
+      <div class="rocks"><i>🪨</i><i>🪨</i><i>🪨</i><i>🪨</i><i>🪨</i></div>
+    </div>
+    <div class="meters" aria-hidden="true">
+      <div class="mrow"><span class="ml">😣 Strict on me</span><div class="bar me"><i></i></div></div>
+      <div class="mrow"><span class="ml">😠 Strict on others</span><div class="bar ot"><i></i></div></div>
+    </div>
+    <div class="stones">
+      <button class="stone" type="button" data-t="me" aria-pressed="false"><span class="who wm">me</span><span class="fr">🪨 I should never make mistakes.</span><span class="bk">🎈 It would be nice if it goes well.</span></button>
+      <button class="stone" type="button" data-t="me" aria-pressed="false"><span class="who wm">me</span><span class="fr">🪨 I should finish what I start.</span><span class="bk">🎈 It would be nice to finish it.</span></button>
+      <button class="stone" type="button" data-t="me" aria-pressed="false"><span class="who wm">me</span><span class="fr">🪨 I should be perfect.</span><span class="bk">🎈 It would be nice to do my best.</span></button>
+      <button class="stone" type="button" data-t="ot" aria-pressed="false"><span class="who wo">others</span><span class="fr">🪨 People should reply fast.</span><span class="bk">🎈 It would be nice to get a reply soon.</span></button>
+      <button class="stone" type="button" data-t="ot" aria-pressed="false"><span class="who wo">others</span><span class="fr">🪨 Everyone should be on time.</span><span class="bk">🎈 It would be nice if everyone is on time.</span></button>
+    </div>
+    <div class="res">🎈 So light! Kind to yourself, and kind to others, too.</div>
+    <div class="again-row"><button class="gbtn ghost again" type="button">↺ Back to stones</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🙉</span>
+      <span class="card-label">Hard to Hear</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎈</span>
+      <span class="card-label">Nothing Gained</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+Should Stones ||| 「べき」の石
+Never Enough ||| 足りない自分
+Hard to Hear ||| 耳が痛い
+Nothing Gained ||| 得はない
+⚡ TRY IT ||| ⚡ やってみよう
+Turn "should" into "it would be nice" ||| 「べき」を「〜だといいな」に
+"Should" stones hold the penguin down. Tap a stone to change the words. ||| 「べき」の石が、ペンギンを地面にしばりつけています。石をタップして、言い方を変えよう。
+😣 Strict on me ||| 😣 自分に厳しい
+😠 Strict on others ||| 😠 人に厳しい
+me ||| 自分
+others ||| 人
+🪨 I should never make mistakes. ||| 🪨 ミスは絶対にするべきじゃない。
+🎈 It would be nice if it goes well. ||| 🎈 うまくいくといいな。
+🪨 I should finish what I start. ||| 🪨 始めたことは、最後までやるべき。
+🎈 It would be nice to finish it. ||| 🎈 最後までできるといいな。
+🪨 I should be perfect. ||| 🪨 完璧であるべき。
+🎈 It would be nice to do my best. ||| 🎈 ベストを尽くせるといいな。
+🪨 People should reply fast. ||| 🪨 返事はすぐにするべき。
+🎈 It would be nice to get a reply soon. ||| 🎈 すぐ返事がくるといいな。
+🪨 Everyone should be on time. ||| 🪨 みんな時間を守るべき。
+🎈 It would be nice if everyone is on time. ||| 🎈 みんな時間どおりだといいな。
+🎈 So light! Kind to yourself, and kind to others, too. ||| 🎈 軽い！自分にも、人にも、やさしくなれた。
+↺ Back to stones ||| ↺ 石に戻す
+@@js
+/* 🪨→🎈 「べき」を「〜だといいな」に：JS は class / aria / style / 絵文字 / data-* だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var stones = [].slice.call(g.querySelectorAll('.stone')), balloons = [].slice.call(g.querySelectorAll('.balloons i')),
+      rocks = [].slice.call(g.querySelectorAll('.rocks i')), rider = g.querySelector('.rider'), face = g.querySelector('.face'),
+      barMe = g.querySelector('.bar.me i'), barOt = g.querySelector('.bar.ot i');
+  var FACES = ['😣', '😟', '😐', '🙂', '😊', '😄'];
+  function paint() {
+    var on = stones.filter(function (s) { return s.classList.contains('on'); });
+    var n = on.length;
+    var me = stones.filter(function (s) { return s.getAttribute('data-t') === 'me' && !s.classList.contains('on'); }).length;
+    var ot = stones.filter(function (s) { return s.getAttribute('data-t') === 'ot' && !s.classList.contains('on'); }).length;
+    g.setAttribute('data-n', n);
+    balloons.forEach(function (b, i) { b.classList.toggle('on', i < n); });
+    rocks.forEach(function (r, i) { r.classList.toggle('off', i < n); });
+    rider.style.setProperty('--up', n === 5 ? 48 : n * 8);
+    face.textContent = FACES[n];
+    barMe.style.width = (me / 3 * 100) + '%';
+    barOt.style.width = (ot / 2 * 100) + '%';
+    return n;
+  }
+  stones.forEach(function (s) {
+    s.addEventListener('click', function () {
+      if (s.classList.contains('on')) return;
+      s.classList.remove('flip'); void s.offsetWidth; s.classList.add('flip');
+      setTimeout(function () {
+        s.classList.add('on'); s.setAttribute('aria-pressed', 'true');
+        var n = paint();
+        if (window.pengessoPop) {
+          var r = n === 5 ? g.querySelector('.pen').getBoundingClientRect() : s.getBoundingClientRect();
+          window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, n === 5 ? ['🎈', '🐧', '✨', '💛'] : ['🎈', '✨'], n === 5 ? 20 : 6);
+        }
+      }, 200);
+    });
+  });
+  g.querySelector('.again').addEventListener('click', function () {
+    stones.forEach(function (s) { s.classList.remove('on', 'flip'); s.setAttribute('aria-pressed', 'false'); });
+    paint();
+  });
+  paint();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード・.big）
+@@message
+「〜べき」が多いほど、自分にも人にも厳しくなる。得することは1つもない。
+@@tone
+素材の重さ：真面目（完璧主義）
+→ 見せ方：ポップに（青とピンク。石を風船に変えると、ペンギンが浮かぶ）
+@@game_ja
+🪨→🎈「べき」を「〜だといいな」に：「べき」の石5つ（自分に3つ：ミスは絶対にするべきじゃない／始めたことは最後までやるべき／完璧であるべき。人に2つ：返事はすぐにするべき／みんな時間を守るべき）が、ペンギンを地面にしばりつけている。石をタップすると、くるっと裏返って「うまくいくといいな」などの風船に変わり、ペンギンに風船が1つずつ付いて浮き上がる。「自分に厳しい」「人に厳しい」のメーターも減っていく。5つで空に浮かんで「自分にも、人にも、やさしくなれた」。
+（「完璧主義の私」は、本人が自分で言っている性格を使った。新しい出来事は作っていない）
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain white belly (no rings or patterns on the belly), made as a layered cut paper diorama with soft paper depth, happily floating up into the air holding the strings of three colorful balloons, while one realistic smooth grey river stone is left behind on the ground below. Bright soft sky-blue background with gentle layered paper clouds and depth, simple and uncluttered. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × 切り絵のジオラマ × 置いていった石

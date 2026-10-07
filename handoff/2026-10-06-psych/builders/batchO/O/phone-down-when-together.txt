@@ -1,0 +1,239 @@
+@@meta
+{"title": "Looking at your phone with a friend feels like whispering secrets next to them", "label": "Phone Down", "seq": 438, "mood": ["lift", "think"], "tags": ["psychology", "friends", "tips"], "thumbAlt": "A hand-embroidered felt penguin smiling at a cafe table with a smartphone lying face down"}
+@@ja_title
+一緒にいるのにスマホを触ると、相手は「内緒話をされている」気分になる
+@@ja_label
+スマホを裏返す
+@@h1emoji
+📱
+@@section
+42「知らぬ間に嫌われる習慣」の②ファビング
+@@vars
+    --bg: #f1fffb; --text: #1f3340; --muted: #5f7a80;
+    --accent: #0fa58a; --accent2: #7b5cff; --h1: #14303a; --big: #0b8a73; --big-dark: #7ff0d4;
+    --glow1: rgba(25,194,160,.25); --glow2: rgba(123,92,255,.2); --glow3: rgba(255,214,90,.22);
+    --shadow: 0 20px 55px rgba(20,120,110,.18); --photo-bg: #dcf7ef;
+    --g1: #14b894; --g2: #5f7dff; --g3: #9b5cff; --pop: #ffe066; --pop-text: #4a3500; --btn-text: #0d8a72;
+@@css
+  /* 📱 カフェのおしゃべり：うなずくとコンボ。スマホがブルッとしたら「見る」か「裏返す」か */
+  .table { display: flex; align-items: center; justify-content: space-between; gap: 6px; max-width: 420px; margin: 14px auto 0; }
+  .who { width: 84px; flex: 0 0 auto; text-align: center; position: relative; }
+  .face { position: relative; width: 70px; height: 70px; margin: 0 auto; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.25); font-size: 42px; line-height: 1; }
+  .face .react { position: absolute; right: -8px; top: -10px; font-size: 26px; line-height: 1; }
+  .face .react.boing { animation: bounce-in .45s both; }
+  .phone { position: absolute; left: -6px; bottom: 16px; font-size: 28px; line-height: 1; transition: transform .35s; }
+  .game[data-buzz="1"] .phone { animation: buzz .18s linear infinite; }
+  @keyframes buzz { 0%,100% { transform: rotate(-12deg) translateX(-2px); } 50% { transform: rotate(12deg) translateX(2px); } }
+  .phone.down { transform: scale(.85); }
+  .tag { margin-top: 5px; font-size: 13px; font-weight: 900; }
+  .link { flex: 1; min-width: 0; display: flex; justify-content: center; gap: 1px; }
+  .link i { font-style: normal; font-size: clamp(13px, 3.8vw, 18px); line-height: 1; opacity: .25; filter: grayscale(1); transition: opacity .3s, filter .3s; }
+  .link i.on { opacity: 1; filter: none; animation: bounce-in .4s both; }
+  .whisper { display: none; max-width: 300px; margin: 8px auto 0; padding: 8px 12px; border-radius: 16px; background: rgba(30,20,60,.45); font-size: 14.5px; font-weight: 900; line-height: 1.4; }
+  .game[data-w="1"] .whisper { display: block; animation: bounce-in .4s both; }
+
+  .story { max-width: 420px; margin: 12px auto 0; padding: 12px 14px; border-radius: 18px 18px 6px 18px; background: #fff; color: #14303a;
+    font-weight: 900; font-size: clamp(16px, 4.4vw, 19px); line-height: 1.4; min-height: 58px; display: flex; align-items: center; justify-content: center; }
+  .story span { display: none; }
+  .game[data-i="0"] .t0, .game[data-i="1"] .t1, .game[data-i="2"] .t2, .game[data-i="3"] .t3, .game[data-i="4"] .t4, .game[data-i="5"] .t5, .game[data-i="6"] .t6 { display: inline; }
+  .story.show { animation: bounce-in .35s both; }
+  .combo { margin-top: 10px; font-size: 15px; font-weight: 900; }
+  .combo .cb-n { display: inline-block; min-width: 1.4em; font-size: 22px; }
+  .combo .cb-n.bump { animation: bounce-in .35s both; }
+
+  .acts { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; max-width: 420px; margin: 14px auto 0; }
+  .acts .gbtn { flex: 1 1 140px; min-height: 60px; font-size: 17px; }
+  .nod { flex-basis: 100% !important; min-height: 70px !important; font-size: 20px !important; }
+  .look, .flip { display: none !important; }
+  .game[data-buzz="1"] .nod { display: none !important; }
+  .game[data-buzz="1"] .look, .game[data-buzz="1"] .flip { display: inline-flex !important; }
+  .game[data-end="1"] .acts { display: none; }
+  .buzz-l { display: none; margin-top: 10px; font-size: 15px; font-weight: 900; }
+  .game[data-buzz="1"] .buzz-l { display: block; animation: shake .4s ease; }
+
+  .end { display: none; max-width: 420px; margin: 12px auto 0; padding: 12px 14px; border-radius: 16px; background: rgba(255,255,255,.24); font-weight: 900; line-height: 1.45; }
+  .end > div { display: none; }
+  .game[data-end="1"] .end { display: block; animation: bounce-in .5s both; }
+  .game[data-r="good"] .e-good, .game[data-r="alone"] .e-alone { display: block; }
+@@dark
+  html[data-theme="dark"] .story { background: #1f2c30; color: #e3fff8; }
+@@sents
+S1 | It seems using your phone when you are with someone is called "phubbing." | 一緒にいるのにスマホを触ることを、「ファビング」と言うそうです。
+S2 | The other person's brain feels like "someone is whispering secrets next to me." | される側の脳は、「隣で内緒話をされている」と感じるらしいです。
+S3 | And little by little, they stop trusting you. | そして、少しずつ信用できなくなってしまいます。
+S4 | When you are together, let's put your phone face down. | 一緒にいる時間は、スマホを裏返しておきましょう。
+S5 | Just that tells them, "I am listening to you." | それだけで、「あなたの話を聞いてるよ」が伝わります。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📱</span>
+      <span class="card-label">A New Word</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🤫</span>
+      <span class="card-label">Secret Talk</span>
+    </div>
+    <p>{S2}</p>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：カフェのおしゃべり（うなずいてコンボ。スマホがブルッとしたら、見る？裏返す？） -->
+  <section class="game" data-i="0" data-buzz="0" data-w="0" data-end="0" data-r="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Cafe talk combo</div>
+    <div class="game-hint">Your friend tells a story. Nod to listen. Watch out for the phone!</div>
+    <div class="table">
+      <div class="who">
+        <div class="face" aria-hidden="true">🐧</div>
+        <span class="phone" aria-hidden="true">📱</span>
+        <div class="tag">You</div>
+      </div>
+      <div class="link" aria-hidden="true"><i>💞</i><i>💞</i><i>💞</i><i>💞</i><i>💞</i><i>💞</i><i>💞</i><i>💞</i></div>
+      <div class="who">
+        <div class="face" aria-hidden="true">🐧<span class="react">😊</span></div>
+        <div class="tag">Friend</div>
+      </div>
+    </div>
+    <div class="whisper">🤫 "…Are they whispering secrets with someone?"</div>
+    <div class="story">
+      <span class="t0">"Guess what! I went to the new cafe."</span>
+      <span class="t1">"The cake was SO big."</span>
+      <span class="t2">"Like… THIS big!"</span>
+      <span class="t3">"I could not finish it."</span>
+      <span class="t4">"So I took it home…"</span>
+      <span class="t5">"…and ate it for breakfast! 😆"</span>
+      <span class="t6">"Want to go there together next time?"</span>
+    </div>
+    <div class="combo"><span class="cb-l">🔥 Listening combo:</span> <span class="cb-n">0</span></div>
+    <div class="buzz-l">📳 Bzzz! Your phone!</div>
+    <div class="acts">
+      <button class="gbtn pop nod" type="button">😊 Nod</button>
+      <button class="gbtn look" type="button">📱 Look</button>
+      <button class="gbtn pop flip" type="button">🙃 Face down</button>
+    </div>
+    <div class="end">
+      <div class="e-good">💞 Perfect! Your friend felt really listened to.</div>
+      <div class="e-alone">🤫 Your friend felt a little alone. Try again with the phone face down?</div>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🙃</span>
+      <span class="card-label">Face Down</span>
+    </div>
+    <p class="big">{S4}</p>
+    <p>{S5}</p>
+  </section>
+@@ui
+A New Word ||| 新しいことば
+Secret Talk ||| 内緒話
+Face Down ||| 裏返す
+⚡ TRY IT ||| ⚡ やってみよう
+Cafe talk combo ||| カフェのおしゃべりコンボ
+Your friend tells a story. Nod to listen. Watch out for the phone! ||| 友達がお話をしてくれるよ。うなずいて聞こう。スマホに気をつけて！
+You ||| あなた
+Friend ||| 友達
+🤫 "…Are they whispering secrets with someone?" ||| 🤫「…だれかと内緒話してるのかな？」
+"Guess what! I went to the new cafe." ||| 「聞いて！新しいカフェに行ったの。」
+"The cake was SO big." ||| 「ケーキがすっごく大きくて。」
+"Like… THIS big!" ||| 「こ〜んなに！」
+"I could not finish it." ||| 「食べきれなかったの。」
+"So I took it home…" ||| 「だから持って帰って…」
+"…and ate it for breakfast! 😆" ||| 「…朝ごはんに食べた！😆」
+"Want to go there together next time?" ||| 「今度、一緒に行かない？」
+🔥 Listening combo: ||| 🔥 聞いてるコンボ：
+📳 Bzzz! Your phone! ||| 📳 ブルッ！スマホが鳴った！
+😊 Nod ||| 😊 うなずく
+📱 Look ||| 📱 見る
+🙃 Face down ||| 🙃 裏返す
+💞 Perfect! Your friend felt really listened to. ||| 💞 完璧！友達は「ちゃんと聞いてもらえた」と感じた。
+🤫 Your friend felt a little alone. Try again with the phone face down? ||| 🤫 友達は、ちょっとさびしかったみたい。スマホを裏返して、もう一回？
+↺ Start over ||| ↺ 最初から
+@@js
+/* 📱 カフェのおしゃべり：JS は data-i / data-buzz / data-w / data-end / data-r / class / 絵文字 / 数字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var BUZZ_AT = { 2: 1, 4: 1 };
+  var i = 0, combo = 0, looks = 0, hearts = 0, buzzed = {};
+  var story = g.querySelector('.story'), react = g.querySelector('.react'), phone = g.querySelector('.phone'), cbN = g.querySelector('.cb-n');
+  var hs = [].slice.call(g.querySelectorAll('.link i'));
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function drawHearts() { hs.forEach(function (h, k) { h.classList.toggle('on', k < hearts); }); }
+  function setCombo(n) { combo = n; cbN.textContent = String(n); restart(cbN, 'bump'); }
+  function maybeBuzz() {
+    if (BUZZ_AT[i] && !buzzed[i]) {
+      buzzed[i] = 1;
+      phone.classList.remove('down'); phone.textContent = '📱';
+      g.setAttribute('data-buzz', '1');
+      if (navigator.vibrate) { try { navigator.vibrate([40, 60, 40]); } catch (e) {} }
+    }
+  }
+  function next() {
+    i++;
+    g.setAttribute('data-i', String(i)); restart(story, 'show');
+    if (i >= 6) {
+      g.setAttribute('data-end', '1');
+      g.setAttribute('data-r', looks ? 'alone' : 'good');
+      react.textContent = looks ? '😶' : '🥰'; restart(react, 'boing');
+      if (!looks && window.pengessoPop) {
+        var r = story.getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['💞', '🍰', '🐧', '☕', '✨'], 22);
+      }
+      return;
+    }
+    maybeBuzz();
+  }
+  g.querySelector('.nod').addEventListener('click', function () {
+    if (g.getAttribute('data-buzz') === '1' || i >= 6) return;
+    g.setAttribute('data-w', '0');
+    hearts = Math.min(hs.length, hearts + 1); drawHearts();
+    setCombo(combo + 1);
+    react.textContent = looks ? '🙂' : '😊';
+    next();
+  });
+  g.querySelector('.look').addEventListener('click', function () {
+    looks++;
+    g.setAttribute('data-buzz', '0'); g.setAttribute('data-w', '1');
+    hearts = Math.max(0, hearts - 2); drawHearts();
+    setCombo(0);
+    react.textContent = '😶'; restart(react, 'boing');
+  });
+  g.querySelector('.flip').addEventListener('click', function () {
+    g.setAttribute('data-buzz', '0');
+    phone.classList.add('down'); phone.textContent = '🔕';
+    hearts = Math.min(hs.length, hearts + 1); drawHearts();
+    setCombo(combo + 1);
+    react.textContent = '😊'; restart(react, 'boing');
+    if (window.pengessoPop) { var r = phone.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['💞', '✨'], 8); }
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    i = 0; looks = 0; hearts = 0; buzzed = {};
+    setCombo(0); drawHearts();
+    phone.classList.remove('down'); phone.textContent = '📱'; react.textContent = '😊';
+    g.setAttribute('data-i', '0'); g.setAttribute('data-buzz', '0'); g.setAttribute('data-w', '0'); g.setAttribute('data-end', '0'); g.setAttribute('data-r', '');
+    restart(story, 'show');
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード・.big）
+S5 → 使った（3枚目のカード・2文目）
+@@message
+一緒にいるのにスマホを触ると、相手は「隣で内緒話をされている」気分になる。スマホは裏返しておく。
+@@tone
+素材の重さ：真面目（ファビング・信用）
+→ 見せ方：ポップに（ミントと紫。カフェのおしゃべりを「うなずきコンボ」で聞くゲーム）
+@@game_ja
+📱 カフェのおしゃべりコンボ：友達ペンギンが、大きなケーキの話を7コマでしてくれる（「新しいカフェに行ったの」→「こ〜んなに！」→「朝ごはんに食べた！」→「今度、一緒に行かない？」）。「😊 うなずく」を押すと話が進み、🔥コンボと、2羽のあいだの 💞 が増える。とちゅう2回、あなたのスマホがブルブルッと震えて、「📱 見る」か「🙃 裏返す」を選ぶ。見ると、友達が 😶 になって「…だれかと内緒話してるのかな？」が出て、コンボが0に、💞 が2つ減る。裏返すと 🔕 になってコンボが続く。最後まで1回も見なければ「💞 完璧！ちゃんと聞いてもらえた」。
+@@combo
+ペンギン × 手刺しゅうのフェルト × 裏返したスマートフォン
+@@cover
+An extremely cute, chubby round penguin made of hand-embroidered felt, with a gentle attentive smiling face and a plain white belly, sitting at a small round cafe table and leaning forward as if listening to a friend, with a realistic smartphone lying face down on the table next to a small cup of coffee. Bright simple mint green and soft lavender background with soft depth and warm cafe light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

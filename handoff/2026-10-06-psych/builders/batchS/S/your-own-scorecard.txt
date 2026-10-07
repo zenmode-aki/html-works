@@ -1,0 +1,218 @@
+@@meta
+{"title": "You can decide your own score by yourself", "label": "My Score", "seq": 479, "mood": ["lift", "think"], "tags": ["psychology", "mindset", "feelings"], "thumbAlt": "An alpaca wool penguin holding a baseball with a proud gentle smile"}
+@@ja_title
+自分の点数は、自分で決めていい
+@@ja_label
+自分の点数
+@@h1emoji
+🧭
+@@section
+99「他人軸と自分軸」・102「自分の人生を生きる」
+@@vars
+    --bg: #f0fbf6; --text: #13283a; --muted: #557083;
+    --accent: #0f8f63; --accent2: #ff7a2f; --h1: #0f2a3a; --big: #0b8a5e; --big-dark: #8ff0c8;
+    --glow1: rgba(34,197,94,.20); --glow2: rgba(29,78,216,.16); --glow3: rgba(255,122,47,.18);
+    --shadow: 0 20px 55px rgba(20,110,80,.18); --photo-bg: #dcf5ea;
+    --g1: #1d4ed8; --g2: #0ea5a0; --g3: #22c55e; --pop: #ffe066; --pop-text: #4a3a00; --btn-text: #0f8f63;
+@@css
+  /* 🧭 だれが点数を決める？：「他人が決める」だと💢だけが大きく見える。「私が決める」で自分の採点表 */
+  .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px; margin: 16px auto 0; }
+  .mode { min-height: 56px; padding: 8px 10px; border: 0; border-radius: 18px; background: rgba(255,255,255,.95); color: #0f5a8c; font: inherit;
+    font-size: 15.5px; font-weight: 900; line-height: 1.25; cursor: pointer; box-shadow: 0 5px 0 rgba(10,40,90,.28);
+    transition: transform .08s ease, background .2s ease; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .mode:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(10,40,90,.28); }
+  .mode:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .game[data-m="others"] .m-others, .game[data-m="mine"] .m-mine { background: var(--pop); color: #4a3a00; box-shadow: 0 0 0 3px #fff, 0 5px 0 rgba(10,40,90,.28); }
+
+  .crowd { position: relative; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 10px; max-width: 360px; min-height: 120px;
+    margin: 16px auto 0; padding: 12px; border-radius: 22px; background: rgba(255,255,255,.18); }
+  .fan { position: relative; display: inline-block; font-size: 30px; line-height: 1; transition: transform .45s cubic-bezier(.2,1.2,.4,1), opacity .4s ease; }
+  .th { position: absolute; right: -10px; bottom: -4px; font-size: 18px; }
+  .game[data-m="others"] .fan:not(.boo) { opacity: .22; transform: scale(.75); }
+  .game[data-m="others"] .boo { z-index: 2; transform: scale(2.3); }
+  .game[data-m="others"] .boo.shake2 { animation: bigshake .45s ease; }
+  @keyframes bigshake { 0%,100% { transform: scale(2.3); } 25% { transform: scale(2.3) translateX(-3px) rotate(-6deg); } 75% { transform: scale(2.3) translateX(3px) rotate(6deg); } }
+  .game[data-m="mine"] .crowd { opacity: .55; }
+  .game[data-m="mine"] .fan { transform: scale(.8); }
+
+  .cap { max-width: 440px; min-height: 50px; margin: 12px auto 0; padding: 10px 14px; border-radius: 18px; background: rgba(255,255,255,.22);
+    display: flex; align-items: center; justify-content: center; font-size: 16.5px; font-weight: 900; line-height: 1.4; }
+  .cap span { display: none; }
+  .game[data-m="none"] .c-none, .game[data-m="others"] .c-others, .game[data-m="mine"] .c-mine { display: inline; }
+
+  .card2 { display: none; max-width: 440px; margin: 14px auto 0; padding: 16px 14px 14px; border-radius: 22px; background: #fff; color: #13283a; text-align: left;
+    box-shadow: 0 10px 24px rgba(10,40,90,.22); }
+  .game[data-m="mine"] .card2 { display: block; animation: bounce-in .45s both; }
+  .sc-h { font-size: 14px; font-weight: 900; letter-spacing: .06em; color: #0f8f63; }
+  .sc-day { margin-top: 6px; font-size: 16.5px; font-weight: 900; line-height: 1.45; }
+  .sc-l { margin-top: 12px; font-size: 14px; font-weight: 900; color: #557083; }
+  .stars { display: flex; justify-content: space-between; gap: 4px; margin-top: 4px; }
+  .star { width: 52px; height: 52px; padding: 0; border: 0; border-radius: 14px; background: #eef6f2; font-size: 28px; line-height: 1; cursor: pointer;
+    filter: grayscale(1); opacity: .45; transition: filter .2s, opacity .2s, transform .08s; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .star.on { filter: none; opacity: 1; background: #fff4c2; }
+  .star.on.pop1 { animation: bounce-in .4s both; }
+  .star:active { transform: scale(.92); }
+  .star:focus-visible { outline: 3px solid #0f8f63; outline-offset: 2px; }
+  .verdict { min-height: 44px; display: flex; align-items: center; margin-top: 10px; font-size: 16px; font-weight: 900; line-height: 1.4; }
+  .verdict span { display: none; }
+  .game[data-st="0"] .v0, .game[data-st="1"] .v12, .game[data-st="2"] .v12, .game[data-st="3"] .v34, .game[data-st="4"] .v34, .game[data-st="5"] .v5 { display: inline; }
+  .by { display: inline-block; margin-top: 6px; padding: 6px 12px; border-radius: 999px; background: #dcf5ea; color: #0b6b49; font-size: 13.5px; font-weight: 900; }
+@@dark
+  html[data-theme="dark"] .mode { background: #1c2a36; color: #b8dcff; }
+  html[data-theme="dark"] .game[data-m="others"] .m-others, html[data-theme="dark"] .game[data-m="mine"] .m-mine { background: #ffe066; color: #4a3a00; }
+  html[data-theme="dark"] .card2 { background: #1c2a2a; color: #e2f5ee; }
+  html[data-theme="dark"] .sc-h { color: #8ff0c8; }
+  html[data-theme="dark"] .sc-l { color: #a9c2cf; }
+  html[data-theme="dark"] .star { background: #263a36; }
+  html[data-theme="dark"] .star.on { background: #4a3f12; }
+  html[data-theme="dark"] .by { background: #17423a; color: #a6f2d2; }
+@@sents
+S1 | Even if 10 people praise you, if 1 person says something bad, you only think about that. | 10人にほめられても、1人に悪く言われると、そればかり気になってしまいます。
+S2 | That is because you let other people decide your score. | それは、自分の点数を他人に決めてもらっているからです。
+S3 | You can decide your own score by yourself. | 自分の点数は、自分で決めていいんです。
+S4 | This is not the same as being selfish. | これは、わがままとは違います。
+S5 | Some days you get a hit but are not happy, and some days you strike out but are happy. | ヒットを打っても不満な日もあれば、三振しても満足な日もあります。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💢</span>
+      <span class="card-label">The One Voice</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎛️</span>
+      <span class="card-label">Who Decides</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：だれが点数を決める？（他人が決める＝💢だけ巨大に／私が決める＝自分の採点表に星をつける） -->
+  <section class="game" data-m="none" data-st="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Who decides your score?</div>
+    <div class="crowd" aria-hidden="true">
+      <span class="fan">🐧<b class="th">💖</b></span><span class="fan">🐧<b class="th">💖</b></span><span class="fan">🐧<b class="th">💖</b></span>
+      <span class="fan">🐧<b class="th">💖</b></span><span class="fan">🐧<b class="th">💖</b></span><span class="fan boo">🐧<b class="th">💢</b></span>
+      <span class="fan">🐧<b class="th">💖</b></span><span class="fan">🐧<b class="th">💖</b></span><span class="fan">🐧<b class="th">💖</b></span>
+      <span class="fan">🐧<b class="th">💖</b></span><span class="fan">🐧<b class="th">💖</b></span>
+    </div>
+    <div class="modes">
+      <button class="mode m-others" type="button" aria-pressed="false">👀 Others decide</button>
+      <button class="mode m-mine" type="button" aria-pressed="false">🧭 I decide</button>
+    </div>
+    <div class="cap">
+      <span class="c-none">10 💖 and 1 💢. Tap a button above.</span>
+      <span class="c-others">😣 10 good voices… but only the 1 bad voice looks big.</span>
+      <span class="c-mine">🧭 The crowd is still there. But the score is yours.</span>
+    </div>
+    <div class="card2">
+      <div class="sc-h">📋 MY SCORECARD</div>
+      <div class="sc-day">⚾ Today: I struck out 3 times. But I swung hard every time.</div>
+      <div class="sc-l">My score:</div>
+      <div class="stars">
+        <button class="star" type="button" aria-label="1 star">⭐</button>
+        <button class="star" type="button" aria-label="2 stars">⭐</button>
+        <button class="star" type="button" aria-label="3 stars">⭐</button>
+        <button class="star" type="button" aria-label="4 stars">⭐</button>
+        <button class="star" type="button" aria-label="5 stars">⭐</button>
+      </div>
+      <div class="verdict">
+        <span class="v0">Tap the stars. You decide. 👆</span>
+        <span class="v12">🙂 OK. That is your score.</span>
+        <span class="v34">😊 Nice. You decided it.</span>
+        <span class="v5">🌟 5 stars! Decided by you, not by them.</span>
+      </div>
+      <div class="by">✅ Decided by: me</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧭</span>
+      <span class="card-label">Your Score</span>
+    </div>
+    <p class="big">{S3}</p>
+    <p>{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">⚾</span>
+      <span class="card-label">Hit Or Out</span>
+    </div>
+    <p>{S5}</p>
+  </section>
+@@ui
+The One Voice ||| 1人の声
+Who Decides ||| だれが決める
+Your Score ||| 自分の点数
+Hit Or Out ||| ヒットか三振か
+⚡ TRY IT ||| ⚡ やってみよう
+Who decides your score? ||| あなたの点数、だれが決める？
+👀 Others decide ||| 👀 他人が決める
+🧭 I decide ||| 🧭 私が決める
+10 💖 and 1 💢. Tap a button above. ||| 💖が10人、💢が1人。上のボタンを押してね。
+😣 10 good voices… but only the 1 bad voice looks big. ||| 😣 いい声が10人分…なのに、悪い声1つだけが大きく見える。
+🧭 The crowd is still there. But the score is yours. ||| 🧭 まわりの人はいる。でも、点数を決めるのは私。
+📋 MY SCORECARD ||| 📋 私の採点表
+⚾ Today: I struck out 3 times. But I swung hard every time. ||| ⚾ 今日：3回三振した。でも、毎回思いきりバットを振った。
+My score: ||| 私の点数：
+1 star ||| 星1つ
+2 stars ||| 星2つ
+3 stars ||| 星3つ
+4 stars ||| 星4つ
+5 stars ||| 星5つ
+Tap the stars. You decide. 👆 ||| 星を押してね。決めるのはあなた 👆
+🙂 OK. That is your score. ||| 🙂 OK。それがあなたの点数。
+😊 Nice. You decided it. ||| 😊 いいね。自分で決めた。
+🌟 5 stars! Decided by you, not by them. ||| 🌟 星5つ！決めたのは、まわりではなく自分。
+✅ Decided by: me ||| ✅ 決めた人：私
+@@js
+/* 🧭 だれが点数を決める？：JS は data-m / data-st / class / aria だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var bO = g.querySelector('.m-others'), bM = g.querySelector('.m-mine'), boo = g.querySelector('.boo');
+  var stars = [].slice.call(g.querySelectorAll('.star'));
+  function restart(el, c) { el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function mode(m) {
+    g.setAttribute('data-m', m);
+    bO.setAttribute('aria-pressed', m === 'others' ? 'true' : 'false');
+    bM.setAttribute('aria-pressed', m === 'mine' ? 'true' : 'false');
+  }
+  bO.addEventListener('click', function () { mode('others'); setTimeout(function () { restart(boo, 'shake2'); }, 350); });
+  bM.addEventListener('click', function () { mode('mine'); });
+  stars.forEach(function (s, i) {
+    s.addEventListener('click', function () {
+      var n = i + 1;
+      g.setAttribute('data-st', String(n));
+      stars.forEach(function (t, k) {
+        var on = k < n; t.classList.toggle('on', on);
+        if (on) restart(t, 'pop1'); else t.classList.remove('pop1');
+      });
+      if (window.pengessoPop) {
+        var r = s.getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, n === 5 ? ['🌟', '⭐', '🐧', '⚾', '✨'] : ['⭐', '✨'], n === 5 ? 20 : 6);
+      }
+    });
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・.big）
+S4 → 使った（3枚目のカード・2文目）
+S5 → 使った（4枚目のカード）
+@@message
+自分の点数は、他人ではなく自分で決めていい（自分軸）。わがままとは違う。
+@@tone
+素材の重さ：真面目（他人軸と自分軸）
+→ 見せ方：ポップに（青とエメラルドと野球。💢が1つだけ巨大に見えるのを体験して、自分の採点表に星をつける）
+@@game_ja
+🧭 だれが点数を決める？：💖のペンギン10羽と💢のペンギン1羽。「👀 他人が決める」を押すと、💖の10羽が薄く小さくなって、💢の1羽だけが巨大になってブルブル震える（いい声が10あっても、悪い声1つだけが大きく見える）。「🧭 私が決める」を押すと、まわりは静かに小さくなり、「📋 私の採点表」が出る：「⚾ 今日：3回三振した。でも、毎回思いきりバットを振った」に、自分で星1〜5をつける。点数によって「OK。それがあなたの点数」〜「星5つ！決めたのは自分」。何度でも切りかえられる。
+@@combo
+ペンギン × アルパカウール × 本物の野球ボール
+@@cover
+An extremely cute, chubby round penguin made of fluffy alpaca wool, with a gentle proud smile and a plain white belly, holding up one realistic white baseball with red stitches in its flipper. Bright simple background of soft green grass and clear blue sky with gentle depth, sunny light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

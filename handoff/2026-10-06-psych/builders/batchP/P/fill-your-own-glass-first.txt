@@ -1,0 +1,201 @@
+@@meta
+{"title": "Be kind to yourself first, then your family, then the people around you", "label": "Top Glass", "seq": 450, "mood": ["lift", "think"], "tags": ["psychology", "happiness", "family"], "thumbAlt": "A hand-embroidered felt penguin pouring tea from a realistic ceramic teapot into its own cup"}
+@@ja_title
+やさしさは、自分 → 家族 → まわりの人の順番で
+@@ja_label
+いちばん上のグラス
+@@h1emoji
+🥂
+@@section
+62「『人に優しく』で心が崩れるとき」
+@@vars
+    --bg: #fff8f0; --text: #3a2a1e; --muted: #8a7260;
+    --accent: #d9701a; --accent2: #e8457a; --h1: #4a2a10; --big: #c75f10; --big-dark: #ffc58f;
+    --glow1: rgba(255,200,90,.30); --glow2: rgba(232,69,122,.16); --glow3: rgba(255,170,60,.20);
+    --shadow: 0 20px 55px rgba(190,110,30,.18); --photo-bg: #ffead2;
+    --g1: #ff9d2e; --g2: #f0663a; --g3: #e8457a; --pop: #fff3b8; --pop-text: #5a3a00; --btn-text: #c75f10;
+@@css
+  /* 🥂 シャンパンタワー：押したグラスに注ぐ。上（自分）から注ぐと、あふれて下の全員へ。下から注ぐと、上はからっぽのまま */
+  .tower { max-width: 380px; margin: 16px auto 0; }
+  .trow { display: flex; justify-content: center; gap: 10px; }
+  .trow + .trow { margin-top: -4px; }
+  .cap { margin: 2px 0 8px; font-size: 13px; font-weight: 900; opacity: .95; }
+  .glass { position: relative; width: 64px; height: 72px; padding: 0; border: 0; background: none; cursor: pointer; font: inherit;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .glass:focus-visible { outline: 4px solid #fff; outline-offset: 2px; border-radius: 12px; }
+  .cup { position: absolute; left: 6px; right: 6px; top: 0; height: 50px; overflow: hidden; border-radius: 4px 4px 26px 26px;
+    background: rgba(255,255,255,.28); box-shadow: inset 0 0 0 3px rgba(255,255,255,.9); }
+  .fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: linear-gradient(180deg, #fff6a8, #ffd23f); transition: height .45s ease; }
+  .fill::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5px; background: rgba(255,255,255,.7); }
+  .stem { position: absolute; left: 50%; top: 50px; width: 5px; height: 14px; margin-left: -2.5px; background: rgba(255,255,255,.9); }
+  .foot { position: absolute; left: 50%; top: 62px; width: 30px; height: 5px; margin-left: -15px; border-radius: 4px; background: rgba(255,255,255,.9); }
+  .glass .ic { position: absolute; left: 50%; top: 13px; transform: translateX(-50%); font-size: 20px; line-height: 1; z-index: 1; }
+  .glass.full .cup { box-shadow: inset 0 0 0 3px #fff, 0 0 16px rgba(255,240,150,.9); }
+  .glass.hit { animation: hop .4s ease; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .top-bub { display: none; max-width: 300px; margin: 0 auto 10px; padding: 8px 12px; border-radius: 14px; background: #fff; color: #7a3a10; font-size: 14.5px; font-weight: 900; line-height: 1.35; }
+  .game[data-st="grumble"] .top-bub { display: block; animation: shake .45s ease; }
+
+  .msg { min-height: 60px; display: flex; align-items: center; justify-content: center; max-width: 420px; margin: 14px auto 0; padding: 10px 14px; border-radius: 18px;
+    background: rgba(255,255,255,.2); font-weight: 900; font-size: 15.5px; line-height: 1.4; }
+  .msg span { display: none; }
+  .game[data-st="start"] .m-start, .game[data-st="top"] .m-top, .game[data-st="flow"] .m-flow,
+  .game[data-st="grumble"] .m-grumble, .game[data-st="full"] .m-full { display: inline; }
+  .game[data-st="full"] .msg { background: #fff; color: #7a3a10; animation: bounce-in .5s both; }
+  .count { margin-top: 10px; font-size: 14px; font-weight: 900; }
+@@dark
+  html[data-theme="dark"] .top-bub { background: #2e2418; color: #ffd9b0; }
+  html[data-theme="dark"] .game[data-st="full"] .msg { background: #2e2418; color: #ffd9b0; }
+@@sents
+S1 | Sometimes you try too hard to "be kind to people," and your heart almost breaks. | 「人にやさしく」と頑張りすぎて、心がくずれそうになることがあります。
+S2 | It seems the order of kindness is: you → your family → the people around you. | やさしくする順番は、自分 → 家族 → まわりの人、だそうです。
+S3 | If you are kind while you are empty, "But I did it for you…" comes out. | 自分がからっぽのまま親切にすると、「〜してあげたのに」が出てきてしまいます。
+S4 | It's like a champagne tower: when the top glass is full, it flows down to the others. | シャンパンタワーと同じで、いちばん上のグラスが満ちると、下のグラスにもあふれていきます。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💔</span>
+      <span class="card-label">Too Kind</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔢</span>
+      <span class="card-label">The Order</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：シャンパンタワー（押したグラスに注ぐ。上から注ぐと全員に流れる） -->
+  <section class="game" data-st="start" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The kindness tower</div>
+    <div class="game-hint">Tap a glass to pour. Which glass should you fill first?</div>
+    <div class="tower">
+      <div class="top-bub">😮‍💨 "I did so much for you, but…"</div>
+      <div class="trow"><button class="glass" type="button" data-i="0"><span class="cup"><span class="fill"></span></span><span class="stem"></span><span class="foot"></span><span class="ic" aria-hidden="true">🐧</span><span class="sr">Pour</span></button></div>
+      <div class="cap">🐧 You</div>
+      <div class="trow"><button class="glass" type="button" data-i="1"><span class="cup"><span class="fill"></span></span><span class="stem"></span><span class="foot"></span><span class="ic" aria-hidden="true">🏠</span><span class="sr">Pour</span></button><button class="glass" type="button" data-i="2"><span class="cup"><span class="fill"></span></span><span class="stem"></span><span class="foot"></span><span class="ic" aria-hidden="true">🏠</span><span class="sr">Pour</span></button></div>
+      <div class="cap">🏠 Family</div>
+      <div class="trow"><button class="glass" type="button" data-i="3"><span class="cup"><span class="fill"></span></span><span class="stem"></span><span class="foot"></span><span class="ic" aria-hidden="true">🌏</span><span class="sr">Pour</span></button><button class="glass" type="button" data-i="4"><span class="cup"><span class="fill"></span></span><span class="stem"></span><span class="foot"></span><span class="ic" aria-hidden="true">🌏</span><span class="sr">Pour</span></button><button class="glass" type="button" data-i="5"><span class="cup"><span class="fill"></span></span><span class="stem"></span><span class="foot"></span><span class="ic" aria-hidden="true">🌏</span><span class="sr">Pour</span></button></div>
+      <div class="cap">🌏 People around you</div>
+    </div>
+    <div class="msg">
+      <span class="m-start">Tap any glass 👆</span>
+      <span class="m-top">🐧 Your glass is filling up…</span>
+      <span class="m-flow">✨ Your glass is full, so it flows down to everyone!</span>
+      <span class="m-grumble">Your glass is still empty… Try the top glass first. 👆</span>
+      <span class="m-full">🥂 Everyone is full, and so are you! Kindness flows best from the top.</span>
+    </div>
+    <div class="count"><span class="cl">🥂 Full glasses:</span> <span class="cn">0/6</span></div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Empty the glasses</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😮‍💨</span>
+      <span class="card-label">When Empty</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🥂</span>
+      <span class="card-label">Top Glass First</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Too Kind ||| やさしすぎて
+The Order ||| 順番
+When Empty ||| からっぽのとき
+Top Glass First ||| まず上のグラス
+⚡ TRY IT ||| ⚡ やってみよう
+The kindness tower ||| やさしさのタワー
+Tap a glass to pour. Which glass should you fill first? ||| グラスを押すと注げます。どのグラスから満たす？
+😮‍💨 "I did so much for you, but…" ||| 😮‍💨「こんなにしてあげたのに…」
+Pour ||| 注ぐ
+🐧 You ||| 🐧 自分
+🏠 Family ||| 🏠 家族
+🌏 People around you ||| 🌏 まわりの人
+Tap any glass 👆 ||| どれかのグラスを押してね 👆
+🐧 Your glass is filling up… ||| 🐧 自分のグラスが満ちてきた…
+✨ Your glass is full, so it flows down to everyone! ||| ✨ 自分のグラスがいっぱいだから、下のみんなに流れていく！
+Your glass is still empty… Try the top glass first. 👆 ||| 自分のグラスがからっぽのまま…。まず、いちばん上から注いでみて 👆
+🥂 Everyone is full, and so are you! Kindness flows best from the top. ||| 🥂 みんないっぱい、自分もいっぱい！やさしさは、上から流すのがいちばん。
+🥂 Full glasses: ||| 🥂 いっぱいのグラス：
+↺ Empty the glasses ||| ↺ グラスをからにする
+@@js
+/* 🥂 やさしさのタワー：JS は data-st / class / style / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var KIDS = { 0: [1, 2], 1: [3, 4], 2: [4, 5] };
+  var glasses = [].slice.call(g.querySelectorAll('.glass'));
+  var fills = glasses.map(function (b) { return b.querySelector('.fill'); });
+  var cn = g.querySelector('.cn');
+  var lv = [0, 0, 0, 0, 0, 0], done = false;
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function pour(i, a) {                       /* あふれた分は、下の2つに半分ずつ（いちばん下は、テーブルへこぼれる） */
+    var room = 1 - lv[i];
+    if (a <= room) { lv[i] += a; return; }
+    lv[i] = 1;
+    var rest = a - room;
+    if (KIDS[i]) KIDS[i].forEach(function (k) { pour(k, rest / 2); });
+  }
+  function draw() {
+    var n = 0;
+    lv.forEach(function (v, i) {
+      fills[i].style.height = Math.round(v * 100) + '%';
+      var full = v >= 0.999; glasses[i].classList.toggle('full', full); if (full) n++;
+    });
+    cn.textContent = n + '/6';
+    return n;
+  }
+  glasses.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var i = +b.getAttribute('data-i');
+      pour(i, 1);
+      restart(b, 'hit');
+      var n = draw();
+      if (n === 6) {
+        g.setAttribute('data-st', 'full');
+        if (!done && window.pengessoPop) {
+          var k = glasses[0].getBoundingClientRect();
+          window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['🥂', '✨', '🐧', '💛'], 22);
+        }
+        done = true;
+        return;
+      }
+      if (lv[0] < 0.999) {
+        var others = lv.slice(1).reduce(function (s, v) { return s + v; }, 0);
+        if (others > 0) { g.setAttribute('data-st', 'top'); void g.offsetWidth; }   /* 吹き出しのゆれを毎回出す */
+        g.setAttribute('data-st', others > 0 ? 'grumble' : 'top');
+      } else {
+        g.setAttribute('data-st', 'flow');
+      }
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    lv = [0, 0, 0, 0, 0, 0]; done = false; draw(); g.setAttribute('data-st', 'start');
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+やさしくする順番は、自分 → 家族 → まわりの人。シャンパンタワーと同じで、まず自分を満たす。
+@@tone
+素材の重さ：真面目（人にやさしくしすぎて疲れる）
+→ 見せ方：ポップに（オレンジとピンクのパーティー。グラスのタワーに注いで遊べる）
+@@game_ja
+🥂 やさしさのタワー：グラスが3段（いちばん上🐧自分、まん中🏠家族×2、下🌏まわりの人×3）。押したグラスに注げる。いちばん上から注ぐと、いっぱいになったあと左右の下のグラスにあふれて、7回ほどで6つ全部がいっぱいになり🎉「やさしさは、上から流すのがいちばん」。下のグラスに先に注ぐと、そのグラスは満ちるけれど、上の自分のグラスはからっぽのままで、🐧から「😮‍💨 こんなにしてあげたのに…」の吹き出しが出る（「まず、いちばん上から注いでみて」）。「グラスをからにする」で最初から。
+@@combo
+ペンギン × 手刺しゅうのフェルト × 陶器のティーポット（ガラスは使わない）
+@@cover
+An extremely cute, chubby round penguin made of hand-embroidered felt, with a gentle content smile and a plain white belly, sitting and carefully pouring warm tea from a realistic glossy ceramic teapot into its own small ceramic cup first, steam rising softly. Bright simple warm peach and soft orange background with soft depth, cozy afternoon light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

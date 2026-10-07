@@ -1,0 +1,227 @@
+@@meta
+{"title": "Turn what you want to keep doing into a collecting game", "label": "Collect Cards", "seq": 496, "mood": ["lift", "energy"], "tags": ["psychology", "productivity", "tips"], "thumbAlt": "A chenille yarn penguin proudly holding up one shiny trading card"}
+@@ja_title
+続けたいことは、集めるゲームにする
+@@ja_label
+カード集め
+@@h1emoji
+🃏
+@@section
+132「ゲーミフィケーション」
+@@vars
+    --bg: #f7f3ff; --text: #2c2440; --muted: #75698f;
+    --accent: #7a4dff; --accent2: #ffb000; --h1: #2a1660; --big: #6236e6; --big-dark: #c7b4ff;
+    --glow1: rgba(255,200,60,.3); --glow2: rgba(130,90,255,.24); --glow3: rgba(60,200,255,.16);
+    --shadow: 0 20px 55px rgba(80,40,170,.2); --photo-bg: #ece4ff;
+    --g1: #5b2ee6; --g2: #9b4dff; --g3: #ff7ab8; --pop: #ffc928; --pop-text: #3b2b00; --btn-text: #6236e6;
+@@css
+  /* 🃏 カード集め：いいことをするとカードが1枚。5枚でごほうび */
+  .swap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin-top: 14px; }
+  .swap > div { padding: 12px 8px; border-radius: 18px; text-align: center; font-weight: 900; font-size: 15px; line-height: 1.35; }
+  .swap .w-old { background: #efedf3; color: #77708a; }
+  .swap .w-new { background: #fff1c2; color: #6b4b00; }
+  .swap .w-ar { font-size: 22px; color: var(--accent); }
+
+  .stagebox { display: grid; place-items: center; min-height: 176px; margin-top: 14px; }
+  .newcard { position: relative; width: 132px; height: 170px; border-radius: 16px; display: grid; justify-items: center; align-content: center; gap: 4px;
+    background: #fff; color: #2c2440; box-shadow: 0 10px 24px rgba(30,0,80,.3); border: 5px solid #d8d2e6; }
+  .newcard[data-rar="2"] { border-color: #4aa8ff; background: linear-gradient(160deg, #ffffff, #e2f1ff); }
+  .newcard[data-rar="3"] { border-color: #ffc928; background: linear-gradient(160deg, #fffbe6, #ffe48a); box-shadow: 0 0 0 4px rgba(255,201,40,.45), 0 10px 30px rgba(255,170,0,.5); }
+  .newcard.in { animation: deal .5s cubic-bezier(.2,1.3,.4,1) both; }
+  @keyframes deal { from { transform: scaleX(0) scaleY(.8); } 60% { transform: scaleX(1.06) scaleY(1.04); } to { transform: none; } }
+  .nc-e { font-size: 54px; line-height: 1; }
+  .nc-stars { font-size: 15px; letter-spacing: 1px; min-height: 20px; }
+  .nc-stars > span, .nc-rar > span { display: none; }
+  .newcard[data-rar="1"] .st1, .newcard[data-rar="2"] .st2, .newcard[data-rar="3"] .st3,
+  .newcard[data-rar="1"] .rr1, .newcard[data-rar="2"] .rr2, .newcard[data-rar="3"] .rr3, .newcard[data-rar="0"] .rr0 { display: inline; }
+  .nc-rar { font-size: 13px; font-weight: 900; letter-spacing: .04em; }
+  .newcard[data-rar="0"] { background: repeating-linear-gradient(135deg, #6a43f0 0 12px, #7b56ff 12px 24px); border-color: #fff; color: #fff; }
+
+  .quests { display: grid; gap: 10px; max-width: 420px; margin: 16px auto 0; }
+  .quest { width: 100%; justify-content: space-between; text-align: left; min-height: 56px; font-size: 16px; }
+  .quest .qd { display: none; font-size: 14px; color: #1d9b57; }
+  .quest[data-done="1"] { background: rgba(255,255,255,.35); color: #fff; box-shadow: none; }
+  .quest[data-done="1"] .qd { display: inline; color: #fff; }
+
+  .album { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; max-width: 420px; margin: 16px auto 0; }
+  .acard { height: 62px; border-radius: 10px; display: grid; place-items: center; background: rgba(255,255,255,.18); border: 2px dashed rgba(255,255,255,.55); font-size: 28px; }
+  .acard .ae { opacity: 0; transform: scale(.3); transition: opacity .2s ease, transform .35s cubic-bezier(.2,1.5,.4,1); }
+  .acard[data-rar] { border: 3px solid #d8d2e6; background: #fff; }
+  .acard[data-rar="2"] { border-color: #4aa8ff; }
+  .acard[data-rar="3"] { border-color: #ffc928; background: #fff4c4; }
+  .acard[data-rar] .ae { opacity: 1; transform: none; }
+  .alabel { margin-top: 8px; font-size: 14.5px; font-weight: 900; }
+
+  .result { margin-top: 12px; min-height: 60px; }
+  .result > div { display: none; font-size: 16px; font-weight: 900; line-height: 1.45; }
+  .game:not([data-all="1"]) .r-hint, .game[data-all="1"] .r-done { display: block; }
+  .game[data-all="1"] .r-done { animation: bounce-in .45s both; padding: 12px; border-radius: 18px; background: rgba(255,255,255,.22); }
+  .r-done .rw { display: block; font-size: 30px; }
+  .again { display: none; }
+  .game[data-all="1"] .again { display: inline-flex; }
+@@dark
+  html[data-theme="dark"] .swap .w-old { background: #2c2e3b; color: #bdb6cc; }
+  html[data-theme="dark"] .swap .w-new { background: #4a3f18; color: #ffe39a; }
+  html[data-theme="dark"] .newcard { background: #2c2e3b; color: #f1ecfa; }
+  html[data-theme="dark"] .newcard[data-rar="2"] { background: linear-gradient(160deg, #2c2e3b, #1f3550); }
+  html[data-theme="dark"] .newcard[data-rar="3"] { background: linear-gradient(160deg, #3d3418, #5a4710); }
+  html[data-theme="dark"] .acard[data-rar] { background: #2c2e3b; }
+  html[data-theme="dark"] .acard[data-rar="3"] { background: #4a3f18; }
+@@sents
+S1 | It seems things you want to keep doing are easier to continue if you turn them into a game. | 続けたいことは、ゲームにしてしまうと続きやすいそうです。
+S2 | For example, you get 1 card when you clean your desk, and 1 more card when you do 10 squats. | たとえば、机を片付けたらカードを1枚、スクワットを10回したらまた1枚。
+S3 | When you collect 5 cards, you buy a slightly nice ice cream. | 5枚集まったら、ちょっといいアイスを買います。
+S4 | When "I have to" changes into "I want to collect," it somehow becomes fun. | 「やらなきゃ」が「集めたい」に変わると、なんだか楽しくなります。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎮</span>
+      <span class="card-label">Make It Game</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🃏</span>
+      <span class="card-label">One Card Each</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：いいことカード集め -->
+  <section class="game" data-all="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The good-things card album</div>
+    <div class="game-hint">Do a small thing, get a card. What will you pull?</div>
+    <div class="stagebox">
+      <div class="newcard" data-rar="0">
+        <span class="nc-e">🐧</span>
+        <span class="nc-stars"><span class="st1">⭐</span><span class="st2">⭐⭐</span><span class="st3">⭐⭐⭐</span></span>
+        <span class="nc-rar"><span class="rr0">CARD PACK</span><span class="rr1">Common</span><span class="rr2">Rare!</span><span class="rr3">Super rare!!</span></span>
+      </div>
+    </div>
+    <div class="quests">
+      <button class="gbtn quest" type="button" data-e="🧹"><span class="qt">🧹 Clean my desk</span><span class="qd">✓ Got it</span></button>
+      <button class="gbtn quest" type="button" data-e="🏅"><span class="qt">🔟 Do 10 squats</span><span class="qd">✓ Got it</span></button>
+      <button class="gbtn quest" type="button" data-e="💧"><span class="qt">💧 Drink a glass of water</span><span class="qd">✓ Got it</span></button>
+      <button class="gbtn quest" type="button" data-e="🔤"><span class="qt">📖 Learn 5 English words</span><span class="qd">✓ Got it</span></button>
+      <button class="gbtn quest" type="button" data-e="🌙"><span class="qt">🛏️ Go to bed early</span><span class="qd">✓ Got it</span></button>
+    </div>
+    <div class="album" aria-hidden="true">
+      <span class="acard"><span class="ae">🐧</span></span><span class="acard"><span class="ae">🐧</span></span><span class="acard"><span class="ae">🐧</span></span>
+      <span class="acard"><span class="ae">🐧</span></span><span class="acard"><span class="ae">🐧</span></span>
+    </div>
+    <div class="alabel"><span class="al">📒 My album:</span> <span class="an">0</span> <span class="am">/ 5</span></div>
+    <div class="result">
+      <div class="r-hint">Collect 5 cards to unlock a reward.</div>
+      <div class="r-done"><span class="rw">🍨</span>Reward unlocked: a slightly nice ice cream!</div>
+    </div>
+    <div class="again-row"><button class="gbtn again" type="button">↺ New album</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍨</span>
+      <span class="card-label">The Reward</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">✨</span>
+      <span class="card-label">Want To</span>
+    </div>
+    <p class="big">{S4}</p>
+    <div class="swap" aria-hidden="true">
+      <div class="w-old">😩 I have to…</div>
+      <div class="w-ar">→</div>
+      <div class="w-new">🤩 I want to collect!</div>
+    </div>
+  </section>
+@@ui
+Make It Game ||| ゲームにする
+One Card Each ||| 1つで1枚
+The Reward ||| ごほうび
+Want To ||| 集めたい
+😩 I have to… ||| 😩 やらなきゃ…
+🤩 I want to collect! ||| 🤩 集めたい！
+⚡ TRY IT ||| ⚡ やってみよう
+The good-things card album ||| いいことカードのアルバム
+Do a small thing, get a card. What will you pull? ||| 小さなことをすると、カードが1枚。何が出るかな？
+CARD PACK ||| カードパック
+Common ||| ノーマル
+Rare! ||| レア！
+Super rare!! ||| 超レア！！
+🧹 Clean my desk ||| 🧹 机を片付ける
+🔟 Do 10 squats ||| 🔟 スクワット10回
+💧 Drink a glass of water ||| 💧 水を1杯飲む
+📖 Learn 5 English words ||| 📖 英単語を5つ覚える
+🛏️ Go to bed early ||| 🛏️ 早めに寝る
+✓ Got it ||| ✓ ゲット
+📒 My album: ||| 📒 アルバム：
+/ 5 ||| / 5
+Collect 5 cards to unlock a reward. ||| 5枚集めると、ごほうびが出るよ。
+Reward unlocked: a slightly nice ice cream! ||| ごほうび解放：ちょっといいアイス！
+↺ New album ||| ↺ 新しいアルバム
+@@js
+/* 🃏 カード集め：やったことを押すとカードが1枚（ノーマル／レア／超レア）。5枚でごほうび。JS は data-* と数字と絵文字だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var card = g.querySelector('.newcard'), ce = g.querySelector('.nc-e');
+  var quests = [].slice.call(g.querySelectorAll('.quest')), slots = [].slice.call(g.querySelectorAll('.acard'));
+  var an = g.querySelector('.an'), again = g.querySelector('.again');
+  var n = 0, supers = 0;
+  function pop(el, list, k) {
+    if (!window.pengessoPop) return;
+    var r = el.getBoundingClientRect();
+    window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, k);
+  }
+  quests.forEach(function (q) {
+    q.addEventListener('click', function () {
+      if (q.getAttribute('data-done') === '1' || n >= 5) return;
+      q.setAttribute('data-done', '1');
+      var x = Math.random();
+      var rar = x < 0.2 ? 3 : x < 0.55 ? 2 : 1;
+      if (n === 4 && supers === 0) rar = 3;   /* 最後の1枚は、超レアがまだなら超レアにする（ごほうび感） */
+      if (rar === 3) supers++;
+      var e = q.getAttribute('data-e');
+      ce.textContent = e;
+      card.setAttribute('data-rar', rar);
+      card.classList.remove('in'); void card.offsetWidth; card.classList.add('in');
+      slots[n].querySelector('.ae').textContent = e;
+      slots[n].setAttribute('data-rar', rar);
+      n++; an.textContent = n;
+      if (rar === 3) pop(card, ['⭐', '✨', e], 12);
+      if (n === 5) {
+        g.setAttribute('data-all', '1');
+        setTimeout(function () { pop(g.querySelector('.r-done'), ['🍨', '🃏', '🐧', '✨'], 18); }, 120);
+        if (navigator.vibrate) { try { navigator.vibrate(30); } catch (err) {} }
+      }
+    });
+  });
+  again.addEventListener('click', function () {
+    n = 0; supers = 0; an.textContent = 0;
+    quests.forEach(function (q) { q.removeAttribute('data-done'); });
+    slots.forEach(function (s) { s.removeAttribute('data-rar'); });
+    card.setAttribute('data-rar', '0'); ce.textContent = '🐧';
+    g.setAttribute('data-all', '0');
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+続けたいことは、カードを集めるゲームにすると続く。
+@@tone
+素材の重さ：かるい（習慣のコツ）
+→ 見せ方：ポップに（紫と金のトレーディングカード。いいことをするたびにカードを引いて、アルバムを埋めて遊べる）
+@@game_ja
+🃏 いいことカードのアルバム：「🧹 机を片付ける」「🔟 スクワット10回」「💧 水を1杯飲む」「📖 英単語を5つ覚える」「🛏️ 早めに寝る」のボタンを押すと、カードがくるっと出てくる。ノーマル（⭐）・レア（⭐⭐・青）・超レア（⭐⭐⭐・金色に光る）のどれかがランダムで出る。カードはアルバムの5つの枠にたまっていき、5枚そろうと「🍨 ごほうび解放：ちょっといいアイス！」。超レアが1枚も出ていなければ、最後の1枚は超レアになる。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of soft chenille yarn, proudly holding up one realistic shiny holographic trading card with a plain sparkly back, the card catching the light. A simple bright violet-to-golden-yellow background with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × シェニール糸 × キラキラのトレーディングカード

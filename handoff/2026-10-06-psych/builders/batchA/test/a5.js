@@ -1,0 +1,1 @@
+setTimeout(function(){ __tap('.minus'); __log('min', __st()); __tap('.plus'); __tap('.plus'); __tap('.plus'); __tap('.plus'); __tap('.plus'); __tap('.plus'); __log('max', __st()); __log('plusDis', document.querySelector('.plus').disabled); }, 300);

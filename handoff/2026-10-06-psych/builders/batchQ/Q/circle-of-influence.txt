@@ -1,0 +1,202 @@
+@@meta
+{"title": "Use your time on things you can change, not things you can't", "label": "Two Circles", "seq": 458, "mood": ["lift", "think"], "tags": ["psychology", "books", "mindset"], "thumbAlt": "A chubby hand-embroidered felt penguin sitting inside a realistic wooden embroidery hoop"}
+@@ja_title
+変えられないことより、変えられることに時間を使う
+@@ja_label
+2つの輪
+@@h1emoji
+🎯
+@@section
+69「関心の輪と影響の輪（『7つの習慣』）」
+@@vars
+    --bg: #f6f4ff; --text: #261f45; --muted: #6c6590;
+    --accent: #6741d9; --accent2: #f06595; --h1: #241552; --big: #5f3dc4; --big-dark: #c0b0ff;
+    --glow1: rgba(103,65,217,.20); --glow2: rgba(240,101,149,.18); --glow3: rgba(255,212,59,.20);
+    --shadow: 0 20px 55px rgba(90,60,180,.18); --photo-bg: #e5dbff;
+    --g1: #4c3fd1; --g2: #7c3aed; --g3: #e64980; --pop: #ffe066; --pop-text: #4a3300; --btn-text: #5f3dc4;
+@@css
+  /* 🎯 2つの輪に分けよう：変えられる → 内側（内側の輪が育つ）／変えられない → 外側 */
+  .rings { position: relative; width: min(280px, 100%); aspect-ratio: 1 / 1; margin: 16px auto 8px; }
+  .outer { position: absolute; inset: 0; border-radius: 50%; background: rgba(255,255,255,.14); border: 3px dashed rgba(255,255,255,.55); }
+  .inner { position: absolute; left: 50%; top: 50%; width: 40%; height: 40%; transform: translate(-50%, -50%); border-radius: 50%;
+    background: #ffe066; box-shadow: 0 0 0 6px rgba(255,224,102,.3); transition: width .6s cubic-bezier(.2,1.4,.4,1), height .6s cubic-bezier(.2,1.4,.4,1); }
+  .game[data-in="1"] .inner { width: 52%; height: 52%; }
+  .game[data-in="2"] .inner { width: 62%; height: 62%; }
+  .game[data-in="3"] .inner { width: 72%; height: 72%; }
+  .rl { position: absolute; left: 50%; transform: translateX(-50%); width: max-content; max-width: 46%; font-size: 12.5px; font-weight: 900; line-height: 1.2; text-align: center; }
+  .rl-out { top: 5%; color: #fff; }
+  .rl-in { top: 34%; color: #5c4400; }
+  .dot { position: absolute; width: 40px; height: 40px; margin: -20px 0 0 -20px; display: grid; place-items: center; border-radius: 50%;
+    background: #fff; font-size: 22px; line-height: 1; box-shadow: 0 4px 10px rgba(0,0,0,.18); animation: bounce-in .45s both; }
+  .dot[hidden] { display: none; }
+  .d1 { left: 14%; top: 26%; } .d3 { left: 86%; top: 26%; } .d5 { left: 50%; top: 92%; }
+  .d2 { left: 41%; top: 50%; } .d4 { left: 59%; top: 50%; } .d6 { left: 50%; top: 64%; }
+
+  .now { max-width: 360px; margin: 6px auto 0; min-height: 58px; display: grid; place-items: center; padding: 12px 14px; border-radius: 18px;
+    background: #fff; color: #241552; font-size: 18px; font-weight: 900; line-height: 1.35; }
+  .now .it { display: none; }
+  .game[data-i="1"] .i1, .game[data-i="2"] .i2, .game[data-i="3"] .i3, .game[data-i="4"] .i4, .game[data-i="5"] .i5, .game[data-i="6"] .i6 { display: inline; animation: bounce-in .4s both; }
+  .game[data-i="7"] .now { display: none; }
+  .game.wrong .now { animation: shake .4s ease; }
+  .bins { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 360px; margin: 12px auto 0; }
+  .bin { width: 100%; padding: 12px 8px; font-size: 15.5px; }
+  .bin-in { background: var(--pop); color: var(--pop-text); }
+  .game[data-i="7"] .bins { display: none; }
+  .says { margin-top: 12px; min-height: 30px; font-size: 16.5px; font-weight: 900; line-height: 1.45; }
+  .says > div { display: none; }
+  .game[data-say="ask"] .s-ask, .game[data-say="ok"] .s-ok, .game[data-say="no"] .s-no, .game[data-say="end"] .s-end { display: block; }
+  .s-end { padding: 12px 14px; border-radius: 18px; background: #fff; color: #241552; animation: bounce-in .5s both; }
+  .cnt { margin-top: 6px; font-size: 15px; font-weight: 900; }
+  .cnt .num { font-size: 20px; }
+  .game:not([data-i="7"]) .again-row { display: none; }
+@@dark
+  html[data-theme="dark"] .now, html[data-theme="dark"] .s-end { background: #f4f0fa; color: #241552; }
+  html[data-theme="dark"] .dot { background: #f4f0fa; }
+@@sents
+S1 | In the book "The 7 Habits," there is a story about 2 circles. | 『7つの習慣』という本に、2つの輪の話が出てきます。
+S2 | The outer circle is things I cannot change, like the weather and the news. | 外側の輪は、天気やニュースなど、自分では変えられないことです。
+S3 | The inner circle is things I can change, like my actions and my talks with my family. | 内側の輪は、自分の行動や家族との会話など、自分で変えられることです。
+S4 | It is said people who use their time on the inner circle have fuller days. | 内側の輪に時間を使う人ほど、毎日が充実するそうです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📗</span>
+      <span class="card-label">Two Circles</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌦️</span>
+      <span class="card-label">Outer Circle</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎯</span>
+      <span class="card-label">Inner Circle</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：2つの輪に分けよう -->
+  <section class="game" data-i="1" data-in="0" data-say="ask" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Sort into 2 circles</div>
+    <div class="rings">
+      <div class="outer"></div>
+      <div class="inner"></div>
+      <div class="rl rl-out">Can't change</div>
+      <div class="rl rl-in">Can change</div>
+      <span class="dot d1" hidden aria-hidden="true">🌦️</span>
+      <span class="dot d2" hidden aria-hidden="true">🚶</span>
+      <span class="dot d3" hidden aria-hidden="true">📺</span>
+      <span class="dot d4" hidden aria-hidden="true">📖</span>
+      <span class="dot d5" hidden aria-hidden="true">📱</span>
+      <span class="dot d6" hidden aria-hidden="true">☎️</span>
+    </div>
+    <div class="now">
+      <span class="it i1">🌦️ Tomorrow's weather</span>
+      <span class="it i2">🚶 What I do today</span>
+      <span class="it i3">📺 The news</span>
+      <span class="it i4">📖 Reading a helpful book</span>
+      <span class="it i5">📱 Other people's posts</span>
+      <span class="it i6">☎️ A chat with my family</span>
+    </div>
+    <div class="bins">
+      <button class="gbtn bin bin-out" data-b="out" type="button">☁️ Outer: can't change</button>
+      <button class="gbtn bin bin-in" data-b="in" type="button">🎯 Inner: can change</button>
+    </div>
+    <div class="says">
+      <div class="s-ask">Which circle is it in?</div>
+      <div class="s-ok">✨ Nice!</div>
+      <div class="s-no">🤔 Hmm, maybe the other circle.</div>
+      <div class="s-end">🌱 All sorted! Look, the inner circle grew. Spend your time there.</div>
+    </div>
+    <div class="cnt"><span class="cl">Sorted:</span> <span class="num">0</span> / 6</div>
+    <div class="again-row"><button class="gbtn ghost again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌱</span>
+      <span class="card-label">Fuller Days</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Two Circles ||| 2つの輪
+Outer Circle ||| 外側の輪
+Inner Circle ||| 内側の輪
+Fuller Days ||| 充実する毎日
+⚡ TRY IT ||| ⚡ やってみよう
+Sort into 2 circles ||| 2つの輪に分けよう
+Can't change ||| 変えられない
+Can change ||| 変えられる
+🌦️ Tomorrow's weather ||| 🌦️ 明日の天気
+🚶 What I do today ||| 🚶 今日の私の行動
+📺 The news ||| 📺 ニュース
+📖 Reading a helpful book ||| 📖 役に立つ本を読む
+📱 Other people's posts ||| 📱 他人のSNS
+☎️ A chat with my family ||| ☎️ 家族との会話
+☁️ Outer: can't change ||| ☁️ 外側：変えられない
+🎯 Inner: can change ||| 🎯 内側：変えられる
+Which circle is it in? ||| どっちの輪に入る？
+✨ Nice! ||| ✨ いいね！
+🤔 Hmm, maybe the other circle. ||| 🤔 うーん、もう一つの輪かも。
+🌱 All sorted! Look, the inner circle grew. Spend your time there. ||| 🌱 全部分けた！ほら、内側の輪が大きくなった。ここに時間を使おう。
+Sorted: ||| 分けた数：
+↺ Try again ||| ↺ もう一回
+@@js
+/* 🎯 2つの輪：JS は data-i・data-in・data-say・class・hidden・数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var ANSWER = ['out', 'in', 'out', 'in', 'out', 'in'];
+  var dots = g.querySelectorAll('.dot'), num = g.querySelector('.cnt .num'), rings = g.querySelector('.rings');
+  var i = 1, inner = 0;
+  function say(v) { g.setAttribute('data-say', ''); void g.offsetWidth; g.setAttribute('data-say', v); }
+  [].forEach.call(g.querySelectorAll('.bin'), function (b) {
+    b.addEventListener('click', function () {
+      if (i > 6) return;
+      if (b.getAttribute('data-b') !== ANSWER[i - 1]) {
+        g.classList.remove('wrong'); void g.offsetWidth; g.classList.add('wrong');
+        say('no'); return;
+      }
+      dots[i - 1].hidden = false;
+      if (ANSWER[i - 1] === 'in') { inner += 1; g.setAttribute('data-in', String(inner)); }
+      num.textContent = String(i);
+      i += 1; g.setAttribute('data-i', String(i));
+      if (i > 6) {
+        say('end');
+        if (window.pengessoPop) { var r = rings.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🎯', '🌱', '🐧', '✨'], 18); }
+        if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+      } else { say('ok'); }
+    });
+  });
+  g.querySelector('.again').addEventListener('click', function () {
+    i = 1; inner = 0; num.textContent = '0';
+    [].forEach.call(dots, function (d) { d.hidden = true; });
+    g.classList.remove('wrong');
+    g.setAttribute('data-i', '1'); g.setAttribute('data-in', '0'); say('ask');
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+変えられない「関心の輪」より、変えられる「影響の輪」に時間を使う（『7つの習慣』）。
+@@tone
+素材の重さ：真面目（本の考え方）
+→ 見せ方：ポップに（紫と黄色。2つの輪に分けると、内側の輪が育つ）
+※本文では「関心の輪・影響の輪」という名前は出さず、「外側の輪・内側の輪」で言っている（中学生レベルの英語にするため）。「刺激と反応のあいだの選択の自由」は別の話なので入れていない。
+@@game_ja
+🎯 2つの輪に分けよう：外側（変えられない）と、黄色い内側（変えられる）の2つの輪。「明日の天気」「今日の私の行動」「ニュース」「役に立つ本を読む」「他人のSNS」「家族との会話」が1つずつ出てくるので、「☁️ 外側：変えられない」か「🎯 内側：変えられる」を押す。正しいと、その絵文字が輪の中にポンと入る。内側に入れるたびに黄色い輪が大きく育つ。まちがえるとブルッと震えて「もう一つの輪かも」。6つ分けると「ほら、内側の輪が大きくなった。ここに時間を使おう」。
+@@cover
+An extremely cute, chubby round penguin made of hand-embroidered felt with visible soft stitching, a gentle face and a plain belly, sitting happily inside a large, realistic round wooden embroidery hoop that stands upright like a frame around it. Bright lavender-purple background with a warm yellow glow in the center and soft depth. Simple and clean, no clutter. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × 手刺しゅうのフェルト × 木の刺しゅう枠（輪）

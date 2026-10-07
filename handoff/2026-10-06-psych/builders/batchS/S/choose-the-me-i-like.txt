@@ -1,0 +1,231 @@
+@@meta
+{"title": "When you are not sure, choose the way that lets you like yourself", "label": "Like Myself", "seq": 473, "mood": ["lift", "think"], "tags": ["psychology", "mindset", "feelings"], "thumbAlt": "A corduroy plush penguin picking up a single French fry next to a paper cup of fries"}
+@@ja_title
+迷ったら、「自分を好きでいられるほう」を選ぶ
+@@ja_label
+好きな自分
+@@h1emoji
+💛
+@@section
+89「自分を好きになる」の前半（どちらのほうが自分を好きでいられるか）
+@@vars
+    --bg: #fff8ee; --text: #3a1a14; --muted: #8c665c;
+    --accent: #e23a3a; --accent2: #ff9f1c; --h1: #3a1414; --big: #d62839; --big-dark: #ff9aa2;
+    --glow1: rgba(255,183,3,.30); --glow2: rgba(230,57,70,.16); --glow3: rgba(255,159,28,.20);
+    --shadow: 0 20px 55px rgba(190,50,30,.18); --photo-bg: #ffe9d6;
+    --g1: #ff4d5a; --g2: #ff7b39; --g3: #ffb703; --pop: #fff3b0; --pop-text: #6b2a00; --btn-text: #c42a2a;
+@@css
+  .theory { display: inline-block; margin-top: 12px; padding: 6px 12px; border-radius: 999px; background: #ffe6e6; color: #b3202e;
+    font-size: 13px; font-weight: 900; }
+
+  /* 🍟 どっちの自分が好き？：3つの場面で選ぶ → 自分を好き度のハート */
+  .like-row { display: flex; align-items: center; justify-content: center; gap: 6px 10px; flex-wrap: wrap; margin-top: 14px; font-size: 15px; font-weight: 900; }
+  .hearts { display: inline-flex; gap: 4px; }
+  .hearts i { display: inline-block; font-style: normal; font-size: 26px; line-height: 1; filter: grayscale(1); opacity: .35; transition: filter .2s, opacity .2s; }
+  .hearts i.on { filter: none; opacity: 1; animation: bounce-in .45s both; }
+  .stagebox { max-width: 440px; margin: 14px auto 0; padding: 14px 14px 16px; border-radius: 22px; background: #fff; color: #3a1414;
+    box-shadow: 0 10px 24px rgba(140,30,20,.2); }
+  .qc { font-size: 12.5px; font-weight: 900; letter-spacing: .1em; color: #d62839; }
+  .scene-row { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 8px 0 6px; }
+  .scene-e { font-size: 54px; line-height: 1; }
+  .peng { position: relative; font-size: 54px; line-height: 1; }
+  .pf { position: absolute; right: -16px; top: -10px; font-size: 28px; line-height: 1; }
+  .peng.happy { animation: hop .5s ease; }
+  .peng.hmm { animation: wiggle .5s ease; }
+  .q { min-height: 52px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 18px; font-weight: 900; line-height: 1.4; }
+  .q span { display: none; }
+  .game[data-q="1"] .q1, .game[data-q="2"] .q2, .game[data-q="3"] .q3 { display: inline; }
+
+  .opts { display: grid; gap: 10px; max-width: 440px; margin: 14px auto 0; }
+  .opt { display: none; align-items: center; justify-content: center; gap: 8px; min-height: 60px; padding: 10px 16px; border: 0; border-radius: 20px;
+    background: rgba(255,255,255,.96); color: #b3202e; font: inherit; font-size: 16.5px; font-weight: 900; line-height: 1.3; cursor: pointer;
+    box-shadow: 0 5px 0 rgba(120,20,10,.28); transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .opt .oe { font-size: 26px; line-height: 1; }
+  .opt:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(120,20,10,.28); }
+  .opt:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .game[data-a=""][data-q="1"] .o1, .game[data-a=""][data-q="2"] .o2, .game[data-a=""][data-q="3"] .o3 { display: flex; }
+
+  .react { display: none; max-width: 440px; margin: 14px auto 0; padding: 12px 14px; border-radius: 18px; background: rgba(255,255,255,.22);
+    font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .game[data-a="a"] .re-a, .game[data-a="b"] .re-b { display: block; animation: bounce-in .45s both; }
+  .game[data-a="b"] .re-b { background: var(--pop); color: #6b2a00; }
+  .nextq { display: none; margin-top: 14px; }
+  .game:not([data-a=""]) .nextq { display: inline-flex; }
+  .nextq span { display: none; }
+  .game:not([data-q="3"]) .nx1, .game[data-q="3"] .nx2 { display: inline; }
+
+  .end { display: none; max-width: 440px; margin: 16px auto 0; padding: 18px 16px; border-radius: 22px; background: #fff; color: #3a1414;
+    font-size: 19px; font-weight: 900; line-height: 1.45; box-shadow: 0 10px 24px rgba(140,30,20,.2); }
+  .end span { display: none; }
+  .game[data-sc="0"] .e0, .game[data-sc="12"] .e12, .game[data-sc="3"] .e3 { display: inline; }
+  .game[data-end="1"] .stagebox, .game[data-end="1"] .opts, .game[data-end="1"] .react, .game[data-end="1"] .nextq { display: none; }
+  .game[data-end="1"] .end { display: block; animation: bounce-in .5s both; }
+  .again-row { display: none; }
+  .game[data-end="1"] .again-row { display: block; }
+@@dark
+  html[data-theme="dark"] .theory { background: #3a2226; color: #ffb3b8; }
+  html[data-theme="dark"] .stagebox, html[data-theme="dark"] .end { background: #2b2224; color: #ffe9e4; }
+  html[data-theme="dark"] .qc { color: #ff9aa2; }
+  html[data-theme="dark"] .opt { background: #2b2224; color: #ffc2c6; }
+  html[data-theme="dark"] .game[data-a="b"] .re-b { background: #fff3b0; color: #5a2400; }
+@@sents
+S1 | When you are not sure, it seems good to choose by asking, "Which one lets me like myself?" | 迷ったら、「どっちのほうが自分を好きでいられるかな？」で選ぶといいそうです。
+S2 | For example, when you drop a French fry on the floor. | たとえば、ポテトを床に落としてしまったとき。
+S3 | Rather than acting like you did not see it, picking it up yourself lets you like yourself a little more. | 見なかったことにするより、自分で拾ったほうが、ちょっと自分を好きになれます。
+S4 | It seems people watch their own actions and decide, "I am this kind of person." | 人は、自分の行動を見て「私はこういう人なんだ」と決めているそうです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🤔</span>
+      <span class="card-label">The Question</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍟</span>
+      <span class="card-label">Dropped Fry</span>
+    </div>
+    <p>{S2}</p>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：どっちの自分が好き？（3つの場面で選ぶ → 自分を好き度のハート） -->
+  <section class="game" data-q="1" data-a="" data-end="0" data-sc="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Which one makes you like yourself?</div>
+    <div class="game-hint">3 small scenes. Choose, and watch the meter.</div>
+    <div class="like-row"><span class="m-l">💛 Like-myself meter</span><span class="hearts" aria-hidden="true"><i>💛</i><i>💛</i><i>💛</i></span></div>
+    <div class="stagebox">
+      <div class="qc"><span class="qc-l">Scene</span> <span class="qn">1</span><span class="of">/3</span></div>
+      <div class="scene-row" aria-hidden="true">
+        <span class="scene-e">🍟</span>
+        <span class="peng">🐧<span class="pf">💭</span></span>
+      </div>
+      <div class="q">
+        <span class="q1">You dropped a French fry on the floor.</span>
+        <span class="q2">Shopping is done. What about the cart?</span>
+        <span class="q3">Your drink is empty. There is no trash can near you.</span>
+      </div>
+    </div>
+    <div class="opts">
+      <button class="opt o1" type="button" data-v="a"><span class="oe" aria-hidden="true">🙈</span><span class="ot">Act like I did not see it</span></button>
+      <button class="opt o1" type="button" data-v="b"><span class="oe" aria-hidden="true">🧻</span><span class="ot">Pick it up</span></button>
+      <button class="opt o2" type="button" data-v="a"><span class="oe" aria-hidden="true">🚗</span><span class="ot">Leave it next to my car</span></button>
+      <button class="opt o2" type="button" data-v="b"><span class="oe" aria-hidden="true">🛒</span><span class="ot">Take it back</span></button>
+      <button class="opt o3" type="button" data-v="a"><span class="oe" aria-hidden="true">🪑</span><span class="ot">Leave it on a bench</span></button>
+      <button class="opt o3" type="button" data-v="b"><span class="oe" aria-hidden="true">🎒</span><span class="ot">Take it home</span></button>
+    </div>
+    <div class="react re-a">👀 Nobody saw it… but you saw it.</div>
+    <div class="react re-b">✨ +1! "I kind of like this me."</div>
+    <button class="gbtn pop nextq" type="button"><span class="nx1">Next ▶</span><span class="nx2">See the result ▶</span></button>
+    <div class="end">
+      <span class="e3">🐧💛 3 out of 3! "I kind of like me."</span>
+      <span class="e12">🐧 Nice! Small choices make the "me" you like.</span>
+      <span class="e0">🐧 That is OK. Next time, ask yourself the question.</span>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">👀</span>
+      <span class="card-label">You Are Watching</span>
+    </div>
+    <p class="big">{S4}</p>
+    <div class="theory">🔬 Self-perception theory</div>
+  </section>
+@@ui
+The Question ||| 質問
+Dropped Fry ||| 落ちたポテト
+You Are Watching ||| 自分が見ている
+🔬 Self-perception theory ||| 🔬 自己知覚理論
+⚡ TRY IT ||| ⚡ やってみよう
+Which one makes you like yourself? ||| 自分を好きになれるのはどっち？
+3 small scenes. Choose, and watch the meter. ||| 小さな場面が3つ。選んで、メーターを見てね。
+💛 Like-myself meter ||| 💛 自分を好き度
+Scene ||| 場面
+You dropped a French fry on the floor. ||| ポテトを床に落とした。
+Shopping is done. What about the cart? ||| 買い物が終わった。カートはどうする？
+Your drink is empty. There is no trash can near you. ||| 飲み物が空になった。近くにゴミ箱がない。
+Act like I did not see it ||| 見なかったことにする
+Pick it up ||| 拾う
+Leave it next to my car ||| 車の横に置いていく
+Take it back ||| 返しに行く
+Leave it on a bench ||| ベンチに置いていく
+Take it home ||| 持って帰る
+👀 Nobody saw it… but you saw it. ||| 👀 誰も見ていなかった…でも、自分は見ていた。
+✨ +1! "I kind of like this me." ||| ✨ +1！「こういう私、ちょっと好き」
+Next ▶ ||| 次へ ▶
+See the result ▶ ||| 結果を見る ▶
+🐧💛 3 out of 3! "I kind of like me." ||| 🐧💛 3つとも！「私、けっこう好きかも」
+🐧 Nice! Small choices make the "me" you like. ||| 🐧 いいね！小さな選択が「好きな自分」をつくる。
+🐧 That is OK. Next time, ask yourself the question. ||| 🐧 大丈夫。次は、あの質問を自分にしてみよう。
+↺ Try again ||| ↺ もう一回
+@@js
+/* 🍟 どっちの自分が好き？：JS は data-q / data-a / data-end / data-sc / class / 絵文字 / 数字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var SCENE = ['🍟', '🛒', '🥤'];
+  var q = 1, score = 0;
+  var hearts = [].slice.call(g.querySelectorAll('.hearts i'));
+  var se = g.querySelector('.scene-e'), qn = g.querySelector('.qn'), peng = g.querySelector('.peng'), pf = g.querySelector('.pf');
+  var next = g.querySelector('.nextq');
+  function restart(el, c) { el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function draw() {
+    g.setAttribute('data-q', String(q));
+    qn.textContent = String(q);
+    se.textContent = SCENE[q - 1];
+    hearts.forEach(function (h, i) { h.classList.toggle('on', i < score); });
+  }
+  [].slice.call(g.querySelectorAll('.opt')).forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (g.getAttribute('data-a')) return;
+      var v = b.getAttribute('data-v');
+      g.setAttribute('data-a', v);
+      if (v === 'b') {
+        score++; pf.textContent = '😊'; peng.classList.remove('hmm'); restart(peng, 'happy');
+        if (window.pengessoPop) { var r = b.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['💛', '🐧', '✨'], 12); }
+      } else {
+        pf.textContent = '😶'; peng.classList.remove('happy'); restart(peng, 'hmm');
+      }
+      draw();
+    });
+  });
+  next.addEventListener('click', function () {
+    if (q < 3) {
+      q++; g.setAttribute('data-a', ''); pf.textContent = '💭';
+      peng.classList.remove('happy', 'hmm'); draw();
+      return;
+    }
+    g.setAttribute('data-sc', score === 3 ? '3' : score ? '12' : '0');
+    g.setAttribute('data-end', '1');
+    if (score === 3 && window.pengessoPop) {
+      var r = g.querySelector('.like-row').getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['💛', '🐧', '🎉', '✨'], 22);
+    }
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    q = 1; score = 0; pf.textContent = '💭'; peng.classList.remove('happy', 'hmm');
+    g.setAttribute('data-a', ''); g.setAttribute('data-end', '0'); g.setAttribute('data-sc', '');
+    draw();
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード・.big）
+@@message
+迷ったら、「どっちのほうが自分を好きでいられるか」で選ぶ。
+@@tone
+素材の重さ：真面目（自分を好きになる）
+→ 見せ方：ポップに（ケチャップの赤とポテトの黄色。3つの場面で選ぶと、自分を好き度のハートがたまる）
+@@game_ja
+🍟 どっちの自分が好き？：3つの小さな場面（ポテトを床に落とした／買い物のあとのカート／飲み終わった缶とゴミ箱がない）で、2つから選ぶ。「拾う」「返しに行く」「持って帰る」を選ぶとペンギンが跳ねて💛が1つたまり「こういう私、ちょっと好き」。もう一方を選ぶと「誰も見ていなかった…でも、自分は見ていた」（責めない言い方。自己知覚理論の「自分の行動を自分が見ている」を感じる）。3つ終わると、ハートの数で結果が出る。「もう一回」でやり直せる。
+@@combo
+ペンギン × コーデュロイとフェルトのぬいぐるみ × 紙カップのフライドポテト
+@@cover
+An extremely cute, chubby round penguin made as a plush toy of corduroy and felt, with a gentle proud face and a plain white belly, bending down to pick up a single French fry from a clean floor with its flipper. Next to it is a realistic red paper cup of golden French fries. Bright simple warm yellow background with soft depth, cheerful light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

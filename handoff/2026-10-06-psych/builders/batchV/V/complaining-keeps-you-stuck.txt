@@ -1,0 +1,254 @@
+@@meta
+{"title": "Too much complaining can make you get used to a bad place", "label": "Small Shoe", "seq": 504, "mood": ["lift", "think"], "tags": ["psychology", "feelings", "mindset"], "thumbAlt": "A crocheted amigurumi penguin looking at one tiny sneaker that is clearly too small for its foot"}
+@@ja_title
+愚痴でガス抜きしすぎると、ひどい場所にも慣れてしまう
+@@ja_label
+小さな靴
+@@h1emoji
+👟
+@@section
+146「愚痴を言うと、ひどい環境にも慣れてしまう」
+@@vars
+    --bg: #fff5f2; --text: #36211d; --muted: #7d5f58;
+    --accent: #d9482b; --accent2: #3b8fd9; --h1: #3a1710; --big: #c23d22; --big-dark: #ffb3a1;
+    --glow1: rgba(255,130,100,.3); --glow2: rgba(90,170,255,.22); --glow3: rgba(255,200,90,.2);
+    --shadow: 0 20px 55px rgba(160,60,40,.18); --photo-bg: #ffe3dc;
+    --g1: #ff6b5b; --g2: #ff9a47; --g3: #3f9be6; --pop: #fff27a; --pop-text: #4a3500; --btn-text: #c23d22;
+@@css
+  /* 👟 小さすぎる靴：「愚痴」を押すと痛みは抜けるけど、靴は小さいまま・慣れが増える。「靴をかえる」で自由に */
+  .loop { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin-top: 14px; font-weight: 900; }
+  .loop .lp { padding: 8px 12px; border-radius: 999px; background: #ffe7e1; color: #8a2f1c; font-size: 14.5px; line-height: 1.3; }
+  .loop .ar { font-size: 18px; color: var(--muted); }
+
+  .stagebox { max-width: 440px; margin: 16px auto 0; padding: 14px; border-radius: 24px; background: #ffffff; color: #36211d; text-align: left;
+    box-shadow: 0 10px 24px rgba(90,20,0,.18); }
+  .pg { display: grid; grid-template-columns: 76px 1fr; gap: 12px; align-items: center; }
+  .pg-av { position: relative; width: 76px; height: 76px; display: grid; place-items: center; border-radius: 50%; background: #ffeee9; }
+  .pg-b { font-size: 40px; line-height: 1; }
+  .pg-face { position: absolute; right: -6px; top: -8px; font-size: 26px; line-height: 1; }
+  .pg-shoe { position: absolute; left: -4px; bottom: -6px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,.15); transition: transform .4s cubic-bezier(.3,1.6,.5,1); transform: scale(.72); }
+  .pg-shoe .se { font-size: 22px; line-height: 1; }
+  .game[data-s="done"] .pg-shoe { transform: scale(1.25); }
+  .puff { position: absolute; right: -10px; top: 18px; font-size: 26px; line-height: 1; opacity: 0; pointer-events: none; }
+  .puff.go { animation: puff .9s ease-out; }
+  @keyframes puff { 0% { opacity: 0; transform: translate(0, 0) scale(.6); } 30% { opacity: 1; } 100% { opacity: 0; transform: translate(26px, -34px) scale(1.4); } }
+  .pg-av.ouch { animation: shake .35s ease; }
+  .say { min-height: 56px; padding: 10px 14px; border-radius: 18px 18px 18px 6px; background: #fff0eb; font-weight: 900; font-size: 15.5px;
+    line-height: 1.4; display: flex; align-items: center; }
+  .say > span { display: none; }
+  .game[data-say="idle"] .s-idle, .game[data-say="walk"] .s-walk, .game[data-say="full"] .s-full, .game[data-say="vent"] .s-vent,
+  .game[data-say="numb"] .s-numb, .game[data-s="done"] .s-done { display: inline; }
+  .game[data-s="done"] .say > span:not(.s-done) { display: none; }
+  .game[data-say="numb"] .say { background: #eceaf2; color: #5a5470; }
+  .game[data-s="done"] .say { background: #fff6c2; animation: bounce-in .45s both; }
+
+  .bars { display: grid; gap: 10px; margin-top: 14px; }
+  .bar-l { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 14px; font-weight: 900; }
+  .bar-l .bn { font-size: 17px; }
+  .bar { position: relative; height: 16px; margin-top: 4px; border-radius: 999px; background: #f3e4df; overflow: hidden; }
+  .bar i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; transition: width .35s cubic-bezier(.2,1.2,.4,1); }
+  .b-ouch i { background: linear-gradient(90deg, #ffb347, #ff4d3a); }
+  .b-numb i { background: linear-gradient(90deg, #b8b2cc, #6f6890); }
+  .days { margin-top: 10px; font-size: 14.5px; font-weight: 900; color: #7d5f58; }
+  .days .dn { font-size: 20px; color: #36211d; }
+
+  .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px; margin: 14px auto 0; }
+  .acts .gbtn { width: 100%; padding: 12px 10px; font-size: 16px; }
+  .change { grid-column: 1 / -1; min-height: 60px; }
+  .game[data-numb="hi"] .change { animation: wiggle .9s ease-in-out infinite; }
+  .game[data-s="done"] .acts { display: none; }
+  .hint { margin-top: 12px; font-size: 15px; font-weight: 800; line-height: 1.45; }
+  .game[data-s="done"] .hint { display: none; }
+  .result { display: none; margin-top: 12px; padding: 14px 12px; border-radius: 20px; background: rgba(255,255,255,.22); }
+  .game[data-s="done"] .result { display: block; animation: bounce-in .5s both; }
+  .result > div { display: none; font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .game[data-s="done"][data-r="fast"] .r-fast, .game[data-s="done"][data-r="slow"] .r-slow { display: block; }
+  .again { display: none; }
+  .game[data-s="done"] .again { display: inline-flex; }
+@@dark
+  html[data-theme="dark"] .loop .lp { background: #43271f; color: #ffc6b8; }
+  html[data-theme="dark"] .stagebox { background: #22242f; color: #f3e9e6; }
+  html[data-theme="dark"] .pg-av { background: #3a2a27; }
+  html[data-theme="dark"] .pg-shoe { background: #30323d; }
+  html[data-theme="dark"] .say { background: #3a2c29; }
+  html[data-theme="dark"] .game[data-say="numb"] .say { background: #2f2d3a; color: #cfc9e6; }
+  html[data-theme="dark"] .game[data-s="done"] .say { background: #4a4018; }
+  html[data-theme="dark"] .bar { background: #3a3236; }
+  html[data-theme="dark"] .days { color: #cdb8b2; }
+  html[data-theme="dark"] .days .dn { color: #fff; }
+@@sents
+S1 | Complaining makes you feel a little better for a while. | 愚痴を言うと、しばらくは少しラクになります。
+S2 | But because you feel better, you may get used to a bad place. | でも、ラクになるぶん、ひどい場所にも慣れてしまうことがあります。
+S3 | Even if you keep saying "Ouch, ouch" about a shoe that is too small, the shoe stays small. | 小さすぎる靴に「痛い、痛い」と言い続けても、靴は小さいままです。
+S4 | How about complaining just a little, and thinking about a way to change the shoe? | 愚痴は少しにして、靴をかえる方法を考えてみませんか。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💨</span>
+      <span class="card-label">Letting Off Steam</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😑</span>
+      <span class="card-label">Getting Used</span>
+    </div>
+    <p>{S2}</p>
+    <div class="loop" aria-hidden="true">
+      <span class="lp">😣 It hurts</span><span class="ar">→</span><span class="lp">💨 Complain</span><span class="ar">→</span><span class="lp">😮‍💨 A little better</span><span class="ar">→</span><span class="lp">🔁 Stay</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">👟</span>
+      <span class="card-label">Small Shoe</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：小さすぎる靴 -->
+  <section class="game" data-s="play" data-say="idle" data-numb="lo" data-r="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The too-small shoe</div>
+    <div class="stagebox">
+      <div class="pg">
+        <div class="pg-av" aria-hidden="true">
+          <span class="pg-b">🐧</span><span class="pg-face">🙁</span>
+          <span class="pg-shoe"><span class="se">👟</span></span>
+          <span class="puff">💨</span>
+        </div>
+        <div class="say">
+          <span class="s-idle">"My shoe is too small…"</span>
+          <span class="s-walk">"Ouch, ouch, ouch…"</span>
+          <span class="s-full">"Too painful! I can't walk!"</span>
+          <span class="s-vent">"Phew. Complaining feels a little better."</span>
+          <span class="s-numb">"It's fine… I'm used to it."</span>
+          <span class="s-done">"Wow! My feet are free!"</span>
+        </div>
+      </div>
+      <div class="bars">
+        <div class="b-ouch">
+          <div class="bar-l"><span class="bl">😣 Ouch</span></div>
+          <div class="bar" aria-hidden="true"><i></i></div>
+        </div>
+        <div class="b-numb">
+          <div class="bar-l"><span class="bl">😑 Used to it</span></div>
+          <div class="bar" aria-hidden="true"><i></i></div>
+        </div>
+      </div>
+      <div class="days"><span class="dl">📅 Days in the small shoe:</span> <span class="dn">1</span></div>
+    </div>
+    <div class="acts">
+      <button class="gbtn walk" type="button">🚶 Walk</button>
+      <button class="gbtn vent" type="button">💨 Complain</button>
+      <button class="gbtn pop change" type="button">👟 Get a shoe that fits</button>
+    </div>
+    <div class="hint">Walk, complain, walk, complain… What happens?</div>
+    <div class="result">
+      <div class="r-fast">🎉 You changed it fast. Happy feet!</div>
+      <div class="r-slow">🎉 Free at last! Complaining made the small shoe OK… for too long.</div>
+    </div>
+    <div class="again-row"><button class="gbtn again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔧</span>
+      <span class="card-label">Change It</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Letting Off Steam ||| ガス抜き
+Getting Used ||| 慣れてしまう
+Small Shoe ||| 小さな靴
+Change It ||| かえてみる
+😣 It hurts ||| 😣 痛い
+💨 Complain ||| 💨 愚痴を言う
+😮‍💨 A little better ||| 😮‍💨 ちょっとラク
+🔁 Stay ||| 🔁 そのまま
+⚡ TRY IT ||| ⚡ やってみよう
+The too-small shoe ||| 小さすぎる靴
+"My shoe is too small…" ||| 「靴が小さすぎる…」
+"Ouch, ouch, ouch…" ||| 「痛い、痛い、痛い…」
+"Too painful! I can't walk!" ||| 「痛すぎる！もう歩けない！」
+"Phew. Complaining feels a little better." ||| 「ふう。愚痴を言ったら、ちょっとラクになった。」
+"It's fine… I'm used to it." ||| 「大丈夫…もう慣れたから。」
+"Wow! My feet are free!" ||| 「わあ！足が自由だ！」
+😣 Ouch ||| 😣 痛さ
+😑 Used to it ||| 😑 慣れ
+📅 Days in the small shoe: ||| 📅 小さな靴ですごした日数：
+🚶 Walk ||| 🚶 歩く
+👟 Get a shoe that fits ||| 👟 足に合う靴にかえる
+Walk, complain, walk, complain… What happens? ||| 歩いて、愚痴って、歩いて、愚痴って…どうなるかな？
+🎉 You changed it fast. Happy feet! ||| 🎉 早めにかえられた。足がよろこんでいます！
+🎉 Free at last! Complaining made the small shoe OK… for too long. ||| 🎉 やっと自由！愚痴のおかげで、小さな靴にずっとがまんできてしまっていました。
+↺ Try again ||| ↺ もう一回
+@@js
+/* 👟 小さすぎる靴：歩く＝痛さが増える。愚痴＝痛さが0に戻るけど、日数と「慣れ」が増える。靴をかえる＝おしまい。JS は data-* と幅と数字と絵文字だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var walk = g.querySelector('.walk'), vent = g.querySelector('.vent'), change = g.querySelector('.change'), again = g.querySelector('.again');
+  var ouchI = g.querySelector('.b-ouch i'), numbI = g.querySelector('.b-numb i'), dn = g.querySelector('.dn');
+  var face = g.querySelector('.pg-face'), av = g.querySelector('.pg-av'), puff = g.querySelector('.puff');
+  var ouch = 0, numb = 0, days = 1;
+  function pop(el, list, k) {
+    if (!window.pengessoPop) return;
+    var b = el.getBoundingClientRect();
+    window.pengessoPop(b.left + b.width / 2, b.top + b.height / 2, list, k);
+  }
+  function redo(el, c) { el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function draw() {
+    ouchI.style.width = ouch + '%';
+    numbI.style.width = Math.min(100, numb * 25) + '%';
+    dn.textContent = days;
+    g.setAttribute('data-numb', numb >= 3 ? 'hi' : 'lo');
+  }
+  walk.addEventListener('click', function () {
+    if (g.getAttribute('data-s') !== 'play') return;
+    ouch = Math.min(100, ouch + 25);
+    g.setAttribute('data-say', ouch >= 100 ? 'full' : 'walk');
+    face.textContent = ouch >= 100 ? '😫' : '😣';
+    redo(av, 'ouch'); draw();
+  });
+  vent.addEventListener('click', function () {
+    if (g.getAttribute('data-s') !== 'play') return;
+    ouch = 0; numb++; days++;
+    g.setAttribute('data-say', numb >= 3 ? 'numb' : 'vent');
+    face.textContent = numb >= 3 ? '😑' : '😮‍💨';
+    redo(puff, 'go'); draw();
+  });
+  change.addEventListener('click', function () {
+    if (g.getAttribute('data-s') !== 'play') return;
+    g.setAttribute('data-r', numb >= 2 ? 'slow' : 'fast');
+    g.setAttribute('data-s', 'done');
+    face.textContent = '😄'; ouch = 0; draw();
+    setTimeout(function () { pop(av, ['👟', '🐧', '✨', '🎉'], 16); }, 250);
+    if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+  });
+  again.addEventListener('click', function () {
+    ouch = 0; numb = 0; days = 1; face.textContent = '🙁';
+    g.setAttribute('data-say', 'idle'); g.setAttribute('data-r', ''); g.setAttribute('data-s', 'play');
+    draw();
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+愚痴でガス抜きしすぎると、ひどい場所にも慣れて抜け出せなくなる。愚痴は少しにして、靴をかえる方法を考える。
+@@tone
+素材の重さ：真面目（つらい場所から抜け出す話。仕事の話にはしない。愚痴を言う人を責めない）
+→ 見せ方：ポップに（コーラルと空色。小さすぎる靴をはいたペンギンで、愚痴の「ラクになる→慣れる」を体験する）
+@@game_ja
+👟 小さすぎる靴：「🚶 歩く」を押すと「痛さ」のメーターが上がる（4回で「痛すぎる！」）。「💨 愚痴を言う」を押すと、湯気が出て痛さは0に戻るけれど、「小さな靴ですごした日数」と「慣れ」のメーターが増えていく。3回愚痴ると、ペンギンが😑「大丈夫…もう慣れたから。」と言い出し、「👟 足に合う靴にかえる」ボタンがゆれる。靴をかえると靴が大きくなって「足が自由だ！」。愚痴が2回以上だと「愚痴のおかげで、小さな靴にずっとがまんできてしまっていました」。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of crocheted amigurumi yarn, sitting and looking puzzled at one realistic tiny red canvas sneaker that is clearly much too small for its foot. A simple bright coral background that fades into soft sky blue with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × あみぐるみ × 小さすぎるスニーカー

@@ -1,0 +1,1 @@
+setTimeout(function(){ for (var i=0;i<6;i++) __tap('.place', i%3); __log('six', __st()); __log('ripe', document.querySelectorAll('.fruit.ripe').length); __tap('.fruit',0); __log('pick1', __st()); }, 300);

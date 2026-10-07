@@ -1,0 +1,258 @@
+@@meta
+{"title": "Listen 100 times first, and then say only 1 thing", "label": "Listen First", "seq": 492, "mood": ["lift", "learn"], "tags": ["psychology", "friends", "tips"], "thumbAlt": "A crocheted amigurumi penguin listening closely with one flipper near its head, next to a vintage tin-can string telephone"}
+@@ja_title
+100聞いてから、言うのは1つだけ
+@@ja_label
+まず聞く
+@@h1emoji
+🎧
+@@section
+117「100を聞いて、小言は1つ」
+@@vars
+    --bg: #f2fffb; --text: #1f3330; --muted: #5f7a75;
+    --accent: #0f9e8a; --accent2: #ff7a59; --h1: #0d3b35; --big: #0b7f70; --big-dark: #7ff0dc;
+    --glow1: rgba(60,220,190,.3); --glow2: rgba(255,140,100,.2); --glow3: rgba(255,210,90,.18);
+    --shadow: 0 20px 55px rgba(20,110,95,.18); --photo-bg: #dcfff6;
+    --g1: #10b39b; --g2: #2bc4c9; --g3: #ff8a63; --pop: #ffd84d; --pop-text: #3b2b00; --btn-text: #0b7f70;
+@@css
+  /* 🎧 100回「うんうん」：先に言うと心の扉が閉じる。100聞いたら、1つだけ言う */
+  .ratio { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin-top: 14px; }
+  .ratio > div { padding: 12px 8px; border-radius: 20px; text-align: center; font-weight: 900; font-size: 15px; line-height: 1.3; }
+  .ratio .r-ear { background: #d9fbf3; color: #0b6b5e; }
+  .ratio .r-say { background: #ffe6dc; color: #a2401f; }
+  .ratio .r-num { display: block; font-size: 30px; letter-spacing: -.02em; }
+  .ratio .r-to { font-size: 22px; font-weight: 900; color: var(--muted); }
+
+  .kanji { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; }
+  .kanji .kj { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 18px; background: #0f9e8a; color: #fff;
+    font-size: 40px; font-weight: 900; line-height: 1; }
+  .kanji .eq, .kanji .plus { font-size: 24px; font-weight: 900; color: var(--muted); }
+  .kanji .part { display: grid; justify-items: center; gap: 2px; padding: 8px 10px; border-radius: 16px; background: #fff3d1; color: #6b4b00; font-weight: 900; }
+  .kanji .part b { font-size: 26px; line-height: 1.1; }
+  .kanji .pn { font-size: 12.5px; letter-spacing: .02em; }
+
+  .chat { max-width: 440px; margin: 16px auto 0; padding: 14px; border-radius: 24px; background: #ffffff; color: #1f3330; text-align: left;
+    box-shadow: 0 10px 24px rgba(0,60,50,.18); }
+  .fr { display: grid; grid-template-columns: 62px 1fr; align-items: center; gap: 10px; }
+  .fr-av { position: relative; width: 62px; height: 62px; display: grid; place-items: center; border-radius: 50%; background: #e3faf5; font-size: 34px; }
+  .fr-face { position: absolute; right: -6px; top: -6px; font-size: 24px; line-height: 1; }
+  .fr-face.nod { animation: hop .35s ease; }
+  .fbub { position: relative; min-height: 52px; padding: 10px 14px; border-radius: 18px 18px 18px 6px; background: #e9fbf7; font-weight: 900; font-size: 15.5px;
+    line-height: 1.4; display: flex; align-items: center; }
+  .fbub > span { display: none; }
+  .game[data-s="talk"][data-t="0"] .fb0, .game[data-s="talk"][data-t="1"] .fb1, .game[data-s="talk"][data-t="2"] .fb2,
+  .game[data-s="talk"][data-t="3"] .fb3, .game[data-s="early"] .fb-early, .game[data-s="done"] .fb-done { display: inline; }
+  .game[data-s="early"] .fbub { background: #ffe1d6; animation: shake .35s ease; }
+  .game[data-s="done"] .fbub { background: #fff1b8; animation: bounce-in .45s both; }
+  .me { display: none; margin: 10px 0 0 auto; width: fit-content; max-width: 86%; padding: 10px 14px; border-radius: 18px 18px 6px 18px;
+    background: #0f9e8a; color: #fff; font-weight: 900; font-size: 15.5px; line-height: 1.4; }
+  .game[data-s="early"] .me, .game[data-s="done"] .me { display: block; animation: bounce-in .4s both; }
+
+  .listen { max-width: 440px; margin: 14px auto 0; }
+  .lrow { display: flex; align-items: baseline; justify-content: center; gap: 6px; font-weight: 900; }
+  .lrow .ll { font-size: 15px; }
+  .lrow .ln { font-size: 40px; line-height: 1; letter-spacing: -.02em; }
+  .lrow .lmax { font-size: 15px; opacity: .9; }
+  .lmeter { position: relative; height: 16px; margin-top: 8px; border-radius: 999px; background: rgba(255,255,255,.28); overflow: hidden; }
+  .lmeter i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; background: #fff; transition: width .3s cubic-bezier(.2,1.2,.4,1); }
+  .game[data-full="1"] .lmeter i { background: var(--pop); }
+  .combo { height: 24px; margin-top: 6px; font-size: 15px; font-weight: 900; }
+  .combo .cx { display: inline-block; opacity: 0; transform: scale(.6); transition: opacity .15s ease, transform .15s ease; }
+  .game[data-combo="1"] .combo .cx { opacity: 1; transform: none; }
+
+  .btns { display: grid; gap: 12px; max-width: 440px; margin: 12px auto 0; }
+  .uh { width: 100%; min-height: 76px; font-size: clamp(22px, 6vw, 28px); }
+  .game:not([data-s="talk"]) .uh { display: none; }
+  .say { width: 100%; }
+  .game[data-full="1"][data-s="talk"] .say { background: var(--pop); color: var(--pop-text); animation: wiggle .9s ease-in-out infinite; }
+  .game:not([data-s="talk"]) .say { display: none; }
+  .again { display: none; }
+  .game[data-s="early"] .again, .game[data-s="done"] .again { display: inline-flex; }
+
+  .result { margin-top: 12px; min-height: 64px; }
+  .result > div { display: none; font-size: 16px; font-weight: 900; line-height: 1.45; }
+  .game[data-s="talk"] .r-hint, .game[data-s="early"] .r-early, .game[data-s="done"] .r-done { display: block; }
+  .game[data-s="early"] .r-early, .game[data-s="done"] .r-done { animation: bounce-in .45s both; }
+@@dark
+  html[data-theme="dark"] .ratio .r-ear { background: #183a35; color: #9ff3e2; }
+  html[data-theme="dark"] .ratio .r-say { background: #45281f; color: #ffc2ad; }
+  html[data-theme="dark"] .kanji .part { background: #3d3418; color: #ffe39a; }
+  html[data-theme="dark"] .chat { background: #22242f; color: #ecf6f4; }
+  html[data-theme="dark"] .fr-av { background: #1d3a36; }
+  html[data-theme="dark"] .fbub { background: #2b3b39; }
+  html[data-theme="dark"] .game[data-s="early"] .fbub { background: #4a2d24; }
+  html[data-theme="dark"] .game[data-s="done"] .fbub { background: #4a3f18; }
+@@sents
+S1 | When you want to tell someone something, first listen and say "uh-huh" 100 times. | 人に何か言いたいときは、まず「うんうん」と100回聞きます。
+S2 | After that, say only 1 thing. | そのあとで、言うことは1つだけにします。
+S3 | People want to listen to a person who listened to them. | 人は、自分の話を聞いてくれた人の言うことなら、聞きたくなるからです。
+S4 | People say the kanji for "listen" (聴) has an ear, an eye, and a heart in it. | 「聴く」という漢字には、耳と目と心が入っている、と言われます。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎧</span>
+      <span class="card-label">Listen First</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">1️⃣</span>
+      <span class="card-label">Only One</span>
+    </div>
+    <p>{S2}</p>
+    <div class="ratio" aria-hidden="true">
+      <div class="r-ear"><span class="r-num">100</span><span class="r-w">🎧 listen</span></div>
+      <div class="r-to">:</div>
+      <div class="r-say"><span class="r-num">1</span><span class="r-w">💬 say</span></div>
+    </div>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：100回「うんうん」 -->
+  <section class="game" data-s="talk" data-t="0" data-full="0" data-combo="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Listen 100, then say 1</div>
+    <div class="game-hint">My friend has a lot to say. Can you wait?</div>
+    <div class="chat">
+      <div class="fr">
+        <div class="fr-av" aria-hidden="true">🐧<span class="fr-face">😣</span></div>
+        <div class="fbub">
+          <span class="fb0">Listen… I stayed up all night again.</span>
+          <span class="fb1">I watched videos until 3 a.m.…</span>
+          <span class="fb2">And today I was so sleepy.</span>
+          <span class="fb3">I know, I know… but it was fun.</span>
+          <span class="fb-early">"You don't understand me…" 😤</span>
+          <span class="fb-done">"You're right. I'll try it tonight!" 😊</span>
+        </div>
+      </div>
+      <div class="me">But please go to bed early tonight, OK?</div>
+    </div>
+    <div class="listen">
+      <div class="lrow"><span class="ll">🎧 Listened:</span> <span class="ln">0</span> <span class="lmax">/ 100</span></div>
+      <div class="lmeter" aria-hidden="true"><i></i></div>
+      <div class="combo"><span class="cx">🔥 Uh-huh, uh-huh! ×2</span></div>
+    </div>
+    <div class="btns">
+      <button class="gbtn pop uh" type="button">🙂 Uh-huh</button>
+      <button class="gbtn ghost say" type="button">💬 Say 1 thing</button>
+    </div>
+    <div class="result">
+      <div class="r-hint">Tap "Uh-huh" to listen. Tap fast for a combo.</div>
+      <div class="r-early">🚪 Too early! The door of the heart closed.</div>
+      <div class="r-done">🎉 You listened first, so your 1 thing got in!</div>
+    </div>
+    <div class="again-row"><button class="gbtn again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔑</span>
+      <span class="card-label">The Reason</span>
+    </div>
+    <p class="big">{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💗</span>
+      <span class="card-label">Ear Eye Heart</span>
+    </div>
+    <p>{S4}</p>
+    <div class="kanji" aria-hidden="true">
+      <span class="kj">聴</span><span class="eq">=</span>
+      <span class="part"><b>耳</b><span class="pn">ear</span></span><span class="plus">+</span>
+      <span class="part"><b>目</b><span class="pn">eye</span></span><span class="plus">+</span>
+      <span class="part"><b>心</b><span class="pn">heart</span></span>
+    </div>
+  </section>
+@@ui
+Listen First ||| まず聞く
+Only One ||| 1つだけ
+The Reason ||| わけ
+Ear Eye Heart ||| 耳と目と心
+🎧 listen ||| 🎧 聞く
+💬 say ||| 💬 言う
+ear ||| 耳
+eye ||| 目
+heart ||| 心
+⚡ TRY IT ||| ⚡ やってみよう
+Listen 100, then say 1 ||| 100聞いて、1つ言う
+My friend has a lot to say. Can you wait? ||| 友だちの話が止まりません。待てるかな？
+Listen… I stayed up all night again. ||| 聞いてよ…また夜ふかししちゃった。
+I watched videos until 3 a.m.… ||| 夜中の3時まで動画を見てて…
+And today I was so sleepy. ||| それで今日、すっごく眠くて。
+I know, I know… but it was fun. ||| わかってる、わかってる…でも楽しかったんだもん。
+"You don't understand me…" 😤 ||| 「わかってないなあ…」😤
+"You're right. I'll try it tonight!" 😊 ||| 「そうだね。今夜やってみる！」😊
+But please go to bed early tonight, OK? ||| でも、今夜は早く寝てね。
+🎧 Listened: ||| 🎧 聞いた回数：
+/ 100 ||| / 100
+🔥 Uh-huh, uh-huh! ×2 ||| 🔥 うんうん、うんうん！×2
+🙂 Uh-huh ||| 🙂 うんうん
+💬 Say 1 thing ||| 💬 1つだけ言う
+Tap "Uh-huh" to listen. Tap fast for a combo. ||| 「うんうん」を押して聞こう。速く押すとコンボ。
+🚪 Too early! The door of the heart closed. ||| 🚪 早すぎ！心の扉が閉じちゃった。
+🎉 You listened first, so your 1 thing got in! ||| 🎉 先に聞いたから、1つの言葉がちゃんと届いた！
+↺ Try again ||| ↺ もう一回
+@@js
+/* 🎧 100回「うんうん」：うんうん1回＝5、速い連打＝10。100になる前に言うと扉が閉じる。JS は data-* と数字と絵文字だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var uh = g.querySelector('.uh'), say = g.querySelector('.say'), again = g.querySelector('.again');
+  var ln = g.querySelector('.ln'), bar = g.querySelector('.lmeter i'), face = g.querySelector('.fr-face');
+  var pts = 0, last = 0, t = 0, ct = 0;
+  function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
+  function draw() {
+    ln.textContent = pts;
+    bar.style.width = pts + '%';
+    face.textContent = pts >= 100 ? '😊' : pts >= 60 ? '🙂' : pts >= 25 ? '😐' : '😣';
+    g.setAttribute('data-full', pts >= 100 ? '1' : '0');
+  }
+  function nod() { face.classList.remove('nod'); void face.offsetWidth; face.classList.add('nod'); }
+  function pop(el, list, n) {
+    if (!window.pengessoPop) return;
+    var k = el.getBoundingClientRect();
+    window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, list, n);
+  }
+  uh.addEventListener('click', function () {
+    if (g.getAttribute('data-s') !== 'talk') return;
+    var n = now(), fast = n - last < 450; last = n;
+    var before = pts;
+    pts = Math.min(100, pts + (fast ? 10 : 5));
+    g.setAttribute('data-combo', fast ? '1' : '0');
+    clearTimeout(ct); ct = setTimeout(function () { g.setAttribute('data-combo', '0'); }, 700);
+    t = (t + 1) % 4; g.setAttribute('data-t', t);
+    draw(); nod();
+    if (before < 100 && pts >= 100) pop(face, ['🎧', '💗', '✨'], 10);
+  });
+  say.addEventListener('click', function () {
+    if (g.getAttribute('data-s') !== 'talk') return;
+    if (pts < 100) { face.textContent = '😤'; g.setAttribute('data-s', 'early'); return; }
+    face.textContent = '😊';
+    g.setAttribute('data-s', 'done');
+    pop(face, ['🐧', '💗', '✨', '🌙'], 16);
+    if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+  });
+  again.addEventListener('click', function () {
+    pts = 0; t = 0; last = 0;
+    g.setAttribute('data-t', '0'); g.setAttribute('data-combo', '0'); g.setAttribute('data-s', 'talk');
+    draw();
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・.big）
+S4 → 使った（4枚目のカード）
+@@message
+100聞いてから、言うのは1つだけ。人は、話を聞いてくれた人の言うことを聞きたくなる。
+@@tone
+素材の重さ：ふつう（話の聞き方のコツ）
+→ 見せ方：ポップに（ミントとコーラル。「うんうん」を連打して100までためる。早く言うと心の扉が閉じる）
+@@game_ja
+🎧 100回「うんうん」：夜ふかしの話が止まらない友だちのペンギン。「🙂 うんうん」を押すたびに「聞いた回数」が5増える（速く2回押すと「うんうん、うんうん！×2」で10）。友だちの顔が 😣→😐→🙂→😊 と変わる。100になる前に「💬 1つだけ言う」を押すと「わかってないなあ…😤」で扉が閉じる。100まで聞いてから押すと「でも、今夜は早く寝てね」が届いて「そうだね。今夜やってみる！😊」。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of crocheted amigurumi yarn, leaning forward and listening closely with one flipper raised near its head, next to one realistic vintage tin-can string telephone with a soft cotton string. A simple bright mint-green background that fades into soft coral with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × あみぐるみ × 糸電話

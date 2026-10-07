@@ -1,0 +1,1 @@
+function play(n){ if(n>=4){ __log("st",__st()); __log("stars", document.querySelector(".stars").innerHTML); return;} __tap('.ask'); setTimeout(function(){ __tap(n%2?'.chg':'.dig'); setTimeout(function(){ if(n<3) __tap('.nextb'); play(n+1);},200);},2900);} play(0);

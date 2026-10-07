@@ -1,0 +1,262 @@
+@@meta
+{"title": "Small unfinished tasks quietly make your heart feel heavy", "label": "Open Tasks", "seq": 402, "mood": ["lift", "energy"], "tags": ["psychology", "productivity", "tips"], "thumbAlt": "A chubby felted wool penguin proudly holding a small hand broom and dustpan in a bright, tidy room"}
+@@ja_title
+済ませていない小さな用事が、心をこっそり重くする
+@@ja_label
+やり残し
+@@h1emoji
+🧹
+@@section
+1「『なぜか心が晴れない』の正体＝やり残し」
+@@vars
+    --bg: #f3f8ff; --text: #1d2a44; --muted: #6a7894;
+    --accent: #2f7bff; --accent2: #20c6b6; --h1: #13306b; --big: #1f5fe0; --big-dark: #9cc4ff;
+    --glow1: rgba(255,214,80,.32); --glow2: rgba(47,123,255,.18); --glow3: rgba(32,198,182,.18);
+    --shadow: 0 20px 55px rgba(40,90,200,.16); --photo-bg: #e3eeff;
+    --g1: #2f7bff; --g2: #4d9bff; --g3: #20c6b6; --pop: #ffe14d; --pop-text: #4a3500; --btn-text: #1f5fe0;
+@@css
+  .card p + p { margin-top: 10px; }
+
+  /* 📱 心のスマホ：開きっぱなしの用事が多いほど「ごきげん」の読み込みが遅い */
+  .phone { position: relative; max-width: 380px; margin: 16px auto 0; padding: 14px 12px; border-radius: 28px; background: #fff; color: #1d2a44;
+    box-shadow: 0 0 0 6px rgba(15,30,70,.82), 0 16px 30px rgba(0,0,0,.2); overflow: hidden; text-align: left; }
+  @media (max-width: 600px) { .phone { margin: 16px 6px 0; } }
+  .haze { position: absolute; inset: 0; background: linear-gradient(180deg, #aeb8cb, #d6dbe6); opacity: calc(1 - var(--clear, 0));
+    transition: opacity .45s ease; pointer-events: none; }
+  .phone > *:not(.haze) { position: relative; }
+  .ph-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 16px; font-weight: 900; }
+  .ph-spin { width: 24px; height: 24px; flex: 0 0 auto; border-radius: 50%; border: 4px solid rgba(47,123,255,.22); border-top-color: #2f7bff;
+    animation: spin var(--spin, 2.8s) linear infinite; }
+  .game[data-st="done"] .ph-spin { animation: none; border-color: #20c6b6; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .load { height: 16px; margin-top: 10px; border-radius: 999px; background: rgba(29,42,68,.12); overflow: hidden; }
+  .load i { display: block; width: 0; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #ffd23f, #2f7bff, #20c6b6); }
+  .ph-stat { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 10px; margin-top: 10px; font-size: 14px; font-weight: 900; }
+  .cnt { display: inline-block; min-width: 1.6em; margin-left: 4px; padding: 2px 8px; border-radius: 999px; background: #ff5a5a; color: #fff; text-align: center; }
+  .cnt.bump { animation: bounce-in .35s both; }
+  .game[data-open="0"] .cnt { background: #20c6b6; }
+  .sp { padding: 3px 10px; border-radius: 999px; font-size: 13px; }
+  .sp-slow { background: #e3e7ef; color: #4f596d; }
+  .sp-fast { display: none; background: #fff1a6; color: #5a4300; }
+  .game[data-light="1"] .sp-slow { display: none; }
+  .game[data-light="1"] .sp-fast { display: inline-block; }
+  .apps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+  .app { position: relative; display: flex; flex-direction: column; align-items: center; gap: 5px; min-height: 78px; padding: 9px 2px 7px; border: 0; border-radius: 18px;
+    background: #eaf2ff; color: #1d2a44; font: inherit; font-size: 11.5px; font-weight: 900; line-height: 1.2; cursor: pointer;
+    box-shadow: 0 4px 0 rgba(31,95,224,.28); -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: transform .08s ease; }
+  .app .ai { font-size: 28px; line-height: 1; }
+  .app .an { overflow-wrap: anywhere; }
+  .app:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(31,95,224,.28); }
+  .app:focus-visible { outline: 3px solid #2f7bff; outline-offset: 2px; }
+  .app::after { content: "✓"; position: absolute; inset: 0; display: grid; place-items: center; border-radius: 18px; background: rgba(32,198,182,.9); color: #fff;
+    font-size: 32px; font-weight: 900; opacity: 0; transform: scale(.5); transition: opacity .25s ease, transform .3s cubic-bezier(.2,1.5,.4,1); }
+  .app.done { cursor: default; box-shadow: none; animation: close-app .35s ease; }
+  .app.done::after { opacity: 1; transform: none; }
+  @keyframes close-app { 40% { transform: scale(.8); } 100% { transform: scale(1); } }
+
+  .go-row { margin-top: 16px; }
+  .game[data-st="run"] .go-row { display: none; }
+  .go .b-again { display: none; }
+  .game[data-st="done"] .go .b-start { display: none; }
+  .game[data-st="done"] .go .b-again { display: inline; }
+  .gmsg { margin-top: 14px; min-height: 52px; font-size: 15.5px; font-weight: 900; line-height: 1.45; }
+  .gmsg > div { display: none; }
+  .game[data-st="idle"] .m-idle, .game[data-st="run"] .m-run, .game[data-st="done"] .res { display: block; }
+  .m-run { animation: hop .7s ease-in-out infinite; }
+  .res { animation: bounce-in .5s both; }
+  .time { font-size: clamp(40px, 11vw, 56px); line-height: 1; letter-spacing: -.02em; }
+  .time small { font-size: .38em; margin-left: 4px; letter-spacing: .04em; }
+  .v-light, .v-heavy { display: none; margin-top: 8px; }
+  .game[data-r="light"] .v-light, .game[data-r="heavy"] .v-heavy { display: block; }
+  .best { margin-top: 8px; font-size: 13.5px; opacity: .92; }
+  .best[hidden] { display: none; }
+@@dark
+  html[data-theme="dark"] .phone { background: #1f2638; color: #e8eefc; }
+  html[data-theme="dark"] .haze { background: linear-gradient(180deg, #3b4357, #2c3244); }
+  html[data-theme="dark"] .app { background: #2b3755; color: #e8eefc; }
+  html[data-theme="dark"] .sp-slow { background: #3a4257; color: #d4dae8; }
+  html[data-theme="dark"] .load { background: rgba(255,255,255,.12); }
+@@sents
+S1 | Some days, your heart feels cloudy even with no worries. | 悩みもないのに、なぜか心が晴れない日があります。
+S2 | The reason may be small tasks you think "I have to do," but have not done yet. | その正体は、「やらなくちゃ」と思いながら済ませていない、小さな用事かもしれません。
+S3 | Even if your head forgets them, it seems your heart remembers. | 頭は忘れていても、心はちゃんと覚えているそうです。
+S4 | It is like a computer with too many apps open. | アプリを開きすぎたパソコンみたいなものです。
+S5 | When you finish them one by one, you feel fresh, like after a big cleaning. | 1つずつ終わらせていくと、大掃除のあとみたいにスッキリします。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">☁️</span>
+      <span class="card-label">Cloudy Days</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📌</span>
+      <span class="card-label">Small To-Dos</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💻</span>
+      <span class="card-label">Too Many Apps</span>
+    </div>
+    <p>{S3}</p>
+    <p>{S4}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：ごきげんの読み込み（開きっぱなしの用事が多いほど遅い。閉じるほど速く・明るくなる） -->
+  <section class="game" data-st="idle" data-open="8" data-light="0" data-r="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Load your good mood</div>
+    <div class="game-hint">Your heart has 8 little to-dos open. The more you finish, the faster it loads.</div>
+    <div class="phone">
+      <div class="haze" aria-hidden="true"></div>
+      <div class="ph-top"><span class="ph-name">😊 Good Mood</span><span class="ph-spin" aria-hidden="true"></span></div>
+      <div class="load" aria-hidden="true"><i></i></div>
+      <div class="ph-stat"><span class="st"><span class="st-l">Open to-dos:</span><span class="cnt">8</span></span><span class="sp sp-slow">🐢 Heavy</span><span class="sp sp-fast">⚡ Light</span></div>
+      <div class="apps">
+        <button class="app" type="button" aria-pressed="false"><span class="ai" aria-hidden="true">🦷</span><span class="an">Dentist</span></button>
+        <button class="app" type="button" aria-pressed="false"><span class="ai" aria-hidden="true">🏦</span><span class="an">Bank transfer</span></button>
+        <button class="app" type="button" aria-pressed="false"><span class="ai" aria-hidden="true">✂️</span><span class="an">Cut nails</span></button>
+        <button class="app" type="button" aria-pressed="false"><span class="ai" aria-hidden="true">🚲</span><span class="an">Bike tires</span></button>
+        <button class="app" type="button" aria-pressed="false"><span class="ai" aria-hidden="true">🚽</span><span class="an">Clean toilet</span></button>
+        <button class="app" type="button" aria-pressed="false"><span class="ai" aria-hidden="true">📞</span><span class="an">Call home</span></button>
+        <button class="app" type="button" aria-pressed="false"><span class="ai" aria-hidden="true">✈️</span><span class="an">Book a trip</span></button>
+        <button class="app" type="button" aria-pressed="false"><span class="ai" aria-hidden="true">📖</span><span class="an">That book</span></button>
+      </div>
+    </div>
+    <div class="go-row"><button class="gbtn pop go" type="button"><span class="b-start">▶ Start loading</span><span class="b-again">↺ Open them again</span></button></div>
+    <div class="gmsg">
+      <div class="m-idle">Tip: you can finish to-dos before you start, too.</div>
+      <div class="m-run">Loading… tap the to-dos to make it faster! 💨</div>
+      <div class="res">
+        <div class="time"><span class="tm">0.0</span><small class="tu">sec</small></div>
+        <div class="v-light">☀️ All closed! Light and fast, like after a big cleaning.</div>
+        <div class="v-heavy">🐢 It loaded, but slowly. Some to-dos are still open.</div>
+        <div class="best" hidden><span class="bl">🏆 Your best:</span> <span class="best-s">0.0</span> <span class="bu">sec</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">✨</span>
+      <span class="card-label">One by One</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+Cloudy Days ||| 晴れない日
+Small To-Dos ||| 小さな用事
+Too Many Apps ||| 開きすぎ
+One by One ||| 1つずつ
+⚡ TRY IT ||| ⚡ やってみよう
+Load your good mood ||| ごきげんを読み込もう
+Your heart has 8 little to-dos open. The more you finish, the faster it loads. ||| 心の中で、小さな用事が8つ開きっぱなし。終わらせるほど、読み込みが速くなります。
+😊 Good Mood ||| 😊 ごきげん
+Open to-dos: ||| 開いている用事：
+🐢 Heavy ||| 🐢 重い
+⚡ Light ||| ⚡ 軽い
+Dentist ||| 歯医者
+Bank transfer ||| 振込
+Cut nails ||| 爪切り
+Bike tires ||| 自転車の空気
+Clean toilet ||| トイレ掃除
+Call home ||| 実家に電話
+Book a trip ||| 旅行の予約
+That book ||| 読みかけの本
+▶ Start loading ||| ▶ 読み込みスタート
+↺ Open them again ||| ↺ もう一回ぜんぶ開く
+Tip: you can finish to-dos before you start, too. ||| スタートの前に、用事を終わらせておいてもOKです。
+Loading… tap the to-dos to make it faster! 💨 ||| 読み込み中…用事をタップすると速くなるよ！💨
+sec ||| 秒
+☀️ All closed! Light and fast, like after a big cleaning. ||| ☀️ ぜんぶ閉じた！大掃除のあとみたいに、軽くて速い。
+🐢 It loaded, but slowly. Some to-dos are still open. ||| 🐢 読み込めたけど、ゆっくり。まだ開いている用事があります。
+🏆 Your best: ||| 🏆 自己ベスト：
+@@js
+/* 📱 ごきげんの読み込み：JS は data-* と数字と style だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var apps = [].slice.call(g.querySelectorAll('.app')), go = g.querySelector('.go'), bar = g.querySelector('.load i'),
+      cnt = g.querySelector('.cnt'), phone = g.querySelector('.phone'), best = g.querySelector('.best');
+  var KEY = 'pengesso-unfinished-tasks-weigh-on-you-best', p = 0, t0 = 0, last = 0;
+  function now() { return (window.performance && performance.now) ? performance.now() : Date.now(); }
+  function open() { return apps.filter(function (a) { return !a.classList.contains('done'); }).length; }
+  function paint() {
+    var n = open();
+    g.setAttribute('data-open', n);
+    cnt.textContent = n;
+    g.setAttribute('data-light', n <= 2 ? '1' : '0');
+    phone.style.setProperty('--clear', ((8 - n) / 8).toFixed(3));
+    phone.style.setProperty('--spin', (0.5 + n * 0.3).toFixed(2) + 's');
+  }
+  function showBest() {
+    var b = 0; try { b = parseFloat(localStorage.getItem(KEY)) || 0; } catch (e) {}
+    if (b) { best.hidden = false; best.querySelector('.best-s').textContent = b.toFixed(1); }
+  }
+  function pop(el, list, n) {
+    if (!window.pengessoPop) return;
+    var r = el.getBoundingClientRect();
+    window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+  }
+  apps.forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (a.classList.contains('done') || g.getAttribute('data-st') === 'done') return;
+      a.classList.add('done'); a.setAttribute('aria-pressed', 'true');
+      cnt.classList.remove('bump'); void cnt.offsetWidth; cnt.classList.add('bump');
+      paint();
+      pop(a, ['✅', '✨'], 6);
+      if (navigator.vibrate) { try { navigator.vibrate(12); } catch (e) {} }
+    });
+  });
+  function step() {
+    var t = now(), dt = Math.min(0.1, (t - last) / 1000); last = t;
+    p += dt * 100 / (1 + open() * 2.2);
+    if (p >= 100) { bar.style.width = '100%'; finish(); return; }
+    bar.style.width = p.toFixed(1) + '%';
+    setTimeout(step, 30);
+  }
+  function finish() {
+    var sec = (now() - t0) / 1000, n = open();
+    g.querySelector('.tm').textContent = sec.toFixed(1);
+    g.setAttribute('data-r', n === 0 ? 'light' : 'heavy');
+    g.setAttribute('data-st', 'done');
+    if (n === 0) {
+      try { var b = parseFloat(localStorage.getItem(KEY)) || 0; if (!b || sec < b) localStorage.setItem(KEY, sec.toFixed(1)); } catch (e) {}
+      showBest();
+      pop(g.querySelector('.time'), ['☀️', '🧹', '✨', '🐧'], 18);
+    }
+  }
+  go.addEventListener('click', function () {
+    var s = g.getAttribute('data-st');
+    if (s === 'idle') {
+      g.setAttribute('data-st', 'run'); p = 0; bar.style.width = '0';
+      t0 = last = now(); setTimeout(step, 30);
+    } else if (s === 'done') {
+      apps.forEach(function (a) { a.classList.remove('done'); a.setAttribute('aria-pressed', 'false'); });
+      p = 0; bar.style.width = '0'; g.setAttribute('data-r', ''); g.setAttribute('data-st', 'idle'); paint();
+    }
+  });
+  showBest(); paint();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・1文目）
+S4 → 使った（3枚目のカード・2文目）
+S5 → 使った（4枚目のカード・.big）
+@@message
+済ませていない小さな「やらなくちゃ」が、心をこっそり重くする。1つずつ終わらせるとスッキリする。
+@@tone
+素材の重さ：ふつう（なんとなく晴れない日の正体）
+→ 見せ方：ポップに（青と黄色。心のスマホで「ごきげん」を読み込む）
+@@game_ja
+📱 ごきげんの読み込み：心のスマホに、やり残しの用事が8つ開きっぱなし（歯医者・振込・爪切り・自転車の空気・トイレ掃除・実家に電話・旅行の予約・読みかけの本）。「読み込みスタート」を押すと「😊 ごきげん」のバーが伸びるが、開いている用事が多いほど遅い（くるくるも遅く、画面もくもっている）。用事をタップすると ✓ で閉じて、バーが速く・画面が明るくなる。ぜんぶ閉じて読み込めたら ☀️ と秒数、自己ベストを端末に覚える。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain white belly (no rings or patterns on the belly), made of soft felted wool, standing proudly in a bright, airy room and holding one realistic small wooden hand broom with a matching dustpan beside its feet, looking relieved and fresh. Pale sky-blue background with soft depth and a hint of morning sunlight, minimal and uncluttered. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × ふわふわ羊毛（フェルト）× ほうきとちりとり

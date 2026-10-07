@@ -1,0 +1,237 @@
+@@meta
+{"title": "A first impression becomes an adjective and changes how people see you later", "label": "First Impression", "seq": 436, "mood": ["lift", "learn"], "tags": ["psychology", "friends", "tips"], "thumbAlt": "A low-poly wood and paper penguin smiling brightly into a small round hand mirror"}
+@@ja_title
+第一印象は形容詞になって、そのあとの見え方を決める
+@@ja_label
+第一印象
+@@h1emoji
+🏷️
+@@section
+40「第一印象は形容詞になる」
+@@vars
+    --bg: #f2f8ff; --text: #1d2b45; --muted: #63748f;
+    --accent: #2f6fe0; --accent2: #22b5d8; --h1: #142446; --big: #2259c7; --big-dark: #9cc2ff;
+    --glow1: rgba(60,140,255,.24); --glow2: rgba(34,195,230,.2); --glow3: rgba(255,214,90,.3);
+    --shadow: 0 20px 55px rgba(40,90,190,.18); --photo-bg: #e0ecff;
+    --g1: #3a7bff; --g2: #5b6cff; --g3: #21b8e0; --pop: #ffe066; --pop-text: #4a3500; --btn-text: #2357c4;
+@@css
+  /* 🏷️ 形容詞スロット：第一印象（暗い／明るい）を選ぶ → 同じ行動をする → スロットが回って、まわりの人の「呼び名」が決まる */
+  .lens { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 420px; margin: 16px auto 0; }
+  .ln { min-height: 60px; padding: 8px; border: 0; border-radius: 18px; background: rgba(255,255,255,.95); color: var(--btn-text); font: inherit; font-size: 16px; font-weight: 900;
+    line-height: 1.25; cursor: pointer; box-shadow: 0 5px 0 rgba(10,40,110,.3); -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: transform .08s, box-shadow .08s; }
+  .ln:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(10,40,110,.3); }
+  .ln.sel { background: var(--pop); color: var(--pop-text); box-shadow: 0 0 0 3px #fff, 0 5px 0 rgba(10,40,110,.3); }
+  .ln:focus-visible, .act:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .step { margin-top: 14px; font-size: 13px; font-weight: 900; letter-spacing: .1em; opacity: .9; }
+
+  .hero { position: relative; width: 96px; height: 96px; margin: 26px auto 0; display: grid; place-items: center; border-radius: 50%;
+    background: rgba(255,255,255,.25); font-size: 56px; line-height: 1; transition: filter .4s; }
+  .hero .sky { position: absolute; top: -26px; left: 50%; margin-left: -18px; font-size: 34px; line-height: 1; opacity: 0; transition: opacity .3s; }
+  .game[data-l="g"] .hero { filter: saturate(.25) brightness(.85); }
+  .game[data-l="g"] .hero .sky, .game[data-l="b"] .hero .sky { opacity: 1; }
+  .hero .act-e { position: absolute; right: -14px; bottom: -6px; font-size: 30px; line-height: 1; }
+  .hero .act-e.boing { animation: bounce-in .45s both; }
+
+  .reel { max-width: 420px; margin: 14px auto 0; padding: 12px 14px; border-radius: 20px; background: #fff; color: #142446; box-shadow: 0 10px 22px rgba(10,30,90,.2); }
+  .reel-l { font-size: 12.5px; font-weight: 900; letter-spacing: .1em; color: var(--btn-text); }
+  .cap { position: relative; min-height: 46px; display: flex; align-items: center; justify-content: center; margin-top: 4px; overflow: hidden; }
+  .cap span { display: none; font-size: clamp(19px, 5.4vw, 24px); font-weight: 900; line-height: 1.3; }
+  .game[data-c="n"] .c-n { display: inline; font-size: 15px; color: #7a87a3; }
+  .game[data-c="0"] .c0, .game[data-c="1"] .c1, .game[data-c="2"] .c2, .game[data-c="3"] .c3, .game[data-c="4"] .c4, .game[data-c="5"] .c5 { display: inline; }
+  .game[data-c="0"] .c0, .game[data-c="1"] .c1, .game[data-c="2"] .c2 { color: #6b6f85; }
+  .game[data-c="3"] .c3, .game[data-c="4"] .c4, .game[data-c="5"] .c5 { color: #e8590c; }
+  .reel.spin .cap span { animation: reel .1s linear infinite; filter: blur(1px); }
+  @keyframes reel { from { transform: translateY(-40%); } to { transform: translateY(40%); } }
+  .reel.land .cap span { animation: bounce-in .4s both; }
+
+  .acts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 440px; margin: 14px auto 0; }
+  .act { min-height: 74px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 6px 4px; border: 0; border-radius: 18px;
+    background: rgba(255,255,255,.95); color: var(--btn-text); font: inherit; font-size: 13.5px; font-weight: 900; line-height: 1.2; cursor: pointer;
+    box-shadow: 0 5px 0 rgba(10,40,110,.3); -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: transform .08s, box-shadow .08s, opacity .2s; }
+  .act .ae { font-size: 28px; line-height: 1; }
+  .act:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(10,40,110,.3); }
+  .act[disabled] { opacity: .45; cursor: default; }
+
+  .board { display: grid; grid-template-columns: auto repeat(3, 1fr); gap: 5px; max-width: 360px; margin: 16px auto 0; font-weight: 900; font-size: 13px; }
+  .board > span { display: grid; place-items: center; min-height: 34px; border-radius: 10px; background: rgba(255,255,255,.18); }
+  .board .rh { padding: 0 8px; justify-items: start; }
+  .board .cell { font-size: 20px; }
+  .board .cell.on { background: rgba(255,255,255,.4); animation: bounce-in .4s both; }
+  .all { display: none; max-width: 420px; margin: 12px auto 0; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.24); font-weight: 900; line-height: 1.45; }
+  .game[data-all="1"] .all { display: block; animation: bounce-in .5s both; }
+@@dark
+  html[data-theme="dark"] .ln, html[data-theme="dark"] .act { background: #1f2638; color: #b9d2ff; }
+  html[data-theme="dark"] .ln.sel { background: #ffe066; color: #3a2a00; }
+  html[data-theme="dark"] .reel { background: #1f2638; color: #e6eeff; }
+  html[data-theme="dark"] .reel-l { color: #9cc2ff; }
+  html[data-theme="dark"] .game[data-c="n"] .c-n { color: #a8b4cc; }
+  html[data-theme="dark"] .game[data-c="0"] .c0, html[data-theme="dark"] .game[data-c="1"] .c1, html[data-theme="dark"] .game[data-c="2"] .c2 { color: #b8bdd0; }
+  html[data-theme="dark"] .game[data-c="3"] .c3, html[data-theme="dark"] .game[data-c="4"] .c4, html[data-theme="dark"] .game[data-c="5"] .c5 { color: #ffb27a; }
+@@sents
+S1 | It seems a first impression becomes an "adjective" for that person. | 第一印象は、その人の「形容詞」になるそうです。
+S2 | If it is "gloomy" at first, even when you work hard, you look like a "gloomy nerd." | 最初が「暗い」だと、まじめにがんばっても「暗いガリ勉」に見えてしまいます。
+S3 | If it is "bright" at first, the harder you work, the more you become "a cheerful hard worker." | 最初が「明るい」なら、まじめにやるほど「さわやかながんばり屋さん」になります。
+S4 | They say the keys are looking clean, your face, and the tone of your voice. | ポイントは、清潔感と、表情と、声のトーンだそうです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🏷️</span>
+      <span class="card-label">A Word Sticks</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">☁️</span>
+      <span class="card-label">Gloomy Start</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：形容詞スロット（第一印象を選ぶ → 同じ行動 → 呼び名が決まる。6マスうめると完成） -->
+  <section class="game" data-l="" data-c="n" data-all="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The adjective slot machine</div>
+    <div class="game-hint">Same penguin. Same actions. Only the first impression is different.</div>
+    <div class="step">STEP 1 · FIRST IMPRESSION</div>
+    <div class="lens">
+      <button class="ln" type="button" data-l="g" aria-pressed="false">☁️ Gloomy at first</button>
+      <button class="ln" type="button" data-l="b" aria-pressed="false">☀️ Bright at first</button>
+    </div>
+    <div class="hero" aria-hidden="true">🐧<span class="sky">☁️</span><span class="act-e"></span></div>
+    <div class="reel">
+      <div class="reel-l">🏷️ PEOPLE CALL YOU:</div>
+      <div class="cap">
+        <span class="c-n">Pick STEP 1, then STEP 2 👇</span>
+        <span class="c0">"a gloomy nerd" 😓</span>
+        <span class="c1">"trying too hard" 😬</span>
+        <span class="c2">"gloomy, but… nice, maybe?" 🤔</span>
+        <span class="c3">"a cheerful hard worker" ✨</span>
+        <span class="c4">"so fun to be with" 🎉</span>
+        <span class="c5">"kind and bright" 🌟</span>
+      </div>
+    </div>
+    <div class="step">STEP 2 · DO THE SAME THING</div>
+    <div class="acts">
+      <button class="act" type="button" data-a="0" disabled><span class="ae" aria-hidden="true">📚</span><span class="at">Study hard</span></button>
+      <button class="act" type="button" data-a="1" disabled><span class="ae" aria-hidden="true">😂</span><span class="at">Tell a joke</span></button>
+      <button class="act" type="button" data-a="2" disabled><span class="ae" aria-hidden="true">🧹</span><span class="at">Help clean up</span></button>
+    </div>
+    <div class="board" aria-hidden="true">
+      <span></span><span>📚</span><span>😂</span><span>🧹</span>
+      <span class="rh">☁️</span><span class="cell" data-i="0">·</span><span class="cell" data-i="1">·</span><span class="cell" data-i="2">·</span>
+      <span class="rh">☀️</span><span class="cell" data-i="3">·</span><span class="cell" data-i="4">·</span><span class="cell" data-i="5">·</span>
+    </div>
+    <div class="all">🎉 Same actions, different adjectives! The first impression wins.</div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">☀️</span>
+      <span class="card-label">Bright Start</span>
+    </div>
+    <p class="big">{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🪞</span>
+      <span class="card-label">Three Keys</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+@@ui
+A Word Sticks ||| 形容詞になる
+Gloomy Start ||| 「暗い」から始まる
+Bright Start ||| 「明るい」から始まる
+Three Keys ||| 3つのポイント
+⚡ TRY IT ||| ⚡ やってみよう
+The adjective slot machine ||| 形容詞スロット
+Same penguin. Same actions. Only the first impression is different. ||| 同じペンギン。同じ行動。ちがうのは第一印象だけ。
+STEP 1 · FIRST IMPRESSION ||| ステップ1 · 第一印象
+STEP 2 · DO THE SAME THING ||| ステップ2 · 同じことをする
+☁️ Gloomy at first ||| ☁️ 最初は「暗い」
+☀️ Bright at first ||| ☀️ 最初は「明るい」
+🏷️ PEOPLE CALL YOU: ||| 🏷️ まわりからの呼び名：
+Pick STEP 1, then STEP 2 👇 ||| ステップ1、ステップ2の順に押してね 👇
+"a gloomy nerd" 😓 ||| 「暗いガリ勉」😓
+"trying too hard" 😬 ||| 「無理してる人」😬
+"gloomy, but… nice, maybe?" 🤔 ||| 「暗いけど…いい人、かも？」🤔
+"a cheerful hard worker" ✨ ||| 「さわやかながんばり屋さん」✨
+"so fun to be with" 🎉 ||| 「一緒にいて楽しい人」🎉
+"kind and bright" 🌟 ||| 「やさしくて明るい人」🌟
+Study hard ||| まじめに勉強
+Tell a joke ||| 冗談を言う
+Help clean up ||| 片づけを手伝う
+🎉 Same actions, different adjectives! The first impression wins. ||| 🎉 同じ行動なのに、形容詞がちがう！第一印象の勝ち。
+↺ Start over ||| ↺ 最初から
+@@js
+/* 🏷️ 形容詞スロット：JS は data-l / data-c / data-all / class / disabled / 絵文字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var KEY = 'pengesso-first-impressions-become-adjectives-board';
+  var AE = ['📚', '😂', '🧹'];
+  var lens = [].slice.call(g.querySelectorAll('.ln')), acts = [].slice.call(g.querySelectorAll('.act'));
+  var cells = [].slice.call(g.querySelectorAll('.cell'));
+  var reel = g.querySelector('.reel'), sky = g.querySelector('.sky'), ae = g.querySelector('.act-e');
+  var l = '', done = {}, spinT = 0, stopT = 0;
+  try { done = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { done = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} }
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function drawBoard() {
+    var n = 0;
+    cells.forEach(function (c) { var i = +c.getAttribute('data-i'); var on = !!done[i]; c.classList.toggle('on', on); c.textContent = on ? (i < 3 ? '👎' : '👍') : '·'; if (on) n++; });
+    g.setAttribute('data-all', n === 6 ? '1' : '0');
+    return n;
+  }
+  function setLens(v) {
+    l = v; g.setAttribute('data-l', v); g.setAttribute('data-c', 'n');
+    lens.forEach(function (b) { var on = b.getAttribute('data-l') === v; b.classList.toggle('sel', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+    acts.forEach(function (a) { a.disabled = !v; });
+    sky.textContent = v === 'b' ? '☀️' : '☁️';
+    ae.textContent = '';
+  }
+  lens.forEach(function (b) { b.addEventListener('click', function () { setLens(b.getAttribute('data-l')); }); });
+  acts.forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (!l) return;
+      var ai = +a.getAttribute('data-a'), target = (l === 'b' ? 3 : 0) + ai, k = 0;
+      ae.textContent = AE[ai]; restart(ae, 'boing');
+      clearInterval(spinT); clearTimeout(stopT);
+      reel.classList.remove('land'); reel.classList.add('spin');
+      var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      spinT = setInterval(function () { g.setAttribute('data-c', String(k++ % 6)); }, 80);
+      stopT = setTimeout(function () {
+        clearInterval(spinT);
+        g.setAttribute('data-c', String(target));
+        reel.classList.remove('spin'); restart(reel, 'land');
+        var before = drawBoard(); done[target] = 1; save(); var after = drawBoard();
+        if (window.pengessoPop) {
+          var r = reel.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+          if (after === 6 && before < 6) window.pengessoPop(x, y, ['🎉', '🏷️', '🐧', '✨'], 22);
+          else if (target >= 3) window.pengessoPop(x, y, ['☀️', '✨', '🐧'], 10);
+        }
+      }, reduce ? 60 : 850);
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () { clearInterval(spinT); clearTimeout(stopT); reel.classList.remove('spin'); done = {}; save(); setLens(''); drawBoard(); });
+  drawBoard();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・.big）
+S4 → 使った（4枚目のカード）
+@@message
+第一印象は形容詞になって、そのあとの見え方を決める。
+@@tone
+素材の重さ：真面目（第一印象・初頭効果）
+→ 見せ方：ポップに（青と水色。スロットマシンで「呼び名」が決まる）
+@@game_ja
+🏷️ 形容詞スロット：ステップ1で第一印象（☁️ 最初は「暗い」／☀️ 最初は「明るい」）を選ぶと、ペンギンの上に雲か太陽が出る（暗いときは色が少しくすむ）。ステップ2で同じ行動（📚 まじめに勉強／😂 冗談を言う／🧹 片づけを手伝う）を押すと、スロットがくるくる回って「まわりからの呼び名」が決まる（暗い×勉強＝「暗いガリ勉」、暗い×冗談＝「無理してる人」、明るい×勉強＝「さわやかながんばり屋さん」など）。下の 2×3 のマスに 👎／👍 がたまり、6マスうめると「同じ行動なのに、形容詞がちがう！第一印象の勝ち」。マスは端末に覚える。
+@@combo
+ペンギン × ローポリの木と紙 × 丸い手鏡
+@@cover
+An extremely cute, chubby round penguin made in a low-poly 3D wood and paper style, with a gentle bright smiling face and a plain white belly, neatly groomed, looking into a realistic small round hand mirror held in one flipper. Bright simple sky blue background with soft depth and fresh morning sunlight. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

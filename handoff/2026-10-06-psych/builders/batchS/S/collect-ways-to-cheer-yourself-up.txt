@@ -1,0 +1,287 @@
+@@meta
+{"title": "Keep many small ways to make yourself happy", "label": "Happy List", "seq": 472, "mood": ["lift", "energy"], "tags": ["psychology", "happiness", "rest", "tips"], "thumbAlt": "A crocheted penguin hugging an open notebook with a red ribbon bookmark"}
+@@ja_title
+自分をご機嫌にする方法を、たくさん持っておく
+@@ja_label
+ご機嫌リスト
+@@h1emoji
+📒
+@@section
+88「自分をご機嫌にする方法をたくさん持つ」
+@@vars
+    --bg: #fffbea; --text: #3d2a12; --muted: #8a6d4a;
+    --accent: #e8551f; --accent2: #18b7a6; --h1: #3d2412; --big: #e0501a; --big-dark: #ffb08f;
+    --glow1: rgba(255,178,30,.32); --glow2: rgba(24,183,166,.18); --glow3: rgba(255,107,61,.18);
+    --shadow: 0 20px 55px rgba(200,90,20,.18); --photo-bg: #fff0cf;
+    --g1: #ffa21c; --g2: #ff6b3d; --g3: #f2437a; --pop: #fff06a; --pop-text: #6b3a00; --btn-text: #d1461b;
+@@css
+  /* 🔢 15・25・100 の3つの数字 */
+  .nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  .nums > div { padding: 12px 6px; border-radius: 18px; text-align: center; font-weight: 900; font-size: 13.5px; line-height: 1.3;
+    background: #fff3d6; color: #8a4a00; }
+  .nums b { display: block; font-size: 30px; line-height: 1.05; color: #ff6b3d; }
+  .nums .n100 { background: #e2f8f5; color: #0d6d63; }
+  .nums .n100 b { color: #13a594; }
+
+  /* 📒 ご機嫌ブック：チップを押すと、ブックにシールがたまる。5・15・25でメダル */
+  .book { max-width: 440px; margin: 16px auto 0; padding: 14px 14px 12px; border-radius: 22px; background: #fffdf5; color: #4a2a10;
+    text-align: left; box-shadow: 0 10px 24px rgba(120,50,0,.2); }
+  .book-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; font-weight: 900; }
+  .bk-l { font-size: 15px; color: #d1461b; }
+  .bk-n { font-size: 24px; line-height: 1; }
+  .of { font-size: 14px; opacity: .6; margin-left: 2px; }
+  .shelf { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; min-height: 48px; margin: 10px 0 6px; padding: 8px 10px;
+    border-radius: 14px; background: #fff3d6; }
+  .st { display: none; font-size: 26px; line-height: 1; }
+  .st.on { display: inline-block; }
+  .st.pop { animation: bounce-in .45s both; }
+  .shelf-empty { font-size: 13.5px; font-weight: 800; color: #9a6c30; }
+  .game[data-empty="0"] .shelf-empty { display: none; }
+  .track { position: relative; height: 14px; margin: 16px 14px 18px; border-radius: 999px; background: #ffe8c2; }
+  .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 999px; background: linear-gradient(90deg, #ffb21e, #ff6b3d);
+    transition: width .45s cubic-bezier(.2,1.2,.4,1); }
+  .mk { position: absolute; top: 50%; transform: translate(-50%, -50%); font-size: 24px; line-height: 1; filter: grayscale(1); opacity: .45;
+    transition: filter .3s, opacity .3s, transform .3s; }
+  .mk.got { filter: none; opacity: 1; transform: translate(-50%, -50%) scale(1.25); }
+  .m5 { left: 20%; } .m15 { left: 60%; } .m25 { left: 100%; }
+  .msg { min-height: 50px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 17px; font-weight: 900;
+    line-height: 1.4; color: #4a2a10; }
+  .msg span { display: none; }
+  .game[data-lv="0"][data-empty="1"] .l0, .game[data-lv="0"][data-empty="0"] .l0b,
+  .game[data-lv="1"] .l1, .game[data-lv="2"] .l2, .game[data-lv="3"] .l3 { display: inline; }
+  .game[data-lv="3"] .l3 { color: #d1461b; }
+  .msg.show { animation: bounce-in .45s both; }
+
+  .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 16px auto 0; max-width: 540px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 8px 14px; border: 0; border-radius: 999px;
+    background: rgba(255,255,255,.95); color: #b8401a; font: inherit; font-size: 15px; font-weight: 900; line-height: 1.2; cursor: pointer;
+    box-shadow: 0 4px 0 rgba(120,40,0,.25); transition: transform .08s ease, background .2s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .chip .ce { font-size: 20px; line-height: 1; }
+  .chip:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(120,40,0,.25); }
+  .chip.on { background: var(--pop); color: #6b3a00; box-shadow: 0 0 0 3px #fff, 0 4px 0 rgba(120,40,0,.25); }
+  .chip.on::after { content: "✓"; font-weight: 900; }
+  .chip:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+@@dark
+  html[data-theme="dark"] .nums > div { background: #3a2f1c; color: #ffd9a0; }
+  html[data-theme="dark"] .nums .n100 { background: #193a37; color: #a6f0e6; }
+  html[data-theme="dark"] .nums .n100 b { color: #5fe0cf; }
+  html[data-theme="dark"] .book { background: #2a2420; color: #ffe9cf; }
+  html[data-theme="dark"] .bk-l { color: #ffb08f; }
+  html[data-theme="dark"] .shelf { background: #3a2f1c; }
+  html[data-theme="dark"] .shelf-empty { color: #d9b98a; }
+  html[data-theme="dark"] .track { background: #4a3a22; }
+  html[data-theme="dark"] .msg { color: #ffe9cf; }
+  html[data-theme="dark"] .game[data-lv="3"] .l3 { color: #ffb08f; }
+  html[data-theme="dark"] .chip { background: #2a2420; color: #ffc2a6; }
+  html[data-theme="dark"] .chip.on { background: #fff06a; color: #5a3000; }
+@@sents
+S1 | It seems it is good to have many ways to make yourself happy. | 自分をご機嫌にする方法は、たくさん持っておくといいそうです。
+S2 | There is an idea: "15 at least, 25 is best, and 100 is the final goal." | 「最低15個、理想は25個、最終目標は100個」という考え方があります。
+S3 | For example, a candle bath, time to look out of a train window, or a sunset. | たとえば、キャンドル風呂、電車の窓からボーッと外を見る時間、夕日。
+S4 | If you collect them on good days, they will help you on days when you have no energy. | 元気な日に集めておけば、元気がない日の自分を助けてくれます。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎁</span>
+      <span class="card-label">Many Ways</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔢</span>
+      <span class="card-label">Magic Numbers</span>
+    </div>
+    <p>{S2}</p>
+    <div class="nums" aria-hidden="true">
+      <div><b>15</b><span class="nl">at least</span></div>
+      <div><b>25</b><span class="nl">best</span></div>
+      <div class="n100"><b>100</b><span class="nl">final goal</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🕯️</span>
+      <span class="card-label">For Example</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：ご機嫌ブック（チップを押すとシールがたまる。5・15・25でメダル） -->
+  <section class="game" data-lv="0" data-empty="1" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Fill your happy book</div>
+    <div class="game-hint">Tap the things that make you happy. They go into your book.</div>
+    <div class="book">
+      <div class="book-head">
+        <span class="bk-l">📒 My happy book</span>
+        <span class="bk-n"><span class="n">0</span><span class="of">/25</span></span>
+      </div>
+      <div class="shelf" aria-hidden="true">
+        <span class="shelf-empty">Empty for now…</span>
+        <span class="st">🕯️</span><span class="st">🚃</span><span class="st">🌇</span><span class="st">🌌</span><span class="st">🌳</span>
+        <span class="st">☕</span><span class="st">🍮</span><span class="st">🎵</span><span class="st">♨️</span><span class="st">📚</span>
+        <span class="st">🌊</span><span class="st">😴</span><span class="st">🍜</span><span class="st">🧺</span><span class="st">🌸</span>
+        <span class="st">🐈</span><span class="st">⚾</span><span class="st">🍦</span><span class="st">🧦</span><span class="st">🚲</span>
+        <span class="st">🍵</span><span class="st">☀️</span><span class="st">🧹</span><span class="st">🗺️</span><span class="st">📝</span>
+      </div>
+      <div class="track" aria-hidden="true"><i class="fill"></i><span class="mk m5">🥉</span><span class="mk m15">🥈</span><span class="mk m25">🥇</span></div>
+      <div class="msg">
+        <span class="l0">Tap the chips below 👇</span>
+        <span class="l0b">Nice! The 1st medal is at 5.</span>
+        <span class="l1">🥉 A good start! You have 5.</span>
+        <span class="l2">🥈 15! You reached the minimum.</span>
+        <span class="l3">🥇 25! That is the ideal. Next goal: 100. 🐧</span>
+      </div>
+    </div>
+    <div class="chips">
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🕯️</span><span class="ct">Candle bath</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🚃</span><span class="ct">Train window</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🌇</span><span class="ct">Sunset</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🌌</span><span class="ct">Starry sky</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🌳</span><span class="ct">Walk in a park</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">☕</span><span class="ct">Coffee shop</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🍮</span><span class="ct">Pudding</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🎵</span><span class="ct">Favorite song</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">♨️</span><span class="ct">Hot spring</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">📚</span><span class="ct">A good book</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🌊</span><span class="ct">Looking at the sea</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">😴</span><span class="ct">Short nap</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🍜</span><span class="ct">Hot ramen</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🧺</span><span class="ct">Fluffy laundry</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🌸</span><span class="ct">Flowers</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🐈</span><span class="ct">Cat videos</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">⚾</span><span class="ct">Baseball game</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🍦</span><span class="ct">Ice cream</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🧦</span><span class="ct">New socks</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🚲</span><span class="ct">Bike ride</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🍵</span><span class="ct">Warm tea</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">☀️</span><span class="ct">Morning sun</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🧹</span><span class="ct">A clean room</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">🗺️</span><span class="ct">A new street</span></button>
+      <button class="chip" type="button" aria-pressed="false"><span class="ce" aria-hidden="true">📝</span><span class="ct">Writing a diary</span></button>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔋</span>
+      <span class="card-label">For Low Days</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Many Ways ||| たくさんの方法
+Magic Numbers ||| 目標の数
+For Example ||| たとえば
+For Low Days ||| 元気がない日に
+at least ||| 最低
+best ||| 理想
+final goal ||| 最終目標
+⚡ TRY IT ||| ⚡ やってみよう
+Fill your happy book ||| ご機嫌ブックをうめよう
+Tap the things that make you happy. They go into your book. ||| 自分がご機嫌になれるものを押してね。ブックに入っていくよ。
+📒 My happy book ||| 📒 私のご機嫌ブック
+Empty for now… ||| まだ空っぽ…
+Tap the chips below 👇 ||| 下のチップを押してね 👇
+Nice! The 1st medal is at 5. ||| いいね！5個で1つめのメダル。
+🥉 A good start! You have 5. ||| 🥉 いいスタート！5個たまったよ。
+🥈 15! You reached the minimum. ||| 🥈 15個！最低ラインに届いた。
+🥇 25! That is the ideal. Next goal: 100. 🐧 ||| 🥇 25個！理想の数。次の目標は100個 🐧
+Candle bath ||| キャンドル風呂
+Train window ||| 電車の窓
+Sunset ||| 夕日
+Starry sky ||| 星空
+Walk in a park ||| 公園を散歩
+Coffee shop ||| 喫茶店
+Pudding ||| プリン
+Favorite song ||| 好きな歌
+Hot spring ||| 温泉
+A good book ||| いい本
+Looking at the sea ||| 海をながめる
+Short nap ||| ちょっと昼寝
+Hot ramen ||| 熱々のラーメン
+Fluffy laundry ||| ふかふかの洗濯物
+Flowers ||| お花
+Cat videos ||| 猫の動画
+Baseball game ||| 野球の試合
+Ice cream ||| アイス
+New socks ||| 新しい靴下
+Bike ride ||| サイクリング
+Warm tea ||| あたたかいお茶
+Morning sun ||| 朝の光
+A clean room ||| きれいな部屋
+A new street ||| 知らない道
+Writing a diary ||| 日記を書く
+↺ Start over ||| ↺ 最初から
+@@js
+/* 📒 ご機嫌ブック：JS は class / data-lv / data-empty / 数字 / style だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var KEY = 'pengesso-collect-ways-to-cheer-yourself-up-picks';
+  var chips = [].slice.call(g.querySelectorAll('.chip'));
+  var sts = [].slice.call(g.querySelectorAll('.st'));
+  var n = g.querySelector('.n'), fill = g.querySelector('.fill'), msg = g.querySelector('.msg');
+  var mk = { 5: g.querySelector('.m5'), 15: g.querySelector('.m15'), 25: g.querySelector('.m25') };
+  var order = [];
+  try { order = JSON.parse(localStorage.getItem(KEY) || '[]') || []; } catch (e) { order = []; }
+  if (!Array.isArray(order)) order = [];
+  order = order.filter(function (i, k) { return typeof i === 'number' && i >= 0 && i < chips.length && order.indexOf(i) === k; });
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(order)); } catch (e) {} }
+  function lv(c) { return c >= 25 ? 3 : c >= 15 ? 2 : c >= 5 ? 1 : 0; }
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function draw() {
+    var c = order.length;
+    chips.forEach(function (b, i) {
+      var on = order.indexOf(i) >= 0;
+      b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    sts.forEach(function (s, i) {
+      var k = order.indexOf(i);
+      s.classList.toggle('on', k >= 0); s.style.order = k >= 0 ? String(k) : '99';
+    });
+    n.textContent = String(c);
+    fill.style.width = (c / 25 * 100) + '%';
+    [5, 15, 25].forEach(function (m) { mk[m].classList.toggle('got', c >= m); });
+    g.setAttribute('data-lv', String(lv(c)));
+    g.setAttribute('data-empty', c ? '0' : '1');
+  }
+  draw();
+  chips.forEach(function (b, i) {
+    b.addEventListener('click', function () {
+      var before = lv(order.length), k = order.indexOf(i);
+      if (k >= 0) order.splice(k, 1); else order.push(i);
+      save(); draw();
+      var after = lv(order.length);
+      if (k < 0) restart(sts[i], 'pop');
+      if (after !== before) restart(msg, 'show');
+      if (after > before && window.pengessoPop) {
+        var r = b.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+        if (after === 3) window.pengessoPop(x, y, ['🥇', '🐧', '🎉', '✨', '📒'], 26);
+        else if (after === 2) window.pengessoPop(x, y, ['🥈', '🐧', '✨'], 16);
+        else window.pengessoPop(x, y, ['🥉', '🐧', '✨'], 12);
+      }
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () { order = []; save(); draw(); restart(msg, 'show'); });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+自分をご機嫌にする方法を、元気な日のうちにたくさん集めておく。
+@@tone
+素材の重さ：ふつう（心のセルフケア）
+→ 見せ方：ポップに（オレンジとターコイズ。ご機嫌ブックにシールを集める）
+@@game_ja
+📒 ご機嫌ブック：25個のチップ（キャンドル風呂・電車の窓・夕日・星空・喫茶店・プリン…）から、自分がご機嫌になれるものを押すと、ブックにシール（絵文字）が押した順にたまっていく。5個で🥉、15個で🥈（最低ライン）、25個で🥇（理想・次は100個）。ゲージとメダルが光る。もう一度押すと外せる。選んだものは端末に覚える。「最初から」で消せる。
+@@combo
+ペンギン × かぎ針編みのあみぐるみ × ハードカバーのノート
+@@cover
+An extremely cute, chubby round penguin made of crocheted amigurumi yarn, with a gentle happy face and a plain white belly, sitting and hugging a realistic open hardcover notebook with a red ribbon bookmark against its chest. Bright simple sunny yellow and soft peach background with gentle depth, warm afternoon light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

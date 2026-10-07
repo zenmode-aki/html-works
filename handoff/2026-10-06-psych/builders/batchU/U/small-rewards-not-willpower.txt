@@ -1,0 +1,227 @@
+@@meta
+{"title": "Small rewards keep a habit going better than willpower does", "label": "Small Rewards", "seq": 497, "mood": ["lift", "learn"], "tags": ["psychology", "productivity", "mindset"], "thumbAlt": "A boucle wool penguin smiling happily next to a small warm cup of coffee after a walk"}
+@@ja_title
+習慣は、気合より小さなごほうびで続く
+@@ja_label
+小さなごほうび
+@@h1emoji
+☕
+@@section
+133「習慣化は『アドレナリン式』ではなく『ドーパミン式』」
+@@vars
+    --bg: #fff8f1; --text: #33261c; --muted: #7d6a5c;
+    --accent: #e8590c; --accent2: #12a594; --h1: #3d1d06; --big: #c94a06; --big-dark: #ffb98a;
+    --glow1: rgba(255,140,60,.3); --glow2: rgba(30,190,170,.2); --glow3: rgba(255,210,100,.2);
+    --shadow: 0 20px 55px rgba(160,70,10,.18); --photo-bg: #ffe9d6;
+    --g1: #ff7a2f; --g2: #f0508a; --g3: #12a594; --pop: #fff3b0; --pop-text: #3b2b00; --btn-text: #c94a06;
+@@css
+  /* 🏁 7日レース：気合（最初だけ速い）vs 小さなごほうび（ずっと同じ速さ） */
+  .race { max-width: 440px; margin: 16px auto 0; padding: 12px; border-radius: 24px; background: #fff; color: #33261c; box-shadow: 0 10px 24px rgba(90,30,0,.2); text-align: left; }
+  .lane + .lane { margin-top: 12px; }
+  .lane-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-weight: 900; font-size: 15px; }
+  .lane-name { color: #c94a06; }
+  .lane.rw .lane-name { color: #0d8a7c; }
+  .fuel { font-size: 18px; line-height: 1; letter-spacing: -2px; transition: transform .3s ease; }
+  .track { position: relative; height: 58px; margin-top: 6px; border-radius: 16px; background: linear-gradient(90deg, #fff0e3, #ffe2cc); overflow: hidden; }
+  .lane.rw .track { background: linear-gradient(90deg, #e3fbf6, #c9f3ea); }
+  .track .goal { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-size: 24px; line-height: 1; }
+  .track .ticks { position: absolute; left: 6px; right: 40px; bottom: 6px; display: flex; justify-content: space-between; }
+  .track .ticks i { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,0,0,.15); }
+  .runner { position: absolute; top: 50%; left: 4px; transform: translateY(-50%); transition: left .6s cubic-bezier(.3,1.2,.5,1); }
+  .runner-in { position: relative; display: inline-block; font-size: 34px; line-height: 1; }
+  .runner .pg { display: inline-block; transform: scaleX(-1); transition: transform .4s ease; }
+  .game[data-w="out"] .lane.wp .runner .pg { transform: scaleX(-1) rotate(-90deg); }
+  .runner .tag { position: absolute; left: 70%; top: -8px; font-size: 18px; line-height: 1; }
+  .runner .tag.hop { animation: hop .45s ease; }
+  .lane-say { min-height: 22px; margin-top: 6px; font-size: 14.5px; font-weight: 900; line-height: 1.4; }
+  .lane-say > span { display: none; }
+  .game[data-w="0"] .ws0, .game[data-w="1"] .ws1, .game[data-w="2"] .ws2, .game[data-w="3"] .ws3, .game[data-w="out"] .wsout { display: inline; }
+  .game[data-d="0"] .rs0, .game:not([data-d="0"]) .rs1 { display: inline; }
+  .game[data-w="1"] .lane.wp .fuel { transform: scale(1.35); }
+  .game[data-w="out"] .lane.wp .track { filter: grayscale(.7); }
+
+  .day { margin-top: 14px; font-size: 16px; font-weight: 900; }
+  .day .dn { font-size: 30px; }
+  .nextbtn { width: min(320px, 100%); min-height: 64px; margin-top: 10px; font-size: 20px; }
+  .nextbtn > span { display: none; }
+  .game:not([data-d="7"]) .nb-next, .game[data-d="7"] .nb-again { display: inline; }
+
+  .result { margin-top: 12px; min-height: 56px; }
+  .result > div { display: none; font-size: 16px; font-weight: 900; line-height: 1.45; }
+  .game[data-d="0"] .r-hint, .game[data-d="1"] .r-early, .game[data-d="2"] .r-early, .game[data-d="3"] .r-early,
+  .game[data-d="4"] .r-mid, .game[data-d="5"] .r-mid, .game[data-d="6"] .r-mid, .game[data-d="7"] .r-done { display: block; }
+  .game[data-d="7"] .r-done, .game[data-d="4"] .r-mid { animation: bounce-in .45s both; }
+@@dark
+  html[data-theme="dark"] .race { background: #22242f; color: #f6ece4; }
+  html[data-theme="dark"] .lane-name { color: #ffb98a; }
+  html[data-theme="dark"] .lane.rw .lane-name { color: #7fe8d8; }
+  html[data-theme="dark"] .track { background: linear-gradient(90deg, #3a2a20, #4a3020); }
+  html[data-theme="dark"] .lane.rw .track { background: linear-gradient(90deg, #1d3633, #20433e); }
+  html[data-theme="dark"] .track .ticks i { background: rgba(255,255,255,.2); }
+@@sents
+S1 | It seems habits do not last long with willpower and guts. | 習慣は、気合と根性ではなかなか続かないそうです。
+S2 | Willpower runs out in about 3 days, and if you push too hard, you burn out. | 気合は3日くらいで切れてしまうし、無理に続けると燃え尽きてしまいます。
+S3 | Instead, it seems better to give yourself a small reward right after you do it. | それよりも、やったらすぐに小さなごほうびをあげるほうがいいそうです。
+S4 | Things that feel good last. | 気持ちいいことは、続きます。
+S5 | For example, a nice cup of coffee after a walk. | たとえば、散歩のあとに、おいしいコーヒーを1杯。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😤</span>
+      <span class="card-label">Not Willpower</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔥</span>
+      <span class="card-label">Three Days</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：7日レース -->
+  <section class="game" data-d="0" data-w="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The 7-day habit race</div>
+    <div class="game-hint">Two penguins start a walking habit. Who keeps going?</div>
+    <div class="race">
+      <div class="lane wp">
+        <div class="lane-top"><span class="lane-name">💥 Willpower</span><span class="fuel">🔥🔥🔥</span></div>
+        <div class="track" aria-hidden="true">
+          <div class="ticks"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="goal">🏁</span>
+          <div class="runner"><span class="runner-in"><span class="pg">🐧</span><span class="tag">💥</span></span></div>
+        </div>
+        <div class="lane-say">
+          <span class="ws0">"I will walk 10 km every day!"</span>
+          <span class="ws1">🔥 Full power! Super fast!</span>
+          <span class="ws2">😤 Still going… a little tired.</span>
+          <span class="ws3">😮‍💨 So tired… my legs hurt.</span>
+          <span class="wsout">💤 Burned out. I can't do it today…</span>
+        </div>
+      </div>
+      <div class="lane rw">
+        <div class="lane-top"><span class="lane-name">☕ Small reward</span><span class="fuel">🔥</span></div>
+        <div class="track" aria-hidden="true">
+          <div class="ticks"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="goal">🏁</span>
+          <div class="runner"><span class="runner-in"><span class="pg">🐧</span><span class="tag">☕</span></span></div>
+        </div>
+        <div class="lane-say">
+          <span class="rs0">"A short walk, then coffee."</span>
+          <span class="rs1">☕ Walked! Coffee time. That felt good.</span>
+        </div>
+      </div>
+    </div>
+    <div class="day"><span class="dl">📅 Day</span> <span class="dn">0</span> <span class="dm">/ 7</span></div>
+    <button class="gbtn pop nextbtn" type="button"><span class="nb-next">▶ Next day</span><span class="nb-again">↺ Race again</span></button>
+    <div class="result">
+      <div class="r-hint">Tap "Next day" to move 1 day.</div>
+      <div class="r-early">💥 Willpower is way ahead… for now.</div>
+      <div class="r-mid">😮 Day 4: willpower stopped. The coffee penguin is still walking.</div>
+      <div class="r-done">🏁 The small reward wins! Feeling good keeps you going.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎁</span>
+      <span class="card-label">Reward Right Away</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😌</span>
+      <span class="card-label">Feels Good</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">☕</span>
+      <span class="card-label">For Example</span>
+    </div>
+    <p>{S5}</p>
+  </section>
+@@ui
+Not Willpower ||| 気合じゃない
+Three Days ||| 3日で切れる
+Reward Right Away ||| すぐにごほうび
+Feels Good ||| 気持ちいい
+For Example ||| たとえば
+⚡ TRY IT ||| ⚡ やってみよう
+The 7-day habit race ||| 7日間の習慣レース
+Two penguins start a walking habit. Who keeps going? ||| 2羽のペンギンが散歩の習慣を始めます。続くのはどっち？
+💥 Willpower ||| 💥 気合
+☕ Small reward ||| ☕ 小さなごほうび
+"I will walk 10 km every day!" ||| 「毎日10キロ歩くぞ！」
+🔥 Full power! Super fast! ||| 🔥 全力！めちゃくちゃ速い！
+😤 Still going… a little tired. ||| 😤 まだまだ…ちょっと疲れた。
+😮‍💨 So tired… my legs hurt. ||| 😮‍💨 疲れた…足が痛い。
+💤 Burned out. I can't do it today… ||| 💤 燃え尽きた。今日はもう無理…
+"A short walk, then coffee." ||| 「ちょっと歩いたら、コーヒー。」
+☕ Walked! Coffee time. That felt good. ||| ☕ 歩いた！コーヒータイム。気持ちいい。
+📅 Day ||| 📅
+/ 7 ||| 日目 / 7
+▶ Next day ||| ▶ 次の日
+↺ Race again ||| ↺ もう一回レース
+Tap "Next day" to move 1 day. ||| 「次の日」を押すと、1日進みます。
+💥 Willpower is way ahead… for now. ||| 💥 気合がずっと先を行ってる…今のところは。
+😮 Day 4: willpower stopped. The coffee penguin is still walking. ||| 😮 4日目：気合が止まった。コーヒーのペンギンは、まだ歩いてる。
+🏁 The small reward wins! Feeling good keeps you going. ||| 🏁 小さなごほうびの勝ち！気持ちいいから続く。
+@@js
+/* 🏁 7日レース：気合は最初だけ速くて4日目に燃え尽きる。ごほうびは毎日同じだけ進む。JS は data-* と style と数字と絵文字だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var btn = g.querySelector('.nextbtn'), dn = g.querySelector('.dn');
+  var wp = g.querySelector('.lane.wp'), rw = g.querySelector('.lane.rw');
+  var wRun = wp.querySelector('.runner'), rRun = rw.querySelector('.runner');
+  var wFuel = wp.querySelector('.fuel'), wTag = wp.querySelector('.tag'), rTag = rw.querySelector('.tag');
+  var WPOS = [0, 2.6, 4.0, 4.6, 4.6, 4.6, 4.6, 4.6];
+  var WFUEL = ['🔥🔥🔥', '🔥🔥🔥', '🔥🔥', '🔥', '💨', '💨', '💨', '💨'];
+  var WTAG = ['💥', '💥', '💦', '💦', '💤', '💤', '💤', '💤'];
+  var RTAG = ['☕', '☕', '🍪', '☕', '🍪', '☕', '🍪', '☕'];
+  var d = 0;
+  function place(el, pos) { el.style.left = 'calc(' + (pos / 7) + ' * (100% - 84px) + 4px)'; }
+  function draw() {
+    dn.textContent = d;
+    g.setAttribute('data-d', d);
+    g.setAttribute('data-w', d === 0 ? '0' : d <= 3 ? String(d) : 'out');
+    place(wRun, WPOS[d]); place(rRun, d);
+    wFuel.textContent = WFUEL[d]; wTag.textContent = WTAG[d]; rTag.textContent = RTAG[d];
+  }
+  btn.addEventListener('click', function () {
+    if (d === 7) { d = 0; draw(); return; }
+    d++; draw();
+    rTag.classList.remove('hop'); void rTag.offsetWidth; rTag.classList.add('hop');
+    if (window.pengessoPop) {
+      var k = rTag.getBoundingClientRect();
+      if (d < 7) window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, [RTAG[d]], 4);
+      else window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['🏁', '☕', '🐧', '✨'], 18);
+    }
+    if (d === 7 && navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+S5 → 使った（5枚目のカード）
+@@message
+習慣は、気合より「やったらすぐの小さなごほうび」で続く。
+@@tone
+素材の重さ：ふつう（習慣のコツ）
+→ 見せ方：ポップに（オレンジとティール。うさぎとかめのような7日間レースで遊べる）
+@@game_ja
+🏁 7日間の習慣レース：散歩の習慣を始めた2羽のペンギン。「💥 気合」は「毎日10キロ歩くぞ！」、「☕ 小さなごほうび」は「ちょっと歩いたら、コーヒー。」。「▶ 次の日」を押すたびに1日進む。気合は1〜2日目にぐんと先に行くが、火（🔥🔥🔥→🔥🔥→🔥）がだんだん小さくなり、4日目に「💤 燃え尽きた」で倒れて止まる。ごほうびのペンギンは毎日同じだけ進み、毎日 ☕ や 🍪 がはじける。7日目に「🏁 小さなごほうびの勝ち！気持ちいいから続く。」。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of cozy boucle wool, smiling happily with eyes closed while holding one realistic small ceramic cup of warm coffee with a little curl of steam. A simple bright warm orange background that fades into soft teal with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × ブークレウール × コーヒーカップ

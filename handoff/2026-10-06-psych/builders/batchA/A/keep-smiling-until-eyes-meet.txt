@@ -1,0 +1,239 @@
+@@meta
+{"title": "Keep your smile on until your eyes meet", "label": "Eyes Meet", "seq": 288, "mood": ["lift", "laugh"], "tags": ["psychology", "friends", "tips"], "thumbAlt": "A chubby crocheted penguin smiling and looking over its shoulder next to a small garden gate"}
+@@ja_title
+目が合うまで、笑顔を続ける
+@@ja_label
+目が合うまで
+@@h1emoji
+👀
+@@section
+1-1「目が合うまで笑顔を続ける」
+@@vars
+    --bg: #f2fbff; --text: #1f2d3a; --muted: #607386;
+    --accent: #1381b8; --accent2: #7b5cff; --h1: #13324a; --big: #4f3ad0; --big-dark: #a9c8ff;
+    --glow1: rgba(18,194,233,.26); --glow2: rgba(123,92,255,.20); --glow3: rgba(255,224,102,.22);
+    --shadow: 0 20px 55px rgba(40,90,170,.18); --photo-bg: #dff4ff;
+    --g1: #10a9dc; --g2: #4f7dff; --g3: #7b5cff; --pop: #ffe066; --pop-text: #4a3500; --btn-text: #3a5bd9;
+@@css
+  /* 👀 笑顔をキープ：連打して笑顔メーターを保ったまま、相手が振り向くのを待つ */
+  .scene { display: flex; align-items: center; justify-content: center; gap: 4px; margin: 16px auto 6px; max-width: 360px; }
+  .who { width: 92px; flex: 0 0 auto; position: relative; }
+  .face { position: relative; width: 78px; height: 78px; margin: 0 auto; display: grid; place-items: center; border-radius: 50%;
+    background: rgba(255,255,255,.26); font-size: 46px; line-height: 1; }
+  .flip { display: inline-block; transform: scaleX(-1); }
+  .them-pg { display: inline-block; transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
+  .game[data-look="away"] .them-pg { transform: scaleX(-1); }
+  .them.twitch { animation: wiggle .4s ease; }
+  .me-badge { position: absolute; right: -6px; bottom: -4px; font-size: 28px; line-height: 1; }
+  .me-badge.boing { animation: bounce-in .25s both; }
+  .tag { margin-top: 6px; font-size: 13px; font-weight: 900; }
+  .say { position: absolute; left: 50%; bottom: calc(100% + 6px); transform: translateX(-50%); padding: 6px 10px; border-radius: 14px; background: #fff; color: #1f2d3a;
+    font-size: 14px; font-weight: 900; width: max-content; max-width: 160px; box-shadow: 0 4px 10px rgba(0,0,0,.12); display: none; }
+  .think { position: absolute; right: 2px; top: -8px; font-size: 24px; line-height: 1; }
+  .think span { display: none; }
+  .game:not([data-look="here"]) .t-away, .game[data-look="here"] .t-here { display: inline; }
+  .game[data-look="here"] .think { animation: bounce-in .4s both; }
+  .game[data-s="run"] .say, .game[data-s="win"] .say, .game[data-s="lose"] .say { display: block; }
+  .scene-wrap { padding-top: 36px; }
+
+  .lane { flex: 1; position: relative; height: 44px; min-width: 60px; }
+  .lane::before { content: ""; position: absolute; left: 4px; right: 4px; top: 50%; border-top: 3px dotted rgba(255,255,255,.4); transition: border-color .3s; }
+  .game[data-s="win"] .lane::before { border-top: 4px solid #fff176; box-shadow: 0 0 14px #fff176; }
+  .spark { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-size: 30px; line-height: 1; display: none; }
+  .spark span { display: none; }
+  .game[data-s="win"] .spark, .game[data-s="lose"] .spark { display: block; animation: bounce-in .45s both; }
+  .game[data-s="win"] .sp-win, .game[data-s="lose"] .sp-lose { display: inline; }
+  .game[data-s="win"] .face { animation: hop .5s ease 2; }
+
+  .sm { max-width: 380px; margin: 10px auto 0; }
+  .sm-bar { position: relative; height: 22px; border-radius: 999px; background: rgba(0,0,0,.2); overflow: hidden; }
+  .sm-fill { position: absolute; inset: 0 auto 0 0; width: 100%; border-radius: 999px; background: linear-gradient(90deg, #fff176, #7dffb2); transition: width .05s linear; }
+  .game[data-ok="0"] .sm-fill { background: linear-gradient(90deg, #ff8a65, #ffb74d); }
+  .sm-line { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 3px; background: #fff; border-radius: 3px; opacity: .9; }
+  .sm-scale { display: flex; justify-content: space-between; margin-top: 4px; font-size: 12px; font-weight: 900; opacity: .92; }
+  .warn { display: none; margin-top: 6px; font-size: 15px; font-weight: 900; color: #fff176; }
+  .game[data-s="run"][data-ok="0"] .warn { display: block; animation: shake .4s ease infinite; }
+
+  .tap { display: block; width: min(320px, 100%); min-height: 96px; margin: 14px auto 0; padding: 10px 16px; border: 0; border-radius: 999px; cursor: pointer;
+    font: inherit; font-size: clamp(22px, 6vw, 30px); font-weight: 900; line-height: 1.2; color: #4a3500; background: var(--pop);
+    box-shadow: 0 9px 0 #d9a400, 0 16px 28px rgba(0,0,0,.18); transition: transform .06s ease, box-shadow .06s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .tap:active { transform: translateY(7px); box-shadow: 0 2px 0 #d9a400, 0 6px 14px rgba(0,0,0,.18); }
+  .tap:focus-visible { outline: 4px solid #fff; outline-offset: 4px; }
+  .tap span { display: none; }
+  .game[data-s="idle"] .t-start, .game[data-s="run"] .t-run, .game[data-s="win"] .t-again, .game[data-s="lose"] .t-again { display: inline; }
+  .game[data-s="run"] .tap { background: #fff; color: #3a5bd9; box-shadow: 0 9px 0 #b9c6f5, 0 16px 28px rgba(0,0,0,.14); }
+
+  .result { margin-top: 16px; min-height: 52px; font-size: 16.5px; font-weight: 900; line-height: 1.45; }
+  .result > div { display: none; }
+  .game[data-s="idle"] .r-hint, .game[data-s="run"] .r-run, .game[data-s="win"] .r-win, .game[data-s="lose"] .r-lose { display: block; }
+  .game[data-s="win"] .r-win, .game[data-s="lose"] .r-lose { animation: bounce-in .45s both; }
+  .r-win { color: #fff176; }
+  .stats { display: flex; justify-content: center; gap: 18px; margin-top: 8px; font-size: 14px; font-weight: 900; opacity: .95; }
+@@dark
+  html[data-theme="dark"] .say { background: #26303d; color: #e6f2ff; }
+@@sents
+S1 | It seems that when you say hello, you should keep smiling until your eyes meet. | 挨拶をするときは、目が合うまで笑顔を続けるといいそうです。
+S2 | For example, what if someone says "Hello," but they are already looking away when you turn around? | たとえば、「こんにちは」と言われて振り向いたのに、相手がもう向こうを向いていたらどうでしょう。
+S3 | The words are polite, but you feel a little lonely just because your eyes did not meet. | 言葉は丁寧でも、目が合わないだけで、少しさみしい気持ちになります。
+S4 | A hello lasts until your smile reaches the other person. | 笑顔が相手に届くまでが、挨拶です。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😊</span>
+      <span class="card-label">Keep Smiling</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔙</span>
+      <span class="card-label">Looking Away</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🥲</span>
+      <span class="card-label">A Little Lonely</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：笑顔をキープ（連打で笑顔メーターを保ち、振り向いた瞬間に笑顔なら成功） -->
+  <section class="game" data-s="idle" data-look="away" data-ok="1" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Hold that smile!</div>
+    <div class="scene-wrap">
+      <div class="scene">
+        <div class="who">
+          <div class="say">Hello! 😊</div>
+          <div class="face" aria-hidden="true"><span class="flip">🐧</span><span class="me-badge">😄</span></div>
+          <div class="tag">You</div>
+        </div>
+        <div class="lane" aria-hidden="true"><span class="spark"><span class="sp-win">💫</span><span class="sp-lose">💧</span></span></div>
+        <div class="who them">
+          <div class="face" aria-hidden="true"><span class="them-pg">🐧</span><span class="think"><span class="t-away">🎵</span><span class="t-here">👀</span></span></div>
+          <div class="tag">Neighbor</div>
+        </div>
+      </div>
+    </div>
+    <div class="sm" aria-hidden="true">
+      <div class="sm-bar"><i class="sm-fill"></i><b class="sm-line"></b></div>
+      <div class="sm-scale"><span class="sm-lo">😑 fading</span><span class="sm-hi">😄 smiling</span></div>
+    </div>
+    <div class="warn">⚠️ Your smile is fading!</div>
+    <button class="tap" type="button">
+      <span class="t-start">▶ Say hello</span>
+      <span class="t-run">😊 Keep smiling! Tap tap!</span>
+      <span class="t-again">↺ Try again</span>
+    </button>
+    <div class="result">
+      <div class="r-hint">Tap fast to keep your smile up. Your neighbor will turn around soon.</div>
+      <div class="r-run">Wait for your eyes to meet… 👀</div>
+      <div class="r-win">💌 Your eyes met with a smile. Hello delivered!</div>
+      <div class="r-lose">😐 Your smile faded just before your eyes met. "Are they angry…?"</div>
+    </div>
+    <div class="stats"><span class="st"><span class="st-l">🔥 Streak:</span> <span class="streak-n">0</span></span><span class="st"><span class="st-l">🏆 Best:</span> <span class="best-n">0</span></span></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💌</span>
+      <span class="card-label">Smile Delivered</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Keep Smiling ||| 笑顔を続ける
+Looking Away ||| そっぽを向く
+A Little Lonely ||| 少しさみしい
+Smile Delivered ||| 笑顔をとどける
+⚡ TRY IT ||| ⚡ やってみよう
+Hold that smile! ||| 笑顔をキープ！
+Hello! 😊 ||| こんにちは！😊
+You ||| あなた
+Neighbor ||| ご近所さん
+😑 fading ||| 😑 消えそう
+😄 smiling ||| 😄 笑顔
+⚠️ Your smile is fading! ||| ⚠️ 笑顔が消えそう！
+▶ Say hello ||| ▶ 挨拶する
+😊 Keep smiling! Tap tap! ||| 😊 笑顔キープ！連打！
+↺ Try again ||| ↺ もう一回
+Tap fast to keep your smile up. Your neighbor will turn around soon. ||| 連打して、笑顔をキープしてね。ご近所さんは、そのうち振り向くよ。
+Wait for your eyes to meet… 👀 ||| 目が合うまで、がまん… 👀
+💌 Your eyes met with a smile. Hello delivered! ||| 💌 笑顔のまま目が合った。挨拶、とどきました！
+😐 Your smile faded just before your eyes met. "Are they angry…?" ||| 😐 目が合う直前に、笑顔が消えちゃった。「怒ってる…？」
+🔥 Streak: ||| 🔥 連続：
+🏆 Best: ||| 🏆 ベスト：
+@@js
+/* 👀 笑顔をキープ：JS は data-* / 幅 / 絵文字 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var KEY = 'pengesso-keep-smiling-until-eyes-meet-best';
+  var btn = g.querySelector('.tap'), fill = g.querySelector('.sm-fill'), face = g.querySelector('.me-badge');
+  var them = g.querySelector('.them'), stN = g.querySelector('.streak-n'), bestN = g.querySelector('.best-n');
+  var level = 100, tick = 0, turnT = 0, twitchT = 0, lock = 0, streak = 0, best = 0;
+  try { best = parseInt(localStorage.getItem(KEY), 10) || 0; } catch (e) {}
+  bestN.textContent = best;
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function faceFor(l) { return l >= 75 ? '😄' : l >= 50 ? '😊' : l >= 25 ? '😐' : '😑'; }
+  function draw() {
+    fill.style.width = level + '%';
+    face.textContent = faceFor(level);
+    g.setAttribute('data-ok', level >= 50 ? '1' : '0');
+  }
+  function stop() { clearInterval(tick); clearTimeout(turnT); clearTimeout(twitchT); }
+  function start() {
+    stop();
+    level = 100; draw();
+    g.setAttribute('data-look', 'away');
+    g.setAttribute('data-s', 'run');
+    var wait = 2600 + Math.random() * 2800;
+    tick = setInterval(function () { level = Math.max(0, level - 2.1); draw(); }, 50);
+    twitchT = setTimeout(function () { restart(them, 'twitch'); }, wait * (0.35 + Math.random() * 0.25));
+    turnT = setTimeout(turn, wait);
+  }
+  function turn() {
+    stop();
+    g.setAttribute('data-look', 'here');
+    var win = level >= 50;
+    streak = win ? streak + 1 : 0;
+    if (streak > best) { best = streak; try { localStorage.setItem(KEY, String(best)); } catch (e) {} }
+    stN.textContent = streak; bestN.textContent = best;
+    g.setAttribute('data-s', win ? 'win' : 'lose');
+    lock = Date.now() + 900;   /* 連打の勢いで、すぐ次が始まらないように */
+    if (win && window.pengessoPop) {
+      var r = g.querySelector('.lane').getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['💫', '😊', '🐧', '💌', '✨'], 18);
+    }
+    if (win && navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+  }
+  btn.addEventListener('click', function () {
+    if (Date.now() < lock) return;
+    if (g.getAttribute('data-s') === 'run') {
+      level = Math.min(100, level + 16); draw(); restart(face, 'boing');
+      return;
+    }
+    start();
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+挨拶は、目が合うまで笑顔を続ける。
+@@tone
+素材の重さ：真面目（人間関係のコツ）
+→ 見せ方：ポップに（水色と紫。連打で笑顔をキープするゲーム）
+@@game_ja
+👀 笑顔をキープ：「挨拶する」を押すと、自分のペンギンが「こんにちは！😊」。笑顔メーターがどんどん減るので、連打して笑顔を保つ。ご近所さんはそっぽを向いて🎵。途中で一度ぴくっと動いて（フェイント）、2.6〜5.4秒後のどこかで振り向く👀。その瞬間に笑顔メーターが半分以上なら成功（視線の線が光って💫）、下なら「目が合う直前に笑顔が消えちゃった。『怒ってる…？』」。連続成功の数と、ベストを端末に覚える。※元のブログの著者の体験（洗車中の話）は使わず、「たとえば」に直した。
+@@combo
+ペンギン × かぎ針編みのあみぐるみ × 木の庭の門
+@@cover
+An extremely cute, chubby round penguin made of crocheted amigurumi yarn, with a gentle face and a plain white belly, turning its head back over its shoulder with a warm, bright smile as if its eyes just met someone. Next to the penguin is a realistic small white wooden garden gate. Bright simple sky blue and soft lavender background with soft depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

@@ -1,0 +1,254 @@
+@@meta
+{"title": "Small talk is like a savings account for friendship", "label": "Talk Savings", "seq": 292, "mood": ["lift", "learn"], "tags": ["psychology", "friends", "school"], "thumbAlt": "A chubby chenille yarn penguin dropping a gold coin into a pink piggy bank"}
+@@ja_title
+雑談は、仲よしの貯金
+@@ja_label
+雑談の貯金
+@@h1emoji
+🐷
+@@section
+1-2「雑談の量が好かれる量になる（単純接触効果）／どうでもいい話だけが親しさとして貯まる」
+@@vars
+    --bg: #f6f5ff; --text: #22203a; --muted: #6c6a8a;
+    --accent: #4b3fd1; --accent2: #e89a00; --h1: #22205a; --big: #4b3fd1; --big-dark: #c3bcff;
+    --glow1: rgba(255,207,58,.30); --glow2: rgba(75,63,209,.16); --glow3: rgba(255,140,190,.18);
+    --shadow: 0 20px 55px rgba(60,50,160,.18); --photo-bg: #eceaff;
+    --g1: #2b2d7a; --g2: #4b3fd1; --g3: #8a5cf6; --pop: #ffcf3a; --pop-text: #4a3000; --btn-text: #4b3fd1;
+@@css
+  /* 🐷 仲よし貯金箱：「どうでもいい話」だけがコインになる */
+  .bank { max-width: 430px; margin: 16px auto 0; padding: 14px 12px 14px; border-radius: 24px; background: #fff; color: #22203a; box-shadow: 0 10px 24px rgba(20,10,80,.3); }
+  .topic { min-height: 50px; display: flex; align-items: center; justify-content: center; padding: 8px 12px; border-radius: 16px; background: #f3f1ff;
+    font-size: 16.5px; font-weight: 900; line-height: 1.35; }
+  .topic span { display: none; }
+  .game[data-tp=""] .tp-0, .game[data-tp="u0"] .tp-u0, .game[data-tp="u1"] .tp-u1, .game[data-tp="u2"] .tp-u2,
+  .game[data-tp="s0"] .tp-s0, .game[data-tp="s1"] .tp-s1, .game[data-tp="s2"] .tp-s2, .game[data-tp="s3"] .tp-s3 { display: inline; }
+  .tp-0 { color: #8a87a8; }
+  .game[data-last="u"] .topic { background: #eef1f5; color: #5a6475; }
+  .game[data-last="s"] .topic, .game[data-last="max"] .topic { background: #fff4c7; color: #5a3a00; }
+  .topic.boing { animation: bounce-in .35s both; }
+
+  .vault { display: grid; grid-template-columns: 120px 1fr; align-items: center; gap: 10px; margin-top: 12px; }
+  .pig-box { position: relative; height: 120px; display: grid; place-items: end center; }
+  .pig { font-size: 64px; line-height: 1; transform-origin: 50% 100%; transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
+  .game[data-lv="2"] .pig { transform: scale(1.08); } .game[data-lv="3"] .pig { transform: scale(1.16); }
+  .game[data-lv="4"] .pig { transform: scale(1.24); } .game[data-lv="5"] .pig { transform: scale(1.32); }
+  .pig.jiggle { animation: jiggle .4s ease; }
+  @keyframes jiggle { 0%,100% { rotate: 0deg; } 30% { rotate: -8deg; } 65% { rotate: 6deg; } }
+  .coin, .paper { position: absolute; left: 50%; top: 0; font-size: 30px; line-height: 1; opacity: 0; pointer-events: none; }
+  .coin.drop { animation: coin-drop .55s ease-in both; }
+  @keyframes coin-drop { 0% { opacity: 0; transform: translate(-50%, -20px) rotateY(0); } 20% { opacity: 1; } 85% { opacity: 1; transform: translate(-50%, 46px) rotateY(540deg); } 100% { opacity: 0; transform: translate(-50%, 56px) rotateY(720deg) scale(.6); } }
+  .paper.fly { animation: paper-fly .8s ease-out both; }
+  @keyframes paper-fly { 0% { opacity: 0; transform: translate(-50%, -10px) rotate(0); } 20% { opacity: 1; } 55% { opacity: 1; transform: translate(-50%, 30px) rotate(25deg); } 100% { opacity: 0; transform: translate(60px, -10px) rotate(120deg); } }
+
+  .info { text-align: left; min-width: 0; }
+  .lv-top { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+  .lv-k { font-size: 13px; font-weight: 900; color: #6c6a8a; letter-spacing: .06em; }
+  .lv-n { font-size: 32px; font-weight: 900; line-height: 1; color: #4b3fd1; }
+  .lv-name { margin-top: 4px; font-size: 17px; font-weight: 900; line-height: 1.3; color: #22205a; }
+  .lv-name span { display: none; }
+  .game[data-lv="1"] .ln1, .game[data-lv="2"] .ln2, .game[data-lv="3"] .ln3, .game[data-lv="4"] .ln4, .game[data-lv="5"] .ln5 { display: inline; }
+  .lv-name.up { animation: bounce-in .5s both; }
+  .lv-bar { position: relative; height: 12px; margin-top: 8px; border-radius: 999px; background: #ecebf6; overflow: hidden; }
+  .lv-bar i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; background: linear-gradient(90deg, #ffcf3a, #ff9f1a); transition: width .4s cubic-bezier(.2,1.2,.4,1); }
+  .coins { margin-top: 6px; font-size: 14px; font-weight: 900; color: #6c6a8a; }
+  .stars { display: flex; gap: 3px; margin-top: 6px; font-size: 18px; }
+  .stars i { font-style: normal; filter: grayscale(1); opacity: .25; }
+  .stars i.on { filter: none; opacity: 1; }
+
+  .msg { margin-top: 10px; min-height: 26px; font-size: 15.5px; font-weight: 900; line-height: 1.4; }
+  .msg span { display: none; }
+  .game[data-last=""] .m-hint, .game[data-last="u"] .m-u, .game[data-last="s"] .m-s, .game[data-last="max"] .m-max { display: inline; }
+  .m-hint { color: #6c6a8a; } .m-u { color: #5a6475; } .m-s { color: #b06a00; } .m-max { color: #e0306f; }
+  .game[data-last="max"] .m-max { display: inline-block; animation: bounce-in .5s both; }
+
+  .talk-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 430px; margin: 14px auto 0; }
+  .talk-btns .gbtn { width: 100%; min-height: 72px; flex-direction: column; gap: 2px; padding: 10px 8px; border-radius: 22px; font-size: 16px; }
+  .talk-btns .tb-e { font-size: 28px; line-height: 1; }
+  .useful { background: #e9ecf3; color: #3e4a5e; }
+@@dark
+  html[data-theme="dark"] .bank { background: #24223a; color: #ecebff; }
+  html[data-theme="dark"] .topic { background: #302d4d; }
+  html[data-theme="dark"] .game[data-last="u"] .topic { background: #2e3440; color: #c3cad6; }
+  html[data-theme="dark"] .game[data-last="s"] .topic, html[data-theme="dark"] .game[data-last="max"] .topic { background: #4a3c12; color: #ffe39a; }
+  html[data-theme="dark"] .tp-0, html[data-theme="dark"] .lv-k, html[data-theme="dark"] .coins, html[data-theme="dark"] .m-hint { color: #b9b6d6; }
+  html[data-theme="dark"] .lv-n { color: #c3bcff; } html[data-theme="dark"] .lv-name { color: #ecebff; }
+  html[data-theme="dark"] .lv-bar { background: #34315a; }
+  html[data-theme="dark"] .m-u { color: #c3cad6; } html[data-theme="dark"] .m-s { color: #ffc966; } html[data-theme="dark"] .m-max { color: #ff9cc4; }
+  html[data-theme="dark"] .useful { background: #3a4152; color: #e6ebf5; }
+@@sents
+S1 | It seems we do not chat because we like someone; we like someone because we chat a lot. | 好きだから雑談するのではなく、雑談が多いから好きになるそうです。
+S2 | For example, on a school trip, you wanted to be in a group with the kids you always talked to, right? | たとえば修学旅行で、同じ班になりたかったのは、いつもしゃべっている子でしたよね。
+S3 | And only silly little talk is saved as closeness. | しかも、親しさとして貯まるのは「どうでもいい話」だけです。
+S4 | Wanting to be close without small talk is like wanting money without saving. | 雑談せずに仲よくなりたいのは、貯金せずにお金を貯めたいのと同じです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💬</span>
+      <span class="card-label">Chat Comes First</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🚌</span>
+      <span class="card-label">School Trip</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍩</span>
+      <span class="card-label">Silly Talk Only</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：仲よし貯金箱（どうでもいい話だけがコインになる） -->
+  <section class="game" data-lv="1" data-tp="" data-last="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The friendship piggy bank</div>
+    <div class="game-hint">Which kind of talk puts a coin in? Tap and see.</div>
+    <div class="bank">
+      <div class="topic">
+        <span class="tp-0">💭 Pick a talk below…</span>
+        <span class="tp-u0">"The bus comes at 8."</span>
+        <span class="tp-u1">"Please pass the salt."</span>
+        <span class="tp-u2">"The homework is due Monday."</span>
+        <span class="tp-s0">"Is a cat a liquid?"</span>
+        <span class="tp-s1">"What is the best onigiri?"</span>
+        <span class="tp-s2">"I saw a cloud like a whale!"</span>
+        <span class="tp-s3">"Where do lost socks go?"</span>
+      </div>
+      <div class="vault">
+        <div class="pig-box" aria-hidden="true">
+          <span class="coin">🪙</span><span class="paper">📄</span>
+          <span class="pig">🐷</span>
+        </div>
+        <div class="info">
+          <div class="lv-top"><span class="lv-k">Friend level</span><span class="lv-n">1</span></div>
+          <div class="lv-name">
+            <span class="ln1">🥚 Strangers</span>
+            <span class="ln2">👋 Hi buddies</span>
+            <span class="ln3">🍙 Lunch buddies</span>
+            <span class="ln4">🚌 Same trip group</span>
+            <span class="ln5">💛 Best buddies</span>
+          </div>
+          <div class="lv-bar" aria-hidden="true"><i></i></div>
+          <div class="stars" aria-hidden="true"><i class="on">⭐</i><i>⭐</i><i>⭐</i><i>⭐</i><i>⭐</i></div>
+          <div class="coins"><span class="c-l">🪙 Coins:</span> <span class="c-n">0</span></div>
+        </div>
+      </div>
+      <div class="msg">
+        <span class="m-hint">Only one kind of talk makes coins.</span>
+        <span class="m-u">📋 Useful, but no coin goes in.</span>
+        <span class="m-s">🪙 Clink! Closeness +1</span>
+        <span class="m-max">🎉 Best buddies! All from silly talk.</span>
+      </div>
+    </div>
+    <div class="talk-btns">
+      <button class="gbtn useful" type="button"><span class="tb-e" aria-hidden="true">📋</span><span class="tb-t">Useful talk</span></button>
+      <button class="gbtn pop silly" type="button"><span class="tb-e" aria-hidden="true">🍩</span><span class="tb-t">Silly talk</span></button>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Empty the piggy bank</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🏦</span>
+      <span class="card-label">Friendship Savings</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Chat Comes First ||| 雑談が先
+School Trip ||| 修学旅行
+Silly Talk Only ||| どうでもいい話だけ
+Friendship Savings ||| 仲よしの貯金
+⚡ TRY IT ||| ⚡ やってみよう
+The friendship piggy bank ||| 仲よし貯金箱
+Which kind of talk puts a coin in? Tap and see. ||| コインが入るのは、どっちの話？押してみてね。
+💭 Pick a talk below… ||| 💭 下から話を選んでね…
+"The bus comes at 8." ||| 「バスは8時に来ます。」
+"Please pass the salt." ||| 「塩を取ってください。」
+"The homework is due Monday." ||| 「宿題は月曜日までです。」
+"Is a cat a liquid?" ||| 「猫って液体なのかな？」
+"What is the best onigiri?" ||| 「いちばんおいしいおにぎりの具って何？」
+"I saw a cloud like a whale!" ||| 「クジラみたいな雲を見たよ！」
+"Where do lost socks go?" ||| 「なくした靴下って、どこに行くんだろう？」
+Friend level ||| 仲よしレベル
+🥚 Strangers ||| 🥚 知らない人
+👋 Hi buddies ||| 👋 挨拶する仲
+🍙 Lunch buddies ||| 🍙 ランチ仲間
+🚌 Same trip group ||| 🚌 修学旅行で同じ班
+💛 Best buddies ||| 💛 大の仲よし
+🪙 Coins: ||| 🪙 コイン：
+Only one kind of talk makes coins. ||| コインになるのは、片方の話だけ。
+📋 Useful, but no coin goes in. ||| 📋 役に立つけど、コインは入らない。
+🪙 Clink! Closeness +1 ||| 🪙 チャリン！親しさ +1
+🎉 Best buddies! All from silly talk. ||| 🎉 大の仲よし！ぜんぶ、どうでもいい話のおかげ。
+Useful talk ||| 用事の話
+Silly talk ||| どうでもいい話
+↺ Empty the piggy bank ||| ↺ 貯金箱を空にする
+@@js
+/* 🐷 仲よし貯金箱：JS は data-* / class / 幅 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var PER = 3, MAX = 12;
+  var coin = g.querySelector('.coin'), paper = g.querySelector('.paper'), pig = g.querySelector('.pig');
+  var topic = g.querySelector('.topic'), lvN = g.querySelector('.lv-n'), lvName = g.querySelector('.lv-name');
+  var bar = g.querySelector('.lv-bar i'), cN = g.querySelector('.c-n'), stars = [].slice.call(g.querySelectorAll('.stars i'));
+  var coins = 0, ui = -1, si = -1;
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function level() { return Math.min(5, 1 + Math.floor(coins / PER)); }
+  function draw() {
+    var lv = level();
+    g.setAttribute('data-lv', String(lv));
+    lvN.textContent = lv; cN.textContent = coins;
+    bar.style.width = (coins >= MAX ? 100 : (coins % PER) / PER * 100) + '%';
+    stars.forEach(function (s, i) { s.classList.toggle('on', i < lv); });
+  }
+  g.querySelector('.useful').addEventListener('click', function () {
+    ui = (ui + 1) % 3;
+    g.setAttribute('data-tp', 'u' + ui);
+    g.setAttribute('data-last', 'u');
+    restart(topic, 'boing'); restart(paper, 'fly');
+  });
+  g.querySelector('.silly').addEventListener('click', function () {
+    si = (si + 1) % 4;
+    g.setAttribute('data-tp', 's' + si);
+    var before = level(), was = coins;
+    if (coins < MAX) coins++;
+    draw();
+    restart(topic, 'boing'); restart(coin, 'drop'); restart(pig, 'jiggle');
+    g.setAttribute('data-last', coins >= MAX ? 'max' : 's');
+    if (level() > before) restart(lvName, 'up');
+    if (coins === MAX && was < MAX && window.pengessoPop) {
+      var r = pig.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🪙', '💛', '🐷', '🐧', '✨'], 22);
+    }
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    coins = 0; ui = -1; si = -1;
+    g.setAttribute('data-tp', ''); g.setAttribute('data-last', '');
+    draw();
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+雑談の量が、好かれる量。親しさとして貯まるのは「どうでもいい話」だけ。
+@@tone
+素材の重さ：真面目（人間関係のコツ）
+→ 見せ方：ポップに（紺と金色。貯金箱にコインを入れるゲーム）
+@@game_ja
+🐷 仲よし貯金箱：「用事の話」（「バスは8時に来ます。」など）を押すと、紙📄がひらひら飛んでいって、コインは入らない。「どうでもいい話」（「猫って液体なのかな？」「なくした靴下って、どこに行くんだろう？」など）を押すと、🪙がくるくる回って貯金箱に入る。コイン3枚ごとに仲よしレベルが上がり（知らない人→挨拶する仲→ランチ仲間→修学旅行で同じ班→大の仲よし）、ブタの貯金箱も大きくなる。12枚で「大の仲よし！」の紙吹雪。※仕事の話は例に使わず、「用事の話」にした。
+@@combo
+ペンギン × シェニール糸 × ブタの貯金箱
+@@cover
+An extremely cute, chubby round penguin made of soft chenille yarn, with a gentle happy face and a plain white belly, dropping one shiny gold coin into a realistic glossy pink ceramic piggy bank. Bright simple indigo and warm golden yellow background with soft depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

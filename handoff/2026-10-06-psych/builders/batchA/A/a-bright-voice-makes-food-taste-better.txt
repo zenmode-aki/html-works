@@ -1,0 +1,258 @@
+@@meta
+{"title": "A bright voice makes people feel cared for", "label": "Bright Voice", "seq": 290, "mood": ["lift", "laugh"], "tags": ["psychology", "friends", "tips"], "thumbAlt": "A chubby plastic model kit penguin smiling next to a steaming bowl of udon noodles"}
+@@ja_title
+明るい声だと、大切にされている気がする
+@@ja_label
+明るい声
+@@h1emoji
+🍜
+@@section
+1-1「明るい声：明るい声だと大切にされている気がする。少し微笑みながら話すと声のトーンが上がる」
+@@vars
+    --bg: #fbf5ff; --text: #2a1a3a; --muted: #7a6a8a;
+    --accent: #7b2ff7; --accent2: #f107a3; --h1: #2e1452; --big: #7a22d6; --big-dark: #d3b0ff;
+    --glow1: rgba(123,47,247,.18); --glow2: rgba(241,7,163,.14); --glow3: rgba(255,216,74,.24);
+    --shadow: 0 20px 55px rgba(110,40,170,.18); --photo-bg: #f0e4ff;
+    --g1: #6a2cf0; --g2: #b31fd0; --g3: #f0189c; --pop: #ffd84a; --pop-text: #4a2a00; --btn-text: #7b2ff7;
+@@css
+  /* 🍜 声のダイヤル：笑顔レベル（1〜5）を上げ下げすると、声・お客さんの気持ち・うどんの味が変わる */
+  .shop { position: relative; max-width: 430px; margin: 16px auto 0; padding: 30px 12px 14px; border-radius: 24px; background: #fffaf3; color: #2a1a3a;
+    box-shadow: 0 10px 24px rgba(60,10,90,.25); overflow: hidden; }
+  .noren { position: absolute; left: 0; right: 0; top: 0; height: 22px; display: flex; gap: 4px; padding: 0 10px; }
+  .noren i { flex: 1; border-radius: 0 0 10px 10px; background: #2b3a8f; }
+  .noren i:nth-child(even) { background: #3e51b5; }
+  .counter { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+  .pp { position: relative; flex: 0 0 72px; text-align: center; }
+  .pp-face { position: relative; width: 66px; height: 66px; margin: 0 auto; display: grid; place-items: center; border-radius: 50%; background: #f1e8ff; font-size: 38px; line-height: 1; }
+  .pp-badge { position: absolute; right: -6px; bottom: -4px; font-size: 26px; line-height: 1; }
+  .pp-badge.boing { animation: bounce-in .4s both; }
+  .flip { display: inline-block; transform: scaleX(-1); }
+  .pp-tag { margin-top: 4px; font-size: 12px; font-weight: 900; color: #7a6a8a; }
+  .waves { flex: 1; display: flex; align-items: center; justify-content: center; gap: 5px; height: 64px; }
+  .waves i { width: 9px; border-radius: 9px; background: #e6dcf2; transition: height .3s cubic-bezier(.3,1.5,.5,1), background .3s; height: 10px; }
+  .waves i.on { background: linear-gradient(180deg, #f0189c, #7b2ff7); }
+  .waves i.on:nth-child(1) { height: 18px; } .waves i.on:nth-child(2) { height: 30px; } .waves i.on:nth-child(3) { height: 42px; }
+  .waves i.on:nth-child(4) { height: 52px; } .waves i.on:nth-child(5) { height: 62px; }
+  .game[data-lv="5"] .waves i.on { animation: hop .6s ease infinite; }
+  .game[data-lv="5"] .waves i.on:nth-child(2) { animation-delay: .1s; } .game[data-lv="5"] .waves i.on:nth-child(3) { animation-delay: .2s; }
+  .game[data-lv="5"] .waves i.on:nth-child(4) { animation-delay: .3s; } .game[data-lv="5"] .waves i.on:nth-child(5) { animation-delay: .4s; }
+
+  .talks { display: grid; gap: 8px; margin-top: 12px; }
+  .say, .feel { padding: 10px 12px; border-radius: 18px; font-weight: 900; line-height: 1.35; text-align: left; }
+  .say { border-radius: 6px 18px 18px 18px; background: #f3ecfb; min-height: 52px; display: flex; align-items: center; }
+  .feel { border-radius: 18px 6px 18px 18px; background: #eef7ff; text-align: right; min-height: 46px; display: flex; align-items: center; justify-content: flex-end; font-size: 16px; }
+  .say span, .feel span { display: none; }
+  .say.boing, .feel.boing { animation: bounce-in .35s both; }
+  .game[data-lv="1"] .s1, .game[data-lv="2"] .s2, .game[data-lv="3"] .s3, .game[data-lv="4"] .s4, .game[data-lv="5"] .s5,
+  .game[data-lv="1"] .c1, .game[data-lv="2"] .c2, .game[data-lv="3"] .c3, .game[data-lv="4"] .c4, .game[data-lv="5"] .c5 { display: inline; }
+  .s1 { font-size: 13px; color: #b0a6bb; font-style: italic; }
+  .s2 { font-size: 15px; color: #8a7a9a; }
+  .s3 { font-size: 18px; color: #5a3a8a; }
+  .s4 { font-size: 21px; color: #7b2ff7; }
+  .s5 { font-size: 25px; color: #e0128f; letter-spacing: -.01em; }
+
+  .bowl { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 12px; }
+  .bowl-e { position: relative; font-size: 44px; line-height: 1; transition: transform .3s cubic-bezier(.3,1.6,.5,1); }
+  .bowl-e .steam { position: absolute; left: 50%; top: -22px; transform: translateX(-50%); font-size: 20px; opacity: 0; transition: opacity .3s; }
+  .game[data-lv="4"] .bowl-e .steam, .game[data-lv="5"] .bowl-e .steam { opacity: 1; animation: float 1.6s ease-in-out infinite alternate; }
+  .game[data-lv="5"] .bowl-e { transform: scale(1.18) rotate(-6deg); }
+  .taste { text-align: left; }
+  .taste-l { font-size: 12.5px; font-weight: 900; color: #7a6a8a; letter-spacing: .06em; }
+  .stars { display: flex; gap: 2px; font-size: 24px; line-height: 1.1; }
+  .stars i { font-style: normal; filter: grayscale(1); opacity: .25; transition: opacity .2s, filter .2s; }
+  .stars i.on { filter: none; opacity: 1; }
+  .yum { display: none; margin-top: 10px; padding: 8px 12px; border-radius: 14px; background: #fff1b8; color: #6b3a00; font-weight: 900; line-height: 1.4; }
+  .game[data-lv="5"] .yum { display: block; animation: bounce-in .45s both; }
+
+  .dial { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 16px; }
+  .step { width: 72px; height: 72px; border: 0; border-radius: 50%; cursor: pointer; font: inherit; font-size: 34px; font-weight: 900; line-height: 1;
+    background: #fff; color: #7b2ff7; box-shadow: 0 6px 0 rgba(0,0,0,.18), 0 12px 20px rgba(0,0,0,.14);
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: transform .08s ease, box-shadow .08s ease; }
+  .step:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.18); }
+  .step[disabled] { opacity: .4; cursor: default; }
+  .step:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .step.plus { background: var(--pop); color: #6b2a00; }
+  .lv-box { min-width: 108px; text-align: center; }
+  .lv-l { font-size: 12.5px; font-weight: 900; letter-spacing: .08em; opacity: .95; }
+  .lv-n { font-size: 44px; font-weight: 900; line-height: 1; }
+  .lv-n.boing { animation: bounce-in .3s both; }
+  .lv-dots { display: flex; justify-content: center; gap: 4px; margin-top: 4px; }
+  .lv-dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.35); }
+  .lv-dots i.on { background: #ffd84a; }
+@@dark
+  html[data-theme="dark"] .shop { background: #2a2233; color: #f1e6ff; }
+  html[data-theme="dark"] .pp-face { background: #3a2f4a; }
+  html[data-theme="dark"] .pp-tag, html[data-theme="dark"] .taste-l { color: #c4b5d6; }
+  html[data-theme="dark"] .waves i { background: #43384f; }
+  html[data-theme="dark"] .say { background: #3a2f4a; }
+  html[data-theme="dark"] .feel { background: #24334a; }
+  html[data-theme="dark"] .s2 { color: #c4b5d6; } html[data-theme="dark"] .s3 { color: #e0cffa; }
+  html[data-theme="dark"] .s4 { color: #c9a8ff; } html[data-theme="dark"] .s5 { color: #ff7ccc; }
+  html[data-theme="dark"] .yum { background: #4a3c12; color: #ffe39a; }
+@@sents
+S1 | If a shop worker says "Welcome" in a small, weak voice, you may worry, "Are they angry? Am I a bother?" | 店員さんに、消えそうな小さい声で「いらっしゃいませ」と言われると、「怒ってる？迷惑だった？」と心配になります。
+S2 | If they say it in a bright voice, you feel cared for. | 明るい声で言われると、大切にされている気がします。
+S3 | Even the udon may taste better somehow. | うどんまで、なんだかおいしく感じるかもしれません。
+S4 | The trick is to talk with a little smile. | コツは、少し微笑みながら話すことです。
+S5 | It seems your voice goes up naturally when you smile. | 微笑むと、声のトーンが自然に上がるそうです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🥀</span>
+      <span class="card-label">Weak Voice</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">☀️</span>
+      <span class="card-label">Bright Voice</span>
+    </div>
+    <p>{S2} {S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：笑顔レベルのダイヤル（＋−で、声とお客さんとうどんが変わる） -->
+  <section class="game" data-lv="1" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The smile dial at a noodle shop</div>
+    <div class="game-hint">Turn up the shop penguin's smile. Listen to the voice change.</div>
+    <div class="shop">
+      <div class="noren" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="counter">
+        <div class="pp">
+          <div class="pp-face" aria-hidden="true"><span class="flip">🐧</span><span class="pp-badge clerk-b">😶</span></div>
+          <div class="pp-tag">Shop penguin</div>
+        </div>
+        <div class="waves" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+        <div class="pp">
+          <div class="pp-face" aria-hidden="true">🐧<span class="pp-badge cust-b">😟</span></div>
+          <div class="pp-tag">Customer</div>
+        </div>
+      </div>
+      <div class="talks">
+        <div class="say">
+          <span class="s1">…welcome…</span>
+          <span class="s2">Welcome.</span>
+          <span class="s3">Welcome!</span>
+          <span class="s4">Welcome! 😊</span>
+          <span class="s5">Welcome!! ✨</span>
+        </div>
+        <div class="feel">
+          <span class="c1">"Are they angry? 😟"</span>
+          <span class="c2">"Am I a bother…?"</span>
+          <span class="c3">"OK."</span>
+          <span class="c4">"What a nice shop! 😊"</span>
+          <span class="c5">"I feel so welcome! 🤩"</span>
+        </div>
+      </div>
+      <div class="bowl">
+        <div class="bowl-e" aria-hidden="true">🍜<span class="steam">♨️</span></div>
+        <div class="taste">
+          <div class="taste-l">🍜 Taste</div>
+          <div class="stars" aria-hidden="true"><i class="on">⭐</i><i>⭐</i><i>⭐</i><i>⭐</i><i>⭐</i></div>
+        </div>
+      </div>
+      <div class="yum">🍜✨ Even the udon tastes better!</div>
+    </div>
+    <div class="dial">
+      <button class="step minus" type="button" aria-label="Less smile">−</button>
+      <div class="lv-box">
+        <div class="lv-l">😊 Smile level</div>
+        <div class="lv-n">1</div>
+        <div class="lv-dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <button class="step plus" type="button" aria-label="More smile">+</button>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Back to 1</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🙂</span>
+      <span class="card-label">The Trick</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎵</span>
+      <span class="card-label">Voice Goes Up</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+Weak Voice ||| 消えそうな声
+Bright Voice ||| 明るい声
+The Trick ||| コツ
+Voice Goes Up ||| 声が上がる
+⚡ TRY IT ||| ⚡ やってみよう
+The smile dial at a noodle shop ||| うどん屋さんの笑顔ダイヤル
+Turn up the shop penguin's smile. Listen to the voice change. ||| 店員ペンギンの笑顔を上げてみよう。声が変わるよ。
+Shop penguin ||| 店員ペンギン
+Customer ||| お客さん
+…welcome… ||| …いらっしゃいませ…
+Welcome. ||| いらっしゃいませ。
+Welcome! ||| いらっしゃいませ！
+Welcome! 😊 ||| いらっしゃいませ！😊
+Welcome!! ✨ ||| いらっしゃいませー！！✨
+"Are they angry? 😟" ||| 「怒ってる？😟」
+"Am I a bother…?" ||| 「迷惑だったかな…？」
+"OK." ||| 「ふつう。」
+"What a nice shop! 😊" ||| 「いいお店！😊」
+"I feel so welcome! 🤩" ||| 「大切にされてる！🤩」
+🍜 Taste ||| 🍜 おいしさ
+🍜✨ Even the udon tastes better! ||| 🍜✨ うどんまで、おいしくなった！
+Less smile ||| 笑顔を下げる
+More smile ||| 笑顔を上げる
+😊 Smile level ||| 😊 笑顔レベル
+↺ Back to 1 ||| ↺ 1にもどす
+@@js
+/* 🍜 笑顔ダイヤル：JS は data-lv / class / 絵文字 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var CLERK = ['', '😶', '😐', '🙂', '😊', '😄'], CUST = ['', '😟', '😕', '🙂', '😊', '🤩'];
+  var minus = g.querySelector('.minus'), plus = g.querySelector('.plus'), num = g.querySelector('.lv-n');
+  var clerk = g.querySelector('.clerk-b'), cust = g.querySelector('.cust-b');
+  var say = g.querySelector('.say'), feel = g.querySelector('.feel');
+  var groups = [g.querySelectorAll('.waves i'), g.querySelectorAll('.stars i'), g.querySelectorAll('.lv-dots i')];
+  var lv = 1, popped = false;
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function set(v) {
+    var old = lv;
+    lv = Math.max(1, Math.min(5, v));
+    g.setAttribute('data-lv', String(lv));
+    num.textContent = lv;
+    clerk.textContent = CLERK[lv]; cust.textContent = CUST[lv];
+    groups.forEach(function (list) { [].forEach.call(list, function (el, i) { el.classList.toggle('on', i < lv); }); });
+    minus.disabled = lv <= 1; plus.disabled = lv >= 5;
+    if (lv !== old) { restart(say, 'boing'); restart(feel, 'boing'); restart(num, 'boing'); restart(clerk, 'boing'); restart(cust, 'boing'); }
+    if (lv === 5 && old !== 5 && !popped && window.pengessoPop) {
+      popped = true;
+      var r = g.querySelector('.bowl-e').getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🍜', '✨', '🐧', '⭐', '♨️'], 18);
+    }
+  }
+  minus.addEventListener('click', function () { set(lv - 1); });
+  plus.addEventListener('click', function () { set(lv + 1); });
+  g.querySelector('.reset').addEventListener('click', function () { popped = false; set(1); });
+  set(1);
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード・.big）
+@@message
+明るい声だと、相手は大切にされている気がする。コツは少し微笑むこと。
+@@tone
+素材の重さ：真面目（人間関係のコツ）
+→ 見せ方：ポップに（紫とピンク。うどん屋さんの笑顔ダイヤル）
+@@game_ja
+🍜 うどん屋さんの笑顔ダイヤル：＋−で店員ペンギンの「笑顔レベル」を1〜5に変える。笑顔が上がるほど、声の波が高くなり、「…いらっしゃいませ…」（小さくて灰色）→「いらっしゃいませー！！✨」（大きくてピンク）に変わる。お客さんの気持ちも「怒ってる？😟」→「大切にされてる！🤩」、うどんの星も1→5。レベル5で湯気が立って「うどんまで、おいしくなった！」と紙吹雪。※元のブログの著者の体験（うどん屋さん）は、「たとえば」の一般的な話に直した。仕事の例（「3時までにお願いできる？」）は使っていない。
+@@combo
+ペンギン × つや消しのプラモデル × うどんのどんぶり
+@@cover
+An extremely cute, chubby round penguin made as a matte plastic model kit figure, with a gentle face with a small happy smile and a plain white belly, standing behind a small wooden noodle shop counter next to a realistic steaming bowl of udon noodles with thick white noodles in clear broth. Bright simple lavender and soft magenta background with soft depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

@@ -1,0 +1,225 @@
+@@meta
+{"title": "Think of it as returned, not lost", "label": "Just Returned", "seq": 475, "mood": ["lift", "think"], "tags": ["psychology", "mindset", "feelings"], "thumbAlt": "A model-kit penguin bowing politely next to a bright city rental bicycle"}
+@@ja_title
+失ったのではなく、返しただけ
+@@ja_label
+返しただけ
+@@h1emoji
+🚲
+@@section
+90「エピクテトス：失ったのではなく、返した」
+@@vars
+    --bg: #effcfa; --text: #17302e; --muted: #5a7a77;
+    --accent: #0c968d; --accent2: #ff8a3d; --h1: #12302e; --big: #0b8a82; --big-dark: #7ff0e4;
+    --glow1: rgba(17,184,165,.24); --glow2: rgba(255,138,61,.20); --glow3: rgba(58,160,255,.16);
+    --shadow: 0 20px 55px rgba(10,120,110,.18); --photo-bg: #dcf6f2;
+    --g1: #11b8a5; --g2: #2f9bff; --g3: #ff8a5c; --pop: #ffe27a; --pop-text: #5a3a00; --btn-text: #0b7f77;
+@@css
+  /* 🙏 返却カウンター：時間が来たら「失った？」→ 押すと「ありがとう」のスタンプで返す */
+  .rentals { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px; margin: 16px auto 0; }
+  .rent { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 3px; min-height: 150px;
+    padding: 12px 8px 10px; border: 0; border-radius: 20px; background: rgba(255,255,255,.96); color: #0e4f4a; font: inherit; font-weight: 900;
+    line-height: 1.25; cursor: pointer; overflow: hidden; box-shadow: 0 5px 0 rgba(0,60,60,.25);
+    transition: background .3s ease, filter .3s ease, transform .08s ease; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .rent:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .r-e { font-size: 36px; line-height: 1; }
+  .r-name { font-size: 15px; }
+  .r-time { font-size: 12.5px; opacity: .7; }
+  .bar { display: block; width: 86%; height: 10px; margin: 6px 0 4px; border-radius: 999px; background: #d8efec; overflow: hidden; }
+  .bar i { display: block; width: 100%; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #11b8a5, #2f9bff); transition: width .1s linear; }
+  .r-lost, .r-back { display: none; font-size: 14px; line-height: 1.3; }
+  .rent[data-st="up"] { background: #e6e8ea; color: #6b7174; filter: grayscale(1); }
+  .rent[data-st="up"] .r-lost { display: block; }
+  .rent[data-st="up"].buzz { animation: shake .45s ease; }
+  .rent[data-st="up"]:active { transform: translateY(3px); }
+  .rent[data-st="back"] { background: var(--pop); color: #5a3a00; }
+  .rent[data-st="back"] .r-back { display: block; }
+  .rent[data-st="back"] .bar { visibility: hidden; }
+  .stamp { position: absolute; right: 6px; top: 6px; font-size: 30px; line-height: 1; opacity: 0; transform: rotate(-14deg) scale(2.2); }
+  .rent[data-st="back"] .stamp { opacity: 1; transform: rotate(-14deg); }
+  .stamp.thud { animation: thud .45s cubic-bezier(.2,1.3,.4,1) both; }
+  @keyframes thud { 0% { opacity: 0; transform: rotate(-14deg) scale(2.4); } 100% { opacity: 1; transform: rotate(-14deg) scale(1); } }
+
+  .tally { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; margin-top: 16px; font-size: 16px; font-weight: 900; }
+  .tn { font-size: 24px; }
+  .say { min-height: 50px; display: flex; align-items: center; justify-content: center; max-width: 440px; margin: 12px auto 0; padding: 10px 14px;
+    border-radius: 18px; background: rgba(255,255,255,.22); font-size: 17px; font-weight: 900; line-height: 1.4; }
+  .say span { display: none; }
+  .game[data-s="idle"] .s-idle, .game[data-s="run"] .s-run, .game[data-s="done"] .s-done { display: inline; }
+  .game[data-s="done"] .say { background: var(--pop); color: #5a3a00; animation: bounce-in .5s both; }
+  .ctl { margin-top: 14px; }
+  .ctl .gbtn { display: none; }
+  .game[data-s="idle"] .start, .game:not([data-s="idle"]) .reset { display: inline-flex; }
+@@dark
+  html[data-theme="dark"] .rent { background: #1f2c2b; color: #bff3ec; }
+  html[data-theme="dark"] .bar { background: #2e4442; }
+  html[data-theme="dark"] .rent[data-st="up"] { background: #2a2d30; color: #a9b0b4; }
+  html[data-theme="dark"] .rent[data-st="back"] { background: #ffe27a; color: #4a3000; }
+  html[data-theme="dark"] .game[data-s="done"] .say { background: #ffe27a; color: #4a3000; }
+@@sents
+S1 | Epictetus, a philosopher from long ago, said something like, "Do not say 'I lost it.' Say 'I returned it.'" | 昔の哲学者エピクテトスは、「『失った』と言わずに、『返した』と言いなさい」という意味のことを言いました。
+S2 | When you return a rental bike after 3 hours, you do not think, "I lost my bike," right? | レンタサイクルを3時間後に返すとき、「自転車を失った」とは思いませんよね。
+S3 | Important things may also be things that you only borrowed for a while. | 大切なものも、しばらく貸してもらっていただけなのかもしれません。
+S4 | When it ends, I want to say "Thank you" and give it back. | 終わるときは、「ありがとう」と言って返したいです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🏛️</span>
+      <span class="card-label">Old Wisdom</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🚲</span>
+      <span class="card-label">Rental Bike</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：返却カウンター（時間が来ると灰色の「失った…？」→ 押すと🙏スタンプで「返した！」） -->
+  <section class="game" data-s="idle" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The return counter</div>
+    <div class="game-hint">Press start. When the time is up, tap the card to give it back with thanks.</div>
+    <div class="rentals">
+      <button class="rent" type="button" data-st="wait">
+        <span class="r-e" aria-hidden="true">🚲</span><span class="r-name">Rental bike</span><span class="r-time">3 hours</span>
+        <span class="bar" aria-hidden="true"><i></i></span>
+        <span class="r-lost">😢 Lost…? 👆 Tap</span><span class="r-back">🙏 Returned!</span>
+        <span class="stamp" aria-hidden="true">🙏</span>
+      </button>
+      <button class="rent" type="button" data-st="wait">
+        <span class="r-e" aria-hidden="true">✈️</span><span class="r-name">A trip</span><span class="r-time">5 days</span>
+        <span class="bar" aria-hidden="true"><i></i></span>
+        <span class="r-lost">😢 Lost…? 👆 Tap</span><span class="r-back">🙏 Returned!</span>
+        <span class="stamp" aria-hidden="true">🙏</span>
+      </button>
+      <button class="rent" type="button" data-st="wait">
+        <span class="r-e" aria-hidden="true">🌸</span><span class="r-name">Cherry blossoms</span><span class="r-time">2 weeks</span>
+        <span class="bar" aria-hidden="true"><i></i></span>
+        <span class="r-lost">😢 Lost…? 👆 Tap</span><span class="r-back">🙏 Returned!</span>
+        <span class="stamp" aria-hidden="true">🙏</span>
+      </button>
+      <button class="rent" type="button" data-st="wait">
+        <span class="r-e" aria-hidden="true">🏖️</span><span class="r-name">Summer vacation</span><span class="r-time">40 days</span>
+        <span class="bar" aria-hidden="true"><i></i></span>
+        <span class="r-lost">😢 Lost…? 👆 Tap</span><span class="r-back">🙏 Returned!</span>
+        <span class="stamp" aria-hidden="true">🙏</span>
+      </button>
+    </div>
+    <div class="tally"><span class="t-l">🙏 Returned with thanks:</span><span class="tn">0</span><span class="of">/4</span></div>
+    <div class="say">
+      <span class="s-idle">Everything here is only borrowed for a while.</span>
+      <span class="s-run">⏳ Time is passing…</span>
+      <span class="s-done">🐧 It was all borrowed. Thank you! ✨</span>
+    </div>
+    <div class="ctl">
+      <button class="gbtn pop start" type="button">▶ Start</button>
+      <button class="gbtn ghost reset" type="button">↺ Again</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎁</span>
+      <span class="card-label">Only Borrowed</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🙏</span>
+      <span class="card-label">Say Thanks</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Old Wisdom ||| 昔の知恵
+Rental Bike ||| レンタサイクル
+Only Borrowed ||| 借りていただけ
+Say Thanks ||| ありがとう
+⚡ TRY IT ||| ⚡ やってみよう
+The return counter ||| 返却カウンター
+Press start. When the time is up, tap the card to give it back with thanks. ||| スタートを押してね。時間が来たら、カードを押して「ありがとう」で返そう。
+Rental bike ||| レンタサイクル
+3 hours ||| 3時間
+A trip ||| 旅行
+5 days ||| 5日間
+Cherry blossoms ||| 桜
+2 weeks ||| 2週間
+Summer vacation ||| 夏休み
+40 days ||| 40日間
+😢 Lost…? 👆 Tap ||| 😢 失った…？👆 押して
+🙏 Returned! ||| 🙏 返した！
+🙏 Returned with thanks: ||| 🙏 ありがとうで返した：
+Everything here is only borrowed for a while. ||| ここにあるものは、ぜんぶ、しばらく借りているだけ。
+⏳ Time is passing… ||| ⏳ 時間が過ぎていく…
+🐧 It was all borrowed. Thank you! ✨ ||| 🐧 ぜんぶ借りていたもの。ありがとう！✨
+▶ Start ||| ▶ スタート
+↺ Again ||| ↺ もう一回
+@@js
+/* 🙏 返却カウンター：JS は data-s / data-st / class / style / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var cards = [].slice.call(g.querySelectorAll('.rent'));
+  var DUR = [2500, 4000, 5500, 7000];
+  var tn = g.querySelector('.tn');
+  var t0 = 0, tick = 0;
+  function restart(el, c) { el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function bar(c, f) { c.querySelector('.bar i').style.width = (f * 100) + '%'; }
+  function count() { var n = g.querySelectorAll('.rent[data-st="back"]').length; tn.textContent = String(n); return n; }
+  function loop() {
+    var el = Date.now() - t0, running = 0;
+    cards.forEach(function (c, i) {
+      if (c.getAttribute('data-st') !== 'run') return;
+      var left = Math.max(0, 1 - el / DUR[i]);
+      bar(c, left);
+      if (left <= 0) { c.setAttribute('data-st', 'up'); restart(c, 'buzz'); }
+      else running++;
+    });
+    if (!running) { clearInterval(tick); tick = 0; }
+  }
+  g.querySelector('.start').addEventListener('click', function () {
+    cards.forEach(function (c) { c.setAttribute('data-st', 'run'); bar(c, 1); });
+    g.setAttribute('data-s', 'run'); count();
+    t0 = Date.now(); clearInterval(tick); tick = setInterval(loop, 80);
+  });
+  cards.forEach(function (c) {
+    c.addEventListener('click', function () {
+      if (c.getAttribute('data-st') !== 'up') return;
+      c.setAttribute('data-st', 'back');
+      restart(c.querySelector('.stamp'), 'thud');
+      var r = c.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+      if (count() === 4) {
+        g.setAttribute('data-s', 'done');
+        if (window.pengessoPop) window.pengessoPop(x, y, ['🙏', '🐧', '✨', '🚲', '🌸'], 24);
+      } else if (window.pengessoPop) {
+        window.pengessoPop(x, y, ['🙏', '✨'], 10);
+      }
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    clearInterval(tick); tick = 0;
+    cards.forEach(function (c) { c.setAttribute('data-st', 'wait'); c.classList.remove('buzz'); bar(c, 1); });
+    g.setAttribute('data-s', 'idle'); count();
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+失ったのではなく、返しただけ。大切なものも、しばらく借りていたもの。
+@@tone
+素材の重さ：少し重い（失うこと）
+→ 見せ方：明るく、やさしく（ターコイズとオレンジ。返却カウンターで「ありがとう」のスタンプを押す。恋愛や人の死の例は使わない。軽いもの＝自転車・旅行・桜・夏休みだけ）
+@@game_ja
+🙏 返却カウンター：スタートを押すと、4枚のカード（🚲 レンタサイクル 3時間／✈️ 旅行 5日間／🌸 桜 2週間／🏖️ 夏休み 40日間）の残り時間ゲージが、ちがう速さで減っていく。0になったカードは灰色になって「😢 失った…？」とブルッと震える。押すと🙏スタンプがドンと押されて黄色に戻り「返した！」。4枚ぜんぶ返すと「ぜんぶ借りていたもの。ありがとう！」とはじける。同じ「終わり」でも、「失った」と「返した」で見え方が変わるのを感じる。
+@@combo
+ペンギン × つや消しのプラモデル × 街のレンタサイクル
+@@cover
+An extremely cute, chubby round penguin built like a matte plastic model kit, with a gentle thankful face and a plain white belly, bowing politely with both flippers together. Next to it stands one realistic bright city rental bicycle with a front basket. Bright simple clear sky-blue and soft orange background with gentle depth, sunny light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

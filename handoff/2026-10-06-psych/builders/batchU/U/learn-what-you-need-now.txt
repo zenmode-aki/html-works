@@ -1,0 +1,240 @@
+@@meta
+{"title": "Adults should start learning from what they can use right now", "label": "Learn Now", "seq": 499, "mood": ["lift", "learn"], "tags": ["psychology", "study", "books"], "thumbAlt": "A hand-embroidered felt penguin reading one small open book with a bright sticky note in it"}
+@@ja_title
+大人の勉強は「今すぐ使えること」から
+@@ja_label
+今使う勉強
+@@h1emoji
+📚
+@@section
+140「大人の勉強は『今必要なこと』から」
+@@vars
+    --bg: #f6f7ff; --text: #222842; --muted: #676d8c;
+    --accent: #3b4fd8; --accent2: #6cc72e; --h1: #18205a; --big: #2f40c4; --big-dark: #b3bdff;
+    --glow1: rgba(140,220,60,.26); --glow2: rgba(80,100,255,.22); --glow3: rgba(255,200,80,.2);
+    --shadow: 0 20px 55px rgba(40,50,160,.18); --photo-bg: #e5e8ff;
+    --g1: #3446d6; --g2: #5b6cff; --g3: #5cc23a; --pop: #ffe066; --pop-text: #3b2b00; --btn-text: #2f40c4;
+@@css
+  /* 📚 本棚クイズ：今の悩みに合う本を選ぶと、ぐんと育つ */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 14px 10px; border-radius: 20px; text-align: center; font-weight: 900; font-size: 15px; line-height: 1.35; }
+  .vs .v-some { background: #eef0f6; color: #707690; }
+  .vs .v-now { background: #e6fbd8; color: #2d6a10; }
+  .vs .v-e { display: block; font-size: 28px; margin-bottom: 4px; }
+
+  .desk { max-width: 440px; margin: 16px auto 0; padding: 14px; border-radius: 24px; background: #fff; color: #222842; box-shadow: 0 10px 24px rgba(10,20,90,.2); }
+  .prob { display: grid; grid-template-columns: 1fr 64px; align-items: center; gap: 10px; text-align: left; }
+  .prob-l { font-size: 12.5px; font-weight: 900; letter-spacing: .08em; color: #3b4fd8; }
+  .prob-t { min-height: 46px; margin-top: 2px; font-size: 17px; font-weight: 900; line-height: 1.35; }
+  .prob-t > span { display: none; }
+  .game[data-q="0"] .p0, .game[data-q="1"] .p1, .game[data-q="2"] .p2, .game[data-q="3"] .p3 { display: inline; }
+  .tree { width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%; background: #effbe6; font-size: 36px; line-height: 1; }
+  .tree .tr.grow { animation: bounce-in .5s both; }
+  .grow-bar { position: relative; height: 14px; margin-top: 10px; border-radius: 999px; background: #e8eaf5; overflow: hidden; }
+  .grow-bar i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; background: linear-gradient(90deg, #8ee04f, #3fb91e); transition: width .6s cubic-bezier(.2,1.3,.4,1); }
+  .grow-l { display: flex; justify-content: space-between; margin-top: 4px; font-size: 12px; font-weight: 900; color: #676d8c; }
+
+  .shelf { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px; margin: 14px auto 0; }
+  .book { position: relative; min-height: 84px; padding: 10px 10px 10px 18px; border: 0; border-radius: 8px 16px 16px 8px; cursor: pointer; font: inherit; font-size: 15px;
+    font-weight: 900; line-height: 1.3; text-align: left; color: #fff; box-shadow: inset 8px 0 0 rgba(0,0,0,.18), 0 5px 0 rgba(0,0,0,.2);
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: transform .1s ease; }
+  .book:active { transform: translateY(3px); }
+  .book:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .book .be { display: block; font-size: 24px; margin-bottom: 2px; }
+  .b-talk { background: #22a35a; } .b-kr { background: #e2475b; } .b-sleep { background: #2f6fe0; } .b-test { background: #a2702c; }
+  .book.ok { animation: bounce-in .45s both; box-shadow: 0 0 0 4px #ffe066, 0 0 24px rgba(255,224,102,.9); }
+  .book.later { animation: shake .4s ease; }
+  .book .later-tag { position: absolute; right: 6px; top: 6px; font-size: 18px; line-height: 1; opacity: 0; transition: opacity .2s ease; }
+  .book.later .later-tag { opacity: 1; }
+
+  .result { margin-top: 12px; min-height: 52px; }
+  .result > div { display: none; font-size: 16px; font-weight: 900; line-height: 1.45; }
+  .game:not([data-fb]):not([data-q="3"]) .r-hint, .game[data-fb="ok"]:not([data-q="3"]) .r-ok, .game[data-fb="later"] .r-later, .game[data-q="3"] .r-done { display: block; }
+  .game[data-q="3"] .r-done { animation: bounce-in .45s both; }
+  .score { margin-top: 4px; font-size: 14px; font-weight: 900; opacity: .95; }
+  .again { display: none; }
+  .game[data-q="3"] .again { display: inline-flex; }
+  .game[data-q="3"] .shelf { opacity: .55; pointer-events: none; }
+@@dark
+  html[data-theme="dark"] .vs .v-some { background: #2c2e3b; color: #b9bdd0; }
+  html[data-theme="dark"] .vs .v-now { background: #24391a; color: #c2f2a6; }
+  html[data-theme="dark"] .desk { background: #22242f; color: #eceefa; }
+  html[data-theme="dark"] .prob-l { color: #b3bdff; }
+  html[data-theme="dark"] .tree { background: #24391a; }
+  html[data-theme="dark"] .grow-bar { background: #353849; }
+  html[data-theme="dark"] .grow-l { color: #b9bdd0; }
+@@sents
+S1 | It seems adults should start studying from "things you can use right now." | 大人の勉強は、「今すぐ使えること」から始めるのがいいそうです。
+S2 | For example, if you keep worrying about people, a book on talking may come before a test book. | たとえば、人間関係でずっと悩んでいるなら、資格の本より、話し方の本が先かもしれません。
+S3 | If you read it today and use it tomorrow, you grow fast and it is fun. | 今日読んで、明日使えると、成長が速くて楽しいです。
+S4 | "Useful right now" comes before "useful someday." | 「いつか役に立つ」より、「今、役に立つ」です。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📖</span>
+      <span class="card-label">Right Now</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔀</span>
+      <span class="card-label">The Order</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：本棚クイズ -->
+  <section class="game" data-q="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Pick the book for right now</div>
+    <div class="game-hint">Read the problem. Which book helps today?</div>
+    <div class="desk">
+      <div class="prob">
+        <div>
+          <div class="prob-l">MY PROBLEM NOW</div>
+          <div class="prob-t">
+            <span class="p0">😣 I get nervous when I talk to people.</span>
+            <span class="p1">✈️ I go to Korea next month!</span>
+            <span class="p2">😴 I can't sleep well these days.</span>
+            <span class="p3">😊 All 3 problems got lighter!</span>
+          </div>
+        </div>
+        <div class="tree" aria-hidden="true"><span class="tr">🌱</span></div>
+      </div>
+      <div class="grow-bar" aria-hidden="true"><i></i></div>
+      <div class="grow-l" aria-hidden="true"><span>🌱 small</span><span>🌳 big</span></div>
+    </div>
+    <div class="shelf">
+      <button class="book b-talk" type="button" data-k="0"><span class="be">📗</span>How to Talk Kindly<span class="later-tag" aria-hidden="true">📌</span></button>
+      <button class="book b-kr" type="button" data-k="1"><span class="be">📕</span>Easy Korean Phrases<span class="later-tag" aria-hidden="true">📌</span></button>
+      <button class="book b-sleep" type="button" data-k="2"><span class="be">📘</span>Good Sleep Habits<span class="later-tag" aria-hidden="true">📌</span></button>
+      <button class="book b-test" type="button" data-k="9"><span class="be">📙</span>A Very Thick Test Book<span class="later-tag" aria-hidden="true">📌</span></button>
+    </div>
+    <div class="result">
+      <div class="r-hint">Tap a book on the shelf.</div>
+      <div class="r-ok">✨ Read today, use tomorrow! You grew a lot.</div>
+      <div class="r-later">📌 Useful someday… but not for this problem now.</div>
+      <div class="r-done">🌳 You grew fast! Learning what you need now is fun.</div>
+    </div>
+    <div class="score"><span class="sl">✅ Solved:</span> <span class="sn">0</span> <span class="sm">/ 3</span></div>
+    <div class="again-row"><button class="gbtn again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🚀</span>
+      <span class="card-label">Grow Fast</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">⏰</span>
+      <span class="card-label">Now First</span>
+    </div>
+    <p class="big">{S4}</p>
+    <div class="vs" aria-hidden="true">
+      <div class="v-some"><span class="v-e">📦</span>useful someday</div>
+      <div class="v-now"><span class="v-e">⚡</span>useful right now</div>
+    </div>
+  </section>
+@@ui
+Right Now ||| 今すぐ
+The Order ||| 順番
+Grow Fast ||| 速く育つ
+Now First ||| 今が先
+useful someday ||| いつか役に立つ
+useful right now ||| 今、役に立つ
+⚡ TRY IT ||| ⚡ やってみよう
+Pick the book for right now ||| 今の自分に合う本を選ぼう
+Read the problem. Which book helps today? ||| 悩みを読んでね。今日役に立つのはどの本？
+MY PROBLEM NOW ||| 今の悩み
+😣 I get nervous when I talk to people. ||| 😣 人と話すと緊張してしまう。
+✈️ I go to Korea next month! ||| ✈️ 来月、韓国に行く！
+😴 I can't sleep well these days. ||| 😴 最近、よく眠れない。
+😊 All 3 problems got lighter! ||| 😊 3つの悩みが、ぜんぶ軽くなった！
+🌱 small ||| 🌱 小さい
+🌳 big ||| 🌳 大きい
+How to Talk Kindly ||| やさしい話し方
+Easy Korean Phrases ||| かんたん韓国語フレーズ
+Good Sleep Habits ||| よく眠るための習慣
+A Very Thick Test Book ||| すごく分厚い資格の本
+Tap a book on the shelf. ||| 本棚の本を押してね。
+✨ Read today, use tomorrow! You grew a lot. ||| ✨ 今日読んで、明日使える！ぐんと育った。
+📌 Useful someday… but not for this problem now. ||| 📌 いつか役に立つ…けど、今の悩みには合わないかも。
+🌳 You grew fast! Learning what you need now is fun. ||| 🌳 速く育った！今必要なことを学ぶのは楽しい。
+✅ Solved: ||| ✅ 解決：
+/ 3 ||| / 3
+↺ Try again ||| ↺ もう一回
+@@js
+/* 📚 本棚クイズ：今の悩みに合う本を押すと、木がぐんと育って次の悩みへ。合わない本は「いつか」の付箋。JS は data-* と class と style と数字と絵文字だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var books = [].slice.call(g.querySelectorAll('.book')), bar = g.querySelector('.grow-bar i'), tr = g.querySelector('.tr');
+  var sn = g.querySelector('.sn'), again = g.querySelector('.again');
+  var TREE = ['🌱', '🌿', '🪴', '🌳'];
+  var q = 0, grow = 0, busy = false;
+  function draw() {
+    g.setAttribute('data-q', q); sn.textContent = q; tr.textContent = TREE[q];
+    bar.style.width = grow + '%';
+  }
+  books.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (busy || q >= 3) return;
+      books.forEach(function (x) { x.classList.remove('later'); });
+      if (+b.getAttribute('data-k') === q) {
+        busy = true;
+        b.classList.remove('ok'); void b.offsetWidth; b.classList.add('ok');
+        g.setAttribute('data-fb', 'ok');
+        grow = Math.min(100, grow + 30 + (q === 2 ? 10 : 0));
+        bar.style.width = grow + '%';
+        tr.textContent = TREE[q + 1]; tr.classList.remove('grow'); void tr.offsetWidth; tr.classList.add('grow');
+        if (window.pengessoPop) {
+          var k = b.getBoundingClientRect();
+          window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['✨', '🌱', '📚'], 10);
+        }
+        setTimeout(function () {
+          b.classList.remove('ok');
+          q++; g.removeAttribute('data-fb'); draw(); busy = false;
+          if (q === 3) {
+            if (window.pengessoPop) {
+              var t = tr.getBoundingClientRect();
+              window.pengessoPop(t.left + t.width / 2, t.top + t.height / 2, ['🌳', '📚', '🐧', '✨'], 18);
+            }
+            if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+          }
+        }, 1100);
+      } else {
+        void b.offsetWidth; b.classList.add('later');
+        g.setAttribute('data-fb', 'later');
+        grow = Math.min(100, grow + 2);
+        bar.style.width = grow + '%';
+      }
+    });
+  });
+  again.addEventListener('click', function () {
+    q = 0; grow = 0; g.removeAttribute('data-fb');
+    books.forEach(function (x) { x.classList.remove('later', 'ok'); });
+    draw();
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+大人の勉強は「今すぐ使えること」から。すぐ使えると、成長が速くて楽しい。
+@@tone
+素材の重さ：ふつう（勉強の順番）
+→ 見せ方：ポップに（紺と若葉色の本棚。今の悩みに合う本を選ぶクイズで遊べる）
+@@game_ja
+📚 本棚クイズ：「今の悩み」が1つずつ出る（😣 人と話すと緊張してしまう／✈️ 来月、韓国に行く！／😴 最近、よく眠れない）。本棚の4冊（やさしい話し方・かんたん韓国語フレーズ・よく眠るための習慣・すごく分厚い資格の本）から1冊押す。合う本だと本が光って、成長バーがぐんと伸び、芽 🌱 → 🌿 → 🪴 → 🌳 と育って次の悩みへ。合わない本は 📌 の付箋がついて「いつか役に立つ…けど、今の悩みには合わないかも」でほんの少ししか伸びない（分厚い資格の本はいつもこれ）。3つ解決で「🌳 速く育った！」。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of hand-embroidered felt, happily reading one realistic small open paperback book with a single bright yellow sticky note on its page. A simple bright cobalt-blue background that fades into fresh lime green with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × 刺しゅうフェルト × 付箋のついた本

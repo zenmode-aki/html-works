@@ -1,0 +1,1 @@
+var g=document.querySelector('.game'); var cs=getComputedStyle(g); __log('op',cs.opacity+' '+cs.transform+' '+cs.visibility+' cls='+g.className); var r=g.getBoundingClientRect(); __log('rect',r.top+' '+r.height);

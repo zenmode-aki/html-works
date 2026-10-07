@@ -1,0 +1,219 @@
+@@meta
+{"title": "People who come over and talk to you first look cute", "label": "Come Closer", "seq": 295, "mood": ["lift", "laugh"], "tags": ["psychology", "friends", "tips"], "thumbAlt": "A chubby boucle wool penguin walking toward a happy puppy that wags its tail"}
+@@ja_title
+自分から近づいて話しかける人は、かわいく見える
+@@ja_label
+自分から近づく
+@@h1emoji
+🐶
+@@section
+1-2「自分から話しかける：尻尾を振って近づいてくる犬はかわいく感じる。人間も同じ」
+@@vars
+    --bg: #fff8f0; --text: #3a2414; --muted: #8a6e58;
+    --accent: #ad5c18; --accent2: #f08a5d; --h1: #3d2410; --big: #a85a18; --big-dark: #ffcf9a;
+    --glow1: rgba(240,160,90,.26); --glow2: rgba(255,120,140,.16); --glow3: rgba(120,200,255,.20);
+    --shadow: 0 20px 55px rgba(160,90,30,.18); --photo-bg: #ffead6;
+    --g1: #a8612a; --g2: #cf7438; --g3: #e2635a; --pop: #ffe066; --pop-text: #4a3500; --btn-text: #ad5c18;
+@@css
+  /* 🐶 ペットショップのショーウィンドウ → 自分の番：待つか、しっぽを振りにいくか */
+  .windows { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 430px; margin: 16px auto 0; }
+  .win { position: relative; display: block; width: 100%; min-height: 176px; padding: 0; border: 6px solid #fff; border-radius: 22px; cursor: pointer; overflow: hidden;
+    font: inherit; color: #3a2414; background: linear-gradient(180deg, #e3f4ff 0%, #f5fbff 66%, #f2dcc0 66%, #e8c9a2 100%);
+    box-shadow: 0 6px 0 rgba(0,0,0,.18); -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: transform .08s ease; }
+  .win:active { transform: translateY(3px); }
+  .win:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .win::after { content: ""; position: absolute; left: 10%; top: 8%; width: 18%; height: 40%; border-radius: 8px; background: rgba(255,255,255,.55); transform: skewX(-12deg); }
+  .win-no { position: absolute; left: 8px; top: 6px; padding: 2px 9px; border-radius: 999px; background: #3a2414; color: #fff; font-size: 12px; font-weight: 900; z-index: 1; }
+  .dog { position: absolute; left: 50%; bottom: 40px; font-size: 40px; line-height: 1; transform: translateX(-50%) scale(.8); transition: transform .55s cubic-bezier(.3,1.4,.5,1), bottom .55s cubic-bezier(.3,1.4,.5,1); }
+  .da { left: 74%; bottom: 72px; transform: translateX(-50%) scale(.7); }
+  .game[data-a="1"] .da { left: 50%; bottom: 30px; transform: translateX(-50%) scale(1.45); animation: wag .35s ease-in-out 6 .5s; }
+  @keyframes wag { 0%,100% { rotate: 0deg; } 50% { rotate: -10deg; } }
+  .db { left: 26%; bottom: 66px; transform: translateX(-50%) scale(.75) scaleX(-1); }
+  .game[data-b="1"] .db { animation: shake .4s ease; }
+  .zzz { position: absolute; left: 36%; bottom: 96px; font-size: 18px; animation: float 2s ease-in-out infinite alternate; }
+  .wave-hint { position: absolute; left: 0; right: 0; bottom: 4px; font-size: 13px; font-weight: 900; color: #6b4a2a; }
+  .whearts { position: absolute; left: 0; right: 0; top: 30px; font-size: 15px; letter-spacing: 1px; }
+  .whearts i { font-style: normal; filter: grayscale(1); opacity: .25; }
+  .whearts i.on { filter: none; opacity: 1; animation: bounce-in .35s both; }
+
+  .verdict1 { display: none; max-width: 430px; margin: 12px auto 0; padding: 10px 14px; border-radius: 18px; background: rgba(255,255,255,.2); font-size: 16px; font-weight: 900; line-height: 1.4; }
+  .game[data-a="1"][data-b="1"] .verdict1 { display: block; animation: bounce-in .45s both; }
+
+  .turn { max-width: 430px; margin: 14px auto 0; padding: 14px 12px; border-radius: 24px; background: #fff; color: #3a2414; box-shadow: 0 10px 24px rgba(80,30,0,.25); transition: opacity .3s; }
+  .game[data-unlock="0"] .turn { opacity: .55; }
+  .turn-t { font-size: 17px; font-weight: 900; }
+  .lock { display: none; margin-top: 6px; font-size: 14px; font-weight: 900; color: #8a6e58; }
+  .game[data-unlock="0"] .lock { display: block; }
+  .party { position: relative; height: 120px; margin-top: 10px; border-radius: 18px; background: linear-gradient(180deg, #fff4e3, #ffe6c7); overflow: hidden; }
+  .me { position: absolute; left: 10px; bottom: 14px; font-size: 40px; line-height: 1; transition: left .7s cubic-bezier(.3,1.2,.5,1), filter .3s; }
+  .me .flip { display: inline-block; transform: scaleX(-1); }
+  .game[data-me="wait"] .me { filter: grayscale(.8); opacity: .7; }
+  .game[data-me="go"] .me { left: calc(100% - 200px); }
+  .game[data-me="go"] .me .flip { animation: hop .4s ease 2 .5s; }
+  .group { position: absolute; right: 10px; bottom: 14px; font-size: 34px; line-height: 1; letter-spacing: -4px; }
+  .me-say { position: absolute; left: 6px; top: 8px; padding: 5px 10px; border-radius: 14px; background: #fff; font-size: 14px; font-weight: 900; display: none; box-shadow: 0 3px 8px rgba(0,0,0,.1); }
+  .game[data-me="wait"] .ms-wait, .game[data-me="go"] .ms-go { display: block; }
+  .game[data-me="go"] .ms-go { left: auto; right: 12px; animation: bounce-in .4s .6s both; }
+  .mhearts { margin-top: 8px; font-size: 22px; letter-spacing: 2px; }
+  .mhearts i { font-style: normal; filter: grayscale(1); opacity: .25; }
+  .mhearts i.on { filter: none; opacity: 1; animation: bounce-in .35s both; }
+  .mhearts i.on:nth-child(2) { animation-delay: .1s; } .mhearts i.on:nth-child(3) { animation-delay: .2s; }
+  .mhearts i.on:nth-child(4) { animation-delay: .3s; } .mhearts i.on:nth-child(5) { animation-delay: .4s; }
+  .res { min-height: 24px; margin-top: 6px; font-size: 16px; font-weight: 900; line-height: 1.4; }
+  .res span { display: none; }
+  .game[data-me="wait"] .rs-wait { display: inline; color: #8a6e58; }
+  .game[data-me="go"] .rs-go { display: inline; color: #d6336c; }
+  .me-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+  .me-btns .gbtn { width: 100%; padding: 10px 8px; min-height: 60px; font-size: 15px; border-radius: 20px; }
+  .b-wait { background: #efe7de; color: #5a4632; box-shadow: 0 5px 0 rgba(0,0,0,.14); }
+  .b-go { box-shadow: 0 5px 0 #d9a400; }
+@@dark
+  html[data-theme="dark"] .win { border-color: #3a2f28; background: linear-gradient(180deg, #23313f 0%, #2a3644 66%, #3d3226 66%, #34291f 100%); color: #f5e6d8; }
+  html[data-theme="dark"] .wave-hint { color: #f0d6bc; }
+  html[data-theme="dark"] .turn { background: #2a221d; color: #f5e6d8; }
+  html[data-theme="dark"] .lock, html[data-theme="dark"] .game[data-me="wait"] .rs-wait { color: #cdb7a3; }
+  html[data-theme="dark"] .party { background: linear-gradient(180deg, #3a2e24, #33281f); }
+  html[data-theme="dark"] .me-say { background: #4a3c30; color: #f5e6d8; }
+  html[data-theme="dark"] .game[data-me="go"] .rs-go { color: #ff9cc4; }
+  html[data-theme="dark"] .b-wait { background: #4a3c30; color: #f5e6d8; }
+@@sents
+S1 | At a pet shop, a dog that wags its tail and comes to you looks very cute. | ペットショップで、しっぽを振って近づいてくる犬は、すごくかわいく見えます。
+S2 | People are the same. | 人間も同じです。
+S3 | It seems people who come over with a smile and talk to you first look cute. | 笑顔で自分から近づいて話しかける人は、かわいく見えるそうです。
+S4 | Instead of waiting, go and wag your tail first. | 待っているより、自分からしっぽを振りにいきましょう。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐶</span>
+      <span class="card-label">Pet Shop</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐧</span>
+      <span class="card-label">People Too</span>
+    </div>
+    <p>{S2} {S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：ペットショップの窓（近づいてくる犬／寝ている犬）→ 自分の番（待つ／話しかけにいく） -->
+  <section class="game" data-a="0" data-b="0" data-unlock="0" data-me="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Which puppy feels cuter?</div>
+    <div class="game-hint">Tap each window to wave at the puppy.</div>
+    <div class="windows">
+      <button class="win wa" type="button">
+        <span class="win-no">1</span>
+        <span class="whearts" aria-hidden="true"><i>💖</i><i>💖</i><i>💖</i><i>💖</i><i>💖</i></span>
+        <span class="dog da" aria-hidden="true">🐕</span>
+        <span class="wave-hint">👋 Wave</span>
+      </button>
+      <button class="win wb" type="button">
+        <span class="win-no">2</span>
+        <span class="whearts" aria-hidden="true"><i>💖</i><i>💖</i><i>💖</i><i>💖</i><i>💖</i></span>
+        <span class="zzz" aria-hidden="true">💤</span>
+        <span class="dog db" aria-hidden="true">🐕</span>
+        <span class="wave-hint">👋 Wave</span>
+      </button>
+    </div>
+    <div class="verdict1">🐶 Puppy 1 ran over, wagging its tail. It feels cuter, right?</div>
+    <div class="turn">
+      <div class="turn-t">🐧 Now it is your turn!</div>
+      <div class="lock">🔒 Wave at both puppies first.</div>
+      <div class="party" aria-hidden="true">
+        <span class="me-say ms-wait">…</span>
+        <span class="me-say ms-go">Hi! 😊</span>
+        <span class="me"><span class="flip">🐧</span></span>
+        <span class="group">🐧🐧🐧</span>
+      </div>
+      <div class="mhearts" aria-hidden="true"><i>💖</i><i>💖</i><i>💖</i><i>💖</i><i>💖</i></div>
+      <div class="res">
+        <span class="rs-wait">😶 You waited… but nobody noticed you.</span>
+        <span class="rs-go">💖 "So cute! Come join us!"</span>
+      </div>
+      <div class="me-btns">
+        <button class="gbtn b-wait" type="button" disabled>🧱 Wait in the corner</button>
+        <button class="gbtn pop b-go" type="button" disabled>🐾 Go and say hi!</button>
+      </div>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐾</span>
+      <span class="card-label">Wag First</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Pet Shop ||| ペットショップ
+People Too ||| 人間も同じ
+Wag First ||| 自分からしっぽを振る
+⚡ TRY IT ||| ⚡ やってみよう
+Which puppy feels cuter? ||| どっちの子犬がかわいく見える？
+Tap each window to wave at the puppy. ||| 窓をタップして、子犬に手を振ってね。
+👋 Wave ||| 👋 手を振る
+🐶 Puppy 1 ran over, wagging its tail. It feels cuter, right? ||| 🐶 1番の子犬は、しっぽを振って走ってきた。こっちのほうが、かわいく見えるよね？
+🐧 Now it is your turn! ||| 🐧 次は、あなたの番！
+🔒 Wave at both puppies first. ||| 🔒 先に、2匹の子犬に手を振ってね。
+Hi! 😊 ||| こんにちは！😊
+😶 You waited… but nobody noticed you. ||| 😶 待っていたけど…だれも気づかなかった。
+💖 "So cute! Come join us!" ||| 💖「かわいい！こっちにおいでよ！」
+🧱 Wait in the corner ||| 🧱 すみっこで待つ
+🐾 Go and say hi! ||| 🐾 話しかけにいく！
+↺ Start over ||| ↺ 最初から
+@@js
+/* 🐶 どっちの子犬がかわいい？：JS は data-* / class / disabled だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var wa = g.querySelector('.wa'), wb = g.querySelector('.wb');
+  var hA = [].slice.call(wa.querySelectorAll('.whearts i')), hB = [].slice.call(wb.querySelectorAll('.whearts i'));
+  var mh = [].slice.call(g.querySelectorAll('.mhearts i'));
+  var bWait = g.querySelector('.b-wait'), bGo = g.querySelector('.b-go');
+  var a = 0, b = 0;
+  function fill(list, k) { list.forEach(function (h, i) { h.classList.toggle('on', i < k); }); }
+  function draw() {
+    g.setAttribute('data-a', a ? '1' : '0'); g.setAttribute('data-b', b ? '1' : '0');
+    fill(hA, Math.min(5, a ? a + 2 : 0)); fill(hB, b ? 1 : 0);
+    var un = a && b;
+    g.setAttribute('data-unlock', un ? '1' : '0');
+    bWait.disabled = !un; bGo.disabled = !un;
+  }
+  function center(el) { var r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }
+  wa.addEventListener('click', function () {
+    a = Math.min(3, a + 1); draw();
+    if (window.pengessoPop) { var c = center(wa); window.pengessoPop(c[0], c[1], ['💖', '🐶', '🐾'], 8); }
+  });
+  wb.addEventListener('click', function () {
+    b = 1; g.setAttribute('data-b', '0'); void g.offsetWidth; draw();
+  });
+  bWait.addEventListener('click', function () { g.setAttribute('data-me', 'wait'); fill(mh, 0); });
+  bGo.addEventListener('click', function () {
+    var again = g.getAttribute('data-me') === 'go';
+    g.setAttribute('data-me', 'go'); fill(mh, 5);
+    if (!again && window.pengessoPop) { var c = center(g.querySelector('.party')); window.pengessoPop(c[0], c[1], ['💖', '🐧', '🐾', '✨'], 20); }
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    a = 0; b = 0; g.setAttribute('data-me', ''); fill(mh, 0); draw();
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード・.big）
+@@message
+自分から近づいて話しかける人は、かわいく見える。
+@@tone
+素材の重さ：真面目（人間関係のコツ）
+→ 見せ方：ポップに（キャラメル色とサーモンピンク。ペットショップの窓で遊ぶ）
+@@game_ja
+🐶 どっちの子犬がかわいい？：ペットショップの窓が2つ。1番の窓をタップすると、奥にいた子犬が走ってきて、ガラスの前でしっぽを振る（💖が増える）。2番の窓の子犬は、すみっこで寝たまま💤（💖は1つだけ）。両方に手を振ると「1番のほうが、かわいく見えるよね？」。次に「あなたの番」：「すみっこで待つ」→ だれも気づかない😶／「話しかけにいく！」→ 自分のペンギンが仲間のところまで歩いていって「こんにちは！😊」、💖が5つ＋紙吹雪「かわいい！こっちにおいでよ！」。
+@@combo
+ペンギン × ブークレウール × しっぽを振る子犬
+@@cover
+An extremely cute, chubby round penguin made of boucle wool, with a gentle happy face and a plain white belly, waddling forward with one flipper raised in greeting toward a realistic small fluffy puppy that is happily wagging its tail. Bright simple warm caramel and soft peach background with soft depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

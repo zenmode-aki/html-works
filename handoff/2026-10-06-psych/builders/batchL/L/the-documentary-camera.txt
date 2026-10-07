@@ -1,0 +1,200 @@
+@@meta
+{"title": "On a bad day, imagine a documentary camera is filming you", "label": "Camera On", "seq": 409, "mood": ["lift", "laugh"], "tags": ["psychology", "mindset", "feelings"], "thumbAlt": "A chubby low-poly wood and paper penguin striking a brave pose in front of a vintage film camera on a tripod"}
+@@ja_title
+落ちこんだ日は、ドキュメンタリーのカメラを想像する
+@@ja_label
+カメラON
+@@h1emoji
+🎥
+@@section
+9「自分は自分、脳は脳」の後半（ドキュメンタリー番組のカメラ）
+@@vars
+    --bg: #fff8ef; --text: #2e2118; --muted: #87705f;
+    --accent: #d9452b; --accent2: #ffb627; --h1: #3a1f12; --big: #c43a22; --big-dark: #ffb39e;
+    --glow1: rgba(255,182,39,.28); --glow2: rgba(217,69,43,.15); --glow3: rgba(120,90,200,.14);
+    --shadow: 0 20px 55px rgba(160,60,30,.18); --photo-bg: #ffeedd;
+    --g1: #2b2f4a; --g2: #3d3566; --g3: #a8433a; --pop: #ffd23f; --pop-text: #3a2a00; --btn-text: #c43a22;
+@@css
+  /* 🎥 カメラON/OFF：同じ場面が、ヒーローの場面になる */
+  .screen { position: relative; max-width: 420px; height: 236px; margin: 14px auto 0; border-radius: 18px; overflow: hidden; background: #6f7480;
+    box-shadow: 0 0 0 4px rgba(255,255,255,.18); transition: background .5s ease; }
+  .game[data-sc="1"] .screen { background: linear-gradient(180deg, #8d97a6, #5e6774); }
+  .game[data-sc="2"] .screen { background: linear-gradient(180deg, #a59c8f, #6d665d); }
+  .game[data-sc="3"] .screen { background: linear-gradient(180deg, #8f95ac, #585d73); }
+  .game[data-cam="on"][data-sc="1"] .screen { background: linear-gradient(180deg, #3d6fb8, #1d2f63); }
+  .game[data-cam="on"][data-sc="2"] .screen { background: linear-gradient(180deg, #ffb35c, #b84a2e); }
+  .game[data-cam="on"][data-sc="3"] .screen { background: linear-gradient(180deg, #ff8f6b, #5a3d8a); }
+  .lbar { position: absolute; left: 0; right: 0; height: 0; background: #0b0b10; z-index: 3; transition: height .45s ease; }
+  .lbar.top { top: 0; } .lbar.bot { bottom: 0; }
+  .game[data-cam="on"] .lbar { height: 22px; }
+  .rec { position: absolute; left: 10px; top: 28px; z-index: 4; display: none; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 8px;
+    background: rgba(0,0,0,.45); color: #fff; font-size: 12px; font-weight: 900; letter-spacing: .08em; }
+  .game[data-cam="on"] .rec { display: inline-flex; }
+  .dot { color: #ff3b30; animation: blink 1s steps(2, start) infinite; }
+  @keyframes blink { to { visibility: hidden; } }
+  .props { position: absolute; inset: 0; display: flex; align-items: flex-start; justify-content: space-around; padding-top: 40px; font-size: 34px; opacity: .85; }
+  .game .props span { display: none; }  /* .game を付けて、絵文字の「押すと弾ける」の inline-block に負けないようにする */
+  .game[data-sc="1"] .p1, .game[data-sc="2"] .p2, .game[data-sc="3"] .p3 { display: inline; }
+  .pen { position: absolute; left: 50%; bottom: 52px; z-index: 2; font-size: 64px; line-height: 1; transform: translateX(-50%) rotate(8deg) scale(.88);
+    filter: saturate(.3); transition: transform .5s cubic-bezier(.2,1.5,.4,1), filter .4s ease; }
+  .game[data-cam="on"] .pen { transform: translateX(-50%) rotate(-6deg) scale(1.18); filter: none; }
+  .shine { position: absolute; left: 50%; bottom: 96px; z-index: 2; font-size: 26px; opacity: 0; transition: opacity .3s ease; margin-left: 26px; }
+  .game[data-cam="on"] .shine { opacity: 1; animation: float 1.6s ease-in-out infinite alternate; }
+  .notes { position: absolute; left: 16px; bottom: 60px; z-index: 2; font-size: 24px; opacity: 0; }
+  .game[data-cam="on"] .notes { opacity: 1; animation: float 2s ease-in-out infinite alternate; }
+  .cap { position: absolute; left: 8px; right: 8px; bottom: 26px; z-index: 4; padding: 4px 6px; text-align: center; color: #fff; font-size: 14px; font-weight: 900; line-height: 1.3;
+    text-shadow: 0 1px 3px rgba(0,0,0,.6); }
+  .game[data-cam="off"] .cap { bottom: 8px; }
+  .cap span { display: none; }
+  .game[data-cam="off"][data-sc="1"] .o1, .game[data-cam="off"][data-sc="2"] .o2, .game[data-cam="off"][data-sc="3"] .o3,
+  .game[data-cam="on"][data-sc="1"] .n1, .game[data-cam="on"][data-sc="2"] .n2, .game[data-cam="on"][data-sc="3"] .n3 { display: inline; }
+  .game[data-cam="on"] .cap span { color: #ffe27a; }
+
+  .cam-btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: min(320px, 100%); min-height: 60px; margin: 16px auto 0; padding: 8px 18px; border: 0; border-radius: 999px;
+    background: rgba(255,255,255,.2); color: #fff; font: inherit; font-size: 18px; font-weight: 900; cursor: pointer; box-shadow: 0 6px 0 rgba(0,0,0,.25);
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: background .2s ease, transform .08s ease; }
+  .cam-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,.25); }
+  .cam-btn:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .knob { position: relative; width: 52px; height: 30px; flex: 0 0 auto; border-radius: 999px; background: rgba(0,0,0,.3); }
+  .knob::after { content: ""; position: absolute; left: 3px; top: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; transition: transform .25s ease; }
+  .game[data-cam="on"] .cam-btn { background: #ff3b30; }
+  .game[data-cam="on"] .knob::after { transform: translateX(22px); }
+  .cam-btn .c-on { display: none; }
+  .game[data-cam="on"] .cam-btn .c-on { display: inline; }
+  .game[data-cam="on"] .cam-btn .c-off { display: none; }
+
+  .row2 { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px 14px; margin-top: 14px; }
+  .stars { display: inline-flex; align-items: center; gap: 6px; font-size: 14.5px; font-weight: 900; }
+  .stars i { font-style: normal; font-size: 22px; filter: grayscale(1); opacity: .35; }
+  .stars i.on { filter: none; opacity: 1; animation: bounce-in .4s both; }
+  .res { display: none; max-width: 420px; margin: 14px auto 0; padding: 12px 14px; border-radius: 18px; background: rgba(255,255,255,.16); font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .game[data-all="1"] .res { display: block; animation: bounce-in .5s both; }
+@@sents
+S1 | When you feel down, imagine a camera for a documentary show is filming you. | 落ちこんだときは、ドキュメンタリー番組のカメラが自分を撮っていると想像してみます。
+S2 | Then even the sad you starts to look cool, like "Now is the time to hang in there." | すると、落ちこんでいる自分も「今が踏ん張りどころだ」と、カッコよく見えてきます。
+S3 | When you look at yourself a little from the outside, your heart gets a little more room. | 自分を少し外から見ると、心に少し余裕ができます。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎥</span>
+      <span class="card-label">Camera Rolling</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎬</span>
+      <span class="card-label">Hero Scene</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：カメラON/OFF（同じ落ちこむ場面が、ヒーローの場面になる。3場面） -->
+  <section class="game" data-cam="off" data-sc="1" data-all="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Turn on the camera</div>
+    <div class="game-hint">Same bad moment. Turn the documentary camera on, and see what changes.</div>
+    <div class="screen">
+      <div class="lbar top" aria-hidden="true"></div>
+      <div class="rec"><span class="dot" aria-hidden="true">●</span><span class="rl">REC</span><span class="tc">00:00</span></div>
+      <div class="props" aria-hidden="true">
+        <span class="p1">🌧️</span><span class="p1">☂️</span>
+        <span class="p2">📝</span><span class="p2">📚</span>
+        <span class="p3">🗺️</span><span class="p3">🏙️</span>
+      </div>
+      <div class="pen" aria-hidden="true">🐧</div>
+      <div class="shine" aria-hidden="true">✨</div>
+      <div class="notes" aria-hidden="true">🎵</div>
+      <div class="cap">
+        <span class="o1">Rain, and no umbrella. Sigh…</span>
+        <span class="o2">The test did not go well. Sigh…</span>
+        <span class="o3">Lost in a new city. Sigh…</span>
+        <span class="n1">🎙️ "Even in the rain, our hero did not give up."</span>
+        <span class="n2">🎙️ "Now is the time to hang in there."</span>
+        <span class="n3">🎙️ "And here, the big adventure began."</span>
+      </div>
+      <div class="lbar bot" aria-hidden="true"></div>
+    </div>
+    <button class="cam-btn" type="button" aria-pressed="false"><span class="knob" aria-hidden="true"></span><span class="c-off">🎥 Camera: OFF</span><span class="c-on">🎥 Camera: ON</span></button>
+    <div class="row2">
+      <span class="stars"><span class="sl">⭐ Hero scenes:</span><span class="st" aria-hidden="true"><i>🎬</i><i>🎬</i><i>🎬</i></span></span>
+      <button class="gbtn ghost nextsc" type="button">Next scene ▶</button>
+    </div>
+    <div class="res">🏆 All 3 bad moments became hero scenes!</div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎞️</span>
+      <span class="card-label">From the Outside</span>
+    </div>
+    <p class="big">{S3}</p>
+  </section>
+@@ui
+Camera Rolling ||| カメラが回る
+Hero Scene ||| ヒーローの場面
+From the Outside ||| 外から見る
+⚡ TRY IT ||| ⚡ やってみよう
+Turn on the camera ||| カメラをONにしよう
+Same bad moment. Turn the documentary camera on, and see what changes. ||| 同じ、落ちこむ場面。ドキュメンタリーのカメラをONにすると、何が変わるかな。
+REC ||| REC
+Rain, and no umbrella. Sigh… ||| 雨なのに、傘がない。はあ…
+The test did not go well. Sigh… ||| テスト、うまくいかなかった。はあ…
+Lost in a new city. Sigh… ||| 知らない街で、道に迷った。はあ…
+🎙️ "Even in the rain, our hero did not give up." ||| 🎙️「雨の中でも、主人公はあきらめなかった」
+🎙️ "Now is the time to hang in there." ||| 🎙️「今が、踏ん張りどころだ」
+🎙️ "And here, the big adventure began." ||| 🎙️「そして、ここから大冒険が始まった」
+🎥 Camera: OFF ||| 🎥 カメラ：OFF
+🎥 Camera: ON ||| 🎥 カメラ：ON
+⭐ Hero scenes: ||| ⭐ ヒーローの場面：
+Next scene ▶ ||| 次の場面 ▶
+🏆 All 3 bad moments became hero scenes! ||| 🏆 落ちこむ3つの場面が、ぜんぶヒーローの場面になった！
+@@js
+/* 🎥 カメラON/OFF：JS は data-* / class / aria / 数字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var btn = g.querySelector('.cam-btn'), tc = g.querySelector('.tc'), stars = [].slice.call(g.querySelectorAll('.st i'));
+  var sc = 1, seen = {}, sec = 0, iv = 0;
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function setCam(on) {
+    g.setAttribute('data-cam', on ? 'on' : 'off');
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    clearInterval(iv);
+    if (on) {
+      sec = 0; tc.textContent = '00:00';
+      iv = setInterval(function () { sec++; tc.textContent = pad(Math.floor(sec / 60)) + ':' + pad(sec % 60); }, 1000);
+      if (!seen[sc]) {
+        seen[sc] = 1;
+        var n = Object.keys(seen).length;
+        stars.forEach(function (s, i) { s.classList.toggle('on', i < n); });
+        var r = g.querySelector('.pen').getBoundingClientRect();
+        if (n === 3) {
+          g.setAttribute('data-all', '1');
+          if (window.pengessoPop) window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🎬', '🏆', '🐧', '✨'], 20);
+        } else if (window.pengessoPop) window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🎬', '✨'], 8);
+      }
+    }
+  }
+  btn.addEventListener('click', function () { setCam(g.getAttribute('data-cam') !== 'on'); });
+  g.querySelector('.nextsc').addEventListener('click', function () {
+    sc = sc % 3 + 1;
+    g.setAttribute('data-sc', sc);
+    setCam(false);
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・.big）
+@@message
+落ちこんだ自分を、ドキュメンタリーのカメラが撮っていると想像する。すると「今が踏ん張りどころ」とカッコよく見える。
+@@tone
+素材の重さ：ふつう（落ちこんだ日の見方）
+→ 見せ方：ポップに（映画っぽい紺と赤。カメラのスイッチで場面が変わる）
+@@game_ja
+🎥 カメラをONにしよう：テレビ画面の中に、しょんぼりしたペンギン。場面は3つ（雨なのに傘がない／テストがうまくいかなかった／知らない街で道に迷った）。カメラOFFだと灰色で「はあ…」。スイッチをONにすると、映画の黒い帯・REC と時間・夕焼けの色・音符・キラキラが出て、ペンギンが胸を張り、ナレーション「今が、踏ん張りどころだ」などが入る。3場面ともONにすると 🏆。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain white belly (no rings or patterns on the belly), made of low-poly 3D wood and paper with clean faceted shapes, striking a brave, heroic little pose with its chest out, while one realistic vintage film movie camera on a wooden tripod points at it. Warm golden spotlight on a deep navy background with soft depth, simple and uncluttered. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × 木と紙のローポリ × 映画のカメラ

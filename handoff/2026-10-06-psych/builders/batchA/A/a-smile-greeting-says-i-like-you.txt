@@ -1,0 +1,263 @@
+@@meta
+{"title": "The way you say hello quietly tells people if you like them", "label": "Hello Message", "seq": 286, "mood": ["lift", "learn"], "tags": ["psychology", "friends", "tips"], "thumbAlt": "A chubby felted wool penguin waving a flipper in front of a small wooden front door"}
+@@ja_title
+挨拶のしかたで、「好き・嫌い」がこっそり伝わる
+@@ja_label
+挨拶のメッセージ
+@@h1emoji
+💌
+@@section
+1-1「挨拶のしかたが『好き・嫌い』のメッセージになる（5段階）」
+@@vars
+    --bg: #fff5f8; --text: #3a2433; --muted: #8a6a7c;
+    --accent: #e0306f; --accent2: #ff8a5c; --h1: #4a1f3a; --big: #d61f6c; --big-dark: #ff9cc4;
+    --glow1: rgba(255,95,162,.25); --glow2: rgba(255,170,90,.22); --glow3: rgba(255,214,102,.22);
+    --shadow: 0 20px 55px rgba(200,60,120,.18); --photo-bg: #ffe3ee;
+    --g1: #ff4f9a; --g2: #ff6f86; --g3: #ff9a5c; --pop: #ffe066; --pop-text: #6b3a00; --btn-text: #c41a62;
+@@css
+  /* 💌 挨拶の暗号：5つの挨拶から1つ選ぶ → かくれたメッセージとハート */
+  .scene { display: flex; align-items: center; justify-content: center; gap: 4px; margin: 16px auto 12px; max-width: 360px; }
+  .who { width: 88px; flex: 0 0 auto; }
+  .face { position: relative; width: 76px; height: 76px; margin: 0 auto; display: grid; place-items: center; border-radius: 50%;
+    background: rgba(255,255,255,.28); font-size: 44px; line-height: 1; }
+  .flip { display: inline-block; transform: scaleX(-1); }
+  .me-badge { position: absolute; right: -6px; bottom: -4px; font-size: 26px; line-height: 1; }
+  .react { position: absolute; right: -8px; top: -10px; font-size: 28px; line-height: 1; }
+  .react.boing { animation: bounce-in .5s both; }
+  .game[data-pick="5"] .them-face { animation: shake .4s ease; }
+  .tag { margin-top: 6px; font-size: 13px; font-weight: 900; }
+  .lane { flex: 1; position: relative; height: 44px; min-width: 60px; }
+  .lane::before { content: ""; position: absolute; left: 4px; right: 4px; top: 50%; border-top: 3px dotted rgba(255,255,255,.55); }
+  .wave { position: absolute; left: 0; top: 4px; font-size: 30px; line-height: 1; opacity: 0; }
+  .wave.go { animation: fly .75s ease-out both; }
+  @keyframes fly { 0% { left: 0; opacity: 0; transform: rotate(-20deg) scale(.7); } 20% { opacity: 1; } 100% { left: calc(100% - 32px); opacity: 0; transform: rotate(20deg) scale(1.1); } }
+
+  .decode { max-width: 430px; margin: 0 auto; padding: 14px 14px 12px; border-radius: 22px; background: #fff; color: #4a1f3a;
+    box-shadow: 0 10px 24px rgba(120,20,60,.18); }
+  .d-label { font-size: 12.5px; font-weight: 900; letter-spacing: .1em; color: #c41a62; }
+  .msg { min-height: 56px; display: flex; align-items: center; justify-content: center; margin-top: 4px; font-size: clamp(19px, 5vw, 23px); font-weight: 900; line-height: 1.35; }
+  .msg span { display: none; }
+  .msg.show { animation: bounce-in .45s both; }
+  .game[data-pick="0"] .m0 { display: inline; font-size: 16px; color: #a06a86; }
+  .game[data-pick="1"] .m1, .game[data-pick="2"] .m2, .game[data-pick="3"] .m3,
+  .game[data-pick="4"] .m4, .game[data-pick="5"] .m5 { display: inline; }
+  .game[data-pick="1"] .m1 { color: #e0306f; }
+  .game[data-pick="5"] .m5 { color: #7a6f86; }
+  .hrow { display: flex; align-items: center; justify-content: center; gap: 4px 8px; flex-wrap: wrap; margin-top: 8px; }
+  .h-l { font-size: 13px; font-weight: 900; color: #a03a6a; }
+  .hearts { display: inline-flex; gap: 3px; }
+  .hearts i { font-style: normal; font-size: 23px; line-height: 1; filter: grayscale(1); opacity: .28; transition: filter .2s, opacity .2s; }
+  .hearts i.on { filter: none; opacity: 1; }
+  .hearts.fill i.on { animation: bounce-in .4s both; }
+  .hearts.fill i.on:nth-child(2) { animation-delay: .07s; } .hearts.fill i.on:nth-child(3) { animation-delay: .14s; }
+  .hearts.fill i.on:nth-child(4) { animation-delay: .21s; } .hearts.fill i.on:nth-child(5) { animation-delay: .28s; }
+  .hrow.back .hearts.fill i.on { animation-name: mirror-in; }
+  .hrow.back .hearts i { transition-delay: .35s; }
+  @keyframes mirror-in { 0% { transform: scaleX(-1) scale(.4); opacity: 0; } 70% { transform: scaleX(1) scale(1.15); opacity: 1; } 100% { transform: none; } }
+
+  .picks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px auto 0; max-width: 440px; }
+  .pick { min-height: 72px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 8px 8px;
+    border: 0; border-radius: 20px; background: rgba(255,255,255,.95); color: #b0175a; font: inherit; font-size: 14.5px; font-weight: 900; line-height: 1.25;
+    box-shadow: 0 5px 0 rgba(120,20,60,.28); cursor: pointer; transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .pick .pe { font-size: 28px; line-height: 1; }
+  .pick:last-child { grid-column: 1 / -1; }
+  .pick:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(120,20,60,.28); }
+  .pick.sel { background: var(--pop); color: #6b3a00; box-shadow: 0 0 0 3px #fff, 0 5px 0 rgba(120,20,60,.28); }
+  .pick:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+
+  .found { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 16px; font-size: 14.5px; font-weight: 900; }
+  .dots { display: inline-flex; gap: 4px; }
+  .dot { font-size: 20px; line-height: 1; filter: grayscale(1); opacity: .4; }
+  .dot.on { filter: none; opacity: 1; }
+  .all-found { display: none; max-width: 420px; margin: 10px auto 0; padding: 10px 14px; background: rgba(255,255,255,.22); border-radius: 16px; font-weight: 900; line-height: 1.4; }
+  .game[data-all="1"] .all-found { display: block; animation: bounce-in .5s both; }
+@@dark
+  html[data-theme="dark"] .decode { background: #2a2230; color: #ffe3ee; }
+  html[data-theme="dark"] .d-label, html[data-theme="dark"] .h-l { color: #ff9cc4; }
+  html[data-theme="dark"] .game[data-pick="0"] .m0 { color: #d9b3c6; }
+  html[data-theme="dark"] .game[data-pick="1"] .m1 { color: #ff8fbf; }
+  html[data-theme="dark"] .game[data-pick="5"] .m5 { color: #c4bccf; }
+  html[data-theme="dark"] .pick { background: #2a2230; color: #ffc2dc; }
+  html[data-theme="dark"] .pick.sel { background: #ffe066; color: #5a3000; }
+@@sents
+S1 | It seems the way you say hello is a message by itself: "I like you" or "I don't." | 挨拶のしかたは、それだけで「好き」「嫌い」のメッセージになるそうです。
+S2 | If you say it first with a smile, it means "I really like you." | 笑顔で自分から先に言うと、「大好きです」という意味になります。
+S3 | If you say it after them with a straight face, it means "I say hello because I have to." | 真顔で、相手に言われてから返すと、「しかたなく挨拶しています」という意味になります。
+S4 | Relationships are like a mirror, so the same score comes back to you. | 人間関係は合わせ鏡なので、同じ点数が自分にも返ってきます。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔍</span>
+      <span class="card-label">Hidden Message</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😄</span>
+      <span class="card-label">Big Smile</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😑</span>
+      <span class="card-label">Straight Face</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：挨拶の暗号（5つから選ぶ → かくれたメッセージ・ハート・鏡） -->
+  <section class="game" data-pick="0" data-all="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Decode your hello</div>
+    <div class="game-hint">Pick a way to say hello. What does the other penguin hear?</div>
+    <div class="scene">
+      <div class="who">
+        <div class="face" aria-hidden="true"><span class="flip">🐧</span><span class="me-badge">✨</span></div>
+        <div class="tag">You</div>
+      </div>
+      <div class="lane" aria-hidden="true"><span class="wave">👋</span></div>
+      <div class="who">
+        <div class="face them-face" aria-hidden="true">🐧<span class="react">❔</span></div>
+        <div class="tag">Neighbor</div>
+      </div>
+    </div>
+    <div class="decode">
+      <div class="d-label">💌 Hidden message:</div>
+      <div class="msg">
+        <span class="m0">Pick one below 👇</span>
+        <span class="m1">"I really like you!"</span>
+        <span class="m2">"I like you, more or less."</span>
+        <span class="m3">"I like you a little."</span>
+        <span class="m4">"I say hello because I have to."</span>
+        <span class="m5">"You do not matter to me."</span>
+      </div>
+      <div class="hrow"><span class="h-l">You give:</span><span class="hearts" aria-hidden="true"><i>💖</i><i>💖</i><i>💖</i><i>💖</i><i>💖</i></span></div>
+      <div class="hrow back"><span class="h-l">🪞 You get back:</span><span class="hearts" aria-hidden="true"><i>💖</i><i>💖</i><i>💖</i><i>💖</i><i>💖</i></span></div>
+    </div>
+    <div class="picks">
+      <button class="pick" type="button" data-v="1" aria-pressed="false"><span class="pe" aria-hidden="true">😄</span><span class="pt">Smile, say it first</span></button>
+      <button class="pick" type="button" data-v="2" aria-pressed="false"><span class="pe" aria-hidden="true">🙂</span><span class="pt">Smile, say it back</span></button>
+      <button class="pick" type="button" data-v="3" aria-pressed="false"><span class="pe" aria-hidden="true">😐</span><span class="pt">Straight face, say it first</span></button>
+      <button class="pick" type="button" data-v="4" aria-pressed="false"><span class="pe" aria-hidden="true">😑</span><span class="pt">Straight face, say it back</span></button>
+      <button class="pick" type="button" data-v="5" aria-pressed="false"><span class="pe" aria-hidden="true">🙈</span><span class="pt">No hello at all</span></button>
+    </div>
+    <div class="found">
+      <span class="f-l">🔍 Found:</span>
+      <span class="dots" aria-hidden="true"><span class="dot">😄</span><span class="dot">🙂</span><span class="dot">😐</span><span class="dot">😑</span><span class="dot">🙈</span></span>
+      <span class="f-n">0</span>
+    </div>
+    <div class="all-found">🎉 You found all 5! Which hello will you use tomorrow?</div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🪞</span>
+      <span class="card-label">Mirror Rule</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Hidden Message ||| かくれたメッセージ
+Big Smile ||| 笑顔
+Straight Face ||| 真顔
+Mirror Rule ||| 合わせ鏡
+⚡ TRY IT ||| ⚡ やってみよう
+Decode your hello ||| 挨拶の暗号をとこう
+Pick a way to say hello. What does the other penguin hear? ||| 挨拶のしかたを選んでね。相手のペンギンには、どう聞こえる？
+You ||| あなた
+Neighbor ||| ご近所さん
+💌 Hidden message: ||| 💌 かくれたメッセージ：
+Pick one below 👇 ||| 下から選んでね 👇
+"I really like you!" ||| 「大好きです！」
+"I like you, more or less." ||| 「まあまあ好きです。」
+"I like you a little." ||| 「少しだけ好きです。」
+"I say hello because I have to." ||| 「しかたなく挨拶しています。」
+"You do not matter to me." ||| 「あなたはどうでもいいです。」
+You give: ||| あなたから：
+🪞 You get back: ||| 🪞 返ってくる：
+Smile, say it first ||| 笑顔で、自分から
+Smile, say it back ||| 笑顔で、相手のあとに
+Straight face, say it first ||| 真顔で、自分から
+Straight face, say it back ||| 真顔で、相手のあとに
+No hello at all ||| 挨拶しない
+🔍 Found: ||| 🔍 見つけた：
+🎉 You found all 5! Which hello will you use tomorrow? ||| 🎉 5つぜんぶ見つけた！明日はどの挨拶にする？
+↺ Start over ||| ↺ 最初から
+@@js
+/* 💌 挨拶の暗号：JS は data-pick / data-all / class / 絵文字 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var KEY = 'pengesso-a-smile-greeting-says-i-like-you-found';
+  var HEARTS = [0, 5, 4, 2, 1, 0];
+  var REACT = ['❔', '💖', '😊', '🙂', '😕', '💔'];
+  var FACE = ['✨', '😄', '🙂', '😐', '😑', '🙈'];
+  var picks = [].slice.call(g.querySelectorAll('.pick'));
+  var rows = [].slice.call(g.querySelectorAll('.hearts'));
+  var dots = [].slice.call(g.querySelectorAll('.dot'));
+  var react = g.querySelector('.react'), me = g.querySelector('.me-badge'), wave = g.querySelector('.wave');
+  var msg = g.querySelector('.msg'), fN = g.querySelector('.f-n');
+  var found = {};
+  try { found = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { found = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(found)); } catch (e) {} }
+  function drawFound() {
+    var n = 0;
+    dots.forEach(function (d, i) { var on = !!found[i + 1]; d.classList.toggle('on', on); if (on) n++; });
+    fN.textContent = n + '/5';
+    g.setAttribute('data-all', n === 5 ? '1' : '0');
+    return n;
+  }
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function show(v) {
+    g.setAttribute('data-pick', String(v));
+    picks.forEach(function (x) {
+      var on = +x.getAttribute('data-v') === v;
+      x.classList.toggle('sel', on); x.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    rows.forEach(function (r) {
+      [].slice.call(r.children).forEach(function (h, i) { h.classList.toggle('on', i < HEARTS[v]); });
+      restart(r, 'fill');
+    });
+    react.textContent = REACT[v]; me.textContent = FACE[v];
+  }
+  drawFound();
+  picks.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var v = +b.getAttribute('data-v');
+      show(v);
+      restart(wave, 'go'); restart(react, 'boing'); restart(msg, 'show');
+      var before = drawFound();
+      found[v] = 1; save();
+      var after = drawFound();
+      if (!window.pengessoPop) return;
+      var r = b.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+      if (after === 5 && before < 5) window.pengessoPop(x, y, ['🎉', '🐧', '💌', '✨'], 20);
+      else if (v === 1) window.pengessoPop(x, y, ['💖', '🐧', '✨', '💕'], 16);
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    found = {}; save();
+    show(0); drawFound();
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+挨拶のしかたは、それだけで「好き・嫌い」のメッセージになる。
+@@tone
+素材の重さ：真面目（人間関係のコツ）
+→ 見せ方：ポップに（ピンクとオレンジ。5つの挨拶から選ぶと、かくれたメッセージが出る）
+@@game_ja
+💌 挨拶の暗号：5つの挨拶（笑顔で自分から／笑顔で相手のあと／真顔で自分から／真顔で相手のあと／しない）から1つ選ぶと、👋が相手のペンギンに飛んでいき、かくれたメッセージ（「大好きです！」〜「どうでもいい」）とハート（5〜0個）が出る。下の段には🪞「返ってくる」ハートが鏡のように同じ数だけ出る（合わせ鏡）。5つぜんぶ試すと🎉。見つけた数は端末に覚える。「最初から」で消せる。
+@@combo
+ペンギン × ふわふわ羊毛（ニードルフェルト） × 木の玄関ドア
+@@cover
+An extremely cute, chubby round penguin made of soft felted wool, with a gentle smiling face and a plain white belly, standing on a doorstep and happily waving one flipper hello. Next to the penguin is a realistic small wooden front door with a brass doorknob, slightly open. Bright simple pastel pink and peach background with soft depth, warm morning light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

@@ -1,0 +1,205 @@
+@@meta
+{"title": "If someone dislikes you, it is just a matter of their taste", "label": "Green Pepper", "seq": 444, "mood": ["lift", "laugh"], "tags": ["psychology", "mindset", "feelings"], "thumbAlt": "A plush corduroy penguin proudly hugging a big realistic green bell pepper"}
+@@ja_title
+嫌われても、それは相手の好みの問題
+@@ja_label
+ピーマン
+@@h1emoji
+🫑
+@@section
+54「嫌われないのは無理ゲー」・55「嫌われたら相手のせいでいい」
+@@vars
+    --bg: #f6fbec; --text: #263420; --muted: #6a7d5c;
+    --accent: #3f9b1f; --accent2: #f2b705; --h1: #1f3d12; --big: #2f8a12; --big-dark: #b6f08c;
+    --glow1: rgba(110,200,60,.25); --glow2: rgba(242,183,5,.22); --glow3: rgba(255,120,90,.16);
+    --shadow: 0 20px 55px rgba(60,120,30,.18); --photo-bg: #e5f5d3;
+    --g1: #3fae2a; --g2: #2a9d5c; --g3: #e6b400; --pop: #fff27a; --pop-text: #3d3a00; --btn-text: #2c7a10;
+@@css
+  /* 🫑 ピーマンの試食会：つぎつぎ来る5人の試食係。ピーマンは一度も変わらない */
+  .table { position: relative; max-width: 400px; margin: 16px auto 0; padding: 14px 12px 16px; border-radius: 26px; background: rgba(255,255,255,.16); }
+  .scene { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; min-height: 150px; }
+  .taster { text-align: left; }
+  .t-face { display: inline-grid; place-items: center; width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,.28); font-size: 36px; line-height: 1; }
+  .t-face.in { animation: slide .45s cubic-bezier(.2,1.3,.4,1) both; }
+  @keyframes slide { from { transform: translateX(-40px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .t-say { margin-top: 8px; padding: 10px 12px; border-radius: 6px 16px 16px 16px; background: #fff; color: #263420; font-weight: 900; font-size: 15.5px; line-height: 1.35; min-height: 46px; }
+  .t-say span { display: none; }
+  .game[data-t="0"] .ts0, .game[data-t="1"] .ts1, .game[data-t="2"] .ts2, .game[data-t="3"] .ts3, .game[data-t="4"] .ts4, .game[data-t="5"] .ts5 { display: inline; }
+  .game[data-t="5"] .t-say { background: #fff27a; color: #3d3a00; }
+  .pepper { position: relative; width: 112px; height: 112px; display: grid; place-items: center; border-radius: 50%;
+    background: radial-gradient(circle at 50% 40%, #fff 0 50%, #e9f6dc 51% 100%); box-shadow: 0 8px 0 rgba(30,80,10,.25); font-size: 62px; line-height: 1; }
+  .pepper.wob { animation: wiggle .45s ease; }
+  .pepper.love { animation: bounce-in .55s both; }
+  .pepper .heart { position: absolute; right: -4px; top: -6px; font-size: 28px; opacity: 0; transform: scale(.3); transition: opacity .25s, transform .35s cubic-bezier(.2,1.5,.4,1); }
+  .game[data-t="5"] .pepper .heart { opacity: 1; transform: none; }
+  .p-say { margin-top: 12px; padding: 10px 12px; border-radius: 16px; background: rgba(255,255,255,.22); font-weight: 900; font-size: 15px; line-height: 1.4; min-height: 44px; }
+  .p-say span { display: none; }
+  .game[data-t="0"] .ps0, .game[data-t="1"] .ps1, .game[data-t="2"] .ps1, .game[data-t="3"] .ps1, .game[data-t="4"] .ps4, .game[data-t="5"] .ps5 { display: inline; }
+
+  .queue { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+  .q { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.2); font-size: 20px; line-height: 1; filter: grayscale(1); opacity: .5; transition: filter .25s, opacity .25s, transform .25s; }
+  .q.done { filter: none; opacity: 1; }
+  .q.now { filter: none; opacity: 1; transform: scale(1.18); box-shadow: 0 0 0 3px #fff; }
+
+  .score { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 380px; margin: 14px auto 0; }
+  .score > div { padding: 10px 8px; border-radius: 16px; background: #fff; color: #263420; font-weight: 900; font-size: 13.5px; line-height: 1.3; }
+  .score .n { display: block; font-size: 26px; line-height: 1.1; color: #2c7a10; }
+  .score .n.bump { animation: bounce-in .4s both; }
+  .row-btn { margin-top: 14px; }
+  .row-btn .gbtn span { display: none; }
+  .game:not([data-t="5"]) .nb-next { display: inline; }
+  .game[data-t="5"] .nb-again { display: inline; }
+  .finale { display: none; margin: 12px auto 0; max-width: 400px; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.24); font-weight: 900; line-height: 1.4; }
+  .game[data-t="5"] .finale { display: block; animation: bounce-in .5s both; }
+@@dark
+  html[data-theme="dark"] .t-say { background: #232c1f; color: #e3f2d7; }
+  html[data-theme="dark"] .game[data-t="5"] .t-say { background: #fff27a; color: #3d3a00; }
+  html[data-theme="dark"] .pepper { background: radial-gradient(circle at 50% 40%, #2c3826 0 50%, #344530 51% 100%); }
+  html[data-theme="dark"] .score > div { background: #232c1f; color: #e3f2d7; }
+  html[data-theme="dark"] .score .n { color: #b6f08c; }
+@@sents
+S1 | Even if a child doesn't like green peppers, the green pepper did nothing wrong. | ピーマンが嫌いな子どもがいても、ピーマンは何も悪くありません。
+S2 | It is the same with people: never being disliked by anyone is an impossible game. | 人も同じで、誰にも嫌われないのは、無理なゲームです。
+S3 | If you are quiet, people say "boring," and if you are bright, people say "too loud." | 静かにしていれば「個性がない」、明るくすれば「うるさい」と言われます。
+S4 | If you stay as you are, someday someone will say, "I love the bitter part!" | そのままでいれば、いつか「苦いところが好き！」という人が現れます。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🫑</span>
+      <span class="card-label">Not The Pepper</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎮</span>
+      <span class="card-label">Impossible Game</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔇</span>
+      <span class="card-label">Quiet Or Loud</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：ピーマンの試食会（5人の試食係が来る。ピーマンは変わらない。5人目がファン） -->
+  <section class="game" data-t="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The green pepper's tasting day</div>
+    <div class="game-hint">5 tasters are coming. The pepper stays a pepper.</div>
+    <div class="table">
+      <div class="scene">
+        <div class="taster">
+          <div class="t-face" aria-hidden="true">🍽️</div>
+          <div class="t-say">
+            <span class="ts0">Who will taste first?</span>
+            <span class="ts1">"Too bitter!" 😖</span>
+            <span class="ts2">"I like carrots more." 🥕</span>
+            <span class="ts3">"I don't know why, but… no."</span>
+            <span class="ts4">"Can you be sweeter, please?" 🍬</span>
+            <span class="ts5">"I love the bitter part!!" 💚</span>
+          </div>
+        </div>
+        <div class="pepper" aria-hidden="true">🫑<b class="heart">💚</b></div>
+      </div>
+      <div class="p-say">
+        <span class="ps0">🫑 "I'm a pepper. Nice to meet you."</span>
+        <span class="ps1">🫑 "That's OK. I'm still a pepper."</span>
+        <span class="ps4">🫑 "Sorry, I can't be candy. I'm a pepper."</span>
+        <span class="ps5">🫑 "Thank you! I'm happy I stayed a pepper."</span>
+      </div>
+      <div class="queue" aria-hidden="true"><span class="q">🐱</span><span class="q">🐰</span><span class="q">🐻</span><span class="q">🐶</span><span class="q">🐧</span></div>
+    </div>
+    <div class="score">
+      <div><span class="n n-change">0</span><span class="sl">🫑 Times it changed itself</span></div>
+      <div><span class="n n-fan">0</span><span class="sl">💚 Fans</span></div>
+    </div>
+    <div class="finale">🎉 It stayed itself, and a fan came! The 4 "no"s were just their taste.</div>
+    <div class="row-btn"><button class="gbtn pop go" type="button"><span class="nb-next">🍴 Next taster ▶</span><span class="nb-again">↺ Again</span></button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💚</span>
+      <span class="card-label">Your Fan</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Not The Pepper ||| ピーマンは悪くない
+Impossible Game ||| 無理なゲーム
+Quiet Or Loud ||| 静かでも、明るくても
+Your Fan ||| あなたのファン
+⚡ TRY IT ||| ⚡ やってみよう
+The green pepper's tasting day ||| ピーマンの試食会
+5 tasters are coming. The pepper stays a pepper. ||| 5人の試食係が来ます。ピーマンは、ピーマンのまま。
+Who will taste first? ||| 最初はだれかな？
+"Too bitter!" 😖 ||| 「苦すぎる！」😖
+"I like carrots more." 🥕 ||| 「ニンジンのほうが好き。」🥕
+"I don't know why, but… no." ||| 「なんでかわからないけど…ムリ。」
+"Can you be sweeter, please?" 🍬 ||| 「もっと甘くなってくれない？」🍬
+"I love the bitter part!!" 💚 ||| 「苦いところが大好き！！」💚
+🫑 "I'm a pepper. Nice to meet you." ||| 🫑「ピーマンです。よろしくね。」
+🫑 "That's OK. I'm still a pepper." ||| 🫑「大丈夫。ピーマンのままだよ。」
+🫑 "Sorry, I can't be candy. I'm a pepper." ||| 🫑「ごめんね、アメにはなれないよ。ピーマンだから。」
+🫑 "Thank you! I'm happy I stayed a pepper." ||| 🫑「ありがとう！ピーマンのままでよかった。」
+🫑 Times it changed itself ||| 🫑 自分を変えた回数
+💚 Fans ||| 💚 ファン
+🎉 It stayed itself, and a fan came! The 4 "no"s were just their taste. ||| 🎉 そのままでいたら、ファンが来た！4つの「ムリ」は、ただの好みでした。
+🍴 Next taster ▶ ||| 🍴 次の試食係 ▶
+↺ Again ||| ↺ もう一回
+@@js
+/* 🫑 ピーマンの試食会：JS は data-t / class / 絵文字 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var FACES = ['🍽️', '🐱', '🐰', '🐻', '🐶', '🐧'];
+  var face = g.querySelector('.t-face'), pep = g.querySelector('.pepper');
+  var qs = [].slice.call(g.querySelectorAll('.q'));
+  var nFan = g.querySelector('.n-fan'), nChange = g.querySelector('.n-change');
+  var t = 0;
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function draw() {
+    g.setAttribute('data-t', String(t));
+    face.textContent = FACES[t];
+    qs.forEach(function (q, i) { q.classList.toggle('done', i < t - 1); q.classList.toggle('now', i === t - 1); });
+    nFan.textContent = t === 5 ? '1' : '0';
+  }
+  g.querySelector('.go').addEventListener('click', function () {
+    if (t >= 5) { t = 0; draw(); return; }
+    t++;
+    draw();
+    restart(face, 'in');
+    if (t < 5) {
+      restart(pep, 'wob'); restart(nChange, 'bump');
+    } else {
+      restart(pep, 'love'); restart(nFan, 'bump');
+      if (window.pengessoPop) {
+        var k = pep.getBoundingClientRect();
+        window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['🫑', '💚', '🐧', '✨'], 18);
+      }
+      if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+    }
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+嫌われても、それは相手の好みの問題。そのままでいれば、好きになってくれる人が現れる。
+@@tone
+素材の重さ：真面目（嫌われるのがこわい）
+→ 見せ方：ポップに（ピーマンの緑と黄色。ピーマンの試食会で遊べる）
+@@game_ja
+🫑 ピーマンの試食会：「🍴 次の試食係」を押すと、5人（🐱🐰🐻🐶🐧）が順番に来て食べる。「苦すぎる！」「ニンジンのほうが好き」「なんでかわからないけど…ムリ」「もっと甘くなって」と言われても、ピーマンはぷるっとゆれるだけで「大丈夫。ピーマンのまま」（「自分を変えた回数」はずっと0）。5人目のペンギンが「苦いところが大好き！！」→ ピーマンに💚がついて、ファンが1になり、🎉。「もう一回」で最初から。
+@@combo
+ペンギン × コーデュロイとフェルトのぬいぐるみ × ピーマン
+@@cover
+An extremely cute, chubby round penguin made as a plush toy of corduroy and felt, with a gentle proud smile and a plain white belly, happily hugging one big realistic glossy green bell pepper. Bright simple fresh green and sunny yellow background with soft depth, clean kitchen daylight. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

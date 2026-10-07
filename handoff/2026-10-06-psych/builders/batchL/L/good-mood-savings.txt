@@ -1,0 +1,234 @@
+@@meta
+{"title": "How kind you look depends on your good mood savings", "label": "Mood Savings", "seq": 406, "mood": ["lift", "laugh"], "tags": ["psychology", "feelings", "happiness"], "thumbAlt": "A chubby matte plastic model kit penguin dropping a coin into a ceramic piggy bank on a sunny yellow background"}
+@@ja_title
+人柄は「ごきげん貯金」でできている
+@@ja_label
+ごきげん貯金
+@@h1emoji
+🪙
+@@section
+5「人格は機嫌でできている＝ごきげん貯金」
+@@vars
+    --bg: #fffaf0; --text: #3a2a14; --muted: #8a7458;
+    --accent: #e07b00; --accent2: #ff5c8a; --h1: #4a2a00; --big: #c96a00; --big-dark: #ffd08a;
+    --glow1: rgba(255,201,60,.35); --glow2: rgba(255,92,138,.16); --glow3: rgba(255,160,60,.20);
+    --shadow: 0 20px 55px rgba(200,120,20,.18); --photo-bg: #fff0d1;
+    --g1: #ffb000; --g2: #ff8a3d; --g3: #ff5c8a; --pop: #fff6a8; --pop-text: #5a3300; --btn-text: #c45f00;
+@@css
+  .card p + p { margin-top: 10px; }
+
+  /* 🪙 2羽のペンギンに1日の出来事を配る → 同じお願いに、ちがう返事 */
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px; margin: 14px auto 0; }
+  .pg { padding: 12px 8px 10px; border-radius: 22px; background: rgba(255,255,255,.22); }
+  .pf { position: relative; font-size: 50px; line-height: 1; }
+  .pf.plus { animation: hop .45s ease; }
+  .pf.minus { animation: shake .4s ease; }
+  .pn { margin-top: 4px; font-size: 14px; font-weight: 900; }
+  .jar { display: flex; justify-content: center; gap: 3px; margin-top: 8px; }
+  .jar i { display: block; width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,.3); box-shadow: inset 0 0 0 2px rgba(255,255,255,.5); transition: background .2s ease; }
+  .jar i.on { background: radial-gradient(circle at 35% 30%, #fff6b0 0 18%, #ffcc1a 45%, #e09a00 100%); box-shadow: 0 2px 0 rgba(120,60,0,.35); }
+  .jl { margin-top: 4px; font-size: 12px; font-weight: 900; opacity: .9; }
+  .reply { min-height: 0; margin-top: 8px; }
+  .reply span { display: none; padding: 8px 8px; border-radius: 14px 14px 14px 4px; background: #fff; color: #3a2a14; font-size: 14px; font-weight: 900; line-height: 1.3; }
+  .game[data-st="asked"] .pg[data-r="kind"] .r-kind,
+  .game[data-st="asked"] .pg[data-r="meh"] .r-meh,
+  .game[data-st="asked"] .pg[data-r="grump"] .r-grump { display: block; animation: bounce-in .45s both; }
+  .game[data-st="asked"] .pg[data-r="grump"] .r-grump { background: #e9e4ee; color: #5a4b66; }
+
+  .event { max-width: 440px; min-height: 64px; margin: 14px auto 0; padding: 10px 12px; border-radius: 20px; background: #fff; color: #5a3300;
+    display: flex; align-items: center; justify-content: center; font-size: clamp(17px, 4.6vw, 20px); font-weight: 900; line-height: 1.3; }
+  .ev { display: none; }
+  .ev.show { display: inline; animation: bounce-in .35s both; }
+  .pm { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-size: .8em; }
+  .pm.up { background: #ffe36b; color: #5a3300; }
+  .pm.down { background: #e5e0ec; color: #5a4b66; }
+  .send { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 440px; margin: 12px auto 0; }
+  .send .gbtn { width: 100%; padding: 12px 8px; font-size: 16px; }
+  .game[data-st="ask"] .send, .game[data-st="asked"] .send { display: none; }
+  .ask-row { display: none; margin-top: 12px; }
+  .game[data-st="ask"] .ask-row { display: block; }
+  .left { margin-top: 10px; font-size: 13.5px; font-weight: 900; opacity: .92; }
+  .game[data-st="ask"] .left, .game[data-st="asked"] .left { display: none; }
+  .res { display: none; max-width: 440px; margin: 14px auto 0; padding: 12px 14px; border-radius: 18px; background: rgba(255,255,255,.25); font-size: 16.5px; font-weight: 900; line-height: 1.45; }
+  .game[data-st="asked"][data-same="0"] .res-diff, .game[data-st="asked"][data-same="1"] .res-same { display: block; animation: bounce-in .5s .3s both; }
+  .again-row { display: none; margin-top: 12px; }
+  .game[data-st="asked"] .again-row { display: block; }
+@@dark
+  html[data-theme="dark"] .event { background: #2e2618; color: #ffe2b0; }
+  html[data-theme="dark"] .reply span { background: #2e2618; color: #ffe2b0; }
+  html[data-theme="dark"] .game[data-st="asked"] .pg[data-r="grump"] .r-grump { background: #2c2a33; color: #cfc6dc; }
+  html[data-theme="dark"] .pm.down { background: #3a3444; color: #d8d0e4; }
+@@sents
+S1 | Your mood is like savings. | 機嫌は、貯金のようなものです。
+S2 | It goes up with good things, and down with bad things. | いい事があると増えて、イヤな事があると減ります。
+S3 | Even a kind person looks mean when their savings are zero. | やさしい人でも、貯金がゼロだと、性格が悪く見えてしまいます。
+S4 | So the same person is kind some days and cold other days. | だから同じ人でも、日によってやさしかったり冷たかったりします。
+S5 | A player who hits a game-winning home run smiles, even when everyone hits him. | サヨナラホームランを打った選手は、みんなにバシバシ叩かれても笑っています。
+S6 | People who are good at saving good moods are the "nice people." | ごきげん貯金を貯めるのが上手な人が、「人柄のいい人」なんです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🪙</span>
+      <span class="card-label">Mood Bank</span>
+    </div>
+    <p>{S1}</p>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🫙</span>
+      <span class="card-label">Zero Savings</span>
+    </div>
+    <p>{S3}</p>
+    <p>{S4}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：2羽に1日の出来事を配る（同じペンギンなのに、貯金で返事が変わる） -->
+  <section class="game" data-st="sort" data-same="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">2 penguins, 1 favor</div>
+    <div class="game-hint">Both are the same kind penguin. Give each thing that happens today to Pen A or Pen B.</div>
+    <div class="pair">
+      <div class="pg pa" data-r="">
+        <div class="pf" aria-hidden="true">🐧</div>
+        <div class="pn">Pen A</div>
+        <div class="jar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="jl">Good mood savings</div>
+        <div class="reply"><span class="r-kind">Sure! Leave it to me! 😄</span><span class="r-meh">Hmm… OK, I guess. 😐</span><span class="r-grump">Not now! 😠</span></div>
+      </div>
+      <div class="pg pb" data-r="">
+        <div class="pf" aria-hidden="true">🐧</div>
+        <div class="pn">Pen B</div>
+        <div class="jar" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="jl">Good mood savings</div>
+        <div class="reply"><span class="r-kind">Sure! Leave it to me! 😄</span><span class="r-meh">Hmm… OK, I guess. 😐</span><span class="r-grump">Not now! 😠</span></div>
+      </div>
+    </div>
+    <div class="event">
+      <span class="ev" data-v="1">☕ A tasty coffee <span class="pm up">+1</span></span>
+      <span class="ev" data-v="-1">🌧️ Rain on the laundry <span class="pm down">−1</span></span>
+      <span class="ev" data-v="1">⚾ Your team won <span class="pm up">+1</span></span>
+      <span class="ev" data-v="-1">🚃 Just missed the train <span class="pm down">−1</span></span>
+      <span class="ev" data-v="1">🎁 A small gift <span class="pm up">+1</span></span>
+      <span class="ev" data-v="-1">🧦 Lost 1 sock <span class="pm down">−1</span></span>
+      <span class="ev ev-ask">📦 A friend asks both: "Can you help me carry this?"</span>
+    </div>
+    <div class="send">
+      <button class="gbtn to-a" type="button">⬅ To Pen A</button>
+      <button class="gbtn to-b" type="button">To Pen B ➡</button>
+    </div>
+    <div class="left"><span class="ll">Things left today:</span> <span class="ln">6</span></div>
+    <div class="ask-row"><button class="gbtn pop ask" type="button">🙏 See their answers</button></div>
+    <div class="res res-diff">📒 Same penguin. Only the savings were different.</div>
+    <div class="res res-same">🤝 Same savings, same answer. Try giving all the good things to 1 penguin!</div>
+    <div class="again-row"><button class="gbtn ghost again" type="button">↺ New day</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">⚾</span>
+      <span class="card-label">Home Run</span>
+    </div>
+    <p>{S5}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌟</span>
+      <span class="card-label">Nice People</span>
+    </div>
+    <p class="big">{S6}</p>
+  </section>
+@@ui
+Mood Bank ||| 機嫌の貯金
+Zero Savings ||| 貯金ゼロ
+Home Run ||| ホームラン
+Nice People ||| 人柄のいい人
+⚡ TRY IT ||| ⚡ やってみよう
+2 penguins, 1 favor ||| 2羽のペンギンに、同じお願い
+Both are the same kind penguin. Give each thing that happens today to Pen A or Pen B. ||| どちらも同じ、やさしいペンギンです。今日の出来事を1つずつ、ペンAかペンBに配ってね。
+Pen A ||| ペンA
+Pen B ||| ペンB
+Good mood savings ||| ごきげん貯金
+Sure! Leave it to me! 😄 ||| いいよ！まかせて！😄
+Hmm… OK, I guess. 😐 ||| うーん…まあ、いいけど。😐
+Not now! 😠 ||| 今それどころじゃない！😠
+☕ A tasty coffee ||| ☕ おいしいコーヒー
+🌧️ Rain on the laundry ||| 🌧️ 洗濯物に雨
+⚾ Your team won ||| ⚾ 応援しているチームが勝った
+🚃 Just missed the train ||| 🚃 電車にギリギリ乗れなかった
+🎁 A small gift ||| 🎁 ちょっとしたプレゼント
+🧦 Lost 1 sock ||| 🧦 靴下が片方ない
+📦 A friend asks both: "Can you help me carry this?" ||| 📦 友だちが2羽にお願い：「これ運ぶの、手伝ってくれる？」
+⬅ To Pen A ||| ⬅ ペンAへ
+To Pen B ➡ ||| ペンBへ ➡
+Things left today: ||| 今日の出来事、のこり：
+🙏 See their answers ||| 🙏 返事を見る
+📒 Same penguin. Only the savings were different. ||| 📒 同じペンギン。ちがったのは貯金だけ。
+🤝 Same savings, same answer. Try giving all the good things to 1 penguin! ||| 🤝 貯金が同じなら、返事も同じ。いい事を1羽にぜんぶ配ってみて！
+↺ New day ||| ↺ 新しい1日
+@@js
+/* 🪙 ごきげん貯金：JS は data-* / class / 数字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var evs = [].slice.call(g.querySelectorAll('.ev[data-v]')), askEv = g.querySelector('.ev-ask'),
+      pens = { a: g.querySelector('.pa'), b: g.querySelector('.pb') }, ln = g.querySelector('.ln');
+  var bal = { a: 2, b: 2 }, order = [], k = 0;
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function paintJar(w) { [].slice.call(pens[w].querySelectorAll('.jar i')).forEach(function (c, i) { c.classList.toggle('on', i < bal[w]); }); }
+  function showEvent() {
+    evs.forEach(function (e) { e.classList.remove('show'); }); askEv.classList.remove('show');
+    if (k < order.length) { void order[k].offsetWidth; order[k].classList.add('show'); ln.textContent = order.length - k; }
+    else { askEv.classList.add('show'); g.setAttribute('data-st', 'ask'); }
+  }
+  function restart(el, c) { el.classList.remove('plus', 'minus'); void el.offsetWidth; el.classList.add(c); }
+  function send(w) {
+    if (g.getAttribute('data-st') !== 'sort' || k >= order.length) return;
+    var v = parseInt(order[k].getAttribute('data-v'), 10);
+    bal[w] = Math.max(0, Math.min(5, bal[w] + v));
+    paintJar(w);
+    var face = pens[w].querySelector('.pf');
+    restart(face, v > 0 ? 'plus' : 'minus');
+    if (v > 0 && window.pengessoPop) { var r = face.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🪙', '✨'], 6); }
+    k++; showEvent();
+  }
+  function mood(b) { return b >= 4 ? 'kind' : b >= 2 ? 'meh' : 'grump'; }
+  g.querySelector('.to-a').addEventListener('click', function () { send('a'); });
+  g.querySelector('.to-b').addEventListener('click', function () { send('b'); });
+  g.querySelector('.ask').addEventListener('click', function () {
+    var ra = mood(bal.a), rb = mood(bal.b);
+    pens.a.setAttribute('data-r', ra); pens.b.setAttribute('data-r', rb);
+    g.setAttribute('data-same', ra === rb ? '1' : '0');
+    g.setAttribute('data-st', 'asked');
+    var happy = ra === 'kind' ? pens.a : rb === 'kind' ? pens.b : null;
+    if (happy && window.pengessoPop) { var r = happy.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 3, ['🪙', '😄', '🐧', '✨'], 16); }
+  });
+  function reset() {
+    bal = { a: 2, b: 2 }; k = 0; order = shuffle(evs.slice());
+    paintJar('a'); paintJar('b');
+    pens.a.setAttribute('data-r', ''); pens.b.setAttribute('data-r', '');
+    g.setAttribute('data-same', '0'); g.setAttribute('data-st', 'sort');
+    showEvent();
+  }
+  g.querySelector('.again').addEventListener('click', reset);
+  reset();
+})();
+@@map
+S1 → 使った（1枚目のカード・1文目）
+S2 → 使った（1枚目のカード・2文目）
+S3 → 使った（2枚目のカード・1文目）
+S4 → 使った（2枚目のカード・2文目）
+S5 → 使った（3枚目のカード）
+S6 → 使った（4枚目のカード・.big）
+@@message
+人柄は「ごきげん貯金」でできている。貯金が多いと、いい人に見える。
+@@tone
+素材の重さ：ふつう（人柄と機嫌）
+→ 見せ方：ポップに（黄色とコーラル。2羽のペンギンに出来事を配る仕分けゲーム）
+@@game_ja
+🪙 2羽のペンギンに、同じお願い：まったく同じやさしいペンギンが2羽（ペンA・ペンB、貯金はどちらも🪙2枚）。今日の出来事（おいしいコーヒー＋1／洗濯物に雨−1／チームが勝った＋1／電車にギリギリ乗れなかった−1／ちょっとしたプレゼント＋1／靴下が片方ない−1）が順番にランダムで出てくるので、1つずつ「ペンAへ」「ペンBへ」と配る。ぜんぶ配ると、友だちが2羽に「これ運ぶの、手伝ってくれる？」→ 貯金が多いほうは「いいよ！まかせて！」、少ないほうは「今それどころじゃない！」。返事がちがえば「同じペンギン。ちがったのは貯金だけ」、同じなら「いい事を1羽にぜんぶ配ってみて」。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain white belly (no rings or patterns on the belly), built like a matte plastic model kit with soft rounded parts, happily dropping one coin into one realistic glossy ceramic piggy bank in a soft cream color. Sunny warm yellow background with a gentle gradient and soft depth, simple and uncluttered. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × プラモデル（マット）× 豚の貯金箱

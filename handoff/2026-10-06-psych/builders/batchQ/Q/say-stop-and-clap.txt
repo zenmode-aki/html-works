@@ -1,0 +1,222 @@
+@@meta
+{"title": "When anger goes around in your head, say \"Stop!\" and clap", "label": "Stop Clap", "seq": 453, "mood": ["lift", "laugh"], "tags": ["psychology", "feelings", "tips"], "thumbAlt": "A chubby corduroy and felt plush penguin clapping its flippers next to a small realistic red stop sign"}
+@@ja_title
+怒りが頭の中でぐるぐるしたら、「ストップ！」と言って手をたたく
+@@ja_label
+ストップ拍手
+@@h1emoji
+👏
+@@section
+64「怒りを減らす考え方（ストップ法）」
+@@vars
+    --bg: #fff5ef; --text: #3a2320; --muted: #8a6560;
+    --accent: #e8462c; --accent2: #ffb12b; --h1: #4a1d16; --big: #d6331b; --big-dark: #ffab95;
+    --glow1: rgba(255,122,69,.24); --glow2: rgba(255,77,109,.18); --glow3: rgba(155,93,229,.16);
+    --shadow: 0 20px 55px rgba(200,70,40,.18); --photo-bg: #ffe2d6;
+    --g1: #ff7a45; --g2: #ff4d6d; --g3: #9b5de5; --pop: #ffe066; --pop-text: #5a3200; --btn-text: #c9301a;
+@@css
+  /* 🌀 ぐるぐる回る嫌な考え → 👏 で1つずつ止める */
+  .game-hint { min-height: 42px; }
+  .orbit { position: relative; width: min(280px, 100%); aspect-ratio: 1 / 1; margin: 12px auto 6px; }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .ring { position: absolute; left: 50%; top: 50%; border: 3px dashed rgba(255,255,255,.5); border-radius: 50%;
+    animation: spin 7s linear infinite; transition: border-color .4s ease; }
+  .r1 { width: 100%; height: 100%; margin: -50% 0 0 -50%; }
+  .r2 { width: 70%; height: 70%; margin: -35% 0 0 -35%; transform: rotate(130deg); animation-duration: 5.4s; animation-direction: reverse; animation-delay: -1.9s; }
+  .r3 { width: 40%; height: 40%; margin: -20% 0 0 -20%; transform: rotate(250deg); animation-duration: 4.2s; animation-delay: -2.9s; }
+  .bub { position: absolute; left: 50%; top: 0; transform: translate(-50%, -50%); }
+  .tx { display: inline-block; width: max-content; max-width: 150px; padding: 6px 11px; border-radius: 999px; background: #fff; color: #b42318;
+    font-weight: 900; font-size: 14.5px; line-height: 1.25; box-shadow: 0 4px 10px rgba(0,0,0,.14);
+    animation: spin 7s linear infinite reverse; }
+  .r2 .tx { transform: rotate(-130deg); animation-duration: 5.4s; animation-direction: normal; animation-delay: -1.9s; }
+  .r3 .tx { transform: rotate(-250deg); animation-duration: 4.2s; animation-delay: -2.9s; }
+  .ring.stop, .ring.stop .tx { animation-play-state: paused; }
+  .ring.stop { border-color: rgba(255,255,255,.14); }
+  @keyframes crack { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 30% { opacity: 1; transform: translate(-50%, -50%) scale(1.2) rotate(-8deg); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0) rotate(14deg); } }
+  .ring.stop .bub { opacity: 0; transform: translate(-50%, -50%) scale(0); animation: crack .7s .05s both; }
+  .core { position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; display: grid; place-items: center;
+    border-radius: 50%; background: rgba(255,255,255,.3); font-size: 38px; line-height: 1; }
+  .mood { position: absolute; right: -8px; top: -8px; font-size: 24px; line-height: 1; }
+  .game.clapped .core { animation: wiggle .35s ease; }
+  .flash { position: absolute; left: 50%; top: 50%; padding: 10px 16px; border-radius: 16px; background: #e5262c; color: #fff; border: 4px solid #fff;
+    font-size: 28px; font-weight: 900; line-height: 1.1; opacity: 0; transform: translate(-50%, -50%) scale(.4); pointer-events: none;
+    width: max-content; max-width: 220px; box-shadow: 0 8px 18px rgba(0,0,0,.2); }
+  @keyframes stamp { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.4) rotate(-14deg); } 25% { opacity: 1; transform: translate(-50%, -50%) scale(1.15) rotate(-6deg); }
+    70% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-6deg); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(1) rotate(-6deg); } }
+  .game.clapped .flash { animation: stamp .7s ease both; }
+
+  .left { margin-top: 6px; font-size: 15px; font-weight: 900; }
+  .left .num { display: inline-block; min-width: 1.2em; font-size: 22px; }
+  .clap { display: block; width: min(300px, 100%); min-height: 96px; margin: 12px auto 0; border: 0; border-radius: 999px; cursor: pointer;
+    font: inherit; font-size: clamp(24px, 6.5vw, 32px); font-weight: 900; color: #5a3200; background: var(--pop);
+    box-shadow: 0 10px 0 #d9a400, 0 18px 30px rgba(0,0,0,.18); transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .clap:active { transform: translateY(8px); box-shadow: 0 2px 0 #d9a400, 0 6px 14px rgba(0,0,0,.18); }
+  .clap:focus-visible { outline: 4px solid #fff; outline-offset: 4px; }
+  .game[data-left="0"] .clap, .game[data-left="0"] .left { display: none; }
+
+  .train { display: none; justify-content: center; gap: 10px; margin: 14px auto 0; padding: 14px 10px 10px; max-width: 320px; border-radius: 20px;
+    background: rgba(255,255,255,.2); font-size: 36px; line-height: 1; }
+  .seat { position: relative; }
+  .ex { position: absolute; left: 50%; top: -18px; margin-left: -8px; font-size: 20px; }
+  .game[data-train="1"] .train { display: flex; }
+  .game[data-train="1"] .seat { animation: hop .5s ease both; }
+  .game[data-train="1"] .seat:nth-child(2) { animation-delay: .08s; }
+  .game[data-train="1"] .seat:nth-child(3) { animation-delay: .16s; }
+
+  .says { margin-top: 12px; min-height: 48px; font-size: 16.5px; font-weight: 900; line-height: 1.45; }
+  .says > div { display: none; }
+  .game:not([data-left="0"]) .s-play { display: block; }
+  .game[data-left="0"][data-train="0"] .s-done, .game[data-train="1"] .s-train { display: block; animation: bounce-in .45s both; }
+  .end-row { display: none; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 14px; }
+  .game[data-left="0"] .end-row { display: flex; }
+  .game[data-train="1"] .to-train { display: none; }
+@@dark
+@@sents
+S1 | Sometimes I remember a bad thing again and again, around and around in my head. | 嫌なことを、頭の中で何回もぐるぐる思い出してしまうことがあります。
+S2 | At those times, I say "Stop!" in my heart and clap my hands once. | そんなときは、心の中で「ストップ！」と言って、手をパンとたたきます。
+S3 | It is said the sound stops the loop of thoughts for a moment. | 音がすると、ぐるぐるの考えがいったん止まるそうです。
+S4 | But if you do it on a train, the people around you will be surprised. | ただし、電車の中でやると、まわりの人がびっくりします。
+S5 | So please do it when you are alone. | なので、ひとりのときにどうぞ。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌀</span>
+      <span class="card-label">The Loop</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">👏</span>
+      <span class="card-label">The Trick</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔇</span>
+      <span class="card-label">Loop Breaker</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：👏 でぐるぐるを止める -->
+  <section class="game" data-left="3" data-train="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Clap the loops away</div>
+    <div class="orbit">
+      <div class="ring r1"><span class="bub"><span class="tx">So rude!</span></span></div>
+      <div class="ring r2"><span class="bub"><span class="tx">Why me?!</span></span></div>
+      <div class="ring r3"><span class="bub"><span class="tx">Not fair!</span></span></div>
+      <div class="core" aria-hidden="true">🐧<span class="mood">💢</span></div>
+      <div class="flash" aria-hidden="true">STOP!</div>
+    </div>
+    <div class="left"><span class="ll">Loops left:</span> <span class="num">3</span></div>
+    <button class="clap" type="button">👏 "Stop!"</button>
+    <div class="train" aria-hidden="true">
+      <span class="seat">🐧<span class="ex">❗</span></span><span class="seat">🐧<span class="ex">❗</span></span><span class="seat">🐧<span class="ex">❗</span></span>
+    </div>
+    <div class="says">
+      <div class="s-play">Bad thoughts are going around and around. Clap to stop them, 1 by 1.</div>
+      <div class="s-done">🍃 All the loops stopped. Your head is quiet now.</div>
+      <div class="s-train">😳 Everyone jumped! Clap in your heart, or when you are alone.</div>
+    </div>
+    <div class="end-row">
+      <button class="gbtn pop to-train" type="button">🚃 What if I clap on a train?</button>
+      <button class="gbtn ghost again" type="button">↺ Try again</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🚃</span>
+      <span class="card-label">On Trains</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🏠</span>
+      <span class="card-label">Alone Time</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+The Loop ||| ぐるぐる
+The Trick ||| やり方
+Loop Breaker ||| 止める音
+On Trains ||| 電車では
+Alone Time ||| ひとりのときに
+⚡ TRY IT ||| ⚡ やってみよう
+Clap the loops away ||| 拍手で、ぐるぐるを止めよう
+So rude! ||| 失礼すぎ！
+Why me?! ||| なんで私が？！
+Not fair! ||| ずるい！
+STOP! ||| ストップ！
+Loops left: ||| 残りのぐるぐる：
+👏 "Stop!" ||| 👏「ストップ！」
+Bad thoughts are going around and around. Clap to stop them, 1 by 1. ||| 嫌な考えがぐるぐる回っています。拍手で1つずつ止めよう。
+🍃 All the loops stopped. Your head is quiet now. ||| 🍃 ぐるぐるが全部止まった。頭の中が静かになりました。
+😳 Everyone jumped! Clap in your heart, or when you are alone. ||| 😳 みんなびっくり！心の中か、ひとりのときにどうぞ。
+🚃 What if I clap on a train? ||| 🚃 電車の中でやったら？
+↺ Try again ||| ↺ もう一回
+@@js
+/* 👏 ぐるぐるを止める：JS は data-left・data-train・class・数字・絵文字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var rings = [].slice.call(g.querySelectorAll('.ring'));
+  var clap = g.querySelector('.clap'), mood = g.querySelector('.mood'), num = g.querySelector('.num');
+  var orbit = g.querySelector('.orbit');
+  var MOODS = ['😌', '😮‍💨', '😤', '💢'];
+  var left = 3;
+  function restart(cls) { g.classList.remove(cls); void g.offsetWidth; g.classList.add(cls); }
+  function mid(el) { var r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; }
+  clap.addEventListener('click', function () {
+    if (left <= 0) return;
+    var c = mid(clap);
+    restart('clapped');
+    rings[3 - left].classList.add('stop');
+    left -= 1;
+    g.setAttribute('data-left', String(left));
+    num.textContent = String(left);
+    mood.textContent = MOODS[left];
+    if (window.pengessoPop) {
+      if (left > 0) window.pengessoPop(c[0], c[1] - 20, ['👏', '💥'], 8);
+      else { var o = mid(orbit); window.pengessoPop(o[0], o[1], ['🍃', '🐧', '✨', '👏'], 18); }
+    }
+    if (navigator.vibrate) { try { navigator.vibrate(left ? 15 : 35); } catch (e) {} }
+  });
+  g.querySelector('.to-train').addEventListener('click', function () {
+    g.setAttribute('data-train', '1');
+    if (window.pengessoPop) { var t = mid(g.querySelector('.train')); window.pengessoPop(t[0], t[1], ['❗', '🚃'], 8); }
+  });
+  g.querySelector('.again').addEventListener('click', function () {
+    left = 3;
+    rings.forEach(function (r) { r.classList.remove('stop'); });
+    g.classList.remove('clapped');
+    g.setAttribute('data-left', '3'); g.setAttribute('data-train', '0');
+    num.textContent = '3'; mood.textContent = MOODS[3];
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード）
+S5 → 使った（5枚目のカード・.big）
+@@message
+怒りがぐるぐるしたら、心の中で「ストップ！」と言って手をたたく（ただし、ひとりのときに）。
+@@tone
+素材の重さ：真面目（怒りの止め方）
+→ 見せ方：ポップに（コーラルとオレンジ。回る考えを拍手で止める。電車でやるとみんながびっくり、のオチ）
+@@game_ja
+👏 ぐるぐるストップ：真ん中の怒ったペンギン（💢）のまわりを、「失礼すぎ！」「なんで私が？！」「ずるい！」の3つの考えが、それぞれの輪の上でぐるぐる回っている。大きな「👏『ストップ！』」ボタンを押すたびに、赤い「ストップ！」の札がバンと出て、外側の輪から1つずつ止まって割れて消える。ペンギンの顔が 💢→😤→😮‍💨→😌 と落ち着いていく。3つ止めると「🍃 頭の中が静かになりました」。そのあと「🚃 電車の中でやったら？」を押すと、まわりのペンギンが一斉に❗で跳ねる（「心の中か、ひとりのときにどうぞ」）。動きを減らす設定では輪は回らず、止めると考えがすっと消える。
+@@cover
+An extremely cute, chubby round penguin made of plush toy corduroy and felt, with a gentle face and a plain belly, caught in the middle of clapping its flippers together, standing next to a small, realistic red octagonal stop sign on a short metal pole. Bright warm coral-orange background with soft depth. Simple and clean, no clutter. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × コーデュロイとフェルトのぬいぐるみ × 一時停止の標識（文字なし）

@@ -1,0 +1,247 @@
+@@meta
+{"title": "If you leave one cup out, your room gets messier and messier", "label": "First Cup", "seq": 501, "mood": ["lift", "laugh"], "tags": ["psychology", "tips", "productivity"], "thumbAlt": "A fluffy brushed mohair penguin happily holding one clean mug next to a neat, empty desk"}
+@@ja_title
+コップ1つの出しっぱなしから、部屋は散らかっていく
+@@ja_label
+最初の1つ
+@@h1emoji
+☕
+@@section
+143「片付けと掃除の心理学（割れ窓理論）」
+@@vars
+    --bg: #f2f9ff; --text: #1f2c3a; --muted: #64768a;
+    --accent: #1b7fd6; --accent2: #ff8f1f; --h1: #0f2b4a; --big: #1468b5; --big-dark: #9fd2ff;
+    --glow1: rgba(80,170,255,.26); --glow2: rgba(255,170,60,.22); --glow3: rgba(120,230,200,.18);
+    --shadow: 0 20px 55px rgba(20,80,150,.18); --photo-bg: #dff0ff;
+    --g1: #1b8fe6; --g2: #19b5c8; --g3: #ffb02e; --pop: #ffd53d; --pop-text: #3b2b00; --btn-text: #1468b5;
+@@css
+  /* ☕ 最初の1つ：コップを放っておくと、物がどんどん増える。すぐ片付ければ1タップで済む */
+  .chain { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; margin-top: 14px; font-size: 26px; line-height: 1; }
+  .chain .ar { font-size: 18px; font-weight: 900; color: var(--muted); }
+  .chain .c1 { font-size: 22px; } .chain .c2 { font-size: 28px; } .chain .c3 { font-size: 34px; }
+
+  .clock { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; font-weight: 900; font-size: 16px; }
+  .clock .dname > span { display: none; }
+  .game[data-d="0"] .dn0, .game[data-d="1"] .dn1, .game[data-d="2"] .dn2, .game[data-d="3"] .dn3, .game[data-d="4"] .dn4,
+  .game[data-d="5"] .dn5, .game[data-d="6"] .dn6, .game[data-d="7"] .dn7 { display: inline; }
+  .dots { display: flex; gap: 5px; }
+  .dots i { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.35); transition: background .2s ease; }
+  .dots i.on { background: #fff; }
+
+  .desk { position: relative; max-width: 420px; height: 230px; margin: 10px auto 0; border-radius: 24px; overflow: hidden;
+    background: linear-gradient(180deg, #ffffff 0 55%, #e9c99e 55% 100%); box-shadow: 0 10px 24px rgba(0,40,90,.2); }
+  .desk::after { content: ""; position: absolute; left: 0; right: 0; top: 55%; height: 6px; background: #c99a64; }
+  .desk .lamp { position: absolute; left: 16px; top: 18px; font-size: 40px; line-height: 1; }
+  .desk .pc { position: absolute; left: 50%; top: 36px; margin-left: -30px; font-size: 56px; line-height: 1; }
+  .desk .pg { position: absolute; right: 14px; top: 46px; font-size: 48px; line-height: 1; }
+  .desk .mood { position: absolute; right: 6px; top: 26px; font-size: 24px; line-height: 1; }
+  .desk .sparkle { position: absolute; left: 50%; top: 66%; margin-left: -20px; font-size: 34px; line-height: 1; opacity: 0; transition: opacity .3s ease; }
+  .game[data-clean="1"] .desk .sparkle { opacity: 1; animation: float 2s ease-in-out infinite alternate; }
+  .mess { position: absolute; width: 54px; height: 54px; margin: -27px 0 0 -27px; display: grid; place-items: center; border: 0; border-radius: 16px;
+    background: transparent; font: inherit; font-size: 36px; line-height: 1; cursor: pointer; opacity: 0; transform: scale(0); pointer-events: none;
+    transition: opacity .2s ease, transform .35s cubic-bezier(.2,1.6,.4,1); -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .mess[data-on="1"] { opacity: 1; transform: none; pointer-events: auto; }
+  .mess[data-on="1"]:active { transform: scale(.85); }
+  .mess:focus-visible { outline: 3px solid #1b7fd6; }
+  .mess.first[data-on="1"] { background: rgba(255,213,61,.45); box-shadow: 0 0 0 3px rgba(255,180,0,.6); }
+  .m0 { left: 30%; top: 68%; } .m1 { left: 52%; top: 80%; } .m2 { left: 14%; top: 86%; } .m3 { left: 74%; top: 70%; }
+  .m4 { left: 88%; top: 86%; } .m5 { left: 40%; top: 90%; } .m6 { left: 64%; top: 90%; } .m7 { left: 16%; top: 64%; }
+
+  .gobtn { width: min(320px, 100%); min-height: 64px; margin-top: 14px; font-size: 20px; }
+  .gobtn > span { display: none; }
+  .game[data-s="idle"] .gb-start, .game[data-s="end"] .gb-again { display: inline; }
+  .game[data-s="run"] .gobtn { display: none; }
+  .taps { margin-top: 10px; font-size: 14.5px; font-weight: 900; }
+
+  .result { margin-top: 12px; min-height: 60px; }
+  .result > div { display: none; font-size: 16px; font-weight: 900; line-height: 1.45; }
+  .game[data-s="idle"] .r-hint, .game[data-s="run"] .r-run,
+  .game[data-s="end"][data-r="early"] .r-early, .game[data-s="end"][data-r="late"] .r-late, .game[data-s="end"][data-r="messy"] .r-messy { display: block; }
+  .game[data-s="end"] .result > div { animation: bounce-in .45s both; }
+@@dark
+  html[data-theme="dark"] .chain .ar { color: #a9b6c6; }
+  html[data-theme="dark"] .desk { background: linear-gradient(180deg, #2a3140 0 55%, #5a4630 55% 100%); }
+  html[data-theme="dark"] .desk::after { background: #7a5c3a; }
+@@sents
+S1 | There is a "broken windows theory": if you leave a broken window, the town gets worse and worse. | 割れた窓を放っておくと、その街はどんどん荒れていく、という「割れ窓理論」があります。
+S2 | A room is the same: if 1 cup is left out, more and more things pile up. | 部屋も同じで、出しっぱなしのコップが1つあると、物がどんどん増えていきます。
+S3 | "Just 1 is OK" is where the mess begins. | 「1つくらい、いいか」が、散らかりの始まりです。
+S4 | If you put away the first 1 right away, the room stays clean. | 最初の1つをすぐ片付ければ、きれいが続きます。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🪟</span>
+      <span class="card-label">Broken Windows</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">☕</span>
+      <span class="card-label">One Cup</span>
+    </div>
+    <p>{S2}</p>
+    <div class="chain" aria-hidden="true">
+      <span class="c1">☕</span><span class="ar">→</span><span class="c2">☕🧦</span><span class="ar">→</span><span class="c3">☕🧦📦🍜</span>
+    </div>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：最初の1つ -->
+  <section class="game" data-s="idle" data-d="0" data-r="" data-clean="1" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">One week at my desk</div>
+    <div class="game-hint">Tap things on the desk to put them away.</div>
+    <div class="clock">
+      <span class="dname"><span class="dn0">📅 Ready</span><span class="dn1">📅 Monday</span><span class="dn2">📅 Tuesday</span><span class="dn3">📅 Wednesday</span><span class="dn4">📅 Thursday</span><span class="dn5">📅 Friday</span><span class="dn6">📅 Saturday</span><span class="dn7">📅 Sunday</span></span>
+      <span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+    </div>
+    <div class="desk">
+      <span class="lamp" aria-hidden="true">💡</span>
+      <span class="pc" aria-hidden="true">📖</span>
+      <span class="pg" aria-hidden="true">🐧</span>
+      <span class="mood" aria-hidden="true">😊</span>
+      <span class="sparkle" aria-hidden="true">✨</span>
+      <button class="mess m0 first" type="button" aria-label="cup">☕</button>
+      <button class="mess m1" type="button" aria-label="sock">🧦</button>
+      <button class="mess m2" type="button" aria-label="paper">📄</button>
+      <button class="mess m3" type="button" aria-label="snack">🍪</button>
+      <button class="mess m4" type="button" aria-label="box">📦</button>
+      <button class="mess m5" type="button" aria-label="cup noodles">🍜</button>
+      <button class="mess m6" type="button" aria-label="bottle">🥤</button>
+      <button class="mess m7" type="button" aria-label="bag">🛍️</button>
+    </div>
+    <button class="gbtn pop gobtn" type="button"><span class="gb-start">▶ Start the week</span><span class="gb-again">↺ One more week</span></button>
+    <div class="taps"><span class="tl">🧹 Taps to clean:</span> <span class="tn">0</span></div>
+    <div class="result">
+      <div class="r-hint">A cup will appear on Monday. Will you put it away?</div>
+      <div class="r-run">⏳ Days are passing… tap the mess!</div>
+      <div class="r-early">✨ Only 1 tap, and the desk was clean all week!</div>
+      <div class="r-late">😮‍💨 Clean again… but it took many taps.</div>
+      <div class="r-messy">🌪️ The mess grew and grew. It started with 1 cup!</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">1️⃣</span>
+      <span class="card-label">Just One</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">✨</span>
+      <span class="card-label">Right Away</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Broken Windows ||| 割れ窓
+One Cup ||| コップ1つ
+Just One ||| 1つくらい
+Right Away ||| すぐ片付ける
+⚡ TRY IT ||| ⚡ やってみよう
+One week at my desk ||| 私の机の1週間
+Tap things on the desk to put them away. ||| 机の上の物を押すと、片付けられます。
+📅 Ready ||| 📅 スタート前
+📅 Monday ||| 📅 月曜日
+📅 Tuesday ||| 📅 火曜日
+📅 Wednesday ||| 📅 水曜日
+📅 Thursday ||| 📅 木曜日
+📅 Friday ||| 📅 金曜日
+📅 Saturday ||| 📅 土曜日
+📅 Sunday ||| 📅 日曜日
+cup ||| コップ
+sock ||| くつした
+paper ||| 紙
+snack ||| おやつ
+box ||| 箱
+cup noodles ||| カップめん
+bottle ||| ペットボトル
+bag ||| 袋
+▶ Start the week ||| ▶ 1週間スタート
+↺ One more week ||| ↺ もう1週間
+🧹 Taps to clean: ||| 🧹 片付けたタップ数：
+A cup will appear on Monday. Will you put it away? ||| 月曜日にコップが1つ出てきます。片付けられるかな？
+⏳ Days are passing… tap the mess! ||| ⏳ 日にちが進んでいく…散らかった物を押して！
+✨ Only 1 tap, and the desk was clean all week! ||| ✨ たった1タップで、1週間ずっときれい！
+😮‍💨 Clean again… but it took many taps. ||| 😮‍💨 きれいに戻った…でも、たくさん押したね。
+🌪️ The mess grew and grew. It started with 1 cup! ||| 🌪️ どんどん散らかった。始まりはコップ1つ！
+@@js
+/* ☕ 最初の1つ：1日＝1.1秒。散らかりが1つでもあると次の日に物が増える（多いほど速く増える）。最初のコップをすぐ片付ければ1タップ。JS は data-* と数字と絵文字だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var mess = [].slice.call(g.querySelectorAll('.mess')), btn = g.querySelector('.gobtn'), tn = g.querySelector('.tn');
+  var dots = [].slice.call(g.querySelectorAll('.dots i')), mood = g.querySelector('.desk .mood');
+  var day = 0, taps = 0, shown = 0, timer = 0;
+  function onCount() { return mess.filter(function (m) { return m.getAttribute('data-on') === '1'; }).length; }
+  function face() {
+    var n = onCount();
+    mood.textContent = n === 0 ? '😊' : n <= 2 ? '😐' : n <= 4 ? '😟' : '😵';
+    g.setAttribute('data-clean', n === 0 ? '1' : '0');
+  }
+  function spawn(k) {
+    var off = mess.filter(function (m) { return m.getAttribute('data-on') !== '1' && !m.classList.contains('first'); });
+    for (var i = 0; i < k && off.length; i++) { off.shift().setAttribute('data-on', '1'); shown++; }
+  }
+  function tick() {
+    day++;
+    g.setAttribute('data-d', day);
+    dots.forEach(function (d, i) { d.classList.toggle('on', i < day); });
+    if (day > 1) { var n = onCount(); if (n > 0) spawn(n >= 3 ? 2 : 1); }
+    face();
+    if (day >= 7) { timer = setTimeout(end, 1100); return; }
+    timer = setTimeout(tick, 1100);
+  }
+  function end() {
+    var n = onCount();
+    var r = n > 0 ? 'messy' : (shown === 1 && taps === 1) ? 'early' : 'late';
+    g.setAttribute('data-r', r); g.setAttribute('data-s', 'end');
+    if (r === 'early') {
+      if (window.pengessoPop) {
+        var k = g.querySelector('.desk').getBoundingClientRect();
+        window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['✨', '☕', '🐧', '🧹'], 18);
+      }
+      if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+    }
+  }
+  function start() {
+    clearTimeout(timer);
+    mess.forEach(function (m) { m.removeAttribute('data-on'); });
+    day = 0; taps = 0; shown = 1; tn.textContent = 0;
+    g.setAttribute('data-s', 'run'); g.setAttribute('data-r', '');
+    mess[0].setAttribute('data-on', '1');   /* 月曜日：コップが1つ */
+    tick();
+  }
+  mess.forEach(function (m) {
+    m.addEventListener('click', function () {
+      if (g.getAttribute('data-s') !== 'run' || m.getAttribute('data-on') !== '1') return;
+      m.removeAttribute('data-on');
+      taps++; tn.textContent = taps;
+      face();
+      if (window.pengessoPop) {
+        var k = m.getBoundingClientRect();
+        window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['✨'], 4);
+      }
+    });
+  });
+  btn.addEventListener('click', start);
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+小さな散らかりを放っておくと、どんどん散らかる。最初の1つをすぐ片付ければ、きれいが続く。
+@@tone
+素材の重さ：かるい（片付けの心理）
+→ 見せ方：ポップに（空色とオレンジ。1週間が早送りで進む机を、タップで片付けて遊べる）
+@@game_ja
+☕ 私の机の1週間：「▶ 1週間スタート」を押すと、月曜日にコップ☕が1つ出てきて、1日＝約1秒で日曜日まで進む。散らかった物が1つでもあると、次の日に物（くつした・紙・おやつ・箱・カップめん・ペットボトル・袋）が増える（3つ以上あると2つずつ増える）。押すと片付く。コップをすぐ片付けると「✨ たった1タップで、1週間ずっときれい！」。遅れると「きれいに戻った…でも、たくさん押したね」、残っていると「🌪️ どんどん散らかった。始まりはコップ1つ！」。ペンギンの顔も 😊→😐→😟→😵 と変わる。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of fluffy brushed mohair, happily holding up one realistic clean white ceramic mug next to a neat, empty light wooden desk with a small desk lamp. A simple bright sky-blue background with warm orange light and gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × モヘア × 白いマグカップと机

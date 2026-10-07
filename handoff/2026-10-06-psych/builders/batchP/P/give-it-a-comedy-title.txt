@@ -1,0 +1,228 @@
+@@meta
+{"title": "Give a hard moment a comedy title in your head", "label": "Comedy Title", "seq": 449, "mood": ["lift", "laugh"], "tags": ["psychology", "feelings", "tips"], "thumbAlt": "A brushed mohair penguin holding a realistic blank film clapperboard on a small stage"}
+@@ja_title
+苦手な場面には、心の中でコントのタイトルをつける
+@@ja_label
+コントのタイトル
+@@h1emoji
+🎬
+@@section
+60「コント法」
+@@vars
+    --bg: #fff6f2; --text: #3a2222; --muted: #8a6464;
+    --accent: #d62839; --accent2: #f4a300; --h1: #4a1218; --big: #c41f30; --big-dark: #ffb0b8;
+    --glow1: rgba(244,163,0,.26); --glow2: rgba(214,40,57,.16); --glow3: rgba(255,200,120,.22);
+    --shadow: 0 20px 55px rgba(170,40,50,.18); --photo-bg: #ffe2dc;
+    --g1: #e0303f; --g2: #b81d4a; --g3: #f4a300; --pop: #ffd84d; --pop-text: #4a2a00; --btn-text: #b81d2e;
+@@css
+  /* 🎬 コントのタイトル：カチンコを押すと、タイトルがくるくる回って止まる → ピリピリの場面が舞台になる */
+  .slot { position: relative; max-width: 400px; min-height: 64px; margin: 14px auto 0; padding: 10px 14px; border-radius: 16px; background: #1e1a22; color: #ffd84d;
+    display: flex; align-items: center; justify-content: center; font-size: clamp(16px, 4.6vw, 19px); font-weight: 900; line-height: 1.3;
+    box-shadow: inset 0 0 0 3px rgba(255,216,77,.35); }
+  .slot::before { content: ""; position: absolute; left: 0; right: 0; top: -10px; height: 12px; border-radius: 6px 6px 0 0;
+    background: repeating-linear-gradient(135deg, #fff 0 14px, #1e1a22 14px 28px); transform-origin: 0 100%; transition: transform .2s; }
+  .game[data-st="spin"] .slot::before { transform: rotate(-12deg); }
+  .slot span { display: none; }
+  .slot .on { display: inline; }
+  .game[data-st="spin"] .slot .on { animation: tick .1s linear; }
+  @keyframes tick { from { transform: translateY(-8px); opacity: .4; } to { transform: none; opacity: 1; } }
+  .game[data-st="comedy"] .slot .on { animation: bounce-in .45s both; }
+
+  .theater { position: relative; height: 190px; max-width: 400px; margin: 12px auto 0; border-radius: 22px; overflow: hidden; background: #5a4a5e; transition: background .5s; }
+  .game[data-st="comedy"] .theater { background: radial-gradient(ellipse at 50% 10%, #fff6c8 0 22%, #b58a3a 23%, #6a3a2a 70%); }
+  .floor { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; background: rgba(0,0,0,.25); }
+  .game[data-st="comedy"] .floor { background: #8a5a2a; }
+  .curtain { position: absolute; top: 0; bottom: 0; width: 22%; background: repeating-linear-gradient(90deg, #c41f30 0 12px, #a3172a 12px 24px); transition: transform .6s cubic-bezier(.3,1.2,.5,1); }
+  .curtain.l { left: 0; transform: translateX(-100%); border-radius: 0 0 40px 0; }
+  .curtain.r { right: 0; transform: translateX(100%); border-radius: 0 0 0 40px; }
+  .game[data-st="comedy"] .curtain { transform: none; }
+  .actor { position: absolute; bottom: 24px; font-size: 44px; line-height: 1; }
+  .actor .t { position: absolute; right: -10px; top: -10px; font-size: 22px; }
+  .a-them { left: 26%; } .a-you { right: 26%; }
+  .game:not([data-st="comedy"]) .a-them { animation: shake .6s ease infinite; }
+  .bub { position: absolute; left: 6%; top: 12px; max-width: 64%; padding: 7px 10px; border-radius: 14px 14px 14px 4px; background: #fff; color: #3a2222;
+    font-size: 13.5px; font-weight: 900; line-height: 1.3; text-align: left; z-index: 2; }
+  .laugh { position: absolute; right: 8%; top: 14px; font-size: 24px; line-height: 1; opacity: 0; transform: scale(.4); transition: opacity .3s .4s, transform .4s .4s cubic-bezier(.2,1.5,.4,1); z-index: 2; }
+  .game[data-st="comedy"] .laugh { opacity: 1; transform: none; }
+  .game[data-st="comedy"] .laugh b { display: inline-block; animation: hop .7s ease infinite; }
+  .game[data-st="comedy"] .laugh b:nth-child(2) { animation-delay: .15s; } .game[data-st="comedy"] .laugh b:nth-child(3) { animation-delay: .3s; }
+
+  .tension { display: flex; align-items: center; gap: 10px; max-width: 380px; margin: 12px auto 0; font-size: 13.5px; font-weight: 900; }
+  .bar { flex: 1; height: 14px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 90%; border-radius: 999px; background: #ff9aa5; transition: width .7s cubic-bezier(.2,1.2,.4,1), background .4s; }
+  .game[data-st="comedy"] .bar i { background: #ffd84d; }
+  .say { min-height: 52px; max-width: 420px; margin: 10px auto 0; font-weight: 900; font-size: 15.5px; line-height: 1.4; }
+  .say span { display: none; }
+  .game[data-st="tense"] .s-tense, .game[data-st="spin"] .s-spin, .game[data-st="comedy"] .s-comedy { display: inline; }
+  .clap { width: min(340px, 100%); min-height: 64px; font-size: 19px; margin-top: 4px; }
+  .clap span { display: none; }
+  .game:not([data-st="comedy"]) .c-first, .game[data-st="comedy"] .c-more { display: inline; }
+  .found { margin-top: 12px; font-size: 14px; font-weight: 900; }
+  .reel { display: inline-flex; gap: 4px; vertical-align: middle; }
+  .reel i { font-style: normal; font-size: 18px; filter: grayscale(1); opacity: .35; }
+  .reel i.on { filter: none; opacity: 1; }
+@@dark
+  html[data-theme="dark"] .bub { background: #2e2224; color: #ffe2dc; }
+@@sents
+S1 | When you talk with a person you find hard, try giving it a title in your head. | 苦手な人と話すとき、心の中でタイトルをつけてみます。
+S2 | For example, "Comedy: The Person Who Gets Angry Fast." | たとえば、「コント・すぐ怒る人」。
+S3 | Then it seems you can watch it from a little farther away. | すると、少し離れたところから見られるようになるそうです。
+S4 | "Wow, amazing as always," and it starts to feel a little funny. | 「相変わらず、すごいなあ」と、ちょっと面白くなってきます。
+S5 | The trick is to do it only in your head, without saying any names. | 名前は出さずに、心の中だけでやるのがコツです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎬</span>
+      <span class="card-label">Give A Title</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💢</span>
+      <span class="card-label">For Example</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：コントのタイトル（カチンコでタイトルが回って止まる → 場面が舞台に。ピリピリ度が下がる） -->
+  <section class="game" data-st="tense" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Turn it into a comedy show</div>
+    <div class="game-hint">A tense moment. Tap the clapperboard and give it a title.</div>
+    <div class="slot">
+      <span class="tt0 on">🎬 Title: ???</span>
+      <span class="tt1">🎬 Comedy: Angry in 3 Seconds</span>
+      <span class="tt2">🎬 Comedy: The Story That Never Ends</span>
+      <span class="tt3">🎬 Comedy: The Big Sigh Show</span>
+      <span class="tt4">🎬 Comedy: Always Right, Always Loud</span>
+    </div>
+    <div class="theater" aria-hidden="true">
+      <div class="floor"></div>
+      <div class="bub"><span class="bl">"And another thing…! Are you listening?!"</span></div>
+      <div class="laugh"><b>👏</b><b>😆</b><b>👏</b></div>
+      <div class="actor a-them">🐧<b class="t">💢</b></div>
+      <div class="actor a-you">🐧<b class="t you-t">😰</b></div>
+      <div class="curtain l"></div><div class="curtain r"></div>
+    </div>
+    <div class="tension"><span class="tl">⚡ Tension</span><span class="bar"><i></i></span></div>
+    <div class="say">
+      <span class="s-tense">So tense… My heart is beating fast.</span>
+      <span class="s-spin">Thinking of a title… 🎰</span>
+      <span class="s-comedy">"Wow, amazing as always." Now I'm watching a show. 😏</span>
+    </div>
+    <button class="gbtn pop clap" type="button"><span class="c-first">🎬 Give it a title!</span><span class="c-more">🎬 Another title</span></button>
+    <div class="found"><span class="fl">🎞 Titles found:</span> <span class="reel" aria-hidden="true"><i>🎬</i><i>🎬</i><i>🎬</i><i>🎬</i></span> <span class="fn">0/4</span></div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Back to the tense scene</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔭</span>
+      <span class="card-label">A Little Distance</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😏</span>
+      <span class="card-label">Kind Of Funny</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🤫</span>
+      <span class="card-label">Only Inside</span>
+    </div>
+    <p>{S5}</p>
+  </section>
+@@ui
+Give A Title ||| タイトルをつける
+For Example ||| たとえば
+A Little Distance ||| 少し離れて
+Kind Of Funny ||| ちょっと面白い
+Only Inside ||| 心の中だけ
+⚡ TRY IT ||| ⚡ やってみよう
+Turn it into a comedy show ||| コントにしてしまおう
+A tense moment. Tap the clapperboard and give it a title. ||| ピリピリした場面です。カチンコを押して、タイトルをつけよう。
+🎬 Title: ??? ||| 🎬 タイトル：？？？
+🎬 Comedy: Angry in 3 Seconds ||| 🎬 コント・3秒で怒る人
+🎬 Comedy: The Story That Never Ends ||| 🎬 コント・終わらない話
+🎬 Comedy: The Big Sigh Show ||| 🎬 コント・大きなため息ショー
+🎬 Comedy: Always Right, Always Loud ||| 🎬 コント・いつも正しくて、いつも大声
+"And another thing…! Are you listening?!" ||| 「それとね…！ちょっと、聞いてる？！」
+⚡ Tension ||| ⚡ ピリピリ
+So tense… My heart is beating fast. ||| ピリピリ…。ドキドキする。
+Thinking of a title… 🎰 ||| タイトルを考え中… 🎰
+"Wow, amazing as always." Now I'm watching a show. 😏 ||| 「相変わらず、すごいなあ」。いまは舞台を見ている気分 😏
+🎬 Give it a title! ||| 🎬 タイトルをつける！
+🎬 Another title ||| 🎬 別のタイトル
+🎞 Titles found: ||| 🎞 見つけたタイトル：
+↺ Back to the tense scene ||| ↺ ピリピリの場面にもどる
+@@js
+/* 🎬 コントのタイトル：JS は data-st / class / style / 絵文字 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var KEY = 'pengesso-give-it-a-comedy-title-found';
+  var titles = [].slice.call(g.querySelectorAll('.slot span'));
+  var reel = [].slice.call(g.querySelectorAll('.reel i'));
+  var bar = g.querySelector('.bar i'), fn = g.querySelector('.fn'), youT = g.querySelector('.you-t'), clap = g.querySelector('.clap');
+  var cur = 0, busy = false, found = {};
+  try { found = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { found = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(found)); } catch (e) {} }
+  function show(i) { cur = i; titles.forEach(function (t, k) { t.classList.toggle('on', k === i); }); }
+  function drawFound() {
+    var n = 0;
+    reel.forEach(function (r, i) { var on = !!found[i + 1]; r.classList.toggle('on', on); if (on) n++; });
+    fn.textContent = n + '/4';
+    return n;
+  }
+  function reduced() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  clap.addEventListener('click', function () {
+    if (busy) return;
+    busy = true;
+    g.setAttribute('data-st', 'spin');
+    bar.style.width = '70%';
+    var pick; do { pick = 1 + Math.floor(Math.random() * 4); } while (pick === cur && cur > 0);
+    var steps = reduced() ? 1 : 12, i = 0, k = cur || 1;
+    (function spin() {
+      i++;
+      if (i < steps) { k = k % 4 + 1; show(k); setTimeout(spin, 60 + i * 9); return; }
+      show(pick);
+      g.setAttribute('data-st', 'comedy');
+      bar.style.width = '15%'; youT.textContent = '😏';
+      var before = drawFound(); found[pick] = 1; save(); var after = drawFound();
+      busy = false;
+      if (window.pengessoPop) {
+        var r = clap.getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top, after === 4 && before < 4 ? ['🎬', '👏', '😆', '🐧', '🎉'] : ['👏', '😆', '🎬'], after === 4 && before < 4 ? 22 : 12);
+      }
+    })();
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    if (busy) return;
+    show(0); g.setAttribute('data-st', 'tense'); bar.style.width = '90%'; youT.textContent = '😰';
+  });
+  drawFound();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+S5 → 使った（5枚目のカード）
+@@message
+苦手な場面には、心の中で「コント・〇〇」とタイトルをつけると、少し離れて見られる。
+@@tone
+素材の重さ：真面目（苦手な人と話すのがつらい）
+→ 見せ方：ポップに（劇場の赤と金色。カチンコでタイトルをつけると、場面が舞台になる）
+@@game_ja
+🎬 コントにしてしまおう：ピリピリの場面（不機嫌なペンギンが「それとね…！ちょっと、聞いてる？！」とゆれている。自分は😰）。「🎬 タイトルをつける！」を押すと、カチンコが開いて、タイトルがスロットのようにくるくる回り、4つのどれか（「コント・3秒で怒る人」「コント・終わらない話」「コント・大きなため息ショー」「コント・いつも正しくて、いつも大声」）で止まる。すると左右から赤い幕が出てきて、スポットライトがあたり、👏😆👏 の笑い声マーク。⚡ピリピリのメーターが90％→15％、顔は😏「相変わらず、すごいなあ」。見つけたタイトルは端末に覚えて、4つ集めると🎉。「ピリピリの場面にもどる」で戻せる。
+@@combo
+ペンギン × ブラッシュドモヘア × カチンコ
+@@cover
+An extremely cute, chubby round penguin made of fluffy brushed mohair, with a gentle amused smile and a plain white belly, standing on a small wooden stage under a soft spotlight and holding up a realistic black and white film clapperboard with a completely blank slate. Bright simple warm red curtain and golden background with soft depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

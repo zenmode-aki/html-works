@@ -1,0 +1,229 @@
+@@meta
+{"title": "With strangers, a small bow and \"Oh, hi\" makes talking easier", "label": "Oh, Hi", "seq": 509, "mood": ["lift", "laugh"], "tags": ["psychology", "friends", "tips"], "thumbAlt": "A brushed mohair penguin giving a small polite bow next to a simple realistic wooden chair"}
+@@ja_title
+知らない人には、軽く頭を下げて「あっ、どうも」
+@@ja_label
+あっ、どうも
+@@h1emoji
+🎫
+@@section
+33「知らない人への声かけ＝『あっどうも』」
+@@vars
+    --bg: #f4fbff; --text: #1d2a33; --muted: #5d6f7c;
+    --accent: #0a84c6; --accent2: #ff8f3d; --h1: #0e2433; --big: #0a74b0; --big-dark: #9fd6ff;
+    --glow1: rgba(90,190,255,.3); --glow2: rgba(255,170,90,.22); --glow3: rgba(140,230,200,.2);
+    --shadow: 0 20px 55px rgba(20,100,160,.18); --photo-bg: #dff1ff;
+    --g1: #1a9be0; --g2: #22b8c7; --g3: #ff9a4d; --pop: #ffe066; --pop-text: #4a3500; --btn-text: #0a74b0;
+@@css
+  /* 🎫 話しかけ予約券：待合室で、どのひとことから始める？「あっ、どうも」だけが予約券をくれる → 5分後「この席、空いてますか？」 */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .vs > div { padding: 14px 10px; border-radius: 20px; text-align: center; font-weight: 900; font-size: 15px; line-height: 1.35; }
+  .vs .meh { background: #eef1f4; color: #5d6772; }
+  .vs .ok { background: #e1f4ff; color: #0b5a87; }
+  .vs .ve { display: block; font-size: 30px; margin-bottom: 4px; }
+
+  .room2 { max-width: 440px; margin: 16px auto 0; padding: 14px; border-radius: 24px; background: #ffffff; color: #1d2a33; box-shadow: 0 10px 24px rgba(0,50,90,.18); }
+  .rm-k { font-size: 12.5px; font-weight: 900; letter-spacing: .12em; color: #5d6f7c; }
+  .rm-k > span { display: none; }
+  .game:not([data-s="ticket"]):not([data-s="done"]) .rk-a, .game[data-s="ticket"] .rk-b, .game[data-s="done"] .rk-b { display: inline; }
+  .bench { position: relative; display: flex; justify-content: center; align-items: flex-end; gap: 26px; height: 104px; margin-top: 6px; }
+  .bench::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: 18px; height: 12px; border-radius: 8px; background: #c9a77a; }
+  .pp { position: relative; display: grid; justify-items: center; z-index: 1; transition: transform .5s cubic-bezier(.3,1.4,.5,1); }
+  .pp-b { font-size: 46px; line-height: 1; }
+  .pp-f { position: absolute; right: -14px; top: -10px; font-size: 24px; line-height: 1; }
+  .pp-n { font-size: 12px; font-weight: 900; color: #5d6f7c; margin-top: 2px; }
+  .me { transform: translateX(-26px); }
+  .me .pp-b { display: inline-block; transform: scaleX(-1); }
+  .me.bow .pp-b { animation: bow .7s ease; }
+  @keyframes bow { 40% { transform: scaleX(-1) rotate(18deg) translateY(4px); } 100% { transform: scaleX(-1); } }
+  .game[data-s="done"] .me { transform: translateX(8px); }
+  .them.shake { animation: shake .4s ease; }
+  .talk { min-height: 54px; margin-top: 10px; padding: 10px 14px; border-radius: 18px; background: #eef6fb; font-weight: 900; font-size: 15.5px;
+    line-height: 1.4; display: flex; align-items: center; justify-content: center; }
+  .talk > span { display: none; }
+  .game[data-c=""] .tk-idle, .game[data-c="a"] .tk-a, .game[data-c="b"] .tk-b, .game[data-c="c"] .tk-c, .game[data-c="d"] .tk-d { display: inline; }
+  .game[data-c="a"] .talk { background: #ffe6dc; } .game[data-c="b"] .talk { background: #f1eef4; }
+  .game[data-c="c"] .talk, .game[data-c="d"] .talk { background: #fff5c2; animation: bounce-in .4s both; }
+
+  .choices { display: grid; gap: 10px; max-width: 440px; margin: 14px auto 0; }
+  .choices .gbtn { width: 100%; justify-content: flex-start; text-align: left; padding: 12px 16px; font-size: 16px; }
+  .game[data-s="ticket"] .choices, .game[data-s="done"] .choices { display: none; }
+  .ticket { display: none; max-width: 320px; margin: 14px auto 0; padding: 12px 14px; border-radius: 16px; background: #fff27a; color: #4a3500; font-weight: 900;
+    border: 3px dashed #c9a400; box-shadow: 0 8px 18px rgba(0,0,0,.18); }
+  .game[data-s="ticket"] .ticket, .game[data-s="done"] .ticket { display: block; animation: stamp .55s cubic-bezier(.3,1.6,.5,1) both; }
+  @keyframes stamp { from { transform: scale(1.8) rotate(-12deg); opacity: 0; } to { transform: rotate(-3deg); opacity: 1; } }
+  .tkt-t { font-size: 18px; line-height: 1.3; }
+  .tkt-s { margin-top: 2px; font-size: 13.5px; line-height: 1.35; }
+  .game[data-s="done"] .ticket { opacity: .55; }
+  .seat { display: none; width: min(340px, 100%); margin-top: 14px; min-height: 60px; }
+  .game[data-s="ticket"] .seat { display: inline-flex; }
+  .hint { margin-top: 10px; font-size: 15px; font-weight: 800; line-height: 1.45; }
+  .hint > span { display: none; }
+  .game[data-s="ask"] .h-ask, .game[data-s="ticket"] .h-ticket { display: inline; }
+  .result { display: none; margin-top: 12px; font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .game[data-s="done"] .result { display: block; animation: bounce-in .5s both; }
+  .again { display: none; }
+  .game[data-s="done"] .again { display: inline-flex; }
+@@dark
+  html[data-theme="dark"] .vs .meh { background: #2b2f36; color: #bcc5cf; }
+  html[data-theme="dark"] .vs .ok { background: #173248; color: #b5e2ff; }
+  html[data-theme="dark"] .room2 { background: #22242f; color: #eef4f8; }
+  html[data-theme="dark"] .rm-k, html[data-theme="dark"] .pp-n { color: #a9bccb; }
+  html[data-theme="dark"] .talk { background: #2b3440; }
+  html[data-theme="dark"] .game[data-c="a"] .talk { background: #4a2d24; }
+  html[data-theme="dark"] .game[data-c="b"] .talk { background: #33303a; }
+  html[data-theme="dark"] .game[data-c="c"] .talk, html[data-theme="dark"] .game[data-c="d"] .talk { background: #4a4018; }
+@@sents
+S1 | If you suddenly say "Nice weather!" to a stranger, they may feel a little careful. | 知らない人にいきなり「いいお天気ですね」と話しかけると、ちょっと警戒されます。
+S2 | I recommend a small bow as you come near, and "Oh, hi." | おすすめは、近づきながら軽く頭を下げて「あっ、どうも」です。
+S3 | This becomes a "ticket to talk," and it stays easy to talk even some minutes later. | これが「話しかけ予約券」になって、何分あとでも話しかけやすくなります。
+S4 | Just asking "Is this seat free?" also makes you look like a polite person. | 「この席、空いてますか？」と聞くだけでも、きちんとした人に見えます。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🤨</span>
+      <span class="card-label">Too Sudden</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🙂</span>
+      <span class="card-label">Oh, Hi</span>
+    </div>
+    <p>{S2}</p>
+    <div class="vs" aria-hidden="true">
+      <div class="meh"><span class="ve">🌤️</span><span class="vt">"Nice weather!"</span></div>
+      <div class="ok"><span class="ve">🐧</span><span class="vt">*small bow* "Oh, hi."</span></div>
+    </div>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：話しかけ予約券 -->
+  <section class="game" data-s="ask" data-c="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Get a "ticket to talk"</div>
+    <div class="room2">
+      <div class="rm-k"><span class="rk-a">🕰️ A WAITING ROOM</span><span class="rk-b">⏳ 5 MINUTES LATER…</span></div>
+      <div class="bench" aria-hidden="true">
+        <div class="pp me"><span class="pp-b">🐧</span><span class="pp-n">YOU</span></div>
+        <div class="pp them"><span class="pp-b">🐧</span><span class="pp-f">😶</span><span class="pp-n">STRANGER</span></div>
+      </div>
+      <div class="talk">
+        <span class="tk-idle">How do you start?</span>
+        <span class="tk-a">"…Um, do I know you?" 🤨</span>
+        <span class="tk-b">"…Hello?" (a little careful)</span>
+        <span class="tk-c">"Oh, hi." 🙂 (a small bow back)</span>
+        <span class="tk-d">"Sure, please sit!" 😊</span>
+      </div>
+    </div>
+    <div class="choices">
+      <button class="gbtn ch-a" type="button">🌤️ "Nice weather, isn't it?"</button>
+      <button class="gbtn ch-b" type="button">💬 "Hello!"</button>
+      <button class="gbtn pop ch-c" type="button">🐧 Small bow + "Oh, hi."</button>
+    </div>
+    <div class="ticket"><div class="tkt-t">🎫 Ticket to talk: GET!</div><div class="tkt-s">You can talk to them later, too.</div></div>
+    <button class="gbtn pop seat" type="button">🪑 "Is this seat free?"</button>
+    <div class="hint"><span class="h-ask">Try all 3. Which one gets a ticket?</span><span class="h-ticket">Now use your ticket.</span></div>
+    <div class="result">🎉 Easy! The ticket worked, and you look polite too.</div>
+    <div class="again-row"><button class="gbtn again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎫</span>
+      <span class="card-label">Talk Ticket</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🪑</span>
+      <span class="card-label">This Seat</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Too Sudden ||| いきなりすぎ
+Oh, Hi ||| あっ、どうも
+Talk Ticket ||| 予約券
+This Seat ||| この席
+"Nice weather!" ||| 「いいお天気ですね！」
+*small bow* "Oh, hi." ||| ＊ペコッ＊「あっ、どうも」
+⚡ TRY IT ||| ⚡ やってみよう
+Get a "ticket to talk" ||| 「話しかけ予約券」をもらおう
+🕰️ A WAITING ROOM ||| 🕰️ 待合室で
+⏳ 5 MINUTES LATER… ||| ⏳ 5分後…
+YOU ||| あなた
+STRANGER ||| 知らない人
+How do you start? ||| どう話しかける？
+"…Um, do I know you?" 🤨 ||| 「…えっと、どこかで会いました？」🤨
+"…Hello?" (a little careful) ||| 「…こんにちは？」（ちょっと警戒）
+"Oh, hi." 🙂 (a small bow back) ||| 「あっ、どうも」🙂（ペコッと返してくれた）
+"Sure, please sit!" 😊 ||| 「どうぞ、どうぞ！」😊
+🌤️ "Nice weather, isn't it?" ||| 🌤️「いいお天気ですね」
+💬 "Hello!" ||| 💬「こんにちは！」
+🐧 Small bow + "Oh, hi." ||| 🐧 ペコッ ＋「あっ、どうも」
+🎫 Ticket to talk: GET! ||| 🎫 話しかけ予約券：ゲット！
+You can talk to them later, too. ||| あとからでも話しかけやすい。
+🪑 "Is this seat free?" ||| 🪑「この席、空いてますか？」
+Try all 3. Which one gets a ticket? ||| 3つとも試してみて。予約券がもらえるのはどれ？
+Now use your ticket. ||| さあ、予約券を使ってみよう。
+🎉 Easy! The ticket worked, and you look polite too. ||| 🎉 かんたん！予約券がきいて、きちんとした人にも見えました。
+↺ Try again ||| ↺ もう一回
+@@js
+/* 🎫 話しかけ予約券：3つのひとことで相手の反応が変わる（data-c）。「あっ、どうも」だけ予約券 → 5分後「この席、空いてますか？」。JS は data-* と class と絵文字だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var a = g.querySelector('.ch-a'), b = g.querySelector('.ch-b'), c = g.querySelector('.ch-c'), seat = g.querySelector('.seat'), again = g.querySelector('.again');
+  var me = g.querySelector('.me'), them = g.querySelector('.them'), face = g.querySelector('.pp-f');
+  function pop(el, list, k) {
+    if (!window.pengessoPop) return;
+    var r = el.getBoundingClientRect();
+    window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, k);
+  }
+  function redo(el, cl) { el.classList.remove(cl); void el.offsetWidth; el.classList.add(cl); }
+  var busy = false;
+  function can() { return g.getAttribute('data-s') === 'ask' && !busy; }
+  a.addEventListener('click', function () { if (!can()) return; g.setAttribute('data-c', 'a'); face.textContent = '🤨'; redo(them, 'shake'); });
+  b.addEventListener('click', function () { if (!can()) return; g.setAttribute('data-c', 'b'); face.textContent = '😐'; redo(them, 'shake'); });
+  c.addEventListener('click', function () {
+    if (!can()) return;
+    busy = true;
+    g.setAttribute('data-c', 'c'); face.textContent = '🙂'; redo(me, 'bow');
+    setTimeout(function () {
+      busy = false;
+      if (g.getAttribute('data-s') !== 'ask') return;
+      g.setAttribute('data-s', 'ticket');
+      pop(g.querySelector('.ticket'), ['🎫', '✨'], 10);
+    }, 700);
+  });
+  seat.addEventListener('click', function () {
+    if (g.getAttribute('data-s') !== 'ticket') return;
+    g.setAttribute('data-c', 'd'); face.textContent = '😊';
+    g.setAttribute('data-s', 'done');
+    setTimeout(function () { pop(them, ['🐧', '🪑', '🎫', '✨', '💛'], 16); }, 300);
+    if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+  });
+  again.addEventListener('click', function () {
+    face.textContent = '😶';
+    g.setAttribute('data-c', ''); g.setAttribute('data-s', 'ask');
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+知らない人には、近づきながら軽く頭を下げて「あっ、どうも」。それが話しかけ予約券になる。
+@@tone
+素材の重さ：かるい（知らない人への声のかけ方。恋愛の話にはしない）
+→ 見せ方：ポップに（空色とオレンジ。待合室で、3つのひとことを試すと相手の顔が変わる。予約券がスタンプのようにドンと出る）
+@@game_ja
+🎫「話しかけ予約券」をもらおう：待合室のベンチに、知らないペンギン。3つのひとことから選ぶ。「🌤️ いいお天気ですね」→🤨「…えっと、どこかで会いました？」、「💬 こんにちは！」→😐「…こんにちは？（ちょっと警戒）」、「🐧 ペコッ＋あっ、どうも」→自分のペンギンがおじぎして、🙂「あっ、どうも」と返してくれる → 「🎫 話しかけ予約券：ゲット！」がスタンプのように出る。「⏳ 5分後…」になり、「🪑 この席、空いてますか？」を押すと😊「どうぞ、どうぞ！」で、となりに座れる。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of brushed mohair, giving a small polite bow with a friendly look, standing next to one simple realistic light wooden chair. A simple bright sky-blue background that fades into soft peach with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × ブラッシュドモヘア × 木のいす

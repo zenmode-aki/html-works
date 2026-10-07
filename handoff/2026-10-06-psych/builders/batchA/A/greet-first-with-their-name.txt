@@ -1,0 +1,259 @@
+@@meta
+{"title": "3 tips for a great hello: smile, go first, and say their name", "label": "Hello Tips", "seq": 287, "mood": ["lift", "learn"], "tags": ["psychology", "friends", "tips"], "thumbAlt": "A chubby corduroy plush penguin holding a blank paper name tag and smiling"}
+@@ja_title
+いい挨拶の3つのコツ：笑顔・自分から・名前
+@@ja_label
+挨拶のコツ
+@@h1emoji
+☀️
+@@section
+1-1「いい挨拶のコツ：笑顔・自分から先に・名前をつける」
+@@vars
+    --bg: #fff8ec; --text: #3b2a1a; --muted: #8a7260;
+    --accent: #d85f00; --accent2: #ff4f6d; --h1: #4a2a00; --big: #d45400; --big-dark: #ffc27a;
+    --glow1: rgba(255,179,0,.30); --glow2: rgba(255,94,98,.16); --glow3: rgba(120,200,255,.20);
+    --shadow: 0 20px 55px rgba(200,110,20,.18); --photo-bg: #ffeccc;
+    --g1: #ff9100; --g2: #ff6a3d; --g3: #f2456b; --pop: #fff176; --pop-text: #6b3a00; --btn-text: #d45400;
+@@css
+  /* ☀️ 100点の挨拶：3つのスイッチ（笑顔・自分から・名前） */
+  .morning { max-width: 430px; margin: 16px auto 0; padding: 14px 12px 12px; border-radius: 24px; background: #fff; color: #3b2a1a;
+    box-shadow: 0 10px 24px rgba(140,50,0,.2); transition: box-shadow .3s ease; }
+  .game[data-n="3"] .morning { box-shadow: 0 0 0 4px #fff176, 0 10px 30px rgba(255,200,0,.55); }
+  .talk { display: flex; flex-direction: column; gap: 10px; }
+  .talk.swap .line { animation: bounce-in .45s both; }
+  .line { display: flex; align-items: flex-end; gap: 8px; }
+  .theirs { flex-direction: row-reverse; }
+  .game[data-first="1"] .mine { order: -1; }
+  .pg { position: relative; flex: 0 0 52px; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 50%; font-size: 30px; line-height: 1; background: #ffe7c7; }
+  .theirs .pg { background: #e3f2ff; }
+  .flip { display: inline-block; transform: scaleX(-1); }
+  .pg .ord { position: absolute; left: -4px; top: -6px; width: 22px; height: 22px; border-radius: 50%; background: #3b2a1a; color: #fff; font-size: 12px; font-weight: 900; display: grid; place-items: center; }
+  .game[data-first="1"] .mine .ord::after, .game[data-first="0"] .theirs .ord::after { content: "1"; }
+  .game[data-first="0"] .mine .ord::after, .game[data-first="1"] .theirs .ord::after { content: "2"; }
+  .game[data-first="1"] .mine .ord { background: #ff6a3d; }
+  .bub { flex: 1; min-width: 0; padding: 10px 12px; border-radius: 18px 18px 18px 6px; background: #f3eee8; text-align: left; font-size: 16.5px; font-weight: 900; line-height: 1.35;
+    transition: background .25s ease, transform .25s ease; }
+  .theirs .bub { border-radius: 18px 18px 6px 18px; text-align: right; background: #eef6ff; }
+  .game[data-smile="1"] .mine .bub { background: #fff1a8; transform: scale(1.03); }
+  .s-face { font-size: 20px; }
+  .g-named, .t-reply { display: none; }
+  .game[data-name="1"] .g-plain { display: none; }
+  .game[data-name="1"] .g-named { display: inline; color: #c2410c; }
+  .game[data-first="1"] .t-first { display: none; }
+  .game[data-first="1"] .t-reply { display: inline; }
+  .t-tag { display: block; margin-top: 2px; font-size: 11.5px; font-weight: 900; color: #6b85a3; }
+
+  .score { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 12px; }
+  .t-face { font-size: 40px; line-height: 1; display: inline-block; }
+  .t-face.boing { animation: bounce-in .45s both; }
+  .pts-box { text-align: left; }
+  .pts { font-size: 40px; font-weight: 900; line-height: 1; letter-spacing: -.03em; color: #d45400; }
+  .pts-u { font-size: 14px; font-weight: 900; color: #8a7260; margin-left: 2px; }
+  .meter { position: relative; height: 14px; margin: 10px 4px 0; border-radius: 999px; background: #f1e6da; overflow: hidden; }
+  .meter i { position: absolute; inset: 0 auto 0 0; width: 30%; border-radius: 999px; background: linear-gradient(90deg, #ffb300, #ff6a3d, #f2456b);
+    transition: width .45s cubic-bezier(.2,1.2,.4,1); }
+  .verdict { margin-top: 10px; min-height: 46px; font-size: 16px; font-weight: 900; line-height: 1.4; color: #6b3a00; }
+  .verdict span { display: none; }
+  .game[data-n="0"] .v0, .game[data-n="1"] .v1, .game[data-n="2"] .v2, .game[data-n="3"] .v3 { display: inline; }
+  .game[data-n="3"] .v3 { color: #e0306f; animation: bounce-in .5s both; display: inline-block; }
+
+  .switches { display: grid; gap: 10px; max-width: 430px; margin: 16px auto 0; }
+  .sw { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 62px; padding: 10px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    background: rgba(255,255,255,.2); color: #fff; font: inherit; font-size: 17.5px; font-weight: 900; text-align: left; line-height: 1.25;
+    box-shadow: 0 5px 0 rgba(0,0,0,.14); transition: background .2s ease, transform .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .sw:active { transform: translateY(3px); }
+  .sw:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .sw-e { font-size: 28px; line-height: 1; flex: 0 0 auto; }
+  .sw-t { flex: 1; min-width: 0; }
+  .track { position: relative; flex: 0 0 58px; width: 58px; height: 34px; border-radius: 999px; background: rgba(0,0,0,.22); transition: background .2s ease; }
+  .track::after { content: ""; position: absolute; left: 4px; top: 4px; width: 26px; height: 26px; border-radius: 50%; background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.25); transition: left .22s cubic-bezier(.3,1.5,.5,1); }
+  .sw[aria-checked="true"] { background: #fff; color: #c2410c; }
+  .sw[aria-checked="true"] .track { background: #2fd37a; }
+  .sw[aria-checked="true"] .track::after { left: 28px; }
+  .sw[aria-checked="true"] .sw-e { animation: wiggle .4s ease; }
+@@dark
+  html[data-theme="dark"] .morning { background: #2a2420; color: #fbe9d6; }
+  html[data-theme="dark"] .bub { background: #3a322b; }
+  html[data-theme="dark"] .theirs .bub { background: #26323f; }
+  html[data-theme="dark"] .game[data-smile="1"] .mine .bub { background: #5a4a10; }
+  html[data-theme="dark"] .game[data-name="1"] .g-named { color: #ffb27a; }
+  html[data-theme="dark"] .pts { color: #ffb27a; }
+  html[data-theme="dark"] .pts-u, html[data-theme="dark"] .t-tag { color: #c9b6a4; }
+  html[data-theme="dark"] .verdict { color: #ffd9a8; }
+  html[data-theme="dark"] .game[data-n="3"] .v3 { color: #ff9cc4; }
+  html[data-theme="dark"] .meter { background: #3a322b; }
+  html[data-theme="dark"] .pg { background: #4a3a28; }
+  html[data-theme="dark"] .theirs .pg { background: #24384d; }
+  html[data-theme="dark"] .sw[aria-checked="true"] { background: #fff4e6; }
+@@sents
+S1 | There are 3 tips for a good hello. | いい挨拶のコツは3つあります。
+S2 | The 1st is a smile, and the 2nd is to say it first. | 1つめは笑顔、2つめは自分から先に言うことです。
+S3 | The 3rd is to add the person's name. | 3つめは、相手の名前をつけることです。
+S4 | "Tanaka-san, good morning!" feels much closer than just "Good morning." | 「おはようございます」より「田中さん、おはようございます！」のほうが、ぐっと近く感じます。
+S5 | The words can be just "Hey!", so first, try to do all 3. | 言葉は「よっ！」でもいいので、まずは3つそろえてみましょう。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎯</span>
+      <span class="card-label">3 Tips</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😄</span>
+      <span class="card-label">The First Two</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📛</span>
+      <span class="card-label">Their Name</span>
+    </div>
+    <p>{S3} {S4}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：100点の挨拶（3つのスイッチ） -->
+  <section class="game" data-smile="0" data-first="0" data-name="0" data-n="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Make a 100-point hello</div>
+    <div class="game-hint">Turn on the switches and watch Tanaka-san's face.</div>
+    <div class="morning">
+      <div class="talk">
+        <div class="line mine">
+          <div class="pg" aria-hidden="true"><span class="flip">🐧</span><span class="ord"></span></div>
+          <div class="bub"><span class="s-face" aria-hidden="true">😐</span> <span class="g-plain">Good morning.</span><span class="g-named">Tanaka-san, good morning!</span></div>
+        </div>
+        <div class="line theirs">
+          <div class="pg" aria-hidden="true">🐧<span class="ord"></span></div>
+          <div class="bub"><span class="t-first">Good morning.</span><span class="t-reply">Oh! Good morning! 😊</span><span class="t-tag">Tanaka-san</span></div>
+        </div>
+      </div>
+      <div class="score">
+        <span class="t-face" aria-hidden="true">😐</span>
+        <div class="pts-box"><span class="pts">30</span><span class="pts-u">points</span></div>
+      </div>
+      <div class="meter" aria-hidden="true"><i></i></div>
+      <div class="verdict">
+        <span class="v0">Hmm. A 30-point hello. "Oh… hi."</span>
+        <span class="v1">Getting warmer! 🙂</span>
+        <span class="v2">So close! Just 1 more switch.</span>
+        <span class="v3">💯 Perfect! Tanaka-san looks so happy!</span>
+      </div>
+    </div>
+    <div class="switches">
+      <button class="sw" type="button" role="switch" aria-checked="false" data-k="smile"><span class="sw-e" aria-hidden="true">😄</span><span class="sw-t">Smile</span><span class="track" aria-hidden="true"></span></button>
+      <button class="sw" type="button" role="switch" aria-checked="false" data-k="first"><span class="sw-e" aria-hidden="true">🥇</span><span class="sw-t">Say it first</span><span class="track" aria-hidden="true"></span></button>
+      <button class="sw" type="button" role="switch" aria-checked="false" data-k="name"><span class="sw-e" aria-hidden="true">📛</span><span class="sw-t">Add their name</span><span class="track" aria-hidden="true"></span></button>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Turn all off</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">👋</span>
+      <span class="card-label">Just Try</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+3 Tips ||| 3つのコツ
+The First Two ||| 1つめと2つめ
+Their Name ||| 相手の名前
+Just Try ||| やってみる
+⚡ TRY IT ||| ⚡ やってみよう
+Make a 100-point hello ||| 100点の挨拶をつくろう
+Turn on the switches and watch Tanaka-san's face. ||| スイッチを入れて、田中さんの顔を見てね。
+Good morning. ||| おはようございます。
+Tanaka-san, good morning! ||| 田中さん、おはようございます！
+Oh! Good morning! 😊 ||| あっ、おはようございます！😊
+Tanaka-san ||| 田中さん
+points ||| 点
+Hmm. A 30-point hello. "Oh… hi." ||| うーん。30点の挨拶。「あ、どうも…」
+Getting warmer! 🙂 ||| いい感じになってきた！🙂
+So close! Just 1 more switch. ||| おしい！あと1つ。
+💯 Perfect! Tanaka-san looks so happy! ||| 💯 完璧！田中さん、すごくうれしそう！
+Smile ||| 笑顔
+Say it first ||| 自分から先に言う
+Add their name ||| 名前をつける
+↺ Turn all off ||| ↺ ぜんぶオフにする
+@@js
+/* ☀️ 100点の挨拶：JS は data-* / aria-checked / 絵文字 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var sws = [].slice.call(g.querySelectorAll('.sw'));
+  var PTS = [30, 55, 80, 100], TFACE = ['😐', '🙂', '😊', '🥰'];
+  var pts = g.querySelector('.pts'), bar = g.querySelector('.meter i'), tface = g.querySelector('.t-face');
+  var sface = g.querySelector('.s-face'), talk = g.querySelector('.talk');
+  var shown = 30, raf = 0, fin = 0, lastN = 0;
+  function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function tween(to) {
+    cancelAnimationFrame(raf); clearTimeout(fin);
+    if (still()) { shown = to; pts.textContent = to; return; }
+    fin = setTimeout(function () { cancelAnimationFrame(raf); shown = to; pts.textContent = to; }, 520);
+    var from = shown, t0 = 0;
+    function step(t) {
+      if (!t0) t0 = t;
+      var k = Math.min(1, (t - t0) / 420);
+      shown = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3)));
+      pts.textContent = shown;
+      if (k < 1) raf = requestAnimationFrame(step);
+    }
+    raf = requestAnimationFrame(step);
+  }
+  function draw() {
+    var n = 0;
+    sws.forEach(function (b) {
+      var on = b.getAttribute('aria-checked') === 'true';
+      g.setAttribute('data-' + b.getAttribute('data-k'), on ? '1' : '0');
+      if (on) n++;
+    });
+    g.setAttribute('data-n', String(n));
+    sface.textContent = g.getAttribute('data-smile') === '1' ? '😄' : '😐';
+    tface.textContent = TFACE[n];
+    bar.style.width = PTS[n] + '%';
+    tween(PTS[n]);
+    if (n !== lastN) restart(tface, 'boing');
+    var hit = n === 3 && lastN !== 3;
+    lastN = n;
+    return hit;
+  }
+  sws.forEach(function (b) {
+    b.addEventListener('click', function () {
+      b.setAttribute('aria-checked', b.getAttribute('aria-checked') === 'true' ? 'false' : 'true');
+      if (b.getAttribute('data-k') === 'first') restart(talk, 'swap');
+      if (draw() && window.pengessoPop) {
+        var r = tface.getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['💯', '☀️', '🐧', '✨', '📛'], 20);
+      }
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    sws.forEach(function (b) { b.setAttribute('aria-checked', 'false'); });
+    draw();
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・1文目）
+S4 → 使った（3枚目のカード・2文目）
+S5 → 使った（4枚目のカード・.big）
+@@message
+いい挨拶のコツは3つ：笑顔・自分から先に・名前をつける。
+@@tone
+素材の重さ：真面目（人間関係のコツ）
+→ 見せ方：ポップに（朝のオレンジ。3つのスイッチで点数が上がる）
+@@game_ja
+☀️ 100点の挨拶：「笑顔」「自分から先に言う」「名前をつける」の3つのスイッチ。スイッチを入れるたびに、吹き出しが変わる（笑顔＝黄色く光る／自分から（🥇）＝自分の吹き出しが①になって先に出る／名前＝「田中さん、おはようございます！」になる）。田中さんの顔 😐→🙂→😊→🥰 と点数（30→55→80→100点）とメーターが上がる。3つそろうと💯の紙吹雪。何も入れていない状態が「待ってから『あ、どうも』の30点」。
+@@combo
+ペンギン × ぬいぐるみのコーデュロイとフェルト × 白紙の名札
+@@cover
+An extremely cute, chubby round penguin made as a plush toy of corduroy and felt, with a gentle smiling face and a plain white belly, proudly holding up a realistic blank paper name tag with a red border in one flipper. Bright simple warm orange and sunny yellow background with soft depth, like early morning sunshine. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

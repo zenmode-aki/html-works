@@ -1,0 +1,233 @@
+@@meta
+{"title": "Before you talk in front of people, make 3 things slow", "label": "Slow Speech", "seq": 481, "mood": ["lift", "learn"], "tags": ["psychology", "tips", "mindset"], "thumbAlt": "A felted wool penguin standing calmly in front of a vintage microphone next to a wooden chair"}
+@@ja_title
+人前で話す前は、「呼吸・動き・話し方」の3つをゆっくりに
+@@ja_label
+ゆっくりスピーチ
+@@h1emoji
+🐢
+@@section
+51「話し方の練習：スピーチの3つの『ゆっくり』」
+@@vars
+    --bg: #f6f4ff; --text: #241b4d; --muted: #6c6494;
+    --accent: #6f4ff2; --accent2: #23b894; --h1: #241b4d; --big: #6a48f0; --big-dark: #cbbcff;
+    --glow1: rgba(123,92,255,.18); --glow2: rgba(43,196,160,.20); --glow3: rgba(255,170,120,.20);
+    --shadow: 0 20px 55px rgba(90,70,200,.18); --photo-bg: #ebe6ff;
+    --g1: #8a6dff; --g2: #4fb8e0; --g3: #3fcf98; --pop: #fff1a8; --pop-text: #4a3a00; --btn-text: #6a48f0;
+@@css
+  /* 🐢 3つのゆっくり */
+  .slow3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  .slow3 span { display: block; padding: 12px 6px; border-radius: 18px; text-align: center; font-size: 14px; font-weight: 900; line-height: 1.3;
+    background: #efeaff; color: #4a32b8; }
+  .slow3 b { display: block; font-size: 26px; line-height: 1.1; margin-bottom: 2px; }
+
+  /* 🎤 スローモーション・スタート：1段ずつゆっくり。動いている間にもう一度押すと「あせり」→ 声がふるえる */
+  .steps { list-style: none; max-width: 400px; margin: 16px auto 0; padding: 0; display: grid; gap: 6px; text-align: left; }
+  .steps li { display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 12px; border-radius: 14px; background: rgba(255,255,255,.18);
+    font-size: 15px; font-weight: 900; line-height: 1.3; opacity: .7; transition: background .3s ease, opacity .3s ease; }
+  .steps li .ck { margin-left: auto; font-size: 18px; visibility: hidden; }
+  .steps li.now { background: #fff; color: #3d2a99; opacity: 1; }
+  .steps li.done { opacity: 1; }
+  .steps li.done .ck { visibility: visible; }
+  .steps li.rushed .ck { filter: hue-rotate(160deg); }
+  .breath { width: 56px; height: 56px; margin: 12px auto 0; border-radius: 50%; background: rgba(255,255,255,.35); border: 3px solid #fff; display: none; }
+  .game[data-i="3"][data-busy="1"] .breath { display: block; animation: breathe 3s ease-in-out both; }
+  @keyframes breathe { 0% { transform: scale(.6); } 55% { transform: scale(1.5); } 100% { transform: scale(1); } }
+  .go { position: relative; display: block; width: min(320px, 100%); min-height: 72px; margin: 14px auto 0; padding: 10px 18px; border: 0; border-radius: 999px;
+    overflow: hidden; background: var(--pop); color: #4a3a00; font: inherit; font-size: 19px; font-weight: 900; line-height: 1.25; cursor: pointer;
+    box-shadow: 0 8px 0 #d9b94a, 0 14px 24px rgba(0,0,0,.16); transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .go:active { transform: translateY(6px); box-shadow: 0 2px 0 #d9b94a, 0 6px 12px rgba(0,0,0,.16); }
+  .go:focus-visible { outline: 4px solid #fff; outline-offset: 4px; }
+  .go .fill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: rgba(255,255,255,.65); }
+  .go .gt { position: relative; display: none; }
+  .game[data-busy="0"] .gt-do, .game[data-busy="1"] .gt-busy { display: inline; }
+  .game[data-end="1"] .go { display: none; }
+  .voice { max-width: 360px; margin: 16px auto 0; }
+  .v-l { font-size: 13.5px; font-weight: 900; }
+  .v-track { position: relative; height: 14px; margin-top: 8px; border-radius: 999px; background: rgba(255,255,255,.3); overflow: hidden; }
+  .v-track i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 999px; background: linear-gradient(90deg, #fff1a8, #ff7a59); transition: width .3s ease; }
+  .voice.jit { animation: shake .35s ease; }
+  .v-ends { display: flex; justify-content: space-between; margin-top: 4px; font-size: 12.5px; font-weight: 900; }
+  .result { display: none; max-width: 440px; margin: 14px auto 0; padding: 14px; border-radius: 20px; background: #fff; color: #241b4d; }
+  .game[data-end="1"] .result { display: block; animation: bounce-in .5s both; }
+  .result span { display: none; }
+  .mic { font-size: 19px; font-weight: 900; line-height: 1.4; }
+  .verdict { margin-top: 8px; font-size: 16px; font-weight: 900; line-height: 1.45; color: #5a3fd8; }
+  .game[data-r="calm"] .r-calm, .game[data-r="bit"] .r-bit, .game[data-r="shaky"] .r-shaky,
+  .game[data-r="calm"] .m-calm, .game[data-r="bit"] .m-calm, .game[data-r="shaky"] .m-shaky { display: inline; }
+  .game[data-r="shaky"] .mic { animation: shake .4s ease 2; }
+  .again-row { display: none; }
+  .game[data-end="1"] .again-row { display: block; }
+@@dark
+  html[data-theme="dark"] .slow3 span { background: #29224a; color: #d6ccff; }
+  html[data-theme="dark"] .steps li.now { background: #29224a; color: #e6e0ff; }
+  html[data-theme="dark"] .result { background: #221c3d; color: #ece8ff; }
+  html[data-theme="dark"] .verdict { color: #cbbcff; }
+@@sents
+S1 | It seems it is good to make 3 things slow when you talk in front of people: breath, moves, and words. | 人前で話すときは、「呼吸・動き・話し方」の3つをゆっくりにするといいそうです。
+S2 | When your name is called, stand up slowly, push in your chair, and look around the room. | 名前を呼ばれたら、ゆっくり立って、イスをしまって、会場を見渡します。
+S3 | Take 1 breath, and then start talking. | ひと呼吸おいてから、話しはじめます。
+S4 | Talking in front of people is like riding a bike: with practice, one day you suddenly can do it. | 人前で話すのも、自転車と同じで、慣れればある日とつぜんできるようになります。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐢</span>
+      <span class="card-label">3 Slow Things</span>
+    </div>
+    <p>{S1}</p>
+    <div class="slow3" aria-hidden="true">
+      <span><b class="se">🌬️</b>Breath</span>
+      <span><b class="se">🐾</b>Moves</span>
+      <span><b class="se">💬</b>Words</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🪑</span>
+      <span class="card-label">The Steps</span>
+    </div>
+    <p>{S2}</p>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：スローモーション・スタート（5段を1つずつゆっくり。動いている間に押すと「あせり」で声がふるえる） -->
+  <section class="game" data-i="0" data-busy="0" data-end="0" data-r="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The slow-motion start</div>
+    <div class="game-hint">Your name is called. Do each step slowly. If you tap again while it is moving, you rush.</div>
+    <ol class="steps">
+      <li><span class="st-t">⬆️ Stand up slowly</span><span class="ck" aria-hidden="true">✅</span></li>
+      <li><span class="st-t">🪑 Push in your chair</span><span class="ck" aria-hidden="true">✅</span></li>
+      <li><span class="st-t">🔄 Look around the room</span><span class="ck" aria-hidden="true">✅</span></li>
+      <li><span class="st-t">🌬️ Take 1 breath</span><span class="ck" aria-hidden="true">✅</span></li>
+      <li><span class="st-t">🎤 Start talking</span><span class="ck" aria-hidden="true">✅</span></li>
+    </ol>
+    <div class="breath" aria-hidden="true"></div>
+    <button class="go" type="button"><span class="fill" aria-hidden="true"></span><span class="gt gt-do">👆 Do this step</span><span class="gt gt-busy">🐢 Slowly…</span></button>
+    <div class="voice">
+      <div class="v-l">🎤 Your voice:</div>
+      <div class="v-track" aria-hidden="true"><i></i></div>
+      <div class="v-ends"><span class="ve1">🐢 calm</span><span class="ve2">⚡ shaky</span></div>
+    </div>
+    <div class="result">
+      <div class="mic"><span class="m-calm">🎤 "Hello, everyone."</span><span class="m-shaky">🎤 "H-h-hello, every… everyone!"</span></div>
+      <div class="verdict">
+        <span class="r-calm">🐢 A perfect slow start! Your voice is calm.</span>
+        <span class="r-bit">🙂 A little fast. Your voice shook a bit.</span>
+        <span class="r-shaky">⚡ Too fast! Your voice is shaking. Try it slower.</span>
+      </div>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🚲</span>
+      <span class="card-label">Like A Bike</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+3 Slow Things ||| 3つのゆっくり
+The Steps ||| 手順
+Like A Bike ||| 自転車と同じ
+Breath ||| 呼吸
+Moves ||| 動き
+Words ||| 話し方
+⚡ TRY IT ||| ⚡ やってみよう
+The slow-motion start ||| スローモーション・スタート
+Your name is called. Do each step slowly. If you tap again while it is moving, you rush. ||| 名前を呼ばれたよ。1つずつ、ゆっくりやろう。動いている間にもう一度押すと、あせったことになるよ。
+⬆️ Stand up slowly ||| ⬆️ ゆっくり立つ
+🪑 Push in your chair ||| 🪑 イスをしまう
+🔄 Look around the room ||| 🔄 会場を見渡す
+🌬️ Take 1 breath ||| 🌬️ ひと呼吸おく
+🎤 Start talking ||| 🎤 話しはじめる
+👆 Do this step ||| 👆 この手順をやる
+🐢 Slowly… ||| 🐢 ゆっくり…
+🎤 Your voice: ||| 🎤 あなたの声：
+🐢 calm ||| 🐢 落ちついている
+⚡ shaky ||| ⚡ ふるえている
+🎤 "Hello, everyone." ||| 🎤「みなさん、こんにちは」
+🎤 "H-h-hello, every… everyone!" ||| 🎤「み、み、みなさん、こ…こんにちは！」
+🐢 A perfect slow start! Your voice is calm. ||| 🐢 完璧なゆっくりスタート！声が落ちついている。
+🙂 A little fast. Your voice shook a bit. ||| 🙂 ちょっと速かった。声が少しふるえた。
+⚡ Too fast! Your voice is shaking. Try it slower. ||| ⚡ 速すぎ！声がふるえている。もっとゆっくりやってみよう。
+↺ Try again ||| ↺ もう一回
+@@js
+/* 🎤 スローモーション・スタート：JS は data-i / data-busy / data-end / data-r / class / style だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var DUR = [1600, 1500, 1800, 3000, 1400];
+  var lis = [].slice.call(g.querySelectorAll('.steps li'));
+  var btn = g.querySelector('.go'), fill = g.querySelector('.go .fill');
+  var voice = g.querySelector('.voice'), vbar = g.querySelector('.v-track i');
+  var i = 0, shaky = 0, busy = false, t = 0;
+  function restart(el, c) { el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function setFill(w, ms) {
+    fill.style.transition = 'none'; fill.style.width = w === 100 ? '0%' : w + '%';
+    void fill.offsetWidth;
+    if (ms) { fill.style.transition = 'width ' + ms + 'ms linear'; fill.style.width = w + '%'; }
+  }
+  function draw() {
+    g.setAttribute('data-i', String(i));
+    g.setAttribute('data-busy', busy ? '1' : '0');
+    lis.forEach(function (li, k) { li.classList.toggle('now', k === i); });
+    vbar.style.width = Math.min(100, shaky * 25) + '%';
+  }
+  function finish() {
+    g.setAttribute('data-r', shaky === 0 ? 'calm' : shaky <= 2 ? 'bit' : 'shaky');
+    g.setAttribute('data-end', '1');
+    if (shaky === 0 && window.pengessoPop) {
+      var r = g.querySelector('.result').getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🐢', '🎤', '🐧', '✨'], 20);
+    }
+  }
+  function done(rushed) {
+    busy = false;
+    lis[i].classList.add('done');
+    if (rushed) lis[i].classList.add('rushed');
+    i++;
+    setFill(0);
+    draw();
+    if (i >= lis.length) finish();
+  }
+  btn.addEventListener('click', function () {
+    if (g.getAttribute('data-end') === '1') return;
+    if (!busy) {
+      busy = true; draw();
+      setFill(100, DUR[i]);
+      t = setTimeout(function () { done(false); }, DUR[i]);
+    } else {
+      clearTimeout(t);
+      shaky++; restart(voice, 'jit');
+      done(true);
+    }
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    clearTimeout(t);
+    i = 0; shaky = 0; busy = false;
+    lis.forEach(function (li) { li.classList.remove('done', 'rushed'); });
+    setFill(0);
+    g.setAttribute('data-end', '0'); g.setAttribute('data-r', '');
+    draw();
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード・1文目）
+S3 → 使った（2枚目のカード・2文目）
+S4 → 使った（3枚目のカード・.big）
+@@message
+人前で話す前は、「呼吸・動き・話し方」の3つをゆっくりに。苦手なのは経験が少ないだけ。
+@@tone
+素材の重さ：ふつう（人前で話す緊張）
+→ 見せ方：ポップに・おだやかに（ラベンダーとミント。1段ずつゆっくり進むと、声が落ちつく。「コミュ障」という言葉は使わない。仕事の発表の場面にはしない）
+@@game_ja
+🎤 スローモーション・スタート：名前を呼ばれたところから、5つの手順（⬆️ ゆっくり立つ／🪑 イスをしまう／🔄 会場を見渡す／🌬️ ひと呼吸おく／🎤 話しはじめる）を1つずつやる。大きなボタンを押すと、その手順がゆっくりゲージで進む（ひと呼吸は、円がふくらんでしぼむ3秒）。動いている間にもう一度押すと「あせった」ことになり、下の「🎤 あなたの声」メーターがふるえる方へ伸びる。5つ終わると、あせらなかったら🎤「みなさん、こんにちは」と落ちついた声、あせると「み、み、みなさん…」とふるえた声になる。
+@@combo
+ペンギン × ふわふわ羊毛（ニードルフェルト） × ビンテージのマイクと木のイス
+@@cover
+An extremely cute, chubby round penguin made of soft felted wool, with a gentle calm face and a plain white belly, standing up straight and taking a slow deep breath in front of one realistic vintage silver microphone on a stand, with a simple wooden chair pushed in neatly beside it. Bright simple lavender and soft mint background with gentle depth, calm warm light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

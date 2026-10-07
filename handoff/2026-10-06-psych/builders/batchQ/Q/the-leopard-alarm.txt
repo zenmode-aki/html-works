@@ -1,0 +1,221 @@
+@@meta
+{"title": "Your fast heartbeat before a big moment is an old leopard alarm", "label": "Leopard Alarm", "seq": 454, "mood": ["lift", "learn"], "tags": ["psychology", "feelings", "mindset"], "thumbAlt": "A chubby crocheted amigurumi penguin holding a small realistic twin-bell alarm clock"}
+@@ja_title
+本番前のドキドキは、ヒョウから逃げるための大昔の警報
+@@ja_label
+ヒョウの警報
+@@h1emoji
+🐆
+@@section
+65「不安のメカニズム（ヒョウと闘争・逃走反応）」
+@@vars
+    --bg: #fff8ee; --text: #33241c; --muted: #85695a;
+    --accent: #d9480f; --accent2: #7048e8; --h1: #3d1d0b; --big: #c2410c; --big-dark: #ffb37a;
+    --glow1: rgba(240,140,0,.24); --glow2: rgba(112,72,232,.18); --glow3: rgba(255,212,59,.22);
+    --shadow: 0 20px 55px rgba(160,80,20,.18); --photo-bg: #ffe8cc;
+    --g1: #5f3dc4; --g2: #7048e8; --g3: #f08c00; --pop: #ffd43b; --pop-text: #4a3300; --btn-text: #c2410c;
+@@css
+  /* 🎩 手品のタネあかし：発表 → 体の警報が鳴る → カーテンを開けるとヒョウ（大昔の警報）→ まわりを見るとヒョウはいない */
+  .stagebox { position: relative; height: 150px; max-width: 380px; margin: 16px auto 12px; border-radius: 22px; overflow: hidden;
+    background: radial-gradient(circle at 50% 40%, #fff6d6, #ffd98a 70%); color: #3d1d0b; }
+  .behind { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; }
+  .behind .e { font-size: 56px; line-height: 1; }
+  .behind .cap { font-size: 16px; font-weight: 900; line-height: 1.3; }
+  .game[data-s="reveal"] .b-leo, .game[data-s="calm"] .b-calm { display: flex; animation: bounce-in .5s .25s both; }
+  .cur { position: absolute; top: 0; bottom: 0; width: 51%; z-index: 2;
+    background: repeating-linear-gradient(90deg, #c92a2a 0 14px, #a61e1e 14px 28px); transition: transform .7s cubic-bezier(.6,0,.3,1); }
+  .cur-l { left: 0; border-right: 3px solid #ffd43b; }
+  .cur-r { right: 0; border-left: 3px solid #ffd43b; }
+  .game[data-s="reveal"] .cur-l, .game[data-s="calm"] .cur-l { transform: translateX(-102%); }
+  .game[data-s="reveal"] .cur-r, .game[data-s="calm"] .cur-r { transform: translateX(102%); }
+  .qmark { position: absolute; left: 50%; top: 50%; z-index: 3; width: 54px; height: 54px; margin: -27px 0 0 -27px; display: grid; place-items: center;
+    border-radius: 50%; background: #ffd43b; font-size: 28px; line-height: 1; box-shadow: 0 4px 10px rgba(0,0,0,.25); }
+  .game[data-s="reveal"] .qmark, .game[data-s="calm"] .qmark { display: none; }
+
+  .bodyrow { display: grid; grid-template-columns: 70px 1fr; gap: 10px; align-items: center; max-width: 380px; margin: 0 auto; }
+  .me { position: relative; width: 66px; height: 66px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.25); font-size: 38px; line-height: 1; }
+  .face { position: absolute; right: -6px; bottom: -4px; font-size: 24px; line-height: 1; }
+  .game[data-s="alarm"] .me { animation: shake .4s ease infinite; }
+  .syms { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .sym { padding: 9px 6px; border-radius: 14px; background: rgba(255,255,255,.16); font-size: 14.5px; font-weight: 900; line-height: 1.25; opacity: .6;
+    transition: background-color .4s ease, color .4s ease, opacity .4s ease; }
+  .game[data-s="alarm"] .sym, .game[data-s="reveal"] .sym { background: #ff4d4d; color: #fff; opacity: 1; }
+  .game[data-s="alarm"] .sym { animation: wiggle .5s ease infinite; }
+  .game[data-s="alarm"] .sym:nth-child(2) { animation-delay: .12s; }
+  .game[data-s="alarm"] .sym:nth-child(3) { animation-delay: .24s; }
+  .game[data-s="alarm"] .sym:nth-child(4) { animation-delay: .36s; }
+  .game[data-s="calm"] .sym { background: #d3f9d8; color: #1e5b2b; opacity: 1; }
+  .game[data-s="calm"] .sym:nth-child(2) { transition-delay: .25s; }
+  .game[data-s="calm"] .sym:nth-child(3) { transition-delay: .5s; }
+  .game[data-s="calm"] .sym:nth-child(4) { transition-delay: .75s; }
+
+  .alarm { max-width: 380px; margin: 14px auto 0; text-align: left; }
+  .al-top { font-size: 15px; font-weight: 900; margin-bottom: 6px; }
+  .bar { height: 16px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 12%; border-radius: 999px; background: #fff; transition: width .7s cubic-bezier(.2,1.2,.4,1), background-color .5s ease; }
+  .game[data-s="alarm"] .bar i, .game[data-s="reveal"] .bar i { width: 100%; background: #ff4d4d; }
+  @keyframes blink { 50% { opacity: .55; } }
+  .game[data-s="alarm"] .bar i { animation: blink .5s steps(2) infinite; }
+  .game[data-s="calm"] .bar i { width: 34%; background: #b2f2bb; }
+
+  .tap { display: block; width: min(330px, 100%); min-height: 64px; margin: 16px auto 0; padding: 12px 18px; border: 0; border-radius: 999px; cursor: pointer;
+    font: inherit; font-size: 19px; font-weight: 900; line-height: 1.3; color: var(--pop-text); background: var(--pop);
+    box-shadow: 0 8px 0 #d9a400, 0 14px 24px rgba(0,0,0,.18); transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .tap:active { transform: translateY(6px); box-shadow: 0 2px 0 #d9a400, 0 6px 12px rgba(0,0,0,.18); }
+  .tap:focus-visible { outline: 4px solid #fff; outline-offset: 4px; }
+  .tap span { display: none; }
+  .game[data-s="idle"] .t-idle, .game[data-s="alarm"] .t-alarm, .game[data-s="reveal"] .t-reveal, .game[data-s="calm"] .t-calm { display: inline; }
+  .game[data-s="calm"] .tap { background: rgba(255,255,255,.22); color: #fff; box-shadow: 0 6px 0 rgba(0,0,0,.16); }
+
+  .says { margin-top: 14px; min-height: 70px; font-size: 16.5px; font-weight: 900; line-height: 1.45; }
+  .says > div { display: none; }
+  .game[data-s="idle"] .s-idle, .game[data-s="alarm"] .s-alarm, .game[data-s="reveal"] .s-reveal, .game[data-s="calm"] .s-calm { display: block; }
+  .s-calm { padding: 12px 14px; border-radius: 18px; background: #fff; color: #3d1d0b; animation: bounce-in .5s both; }
+@@dark
+  html[data-theme="dark"] .s-calm { background: #f4f0fa; color: #3d1d0b; }
+  html[data-theme="dark"] .stagebox { background: radial-gradient(circle at 50% 40%, #ffe9a8, #e2a64a 70%); color: #3d1d0b; }
+  html[data-theme="dark"] .game[data-s="calm"] .sym { background: #b8eec2; color: #143d1d; }
+@@sents
+S1 | Before a presentation, my heart beats fast and my hands sweat. | 発表の前に、心臓がドキドキして、手に汗をかくことがあります。
+S2 | It is said this is the same reaction as people long ago when a leopard looked at them. | これは、大昔の人がヒョウににらまれたときと同じ反応だそうです。
+S3 | The brain turns on the body's switch: "Run! Fight!" | 脳が体に「逃げろ！戦え！」とスイッチを入れているのです。
+S4 | When you know how it works, like the trick of a magic show, you can calm down a little. | しくみがわかると、手品のタネを知ったときのように、少し落ち着けます。
+S5 | There is no leopard in front of you. | 目の前に、ヒョウはいません。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💓</span>
+      <span class="card-label">Pounding Heart</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐆</span>
+      <span class="card-label">Long Ago</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🚨</span>
+      <span class="card-label">Run Or Fight</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：警報のうしろに何がいる？（手品のタネあかし） -->
+  <section class="game" data-s="idle" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">What is behind the alarm?</div>
+    <div class="stagebox">
+      <div class="behind b-leo"><span class="e" aria-hidden="true">🐆</span><span class="cap">A leopard from long, long ago</span></div>
+      <div class="behind b-calm"><span class="e" aria-hidden="true">🐧🐧🐧</span><span class="cap">Just kind penguins, listening</span></div>
+      <div class="cur cur-l" aria-hidden="true"></div>
+      <div class="cur cur-r" aria-hidden="true"></div>
+      <div class="qmark" aria-hidden="true">❓</div>
+    </div>
+    <div class="bodyrow">
+      <div class="me" aria-hidden="true">🐧<span class="face">🙂</span></div>
+      <div class="syms">
+        <div class="sym">💓 Fast heart</div>
+        <div class="sym">💨 Fast breath</div>
+        <div class="sym">💧 Sweaty hands</div>
+        <div class="sym">🌀 Blank mind</div>
+      </div>
+    </div>
+    <div class="alarm">
+      <div class="al-top">🚨 Body alarm</div>
+      <div class="bar" aria-hidden="true"><i></i></div>
+    </div>
+    <button class="tap" type="button">
+      <span class="t-idle">🎤 Your turn to present!</span>
+      <span class="t-alarm">🎩 Show me the trick</span>
+      <span class="t-reveal">👀 Look around now</span>
+      <span class="t-calm">↺ Try again</span>
+    </button>
+    <div class="says">
+      <div class="s-idle">Tap the button and stand up to present.</div>
+      <div class="s-alarm">Heart, breath, sweat… Your body is getting ready to run!</div>
+      <div class="s-reveal">🐆 Your brain thinks a leopard is here. This alarm is very, very old.</div>
+      <div class="s-calm">😌 No leopard. You know the trick now, so you can calm down a little.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎩</span>
+      <span class="card-label">The Trick</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌿</span>
+      <span class="card-label">No Leopard</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+Pounding Heart ||| ドキドキ
+Long Ago ||| 大昔
+Run Or Fight ||| 逃げろ、戦え
+The Trick ||| タネあかし
+No Leopard ||| ヒョウはいない
+⚡ TRY IT ||| ⚡ やってみよう
+What is behind the alarm? ||| 警報のうしろに、何がいる？
+A leopard from long, long ago ||| 大昔のヒョウ
+Just kind penguins, listening ||| 聞いてくれる、やさしいペンギンたちだけ
+💓 Fast heart ||| 💓 ドキドキ
+💨 Fast breath ||| 💨 速い息
+💧 Sweaty hands ||| 💧 手汗
+🌀 Blank mind ||| 🌀 頭が真っ白
+🚨 Body alarm ||| 🚨 体の警報
+🎤 Your turn to present! ||| 🎤 発表の番です！
+🎩 Show me the trick ||| 🎩 タネを見せて
+👀 Look around now ||| 👀 まわりをよく見る
+↺ Try again ||| ↺ もう一回
+Tap the button and stand up to present. ||| ボタンを押して、発表に立ってみよう。
+Heart, breath, sweat… Your body is getting ready to run! ||| ドキドキ、ハアハア、手汗…体が逃げる準備をしています！
+🐆 Your brain thinks a leopard is here. This alarm is very, very old. ||| 🐆 脳は「ヒョウがいる！」と思っています。とても古い警報なんです。
+😌 No leopard. You know the trick now, so you can calm down a little. ||| 😌 ヒョウはいません。タネがわかったから、少し落ち着けます。
+@@js
+/* 🎩 警報のタネあかし：JS は data-s と絵文字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var btn = g.querySelector('.tap'), face = g.querySelector('.face'), box = g.querySelector('.stagebox');
+  var NEXT = { idle: 'alarm', alarm: 'reveal', reveal: 'calm', calm: 'idle' };
+  var FACE = { idle: '🙂', alarm: '😰', reveal: '😮', calm: '😌' };
+  btn.addEventListener('click', function () {
+    var s = NEXT[g.getAttribute('data-s')] || 'idle';
+    g.setAttribute('data-s', s);
+    face.textContent = FACE[s];
+    if (s === 'alarm' && navigator.vibrate) { try { navigator.vibrate([40, 60, 40]); } catch (e) {} }
+    if (s === 'calm' && window.pengessoPop) {
+      var r = box.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['😌', '🐧', '✨', '🎤'], 16);
+    }
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード）
+S5 → 使った（5枚目のカード・.big）
+@@message
+本番前のドキドキは、ヒョウから逃げるための大昔のしくみ。タネがわかれば少し落ち着ける。
+@@tone
+素材の重さ：真面目（不安のしくみ）
+→ 見せ方：ポップに（紫の手品ステージとオレンジ。カーテンを開けるタネあかし）
+※扁桃体などの専門用語は入れず、「脳がスイッチを入れる」で言っている。
+@@game_ja
+🎩 警報のうしろに、何がいる？：大きなボタン1つで4場面。①「🎤 発表の番です！」→ 体のサイン（ドキドキ・速い息・手汗・頭が真っ白）が赤く光って震え、「体の警報」メーターが満タンで点滅。②「🎩 タネを見せて」→ 赤いカーテンが左右に開き、うしろに大昔のヒョウ🐆。「脳はヒョウがいると思っている。とても古い警報」。③「👀 まわりをよく見る」→ ヒョウが、聞いてくれるやさしいペンギンたち🐧🐧🐧に変わり、体のサインが1つずつ緑に戻る。警報メーターは0ではなく少し残る（「少し落ち着ける」のとおり）。④もう一回。
+@@cover
+An extremely cute, chubby round penguin made of crocheted amigurumi yarn, with a gentle face and a plain belly, hugging a small, realistic vintage twin-bell alarm clock in shiny red metal. Bright warm golden-orange background with a soft purple glow at the edges and gentle depth. Simple and clean, no clutter. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × あみぐるみ × 目覚まし時計（体の警報）

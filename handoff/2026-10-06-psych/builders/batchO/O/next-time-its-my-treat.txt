@@ -1,0 +1,229 @@
+@@meta
+{"title": "The best answer to \"It's my treat\" is \"Thanks! Next time is mine\"", "label": "My Treat Next", "seq": 433, "mood": ["lift", "learn"], "tags": ["psychology", "friends", "money"], "thumbAlt": "A plush corduroy penguin happily holding out a paper cup of coffee"}
+@@ja_title
+「今日はおごるよ」への一番の返事は「ありがとう！次は私がおごるね」
+@@ja_label
+次は私がおごる
+@@h1emoji
+☕
+@@section
+36「持ちつ持たれつ」診断
+@@vars
+    --bg: #fff6ef; --text: #3a2618; --muted: #8a6a55;
+    --accent: #e8590c; --accent2: #ff4f7b; --h1: #4a2410; --big: #d9480f; --big-dark: #ffb27a;
+    --glow1: rgba(255,146,60,.3); --glow2: rgba(255,94,126,.2); --glow3: rgba(255,214,90,.25);
+    --shadow: 0 20px 55px rgba(200,90,30,.18); --photo-bg: #ffe6d3;
+    --g1: #ff6a3d; --g2: #ff8f3d; --g3: #ff5e86; --pop: #ffe066; --pop-text: #5a3a00; --btn-text: #c2410c;
+@@css
+  /* ☕ 「今日はおごるよ」クイズ：3つの返事から選ぶ → 友達の反応・友情ロープの太さ・星 */
+  .scene { display: flex; align-items: center; gap: 6px; max-width: 420px; margin: 16px auto 0; }
+  .who { flex: 0 0 auto; width: 76px; }
+  .face { width: 70px; height: 70px; margin: 0 auto; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.25);
+    font-size: 42px; line-height: 1; position: relative; }
+  .face .react { position: absolute; right: -8px; top: -10px; font-size: 28px; line-height: 1; }
+  .face .react.boing { animation: bounce-in .45s both; }
+  .tag { margin-top: 5px; font-size: 13px; font-weight: 900; }
+  .rope-box { flex: 1; min-width: 0; text-align: center; }
+  .rope { height: 22px; display: flex; align-items: center; }
+  .rope i { display: block; width: 100%; height: 6px; border-radius: 999px; transition: height .5s cubic-bezier(.2,1.4,.4,1), opacity .4s;
+    background: repeating-linear-gradient(60deg, #fff 0 7px, #ffd7a8 7px 14px); box-shadow: 0 2px 0 rgba(0,0,0,.12); }
+  .game[data-a="a"] .rope i { height: 9px; }
+  .game[data-a="b"] .rope i { height: 3px; opacity: .7; }
+  .game[data-a="c"] .rope i { height: 20px; }
+  .rope-l { font-size: 12px; font-weight: 900; opacity: .92; }
+  .say { max-width: 420px; margin: 12px auto 0; padding: 12px 14px; border-radius: 18px 18px 6px 18px; background: #fff; color: #4a2410;
+    font-weight: 900; font-size: clamp(16px, 4.4vw, 19px); line-height: 1.4; min-height: 54px; display: flex; align-items: center; justify-content: center; }
+  .say span { display: none; }
+  .say.show { animation: bounce-in .4s both; }
+  .game[data-a="0"] .s0, .game[data-a="a"] .sa, .game[data-a="b"] .sb, .game[data-a="c"] .sc { display: inline; }
+
+  .opts { display: grid; gap: 10px; max-width: 440px; margin: 14px auto 0; }
+  .opt { display: flex; align-items: center; gap: 10px; min-height: 58px; padding: 10px 14px; border: 0; border-radius: 18px; text-align: left;
+    background: rgba(255,255,255,.95); color: var(--btn-text); font: inherit; font-size: 16px; font-weight: 900; line-height: 1.3; cursor: pointer;
+    box-shadow: 0 5px 0 rgba(120,40,0,.28); transition: transform .08s ease, box-shadow .08s ease; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .opt .ab { flex: 0 0 auto; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: var(--btn-text); color: #fff; font-size: 16px; }
+  .opt:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(120,40,0,.28); }
+  .opt.sel { background: var(--pop); color: var(--pop-text); box-shadow: 0 0 0 3px #fff, 0 5px 0 rgba(120,40,0,.28); }
+  .opt:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+
+  .verdict { max-width: 440px; margin: 14px auto 0; min-height: 50px; }
+  .verdict > div { display: none; font-weight: 900; font-size: 15.5px; line-height: 1.45; }
+  .game[data-a="0"] .v0, .game[data-a="a"] .va, .game[data-a="b"] .vb, .game[data-a="c"] .vc { display: block; }
+  .stars { font-size: 26px; letter-spacing: 2px; line-height: 1.2; margin-bottom: 2px; }
+  .stars i { font-style: normal; filter: grayscale(1); opacity: .3; }
+  .stars i.on { filter: none; opacity: 1; }
+  .verdict.show .stars i.on { animation: bounce-in .4s both; }
+  .verdict.show .stars i.on:nth-child(2) { animation-delay: .1s; } .verdict.show .stars i.on:nth-child(3) { animation-delay: .2s; }
+  .tried { margin-top: 10px; font-size: 14px; font-weight: 900; opacity: .95; }
+  .rank { display: none; max-width: 420px; margin: 10px auto 0; padding: 12px 14px; border-radius: 18px; background: rgba(255,255,255,.24); font-weight: 900; line-height: 1.45; }
+  .rank b { display: block; font-size: 22px; letter-spacing: .04em; }
+  .game[data-all="1"] .rank { display: block; animation: bounce-in .5s both; }
+@@dark
+  html[data-theme="dark"] .say { background: #2e2420; color: #ffe4d0; }
+  html[data-theme="dark"] .opt { background: #2e2420; color: #ffc9a3; }
+  html[data-theme="dark"] .opt.sel { background: #ffe066; color: #4a3000; }
+  html[data-theme="dark"] .opt .ab { background: #ff8f3d; color: #2e1400; }
+@@sents
+S1 | If a friend says, "Today is my treat," how do you answer? | 友達に「今日はおごるよ」と言われたら、なんて答えますか？
+S2 | If you only say, "Yay, thank you!", you can become someone who only takes. | 「うれしい！ありがとう」だけだと、もらうばかりの人になってしまいます。
+S3 | "No, no, let's split it" is very proper, but the connection can get a little thin. | 「ダメダメ、割り勘で」は律儀ですが、つながりが少し薄くなりやすいです。
+S4 | The best answer is "Thank you! Next time is my treat." | いちばんいいのは、「ありがとう！次は私がおごるね」です。
+S5 | You get, you give back, and the friendship keeps going. | もらって、返して、仲よしが続いていきます。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍰</span>
+      <span class="card-label">The Question</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：「今日はおごるよ」クイズ（3つの返事 → 反応・友情ロープ・星。3つ試すとランキング） -->
+  <section class="game" data-a="0" data-all="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Your friend: "Today is my treat!"</div>
+    <div class="game-hint">What do you say? Try all 3 answers.</div>
+    <div class="scene">
+      <div class="who">
+        <div class="face" aria-hidden="true">🐧</div>
+        <div class="tag">You</div>
+      </div>
+      <div class="rope-box">
+        <div class="rope" aria-hidden="true"><i></i></div>
+        <div class="rope-l">🧶 Friendship rope</div>
+      </div>
+      <div class="who">
+        <div class="face" aria-hidden="true">🐧<span class="react">🍰</span></div>
+        <div class="tag">Friend</div>
+      </div>
+    </div>
+    <div class="say">
+      <span class="s0">"Today is my treat! 🍰"</span>
+      <span class="sa">😊 "You're welcome!"</span>
+      <span class="sb">😅 "Oh… OK. Sure."</span>
+      <span class="sc">😆 "Deal! See you next time!"</span>
+    </div>
+    <div class="opts">
+      <button class="opt" type="button" data-a="a" aria-pressed="false"><span class="ab" aria-hidden="true">A</span><span class="ot">"Yay, thank you!"</span></button>
+      <button class="opt" type="button" data-a="b" aria-pressed="false"><span class="ab" aria-hidden="true">B</span><span class="ot">"No, no, let's split it."</span></button>
+      <button class="opt" type="button" data-a="c" aria-pressed="false"><span class="ab" aria-hidden="true">C</span><span class="ot">"Thank you! Next time is my treat."</span></button>
+    </div>
+    <div class="verdict">
+      <div class="v0">👆 Pick an answer.</div>
+      <div class="va"><div class="stars" aria-hidden="true"><i class="on">⭐</i><i class="on">⭐</i><i>⭐</i></div>Nice! But if it is always like this, you only take.</div>
+      <div class="vb"><div class="stars" aria-hidden="true"><i class="on">⭐</i><i>⭐</i><i>⭐</i></div>Very proper… but the rope gets thin.</div>
+      <div class="vc"><div class="stars" aria-hidden="true"><i class="on">⭐</i><i class="on">⭐</i><i class="on">⭐</i></div>Perfect! The rope gets thicker every time.</div>
+    </div>
+    <div class="tried"><span class="tr-l">Answers tried:</span> <span class="tr-n">0/3</span></div>
+    <div class="rank"><b class="rk">🏆 C &gt; A &gt; B</b>Surprise! A happy "thank you" is better than splitting.</div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎁</span>
+      <span class="card-label">Only Taking</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">✂️</span>
+      <span class="card-label">Always Splitting</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔁</span>
+      <span class="card-label">Give and Take</span>
+    </div>
+    <p class="big">{S4}</p>
+    <p>{S5}</p>
+  </section>
+@@ui
+The Question ||| 質問
+Only Taking ||| もらうだけ
+Always Splitting ||| いつも割り勘
+Give and Take ||| 持ちつ持たれつ
+⚡ TRY IT ||| ⚡ やってみよう
+Your friend: "Today is my treat!" ||| 友達：「今日はおごるよ！」
+What do you say? Try all 3 answers. ||| なんて答える？3つぜんぶ試してみてね。
+You ||| あなた
+Friend ||| 友達
+🧶 Friendship rope ||| 🧶 友情のロープ
+"Today is my treat! 🍰" ||| 「今日はおごるよ！🍰」
+😊 "You're welcome!" ||| 😊「どういたしまして！」
+😅 "Oh… OK. Sure." ||| 😅「あ…うん。いいけど。」
+😆 "Deal! See you next time!" ||| 😆「決まり！じゃあ次もね！」
+"Yay, thank you!" ||| 「うれしい！ありがとう」
+"No, no, let's split it." ||| 「ダメダメ、割り勘で」
+"Thank you! Next time is my treat." ||| 「ありがとう！次は私がおごるね」
+👆 Pick an answer. ||| 👆 返事を選んでね。
+Nice! But if it is always like this, you only take. ||| いいね！でも、いつもこれだと、もらうばかりになっちゃう。
+Very proper… but the rope gets thin. ||| とても律儀…でも、ロープが細くなっちゃった。
+Perfect! The rope gets thicker every time. ||| 完璧！ロープが毎回太くなっていく。
+Answers tried: ||| 試した返事：
+🏆 C > A > B ||| 🏆 C ＞ A ＞ B
+Surprise! A happy "thank you" is better than splitting. ||| 意外！うれしそうな「ありがとう」は、割り勘より上。
+A ||| A
+B ||| B
+C ||| C
+↺ Start over ||| ↺ 最初から
+@@js
+/* ☕ 「今日はおごるよ」クイズ：JS は data-a / data-all / class / 絵文字 / 数字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var KEY = 'pengesso-next-time-its-my-treat-tried';
+  var REACT = { a: '😊', b: '😅', c: '😆' };
+  var opts = [].slice.call(g.querySelectorAll('.opt'));
+  var react = g.querySelector('.react'), say = g.querySelector('.say'), verdict = g.querySelector('.verdict'), trN = g.querySelector('.tr-n');
+  var tried = {};
+  try { tried = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { tried = {}; }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(tried)); } catch (e) {} }
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function count() {
+    var n = (tried.a ? 1 : 0) + (tried.b ? 1 : 0) + (tried.c ? 1 : 0);
+    trN.textContent = n + '/3';
+    g.setAttribute('data-all', n === 3 ? '1' : '0');
+    return n;
+  }
+  function choose(a) {
+    g.setAttribute('data-a', a || '0');
+    opts.forEach(function (o) { var on = o.getAttribute('data-a') === a; o.classList.toggle('sel', on); o.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+    react.textContent = a ? REACT[a] : '🍰';
+    if (a) { restart(react, 'boing'); restart(say, 'show'); restart(verdict, 'show'); }
+  }
+  count();
+  opts.forEach(function (o) {
+    o.addEventListener('click', function () {
+      var a = o.getAttribute('data-a');
+      choose(a);
+      var before = count(); tried[a] = 1; save(); var after = count();
+      if (!window.pengessoPop) return;
+      var r = o.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+      if (after === 3 && before < 3) window.pengessoPop(x, y, ['🏆', '🐧', '☕', '✨'], 20);
+      else if (a === 'c') window.pengessoPop(x, y, ['🍰', '☕', '🐧', '💛'], 16);
+    });
+  });
+  g.querySelector('.reset').addEventListener('click', function () { tried = {}; save(); choose(''); count(); });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+S5 → 使った（4枚目のカード・2文目）
+@@message
+「今日はおごるよ」には、「ありがとう！次は私がおごるね」で、持ちつ持たれつ。
+@@tone
+素材の重さ：真面目（友達とお金のやりとり）
+→ 見せ方：ポップに（オレンジとコーラル。3択クイズで、友情のロープが太くなったり細くなったりする）
+@@game_ja
+☕「今日はおごるよ」クイズ：友達ペンギンに「今日はおごるよ！」と言われる。A「うれしい！ありがとう」／B「ダメダメ、割り勘で」／C「ありがとう！次は私がおごるね」から選ぶと、友達の反応（😊😅😆）と、2羽をつなぐ「友情のロープ」の太さ（A ふつう／B 細い／C 太い）と、星（A★2／B★1／C★3）が変わる。3つぜんぶ試すと「🏆 C＞A＞B　意外！うれしそうな『ありがとう』は、割り勘より上」が出る。試した数は端末に覚える。
+@@combo
+ペンギン × コーデュロイとフェルトのぬいぐるみ × 紙のコーヒーカップ
+@@cover
+An extremely cute, chubby round penguin made of plush toy corduroy and felt, with a gentle cheerful face and a plain cream belly, holding out a realistic paper takeaway coffee cup with both flippers as if offering it to a friend. Bright simple warm orange and peach background with soft depth, cozy afternoon light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

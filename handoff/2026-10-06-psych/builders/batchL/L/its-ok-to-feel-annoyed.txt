@@ -1,0 +1,180 @@
+@@meta
+{"title": "It is OK to feel annoyed, because we are only human", "label": "OK to Feel", "seq": 410, "mood": ["lift", "think"], "tags": ["psychology", "feelings", "mindset"], "thumbAlt": "A chubby boucle wool penguin gently hugging a soft knitted heart cushion on a pastel pink background"}
+@@ja_title
+イライラしたっていい。人間だもの
+@@ja_label
+感じていい
+@@h1emoji
+💛
+@@section
+10「ネガティブ感情を否定しない」
+@@vars
+    --bg: #fff5f7; --text: #3a1e2a; --muted: #8a6a78;
+    --accent: #f0457a; --accent2: #ff9f43; --h1: #4a1630; --big: #e03a6a; --big-dark: #ffa3bd;
+    --glow1: rgba(255,159,67,.24); --glow2: rgba(240,69,122,.16); --glow3: rgba(255,214,102,.24);
+    --shadow: 0 20px 55px rgba(200,60,110,.17); --photo-bg: #ffe3ea;
+    --g1: #ff6b9a; --g2: #ff8f7a; --g3: #ffbf5a; --pop: #fff3a6; --pop-text: #5a2a00; --btn-text: #e03a6a;
+@@css
+  /* 💢 押しのけると増える気持ち → 「イライラしたっていい」でやわらかく消える */
+  .arena { position: relative; max-width: 420px; height: 230px; margin: 14px auto 0; border-radius: 26px; overflow: hidden; background: rgba(255,255,255,.22); }
+  .bub { position: absolute; width: 58px; height: 58px; margin: -29px 0 0 -29px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+    background: radial-gradient(circle at 35% 30%, #fff 0 10%, #ff5a5a 45%, #d22d4f 100%); box-shadow: 0 6px 14px rgba(120,0,40,.3);
+    font-size: 28px; line-height: 58px; text-align: center; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    animation: jitter 1.2s ease-in-out infinite alternate; transition: transform .6s ease, opacity .6s ease, background .4s ease; }
+  .bub:nth-child(2n) { animation-delay: -.6s; }
+  @keyframes jitter { 0% { translate: 0 0; } 50% { translate: 3px -4px; } 100% { translate: -3px 3px; } }
+  .bub.hit { animation: shake .35s ease; }
+  .bub.born { animation: bounce-in .4s both; }
+  .bub:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .bub.soft { background: radial-gradient(circle at 35% 30%, #fff 0 14%, #ffd1e0 50%, #ffb3cb 100%); box-shadow: 0 4px 10px rgba(120,0,40,.12); cursor: default; animation: none; }
+  .bub.away { transform: translateY(-140px) scale(.3); opacity: 0; }
+  .pen { position: absolute; right: 10px; bottom: 6px; font-size: 44px; line-height: 1; transition: transform .4s ease; }
+  .game[data-st="soft"] .pen { transform: scale(1.15); animation: hop .6s ease 2; }
+
+  .count { margin-top: 12px; font-size: 15px; font-weight: 900; }
+  .cn { display: inline-block; min-width: 1.8em; padding: 1px 8px; border-radius: 999px; background: rgba(255,255,255,.3); }
+  .cn.bump { animation: bounce-in .3s both; }
+  .msgs { min-height: 50px; margin-top: 10px; font-size: 15.5px; font-weight: 900; line-height: 1.45; }
+  .msgs > div { display: none; }
+  .game[data-st="start"] .m-start, .game[data-st="more"] .m-more, .game[data-st="full"] .m-full, .game[data-st="soft"] .m-soft { display: block; }
+  .game[data-st="full"] .m-full, .game[data-st="soft"] .m-soft { animation: bounce-in .5s both; }
+  .ok-row { margin-top: 12px; }
+  .ok-row .gbtn { width: min(360px, 100%); min-height: 60px; font-size: 18px; }
+  .game[data-st="soft"] .ok-row { display: none; }
+  .again-row { display: none; margin-top: 12px; }
+  .game[data-st="soft"] .again-row { display: block; }
+@@sents
+S1 | The more you think "Getting angry is bad," the weaker your heart gets. | 「怒るのはよくない」と思うほど、心は弱くなります。
+S2 | If your message is read with no reply and you think "Don't worry," you worry more. | 既読スルーされて「気にしちゃダメ」と思うと、よけいに気になります。
+S3 | It is like how "I must sleep now!" makes you more awake. | 「早く寝なきゃ」と思うほど、目がさえるのと同じです。
+S4 | The magic words are "It's OK to feel annoyed" and "We are only human." | 魔法の言葉は、「イライラしたっていいんだよ」「人間だもの」です。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🚫</span>
+      <span class="card-label">Don't Feel It</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📱</span>
+      <span class="card-label">No Reply</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌙</span>
+      <span class="card-label">Sleep Now</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：押しのけると増える気持ち（タップすると分裂して増える → 「イライラしたっていい」でやわらかく消える） -->
+  <section class="game" data-st="start" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Push it away, or let it be?</div>
+    <div class="game-hint">Tap the angry bubble to push the feeling away. What happens?</div>
+    <div class="arena">
+      <button class="bub" type="button" style="left:40%;top:45%">💢</button>
+      <span class="pen" aria-hidden="true">🐧</span>
+    </div>
+    <div class="count"><span class="cl">💢 Annoyed bubbles:</span> <span class="cn">1</span></div>
+    <div class="msgs">
+      <div class="m-start">👆 Tap it: "No! Don't feel it!"</div>
+      <div class="m-more">😵 Pushing it away made more!</div>
+      <div class="m-full">😵 So many! Fighting the feeling made it bigger.</div>
+      <div class="m-soft">💛 They got soft and floated away. It's OK. We are only human. (Penguins too.)</div>
+    </div>
+    <div class="ok-row"><button class="gbtn pop okbtn" type="button">💛 "It's OK to feel annoyed."</button></div>
+    <div class="again-row"><button class="gbtn ghost again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">✨</span>
+      <span class="card-label">Magic Words</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Don't Feel It ||| 感じちゃダメ？
+No Reply ||| 既読スルー
+Sleep Now ||| 早く寝なきゃ
+Magic Words ||| 魔法の言葉
+⚡ TRY IT ||| ⚡ やってみよう
+Push it away, or let it be? ||| 押しのける？それとも、そのままにする？
+Tap the angry bubble to push the feeling away. What happens? ||| イライラの玉をタップして、気持ちを押しのけてみよう。どうなるかな？
+💢 Annoyed bubbles: ||| 💢 イライラの玉：
+👆 Tap it: "No! Don't feel it!" ||| 👆 タップ：「ダメ！感じちゃダメ！」
+😵 Pushing it away made more! ||| 😵 押しのけたら、増えちゃった！
+😵 So many! Fighting the feeling made it bigger. ||| 😵 いっぱい！気持ちと戦ったら、大きくなった。
+💛 They got soft and floated away. It's OK. We are only human. (Penguins too.) ||| 💛 やわらかくなって、ふわっと消えていった。いいんだよ。人間だもの。（ペンギンも。）
+💛 "It's OK to feel annoyed." ||| 💛「イライラしたっていいんだよ」
+↺ Try again ||| ↺ もう一回
+@@js
+/* 💢 押しのけると増える気持ち：JS は class / style / 絵文字 / 数字 / data-* だけを変える。新しい玉は HTML の玉を複製するだけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var arena = g.querySelector('.arena'), first = arena.querySelector('.bub'), cn = g.querySelector('.cn');
+  var MAX = 14, timers = [];
+  function bubs() { return [].slice.call(arena.querySelectorAll('.bub')); }
+  function live() { return bubs().filter(function (b) { return !b.classList.contains('away'); }); }
+  function count() { cn.textContent = live().length; cn.classList.remove('bump'); void cn.offsetWidth; cn.classList.add('bump'); }
+  function restart(el, c) { el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  arena.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.bub') : null;
+    if (!b || b.classList.contains('soft')) return;
+    var s = g.getAttribute('data-st');
+    if (s === 'soft') return;
+    restart(b, 'hit');
+    var n = live().length;
+    var add = n >= MAX ? 0 : Math.min(2, MAX - n);
+    for (var i = 0; i < add; i++) {
+      var c = first.cloneNode(true);
+      c.className = 'bub born';
+      c.style.left = (12 + Math.random() * 64) + '%';
+      c.style.top = (18 + Math.random() * 64) + '%';
+      c.textContent = ['💢', '😤', '💢', '😣'][Math.floor(Math.random() * 4)];
+      arena.insertBefore(c, arena.querySelector('.pen'));
+    }
+    g.setAttribute('data-st', live().length >= MAX ? 'full' : 'more');
+    count();
+    if (navigator.vibrate) { try { navigator.vibrate(15); } catch (e2) {} }
+  });
+  g.querySelector('.okbtn').addEventListener('click', function () {
+    g.setAttribute('data-st', 'soft');
+    var list = live();
+    list.forEach(function (b, i) {
+      b.classList.remove('hit', 'born'); b.classList.add('soft'); b.textContent = '🫧';
+      timers.push(setTimeout(function () { b.classList.add('away'); count(); }, 500 + i * 120));
+    });
+    var r = arena.getBoundingClientRect();
+    if (window.pengessoPop) window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['💛', '🫧', '🐧', '✨'], 18);
+  });
+  g.querySelector('.again').addEventListener('click', function () {
+    timers.forEach(clearTimeout); timers = [];
+    bubs().forEach(function (b) { if (b !== first) b.parentNode.removeChild(b); });
+    first.className = 'bub'; first.textContent = '💢';
+    g.setAttribute('data-st', 'start'); count();
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+ネガティブな気持ちを否定しない。「イライラしたっていい、人間だもの」。
+@@tone
+素材の重さ：ふつう（イライラ・不安との付き合い方）
+→ 見せ方：ポップに（ピンクとオレンジ。押しのけると増える玉で、からかわずに笑える形）
+@@game_ja
+💢 押しのける？そのままにする？：画面にイライラの玉が1つ。タップして「ダメ！感じちゃダメ！」と押しのけると、玉が震えて2つずつ増えていく（最大14個で「気持ちと戦ったら、大きくなった」）。「💛 イライラしたっていいんだよ」を押すと、ぜんぶの玉がやわらかいピンクの泡になって、ふわっと1つずつ消えていく。「人間だもの。（ペンギンも。）」
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain white belly (no rings or patterns on the belly), made of soft boucle wool, smiling peacefully with relaxed eyes while gently hugging one realistic soft knitted heart-shaped cushion. Soft pastel pink background with a warm gradient and gentle depth, simple and uncluttered. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × ブークレ羊毛 × 編みもののハートのクッション

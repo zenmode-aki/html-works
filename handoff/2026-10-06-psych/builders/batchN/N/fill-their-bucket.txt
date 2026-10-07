@@ -1,0 +1,238 @@
+@@meta
+{"title": "When you fill someone's heart bucket, your bucket fills too", "label": "Heart Bucket", "seq": 426, "mood": ["lift", "learn"], "tags": ["psychology", "friends", "happiness"], "thumbAlt": "A chubby corduroy and felt plush penguin hugging a metal bucket full of clear water that is splashing over the edge"}
+@@ja_title
+人の心のバケツに水を注ぐと、自分のバケツも満たされる
+@@ja_label
+心のバケツ
+@@h1emoji
+🪣
+@@section
+27「バケツ理論（ドン・クリフトン）」
+@@vars
+    --bg: #f0fbff; --text: #19303a; --muted: #5d7782;
+    --accent: #0891b2; --accent2: #f59e0b; --h1: #0c2d3a; --big: #0e7490; --big-dark: #7fe3f5;
+    --glow1: rgba(6,182,212,.24); --glow2: rgba(250,204,21,.24); --glow3: rgba(14,165,233,.18);
+    --shadow: 0 20px 55px rgba(10,120,160,.18); --photo-bg: #d9f5fc;
+    --g1: #06b6d4; --g2: #0ea5e9; --g3: #facc15; --pop: #fde047; --pop-text: #4a3500; --btn-text: #0e7490;
+@@css
+  /* 🪣 カード1：心のバケツ（小さな絵） */
+  .mini { display: flex; justify-content: center; gap: 22px; margin-top: 14px; }
+  .mini > span { display: flex; flex-direction: column; align-items: center; gap: 4px; font-weight: 900; font-size: 13.5px; color: var(--muted); }
+  .mini .mb { position: relative; width: 54px; height: 50px; border: 4px solid #9fb7c2; border-top-width: 0; border-radius: 0 0 16px 16px; overflow: hidden; background: #fff; }
+  .mini .mb::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 62%; background: linear-gradient(#67e8f9, #0ea5e9); }
+
+  /* ⚡ バケツに水を注ごう：友だちのバケツに注ぐと、自分のバケツにも返ってくる */
+  .tanks { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 400px; margin: 18px auto 0; }
+  .tank { position: relative; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .who { font-size: 14.5px; font-weight: 900; }
+  .who .em { font-size: 24px; line-height: 1; margin-right: 2px; }
+  .bucket { position: relative; width: 112px; height: 116px; border: 6px solid rgba(255,255,255,.95); border-top-width: 0; border-radius: 6px 6px 30px 30px;
+    background: rgba(255,255,255,.18); overflow: hidden; }
+  .bucket::before { content: ""; position: absolute; left: -10px; right: -10px; top: -2px; height: 6px; border-radius: 999px; background: rgba(255,255,255,.95); }
+  .water { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: linear-gradient(#a5f3fc, #22d3ee 40%, #0284c7);
+    transition: height .6s cubic-bezier(.2,1.2,.4,1); }
+  .water::before { content: ""; position: absolute; left: -20%; right: -20%; top: -6px; height: 12px; border-radius: 50%; background: #cffafe; opacity: .9; animation: wave 2.2s ease-in-out infinite alternate; }
+  @keyframes wave { from { transform: translateX(-8px); } to { transform: translateX(8px); } }
+  .tank.full .bucket { box-shadow: 0 0 0 4px var(--pop), 0 0 24px rgba(253,224,71,.8); }
+  .tank.shake .bucket { animation: shake .4s ease; }
+  .pct { font-size: 20px; font-weight: 900; line-height: 1; }
+  .pct small { font-size: .6em; margin-left: 1px; }
+  .drop { position: absolute; left: 50%; top: 0; margin-left: -14px; font-size: 28px; line-height: 1; opacity: 0; pointer-events: none; }
+  .drop.fall { animation: fall .55s ease-in both; }
+  @keyframes fall { 0% { transform: translateY(-10px) scale(.8); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateY(70px) scale(1); opacity: 0; } }
+  .ret { position: absolute; left: 50%; top: 46%; margin-left: -18px; font-size: 26px; line-height: 1; opacity: 0; pointer-events: none; z-index: 2; }
+  .ret.fly { animation: hopover .7s ease-in-out both; }
+  @keyframes hopover { 0% { transform: translate(-60px, 0) scale(.7); opacity: 0; } 20% { opacity: 1; } 50% { transform: translate(0, -46px) scale(1.15); } 100% { transform: translate(60px, 0) scale(.8); opacity: 0; } }
+  .tanks { position: relative; }
+
+  .pours { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; max-width: 440px; margin: 18px auto 0; }
+  .pour { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-height: 76px; padding: 8px 4px; border: 0; border-radius: 20px;
+    background: #fff; color: var(--btn-text); font: inherit; font-size: 14.5px; font-weight: 900; line-height: 1.2; cursor: pointer; box-shadow: 0 5px 0 rgba(10,70,100,.3);
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: transform .08s ease, box-shadow .08s ease; }
+  .pour .pe { font-size: 26px; line-height: 1; }
+  .pour:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(10,70,100,.3); }
+  .pour:focus-visible, .mean:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .mean { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; margin-top: 10px; padding: 10px 18px; border: 2px dashed rgba(255,255,255,.7);
+    border-radius: 999px; background: rgba(0,0,0,.14); color: #fff; font: inherit; font-size: 15px; font-weight: 900; cursor: pointer;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+
+  .say { max-width: 440px; margin: 14px auto 0; min-height: 50px; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.95); color: #0c2d3a;
+    font-weight: 900; line-height: 1.4; display: flex; align-items: center; justify-content: center; }
+  .say span { display: none; }
+  .game[data-s="idle"] .m-idle, .game[data-s="give"] .m-give, .game[data-s="over"] .m-over, .game[data-s="mean"] .m-mean, .game[data-s="done"] .m-done { display: inline; }
+  .game[data-s="mean"] .say { background: #e5e7eb; color: #4b5563; }
+  .game[data-s="done"] .say { background: var(--pop); color: #4a3500; animation: bounce-in .5s both; }
+  .again-row { margin-top: 12px; }
+@@dark
+  html[data-theme="dark"] .mini .mb { background: #1b2a30; border-color: #4f6b76; }
+  html[data-theme="dark"] .pour { background: #17303a; color: #8ee8f8; }
+  html[data-theme="dark"] .say { background: #17303a; color: #e2f6fb; }
+  html[data-theme="dark"] .game[data-s="mean"] .say { background: #374151; color: #c4c9d1; }
+  html[data-theme="dark"] .game[data-s="done"] .say { background: #fde047; color: #3a2800; }
+@@sents
+S1 | Psychologist Don Clifton thought that everyone has a bucket in their heart. | 心理学者のドン・クリフトンは、「人はみんな、心にバケツを持っている」と考えました。
+S2 | Compliments, "thank you," and kindness pour water into the other person's bucket. | 褒め言葉や「ありがとう」、やさしさは、相手のバケツに水を注ぎます。
+S3 | Then that person pours water into your bucket too. | すると相手も、こちらのバケツに水を注いでくれます。
+S4 | The person who pours and the person who gets it both become full. | 注いだ人も、注がれた人も、どちらも満たされるのです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🪣</span>
+      <span class="card-label">Heart Bucket</span>
+    </div>
+    <p>{S1}</p>
+    <div class="mini" aria-hidden="true">
+      <span><span class="mb"></span>🐧</span>
+      <span><span class="mb"></span>🐧</span>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💧</span>
+      <span class="card-label">Pour Some Water</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：バケツに水を注ごう（友だちのバケツに注ぐ → 自分のバケツにも返ってくる・あふれる） -->
+  <section class="game" data-s="idle" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Fill the heart buckets</div>
+    <div class="game-hint">Pour into your friend's bucket. Then watch your own bucket!</div>
+    <div class="tanks">
+      <div class="tank t-fr">
+        <div class="who"><span class="em" aria-hidden="true">🐧</span>Friend</div>
+        <div class="bucket" aria-hidden="true"><div class="water"></div><span class="drop">💧</span></div>
+        <div class="pct"><span class="n">20</span><small>%</small></div>
+      </div>
+      <div class="tank t-me">
+        <div class="who"><span class="em" aria-hidden="true">🐧</span>You</div>
+        <div class="bucket" aria-hidden="true"><div class="water"></div><span class="drop">💧</span></div>
+        <div class="pct"><span class="n">20</span><small>%</small></div>
+      </div>
+      <span class="ret" aria-hidden="true">💧</span>
+    </div>
+    <div class="say">
+      <span class="m-idle">Tap a button below. 👇</span>
+      <span class="m-give">Your friend smiles and pours some back to you!</span>
+      <span class="m-over">Your friend's bucket is full! Now it flows into yours.</span>
+      <span class="m-mean">Oops… a mean word took water from both buckets.</span>
+      <span class="m-done">🎉 Both buckets are full! Everyone is happy.</span>
+    </div>
+    <div class="pours">
+      <button class="pour" type="button" data-a="20"><span class="pe" aria-hidden="true">💐</span>Praise</button>
+      <button class="pour" type="button" data-a="20"><span class="pe" aria-hidden="true">💌</span>Thank you</button>
+      <button class="pour" type="button" data-a="20"><span class="pe" aria-hidden="true">🍪</span>Kindness</button>
+    </div>
+    <button class="mean" type="button">🥄 Mean word</button>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Empty the buckets</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">↩️</span>
+      <span class="card-label">It Comes Back</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌊</span>
+      <span class="card-label">Both Full</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Heart Bucket ||| 心のバケツ
+Pour Some Water ||| 水を注ぐ
+It Comes Back ||| 返ってくる
+Both Full ||| どちらも満たされる
+⚡ TRY IT ||| ⚡ やってみよう
+Fill the heart buckets ||| 心のバケツを満たそう
+Pour into your friend's bucket. Then watch your own bucket! ||| 友だちのバケツに注いでね。そして、自分のバケツを見てみて！
+Friend ||| 友だち
+You ||| あなた
+Tap a button below. 👇 ||| 下のボタンを押してね。👇
+Your friend smiles and pours some back to you! ||| 友だちがにっこりして、あなたにも注ぎ返してくれた！
+Your friend's bucket is full! Now it flows into yours. ||| 友だちのバケツがいっぱい！あふれた分が、あなたのバケツへ。
+Oops… a mean word took water from both buckets. ||| あっ…意地悪な一言で、2つのバケツから水が減っちゃった。
+🎉 Both buckets are full! Everyone is happy. ||| 🎉 どちらのバケツもいっぱい！みんな幸せ。
+Praise ||| 褒める
+Thank you ||| ありがとう
+Kindness ||| やさしさ
+🥄 Mean word ||| 🥄 意地悪な一言
+↺ Empty the buckets ||| ↺ バケツを空にする
+@@js
+/* 🪣 バケツに水を注ごう：JS は data-* / class / style / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var fr = g.querySelector('.t-fr'), me = g.querySelector('.t-me'), ret = g.querySelector('.ret');
+  var a = 20, b = 20, timer = 0;
+  function restart(el, c) { el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function clamp(v) { return Math.max(0, Math.min(100, v)); }
+  function paint(t, v) {
+    t.querySelector('.water').style.height = v + '%';
+    t.querySelector('.n').textContent = String(v);
+    t.classList.toggle('full', v >= 100);
+  }
+  function draw() { paint(fr, a); paint(me, b); }
+  function finishCheck(btn) {
+    if (a >= 100 && b >= 100 && g.getAttribute('data-s') !== 'done') {
+      g.setAttribute('data-s', 'done');
+      if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+      if (window.pengessoPop) { var r = g.querySelector('.tanks').getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 3, ['💧', '🎉', '🐧', '💙', '✨'], 22); }
+      return true;
+    }
+    return false;
+  }
+  [].slice.call(g.querySelectorAll('.pour')).forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      if (g.getAttribute('data-s') === 'done') {
+        if (window.pengessoPop) { var q = btn.getBoundingClientRect(); window.pengessoPop(q.left + q.width / 2, q.top, ['💧', '💙'], 8); }
+        return;
+      }
+      clearTimeout(timer);
+      var overflow = a >= 100;
+      a = clamp(a + 20);
+      restart(fr.querySelector('.drop'), 'fall');
+      draw();
+      if (finishCheck(btn)) return;
+      g.setAttribute('data-s', overflow ? 'over' : 'give');
+      timer = setTimeout(function () {
+        b = clamp(b + (overflow ? 25 : 15));
+        restart(ret, 'fly'); restart(me.querySelector('.drop'), 'fall');
+        draw();
+        finishCheck(btn);
+      }, 420);
+      if (window.pengessoPop) { var r = btn.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top, ['💧'], 5); }
+    });
+  });
+  g.querySelector('.mean').addEventListener('click', function () {
+    clearTimeout(timer);
+    a = clamp(a - 15); b = clamp(b - 15);
+    draw(); restart(fr, 'shake'); restart(me, 'shake');
+    g.setAttribute('data-s', 'mean');
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    clearTimeout(timer); a = 20; b = 20; draw(); g.setAttribute('data-s', 'idle');
+  });
+  draw();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+人の心のバケツに水（褒め言葉・感謝・やさしさ）を注ぐと、自分のバケツも満たされる。
+@@tone
+素材の重さ：真面目（心理学の理論）
+→ 見せ方：ポップに（水色と黄色。バケツに水が増えていくのが見える）
+@@game_ja
+🪣 心のバケツを満たそう：友だちと自分の2つのバケツ（どちらも20％から）。「💐 褒める／💌 ありがとう／🍪 やさしさ」を押すと💧が友だちのバケツに落ちて＋20％。少しすると友だちが注ぎ返してくれて、💧が自分のバケツに飛んできて＋15％。友だちのバケツがいっぱいのときに注ぐと、あふれた分が自分のバケツへ（＋25％）。「🥄 意地悪な一言」は2つのバケツから−15％ずつ。2つとも100％で🎉「どちらのバケツもいっぱい！」。「バケツを空にする」で最初から。
+@@combo
+ペンギン × コーデュロイとフェルトのぬいぐるみ × 水があふれるブリキのバケツ
+@@cover
+An extremely cute, chubby round penguin made as a plush toy of soft corduroy and felt, with a gentle content face and a plain white belly, hugging a realistic galvanized metal bucket that is full of clear sparkling water gently splashing over the rim. Bright simple aqua blue and sunny yellow background with soft depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

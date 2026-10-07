@@ -1,0 +1,266 @@
+@@meta
+{"title": "You do not have to get along with everyone, just keep a little distance", "label": "Distance OK", "seq": 442, "mood": ["lift", "think"], "tags": ["psychology", "friends", "feelings"], "thumbAlt": "A crocheted amigurumi penguin happily closing a small restaurant menu at a cafe table"}
+@@ja_title
+「誰とでも仲良く」はしなくていい。少し距離をおけばいい
+@@ja_label
+距離をおいていい
+@@h1emoji
+🍽️
+@@section
+52「『人を嫌ってもいい』と割り切る」
+@@vars
+    --bg: #fff8ef; --text: #3b2a20; --muted: #8a6f5c;
+    --accent: #e2502f; --accent2: #ff9f1c; --h1: #4a2414; --big: #d9441f; --big-dark: #ffb59c;
+    --glow1: rgba(255,159,28,.28); --glow2: rgba(226,80,47,.18); --glow3: rgba(122,201,67,.20);
+    --shadow: 0 20px 55px rgba(190,80,30,.18); --photo-bg: #ffe9d6;
+    --g1: #ff7b3a; --g2: #f25546; --g3: #ffb627; --pop: #fff3b0; --pop-text: #6b3a00; --btn-text: #c23a1a;
+@@css
+  /* 🍽 今日のメニュー：苦手なものが出てくる → 「がんばって食べる」か「注文しない」か。3皿目は「合わないペンギン」 */
+  .round-row { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; font-size: 13.5px; font-weight: 900; }
+  .pips { display: inline-flex; gap: 6px; }
+  .pip { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,.35); transition: background .25s, transform .25s; }
+  .pip.on { background: #fff; transform: scale(1.15); }
+
+  .menu { position: relative; max-width: 360px; margin: 12px auto 0; padding: 16px 14px 14px; border-radius: 22px; background: #fffdf7; color: #4a2414;
+    box-shadow: 0 10px 0 rgba(120,40,10,.18), 0 16px 26px rgba(80,20,0,.16); }
+  .menu::before { content: ""; position: absolute; left: 14px; right: 14px; top: 8px; border-top: 2px dashed rgba(226,80,47,.35); }
+  .menu-k { font-size: 11.5px; font-weight: 900; letter-spacing: .16em; color: #e2502f; }
+  .dish { position: relative; width: 104px; height: 104px; margin: 8px auto 4px; display: grid; place-items: center; border-radius: 50%;
+    background: radial-gradient(circle at 50% 45%, #fff 0 52%, #ffe7cf 53% 100%); font-size: 52px; line-height: 1; transition: transform .35s ease; }
+  .dish span { display: none; }
+  .game[data-r="1"] .de1, .game[data-r="2"] .de2, .game[data-r="3"] .de3 { display: inline; }
+  .dish .nope { position: absolute; right: -6px; top: -6px; font-size: 34px; display: block; opacity: 0; transform: scale(.3) rotate(-25deg); transition: opacity .2s, transform .3s cubic-bezier(.2,1.4,.4,1); }
+  .game[data-c="b"]:not([data-r="3"]) .dish .nope { opacity: 1; transform: none; }
+  .game[data-c="b"][data-r="3"] .dish { transform: translateX(46px) scale(.86); }
+  .game[data-c="b"][data-r="3"] .dish .wave3 { opacity: 1; transform: none; }
+  .dish .wave3 { position: absolute; left: -16px; top: -4px; font-size: 26px; display: block; opacity: 0; transform: scale(.4); transition: opacity .25s .2s, transform .35s .2s; }
+  .dname { min-height: 46px; display: flex; align-items: center; justify-content: center; font-size: clamp(17px, 4.6vw, 20px); font-weight: 900; line-height: 1.3; }
+  .dname span { display: none; }
+  .game[data-r="1"] .dn1, .game[data-r="2"] .dn2, .game[data-r="3"] .dn3 { display: inline; }
+
+  .me { display: grid; grid-template-columns: 64px 1fr; gap: 10px; align-items: center; max-width: 380px; margin: 16px auto 0; text-align: left; }
+  .me-face { position: relative; width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.25); font-size: 38px; }
+  .me-face .fx { position: absolute; right: -6px; top: -8px; font-size: 24px; }
+  .game[data-c="a"] .me-face { animation: shake .45s ease; }
+  .game[data-c="b"] .me-face { animation: hop .5s ease; }
+  .say { position: relative; padding: 11px 14px; border-radius: 18px 18px 18px 6px; background: #fff; color: #3b2a20; font-weight: 900; font-size: 15.5px; line-height: 1.4; min-height: 50px; display: flex; align-items: center; }
+  .say span { display: none; }
+  .game[data-c=""] .s-wait, .game[data-c="a"]:not([data-r="3"]) .s-a, .game[data-c="b"]:not([data-r="3"]) .s-b,
+  .game[data-c="a"][data-r="3"] .s-a3, .game[data-c="b"][data-r="3"] .s-b3 { display: inline; }
+  .game[data-c="a"] .say { background: #e9eef7; color: #44506a; }
+
+  .energy { display: flex; align-items: center; gap: 10px; max-width: 360px; margin: 14px auto 0; font-size: 13.5px; font-weight: 900; }
+  .bar { flex: 1; height: 14px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 100%; border-radius: 999px; background: #c8ff7a; transition: width .5s cubic-bezier(.2,1.2,.4,1), background .3s; }
+  .bar i.low { background: #ffd0c2; }
+
+  .choices { display: grid; gap: 10px; max-width: 380px; margin: 14px auto 0; }
+  .choices .gbtn { width: 100%; }
+  .choices .gbtn span { display: none; }
+  .game:not([data-r="3"]) .ca12, .game:not([data-r="3"]) .cb12, .game[data-r="3"] .ca3, .game[data-r="3"] .cb3 { display: inline; }
+  .gbtn.ch.sel { box-shadow: 0 0 0 4px #fff, 0 6px 0 rgba(0,0,0,.16); }
+  .game[data-r="end"] .round-row, .game[data-r="end"] .menu, .game[data-r="end"] .me, .game[data-r="end"] .choices { display: none; }
+  .next-row { margin-top: 12px; display: none; }
+  .game[data-c]:not([data-c=""]):not([data-r="end"]) .next-row { display: block; }
+  .next-row span { display: none; }
+  .game:not([data-r="3"]) .nx { display: inline; }
+  .game[data-r="3"] .nx-end { display: inline; }
+
+  .end { display: none; max-width: 400px; margin: 16px auto 0; padding: 16px 14px; border-radius: 22px; background: #fff; color: #4a2414; }
+  .game[data-r="end"] .end { display: block; animation: bounce-in .5s both; }
+  .end-pair { font-size: 40px; line-height: 1; letter-spacing: .1em; }
+  .end-msg { margin-top: 8px; font-size: clamp(17px, 4.6vw, 20px); font-weight: 900; line-height: 1.4; }
+  .end-msg span { display: none; }
+  .game[data-e="full"] .em-full, .game[data-e="low"] .em-low { display: inline; }
+  .end-n { margin-top: 8px; font-size: 14px; font-weight: 900; color: #c23a1a; }
+@@dark
+  html[data-theme="dark"] .menu { background: #2c241f; color: #ffe6d4; }
+  html[data-theme="dark"] .menu-k { color: #ffb59c; }
+  html[data-theme="dark"] .dish { background: radial-gradient(circle at 50% 45%, #3a302a 0 52%, #4a3a2e 53% 100%); }
+  html[data-theme="dark"] .say { background: #2c241f; color: #ffe6d4; }
+  html[data-theme="dark"] .game[data-c="a"] .say { background: #283041; color: #d6def0; }
+  html[data-theme="dark"] .end { background: #2c241f; color: #ffe6d4; }
+  html[data-theme="dark"] .end-n { color: #ffb59c; }
+@@sents
+S1 | We learn "Get along with everyone" at school, right? | 「誰とでも仲良く」って、学校で習いますよね。
+S2 | But with food you don't like, you don't think, "I will try hard to eat it," right? | でも、苦手な料理を「食べられるように頑張ろう」とは思いませんよね。
+S3 | "I won't order it again," and that's the end. | 「もう注文しない」で、おしまいです。
+S4 | People are the same: you can just keep a little distance from people who don't match you. | 人も同じで、合わない人とは、少し距離をおけばいいんです。
+S5 | It is not "hating them"; it is just "stepping back a little." | 「嫌いになる」のではなく、「ちょっと離れる」だけです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🏫</span>
+      <span class="card-label">School Rule</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍄</span>
+      <span class="card-label">Food You Dislike</span>
+    </div>
+    <p>{S2} {S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：今日のメニュー（3皿。苦手なものに「がんばって食べる」か「注文しない」か） -->
+  <section class="game" data-r="1" data-c="" data-e="full" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Today's menu 🍽️</div>
+    <div class="game-hint">Something you don't like is coming. What will you do?</div>
+    <div class="round-row"><span class="rl">🍴 Dish</span><span class="pips" aria-hidden="true"><i class="pip on"></i><i class="pip"></i><i class="pip"></i></span></div>
+    <div class="menu">
+      <div class="menu-k">MENU</div>
+      <div class="dish" aria-hidden="true"><span class="de1">🌶️</span><span class="de2">🍄</span><span class="de3">🐧</span><b class="nope">🚫</b><b class="wave3">👋</b></div>
+      <div class="dname">
+        <span class="dn1">Super spicy curry</span>
+        <span class="dn2">Mushroom soup (lots of mushrooms)</span>
+        <span class="dn3">A penguin you just don't click with</span>
+      </div>
+    </div>
+    <div class="me">
+      <div class="me-face" aria-hidden="true">🐧<b class="fx">❔</b></div>
+      <div class="say">
+        <span class="s-wait">Hmm… 🤔</span>
+        <span class="s-a">I must eat it… I must like it… 💦</span>
+        <span class="s-b">Phew. I just won't order it. 😌</span>
+        <span class="s-a3">I must be best friends… I must… 💦</span>
+        <span class="s-b3">"Hi!" and a little distance. That's enough. 😌</span>
+      </div>
+    </div>
+    <div class="energy"><span class="el">🔋 Energy</span><span class="bar" aria-hidden="true"><i></i></span><span class="en-n">100</span><span class="pc">%</span></div>
+    <div class="choices">
+      <button class="gbtn ch" type="button" data-c="a"><span class="ca12">😣 Eat it anyway</span><span class="ca3">😣 Try hard to be best friends</span></button>
+      <button class="gbtn ch pop" type="button" data-c="b"><span class="cb12">😌 Just don't order it</span><span class="cb3">😌 Keep a little distance</span></button>
+    </div>
+    <div class="next-row"><button class="gbtn ghost go-next" type="button"><span class="nx">Next dish ▶</span><span class="nx-end">See the result ▶</span></button></div>
+    <div class="end">
+      <div class="end-pair" aria-hidden="true">🐧 ↔ 🐧</div>
+      <div class="end-msg">
+        <span class="em-full">😌 Full energy! Not hate, just a little distance. You can still say "Hi!"</span>
+        <span class="em-low">😮‍💨 That was tiring… You don't have to force it. A little distance is OK.</span>
+      </div>
+      <div class="end-n"><span class="el2">🔋 Energy left:</span> <span class="en-n">100</span><span class="pc">%</span></div>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐧</span>
+      <span class="card-label">Same With People</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">↔️</span>
+      <span class="card-label">Not Hate</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+School Rule ||| 学校のルール
+Food You Dislike ||| 苦手な料理
+Same With People ||| 人も同じ
+Not Hate ||| 嫌いじゃない
+⚡ TRY IT ||| ⚡ やってみよう
+Today's menu 🍽️ ||| 今日のメニュー 🍽️
+Something you don't like is coming. What will you do? ||| 苦手なものが出てきます。どうする？
+🍴 Dish ||| 🍴 お皿
+MENU ||| メニュー
+Super spicy curry ||| 激辛カレー
+Mushroom soup (lots of mushrooms) ||| きのこたっぷりスープ
+A penguin you just don't click with ||| なんとなく合わないペンギン
+Hmm… 🤔 ||| うーん… 🤔
+I must eat it… I must like it… 💦 ||| 食べなきゃ…好きにならなきゃ… 💦
+Phew. I just won't order it. 😌 ||| ふう。注文しなければいいんだ 😌
+I must be best friends… I must… 💦 ||| 親友にならなきゃ…ならなきゃ… 💦
+"Hi!" and a little distance. That's enough. 😌 ||| 「こんにちは！」と、ちょっとの距離。それで十分 😌
+🔋 Energy ||| 🔋 元気
+% ||| ％
+😣 Eat it anyway ||| 😣 がんばって食べる
+😣 Try hard to be best friends ||| 😣 がんばって親友になる
+😌 Just don't order it ||| 😌 注文しない
+😌 Keep a little distance ||| 😌 少し距離をおく
+Next dish ▶ ||| 次のお皿 ▶
+See the result ▶ ||| 結果を見る ▶
+😌 Full energy! Not hate, just a little distance. You can still say "Hi!" ||| 😌 元気まんたん！嫌いになるのではなく、少し離れるだけ。「こんにちは！」は言えます。
+😮‍💨 That was tiring… You don't have to force it. A little distance is OK. ||| 😮‍💨 つかれた…。無理しなくていいんです。少し離れて大丈夫。
+🔋 Energy left: ||| 🔋 残りの元気：
+↺ Try again ||| ↺ もう一回
+@@js
+/* 🍽 今日のメニュー：JS は data-r / data-c / data-e / class / 絵文字 / 数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var chs = [].slice.call(g.querySelectorAll('.ch'));
+  var pips = [].slice.call(g.querySelectorAll('.pip'));
+  var bar = g.querySelector('.bar i'), nums = [].slice.call(g.querySelectorAll('.en-n'));
+  var fx = g.querySelector('.fx'), face = g.querySelector('.me-face');
+  var r = 1, energy = 100, paid = {};
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function drawEnergy() {
+    bar.style.width = Math.max(4, energy) + '%';
+    bar.classList.toggle('low', energy < 60);
+    nums.forEach(function (n) { n.textContent = String(energy); });
+  }
+  function setRound(n) {
+    r = n;
+    g.setAttribute('data-r', String(n)); g.setAttribute('data-c', '');
+    pips.forEach(function (p, i) { p.classList.toggle('on', i < n); });
+    chs.forEach(function (b) { b.classList.remove('sel'); });
+    fx.textContent = '❔';
+  }
+  chs.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var c = b.getAttribute('data-c');
+      g.setAttribute('data-c', '');
+      void g.offsetWidth;            /* 同じ答えを2回押しても、ゆれ・ジャンプがもう一度出るように */
+      g.setAttribute('data-c', c);
+      chs.forEach(function (x) { x.classList.toggle('sel', x === b); });
+      if (c === 'a') {
+        fx.textContent = '💦';
+        if (!paid[r]) { paid[r] = 1; energy = Math.max(0, energy - 30); drawEnergy(); }
+        if (navigator.vibrate) { try { navigator.vibrate([20, 40, 20]); } catch (e) {} }
+      } else {
+        fx.textContent = '😌';
+        if (window.pengessoPop) {
+          var k = b.getBoundingClientRect();
+          window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, r === 3 ? ['👋', '🐧', '✨'] : ['😌', '🍽️', '✨'], 10);
+        }
+      }
+    });
+  });
+  g.querySelector('.go-next').addEventListener('click', function () {
+    if (r < 3) { setRound(r + 1); return; }
+    g.setAttribute('data-e', energy === 100 ? 'full' : 'low');
+    g.setAttribute('data-r', 'end');
+    if (energy === 100 && window.pengessoPop) {
+      var k = g.querySelector('.end').getBoundingClientRect();
+      window.pengessoPop(k.left + k.width / 2, k.top + 30, ['🐧', '💛', '✨', '🍽️'], 18);
+    }
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    energy = 100; paid = {}; drawEnergy(); setRound(1); g.setAttribute('data-e', 'full');
+  });
+  drawEnergy();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（2枚目のカード）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード・.big）
+@@message
+「誰とでも仲良く」は無理しなくていい。合わない料理は注文しなければいいのと同じで、人も少し距離をおけばいい。
+@@tone
+素材の重さ：真面目（人間関係の悩み）
+→ 見せ方：ポップに（トマトの赤とからし色のレストラン。メニューの絵で遊べる）
+@@game_ja
+🍽 今日のメニュー：苦手なものが3皿出てくる（激辛カレー → きのこたっぷりスープ → なんとなく合わないペンギン）。「😣 がんばって食べる／親友になる」を押すと、ペンギンが汗をかいてゆれて、🔋元気が30％へる。「😌 注文しない／少し距離をおく」を押すと、お皿に🚫がつく（3皿目は相手のペンギンが少し右に離れて👋）。3皿のあと、元気が100％なら「嫌いになるのではなく、少し離れるだけ」の結果と🎉、へっていたら「無理しなくていい」の結果。「もう一回」で最初から。
+@@combo
+ペンギン × かぎ針編みのあみぐるみ × レストランのメニュー
+@@cover
+An extremely cute, chubby round penguin made of crocheted amigurumi yarn, with a gentle relaxed face and a plain white belly, sitting at a small cafe table and happily closing a realistic leather-bound restaurant menu with both flippers, looking relieved. Bright simple warm tomato-orange and cream background with soft depth, cozy afternoon light. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

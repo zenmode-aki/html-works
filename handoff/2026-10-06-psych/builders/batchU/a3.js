@@ -1,0 +1,1 @@
+var n=0; var iv=setInterval(function(){ if(document.querySelector('.game').getAttribute('data-fit')==='3'||n>8){clearInterval(iv); __log('st',__st()); __log('tn',document.querySelector('.tn').textContent); return;} n++; __tap('.trybtn'); }, 500);

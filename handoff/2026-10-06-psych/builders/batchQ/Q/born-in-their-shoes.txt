@@ -1,0 +1,211 @@
+@@meta
+{"title": "With the same life, I would be that person, so anger gets smaller", "label": "Same Life", "seq": 452, "mood": ["lift", "think"], "tags": ["psychology", "feelings", "mindset"], "thumbAlt": "A chubby boucle wool penguin gently looking down at a pair of small worn red sneakers"}
+@@ja_title
+同じ人生なら、私もあの人だった。そう思うと怒りが小さくなる
+@@ja_label
+同じ人生なら
+@@h1emoji
+👟
+@@section
+64「怒りを減らす考え方（人格はたまたまの産物）」
+@@vars
+    --bg: #effaf7; --text: #20363a; --muted: #5f7f80;
+    --accent: #0e9384; --accent2: #ff8a65; --h1: #12403d; --big: #0b7f72; --big-dark: #7fe3d3;
+    --glow1: rgba(20,184,166,.22); --glow2: rgba(255,138,101,.20); --glow3: rgba(139,124,246,.16);
+    --shadow: 0 20px 55px rgba(14,120,110,.18); --photo-bg: #d9f5ef;
+    --g1: #0fb3a0; --g2: #2f9fd8; --g3: #7b6cf0; --pop: #ffe066; --pop-text: #5a3d00; --btn-text: #0b6f64;
+@@css
+  /* 🧬 性格のレシピ（3枚目のカード） */
+  .mix { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; margin-top: 14px; }
+  .mix .chip { padding: 8px 12px; border-radius: 999px; background: #e3f7f3; color: #0b6f64; font-weight: 900; font-size: 15px; }
+  .mix .op { font-weight: 900; color: var(--muted); font-size: 18px; }
+  .mix .res { background: #fff1c2; color: #6b4b00; }
+
+  /* 🧬 人生いれかえマシン：3つの部品を「私」に入れると、あの人と同じ性格になる → 怒りメーターが下がる */
+  .pair { display: grid; grid-template-columns: 1fr 40px 1fr; align-items: center; gap: 6px; max-width: 400px; margin: 16px auto 4px; }
+  .who { padding: 12px 6px 10px; border-radius: 22px; background: rgba(255,255,255,.18); }
+  .pg { position: relative; width: 70px; height: 70px; margin: 0 auto; display: grid; place-items: center; border-radius: 50%;
+    background: rgba(255,255,255,.3); font-size: 42px; line-height: 1; }
+  .mad { position: absolute; right: -6px; top: -8px; font-size: 26px; line-height: 1; transition: transform .45s cubic-bezier(.2,1.4,.4,1); }
+  .me .mad { transform: scale(0); }
+  .game[data-n="1"] .me .mad { transform: scale(.45); }
+  .game[data-n="2"] .me .mad { transform: scale(.75); }
+  .game[data-n="3"] .me .mad { transform: scale(1); }
+  .tag { margin-top: 6px; font-size: 15px; font-weight: 900; }
+  .slots { display: flex; justify-content: center; gap: 4px; margin-top: 8px; }
+  .sl { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 10px; background: rgba(255,255,255,.3); font-size: 17px; line-height: 1; }
+  .me .sl { background: rgba(0,0,0,.12); }
+  .me .sl.fill { background: rgba(255,255,255,.4); animation: bounce-in .45s both; }
+  .eq { font-size: 34px; font-weight: 900; line-height: 1; }
+  .eq-eq { display: none; }
+  .game[data-n="3"] .eq-ne { display: none; }
+  .game[data-n="3"] .eq-eq { display: inline-block; animation: bounce-in .5s both; }
+  .game.buzz .me .pg { animation: wiggle .4s ease; }
+  .game[data-n="3"] .who { animation: hop .6s ease both; }
+  .btns { display: grid; gap: 10px; max-width: 360px; margin: 14px auto 0; }
+  .part.done, .part.done[disabled] { opacity: 1; background: var(--pop); color: var(--pop-text); }
+  .anger { max-width: 360px; margin: 18px auto 0; text-align: left; }
+  .anger-top { font-size: 15px; font-weight: 900; margin-bottom: 6px; }
+  .anger-top span { display: none; }
+  .game:not([data-n="3"]) .al-mad, .game[data-n="3"] .al-calm { display: inline; }
+  .bar { height: 18px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 100%; border-radius: 999px; background: #ff5a5a;
+    transition: width .6s cubic-bezier(.2,1.2,.4,1), background-color .6s ease; }
+  .game[data-n="1"] .bar i { width: 72%; background: #ff7a50; }
+  .game[data-n="2"] .bar i { width: 44%; background: #ffb340; }
+  .game[data-n="3"] .bar i { width: 10%; background: #b8f5d0; }
+  .msgs { margin-top: 14px; min-height: 54px; font-size: 16.5px; font-weight: 900; line-height: 1.45; }
+  .msgs .m { display: none; }
+  .game[data-n="0"] .m0, .game[data-n="1"] .m1, .game[data-n="2"] .m2, .game[data-n="3"] .m3 { display: block; }
+  .m3 { padding: 12px 14px; border-radius: 18px; background: #fff; color: #12403d; animation: bounce-in .5s both; }
+  .game:not([data-n="3"]) .again-row { display: none; }
+@@dark
+  html[data-theme="dark"] .mix .chip { background: #1d3b38; color: #9ff0e2; }
+  html[data-theme="dark"] .mix .res { background: #4a3c12; color: #ffe39a; }
+  html[data-theme="dark"] .m3 { background: #f4f0fa; color: #12403d; }
+@@sents
+S1 | When someone makes me angry, I try to think like this. | 誰かにイラッとしたら、こう考えてみます。
+S2 | "If I had the same genes and grew up in the same home, I would be that person too." | 「もし同じ遺伝子で、同じ家で育っていたら、私もあの人になっていた」。
+S3 | This is because our character comes from chance, and we cannot choose it. | 性格は、自分では選べない「たまたま」でできているからです。
+S4 | When I think this way, my anger slowly changes into "Maybe that person had a hard time too." | そう思うと、怒りが「あの人も大変だったのかもね」に少しずつ変わっていきます。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">😤</span>
+      <span class="card-label">Try This</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧬</span>
+      <span class="card-label">Same Start</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎲</span>
+      <span class="card-label">By Chance</span>
+    </div>
+    <p>{S3}</p>
+    <div class="mix" aria-hidden="true">
+      <span class="chip">🧬 Genes</span><span class="op">+</span><span class="chip">🏠 Home</span><span class="op">+</span><span class="chip">🎒 Life</span><span class="op">=</span><span class="chip res">🐧 Character</span>
+    </div>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：人生いれかえマシン -->
+  <section class="game" data-n="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">The life swap machine</div>
+    <div class="pair">
+      <div class="who them">
+        <div class="pg" aria-hidden="true">🐧<span class="mad">💢</span></div>
+        <div class="tag">That person</div>
+        <div class="slots" aria-hidden="true"><span class="sl">🧬</span><span class="sl">🏠</span><span class="sl">🎒</span></div>
+      </div>
+      <div class="eq" aria-hidden="true"><span class="eq-ne">≠</span><span class="eq-eq">=</span></div>
+      <div class="who me">
+        <div class="pg" aria-hidden="true">🐧<span class="mad">💢</span></div>
+        <div class="tag">Me</div>
+        <div class="slots" aria-hidden="true"><span class="sl">❔</span><span class="sl">❔</span><span class="sl">❔</span></div>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="gbtn part" data-i="0" type="button">🧬 Same genes</button>
+      <button class="gbtn part" data-i="1" type="button">🏠 Same home</button>
+      <button class="gbtn part" data-i="2" type="button">🎒 Same life story</button>
+    </div>
+    <div class="anger">
+      <div class="anger-top"><span class="al-mad">😠 My anger at that person</span><span class="al-calm">🍵 My anger got small</span></div>
+      <div class="bar" aria-hidden="true"><i></i></div>
+    </div>
+    <div class="msgs">
+      <div class="m m0">Tap the 3 buttons. Give me that person's life.</div>
+      <div class="m m1">Hmm… something is changing.</div>
+      <div class="m m2">Almost the same…</div>
+      <div class="m m3">🍵 Same character! Maybe life was hard for that person too.</div>
+    </div>
+    <div class="again-row"><button class="gbtn ghost again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍵</span>
+      <span class="card-label">Anger Melts</span>
+    </div>
+    <p class="big">{S4}</p>
+  </section>
+@@ui
+Try This ||| 考え方
+Same Start ||| 同じスタート
+By Chance ||| たまたま
+Anger Melts ||| 怒りがとける
+🧬 Genes ||| 🧬 遺伝子
+🏠 Home ||| 🏠 家
+🎒 Life ||| 🎒 人生
+🐧 Character ||| 🐧 性格
+⚡ TRY IT ||| ⚡ やってみよう
+The life swap machine ||| 人生いれかえマシン
+That person ||| あの人
+Me ||| 私
+🧬 Same genes ||| 🧬 同じ遺伝子
+🏠 Same home ||| 🏠 同じ家
+🎒 Same life story ||| 🎒 同じ人生
+😠 My anger at that person ||| 😠 あの人への怒り
+🍵 My anger got small ||| 🍵 怒りが小さくなった
+Tap the 3 buttons. Give me that person's life. ||| 3つのボタンを押して、あの人の人生を私に入れてみよう。
+Hmm… something is changing. ||| うーん…何かが変わってきた。
+Almost the same… ||| ほとんど同じ…
+🍵 Same character! Maybe life was hard for that person too. ||| 🍵 同じ性格になった！あの人も、大変だったのかも。
+↺ Try again ||| ↺ もう一回
+@@js
+/* 🧬 人生いれかえマシン：JS は data-n・class・絵文字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var parts = [].slice.call(g.querySelectorAll('.part'));
+  var slots = g.querySelectorAll('.me .sl');
+  var icons = ['🧬', '🏠', '🎒'];
+  var n = 0;
+  function buzz() { g.classList.remove('buzz'); void g.offsetWidth; g.classList.add('buzz'); }
+  parts.forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (b.disabled) return;
+      var i = +b.getAttribute('data-i');
+      b.disabled = true; b.classList.add('done');
+      slots[i].textContent = icons[i]; slots[i].classList.add('fill');
+      n += 1; g.setAttribute('data-n', String(n)); buzz();
+      if (n === 3) {
+        if (window.pengessoPop) {
+          var r = g.querySelector('.eq').getBoundingClientRect();
+          window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🍵', '🐧', '✨', '🧬'], 16);
+        }
+        if (navigator.vibrate) { try { navigator.vibrate(25); } catch (e) {} }
+      }
+    });
+  });
+  g.querySelector('.again').addEventListener('click', function () {
+    n = 0; g.setAttribute('data-n', '0'); g.classList.remove('buzz');
+    parts.forEach(function (b) { b.disabled = false; b.classList.remove('done'); });
+    [].forEach.call(slots, function (s) { s.textContent = '❔'; s.classList.remove('fill'); });
+  });
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+@@message
+同じ遺伝子と環境なら、私もあの人になっていた。そう思うと、怒りが「大変だったのかも」に変わる。
+@@tone
+素材の重さ：真面目（怒りとのつきあい方）
+→ 見せ方：ポップに（ミントと青紫。人生いれかえマシンで遊べる）
+※元のメモの「精神レベルが低い相手には腹が立たない（幼児のおもちゃの取り合い）」は、相手を下に見る言い方になりやすいので使っていない（憲法 第2条）。
+@@game_ja
+🧬 人生いれかえマシン：「あの人」（💢）と「私」が並んでいる。「同じ遺伝子」「同じ家」「同じ人生」の3つのボタンを押すたびに、私の空っぽの枠に部品が入り、私にも💢が少しずつ出てくる。3つそろうと「≠」が「＝」になって同じ性格に。同時に「あの人への怒り」メーターが赤から緑へ下がり、「🍵 あの人も、大変だったのかも」。もう一回できる。
+@@cover
+An extremely cute, chubby round penguin made of soft boucle wool with a gentle face and a plain belly, standing next to a pair of small, realistic, well-worn red canvas sneakers and looking down at them kindly with its head a little tilted. Bright mint-green background with soft depth and a gentle warm light from one side. Simple, calm, no clutter. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × ブークレウール × 履き古したスニーカー（その人の立場に立つ）

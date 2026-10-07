@@ -1,0 +1,234 @@
+@@meta
+{"title": "Nerves and anger are just your brain barking like a dog", "label": "Barking Brain", "seq": 408, "mood": ["lift", "laugh"], "tags": ["psychology", "feelings", "mindset"], "thumbAlt": "A chubby hand-embroidered felt penguin calmly speaking into a small vintage microphone in a green park"}
+@@ja_title
+緊張も怒りも、脳が犬みたいに吠えているだけ
+@@ja_label
+吠える脳
+@@h1emoji
+🐕
+@@section
+9「自分は自分、脳は脳」
+@@vars
+    --bg: #f5fbef; --text: #1d3322; --muted: #6b8070;
+    --accent: #2e9e4f; --accent2: #ffb02e; --h1: #183d23; --big: #23853f; --big-dark: #9be3b0;
+    --glow1: rgba(255,176,46,.26); --glow2: rgba(46,158,79,.18); --glow3: rgba(140,210,90,.22);
+    --shadow: 0 20px 55px rgba(40,120,60,.16); --photo-bg: #e4f5dc;
+    --g1: #8bd34f; --g2: #3fae5a; --g3: #2a8f86; --pop: #fff1a8; --pop-text: #4a3200; --btn-text: #23853f;
+@@css
+  .card p + p { margin-top: 10px; }
+
+  /* 🐕 脳は小さな犬：吠え返す？ それとも実況する？ */
+  .park { display: grid; grid-template-columns: 1fr 1.4fr; align-items: end; gap: 10px; max-width: 420px; margin: 14px auto 0; padding: 14px 10px 12px;
+    border-radius: 26px; background: rgba(255,255,255,.2); }
+  .who { text-align: center; }
+  .me { font-size: 56px; line-height: 1; transition: transform .3s ease; }
+  .game[data-mood="back"] .me { animation: shake .4s ease; }
+  .tag { margin-top: 4px; font-size: 13px; font-weight: 900; }
+  .bark { position: relative; min-height: 54px; margin: 0 auto 8px; padding: 8px 10px; border-radius: 16px 16px 16px 4px; background: #fff; color: #1d3322;
+    font-size: 14.5px; font-weight: 900; line-height: 1.3; display: flex; align-items: center; justify-content: center; }
+  .bark span { display: none; }
+  .game[data-b="0"] .b0, .game[data-b="1"] .b1, .game[data-b="2"] .b2, .game[data-b="3"] .b3, .game[data-b="4"] .b4, .game[data-b="5"] .b5 { display: inline; }
+  .bark.new { animation: bounce-in .3s both; }
+  .game[data-b="1"] .bark, .game[data-b="2"] .bark, .game[data-b="3"] .bark, .game[data-b="4"] .bark { background: #ffe9a8; }
+  .dog { display: inline-block; font-size: 60px; line-height: 1; transform: scale(var(--ds, 1)); transform-origin: 50% 100%; transition: transform .3s ease; }
+  .dog.yap { animation: yap .35s ease; }
+  @keyframes yap { 30% { translate: 0 -10px; } 60% { translate: 0 0; } }
+  .game[data-st="win"] .dog { animation: none; }
+
+  .noise, .calm { display: flex; align-items: center; justify-content: center; gap: 8px; max-width: 420px; margin: 12px auto 0; font-size: 14px; font-weight: 900; }
+  .nbar { flex: 1; max-width: 220px; height: 14px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .nbar i { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #fff1a8, #ff7a5c); transition: width .3s ease; }
+  .paws { display: inline-flex; gap: 4px; }
+  .paws i { font-style: normal; font-size: 20px; line-height: 1; filter: grayscale(1); opacity: .35; }
+  .paws i.on { filter: none; opacity: 1; animation: bounce-in .35s both; }
+
+  .ctrls { display: grid; grid-template-columns: 1fr; gap: 10px; max-width: 420px; margin: 14px auto 0; }
+  .ctrls .gbtn { width: 100%; }
+  .game[data-st="idle"] .ctrls, .game[data-st="win"] .ctrls, .game[data-st="lose"] .ctrls { display: none; }
+  .game[data-st="wait"] .ctrls .gbtn { opacity: .55; }
+  .start-row { margin-top: 14px; }
+  .start-row .s2 { display: none; }
+  .game[data-st="bark"] .start-row, .game[data-st="wait"] .start-row { display: none; }
+  .game[data-st="win"] .start-row .s1, .game[data-st="lose"] .start-row .s1 { display: none; }
+  .game[data-st="win"] .start-row .s2, .game[data-st="lose"] .start-row .s2 { display: inline; }
+  .msgs { min-height: 44px; margin-top: 12px; font-size: 15.5px; font-weight: 900; line-height: 1.45; }
+  .msgs > div { display: none; }
+  .game[data-st="idle"] .m-idle, .game[data-mood="back"]:not([data-st="lose"]):not([data-st="win"]) .m-back,
+  .game[data-mood="say"]:not([data-st="lose"]):not([data-st="win"]) .m-say, .game[data-st="win"] .m-win, .game[data-st="lose"] .m-lose { display: block; }
+  .game[data-st="win"] .m-win, .game[data-st="lose"] .m-lose { animation: bounce-in .5s both; }
+  .game[data-st="bark"][data-mood=""] .m-first { display: block; }
+@@dark
+  html[data-theme="dark"] .bark { background: #233328; color: #d6f2de; }
+  html[data-theme="dark"] .game[data-b="1"] .bark, html[data-theme="dark"] .game[data-b="2"] .bark,
+  html[data-theme="dark"] .game[data-b="3"] .bark, html[data-theme="dark"] .game[data-b="4"] .bark { background: #4a3c12; color: #ffe9a8; }
+@@sents
+S1 | Nerves and worries are not things you wanted. | 緊張も不安も、自分で望んだものではありません。
+S2 | Your brain started them on its own. | 脳が、勝手に始めたことです。
+S3 | When a dog barks on a walk, no one gets angry along with it, right? | 散歩中に犬がワンワン吠えても、一緒になって怒る人はいませんよね。
+S4 | When you get annoyed, say it like a sports announcer: "Oh, my brain is getting angry!" | イラっとしたら、「あっ、脳に怒りが生まれたぞ」と実況してみます。
+S5 | You can just watch it and think, "What a silly brain." | 「困った脳だなあ」と、ただ見ていればいいんです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🧠</span>
+      <span class="card-label">Not Your Choice</span>
+    </div>
+    <p>{S1}</p>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐕</span>
+      <span class="card-label">Barking Dog</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🎙️</span>
+      <span class="card-label">Like an Announcer</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：脳は小さな犬（吠え返すとうるさくなる・実況すると落ち着いて眠る） -->
+  <section class="game" data-st="idle" data-b="0" data-mood="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Your brain is a little dog</div>
+    <div class="game-hint">The dog barks alarms at you. Bark back? Or calmly report it like an announcer?</div>
+    <div class="park">
+      <div class="who"><div class="me" aria-hidden="true">🐧</div><div class="tag">You</div></div>
+      <div class="who">
+        <div class="bark">
+          <span class="b0">💤 Zzz…</span>
+          <span class="b1">WOOF! Danger! Danger!</span>
+          <span class="b2">WOOF! They are angry at you!</span>
+          <span class="b3">WOOF! You will fail!</span>
+          <span class="b4">WOOF! Remember that mistake?</span>
+          <span class="b5">… (sitting quietly)</span>
+        </div>
+        <div class="dog" aria-hidden="true">🐕</div>
+        <div class="tag">Your brain</div>
+      </div>
+    </div>
+    <div class="noise"><span class="nl">🔊 Noise</span><div class="nbar" aria-hidden="true"><i></i></div></div>
+    <div class="calm"><span class="cl">🎙️ Calm reports</span><span class="paws" aria-hidden="true"><i>🐾</i><i>🐾</i><i>🐾</i></span></div>
+    <div class="ctrls">
+      <button class="gbtn back" type="button">😠 Bark back!</button>
+      <button class="gbtn pop say" type="button">🎙️ "Oh, my brain is barking."</button>
+    </div>
+    <div class="start-row"><button class="gbtn pop start" type="button"><span class="s1">▶ Start the walk</span><span class="s2">↺ Walk again</span></button></div>
+    <div class="msgs">
+      <div class="m-idle">The dog is sleeping… for now.</div>
+      <div class="m-first">Here it comes! What will you do?</div>
+      <div class="m-back">😠 WOOF WOOF! Now you are both barking. Louder!</div>
+      <div class="m-say">🎙️ You just watched it. The dog looks at you and calms down a little.</div>
+      <div class="m-win">💤 The dog sat down and fell asleep. You only watched it.</div>
+      <div class="m-lose">🔊 So loud! Barking back made it bigger. Try reporting instead.</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍵</span>
+      <span class="card-label">Just Watch</span>
+    </div>
+    <p class="big">{S5}</p>
+  </section>
+@@ui
+Not Your Choice ||| 望んでいない
+Barking Dog ||| 吠える犬
+Like an Announcer ||| 実況する
+Just Watch ||| ただ見る
+⚡ TRY IT ||| ⚡ やってみよう
+Your brain is a little dog ||| 脳は、小さな犬
+The dog barks alarms at you. Bark back? Or calmly report it like an announcer? ||| 犬が、あなたに向かって警報を吠えます。吠え返す？それとも、アナウンサーみたいに落ち着いて実況する？
+You ||| あなた
+Your brain ||| あなたの脳
+💤 Zzz… ||| 💤 すやすや…
+WOOF! Danger! Danger! ||| ワン！危ない！危ない！
+WOOF! They are angry at you! ||| ワン！あの人、怒ってるよ！
+WOOF! You will fail! ||| ワン！どうせ失敗するよ！
+WOOF! Remember that mistake? ||| ワン！あの失敗、覚えてる？
+… (sitting quietly) ||| …（おとなしくおすわり）
+🔊 Noise ||| 🔊 うるささ
+🎙️ Calm reports ||| 🎙️ 落ち着いた実況
+😠 Bark back! ||| 😠 吠え返す！
+🎙️ "Oh, my brain is barking." ||| 🎙️「あっ、脳が吠えてるぞ」
+▶ Start the walk ||| ▶ 散歩スタート
+↺ Walk again ||| ↺ もう一回散歩
+The dog is sleeping… for now. ||| 犬は寝ています…今のところは。
+Here it comes! What will you do? ||| 来た！どうする？
+😠 WOOF WOOF! Now you are both barking. Louder! ||| 😠 ワンワン！2人とも吠えている。もっとうるさくなった！
+🎙️ You just watched it. The dog looks at you and calms down a little. ||| 🎙️ ただ見ていただけ。犬はこちらを見て、少し落ち着きました。
+💤 The dog sat down and fell asleep. You only watched it. ||| 💤 犬はおすわりして、眠ってしまいました。あなたは見ていただけ。
+🔊 So loud! Barking back made it bigger. Try reporting instead. ||| 🔊 うるさすぎ！吠え返したら大きくなった。今度は実況してみて。
+@@js
+/* 🐕 脳は小さな犬：JS は data-* / class / style / 絵文字 / 数字だけを変える。文字は上の HTML */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var dog = g.querySelector('.dog'), bark = g.querySelector('.bark'), nbar = g.querySelector('.nbar i'),
+      paws = [].slice.call(g.querySelectorAll('.paws i'));
+  var noise = 2, calm = 0, lastB = 0, timer = 0;
+  function st(s) { g.setAttribute('data-st', s); }
+  function paint() {
+    nbar.style.width = (noise / 6 * 100) + '%';
+    paws.forEach(function (p, i) { p.classList.toggle('on', i < calm); });
+    dog.style.setProperty('--ds', (0.85 + noise * 0.09).toFixed(2));
+  }
+  function restart(el, c) { el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function nextBark() {
+    var b; do { b = 1 + Math.floor(Math.random() * 4); } while (b === lastB);
+    lastB = b;
+    g.setAttribute('data-b', b); restart(bark, 'new'); restart(dog, 'yap');
+    dog.textContent = '🐕';
+    st('bark');
+  }
+  function later(fn, ms) { clearTimeout(timer); timer = setTimeout(fn, ms); }
+  g.querySelector('.start').addEventListener('click', function () {
+    noise = 2; calm = 0; g.setAttribute('data-mood', ''); paint();
+    nextBark();
+  });
+  g.querySelector('.back').addEventListener('click', function () {
+    if (g.getAttribute('data-st') !== 'bark') return;
+    noise = Math.min(6, noise + 2); calm = 0;
+    g.setAttribute('data-mood', 'back'); paint();
+    restart(dog, 'yap');
+    if (navigator.vibrate) { try { navigator.vibrate([20, 40, 20]); } catch (e) {} }
+    if (noise >= 6) { st('lose'); return; }
+    st('wait'); later(nextBark, 900);
+  });
+  g.querySelector('.say').addEventListener('click', function () {
+    if (g.getAttribute('data-st') !== 'bark') return;
+    noise = Math.max(0, noise - 1); calm++;
+    g.setAttribute('data-mood', 'say'); paint();
+    if (calm >= 3) {
+      g.setAttribute('data-b', '0'); dog.textContent = '🐶'; noise = 0; paint(); st('win');
+      var r = dog.getBoundingClientRect();
+      if (window.pengessoPop) window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['💤', '🐾', '🐧', '✨'], 18);
+      return;
+    }
+    g.setAttribute('data-b', '5'); restart(bark, 'new');
+    st('wait'); later(nextBark, 1300);
+  });
+  paint();
+})();
+@@map
+S1 → 使った（1枚目のカード・1文目）
+S2 → 使った（1枚目のカード・2文目）
+S3 → 使った（2枚目のカード）
+S4 → 使った（3枚目のカード）
+S5 → 使った（4枚目のカード・.big）
+@@message
+緊張や怒りは、脳が勝手に始めたこと。「あ、脳が怒ってるぞ」と実況して、ただ見る。
+@@tone
+素材の重さ：ふつう（イライラ・緊張との付き合い方）
+→ 見せ方：ポップに（公園の緑。脳＝小さな犬。吠え返すか、実況するか）
+@@game_ja
+🐕 脳は小さな犬：散歩をスタートすると、犬（＝自分の脳）が「ワン！危ない！」「ワン！どうせ失敗するよ！」などをランダムに吠える。「😠 吠え返す！」を押すと、うるささメーターが上がって犬が大きくなる（2人とも吠えている）。「🎙️ あっ、脳が吠えてるぞ」と実況すると、うるささが下がって犬が少し落ち着き、🐾がたまる。3回実況すると犬はおすわりして眠る（💤）。吠え返しすぎると「うるさすぎ！」でやり直し。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain white belly (no rings or patterns on the belly), made of hand-embroidered felt with visible soft stitching, sitting calmly and speaking like a friendly sports announcer into one realistic small vintage silver microphone on a little stand. Bright green park background with soft blurred grass and sky, gentle depth, simple and uncluttered. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × 刺しゅうのフェルト × レトロなマイク

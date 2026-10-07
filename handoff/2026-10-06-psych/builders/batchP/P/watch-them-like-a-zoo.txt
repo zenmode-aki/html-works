@@ -1,0 +1,244 @@
+@@meta
+{"title": "Watch difficult people like animals at a zoo, without judging them", "label": "Zoo Mode", "seq": 448, "mood": ["lift", "laugh"], "tags": ["psychology", "feelings", "mindset"], "thumbAlt": "A boucle wool penguin looking through realistic binoculars with a curious smile"}
+@@ja_title
+苦手な人は、良い悪いを決めずに、動物園のように観察する
+@@ja_label
+動物園モード
+@@h1emoji
+🔭
+@@section
+59「動物園だと思って観察する」
+@@vars
+    --bg: #f6f9ec; --text: #263222; --muted: #6b7a5e;
+    --accent: #17855f; --accent2: #f59e0b; --h1: #163b2a; --big: #127050; --big-dark: #8ee6c2;
+    --glow1: rgba(245,158,11,.24); --glow2: rgba(23,133,95,.18); --glow3: rgba(120,200,255,.18);
+    --shadow: 0 20px 55px rgba(40,110,70,.18); --photo-bg: #e3f1d8;
+    --g1: #1b9a6c; --g2: #2c8f52; --g3: #f2a20c; --pop: #fff3c4; --pop-text: #5a3a00; --btn-text: #127050;
+@@css
+  /* 🔭 動物園モード：同じ動物でも「👓 ジャッジ」だとイライラ、「🔭 動物園」だと観察メモ。りかい ⇄ いかり */
+  .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; max-width: 380px; margin: 14px auto 0; padding: 5px; border-radius: 999px; background: rgba(0,0,0,.14); }
+  .mode { min-height: 50px; border: 0; border-radius: 999px; background: transparent; color: #fff; font: inherit; font-size: 15.5px; font-weight: 900; cursor: pointer;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: background .25s, color .25s; line-height: 1.2; padding: 6px 8px; }
+  .mode:focus-visible { outline: 4px solid #fff; outline-offset: 2px; }
+  .game[data-mode="judge"] .md-judge { background: #fff; color: #b3261e; }
+  .game[data-mode="zoo"] .md-zoo { background: #fff; color: #127050; }
+  .lens { margin-top: 8px; font-size: 13px; font-weight: 900; opacity: .95; }
+  .lens span { display: none; }
+  .game[data-mode="judge"] .ln-j, .game[data-mode="zoo"] .ln-z { display: inline; }
+
+  .pens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 420px; margin: 12px auto 0; }
+  .pen { position: relative; min-height: 112px; padding: 10px 4px 8px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; color: #263222;
+    background: linear-gradient(180deg, #fffdf3 0 62%, #d9eeb8 62% 100%); box-shadow: 0 5px 0 rgba(20,70,40,.28);
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: transform .08s ease, box-shadow .08s ease; }
+  .pen:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(20,70,40,.28); }
+  .pen:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .pen::after { content: ""; position: absolute; left: 8px; right: 8px; bottom: 30px; height: 0; border-top: 3px solid rgba(120,80,30,.4); }
+  .an { display: block; font-size: 42px; line-height: 1.1; }
+  .an.roar { animation: roar .6s ease; }
+  @keyframes roar { 20% { transform: scale(1.35) rotate(-6deg); } 40% { transform: scale(1.35) rotate(6deg); } 100% { transform: none; } }
+  .an.turn { animation: turn .7s ease; }
+  @keyframes turn { 40% { transform: scaleX(-1); } 80% { transform: scaleX(-1); } 100% { transform: none; } }
+  .an.show { animation: hop .55s ease 2; }
+  .pn { display: block; margin-top: 6px; font-size: 13px; font-weight: 900; }
+  .stamp { position: absolute; right: 6px; top: 4px; font-size: 20px; opacity: 0; transform: scale(.3); transition: opacity .2s, transform .3s cubic-bezier(.2,1.5,.4,1); }
+  .pen.noted .stamp { opacity: 1; transform: none; }
+  .pen.mad .stamp { opacity: 1; transform: none; }
+
+  .anger { display: flex; align-items: center; gap: 10px; max-width: 380px; margin: 14px auto 0; font-size: 13.5px; font-weight: 900; }
+  .bar { flex: 1; height: 14px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 30%; border-radius: 999px; background: #ff8a7a; transition: width .5s cubic-bezier(.2,1.2,.4,1); }
+  .msg { min-height: 64px; display: flex; align-items: center; justify-content: center; max-width: 420px; margin: 12px auto 0; padding: 10px 14px; border-radius: 18px;
+    background: #fff; color: #263222; font-weight: 900; font-size: 15.5px; line-height: 1.4; }
+  .msg span { display: none; }
+  .msg.show { animation: bounce-in .4s both; }
+  .game[data-m="0"] .m0, .game[data-m="j1"] .j1, .game[data-m="j2"] .j2, .game[data-m="j3"] .j3,
+  .game[data-m="z1"] .z1, .game[data-m="z2"] .z2, .game[data-m="z3"] .z3, .game[data-m="zall"] .zall { display: inline; }
+  .game[data-m^="j"] .msg { background: #ffe3de; color: #8a1f14; }
+
+  .word { max-width: 380px; margin: 16px auto 0; padding: 14px 12px 12px; border-radius: 22px; background: rgba(255,255,255,.18); }
+  .tiles { position: relative; height: 64px; width: 216px; margin: 0 auto; }
+  .tile { position: absolute; top: 0; width: 64px; height: 64px; display: grid; place-items: center; border-radius: 16px; background: #fff; color: #163b2a;
+    font-size: 32px; font-weight: 900; line-height: 1; box-shadow: 0 5px 0 rgba(20,70,40,.3); transition: left .6s cubic-bezier(.3,1.3,.5,1), background .3s, color .3s; }
+  .tile.a { left: 0; } .tile.b { left: 76px; } .tile.c { left: 152px; }
+  .game[data-word="back"] .tile.a { left: 152px; }
+  .game[data-word="back"] .tile.c { left: 0; }
+  .game[data-word="back"] .tile { background: #ffe3de; color: #b3261e; }
+  .wmean { margin-top: 10px; font-size: 14.5px; font-weight: 900; }
+  .wmean span { display: none; }
+  .game[data-word="fwd"] .w-f, .game[data-word="back"] .w-b { display: inline; }
+  .word .gbtn { margin-top: 10px; }
+@@dark
+  html[data-theme="dark"] .game[data-mode="judge"] .md-judge { background: #2a201f; color: #ffb4a8; }
+  html[data-theme="dark"] .game[data-mode="zoo"] .md-zoo { background: #1f2a24; color: #8ee6c2; }
+  html[data-theme="dark"] .pen { background: linear-gradient(180deg, #2a3026 0 62%, #34452a 62% 100%); color: #e6f1dc; }
+  html[data-theme="dark"] .msg { background: #1f2a24; color: #e6f1dc; }
+  html[data-theme="dark"] .game[data-m^="j"] .msg { background: #3a2220; color: #ffc9c0; }
+  html[data-theme="dark"] .tile { background: #1f2a24; color: #e6f1dc; }
+  html[data-theme="dark"] .game[data-word="back"] .tile { background: #3a2220; color: #ffb4a8; }
+@@sents
+S1 | Even if a lion is loud, you don't get angry, right? | ライオンの声が大きくても、腹は立ちませんよね。
+S2 | Even if a gorilla ignores you, you just think, "That's how this animal is." | ゴリラに無視されても、「そういう動物だな」と思うだけです。
+S3 | With people too, if you watch without deciding good or bad, you can see how to deal with them. | 人も、良い悪いを決めずに観察すると、どう付き合えばいいかが見えてきます。
+S4 | Read "rikai" (understanding) backward, and you get "ikari" (anger). | 「りかい（理解）」を逆から読むと、「いかり（怒り）」。
+S5 | Maybe we get angry because we don't understand. | わからないから、腹が立つのかもしれません。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🦁</span>
+      <span class="card-label">Loud Lion</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🦍</span>
+      <span class="card-label">Quiet Gorilla</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔭</span>
+      <span class="card-label">Just Watch</span>
+    </div>
+    <p>{S3}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：動物園モード（👓 ジャッジ ⇄ 🔭 動物園。同じ動物でイライラ度が変わる）＋ りかい ⇄ いかり -->
+  <section class="game" data-mode="judge" data-m="0" data-word="fwd" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Put on your zoo glasses</div>
+    <div class="game-hint">Tap the animals. Then switch the glasses and tap again.</div>
+    <div class="modes">
+      <button class="mode md-judge" type="button" data-v="judge" aria-pressed="true">👓 Judge</button>
+      <button class="mode md-zoo" type="button" data-v="zoo" aria-pressed="false">🔭 Zoo</button>
+    </div>
+    <div class="lens"><span class="ln-j">"Good or bad?" glasses</span><span class="ln-z">"Oh, so that's how they are" glasses</span></div>
+    <div class="pens">
+      <button class="pen" type="button" data-a="1"><span class="an" aria-hidden="true">🦁</span><span class="pn">Loud lion</span><b class="stamp" aria-hidden="true">📝</b></button>
+      <button class="pen" type="button" data-a="2"><span class="an" aria-hidden="true">🦍</span><span class="pn">Ignoring gorilla</span><b class="stamp" aria-hidden="true">📝</b></button>
+      <button class="pen" type="button" data-a="3"><span class="an" aria-hidden="true">🦚</span><span class="pn">Show-off peacock</span><b class="stamp" aria-hidden="true">📝</b></button>
+    </div>
+    <div class="anger"><span class="al">😠 Anger</span><span class="bar" aria-hidden="true"><i></i></span></div>
+    <div class="msg">
+      <span class="m0">Tap an animal 👆</span>
+      <span class="j1">💢 "So loud! How rude!"</span>
+      <span class="j2">💢 "Why is it ignoring me?!"</span>
+      <span class="j3">💢 "What a show-off!"</span>
+      <span class="z1">📝 Note: lions are loud. That's just a lion.</span>
+      <span class="z2">📝 Note: gorillas do their own thing. OK!</span>
+      <span class="z3">📝 Note: peacocks love to show off. Pretty!</span>
+      <span class="zall">🔭 Zoo master! No anger, just 3 notes.</span>
+    </div>
+    <div class="word">
+      <div class="tiles" aria-hidden="true"><span class="tile a">り</span><span class="tile b">か</span><span class="tile c">い</span></div>
+      <div class="wmean"><span class="w-f">rikai = understanding 🤝</span><span class="w-b">ikari = anger 💢</span></div>
+      <button class="gbtn ghost flipw" type="button">🔄 Read it backward</button>
+    </div>
+    <div class="again-row"><button class="gbtn ghost reset" type="button">↺ Start over</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔄</span>
+      <span class="card-label">Read It Backward</span>
+    </div>
+    <p class="big">{S4}</p>
+    <p style="margin-top:10px">{S5}</p>
+  </section>
+@@ui
+Loud Lion ||| 声の大きいライオン
+Quiet Gorilla ||| 無視するゴリラ
+Just Watch ||| ただ観察する
+Read It Backward ||| 逆から読む
+⚡ TRY IT ||| ⚡ やってみよう
+Put on your zoo glasses ||| 動物園めがねをかけよう
+Tap the animals. Then switch the glasses and tap again. ||| 動物を押してね。それから、めがねを変えて、もう一度押してみて。
+👓 Judge ||| 👓 ジャッジ
+🔭 Zoo ||| 🔭 動物園
+"Good or bad?" glasses ||| 「良い？悪い？」めがね
+"Oh, so that's how they are" glasses ||| 「へえ、そういう動物なんだ」めがね
+Loud lion ||| 声の大きいライオン
+Ignoring gorilla ||| 無視するゴリラ
+Show-off peacock ||| 見せびらかすクジャク
+😠 Anger ||| 😠 イライラ
+Tap an animal 👆 ||| 動物を押してね 👆
+💢 "So loud! How rude!" ||| 💢「うるさい！失礼な！」
+💢 "Why is it ignoring me?!" ||| 💢「なんで無視するの？！」
+💢 "What a show-off!" ||| 💢「自慢ばっかり！」
+📝 Note: lions are loud. That's just a lion. ||| 📝 メモ：ライオンは声が大きい。ライオンだからね。
+📝 Note: gorillas do their own thing. OK! ||| 📝 メモ：ゴリラはマイペース。了解！
+📝 Note: peacocks love to show off. Pretty! ||| 📝 メモ：クジャクは見せるのが好き。きれい！
+🔭 Zoo master! No anger, just 3 notes. ||| 🔭 動物園マスター！イライラはなし。メモが3つ。
+rikai = understanding 🤝 ||| りかい ＝ 理解 🤝
+ikari = anger 💢 ||| いかり ＝ 怒り 💢
+🔄 Read it backward ||| 🔄 逆から読む
+↺ Start over ||| ↺ 最初から
+@@js
+/* 🔭 動物園モード：JS は data-* / class / style / 絵文字 だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var ANIM = { 1: 'roar', 2: 'turn', 3: 'show' };
+  var modes = [].slice.call(g.querySelectorAll('.mode'));
+  var pens = [].slice.call(g.querySelectorAll('.pen'));
+  var bar = g.querySelector('.bar i'), msg = g.querySelector('.msg');
+  var anger = 30, notes = {};
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function drawAnger() { bar.style.width = Math.max(3, anger) + '%'; }
+  function setMode(m) {
+    g.setAttribute('data-mode', m);
+    modes.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-v') === m ? 'true' : 'false'); });
+  }
+  modes.forEach(function (b) { b.addEventListener('click', function () { setMode(b.getAttribute('data-v')); }); });
+  pens.forEach(function (p) {
+    p.addEventListener('click', function () {
+      var a = p.getAttribute('data-a'), zoo = g.getAttribute('data-mode') === 'zoo';
+      var stamp = p.querySelector('.stamp');
+      restart(p.querySelector('.an'), ANIM[a]);
+      if (zoo) {
+        anger = Math.max(0, anger - 30);
+        notes[a] = 1; stamp.textContent = '📝'; p.classList.remove('mad'); p.classList.add('noted');
+        var n = Object.keys(notes).length;
+        g.setAttribute('data-m', n >= 3 && anger === 0 ? 'zall' : 'z' + a);
+        if (n >= 3 && anger === 0 && window.pengessoPop) {
+          var k = p.getBoundingClientRect();
+          window.pengessoPop(k.left + k.width / 2, k.top + k.height / 2, ['🔭', '📝', '🦁', '🦍', '🦚', '🐧'], 18);
+        }
+      } else {
+        anger = Math.min(100, anger + 25);
+        stamp.textContent = '💢'; p.classList.remove('noted'); p.classList.add('mad');
+        g.setAttribute('data-m', 'j' + a);
+        if (navigator.vibrate) { try { navigator.vibrate(25); } catch (e) {} }
+      }
+      drawAnger(); restart(msg, 'show');
+    });
+  });
+  g.querySelector('.flipw').addEventListener('click', function () {
+    g.setAttribute('data-word', g.getAttribute('data-word') === 'back' ? 'fwd' : 'back');
+  });
+  g.querySelector('.reset').addEventListener('click', function () {
+    anger = 30; notes = {};
+    pens.forEach(function (p) { p.classList.remove('noted', 'mad'); });
+    setMode('judge'); g.setAttribute('data-m', '0'); g.setAttribute('data-word', 'fwd'); drawAnger();
+  });
+  drawAnger();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+S5 → 使った（4枚目のカード）
+@@message
+良い悪いを決めずに、動物園のように観察する。「りかい」を逆から読むと「いかり」。
+@@tone
+素材の重さ：真面目（苦手な人にイライラする）
+→ 見せ方：ポップに（サファリの緑とオレンジ。めがねを変えると同じ動物の見え方が変わる）
+@@game_ja
+🔭 動物園めがね：上で「👓 ジャッジ」と「🔭 動物園」のめがねを切りかえる。🦁声の大きいライオン・🦍無視するゴリラ・🦚見せびらかすクジャクの3つのおりを押すと、動物がほえる・背中を向ける・ぴょんぴょんする。ジャッジめがねだと「うるさい！失礼な！」と💢がつき、😠イライラのメーターが上がる。動物園めがねだと「📝 メモ：ライオンは声が大きい。ライオンだからね。」と観察メモになり、イライラが下がる。3つメモしてイライラ0で「動物園マスター」🎉。下の「🔄 逆から読む」で、り・か・い のタイルが入れかわって い・か・り（理解 ⇄ 怒り）。「最初から」で戻せる。
+@@combo
+ペンギン × ブークレウール × 双眼鏡
+@@cover
+An extremely cute, chubby round penguin made of soft boucle wool, with a gentle curious smiling face and a plain white belly, looking through a realistic pair of black binoculars held in both flippers, as if quietly watching animals at a zoo. Bright simple safari green and warm sand background with soft depth, sunny daylight. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.

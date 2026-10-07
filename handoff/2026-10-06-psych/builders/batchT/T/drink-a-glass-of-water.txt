@@ -1,0 +1,212 @@
+@@meta
+{"title": "When your mood drops for no reason, try a glass of water first", "label": "Water First", "seq": 486, "mood": ["lift", "energy"], "tags": ["psychology", "health", "feelings"], "thumbAlt": "A chubby felted wool penguin happily hugging a realistic stainless steel water bottle"}
+@@ja_title
+なんとなく気分が下がったら、まず水を一杯
+@@ja_label
+まず水を一杯
+@@h1emoji
+💧
+@@section
+107「水分不足で気分が下がる」
+@@vars
+    --bg: #eefcff; --text: #173a45; --muted: #5b7f89;
+    --accent: #0890b6; --accent2: #ff7a8a; --h1: #0f3440; --big: #077fa2; --big-dark: #8fe3ff;
+    --glow1: rgba(60,200,240,.24); --glow2: rgba(255,122,138,.18); --glow3: rgba(120,240,210,.2);
+    --shadow: 0 20px 55px rgba(10,110,150,.18); --photo-bg: #d9f6ff;
+    --g1: #0aa0cc; --g2: #36c2e6; --g3: #6fdcbf; --pop: #ff6f86; --pop-text: #fff; --btn-text: #077fa2;
+@@css
+  /* 💧 ペンギンが不機嫌。どうして？ → 水を飲むと、ごきげんメーターが上がる */
+  .scene { display: grid; grid-template-columns: 92px 1fr; align-items: center; gap: 12px; max-width: 420px; margin: 16px auto 0; text-align: left; }
+  .game .who { position: relative; height: 92px; display: grid; place-items: center; border-radius: 50%; background: rgba(255,255,255,.25); font-size: 54px; line-height: 1; }
+  .who .mood { position: absolute; right: -4px; top: -4px; font-size: 32px; line-height: 1; }
+  .who .mood.boing { animation: bounce-in .4s both; }
+  .game[data-t="cake"] .who, .game[data-t="phone"] .who { animation: shake .4s ease; }
+  .bubble { position: relative; min-height: 64px; padding: 12px 14px; border-radius: 18px 18px 18px 6px; background: #fff; color: #173a45;
+    font-size: 16px; font-weight: 900; line-height: 1.4; display: flex; align-items: center; }
+  .bubble span { display: none; }
+  .game[data-s="ask"][data-t=""] .b-ask, .game[data-s="ask"][data-t="cake"] .b-cake, .game[data-s="ask"][data-t="phone"] .b-phone,
+  .game[data-s="drink"] .b-drink, .game[data-s="done"] .b-done { display: inline; }
+  .bubble.swap { animation: bounce-in .35s both; }
+
+  .meter-row { display: flex; align-items: center; gap: 8px; max-width: 420px; margin: 14px auto 0; font-size: 14px; font-weight: 900; }
+  .meter { position: relative; flex: 1; height: 16px; border-radius: 999px; background: rgba(255,255,255,.3); overflow: hidden; }
+  .meter i { position: absolute; inset: 0 auto 0 0; width: 10%; border-radius: 999px; background: linear-gradient(90deg, #ffe45e, #ff9ab0); transition: width .45s cubic-bezier(.2,1.2,.4,1); }
+
+  .choices { display: grid; gap: 10px; max-width: 360px; margin: 16px auto 0; }
+  .choices .gbtn { width: 100%; min-height: 56px; font-size: 18px; }
+  .choices .gbtn.tried { opacity: .5; text-decoration: line-through; text-decoration-thickness: 2px; }
+  .game:not([data-s="ask"]) .choices { display: none; }
+
+  .drinkbox { display: none; align-items: center; justify-content: center; gap: 18px; margin-top: 16px; }
+  .game[data-s="drink"] .drinkbox, .game[data-s="done"] .drinkbox { display: flex; }
+  .cup { position: relative; width: 70px; height: 92px; border: 4px solid #fff; border-top-width: 3px; border-radius: 6px 6px 18px 18px;
+    background: rgba(255,255,255,.18); overflow: hidden; box-shadow: 0 6px 0 rgba(0,0,0,.1); }
+  .cup .water { position: absolute; left: 0; right: 0; bottom: 0; height: 88%; background: linear-gradient(180deg, #bff3ff, #6fd3f2);
+    transition: height .5s ease; }
+  .cup.gulp { animation: tilt .45s ease; }
+  @keyframes tilt { 50% { transform: rotate(-16deg) translateY(-6px); } }
+  .sip { min-width: 150px; min-height: 64px; font-size: 21px; }
+  .game[data-s="done"] .sip { display: none; }
+  .sips { margin-top: 8px; font-size: 14px; font-weight: 900; opacity: .95; }
+  .game:not([data-s="drink"]) .sips { display: none; }
+
+  .result { margin-top: 12px; min-height: 30px; font-size: 16px; font-weight: 900; line-height: 1.45; }
+  .result > div { display: none; }
+  .game[data-s="ask"] .r-hint { display: block; opacity: .95; }
+  .game[data-s="done"] .r-done { display: block; font-size: 18px; animation: bounce-in .5s both; }
+  .game:not([data-s="done"]) .again-row { display: none; }
+@@dark
+  html[data-theme="dark"] .bubble { background: #f2fbff; }
+  html[data-theme="dark"] .cup { border-color: #dff6ff; }
+@@sents
+S1 | On days when you feel low for no reason, maybe you just need water. | なんとなく気分が下がる日は、ただの水分不足かもしれません。
+S2 | It seems that when your body is low on water, you may lose focus or get annoyed without noticing. | 体の水が足りないと、気づかないうちに集中できなくなったり、イライラしたりすることがあるそうです。
+S3 | So before you worry, first have a glass of water. | だから、悩む前に、まずは水を一杯。
+S4 | If you think, "Oh, maybe I was just thirsty," that is lucky. | 「あれ、ただのどが渇いていただけかも」と思えたら、ラッキーです。
+@@body
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌧️</span>
+      <span class="card-label">Feeling Low</span>
+    </div>
+    <p>{S1}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🫗</span>
+      <span class="card-label">Low On Water</span>
+    </div>
+    <p>{S2}</p>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：ペンギンはなぜ不機嫌？ -->
+  <section class="game" data-s="ask" data-t="" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">Why is the penguin grumpy?</div>
+    <div class="scene">
+      <div class="who" aria-hidden="true">🐧<span class="mood">😤</span></div>
+      <div class="bubble">
+        <span class="b-ask">Hmm… I feel grumpy today. I don't know why.</span>
+        <span class="b-cake">Yummy! …but I am still grumpy. 😑</span>
+        <span class="b-phone">Scroll, scroll… now I am grumpy AND tired. 😩</span>
+        <span class="b-drink">Gulp, gulp… 💧</span>
+        <span class="b-done">Ahh… maybe I was just thirsty! 😊</span>
+      </div>
+    </div>
+    <div class="meter-row" aria-hidden="true"><span class="ml">😊 Mood</span><span class="meter"><i></i></span></div>
+    <div class="choices">
+      <button class="gbtn" type="button" data-c="cake">🍰 Eat some cake</button>
+      <button class="gbtn" type="button" data-c="phone">📱 Look at the phone</button>
+      <button class="gbtn" type="button" data-c="water">💧 Drink a glass of water</button>
+    </div>
+    <div class="drinkbox">
+      <div class="cup" aria-hidden="true"><div class="water"></div></div>
+      <button class="gbtn pop sip" type="button">💧 Sip!</button>
+    </div>
+    <div class="sips"><span class="sl">Sips:</span> <span class="sn">0</span><span class="sm">/4</span></div>
+    <div class="result">
+      <div class="r-hint">Pick what the penguin should try first.</div>
+      <div class="r-done">✨ Before you worry, try water. It may be the easiest fix.</div>
+    </div>
+    <div class="again-row"><button class="gbtn ghost again" type="button">↺ Try again</button></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💧</span>
+      <span class="card-label">Water First</span>
+    </div>
+    <p class="big">{S3}</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍀</span>
+      <span class="card-label">Lucky You</span>
+    </div>
+    <p>{S4}</p>
+  </section>
+@@ui
+Feeling Low ||| 気分が下がる
+Low On Water ||| 水が足りない
+Water First ||| まずは水
+Lucky You ||| ラッキー
+⚡ TRY IT ||| ⚡ やってみよう
+Why is the penguin grumpy? ||| ペンギンは、どうして不機嫌？
+Hmm… I feel grumpy today. I don't know why. ||| うーん…今日はなんだか不機嫌。理由はわからない。
+Yummy! …but I am still grumpy. 😑 ||| おいしい！…でも、まだ不機嫌。😑
+Scroll, scroll… now I am grumpy AND tired. 😩 ||| スクロール、スクロール…不機嫌なうえに、つかれてきた。😩
+Gulp, gulp… 💧 ||| ごくごく… 💧
+Ahh… maybe I was just thirsty! 😊 ||| ぷはー…ただのどが渇いていただけかも！😊
+😊 Mood ||| 😊 ごきげん
+🍰 Eat some cake ||| 🍰 ケーキを食べる
+📱 Look at the phone ||| 📱 スマホを見る
+💧 Drink a glass of water ||| 💧 水を一杯飲む
+💧 Sip! ||| 💧 ごくっ！
+Sips: ||| 飲んだ回数：
+Pick what the penguin should try first. ||| ペンギンが最初に試すものを選んでね。
+✨ Before you worry, try water. It may be the easiest fix. ||| ✨ 悩む前に、まず水。いちばん簡単な解決法かもしれません。
+↺ Try again ||| ↺ もう一回
+@@js
+/* 💧 不機嫌の理由を選ぶ → 水なら4口飲んで、ごきげんメーターが上がる。JS は data-* / class / 数字 / 絵文字 / style だけ */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var mood = g.querySelector('.who .mood'), bubble = g.querySelector('.bubble'), bar = g.querySelector('.meter i');
+  var choices = g.querySelectorAll('.choices .gbtn'), sip = g.querySelector('.sip'), water = g.querySelector('.cup .water');
+  var cup = g.querySelector('.cup'), sn = g.querySelector('.sn'), again = g.querySelector('.again');
+  var FACES = ['😤', '😐', '🙂', '😊', '😄'], SIPS = 4, n = 0;
+  function bump(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function face(i) { mood.textContent = FACES[i]; bump(mood, 'boing'); }
+  function state(s, t) { g.setAttribute('data-s', s); g.setAttribute('data-t', t || ''); bump(bubble, 'swap'); }
+  function render() {
+    sn.textContent = n;
+    water.style.height = (88 - n * 22) + '%';
+    bar.style.width = (10 + n * 22.5) + '%';
+  }
+  for (var i = 0; i < choices.length; i++) {
+    choices[i].addEventListener('click', function () {
+      var c = this.getAttribute('data-c');
+      if (c === 'water') { state('drink'); face(0); return; }
+      this.classList.add('tried');
+      g.setAttribute('data-t', '');
+      state('ask', c);
+      face(0);
+    });
+  }
+  sip.addEventListener('click', function () {
+    if (n >= SIPS) return;
+    n++;
+    render(); face(n); bump(cup, 'gulp');
+    if (n >= SIPS) {
+      state('done');
+      if (window.pengessoPop) {
+        var r = cup.getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['💧', '✨', '🐧', '😊'], 16);
+      }
+      if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) {} }
+    }
+  });
+  again.addEventListener('click', function () {
+    n = 0; render();
+    for (var j = 0; j < choices.length; j++) choices[j].classList.remove('tried');
+    state('ask'); face(0);
+  });
+  render();
+})();
+@@map
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード・.big）
+S4 → 使った（4枚目のカード）
+@@message
+なんとなく気分が下がったら、悩む前にまず水を一杯（水分不足で気分が下がることがあるそうです）。
+@@tone
+素材の重さ：ふつう（体と気分の話）
+→ 見せ方：ポップに（水色とコーラルピンク。不機嫌なペンギンに何をしてあげるか選んで、水をごくごく飲ませて遊べる）
+@@game_ja
+💧 ペンギンは、どうして不機嫌？：「うーん…今日はなんだか不機嫌」と言うペンギンに、「🍰 ケーキを食べる」「📱 スマホを見る」「💧 水を一杯飲む」から選ぶ。ケーキは「おいしい！…でも、まだ不機嫌」、スマホは「不機嫌なうえに、つかれてきた」（ペンギンがぷるぷる）。水を選ぶとコップが出てきて、「💧 ごくっ！」を4回押すと水が減り、顔が 😤 → 😐 → 🙂 → 😊 → 😄、ごきげんメーターが上がって「ぷはー…ただのどが渇いていただけかも！」。
+@@cover
+An extremely cute, chubby round penguin with a gentle face and a plain belly, made of soft felted wool, happily hugging one realistic brushed stainless steel water bottle almost as tall as itself. A simple bright aqua background that fades into soft coral pink with gentle depth. Realistic 3D render, studio lighting, shallow depth of field, physically based materials, photographic. Centered composition. No humans, no text, no lettering.
+@@combo
+ペンギン × フェルト羊毛 × ステンレスの水筒
