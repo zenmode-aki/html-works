@@ -17,9 +17,11 @@
 - [ ] 注意：check.py や i18n.py が「14言語そろっていない」と止めるなら、3言語で通るようにするか本人に伝える
 
 ## 3. ③④の書きかけの記事を確かめて仕上げる
-- [ ] 対象：seq 522〜590（③ X・Y・Z、④ BK1〜BK4）。書いている途中で API の上限で止まった
-- [ ] 1本ずつ：`python3 tools/i18n.py --draft --todo <slug>` が `[]`／`python3 tools/check.py --draft --fix-badge <slug>` が表紙以外 ✅
-- [ ] iPhone テスト：`node handoff/2026-10-06-psych/mtest.js <出力先> <slug>…`（リポジトリで `python3 -m http.server 8765`）
-- [ ] 裏返すカードがあれば、鏡文字の対策が入っているか（`SPEC2.md` の最後）
-- [ ] BK4：dailyish のカードのラベルを直す途中だった
-- [ ] ③のクレジットは「📚 I wrote this from my notes on books and blogs I have read.」
+- [x] 対象：seq 522〜590（③ X・Y・Z、④ BK1〜BK4）。書いている途中で API の上限で止まった
+- [x] 1本ずつ：`python3 tools/i18n.py --draft --todo <slug>` が `[]`／`python3 tools/check.py --draft --fix-badge <slug>` が表紙以外 ✅
+- [x] iPhone テスト：`node handoff/2026-10-06-psych/mtest.js <出力先> <slug>…`（リポジトリで `python3 -m http.server 8765`）
+- [x] 裏返すカードがあれば、鏡文字の対策が入っているか（`SPEC2.md` の最後）
+- [x] BK4：dailyish のカードのラベルを直す途中だった
+- [x] ③のクレジットは「📚 I wrote this from my notes on books and blogs I have read.」
+
+- ✅ 2026-10-07：69本とも `--todo` が []、`check.py --draft` は表紙以外 ✅。スマホ幅テスト（Chromium・iPhone幅）でエラー・はみ出し・小さいボタンなし（1本は「揺れているボタン」で待ち時間切れ＝既知の仕様）。裏返すカードは鏡文字の出る形なし。人の形の絵文字（🏃🧍🏊）が8本に残っていたので 👟🪑🌊 に置き換えた。仕事の中身の話はなし（例は旅行・料理・友達）
