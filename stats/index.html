@@ -131,6 +131,18 @@
   .empty { padding:18px; border-radius:16px; background:var(--cream); color:var(--muted); font-size:14px; text-align:center; line-height:1.6; }
   .promise { margin:0; padding-left:20px; color:var(--muted); font-size:13.5px; line-height:1.8; }
   .foot { margin-top:22px; text-align:center; color:var(--muted); font-size:12.5px; }
+  /* 🐧 ちょっと楽しく：ペンギンのゆれ、数字のぽん、カードのふわっ */
+  h1 .peng { animation:waddle 2.6s ease-in-out infinite; }
+  @keyframes waddle { 0%, 100% { transform:rotate(-8deg); } 50% { transform:rotate(8deg) translateY(-2px); } }
+  .kpi { animation:popin .5s cubic-bezier(.2,1.4,.4,1) both; transition:transform .15s; }
+  .kpi:nth-child(2) { animation-delay:.06s; } .kpi:nth-child(3) { animation-delay:.12s; } .kpi:nth-child(4) { animation-delay:.18s; } .kpi:nth-child(5) { animation-delay:.24s; } .kpi:nth-child(6) { animation-delay:.3s; }
+  .kpi:hover { transform:translateY(-3px) rotate(-1deg); }
+  @keyframes popin { from { transform:scale(.8); opacity:0; } }
+  .card { transition:transform .2s, box-shadow .2s; }
+  .card:hover { transform:translateY(-2px); box-shadow:0 16px 38px rgba(35,44,72,.11); }
+  .foot::after { content:" 🐧"; display:inline-block; animation:waddle 2.6s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) h1 .peng, html:not([data-motion="on"]) .kpi, html:not([data-motion="on"]) .foot::after { animation:none; } html:not([data-motion="on"]) .card, html:not([data-motion="on"]) .kpi { transition:none; } html:not([data-motion="on"]) .card:hover, html:not([data-motion="on"]) .kpi:hover { transform:none; } }
+  html[data-motion="off"] h1 .peng, html[data-motion="off"] .kpi, html[data-motion="off"] .foot::after { animation:none; } html[data-motion="off"] .card, html[data-motion="off"] .kpi { transition:none; } html[data-motion="off"] .card:hover, html[data-motion="off"] .kpi:hover { transform:none; }
   @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) .pulse::after, html:not([data-motion="on"]) .map .ring, html:not([data-motion="on"]) .bars .bw i { animation:none; } html:not([data-motion="on"]) .rank a { transition:none; } html:not([data-motion="on"]) .rank a:hover { transform:none; } }
   /* ✨ 動きの設定が OFF のとき（端末が「減らさない」でも止める） */
   html[data-motion="off"] .pulse::after, html[data-motion="off"] .map .ring, html[data-motion="off"] .bars .bw i { animation:none; } html[data-motion="off"] .rank a { transition:none; } html[data-motion="off"] .rank a:hover { transform:none; }
