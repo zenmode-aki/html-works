@@ -1009,6 +1009,16 @@
   .learn-toggle[aria-pressed="true"] .lt-sw::after { transform: translateX(14px); }
   .learn-list { align-self: flex-start; border: 0; background: #eaf7f0; color: #1d5c41; font: inherit; font-size: 13px; font-weight: 800;
     padding: 9px 14px; border-radius: 999px; cursor: pointer; }
+  /* 📱 「だれ？」の後半は、スマホでは最初たたんでおく（2026-10-07：トップが約12画面あり、ここだけで5画面だった） */
+  .about-more { display: none; }
+  @media (max-width: 700px) {
+    .about-rest:not(.open) { max-height: 420px; overflow: hidden; -webkit-mask-image: linear-gradient(#000 55%, transparent); mask-image: linear-gradient(#000 55%, transparent); }
+    .about-more { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 50px; margin-top: 10px; border-radius: 16px;
+      border: 2px solid rgba(255,255,255,.35); background: rgba(255,255,255,.12); color: #fff; font: inherit; font-size: 15px; font-weight: 900; cursor: pointer; }
+    .about-more .am-close { display: none; }
+    .about-more[aria-expanded="true"] .am-open { display: none; } .about-more[aria-expanded="true"] .am-close { display: inline; }
+    .about-more .am-ic { transition: transform .25s; } .about-more[aria-expanded="true"] .am-ic { transform: rotate(180deg); }
+  }
   /* 👆 押して試せる例（2026-10-07） */
   .learn-try { position: relative; margin: 16px 0 14px; padding: 16px 18px 14px; border-radius: 22px; background: #fff; border: 2px solid #d9cffb;
     box-shadow: 0 10px 26px rgba(91,75,176,.10); cursor: pointer; -webkit-tap-highlight-color: transparent; transition: box-shadow .2s, transform .2s; }
@@ -1399,6 +1409,8 @@
       </div>
     </div>
 
+    <!-- 📱 2026-10-07：スマホでは、ここから下（約4画面ぶん）を最初は少しだけ見せて、「ぜんぶ表示」で開く -->
+    <div class="about-rest" id="aboutRest">
     <!-- ── 🤔 何者なの ── -->
     <div class="blk">
       <h3>🐧 What is this?</h3>
@@ -1537,6 +1549,8 @@
       <p>When a post does not explain enough, please just say:</p>
       <div class="stamp">“A penguin wrote it. Nothing can be done.”</div>
     </div>
+    </div>
+    <button type="button" class="about-more" id="aboutMore" aria-expanded="false" aria-controls="aboutRest"><span class="am-open">Show all</span><span class="am-close">Show fewer</span><span class="am-ic" aria-hidden="true">▾</span></button>
   </section>
 
   <footer>
@@ -3630,6 +3644,18 @@ if (tagsEl) tagsEl.addEventListener('click', function(e){
   render(); if (state.tag) goToPosts();
 });
 
+/* 📱 「だれ？」の後半を開く・閉じる（2026-10-07） */
+(function(){
+  var b = document.getElementById('aboutMore'), r = document.getElementById('aboutRest');
+  if (!b || !r) return;
+  b.addEventListener('click', function(){
+    var open = !r.classList.contains('open');
+    r.classList.toggle('open', open);
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (!open) document.getElementById('about').scrollIntoView({ block: 'start' });
+  });
+})();
+
 /* 📚 読みながら、ことばの勉強（2026-10-03 → 2026-10-07 語学だけに）：スイッチは記事と同じ localStorage に書く */
 (function(){
   var sec = document.getElementById('learn'); if (!sec) return;
@@ -3808,7 +3834,7 @@ function drawFeed() {
         '<div class="post-title">' + p.title + '</div>' +
         '<div class="post-meta">' +
           '<span>' + p.date.replace(/-/g, '.') + '</span>' +
-          '<span>' + ((PLACES[p.place] || { name: p.place }).name) + '</span>' +
+          (p.place ? '<span>' + ((PLACES[p.place] || { name: p.place }).name) + '</span>' : '') +
           '<span>' + p.words + ' words</span>' +
           '<span class="meta-sec">⚡ ' + p.sec + ' sec</span>' +
         '</div>' +

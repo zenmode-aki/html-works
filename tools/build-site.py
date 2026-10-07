@@ -99,11 +99,13 @@ def inject(page: pathlib.Path, items):
     rows, used = [], set()
     for m in items:
         place = m.get("place", "nagoya")
-        if place not in PLACES:
+        # 📍 "place": "" ＝ どこの土地の話でもない（考え方の記事など。2026-10-07：心理学の306本に「名古屋」が付いていて、地図の名古屋が399本になっていた）
+        if place and place not in PLACES:
             raise SystemExit(
                 f"❌ {m['slug']}: meta.json の place \"{place}\" が tools/build-site.py の "
                 f"PLACES にありません。地図に出す行・列を決めて足してください。")
-        used.add(place)
+        if place:
+            used.add(place)
         rows.append(
             "  {slug:%r, label:%r, len:%d, sec:%d, words:%d, date:%r, place:%r,\n"
             "   href:%r, thumb:%r,\n   title:%r, topic:%r%s},"
