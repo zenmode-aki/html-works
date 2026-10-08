@@ -46,6 +46,10 @@ CSS = """<style id="lab-css">
   .lab-next span.t { display: block; font-size: 17px; line-height: 1.4; }
   .lab-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
     border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .lab-topics { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; }
+  .lab-topics a { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 14px; border-radius: 999px; background: #fff;
+    border: 2px solid rgba(60,80,110,.18); color: #2c3a50; text-decoration: none; }
+  html[data-theme="dark"] .lab-topics a { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
   .lab-home { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
   html[data-theme="dark"] .lab-ribbon, html[data-theme="dark"] .lab-next { background: #252b36; color: #d6deea; border-color: rgba(214,222,234,.25); }
   html[data-theme="dark"] .lab-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
@@ -91,6 +95,11 @@ def to_lab_page(slug, doc, labs, works, nxt):
         ja = load(LAB / nxt / "i18n" / "ja.json").get("title") or en
         nav.append(f'    <a class="lab-next" href="../{nxt}/index.html"><span><small>NEXT · 次の試作</small>'
                    f'<span class="t">{html.escape(ja)}</span></span><span aria-hidden="true">🧪</span></a>')
+    tags = load(LAB / slug / "meta.json").get("tags", [])
+    tl = [t for t in TOPICS if t[0] in tags][:4]
+    if tl:   # 🗺 読み終えたら、同じテーマの地図へ（2026-10-08 本人）
+        nav.append('    <div class="lab-topics"><span>🗺 同じテーマを読む：</span>' + "".join(
+            f'<a href="../index.html#t={k}">{e} {n}</a>' for k, e, n in tl) + '<a href="../index.html#map">🗺 テーマの地図</a></div>')
     nav += ['    <a class="lab-back" href="../index.html">🧪 ← 試作の一覧 / All lab posts</a>',
             '    <a class="lab-home" href="../../index.html">ブログのトップへ ↗</a>',
             "  </nav>", f"  {NAV_E}"]
@@ -105,6 +114,12 @@ def from_lab_page(slug, doc):
     return doc.replace(f"https://15-second-blog.com/lab/{slug}/", f"https://15-second-blog.com/works/{slug}/")
 
 
+# 🗺 テーマの地図（2026-10-08 本人：「読み終えるごとに地図を出して、好きな記事に飛べるように」）。試作は場所がないので、テーマで
+TOPICS = [("feelings", "🫧", "気持ち"), ("friends", "💬", "人づきあい"), ("happiness", "😊", "しあわせ"), ("mindset", "💭", "考え方"),
+          ("productivity", "✅", "やること・時間"), ("rest", "🛋️", "休む"), ("mistakes", "😅", "失敗"), ("study", "📚", "勉強"),
+          ("sleep", "😴", "眠り"), ("health", "🍵", "体"), ("walking", "👟", "歩く"), ("family", "🏠", "家族"), ("money", "💴", "お金"),
+          ("books", "📖", "本のメモ"), ("tips", "💡", "小さなコツ")]
+
 SERIES = [("happy-psychology", "🐼 しあわせ心理学のメモから"), ("burkeman-notes", "📘 時間と生き方の本のメモから"), ("", "🗂 そのほか")]
 
 
@@ -115,9 +130,13 @@ def index_html(rows):
         if not rs:
             continue
         cards = "\n".join(
-            f'      <a class="card" href="{r["slug"]}/index.html"><img src="../assets/thumbs/{r["slug"]}.jpg" alt="" loading="lazy">'
+            f'      <a class="card" data-t="{" ".join(r["tags"])}" href="{r["slug"]}/index.html"><img src="../assets/thumbs/{r["slug"]}.jpg" alt="" loading="lazy">'
             f'<div><div class="ja">{html.escape(r["ja"])}</div><div class="en">{html.escape(r["en"])}</div></div></a>' for r in rs)
         secs.append(f'  <section>\n    <h2>{title} <small>{len(rs)}本</small></h2>\n    <div class="grid">\n{cards}\n    </div>\n  </section>')
+    cnt = {k: sum(1 for r in rows if k in r["tags"]) for k, _, _ in TOPICS}
+    tmap = "".join(f'<button type="button" class="tp" data-k="{k}" style="--s:{min(1.6, .9 + cnt[k] / 120):.2f}">'
+                   f'<span class="e">{e}</span><span class="n">{n}</span><b>{cnt[k]}</b></button>'
+                   for k, e, n in sorted(TOPICS, key=lambda t: -cnt[t[0]]) if cnt[k])
     return f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -141,6 +160,19 @@ def index_html(rows):
   .card img {{ flex: none; width: 64px; height: 64px; border-radius: 12px; object-fit: cover; background: #e9edf3; }}
   .ja {{ font-size: 14.5px; font-weight: 900; line-height: 1.45; }}
   .en {{ margin-top: 3px; font-size: 12px; color: var(--muted); line-height: 1.4; }}
+  .map {{ margin: 0 0 8px; padding: 16px 12px; border-radius: 24px; background: linear-gradient(160deg, #eaf0ff, #fff4e8); scroll-margin-top: 12px; }}
+  .map h2 {{ margin: 0 0 4px; }} .map p {{ margin: 0 0 12px; color: var(--muted); font-size: 13px; }}
+  .tps {{ display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }}
+  .tp {{ display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px; border-radius: 999px; border: 2px solid rgba(42,49,64,.1);
+    background: #fff; color: var(--ink); font: inherit; font-size: calc(13px * var(--s)); font-weight: 900; cursor: pointer;
+    animation: tpIn .5s cubic-bezier(.2,1.5,.4,1) both; box-shadow: 0 6px 14px rgba(42,49,64,.08); }}
+  .tp .e {{ font-size: 1.3em; }} .tp b {{ font-size: .75em; color: var(--muted); }}
+  .tp[aria-pressed="true"] {{ background: #2a3140; color: #fff; }} .tp[aria-pressed="true"] b {{ color: #cfd6e4; }}
+  .tps .tp:nth-child(2n) {{ animation-delay: .06s; }} .tps .tp:nth-child(3n) {{ animation-delay: .12s; }}
+  @keyframes tpIn {{ from {{ opacity: 0; transform: scale(.6); }} to {{ opacity: 1; transform: none; }} }}
+  .card[hidden], section[hidden] {{ display: none; }}
+  @media (prefers-reduced-motion: reduce) {{ html:not([data-motion="on"]) .tp {{ animation: none; }} }}
+  html[data-motion="off"] .tp {{ animation: none; }}
 </style>
 </head>
 <body>
@@ -149,8 +181,26 @@ def index_html(rows):
   <h1>🧪 試作の棚 <span style="font-size:.5em">{len(rows)}本</span></h1>
   <p class="lead">ここは、AIが読書メモやブログのメモから一気に作った記事の置き場です。本番の一覧には出していません。<br>
   これから少しずつ、文章と表紙をていねいに直して、良くなったものから本番に戻します。検索には出ません。</p>
+  <section class="map" id="map">
+    <h2>🗺 テーマの地図</h2>
+    <p>気になるテーマを押すと、その記事だけになります。もう一度押すと、ぜんぶに戻ります。</p>
+    <div class="tps">{tmap}</div>
+  </section>
 {chr(10).join(secs)}
 </main>
+<script>
+(function () {{
+  var on = null, tps = [].slice.call(document.querySelectorAll('.tp'));
+  function paint() {{
+    tps.forEach(function (b) {{ b.setAttribute('aria-pressed', b.dataset.k === on ? 'true' : 'false'); }});
+    [].forEach.call(document.querySelectorAll('.card'), function (c) {{ c.hidden = !!on && (' ' + c.dataset.t + ' ').indexOf(' ' + on + ' ') < 0; }});
+    [].forEach.call(document.querySelectorAll('main > section:not(.map)'), function (s) {{ s.hidden = !s.querySelector('.card:not([hidden])'); }});
+  }}
+  tps.forEach(function (b) {{ b.addEventListener('click', function () {{ on = on === b.dataset.k ? null : b.dataset.k; paint();
+    var f = document.querySelector('main > section:not(.map):not([hidden])'); if (on && f) f.scrollIntoView({{ behavior: 'smooth', block: 'start' }}); }}); }});
+  var h = (location.hash.match(/^#t=([a-z-]+)/) || [])[1]; if (h) {{ on = h; paint(); }}
+}})();
+</script>
 </body>
 </html>
 """
@@ -161,7 +211,7 @@ def build():
     rows = []
     for s in labs:
         m = load(LAB / s / "meta.json")
-        rows.append({"slug": s, "series": m.get("series", ""), "seq": m.get("seq", 0), "en": m.get("title", s),
+        rows.append({"slug": s, "series": m.get("series", ""), "seq": m.get("seq", 0), "en": m.get("title", s), "tags": m.get("tags", []),
                      "ja": load(LAB / s / "i18n" / "ja.json").get("title") or m.get("title", s)})
     rows.sort(key=lambda r: (r["series"], r["seq"]))
     seq = [r["slug"] for r in rows]
