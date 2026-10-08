@@ -368,6 +368,167 @@
     <div class="restaurant-note"><span aria-hidden="true">👋</span><strong>Finding someone to ask feels easier in the Philippines.</strong></div>
   </section>
 
+  <style>
+  .toy { margin: 30px 0 0; padding: 20px 16px 18px; border-radius: 28px; text-align: center; position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #fff4dc, #fbe7e2 50%, #e2f4ea); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(32,60,58,.16); font-weight: 800; color: #203c3a; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-tabs { display: flex; justify-content: center; gap: 12px; margin: 8px 0 14px; }
+  .toy-tab { position: relative; min-width: 84px; min-height: 58px; padding: 6px 14px; border: 3px solid transparent; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 32px; line-height: 1; background: #fff; color: inherit; box-shadow: 0 5px 0 #e7ded0;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, border-color .2s; }
+  .toy-tab:active { transform: translateY(4px); box-shadow: 0 1px 0 #e7ded0; }
+  .toy-tab[data-k="jp"].toy-on { border-color: #d85d55; background: #fff0ee; }
+  .toy-tab[data-k="ph"].toy-on { border-color: #2f8c69; background: #eaf7f0; }
+  .toy-tab .toy-mk { position: absolute; right: -8px; top: -10px; font-size: 18px; visibility: hidden; }
+  .toy-tab.toy-did .toy-mk { visibility: visible; }
+  .toy-counter { position: relative; width: min(310px, 100%); margin: 0 auto; padding: 56px 10px 12px; border-radius: 22px; background: #fffaf1;
+    border: 3px solid #e7ded0; box-shadow: 0 6px 0 #e7ded0; }
+  .toy-crew { position: absolute; left: 10px; right: 10px; top: 8px; height: 44px; }
+  .toy-crew .toy-pg { position: absolute; top: 0; width: 33.33%; font-size: 36px; line-height: 1; text-align: center;
+    transition: left .25s cubic-bezier(.3,1.3,.5,1), opacity .25s; }
+  .toy-crew .toy-pg.toy-off { opacity: 0; }
+  .toy-st { display: flex; gap: 8px; }
+  .toy .toy-st.toy-st { display: flex; }
+  .toy-box { flex: 1; position: relative; height: 70px; border-radius: 16px; background: #f1ebe0; display: flex; align-items: center; justify-content: center;
+    font-size: 30px; line-height: 1; transition: background .2s, transform .2s; }
+  .toy .toy-box.toy-box { display: flex; }
+  .toy-box.toy-cur { background: #ffe9a8; }
+  .toy-box.toy-hit { background: #c9efd9; transform: scale(1.06); }
+  .toy-box .toy-bag { position: absolute; bottom: -12px; right: -2px; font-size: 22px; visibility: hidden; }
+  .toy-box.toy-cur .toy-bag { visibility: visible; }
+  .toy-chips { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 16px 0 0; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: #203c3a; color: #fff;
+    font-size: 22px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #0f1f1e; }
+  .toy .toy-chip.toy-chip { display: inline-flex; }
+  .toy-chip .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-chip.toy-full { background: #2f8c69; box-shadow: 0 5px 0 #1b5a42; }
+  .toy-go { display: block; width: 100%; max-width: 230px; min-height: 62px; margin: 16px auto 0; padding: 8px 16px; border: 0; border-radius: 22px;
+    cursor: pointer; font: inherit; font-size: 30px; font-weight: 900; line-height: 1; color: #203c3a; background: #efbd4d;
+    box-shadow: 0 6px 0 #b98a1f; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s; }
+  .toy-go:active { transform: translateY(5px); box-shadow: 0 1px 0 #b98a1f; }
+  .toy-go[disabled] { opacity: .45; cursor: default; }
+  .toy-score { display: flex; justify-content: center; gap: 10px; margin-top: 14px; font-size: 22px; line-height: 1.1; }
+  .toy .toy-score.toy-score { display: flex; }
+  .toy-score .toy-sc { padding: 6px 12px; border-radius: 14px; background: rgba(255,255,255,.7); }
+  .toy-score .toy-sc .toy-v { font-variant-numeric: tabular-nums; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; font: inherit; font-size: 22px; font-weight: 900; color: #697873; background: #fff; cursor: pointer;
+    box-shadow: 0 4px 0 #e7ded0; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #e7ded0; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #3a3220, #3a2626 50%, #1d3a2d); border-color: rgba(255,255,255,.12); color: #f4ecff; }
+  html[data-theme="dark"] .toy-tab { background: #2d2838; box-shadow: 0 5px 0 #14111a; }
+  html[data-theme="dark"] .toy-tab[data-k="jp"].toy-on { background: #4a2a28; }
+  html[data-theme="dark"] .toy-tab[data-k="ph"].toy-on { background: #1d3a2d; }
+  html[data-theme="dark"] .toy-counter { background: #2d2838; border-color: #4a4058; box-shadow: 0 6px 0 #14111a; }
+  html[data-theme="dark"] .toy-box { background: #3a3448; }
+  html[data-theme="dark"] .toy-box.toy-cur { background: #6e5410; }
+  html[data-theme="dark"] .toy-box.toy-hit { background: #1f6a4c; }
+  html[data-theme="dark"] .toy-score .toy-sc { background: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .toy-go { background: #b98a1f; color: #fff; box-shadow: 0 6px 0 #6e5410; }
+  html[data-theme="dark"] .toy-reset { background: #2d2838; color: #f4ecff; box-shadow: 0 4px 0 #14111a; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump { animation: none; }
+    html:not([data-motion="on"]) .toy-crew .toy-pg { transition: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump { animation: none; }
+  html[data-motion="off"] .toy-crew .toy-pg { transition: none; }
+  </style>
+  <section class="toy" aria-label="👆🧺">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-tabs">
+      <button type="button" class="toy-tab toy-on" data-k="jp" aria-label="🇯🇵">🇯🇵<span class="toy-mk">✅</span></button>
+      <button type="button" class="toy-tab" data-k="ph" aria-label="🇵🇭">🇵🇭<span class="toy-mk">✅</span></button>
+    </div>
+    <div class="toy-counter" aria-hidden="true">
+      <div class="toy-crew"><span class="toy-pg">🐧</span><span class="toy-pg">🐧</span><span class="toy-pg">🐧</span></div>
+      <div class="toy-st">
+        <div class="toy-box">🔎<span class="toy-bag">🧺</span></div>
+        <div class="toy-box">💳<span class="toy-bag">🧺</span></div>
+        <div class="toy-box">🛍️<span class="toy-bag">🧺</span></div>
+      </div>
+    </div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-c1"><span>🧺</span><span class="toy-n toy-served">0</span><span>/3</span></span>
+      <span class="toy-chip"><span>👆</span><span class="toy-n toy-taps">0</span></span>
+    </div>
+    <button type="button" class="toy-go" aria-label="🧺 ▶">🧺 ▶</button>
+    <div class="toy-score" aria-hidden="true">
+      <span class="toy-sc">🇯🇵 👆 <span class="toy-v" data-k="jp">?</span></span>
+      <span class="toy-sc">🇵🇭 👆 <span class="toy-v" data-k="ph">?</span></span>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var tabs = [].slice.call(box.querySelectorAll('.toy-tab')), pgs = [].slice.call(box.querySelectorAll('.toy-pg'));
+    var boxes = [].slice.call(box.querySelectorAll('.toy-box')), go = box.querySelector('.toy-go'), reset = box.querySelector('.toy-reset');
+    var servedEl = box.querySelector('.toy-served'), tapsEl = box.querySelector('.toy-taps'), c1 = box.querySelector('.toy-c1');
+    var scores = {};
+    [].slice.call(box.querySelectorAll('.toy-v')).forEach(function (v) { scores[v.getAttribute('data-k')] = v; });
+    if (!tabs.length || pgs.length < 3 || boxes.length < 3 || !go || !reset || !servedEl || !tapsEl) return;
+    var GOAL = 3, mode = 'jp', served = 0, step = 0, taps = 0, best = {}, celebrated = false;
+    function bump(el) { if (!el) return; el.classList.remove('toy-bump'); void el.offsetWidth; el.classList.add('toy-bump'); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    function flash(b) { b.classList.add('toy-hit'); setTimeout(function () { b.classList.remove('toy-hit'); }, 220); }
+    function draw() {
+      tabs.forEach(function (t) {
+        var k = t.getAttribute('data-k');
+        t.classList.toggle('toy-on', k === mode);
+        t.classList.toggle('toy-did', best[k] != null);
+      });
+      pgs.forEach(function (p, i) {
+        if (mode === 'jp') { p.style.left = (step * 33.33) + '%'; p.classList.toggle('toy-off', i > 0); }
+        else { p.style.left = (i * 33.33) + '%'; p.classList.remove('toy-off'); }
+      });
+      boxes.forEach(function (b, i) { b.classList.toggle('toy-cur', served < GOAL && (mode === 'ph' || i === step)); });
+      servedEl.textContent = String(served);
+      tapsEl.textContent = String(taps);
+      if (c1) c1.classList.toggle('toy-full', served >= GOAL);
+      go.disabled = served >= GOAL;
+      Object.keys(scores).forEach(function (k) { scores[k].textContent = best[k] != null ? String(best[k]) : '?'; });
+    }
+    function setMode(m) { mode = m; served = 0; step = 0; taps = 0; draw(); }
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () { setMode(t.getAttribute('data-k') || 'jp'); bump(t); });
+    });
+    go.addEventListener('click', function () {
+      if (served >= GOAL) return;
+      taps++;
+      if (mode === 'jp') {
+        flash(boxes[step]);
+        step++;
+        if (step >= 3) { step = 0; served++; bump(c1); }
+      } else {
+        boxes.forEach(flash);
+        served++;
+        bump(c1);
+      }
+      if (served >= GOAL) {
+        best[mode] = taps;
+        pop(boxes[2], ['🛍️', '✨'], 8);
+        if (!celebrated && best.jp != null && best.ph != null) {
+          celebrated = true;
+          setTimeout(function () { pop(go, ['🇯🇵', '🇵🇭', '🐧', '🎉'], 18); }, 250);
+        }
+      }
+      draw();
+    });
+    reset.addEventListener('click', function () { best = {}; celebrated = false; setMode('jp'); });
+    draw();
+  })();
+  </script>
+
   <div class="credit">Cebu photo: author’s own.</div>
   <a class="next" href="../walking-on-the-7th-floor/index.html">
     <div>

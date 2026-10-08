@@ -527,6 +527,119 @@
   </section>
   </div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 18px; border-radius: 28px; text-align: center; position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #fff6c9, #e8f7dc 60%, #e6f2ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(194,138,0,.2); font-weight: 800; color: #3a3219; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; margin: 6px 0 8px; padding: 6px 18px; border-radius: 999px;
+    background: #3a3219; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #1d190c; }
+  .toy .toy-chip.toy-chip { display: inline-flex; }
+  .toy-chip .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-chip.toy-full { background: #34b27d; box-shadow: 0 5px 0 #1f7a53; }
+  .toy-scene { position: relative; width: min(260px, 100%); height: 256px; margin: 0 auto; }
+  .toy-cow { position: absolute; left: 4px; bottom: 6px; font-size: 44px; line-height: 1; transform: translateX(-80px); opacity: 0;
+    transition: transform .5s cubic-bezier(.2,1.4,.4,1), opacity .3s; }
+  .toy-scene.toy-done .toy-cow { transform: none; opacity: 1; }
+  .toy-cone { position: absolute; left: 50%; bottom: 0; width: 0; height: 0; margin-left: -34px;
+    border-left: 34px solid transparent; border-right: 34px solid transparent; border-top: 96px solid #e0a95a; }
+  .toy-cone::after { content: ""; position: absolute; left: -26px; top: -92px; width: 52px; height: 80px;
+    background: repeating-linear-gradient(45deg, transparent 0 10px, rgba(150,95,30,.35) 10px 13px),
+                repeating-linear-gradient(-45deg, transparent 0 10px, rgba(150,95,30,.35) 10px 13px);
+    clip-path: polygon(0 0, 100% 0, 50% 100%); }
+  .toy-scoop { position: absolute; left: 50%; width: 84px; height: 66px; margin-left: -42px; border-radius: 50% 50% 42% 42% / 56% 56% 44% 44%;
+    box-shadow: inset -8px -8px 0 rgba(0,0,0,.08), inset 6px 6px 0 rgba(255,255,255,.45);
+    animation: toy-drop .45s cubic-bezier(.3,1.5,.5,1); }
+  @keyframes toy-drop { 0% { transform: translateY(-140px); } 100% { transform: translateY(0); } }
+  .toy-row { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .toy-btn { width: 64px; height: 64px; padding: 0; border: 3px solid #fff; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 32px; line-height: 1; color: inherit; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s; }
+  .toy-btn:active { transform: translateY(5px); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-f1 { background: #fffaf0; box-shadow: 0 6px 0 #d9cfb8; }
+  .toy-btn.toy-f2 { background: #ffd1dc; box-shadow: 0 6px 0 #e091a6; }
+  .toy-btn.toy-f3 { background: #c9e8a8; box-shadow: 0 6px 0 #86b35a; }
+  .toy-btn.toy-f4 { background: #d9b38c; box-shadow: 0 6px 0 #9a6f45; }
+  .toy-btn:active { box-shadow: 0 1px 0 rgba(0,0,0,.2); }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; font: inherit; font-size: 22px; font-weight: 900; color: #86795a; background: #fff; cursor: pointer;
+    box-shadow: 0 4px 0 #e2cf8c; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #e2cf8c; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #3a3220, #22331f 60%, #1f2c3a); border-color: rgba(255,255,255,.12); color: #f4ecff; }
+  html[data-theme="dark"] .toy-btn { border-color: #2d2838; }
+  html[data-theme="dark"] .toy-reset { background: #2d2838; color: #f4ecff; box-shadow: 0 4px 0 #14111a; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-scoop, html:not([data-motion="on"]) .toy-bump { animation: none; }
+    html:not([data-motion="on"]) .toy-cow { transition: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-scoop, html[data-motion="off"] .toy-bump { animation: none; }
+  html[data-motion="off"] .toy-cow { transition: none; }
+  </style>
+  <section class="toy" aria-label="👆🍦">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite"><span>🍨</span><span class="toy-n">0</span><span>/4</span></div>
+    <div class="toy-scene" aria-hidden="true">
+      <span class="toy-cow">🐄</span>
+      <div class="toy-cone"></div>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-f1" data-c="#fffaf0" aria-label="🥛">🥛</button>
+      <button type="button" class="toy-btn toy-f2" data-c="#ffb3c6" aria-label="🍓">🍓</button>
+      <button type="button" class="toy-btn toy-f3" data-c="#a9d67a" aria-label="🍵">🍵</button>
+      <button type="button" class="toy-btn toy-f4" data-c="#a8754a" aria-label="🍫">🍫</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var scene = box.querySelector('.toy-scene'), numEl = box.querySelector('.toy-n'), chip = box.querySelector('.toy-chip');
+    var btns = [].slice.call(box.querySelectorAll('.toy-row .toy-btn')), reset = box.querySelector('.toy-reset');
+    if (!scene || !numEl || !btns.length || !reset) return;
+    var MAX = 4, scoops = [];
+    function bump(el) { if (!el) return; el.classList.remove('toy-bump'); void el.offsetWidth; el.classList.add('toy-bump'); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    function draw() {
+      numEl.textContent = String(scoops.length);
+      chip.classList.toggle('toy-full', scoops.length >= MAX);
+      scene.classList.toggle('toy-done', scoops.length >= MAX);
+      btns.forEach(function (b) { b.disabled = scoops.length >= MAX; });
+    }
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (scoops.length >= MAX) return;
+        var s = document.createElement('div');
+        s.className = 'toy-scoop';
+        s.style.background = b.getAttribute('data-c') || '#fff';
+        s.style.bottom = (78 + scoops.length * 34) + 'px';
+        s.style.zIndex = String(2 + scoops.length);
+        s.style.marginLeft = (-42 + (scoops.length % 2 ? 5 : -5)) + 'px';
+        scene.appendChild(s);
+        scoops.push(s);
+        bump(chip);
+        draw();
+        if (scoops.length >= MAX) setTimeout(function () { pop(s, ['🍦', '🐄', '🐧', '✨'], 18); }, 300);
+      });
+    });
+    reset.addEventListener('click', function () {
+      scoops.forEach(function (s) { if (s.parentNode) s.parentNode.removeChild(s); });
+      scoops = [];
+      draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../yaba-ton-local-never-eaten/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>

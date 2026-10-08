@@ -343,6 +343,129 @@
 
   <div class="rail" aria-hidden="true"></div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 18px; border-radius: 28px; text-align: center; position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #232b3a, #1b2230 60%, #2a2a20); border: 3px solid rgba(255,255,255,.10);
+    box-shadow: 0 14px 34px rgba(0,0,0,.35); font-weight: 800; color: #f7f2e8; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-hearts { display: flex; justify-content: center; gap: 6px; margin: 8px 0 12px; font-size: 26px; line-height: 1; }
+  .toy .toy-hearts.toy-hearts { display: flex; }
+  .toy-hearts .toy-h { opacity: .2; filter: grayscale(1); transform: scale(.8); transition: opacity .2s, transform .25s cubic-bezier(.2,1.6,.4,1); }
+  .toy-hearts .toy-h.toy-on { opacity: 1; filter: none; transform: none; }
+  .toy-hall { position: relative; height: 170px; width: min(310px, 100%); margin: 0 auto; border-radius: 22px; overflow: hidden;
+    background: linear-gradient(#2c3442 0 52%, #12161e 52% 70%, #3a4252 70%); }
+  .toy-hall::before { content: ""; position: absolute; left: -30px; top: 30px; width: 80px; height: 90px; border-radius: 0 50px 0 0; background: #07090d; }
+  .toy-hall::after { content: ""; position: absolute; left: 0; right: 0; top: 70%; height: 6px; background: #ffd342; }
+  .toy-train { position: absolute; left: 56px; top: 66px; font-size: 48px; white-space: nowrap; line-height: 1; transition: transform 1.2s cubic-bezier(.6,0,.4,1); }
+  .toy-hall.toy-gone .toy-train { transform: translateX(320px); }
+  .toy-me { position: absolute; left: 170px; bottom: 4px; font-size: 40px; line-height: 1; transition: left .35s, bottom .35s, transform .35s; }
+  .toy-hall.toy-in .toy-me { left: 70px; bottom: 66px; transform: scale(.6); }
+  .toy-hall.toy-in.toy-gone .toy-me { left: 390px; }
+  .toy-hall .toy-wind { position: absolute; left: 20px; top: 74px; font-size: 30px; line-height: 1; opacity: 0; pointer-events: none; }
+  .toy-hall .toy-wind.toy-go { animation: toy-wind 1.1s ease-out forwards; }
+  @keyframes toy-wind { 0% { opacity: 0; transform: translate(0, 0); } 20% { opacity: 1; } 100% { opacity: 0; transform: translate(220px, 40px); } }
+  .toy-hall .toy-no { position: absolute; left: 50%; top: 18px; margin-left: -22px; font-size: 34px; line-height: 1; visibility: hidden; }
+  .toy-hall.toy-in .toy-no.toy-show { visibility: visible; }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+  .toy-btn { min-width: 70px; min-height: 60px; padding: 8px 14px; border: 3px solid transparent; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 30px; font-weight: 900; line-height: 1; color: #f7f2e8; background: #2f3747;
+    box-shadow: 0 6px 0 #0d1016; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, border-color .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #0d1016; }
+  .toy-btn.toy-on { border-color: #ffd342; }
+  .toy-btn.toy-blow { min-width: 96px; background: #ffd342; color: #11151d; box-shadow: 0 6px 0 #b58f12; }
+  .toy-btn.toy-blow:active { box-shadow: 0 1px 0 #b58f12; }
+  .toy-btn[disabled] { opacity: .4; cursor: default; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; font: inherit; font-size: 22px; font-weight: 900; color: #f7f2e8; background: #2f3747; cursor: pointer;
+    box-shadow: 0 4px 0 #0d1016; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #0d1016; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-hall .toy-wind.toy-go, html:not([data-motion="on"]) .toy-bump { animation: none; }
+    html:not([data-motion="on"]) .toy-train, html:not([data-motion="on"]) .toy-me { transition: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-hall .toy-wind.toy-go, html[data-motion="off"] .toy-bump { animation: none; }
+  html[data-motion="off"] .toy-train, html[data-motion="off"] .toy-me { transition: none; }
+  </style>
+  <section class="toy" aria-label="👆🚇">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-hearts" aria-live="polite"><span class="toy-h">💛</span><span class="toy-h">💛</span><span class="toy-h">💛</span><span class="toy-h">💛</span><span class="toy-h">💛</span></div>
+    <div class="toy-hall" aria-hidden="true">
+      <span class="toy-train">🚃🚃</span>
+      <span class="toy-me">🐧</span>
+      <span class="toy-wind">💨</span>
+      <span class="toy-no">🚫</span>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-where toy-on" data-w="out" aria-label="🚉">🚉</button>
+      <button type="button" class="toy-btn toy-where" data-w="in" aria-label="🚃">🚃</button>
+      <button type="button" class="toy-btn toy-blow" aria-label="🌬️">🌬️</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var hall = box.querySelector('.toy-hall'), wind = box.querySelector('.toy-wind'), no = box.querySelector('.toy-no');
+    var hearts = [].slice.call(box.querySelectorAll('.toy-h')), wheres = [].slice.call(box.querySelectorAll('.toy-where'));
+    var blow = box.querySelector('.toy-blow'), reset = box.querySelector('.toy-reset'), me = box.querySelector('.toy-me');
+    if (!hall || !wind || !hearts.length || !blow || !reset) return;
+    var n = 0, inside = false, gone = false, t1 = 0, t2 = 0;
+    function bump(el) { if (!el) return; el.classList.remove('toy-bump'); void el.offsetWidth; el.classList.add('toy-bump'); }
+    function pop(el, list, k) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, k);
+    }
+    function draw() {
+      hearts.forEach(function (h, i) { h.classList.toggle('toy-on', i < n); });
+      hall.classList.toggle('toy-in', inside);
+      hall.classList.toggle('toy-gone', gone);
+      wheres.forEach(function (w) { w.classList.toggle('toy-on', (w.getAttribute('data-w') === 'in') === inside); w.disabled = gone; });
+      blow.disabled = gone;
+    }
+    wheres.forEach(function (w) {
+      w.addEventListener('click', function () {
+        if (gone) return;
+        inside = w.getAttribute('data-w') === 'in';
+        if (no) no.classList.remove('toy-show');
+        draw();
+      });
+    });
+    blow.addEventListener('click', function () {
+      if (gone) return;
+      wind.classList.remove('toy-go'); void wind.offsetWidth; wind.classList.add('toy-go');
+      clearTimeout(t1);
+      t1 = setTimeout(function () {
+        if (inside) {
+          if (no) { no.classList.remove('toy-show'); void no.offsetWidth; no.classList.add('toy-show'); }
+          return;
+        }
+        n = Math.min(hearts.length, n + 1);
+        bump(hearts[n - 1]);
+        bump(me);
+        draw();
+        if (n >= hearts.length) {
+          pop(me, ['💛', '🐧', '✨'], 14);
+          clearTimeout(t2);
+          t2 = setTimeout(function () { gone = true; draw(); pop(hall, ['🚃', '💨', '🎉'], 10); }, 700);
+        }
+      }, 450);
+    });
+    reset.addEventListener('click', function () {
+      clearTimeout(t1); clearTimeout(t2);
+      n = 0; inside = false; gone = false;
+      if (no) no.classList.remove('toy-show');
+      draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../chiikawa-before-you-visit/index.html">
     <div>
       <div class="next-kicker">NEXT · 23 SEC</div>

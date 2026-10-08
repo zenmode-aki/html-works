@@ -525,6 +525,89 @@
   </section>
   </div>
 
+  <style>
+  .toy { position: relative; margin: 30px 0 0; padding: 20px 14px 24px; border-radius: 28px; text-align: center;
+    background: linear-gradient(165deg, #d8f5fc, #f4fdff 55%, #c9eef7); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(27,127,153,.18); font-weight: 800; color: #1d3440; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-head { position: relative; display: block; width: 150px; height: 150px; margin: 12px auto 4px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; background: radial-gradient(circle at 50% 40%, #ffffff, #bfe9f3);
+    box-shadow: 0 8px 0 #7fc3d4, inset 0 0 0 5px #fff; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-head:active { transform: translateY(5px); box-shadow: 0 3px 0 #7fc3d4, inset 0 0 0 5px #fff; }
+  .toy-face { display: inline-block; font-size: 84px; line-height: 1; }
+  .toy-head.toy-rub .toy-face { animation: toy-rub .35s ease-in-out; }
+  @keyframes toy-rub { 25% { transform: rotate(-10deg) scale(1.06); } 75% { transform: rotate(10deg) scale(1.06); } }
+  .toy-head.toy-wow .toy-face { animation: toy-wow 1s ease-in-out infinite; }
+  @keyframes toy-wow { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+  .toy-foam { position: absolute; left: 50%; top: 18px; font-size: 30px; line-height: 1; pointer-events: none; opacity: 0; }
+  .toy-foam.toy-up { animation: toy-up .8s ease-out forwards; }
+  @keyframes toy-up { 0% { opacity: 1; transform: translate(-50%, 0) scale(.6); } 100% { opacity: 0; transform: translate(var(--toy-dx, -50%), -70px) scale(1.2); } }
+  .toy-scale { display: flex; align-items: center; gap: 8px; max-width: 320px; margin: 18px auto 0; font-size: 28px; line-height: 1; }
+  .toy-bar { flex: 1; height: 22px; border-radius: 999px; background: rgba(29,52,64,.12); overflow: hidden; }
+  .toy-fill { width: 0; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #7fd6e8, #1b7f99); transition: width .3s ease; }
+  .toy-pct { margin-top: 8px; font-size: 24px; font-weight: 900; }
+  .toy-pct .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #1b7f99; background: #fff;
+    box-shadow: 0 4px 0 #a9d9e5; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #a9d9e5; }
+  html[data-theme="dark"] .toy { background: linear-gradient(165deg, #12303a, #1a2228 55%, #0f3440); border-color: rgba(255,255,255,.12); color: #e4f6fb; }
+  html[data-theme="dark"] .toy-head { background: radial-gradient(circle at 50% 40%, #2e4a55, #183039); box-shadow: 0 8px 0 #0a1a20, inset 0 0 0 5px rgba(255,255,255,.12); }
+  html[data-theme="dark"] .toy-bar { background: rgba(255,255,255,.12); }
+  html[data-theme="dark"] .toy-reset { background: #22343c; color: #8fdcef; box-shadow: 0 4px 0 #0a1418; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-head .toy-face,
+    html:not([data-motion="on"]) .toy-foam.toy-up { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-head .toy-face, html[data-motion="off"] .toy-foam.toy-up { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🫧">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <button type="button" class="toy-head" aria-label="🫧"><span class="toy-face">😪</span><span class="toy-foam" aria-hidden="true">🫧</span></button>
+    <div class="toy-scale" aria-hidden="true"><span>😪</span><div class="toy-bar"><div class="toy-fill"></div></div><span>🤩</span></div>
+    <div class="toy-pct" aria-live="polite">👀 <span class="toy-n">0</span>%</div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var head = box.querySelector('.toy-head'), face = box.querySelector('.toy-face'), foam = box.querySelector('.toy-foam');
+    var fill = box.querySelector('.toy-fill'), num = box.querySelector('.toy-pct .toy-n'), reset = box.querySelector('.toy-reset');
+    if (!head || !face || !fill || !num || !reset) return;
+    var MAX = 10, n = 0;
+    var FACES = ['😪', '😪', '😑', '😑', '😐', '😐', '🙂', '🙂', '😊', '😳', '🤩'];
+    function draw() {
+      var p = Math.round(n / MAX * 100);
+      num.textContent = String(p);
+      fill.style.width = p + '%';
+      face.textContent = FACES[n] || '🤩';
+      head.classList.toggle('toy-wow', n >= MAX);
+    }
+    head.addEventListener('click', function () {
+      if (n >= MAX) return;
+      n += 1;
+      head.classList.remove('toy-rub'); void head.offsetWidth; head.classList.add('toy-rub');
+      if (foam) {
+        foam.style.setProperty('--toy-dx', (n % 2 ? '-110%' : '10%'));
+        foam.classList.remove('toy-up'); void foam.offsetWidth; foam.classList.add('toy-up');
+      }
+      draw();
+      if (n >= MAX) {
+        head.classList.remove('toy-rub');
+        if (window.pengessoPop) {
+          var r = head.getBoundingClientRect();
+          window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🫧', '✨', '👀', '🐧'], 18);
+        }
+      }
+    });
+    reset.addEventListener('click', function () { n = 0; head.classList.remove('toy-rub', 'toy-wow'); draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../how-to-spot-a-good-hair-salon/index.html">
     <div>
       <div class="next-kicker">NEXT · 35 SEC</div>

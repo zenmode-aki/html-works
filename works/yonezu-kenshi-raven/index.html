@@ -697,6 +697,98 @@
 
   <div class="chap-tracker" aria-hidden="true"><span data-c="c1" style="--c: #ff8a70">1</span><span data-c="c2" style="--c: #4d9de0">2</span><span data-c="c3" style="--c: #34b27d">3</span><span data-c="c4" style="--c: #b07ce8">4</span></div>
 
+  <style>
+  .toy { position: relative; margin: 30px 0 0; padding: 20px 14px 22px; border-radius: 28px; text-align: center;
+    background: linear-gradient(170deg, #1d2a5c, #3a3f7a 55%, #b06a2f); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(29,42,92,.3); font-weight: 800; color: #fff8ec; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-sky { position: relative; height: 210px; max-width: 360px; margin: 6px auto 0; }
+  .toy-star { position: absolute; width: 56px; height: 56px; margin: -28px 0 0 -28px; padding: 0; border: 0; border-radius: 50%;
+    cursor: pointer; font: inherit; font-size: 30px; line-height: 1; background: rgba(255,255,255,.08); color: inherit;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-star .toy-s { display: inline-block; opacity: .55; transform: scale(.75); transition: transform .3s cubic-bezier(.3,1.6,.5,1), opacity .3s; }
+  .toy-star:not(.toy-on) .toy-s { animation: toy-twinkle 2s ease-in-out infinite; }
+  .toy-star:nth-child(2n) .toy-s { animation-delay: .7s; }
+  @keyframes toy-twinkle { 0%, 100% { opacity: .35; } 50% { opacity: .75; } }
+  .toy-star.toy-on { cursor: default; background: rgba(255,214,102,.18); box-shadow: 0 0 18px rgba(255,214,102,.55); }
+  .toy-star.toy-on .toy-s { opacity: 1; transform: scale(1.1); }
+  .toy-moon { position: absolute; right: 66px; top: -4px; font-size: 34px; line-height: 1; }
+  .toy-me { position: absolute; left: 50%; bottom: 0; margin-left: -40px; width: 80px; font-size: 52px; line-height: 1; }
+  .toy-me .toy-b { display: inline-block; transform-origin: 50% 100%; transition: transform .35s cubic-bezier(.3,1.6,.5,1); }
+  .toy-me.toy-grow .toy-b { animation: toy-grow .45s ease-out; }
+  @keyframes toy-grow { 40% { transform: scale(1.25) translateY(-6px); } }
+  .toy-count { margin-top: 10px; font-size: 24px; font-weight: 900; }
+  .toy-count .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #1d2a5c; background: #fff8ec;
+    box-shadow: 0 4px 0 #b9a77f; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #b9a77f; }
+  html[data-theme="dark"] .toy { background: linear-gradient(170deg, #121a3a, #23264a 55%, #5a3818); border-color: rgba(255,255,255,.12); }
+  html[data-theme="dark"] .toy-reset { background: #2a2a40; color: #ffd98a; box-shadow: 0 4px 0 #0b0b14; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-star .toy-s,
+    html:not([data-motion="on"]) .toy-me .toy-b { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-star .toy-s, html[data-motion="off"] .toy-me .toy-b { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆⭐">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-sky">
+      <span class="toy-moon" aria-hidden="true">🌙</span>
+      <button type="button" class="toy-star" style="left:14%;top:22%" aria-label="⭐"><span class="toy-s">⭐</span></button>
+      <button type="button" class="toy-star" style="left:38%;top:12%" aria-label="⭐"><span class="toy-s">⭐</span></button>
+      <button type="button" class="toy-star" style="left:64%;top:28%" aria-label="⭐"><span class="toy-s">⭐</span></button>
+      <button type="button" class="toy-star" style="left:86%;top:52%" aria-label="⭐"><span class="toy-s">⭐</span></button>
+      <button type="button" class="toy-star" style="left:16%;top:62%" aria-label="⭐"><span class="toy-s">⭐</span></button>
+      <span class="toy-me" aria-hidden="true"><span class="toy-b">🥚</span></span>
+    </div>
+    <div class="toy-count" aria-live="polite">⭐ <span class="toy-n">0</span>/5</div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var stars = box.querySelectorAll('.toy-star'), reset = box.querySelector('.toy-reset');
+    var me = box.querySelector('.toy-me'), body = box.querySelector('.toy-me .toy-b'), num = box.querySelector('.toy-count .toy-n');
+    if (!stars.length || !reset || !me || !body || !num) return;
+    // every star we learn, we grow up a little
+    var GROW = ['🥚', '🐣', '🐥', '🐤', '🐦', '🐧'];
+    function count() { var k = 0; for (var i = 0; i < stars.length; i++) if (stars[i].classList.contains('toy-on')) k++; return k; }
+    function draw() {
+      var k = count();
+      num.textContent = String(k);
+      body.textContent = GROW[Math.min(k, GROW.length - 1)];
+    }
+    for (var i = 0; i < stars.length; i++) {
+      stars[i].addEventListener('click', function () {
+        if (this.classList.contains('toy-on')) return;
+        this.classList.add('toy-on');
+        var s = this.querySelector('.toy-s'); if (s) s.textContent = '🌟';
+        this.setAttribute('aria-label', '🌟');
+        me.classList.remove('toy-grow'); void me.offsetWidth; me.classList.add('toy-grow');
+        draw();
+        if (count() >= stars.length && window.pengessoPop) {
+          var r = me.getBoundingClientRect();
+          window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['⭐', '🌟', '🌙', '🐧'], 18);
+        }
+      });
+    }
+    reset.addEventListener('click', function () {
+      for (var i = 0; i < stars.length; i++) {
+        stars[i].classList.remove('toy-on');
+        var s = stars[i].querySelector('.toy-s'); if (s) s.textContent = '⭐';
+        stars[i].setAttribute('aria-label', '⭐');
+      }
+      me.classList.remove('toy-grow');
+      draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../cebu-condo-poolside/index.html">
     <div>
       <div class="next-kicker">NEXT · 34 SEC</div>

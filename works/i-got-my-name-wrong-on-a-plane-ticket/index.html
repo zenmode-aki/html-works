@@ -507,6 +507,126 @@
   </section>
   </div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 18px; border-radius: 28px; text-align: center; position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #fff1c9, #ffe0d1 60%, #e6f2ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(224,102,58,.22); font-weight: 800; color: #322536; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-sky { position: relative; height: 54px; margin: 4px 0 6px; }
+  .toy-sky .toy-plane { position: absolute; left: 6%; bottom: 4px; font-size: 40px; line-height: 1;
+    transition: left 1.1s cubic-bezier(.5,0,.3,1), bottom 1.1s cubic-bezier(.5,0,.3,1), transform 1.1s; }
+  .toy-sky.toy-fly .toy-plane { left: 64%; bottom: 30px; transform: rotate(-12deg) scale(.8); }
+  .toy-ticket { position: relative; width: min(290px, 100%); margin: 0 auto; padding: 14px 14px 12px 22px;
+    border-radius: 18px; background: #fff; border: 3px dashed #ffb48f; box-shadow: 0 7px 0 #f2c3a8; text-align: left; }
+  .toy-ticket::before { content: ""; position: absolute; left: -12px; top: 50%; width: 22px; height: 22px; margin-top: -11px;
+    border-radius: 50%; background: #ffe7d6; }
+  .toy-ticket .toy-top { display: flex; align-items: center; justify-content: space-between; font-size: 22px; line-height: 1; }
+  .toy-ticket .toy-route { font-size: 20px; font-weight: 900; color: #e0663a; }
+  .toy-names { display: flex; gap: 10px; margin-top: 12px; }
+  .toy-box { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 64px; border-radius: 16px; border: 3px solid #e7dbe6; background: #fbf6fa;
+    font: inherit; font-size: 38px; line-height: 1; color: inherit; cursor: default; padding: 0; }
+  .toy .toy-box.toy-b1.toy-b1 { display: flex; }
+  .toy-box.toy-b2 { cursor: pointer; border-color: #ff8a5c; background: #fff2ea; box-shadow: 0 5px 0 #ffc4a6;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s; }
+  .toy-box.toy-b2:active { transform: translateY(4px); box-shadow: 0 1px 0 #ffc4a6; }
+  .toy-ticket.toy-bad .toy-box.toy-b2 { animation: toy-shake .5s ease-in-out infinite; animation-delay: 1s; }
+  .toy-ticket.toy-ok { border-color: #34b27d; border-style: solid; box-shadow: 0 7px 0 #a6dcc2; }
+  .toy-ticket.toy-ok .toy-box { border-color: #34b27d; background: #eafaf2; box-shadow: none; }
+  @keyframes toy-shake { 0%, 60%, 100% { transform: translateX(0); } 70% { transform: translateX(-5px); } 85% { transform: translateX(5px); } }
+  .toy-mark { display: inline-block; min-width: 40px; font-size: 26px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; margin-top: 16px; padding: 8px 18px; border-radius: 999px;
+    font-size: 26px; font-weight: 900; line-height: 1.1; color: #fff; background: #e2553f; box-shadow: 0 5px 0 #9c2f1f;
+    transition: background .3s, box-shadow .3s; }
+  .toy-chip .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-chip.toy-good { background: #34b27d; box-shadow: 0 5px 0 #1f7a53; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; font: inherit; font-size: 22px; font-weight: 900; color: #876f84; background: #fff; cursor: pointer;
+    box-shadow: 0 4px 0 #f2c3a8; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #f2c3a8; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #3a3220, #3a2626 60%, #1f2c3a); border-color: rgba(255,255,255,.12); color: #f4ecff; }
+  html[data-theme="dark"] .toy-ticket { background: #2d2838; border-color: #a85a3c; box-shadow: 0 7px 0 #14111a; }
+  html[data-theme="dark"] .toy-ticket::before { background: #3a2626; }
+  html[data-theme="dark"] .toy-box { background: #231f2c; border-color: #4a4058; }
+  html[data-theme="dark"] .toy-box.toy-b2 { background: #3a2a24; border-color: #ff8a5c; box-shadow: 0 5px 0 #14111a; }
+  html[data-theme="dark"] .toy-ticket.toy-ok .toy-box { background: #1d3a2d; border-color: #34b27d; }
+  html[data-theme="dark"] .toy-reset { background: #2d2838; color: #f4ecff; box-shadow: 0 4px 0 #14111a; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-ticket.toy-bad .toy-box.toy-b2,
+    html:not([data-motion="on"]) .toy-bump { animation: none; }
+    html:not([data-motion="on"]) .toy-sky .toy-plane { transition: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-ticket.toy-bad .toy-box.toy-b2, html[data-motion="off"] .toy-bump { animation: none; }
+  html[data-motion="off"] .toy-sky .toy-plane { transition: none; }
+  </style>
+  <section class="toy" aria-label="👆🎫">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-sky" aria-hidden="true"><span class="toy-plane">🛫</span></div>
+    <div class="toy-ticket toy-bad">
+      <div class="toy-top"><span aria-hidden="true">🎫</span><span class="toy-route">🇯🇵 → 🇵🇭</span><span class="toy-mark" aria-live="polite">❌</span></div>
+      <div class="toy-names">
+        <span class="toy-box toy-b1">🐧</span>
+        <button type="button" class="toy-box toy-b2" aria-label="🐧 ⇄ ⭐">🐧</button>
+      </div>
+    </div>
+    <div class="toy-chip" aria-live="polite"><span class="toy-ic">💸</span><span>¥</span><span class="toy-n">40,000</span></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var b2 = box.querySelector('.toy-b2'), ticket = box.querySelector('.toy-ticket'), mark = box.querySelector('.toy-mark');
+    var chip = box.querySelector('.toy-chip'), numEl = box.querySelector('.toy-n');
+    var sky = box.querySelector('.toy-sky'), reset = box.querySelector('.toy-reset');
+    if (!b2 || !ticket || !mark || !chip || !numEl || !reset) return;
+    var LOSS = 40000, ok = false, raf = 0;
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function fmt(v) { return String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+    function bump(el) { el.classList.remove('toy-bump'); void el.offsetWidth; el.classList.add('toy-bump'); }
+    function roll(from, to) {
+      cancelAnimationFrame(raf);
+      if (still()) { numEl.textContent = fmt(to); return; }
+      var t0 = 0;
+      function step(t) {
+        if (!t0) t0 = t;
+        var k = Math.min(1, (t - t0) / 700);
+        numEl.textContent = fmt(Math.round(from + (to - from) * k));
+        if (k < 1) raf = requestAnimationFrame(step);
+      }
+      raf = requestAnimationFrame(step);
+    }
+    function draw() {
+      b2.textContent = ok ? '⭐' : '🐧';
+      ticket.classList.toggle('toy-ok', ok);
+      ticket.classList.toggle('toy-bad', !ok);
+      mark.textContent = ok ? '✅' : '❌';
+      chip.classList.toggle('toy-good', ok);
+      if (sky) sky.classList.toggle('toy-fly', ok);
+    }
+    b2.addEventListener('click', function () {
+      ok = !ok;
+      draw();
+      bump(b2); bump(chip);
+      roll(ok ? LOSS : 0, ok ? 0 : LOSS);
+      if (ok && window.pengessoPop) {
+        var r = ticket.getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['✅', '🐧', '✨', '🛫'], 16);
+      }
+    });
+    reset.addEventListener('click', function () {
+      if (!ok) return;
+      ok = false; draw(); roll(0, LOSS);
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../output-like-a-toilet/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>

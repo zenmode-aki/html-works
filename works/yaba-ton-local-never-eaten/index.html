@@ -562,6 +562,116 @@
   </section>
   </div>
 
+  <style>
+  .toy { position: relative; margin: 30px 0 0; padding: 20px 14px 24px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #ffefc4, #fffaf0 55%, #f6dfb3); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(154,107,18,.2); font-weight: 800; color: #352c1c; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-steps { display: flex; justify-content: center; align-items: center; gap: 4px; margin: 10px 0 14px; font-size: 26px; line-height: 1; }
+  .toy-st { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 14px;
+    background: rgba(255,255,255,.6); opacity: .45; transition: opacity .25s, background .25s, transform .25s; }
+  .toy-st.toy-done { opacity: 1; background: #fff; }
+  .toy-st.toy-cur { opacity: 1; background: #fff; transform: scale(1.12); box-shadow: 0 0 0 3px #9a6b12; }
+  .toy-arrow { font-size: 16px; opacity: .5; }
+  .toy-plate { position: relative; width: 250px; max-width: 100%; height: 130px; margin: 0 auto; border-radius: 50%;
+    background: radial-gradient(ellipse at 50% 45%, #ffffff 0 58%, #eee6d6 60% 100%); box-shadow: 0 8px 0 rgba(53,44,28,.15); }
+  .toy-katsu { position: absolute; left: 50%; top: 50%; width: 150px; height: 70px; margin: -38px 0 0 -75px; border-radius: 34px 40px 30px 38px;
+    background: #f4b7b0; box-shadow: inset 0 -6px 0 rgba(0,0,0,.08); transition: background .4s, filter .4s; }
+  .toy-katsu.toy-k1 { background: repeating-linear-gradient(45deg, #f3dca0 0 6px, #ecd08a 6px 12px); }
+  .toy-katsu.toy-k2 { background: repeating-linear-gradient(45deg, #e9b453 0 6px, #dc9f3a 6px 12px); }
+  .toy-katsu.toy-k3 { background: repeating-linear-gradient(45deg, #d99634 0 6px, #c9822a 6px 12px); }
+  .toy-katsu.toy-k4 { background: repeating-linear-gradient(45deg, #c47a22 0 6px, #b46b1c 6px 12px); }
+  .toy-miso { position: absolute; left: 10px; right: 10px; top: 8px; bottom: 8px; border-radius: 30px; background: #5b3313;
+    clip-path: inset(0 100% 0 0); transition: clip-path .6s ease-out; opacity: .92; }
+  .toy-katsu.toy-m1 .toy-miso { clip-path: inset(0 50% 0 0); }
+  .toy-katsu.toy-m2 .toy-miso { clip-path: inset(0 0 0 0); }
+  .toy-sesame { position: absolute; right: 18px; top: 4px; font-size: 26px; line-height: 1; visibility: hidden; }
+  .toy-katsu.toy-m2 .toy-sesame { visibility: visible; }
+  .toy-fx { position: absolute; left: 50%; top: 0; margin-left: -16px; font-size: 32px; line-height: 1; opacity: 0; pointer-events: none; }
+  .toy-fx.toy-go { animation: toy-rise .7s ease-out; }
+  @keyframes toy-rise { 0% { opacity: 1; transform: translateY(20px) scale(.6); } 100% { opacity: 0; transform: translateY(-40px) scale(1.3); } }
+  .toy-act { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 150px; min-height: 64px;
+    margin-top: 18px; padding: 8px 24px; border: 0; border-radius: 24px; cursor: pointer; font: inherit; font-size: 32px;
+    font-weight: 900; line-height: 1; color: #fff; background: #9a6b12; box-shadow: 0 7px 0 #61430a;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-act:active { transform: translateY(6px); box-shadow: 0 1px 0 #61430a; }
+  .toy-act[disabled] { cursor: default; background: #2fa36b; box-shadow: 0 7px 0 #1b6b45; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #9a6b12; background: #fff;
+    box-shadow: 0 4px 0 #e7cf9c; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #e7cf9c; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #3d3015, #221e17 55%, #362a14); border-color: rgba(255,255,255,.12); color: #f7ecd6; }
+  html[data-theme="dark"] .toy-st { background: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .toy-st.toy-done, html[data-theme="dark"] .toy-st.toy-cur { background: #3e3524; }
+  html[data-theme="dark"] .toy-plate { background: radial-gradient(ellipse at 50% 45%, #4a4436 0 58%, #36302a 60% 100%); box-shadow: 0 8px 0 #000; }
+  html[data-theme="dark"] .toy-reset { background: #322a1c; color: #f0c770; box-shadow: 0 4px 0 #120e08; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-fx.toy-go { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-fx.toy-go { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🐷">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-steps" aria-hidden="true">
+      <span class="toy-st" data-s="0">🍞</span><span class="toy-arrow">→</span>
+      <span class="toy-st" data-s="1">🔥</span><span class="toy-arrow">→</span>
+      <span class="toy-st" data-s="2">🟤</span><span class="toy-arrow">→</span>
+      <span class="toy-st" data-s="3">🐷</span>
+    </div>
+    <div class="toy-plate" aria-hidden="true">
+      <span class="toy-fx">✨</span>
+      <div class="toy-katsu"><div class="toy-miso"></div><span class="toy-sesame">✨</span></div>
+    </div>
+    <button type="button" class="toy-act" aria-label="🍞 ▶">🍞 ▶</button>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var act = box.querySelector('.toy-act'), reset = box.querySelector('.toy-reset');
+    var katsu = box.querySelector('.toy-katsu'), fx = box.querySelector('.toy-fx'), sts = box.querySelectorAll('.toy-st');
+    if (!act || !reset || !katsu || !fx) return;
+    // 🍞 ×1, 🔥 ×3, 🟤 ×2 → 🐷 miso katsu
+    var PLAN = [['🍞', 'toy-k1', '✨'], ['🔥', 'toy-k2', '♨️'], ['🔥', 'toy-k3', '♨️'], ['🔥', 'toy-k4', '♨️'], ['🟤', 'toy-m1', '💧'], ['🟤', 'toy-m2', '✨']];
+    var STAGE = [0, 1, 1, 1, 2, 2];
+    var n = 0;
+    function draw() {
+      katsu.className = 'toy-katsu';
+      for (var i = 0; i < n; i++) {
+        var c = PLAN[i][1];
+        if (c.indexOf('toy-k') === 0) katsu.className = 'toy-katsu ' + c;
+      }
+      if (n >= 5) katsu.classList.add('toy-m1');
+      if (n >= 6) katsu.classList.add('toy-m2');
+      var cur = n < PLAN.length ? STAGE[n] : 3;
+      for (var j = 0; j < sts.length; j++) {
+        sts[j].classList.toggle('toy-done', j < cur || n >= PLAN.length);
+        sts[j].classList.toggle('toy-cur', j === cur);
+      }
+      var done = n >= PLAN.length;
+      act.disabled = done;
+      var t = done ? '🐷 ✓' : PLAN[n][0] + ' ▶';
+      act.textContent = t; act.setAttribute('aria-label', t);
+    }
+    act.addEventListener('click', function () {
+      if (n >= PLAN.length) return;
+      fx.textContent = PLAN[n][2];
+      fx.classList.remove('toy-go'); void fx.offsetWidth; fx.classList.add('toy-go');
+      n += 1;
+      draw();
+      if (n >= PLAN.length && window.pengessoPop) {
+        var r = katsu.getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🐷', '🟤', '🍱', '✨'], 18);
+      }
+    });
+    reset.addEventListener('click', function () { n = 0; fx.classList.remove('toy-go'); draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../osu-for-a-japanese-feeling-in-nagoya/index.html">
     <div>
       <div class="next-kicker">NEXT · 42 SEC</div>

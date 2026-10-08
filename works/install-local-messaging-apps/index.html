@@ -561,6 +561,150 @@
   </section>
   </div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 18px; border-radius: 28px; text-align: center; position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #fff6c9, #ffeec2 55%, #e6f2ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(194,138,0,.2); font-weight: 800; color: #3a3219; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-flags { display: flex; justify-content: center; gap: 8px; margin: 8px 0 12px; }
+  .toy .toy-flags.toy-flags { display: flex; }
+  .toy-flag { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 58px; height: 46px;
+    border-radius: 16px; background: rgba(255,255,255,.6); border: 3px solid transparent; font-size: 28px; line-height: 1;
+    transition: transform .2s, border-color .2s, background .2s; }
+  .toy-flag.toy-cur { border-color: #c28a00; background: #fff; transform: scale(1.1); }
+  .toy-flag .toy-ok { position: absolute; right: -8px; top: -10px; font-size: 18px; visibility: hidden; }
+  .toy-flag.toy-got .toy-ok { visibility: visible; }
+  .toy-phone { position: relative; width: 210px; margin: 0 auto; padding: 34px 16px 18px; border-radius: 34px; background: #3a3219;
+    box-shadow: 0 8px 0 #1d190c; }
+  .toy-phone::before { content: ""; position: absolute; left: 50%; top: 12px; width: 50px; height: 8px; margin-left: -25px;
+    border-radius: 8px; background: #6b6040; }
+  .toy-screen { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px; border-radius: 20px;
+    background: linear-gradient(170deg, #fffaf0, #f2f6ff); }
+  .toy-app { position: relative; height: 70px; padding: 0; border: 3px dashed #c9bfa8; border-radius: 20px; background: transparent;
+    cursor: pointer; font: inherit; font-size: 30px; line-height: 1; color: #86795a; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .1s, background .25s, border-color .25s; }
+  .toy-app:active { transform: scale(.94); }
+  .toy-app .toy-ic { visibility: hidden; position: absolute; left: 0; right: 0; top: 50%; margin-top: -16px; }
+  .toy-app .toy-dl { position: absolute; left: 0; right: 0; top: 50%; margin-top: -16px; }
+  .toy-app.toy-in { border-style: solid; border-color: transparent; background: var(--toy-c); box-shadow: 0 5px 0 rgba(0,0,0,.18); }
+  .toy-app.toy-in .toy-ic { visibility: visible; }
+  .toy-app.toy-in .toy-dl { visibility: hidden; }
+  .toy-app .toy-code { position: absolute; right: -10px; top: -12px; padding: 3px 7px; border-radius: 999px; background: #e2553f; color: #fff;
+    font-size: 15px; font-weight: 900; line-height: 1.1; visibility: hidden; transform: scale(.3); transition: transform .3s cubic-bezier(.2,1.6,.4,1); }
+  .toy-app.toy-hit .toy-code { visibility: visible; transform: none; }
+  .toy-miss { position: absolute; left: 50%; top: 50%; z-index: 4; padding: 8px 14px; border-radius: 18px; background: #fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,.25); font-size: 30px; line-height: 1; white-space: nowrap; visibility: hidden;
+    transform: translate(-50%, -50%) scale(.4); transition: transform .25s cubic-bezier(.2,1.6,.4,1); }
+  .toy-phone.toy-lost .toy-miss { visibility: visible; transform: translate(-50%, -50%); }
+  .toy-phone.toy-lost { animation: toy-shake .4s ease-in-out 1; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  .toy-send { display: block; width: 100%; max-width: 230px; min-height: 62px; margin: 18px auto 0; padding: 8px 16px; border: 0; border-radius: 22px;
+    cursor: pointer; font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: #3a3219; background: #ffd54d;
+    box-shadow: 0 6px 0 #c28a00; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s; }
+  .toy-send:active { transform: translateY(5px); box-shadow: 0 1px 0 #c28a00; }
+  .toy-send[disabled] { opacity: .45; cursor: default; }
+  .toy-send.toy-done { background: #34b27d; color: #fff; box-shadow: 0 6px 0 #1f7a53; opacity: 1; }
+  .toy-reset { position: absolute; z-index: 5; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; font: inherit; font-size: 22px; font-weight: 900; color: #86795a; background: #fff; cursor: pointer;
+    box-shadow: 0 4px 0 #e2cf8c; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #e2cf8c; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.15); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #3a3220, #33301c 55%, #1f2c3a); border-color: rgba(255,255,255,.12); color: #f4ecff; }
+  html[data-theme="dark"] .toy-flag { background: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .toy-flag.toy-cur { background: #2d2838; border-color: #ffd54d; }
+  html[data-theme="dark"] .toy-phone { background: #14111a; box-shadow: 0 8px 0 #000; }
+  html[data-theme="dark"] .toy-screen { background: linear-gradient(170deg, #2d2838, #232b3a); }
+  html[data-theme="dark"] .toy-app { border-color: #5a5470; color: #c9bfe0; }
+  html[data-theme="dark"] .toy-miss { background: #2d2838; }
+  html[data-theme="dark"] .toy-send { background: #b08a1a; color: #fff; box-shadow: 0 6px 0 #6e5410; }
+  html[data-theme="dark"] .toy-reset { background: #2d2838; color: #f4ecff; box-shadow: 0 4px 0 #14111a; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-phone.toy-lost, html:not([data-motion="on"]) .toy-bump { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-phone.toy-lost, html[data-motion="off"] .toy-bump { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆📱">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-flags" aria-hidden="true">
+      <span class="toy-flag toy-cur" data-app="0">🇰🇷<span class="toy-ok">✅</span></span>
+      <span class="toy-flag" data-app="1">🇵🇭<span class="toy-ok">✅</span></span>
+      <span class="toy-flag" data-app="2">🇲🇾<span class="toy-ok">✅</span></span>
+    </div>
+    <div class="toy-phone">
+      <div class="toy-screen">
+        <button type="button" class="toy-app" style="--toy-c: #ffe14d" aria-label="⬇️ 💬"><span class="toy-dl">⬇️</span><span class="toy-ic">💬</span><span class="toy-code">🔢</span></button>
+        <button type="button" class="toy-app" style="--toy-c: #6fb6ff" aria-label="⬇️ ⚡"><span class="toy-dl">⬇️</span><span class="toy-ic">⚡</span><span class="toy-code">🔢</span></button>
+        <button type="button" class="toy-app" style="--toy-c: #5fd38a" aria-label="⬇️ 📞"><span class="toy-dl">⬇️</span><span class="toy-ic">📞</span><span class="toy-code">🔢</span></button>
+        <button type="button" class="toy-app" style="--toy-c: #b48cff" aria-label="⬇️ 📲"><span class="toy-dl">⬇️</span><span class="toy-ic">📲</span><span class="toy-code">🔢</span></button>
+      </div>
+      <div class="toy-miss" aria-hidden="true">🔢 → 📭 ❌</div>
+    </div>
+    <button type="button" class="toy-send" aria-label="📩 🔢">📩 🔢</button>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var flags = [].slice.call(box.querySelectorAll('.toy-flag')), apps = [].slice.call(box.querySelectorAll('.toy-app'));
+    var phone = box.querySelector('.toy-phone'), send = box.querySelector('.toy-send'), reset = box.querySelector('.toy-reset');
+    if (!flags.length || apps.length < 4 || !phone || !send || !reset) return;
+    // 🇰🇷 → yellow 💬, 🇵🇭 → blue ⚡, 🇲🇾 → green 📞 (the purple 📲 is a spare that can also be installed)
+    var cur = 0, got = 0, missT = 0;
+    function bump(el) { if (!el) return; el.classList.remove('toy-bump'); void el.offsetWidth; el.classList.add('toy-bump'); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    function draw() {
+      flags.forEach(function (f, i) { f.classList.toggle('toy-cur', i === cur && got < flags.length); f.classList.toggle('toy-got', i < got); });
+      var done = got >= flags.length;
+      send.disabled = done;
+      send.classList.toggle('toy-done', done);
+      send.textContent = done ? '✅ 🔢 3/3' : '📩 🔢';
+    }
+    apps.forEach(function (a) {
+      a.addEventListener('click', function () {
+        if (a.classList.contains('toy-in')) { bump(a); return; }
+        a.classList.add('toy-in');
+        bump(a);
+        pop(a, ['✨'], 4);
+      });
+    });
+    send.addEventListener('click', function () {
+      if (got >= flags.length) return;
+      var target = apps[Number(flags[cur].getAttribute('data-app')) || 0];
+      clearTimeout(missT);
+      phone.classList.remove('toy-lost');
+      if (!target.classList.contains('toy-in')) {
+        void phone.offsetWidth;
+        phone.classList.add('toy-lost');
+        missT = setTimeout(function () { phone.classList.remove('toy-lost'); }, 1800);
+        return;
+      }
+      target.classList.add('toy-hit');
+      bump(target);
+      pop(target, ['🔢', '✅'], 6);
+      got++;
+      cur = Math.min(flags.length - 1, got);
+      draw();
+      if (got >= flags.length) pop(phone, ['📱', '🐧', '✨', '🎉'], 18);
+    });
+    reset.addEventListener('click', function () {
+      clearTimeout(missT);
+      phone.classList.remove('toy-lost');
+      apps.forEach(function (a) { a.classList.remove('toy-in', 'toy-hit'); });
+      cur = 0; got = 0;
+      draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../seoul-city-share-bikes/index.html">
     <div>
       <div class="next-kicker">NEXT · 78 SEC</div>

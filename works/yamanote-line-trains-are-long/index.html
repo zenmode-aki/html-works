@@ -586,6 +586,99 @@
   </section>
   </div>
 
+  <style>
+  .toy { position: relative; margin: 30px 0 0; padding: 20px 14px 24px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #d6f5e6, #f5fdf9 55%, #fff4d1); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(35,132,92,.18); font-weight: 800; color: #233b31; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-ratio { display: inline-flex; align-items: center; gap: 6px; margin: 10px 0 14px; padding: 8px 18px; border-radius: 999px;
+    background: #233b31; color: #fff; font-size: 26px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #11201a; transition: background .3s; }
+  .toy-ratio.toy-win { background: #e0563a; box-shadow: 0 5px 0 #9e3420; }
+  .toy-ratio .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-row { display: grid; grid-template-columns: 34px 1fr; align-items: center; gap: 6px; max-width: 400px; margin: 0 auto 10px; }
+  .toy-ico { font-size: 26px; line-height: 1; }
+  .toy-track { position: relative; height: 54px; padding: 6px 0 14px; border-radius: 10px;
+    background: linear-gradient(transparent 0 76%, #8a8f99 76% 82%, transparent 82%); }
+  .toy-cars { display: flex; gap: 0; height: 100%; }
+  .toy-car { position: relative; flex: 0 0 auto; height: 100%; margin-right: 1px; border-radius: 6px 6px 3px 3px;
+    background: linear-gradient(#f2f4f3 0 30%, #9aa5a0 30% 52%, #f2f4f3 52%); }
+  .toy-row.toy-nag .toy-car { width: calc(6.82% - 1px); box-shadow: inset 0 -5px 0 #f0b400; }
+  .toy-row.toy-yam .toy-car { width: calc(9.09% - 1px); box-shadow: inset 0 -5px 0 #5bb138; }
+  .toy-row.toy-yam .toy-car.toy-new { animation: toy-roll .35s cubic-bezier(.3,1.4,.5,1); }
+  @keyframes toy-roll { 0% { transform: translateX(30px); opacity: 0; } 100% { transform: none; opacity: 1; } }
+  .toy-m { position: absolute; right: 0; bottom: -12px; font-size: 15px; font-weight: 900; opacity: .75; font-variant-numeric: tabular-nums; }
+  .toy-add { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 150px; min-height: 64px;
+    margin-top: 14px; padding: 8px 24px; border: 0; border-radius: 24px; cursor: pointer; font: inherit; font-size: 30px;
+    font-weight: 900; line-height: 1; color: #fff; background: #23845c; box-shadow: 0 7px 0 #135237;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-add:active { transform: translateY(6px); box-shadow: 0 1px 0 #135237; }
+  .toy-add[disabled] { cursor: default; background: #e0563a; box-shadow: 0 7px 0 #9e3420; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #23845c; background: #fff;
+    box-shadow: 0 4px 0 #b3dcc8; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #b3dcc8; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #173528, #1b2420 55%, #3a3218); border-color: rgba(255,255,255,.12); color: #e3f6ec; }
+  html[data-theme="dark"] .toy-car { background: linear-gradient(#cfd6d2 0 30%, #5b6661 30% 52%, #cfd6d2 52%); }
+  html[data-theme="dark"] .toy-ratio { background: #0d1612; box-shadow: 0 5px 0 #000; }
+  html[data-theme="dark"] .toy-ratio.toy-win { background: #b5432b; }
+  html[data-theme="dark"] .toy-reset { background: #22302a; color: #8fe0b9; box-shadow: 0 4px 0 #0b120e; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-car { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-car { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🚃">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div><span class="toy-ratio" aria-live="polite">🚃 ÷ 🚇 = ×<span class="toy-n">0</span></span></div>
+    <div class="toy-row toy-nag" aria-hidden="true">
+      <span class="toy-ico">🚇</span>
+      <div class="toy-track"><div class="toy-cars"></div><span class="toy-m">📏 <span class="toy-n">90</span></span></div>
+    </div>
+    <div class="toy-row toy-yam" aria-hidden="true">
+      <span class="toy-ico">🚃</span>
+      <div class="toy-track"><div class="toy-cars"></div><span class="toy-m">📏 <span class="toy-n toy-len">0</span></span></div>
+    </div>
+    <button type="button" class="toy-add" aria-label="➕🚃">➕🚃</button>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var add = box.querySelector('.toy-add'), reset = box.querySelector('.toy-reset');
+    var nag = box.querySelector('.toy-nag .toy-cars'), yam = box.querySelector('.toy-yam .toy-cars');
+    var len = box.querySelector('.toy-len'), ratio = box.querySelector('.toy-ratio .toy-n'), chip = box.querySelector('.toy-ratio');
+    if (!add || !reset || !nag || !yam || !len || !ratio) return;
+    // 🚇 6 cars × 15 m = 90 m.  🚃 11 cars × 20 m = 220 m.
+    var MAX = 11, n = 0;
+    for (var i = 0; i < 6; i++) { var c = document.createElement('span'); c.className = 'toy-car'; nag.appendChild(c); }
+    function draw() {
+      var m = n * 20;
+      len.textContent = String(m);
+      ratio.textContent = (m / 90).toFixed(1);
+      var done = n >= MAX;
+      if (chip) chip.classList.toggle('toy-win', done);
+      add.disabled = done;
+      var t = done ? '🚃 ✓' : '➕🚃';
+      add.textContent = t; add.setAttribute('aria-label', t);
+    }
+    add.addEventListener('click', function () {
+      if (n >= MAX) return;
+      var c = document.createElement('span'); c.className = 'toy-car toy-new'; yam.appendChild(c);
+      n += 1;
+      draw();
+      if (n >= MAX && window.pengessoPop) {
+        var r = yam.getBoundingClientRect();
+        window.pengessoPop(r.right - 30, r.top + r.height / 2, ['🚃', '🗼', '✨', '🐧'], 18);
+      }
+    });
+    reset.addEventListener('click', function () { n = 0; yam.innerHTML = ''; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../shinjuku-golden-gai-feels-different/index.html">
     <div>
       <div class="next-kicker">NEXT · 73 SEC</div>

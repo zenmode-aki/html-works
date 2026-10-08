@@ -417,6 +417,112 @@
     </figure>
   </div>
 
+  <style>
+  .toy { position: relative; margin: 30px 0 0; padding: 20px 14px 24px; border-radius: 28px; text-align: center;
+    background: linear-gradient(165deg, #ffe3ea, #fff6f8 55%, #ffd9e4); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(100,50,70,.18); font-weight: 800; color: #3a2028; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; margin: 10px 0 6px; padding: 8px 18px; border-radius: 999px;
+    background: #7a4058; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #4d2537; }
+  .toy-chip .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-chip .toy-of { font-size: 16px; opacity: .75; }
+  .toy-chip.toy-done { background: #e0708f; box-shadow: 0 5px 0 #a8445f; }
+  .toy-branch { position: relative; display: flex; justify-content: center; gap: 6px; height: 96px; margin: 8px auto 0; max-width: 340px; }
+  .toy-branch::before { content: ""; position: absolute; left: 6%; right: 6%; top: 58px; height: 10px; border-radius: 10px;
+    background: #8a5a44; transform: rotate(-3deg); }
+  .toy-bud { position: relative; z-index: 1; width: 56px; height: 56px; padding: 0; border: 0; border-radius: 50%; cursor: pointer;
+    font: inherit; font-size: 34px; line-height: 1; background: rgba(255,255,255,.75); box-shadow: 0 4px 0 rgba(122,64,88,.25);
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: background .2s; }
+  .toy-bud:nth-child(odd) { margin-top: 20px; }
+  .toy-bud .toy-face { display: inline-block; }
+  .toy-bud.toy-open { background: #fff; cursor: default; }
+  .toy-bud.toy-open .toy-face { animation: toy-bloom .45s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes toy-bloom { 0% { transform: scale(.3) rotate(-40deg); } 100% { transform: scale(1) rotate(0); } }
+  .toy-bud:not(.toy-open) .toy-face { animation: toy-sway 2.2s ease-in-out infinite; }
+  @keyframes toy-sway { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+  .toy-me { display: flex; align-items: flex-end; justify-content: center; gap: 4px; height: 96px; margin-top: 0; }
+  .toy-peng { font-size: 58px; line-height: 1; }
+  .toy-heart { display: inline-block; font-size: 30px; line-height: 1; margin-bottom: 40px; transform-origin: 50% 80%;
+    transform: scale(.7); transition: transform .4s cubic-bezier(.3,1.6,.5,1); }
+  .toy-heart.toy-beat { animation: toy-beat .9s ease-in-out infinite; }
+  @keyframes toy-beat { 0%, 100% { scale: 1; } 50% { scale: 1.15; } }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #7a4058; background: #fff;
+    box-shadow: 0 4px 0 #e8b9c7; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #e8b9c7; }
+  html[data-theme="dark"] .toy { background: linear-gradient(165deg, #3e2430, #2a2026 55%, #43263a); border-color: rgba(255,255,255,.12); color: #fbe8ee; }
+  html[data-theme="dark"] .toy-bud { background: rgba(255,255,255,.10); box-shadow: 0 4px 0 rgba(0,0,0,.4); }
+  html[data-theme="dark"] .toy-bud.toy-open { background: #4a3040; }
+  html[data-theme="dark"] .toy-chip { background: #1c1216; box-shadow: 0 5px 0 #000; }
+  html[data-theme="dark"] .toy-chip.toy-done { background: #b85272; box-shadow: 0 5px 0 #6e2c40; }
+  html[data-theme="dark"] .toy-reset { background: #3a2a32; color: #ffb3c8; box-shadow: 0 4px 0 #120a0e; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bud .toy-face,
+    html:not([data-motion="on"]) .toy-heart.toy-beat { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bud .toy-face, html[data-motion="off"] .toy-heart.toy-beat { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🌸">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite">🌸 <span class="toy-n">0</span><span class="toy-of">/5</span></div>
+    <div class="toy-branch">
+      <button type="button" class="toy-bud" aria-label="🌱"><span class="toy-face">🌱</span></button>
+      <button type="button" class="toy-bud" aria-label="🌱"><span class="toy-face">🌱</span></button>
+      <button type="button" class="toy-bud" aria-label="🌱"><span class="toy-face">🌱</span></button>
+      <button type="button" class="toy-bud" aria-label="🌱"><span class="toy-face">🌱</span></button>
+      <button type="button" class="toy-bud" aria-label="🌱"><span class="toy-face">🌱</span></button>
+    </div>
+    <div class="toy-me" aria-hidden="true">
+      <span class="toy-peng">🐧🎧</span><span class="toy-heart">💗</span>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var buds = box.querySelectorAll('.toy-bud'), reset = box.querySelector('.toy-reset');
+    var num = box.querySelector('.toy-chip .toy-n'), chip = box.querySelector('.toy-chip'), heart = box.querySelector('.toy-heart');
+    if (!buds.length || !reset || !num || !heart) return;
+    var MAX = buds.length;
+    function count() { var n = 0; for (var i = 0; i < buds.length; i++) if (buds[i].classList.contains('toy-open')) n++; return n; }
+    function draw() {
+      var n = count();
+      num.textContent = String(n);
+      // every 🌸 makes the 💗 a little bigger
+      heart.style.transform = 'scale(' + (0.7 + n * 0.22).toFixed(2) + ')';
+      heart.classList.toggle('toy-beat', n >= MAX);
+      if (chip) chip.classList.toggle('toy-done', n >= MAX);
+    }
+    for (var i = 0; i < buds.length; i++) {
+      buds[i].addEventListener('click', function () {
+        if (this.classList.contains('toy-open')) return;
+        var f = this.querySelector('.toy-face');
+        if (f) f.textContent = '🌸';
+        this.setAttribute('aria-label', '🌸');
+        this.classList.add('toy-open');
+        draw();
+        if (count() >= MAX && window.pengessoPop) {
+          var r = heart.getBoundingClientRect();
+          window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🌸', '💗', '🎧', '✨'], 18);
+        }
+      });
+    }
+    reset.addEventListener('click', function () {
+      for (var i = 0; i < buds.length; i++) {
+        var f = buds[i].querySelector('.toy-face');
+        if (f) f.textContent = '🌱';
+        buds[i].setAttribute('aria-label', '🌱');
+        buds[i].classList.remove('toy-open');
+      }
+      draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../sakura-english-mixed-language/index.html">
     <div>
       <div class="next-kicker">NEXT · 14 SEC</div>

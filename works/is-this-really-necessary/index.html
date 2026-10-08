@@ -443,6 +443,136 @@
   </section>
   </div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 18px; border-radius: 28px; text-align: center; position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #fff3cc, #ffe4bf 60%, #eef4ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(224,146,26,.22); font-weight: 800; color: #2c2a1e; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-head { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 8px 0 12px; }
+  .toy .toy-head.toy-head { display: flex; }
+  .toy-mood { font-size: 44px; line-height: 1; transition: transform .25s; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; border-radius: 999px;
+    background: #2c2a1e; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #14130c; transition: background .3s; }
+  .toy .toy-chip.toy-chip { display: inline-flex; }
+  .toy-chip .toy-n { min-width: 1.4ch; font-variant-numeric: tabular-nums; }
+  .toy-chip.toy-hi { background: #e2553f; box-shadow: 0 5px 0 #9c2f1f; }
+  .toy-chip.toy-ok { background: #34b27d; box-shadow: 0 5px 0 #1f7a53; }
+  .toy-pond { position: relative; width: min(310px, 100%); height: 210px; margin: 0 auto; border-radius: 24px;
+    background: #fffdf6; border: 3px dashed #f0c987; overflow: hidden; }
+  .toy-pond.toy-calm { border-style: solid; border-color: #34b27d; background: #f1fbf5; }
+  .toy-want { position: absolute; width: 56px; height: 56px; margin: -28px 0 0 -28px; padding: 0; border: 3px solid #f6dcae; border-radius: 18px;
+    background: #fff; font: inherit; font-size: 30px; line-height: 1; cursor: pointer; box-shadow: 0 4px 0 #f0c987;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; animation: toy-in .35s cubic-bezier(.2,1.6,.4,1), toy-sway 2.6s ease-in-out .35s infinite;
+    transition: transform .25s, opacity .25s, left .45s ease, top .45s ease; }
+  .toy-want:nth-child(2n) { animation-duration: .35s, 3.1s; }
+  .toy-want:nth-child(3n) { animation-duration: .35s, 2.2s; }
+  @keyframes toy-in { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+  @keyframes toy-sway { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-6px) rotate(4deg); } }
+  .toy-want.toy-cut { animation: none; transform: scale(0) rotate(40deg); opacity: 0; pointer-events: none; }
+  .toy-pond.toy-calm .toy-want { animation: none; border-color: #34b27d; box-shadow: 0 4px 0 #8fd1b1; background: #fffbe6; cursor: default; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; font: inherit; font-size: 22px; font-weight: 900; color: #807a63; background: #fff; cursor: pointer;
+    box-shadow: 0 4px 0 #f0c987; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #f0c987; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #3a3220, #3a2a1c 60%, #1f2c3a); border-color: rgba(255,255,255,.12); color: #f4ecff; }
+  html[data-theme="dark"] .toy-pond { background: #2a2620; border-color: #7a5a12; }
+  html[data-theme="dark"] .toy-pond.toy-calm { background: #1d3a2d; border-color: #34b27d; }
+  html[data-theme="dark"] .toy-want { background: #2d2838; border-color: #5a4a2a; box-shadow: 0 4px 0 #14111a; }
+  html[data-theme="dark"] .toy-pond.toy-calm .toy-want { background: #3a3220; }
+  html[data-theme="dark"] .toy-reset { background: #2d2838; color: #f4ecff; box-shadow: 0 4px 0 #14111a; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-want, html:not([data-motion="on"]) .toy-bump { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-want, html[data-motion="off"] .toy-bump { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆✂️">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-head">
+      <span class="toy-mood" aria-hidden="true">🫠</span>
+      <span class="toy-chip" aria-live="polite"><span>📋</span><span class="toy-n">0</span></span>
+    </div>
+    <div class="toy-pond"></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var pond = box.querySelector('.toy-pond'), numEl = box.querySelector('.toy-n'), chip = box.querySelector('.toy-chip');
+    var mood = box.querySelector('.toy-mood'), reset = box.querySelector('.toy-reset');
+    if (!pond || !numEl || !chip || !reset) return;
+    var EMO = ['📚', '🎸', '✈️', '💻', '📷', '🍳', '🎨', '🎮', '🌱', '🎹', '🧩', '⛺'];
+    var SLOTS = [[13, 18], [62, 20], [37, 50], [86, 48], [13, 82], [62, 82], [37, 17], [87, 16], [12, 50], [62, 52], [37, 83], [87, 82]];
+    var KEEP = 3, MAXN = 10, live = [], spawnT = 0, calm = false, k = 0;
+    function bump(el) { if (!el) return; el.classList.remove('toy-bump'); void el.offsetWidth; el.classList.add('toy-bump'); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    function freeSlot() {
+      var used = live.map(function (b) { return b._slot; });
+      for (var i = 0; i < SLOTS.length; i++) { var j = (i + k * 5) % SLOTS.length; if (used.indexOf(j) < 0) return j; }
+      return -1;
+    }
+    function draw() {
+      var n = live.length;
+      numEl.textContent = String(n);
+      chip.classList.toggle('toy-hi', n >= 8 && !calm);
+      chip.classList.toggle('toy-ok', calm);
+      pond.classList.toggle('toy-calm', calm);
+      if (mood) mood.textContent = calm ? '😌' : (n >= 8 ? '🫠' : (n >= 6 ? '😵' : '🙂'));
+    }
+    function add() {
+      if (calm || live.length >= MAXN) return;
+      var s = freeSlot();
+      if (s < 0) return;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'toy-want';
+      var e = EMO[k % EMO.length];
+      k++;
+      b.textContent = e;
+      b.setAttribute('aria-label', '✂️ ' + e);
+      b._slot = s;
+      b.style.left = SLOTS[s][0] + '%';
+      b.style.top = SLOTS[s][1] + '%';
+      b.addEventListener('click', function () {
+        if (calm || b.classList.contains('toy-cut')) return;
+        b.classList.add('toy-cut');
+        live = live.filter(function (x) { return x !== b; });
+        setTimeout(function () { if (b.parentNode) b.parentNode.removeChild(b); }, 300);
+        pop(b, ['✂️'], 3);
+        bump(chip);
+        if (live.length <= KEEP) {
+          calm = true;
+          clearInterval(spawnT);
+          live.forEach(function (x, i) { x.style.left = (25 + i * 25) + '%'; x.style.top = '50%'; });
+          pop(pond, ['🎯', '🐧', '✨', '😌'], 18);
+        }
+        draw();
+      });
+      pond.appendChild(b);
+      live.push(b);
+      draw();
+    }
+    function start() {
+      clearInterval(spawnT);
+      pond.innerHTML = '';
+      live = []; calm = false; k = 0;
+      for (var i = 0; i < 8; i++) add();
+      spawnT = setInterval(add, 2600);
+      draw();
+    }
+    reset.addEventListener('click', start);
+    start();
+  })();
+  </script>
+
   <a class="next" href="../want-to-ask-for-help/index.html">
     <div>
       <div class="next-kicker">NEXT · 16 SEC</div>

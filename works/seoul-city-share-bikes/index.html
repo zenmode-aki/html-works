@@ -593,6 +593,117 @@
   </section>
   </div>
 
+  <style>
+  .toy { position: relative; margin: 30px 0 0; padding: 20px 14px 24px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #d7f5e6, #f4fdf8 55%, #e3f0ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(35,132,92,.18); font-weight: 800; color: #233b31; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-time { display: inline-flex; align-items: center; gap: 6px; margin: 10px 0 12px; padding: 8px 18px; border-radius: 999px;
+    background: #233b31; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #11201a; }
+  .toy-time .toy-n { font-variant-numeric: tabular-nums; min-width: 2ch; text-align: right; }
+  .toy-time .toy-of { font-size: 16px; opacity: .7; }
+  .toy-lanes { display: grid; gap: 10px; max-width: 380px; margin: 0 auto; }
+  .toy-lane { display: grid; grid-template-columns: 38px 1fr 92px; align-items: center; gap: 6px; }
+  .toy-tag { font-size: 28px; line-height: 1; }
+  .toy-road { position: relative; height: 50px; border-radius: 16px; background: #6b6f7a; overflow: hidden; }
+  .toy-road::before { content: ""; position: absolute; left: 8px; right: 8px; top: 50%; height: 4px; margin-top: -2px;
+    background: repeating-linear-gradient(90deg, #fff 0 14px, transparent 14px 26px); opacity: .8; }
+  .toy-bike { position: absolute; top: 50%; left: 4px; margin-top: -19px; font-size: 34px; line-height: 1; transition: left .3s cubic-bezier(.3,1.4,.5,1); }
+  .toy-bike .toy-wheel { display: inline-block; transform: scaleX(-1); }
+  .toy-lane.toy-hop .toy-wheel { animation: toy-hop .3s ease-out; }
+  @keyframes toy-hop { 40% { transform: scaleX(-1) translateY(-6px) rotate(-6deg); } }
+  .toy-yen { padding: 8px 4px; border-radius: 14px; font-size: 20px; font-weight: 900; line-height: 1.1; color: #fff;
+    font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .toy-green .toy-yen { background: #2fa36b; box-shadow: 0 4px 0 #1b6b45; }
+  .toy-city .toy-yen { background: #3a72c9; box-shadow: 0 4px 0 #234b8a; }
+  .toy-times { height: 48px; margin-top: 12px; font-size: 34px; font-weight: 900; line-height: 48px; color: #e0563a;
+    visibility: hidden; }
+  .toy-times.toy-show { visibility: visible; animation: toy-stamp .5s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes toy-stamp { 0% { transform: scale(2.2) rotate(-12deg); opacity: 0; } 100% { transform: scale(1) rotate(-4deg); opacity: 1; } }
+  .toy-ride { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 150px; min-height: 64px;
+    margin-top: 6px; padding: 8px 24px; border: 0; border-radius: 24px; cursor: pointer; font: inherit; font-size: 32px;
+    font-weight: 900; line-height: 1; color: #fff; background: #23845c; box-shadow: 0 7px 0 #135237;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-ride:active { transform: translateY(6px); box-shadow: 0 1px 0 #135237; }
+  .toy-ride[disabled] { cursor: default; background: #8aa79a; box-shadow: 0 7px 0 #5c7568; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #23845c; background: #fff;
+    box-shadow: 0 4px 0 #b3dcc8; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #b3dcc8; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #173528, #1b2420 55%, #1b2738); border-color: rgba(255,255,255,.12); color: #e3f6ec; }
+  html[data-theme="dark"] .toy-road { background: #3b3e47; }
+  html[data-theme="dark"] .toy-time { background: #0d1612; box-shadow: 0 5px 0 #000; }
+  html[data-theme="dark"] .toy-reset { background: #22302a; color: #8fe0b9; box-shadow: 0 4px 0 #0b120e; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-lane .toy-wheel,
+    html:not([data-motion="on"]) .toy-times.toy-show { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-lane .toy-wheel, html[data-motion="off"] .toy-times.toy-show { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🚲">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-time" aria-live="polite">⏱️ <span class="toy-n toy-min">0</span><span class="toy-of">/60</span></div>
+    <div class="toy-lanes">
+      <div class="toy-lane toy-green">
+        <span class="toy-tag" aria-hidden="true">🟢</span>
+        <div class="toy-road" aria-hidden="true"><span class="toy-bike"><span class="toy-wheel">🚲</span></span></div>
+        <span class="toy-yen">¥<span class="toy-n toy-g">0</span></span>
+      </div>
+      <div class="toy-lane toy-city">
+        <span class="toy-tag" aria-hidden="true">🏙️</span>
+        <div class="toy-road" aria-hidden="true"><span class="toy-bike"><span class="toy-wheel">🚲</span></span></div>
+        <span class="toy-yen">¥<span class="toy-n toy-c">0</span></span>
+      </div>
+    </div>
+    <div class="toy-times" aria-hidden="true">×10</div>
+    <button type="button" class="toy-ride" aria-label="🚲 ▶">🚲 ▶</button>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var ride = box.querySelector('.toy-ride'), reset = box.querySelector('.toy-reset');
+    var minEl = box.querySelector('.toy-min'), gEl = box.querySelector('.toy-g'), cEl = box.querySelector('.toy-c');
+    var times = box.querySelector('.toy-times'), lanes = box.querySelectorAll('.toy-lane'), bikes = box.querySelectorAll('.toy-bike');
+    if (!ride || !reset || !minEl || !gEl || !cEl || !times) return;
+    var STEP = 5, MAX = 60, m = 0;
+    function place() {
+      for (var i = 0; i < bikes.length; i++) {
+        var road = bikes[i].parentNode, w = road ? road.clientWidth : 100;
+        bikes[i].style.left = Math.round(4 + (w - 50) * (m / MAX)) + 'px';
+      }
+    }
+    function draw() {
+      minEl.textContent = String(m);
+      // about 1,000 yen vs about 100 yen for 1 hour
+      gEl.textContent = String(Math.round(1000 * m / MAX)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      cEl.textContent = String(Math.round(100 * m / MAX));
+      var done = m >= MAX;
+      ride.disabled = done;
+      var t = done ? '🚲 ✓' : '🚲 ▶';
+      ride.textContent = t; ride.setAttribute('aria-label', t);
+      times.classList.toggle('toy-show', done);
+      place();
+    }
+    ride.addEventListener('click', function () {
+      if (m >= MAX) return;
+      m += STEP;
+      for (var i = 0; i < lanes.length; i++) { lanes[i].classList.remove('toy-hop'); void lanes[i].offsetWidth; lanes[i].classList.add('toy-hop'); }
+      draw();
+      if (m >= MAX && window.pengessoPop) {
+        var r = times.getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🚲', '🪙', '🏙️', '✨'], 18);
+      }
+    });
+    reset.addEventListener('click', function () { m = 0; draw(); });
+    window.addEventListener('resize', place);
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../bike-to-lotte-tower/index.html">
     <div>
       <div class="next-kicker">NEXT · 88 SEC</div>

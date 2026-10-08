@@ -528,6 +528,111 @@
   </section>
   </div>
 
+  <style>
+  .toy { position: relative; margin: 30px 0 0; padding: 20px 14px 24px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #d3f1fa, #f5fcff 55%, #f3e6d6); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(27,127,153,.18); font-weight: 800; color: #1d3440; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-bar { position: relative; display: flex; align-items: flex-end; justify-content: center; margin: 10px 0 0; min-height: 190px; }
+  .toy-cup { position: relative; width: 120px; height: 160px; border-radius: 10px 10px 34px 34px; overflow: hidden;
+    background: rgba(255,255,255,.75); box-shadow: inset 0 0 0 5px #fff, 0 8px 0 rgba(29,52,64,.15); }
+  .toy-cup.toy-shake { animation: toy-shake .3s ease-in-out; }
+  @keyframes toy-shake { 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
+  .toy-fill { position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column-reverse; }
+  .toy-layer { height: 24px; transition: height .3s; }
+  .toy-layer.toy-c { background: #5a3418; }
+  .toy-layer.toy-m { background: #f6efe4; }
+  .toy-layer.toy-new { animation: toy-pour .35s ease-out; }
+  @keyframes toy-pour { 0% { height: 0; } 100% { height: 24px; } }
+  .toy-cup.toy-mixed .toy-layer { background: var(--toy-latte, #b98a5e); transition: background .6s; }
+  .toy-foam { position: absolute; left: 50%; top: 4px; margin-left: -18px; font-size: 32px; line-height: 1; visibility: hidden; }
+  .toy-cup.toy-full .toy-foam { visibility: visible; }
+  .toy-twin { position: absolute; left: 50%; bottom: 0; margin-left: 70px; font-size: 48px; line-height: 1; visibility: hidden; }
+  .toy-twin.toy-show { visibility: visible; animation: toy-in .45s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes toy-in { 0% { transform: scale(.2); } 100% { transform: scale(1); } }
+  .toy-n-row { margin-top: 10px; font-size: 22px; font-weight: 900; }
+  .toy-n-row .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btns { display: flex; justify-content: center; gap: 14px; margin-top: 12px; }
+  .toy-pour { min-width: 100px; min-height: 64px; padding: 8px 18px; border: 0; border-radius: 24px; cursor: pointer; font: inherit;
+    font-size: 34px; line-height: 1; color: #fff; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-pour.toy-pc { background: #6b3e1d; box-shadow: 0 7px 0 #3f2310; }
+  .toy-pour.toy-pm { background: #1b7f99; box-shadow: 0 7px 0 #0f5163; }
+  .toy-pour:active { transform: translateY(6px); box-shadow: none; }
+  .toy-pour[disabled] { cursor: default; opacity: .4; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #1b7f99; background: #fff;
+    box-shadow: 0 4px 0 #a9d9e5; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #a9d9e5; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #12303a, #1a2228 55%, #3a2c1e); border-color: rgba(255,255,255,.12); color: #e4f6fb; }
+  html[data-theme="dark"] .toy-cup { background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 5px rgba(255,255,255,.2), 0 8px 0 #000; }
+  html[data-theme="dark"] .toy-reset { background: #22343c; color: #8fdcef; box-shadow: 0 4px 0 #0a1418; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-cup,
+    html:not([data-motion="on"]) .toy-layer, html:not([data-motion="on"]) .toy-twin { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-cup, html[data-motion="off"] .toy-layer, html[data-motion="off"] .toy-twin { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆☕">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-bar" aria-hidden="true">
+      <div class="toy-cup"><div class="toy-fill"></div><span class="toy-foam">😋</span></div>
+      <span class="toy-twin">🥤</span>
+    </div>
+    <div class="toy-n-row" aria-live="polite">☕ <span class="toy-n">0</span>/6</div>
+    <div class="toy-btns">
+      <button type="button" class="toy-pour toy-pc" data-k="c" aria-label="☕">☕</button>
+      <button type="button" class="toy-pour toy-pm" data-k="m" aria-label="🥛">🥛</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var cup = box.querySelector('.toy-cup'), fill = box.querySelector('.toy-fill'), twin = box.querySelector('.toy-twin');
+    var btns = box.querySelectorAll('.toy-pour'), reset = box.querySelector('.toy-reset'), num = box.querySelector('.toy-n-row .toy-n');
+    if (!cup || !fill || !btns.length || !reset || !num) return;
+    var MAX = 6, parts = [], mixT = null;
+    function draw() {
+      num.textContent = String(parts.length);
+      var full = parts.length >= MAX;
+      for (var i = 0; i < btns.length; i++) btns[i].disabled = full;
+      cup.classList.toggle('toy-full', full);
+      if (twin) twin.classList.toggle('toy-show', full);
+    }
+    function pour(k) {
+      if (parts.length >= MAX) return;
+      parts.push(k);
+      var l = document.createElement('div');
+      l.className = 'toy-layer toy-new ' + (k === 'c' ? 'toy-c' : 'toy-m');
+      fill.appendChild(l);
+      cup.classList.remove('toy-shake'); void cup.offsetWidth; cup.classList.add('toy-shake');
+      draw();
+      if (parts.length >= MAX) {
+        // stir: the layers mix into one latte color
+        var c = 0; for (var i = 0; i < parts.length; i++) if (parts[i] === 'c') c++;
+        var t = c / parts.length;
+        var r = Math.round(240 - (240 - 90) * t), g = Math.round(205 - (205 - 52) * t), b = Math.round(160 - (160 - 24) * t);
+        cup.style.setProperty('--toy-latte', 'rgb(' + r + ',' + g + ',' + b + ')');
+        mixT = setTimeout(function () { cup.classList.add('toy-mixed'); }, 400);
+        if (window.pengessoPop) {
+          var rr = cup.getBoundingClientRect();
+          window.pengessoPop(rr.left + rr.width / 2, rr.top + 20, ['☕', '😋', '🥛', '✨'], 18);
+        }
+      }
+    }
+    for (var i = 0; i < btns.length; i++) btns[i].addEventListener('click', function () { pour(this.getAttribute('data-k')); });
+    reset.addEventListener('click', function () {
+      if (mixT) clearTimeout(mixT);
+      parts = []; fill.innerHTML = ''; cup.classList.remove('toy-mixed', 'toy-shake');
+      draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../petronas-towers-photo-business/index.html">
     <div>
       <div class="next-kicker">NEXT · 77 SEC</div>

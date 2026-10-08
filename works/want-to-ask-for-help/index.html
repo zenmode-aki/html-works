@@ -434,6 +434,111 @@
   </section>
   </div>
 
+  <style>
+  .toy { position: relative; margin: 30px 0 0; padding: 20px 14px 24px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #d6f3e4, #f5fcf8 55%, #fff1d6); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(24,102,71,.18); font-weight: 800; color: #1f2f26; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; margin: 10px 0 8px; padding: 8px 18px; border-radius: 999px;
+    background: #186647; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #0d3b28; transition: background .3s; }
+  .toy-chip .toy-n { font-variant-numeric: tabular-nums; min-width: 2ch; }
+  .toy-chip.toy-light { background: #1e9e6a; }
+  .toy-scene { position: relative; height: 150px; max-width: 360px; margin: 0 auto; }
+  .toy-me, .toy-pal { position: absolute; bottom: 10px; font-size: 52px; line-height: 1; }
+  .toy-me { left: 8px; }
+  .toy-pal { right: 8px; }
+  .toy-me .toy-face, .toy-pal .toy-face { display: inline-block; }
+  .toy-bag { position: absolute; left: 50%; bottom: 52px; margin-left: -18px; font-size: 34px; line-height: 1;
+    transition: transform .4s cubic-bezier(.3,1.4,.5,1); }
+  .toy .toy-bag2 { visibility: hidden; transform: scale(.7); }
+  .toy .toy-bag2.toy-show { visibility: visible; animation: toy-pop .45s cubic-bezier(.3,1.6,.5,1); }
+  .toy-me.toy-heavy .toy-face { animation: toy-wobble 1.6s ease-in-out infinite; }
+  @keyframes toy-wobble { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+  .toy-pal.toy-hop .toy-face { animation: toy-hop .5s ease-out 2; }
+  @keyframes toy-hop { 40% { transform: translateY(-14px); } }
+  .toy-say { position: absolute; top: 14px; left: 18%; font-size: 40px; line-height: 1; transform-origin: 0 100%;
+    transition: left .35s cubic-bezier(.3,1.4,.5,1), transform .35s cubic-bezier(.3,1.6,.5,1); }
+  .toy-reply { position: absolute; top: 6px; right: 0; font-size: 36px; line-height: 1; visibility: hidden; }
+  .toy-reply.toy-show { visibility: visible; animation: toy-pop .45s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes toy-pop { 0% { transform: scale(.2); } 100% { transform: scale(1); } }
+  .toy-ask { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 150px; min-height: 64px;
+    margin-top: 12px; padding: 8px 24px; border: 0; border-radius: 24px; cursor: pointer; font: inherit; font-size: 32px;
+    font-weight: 900; line-height: 1; color: #fff; background: #1e9e6a; box-shadow: 0 7px 0 #136443;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-ask:active { transform: translateY(6px); box-shadow: 0 1px 0 #136443; }
+  .toy-ask[disabled] { cursor: default; background: #f0a63a; box-shadow: 0 7px 0 #b0731b; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #186647; background: #fff;
+    box-shadow: 0 4px 0 #b6dcc9; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #b6dcc9; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #163528, #1a221e 55%, #3a3018); border-color: rgba(255,255,255,.12); color: #e4f5ec; }
+  html[data-theme="dark"] .toy-chip { background: #0b1a13; box-shadow: 0 5px 0 #000; }
+  html[data-theme="dark"] .toy-chip.toy-light { background: #157450; }
+  html[data-theme="dark"] .toy-reset { background: #22302a; color: #8fe0b9; box-shadow: 0 4px 0 #0b120e; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-face,
+    html:not([data-motion="on"]) .toy-reply.toy-show, html:not([data-motion="on"]) .toy .toy-bag2.toy-show { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-face, html[data-motion="off"] .toy-reply.toy-show, html[data-motion="off"] .toy .toy-bag2.toy-show { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆💬">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite">🎒 <span class="toy-n">100</span>%</div>
+    <div class="toy-scene" aria-hidden="true">
+      <span class="toy-say">💬</span>
+      <span class="toy-reply">💗</span>
+      <span class="toy-me"><span class="toy-bag">🎒</span><span class="toy-face">🐧</span></span>
+      <span class="toy-pal"><span class="toy-bag toy-bag2">🎒</span><span class="toy-face">🐻</span></span>
+    </div>
+    <button type="button" class="toy-ask" aria-label="💬 ▶">💬 ▶</button>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var ask = box.querySelector('.toy-ask'), reset = box.querySelector('.toy-reset');
+    var say = box.querySelector('.toy-say'), reply = box.querySelector('.toy-reply'), num = box.querySelector('.toy-chip .toy-n');
+    var chip = box.querySelector('.toy-chip'), me = box.querySelector('.toy-me'), pal = box.querySelector('.toy-pal');
+    var bag = box.querySelector('.toy-me .toy-bag'), bag2 = box.querySelector('.toy-bag2');
+    if (!ask || !reset || !say || !reply || !num || !me || !pal || !bag) return;
+    var MAX = 6, n = 0;
+    function draw() {
+      // the 💬 starts small and quiet, and grows a little with each tap until it reaches the 🐻
+      var done = n >= MAX;
+      say.style.left = (18 + n * 7.5) + '%';
+      say.style.transform = 'scale(' + (0.45 + n * 0.12).toFixed(2) + ')';
+      say.textContent = done ? '💬' : (n ? '💬' : '💭');
+      reply.classList.toggle('toy-show', done);
+      num.textContent = done ? '50' : '100';
+      if (chip) chip.classList.toggle('toy-light', done);
+      me.classList.toggle('toy-heavy', !done);
+      // the 🎒 is shared: half each
+      bag.style.transform = done ? 'scale(.7)' : 'none';
+      if (bag2) bag2.classList.toggle('toy-show', done);
+      ask.disabled = done;
+      var t = done ? '🐧 😊' : '💬 ▶';
+      ask.textContent = t; ask.setAttribute('aria-label', t);
+    }
+    ask.addEventListener('click', function () {
+      if (n >= MAX) return;
+      n += 1;
+      draw();
+      if (n >= MAX) {
+        pal.classList.remove('toy-hop'); void pal.offsetWidth; pal.classList.add('toy-hop');
+        if (window.pengessoPop) {
+          var r = pal.getBoundingClientRect();
+          window.pengessoPop(r.left + r.width / 2, r.top, ['💗', '🎒', '🐧', '✨'], 16);
+        }
+      }
+    });
+    reset.addEventListener('click', function () { n = 0; pal.classList.remove('toy-hop'); draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../freezing-not-fleeing/index.html">
     <div>
       <div class="next-kicker">NEXT · 73 SEC</div>

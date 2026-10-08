@@ -505,6 +505,121 @@
     </p>
   </section>
 
+  <style>
+  .toy { position: relative; margin: 30px 0 0; padding: 20px 14px 24px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #dfe8ff, #f6f8ff 55%, #ffe1ec); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(31,50,120,.18); font-weight: 800; color: #1f2744; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-phone { position: relative; width: 190px; margin: 12px auto 0; padding: 14px 14px 18px; border-radius: 30px;
+    background: #1f2744; box-shadow: 0 8px 0 #10152b; color: #fff; }
+  .toy-screen { border-radius: 18px; padding: 12px 10px 14px; background: #f3f6ff; color: #1f2744; }
+  .toy-top { display: flex; align-items: flex-end; justify-content: space-between; height: 22px; font-size: 18px; line-height: 1; }
+  .toy-bars { display: flex; align-items: flex-end; gap: 3px; height: 20px; }
+  .toy-bars i { display: block; width: 6px; border-radius: 2px; background: #c9cfe3; }
+  .toy-bars i:nth-child(1) { height: 6px; } .toy-bars i:nth-child(2) { height: 10px; }
+  .toy-bars i:nth-child(3) { height: 15px; } .toy-bars i:nth-child(4) { height: 20px; }
+  .toy-bars i.toy-lit { background: #2f56c9; }
+  .toy-big { display: block; height: 76px; margin: 10px 0 8px; font-size: 60px; line-height: 76px; }
+  .toy-big.toy-spin .toy-ico { display: inline-block; animation: toy-spin 1s linear infinite; }
+  @keyframes toy-spin { to { transform: rotate(360deg); } }
+  .toy-big.toy-shake .toy-ico { display: inline-block; animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+  .toy-load { height: 14px; border-radius: 999px; background: #dde3f5; overflow: hidden; }
+  .toy-load-fill { width: 0; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #e0457b, #2f56c9); }
+  .toy-tries { display: flex; justify-content: center; gap: 8px; min-height: 34px; margin: 14px 0 0; font-size: 26px; line-height: 1.2; }
+  .toy-tries span { display: inline-block; animation: toy-in .3s cubic-bezier(.3,1.6,.5,1); }
+  @keyframes toy-in { 0% { transform: scale(.3); } 100% { transform: scale(1); } }
+  .toy-scan { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 150px; min-height: 64px;
+    margin-top: 12px; padding: 8px 24px; border: 0; border-radius: 24px; cursor: pointer; font: inherit; font-size: 32px;
+    font-weight: 900; line-height: 1; color: #fff; background: #2f56c9; box-shadow: 0 7px 0 #1b3482;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-scan:active { transform: translateY(6px); box-shadow: 0 1px 0 #1b3482; }
+  .toy-scan[disabled] { cursor: default; background: #8b93b0; box-shadow: 0 7px 0 #5d6582; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #2f56c9; background: #fff;
+    box-shadow: 0 4px 0 #bcc8ec; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #bcc8ec; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #1d2544, #1a1d2a 55%, #3a1d2a); border-color: rgba(255,255,255,.12); color: #e8ecff; }
+  html[data-theme="dark"] .toy-phone { background: #0b0f1f; box-shadow: 0 8px 0 #000; }
+  html[data-theme="dark"] .toy-screen { background: #262d45; color: #e8ecff; }
+  html[data-theme="dark"] .toy-load { background: #3a4260; }
+  html[data-theme="dark"] .toy-bars i { background: #4a5272; }
+  html[data-theme="dark"] .toy-bars i.toy-lit { background: #8fa8ff; }
+  html[data-theme="dark"] .toy-reset { background: #262d45; color: #a9bbff; box-shadow: 0 4px 0 #0b0f1f; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-big .toy-ico,
+    html:not([data-motion="on"]) .toy-tries span { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-big .toy-ico, html[data-motion="off"] .toy-tries span { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆📱">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-phone" aria-hidden="true">
+      <div class="toy-screen">
+        <div class="toy-top"><span>🏟️</span><span class="toy-bars"><i></i><i></i><i></i><i></i></span></div>
+        <div class="toy-big"><span class="toy-ico">🔳</span></div>
+        <div class="toy-load"><div class="toy-load-fill"></div></div>
+      </div>
+    </div>
+    <div class="toy-tries" aria-live="polite"></div>
+    <button type="button" class="toy-scan" aria-label="📷">📷 ▶</button>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var scan = box.querySelector('.toy-scan'), reset = box.querySelector('.toy-reset');
+    var big = box.querySelector('.toy-big'), ico = box.querySelector('.toy-ico'), fill = box.querySelector('.toy-load-fill');
+    var tries = box.querySelector('.toy-tries'), bars = box.querySelectorAll('.toy-bars i');
+    if (!scan || !reset || !big || !ico || !fill || !tries) return;
+    var MAX = 3, n = 0, busy = false, timers = [], flick = null;
+    function lit(k) { for (var i = 0; i < bars.length; i++) bars[i].classList.toggle('toy-lit', i < k); }
+    function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+    function clearAll() { for (var i = 0; i < timers.length; i++) clearTimeout(timers[i]); timers = []; if (flick) clearInterval(flick); flick = null; }
+    function idle() {
+      busy = false;
+      scan.disabled = n >= MAX;
+      var t = n >= MAX ? '🐧 😅' : (n ? '🔄 ▶' : '📷 ▶');
+      scan.textContent = t; scan.setAttribute('aria-label', t);
+    }
+    scan.addEventListener('click', function () {
+      if (busy || n >= MAX) return;
+      busy = true; scan.disabled = true; scan.textContent = '⏳'; scan.setAttribute('aria-label', '⏳');
+      ico.textContent = '⏳'; big.classList.remove('toy-shake'); big.classList.add('toy-spin');
+      fill.style.transition = 'none'; fill.style.width = '0'; void fill.offsetWidth;
+      // the bar crawls, then stops: too many people, the signal cannot keep up
+      var stop = [38, 22, 9][n] || 9;
+      fill.style.transition = 'width 1.3s ease-out'; fill.style.width = stop + '%';
+      flick = setInterval(function () { lit(Math.random() < .5 ? 1 : 0); }, 220);
+      later(function () {
+        clearInterval(flick); flick = null; lit(0);
+        big.classList.remove('toy-spin'); ico.textContent = '🚫';
+        void big.offsetWidth; big.classList.add('toy-shake');
+        n += 1;
+        var s = document.createElement('span'); s.textContent = '❌'; tries.appendChild(s);
+        idle();
+        if (n >= MAX) {
+          ico.textContent = '😅';
+          if (window.pengessoPop) {
+            var r = big.getBoundingClientRect();
+            window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['📱', '⏳', '📶', '😅'], 16);
+          }
+        }
+      }, 1500);
+    });
+    reset.addEventListener('click', function () {
+      clearAll(); n = 0; tries.innerHTML = ''; lit(2);
+      big.classList.remove('toy-spin', 'toy-shake'); ico.textContent = '🔳';
+      fill.style.transition = 'none'; fill.style.width = '0';
+      idle();
+    });
+    lit(2); idle();
+  })();
+  </script>
+
   <a class="next" href="../japanese-flag-at-korean-ballpark/index.html">
     <div>
       <div class="next-kicker">NEXT · 17 SEC</div>
