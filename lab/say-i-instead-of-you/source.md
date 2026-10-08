@@ -1,4 +1,4 @@
-# slug: say-i-instead-of-you / date: 2026-10-05 / words: 0
+# slug: say-i-instead-of-you / date: 2026-10-05 / words: 126
 
 ## 出どころ
 
