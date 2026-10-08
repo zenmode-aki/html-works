@@ -501,6 +501,118 @@
     </p>
   </section>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #e6eeff, #d6e2ff 55%, #ffe3ee); --tedge: #fff; --tglow: rgba(47,86,201,.2); --tink: #1f2744; --tbtn: #fff; --tsh: #b3c3ee; --ttrack: rgba(31,39,68,.1);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #1b2240, #1a2448 55%, #3a1d2c); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #eef2ff; --tbtn: #283152; --tsh: #0f1428; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-chart { display: flex; justify-content: center; align-items: flex-end; gap: 14px; height: 210px; max-width: 300px;
+    margin: 4px auto 0; padding: 0 6px; border-bottom: 5px solid var(--ttrack); }
+  .toy-col { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; min-width: 0; }
+  .toy-col .toy-tag { font-size: 22px; line-height: 1.2; margin-bottom: 6px; opacity: .45; }
+  .toy-col.toy-on .toy-tag { opacity: 1; }
+  .toy-col .toy-bar { position: relative; width: 100%; max-width: 70px; height: 24%; border-radius: 16px 16px 4px 4px;
+    background: transparent; border: 3px dashed #9fb4ea; box-sizing: border-box; transition: height .6s cubic-bezier(.2,1.3,.4,1); }
+  .toy-col .toy-bar .toy-food { position: absolute; left: 50%; top: 8px; transform: translateX(-50%); font-size: 30px; line-height: 1; visibility: hidden; }
+  .toy-col.toy-on .toy-bar .toy-food { visibility: visible; }
+  .toy-col.toy-on .toy-bar { background: #9fb4ea; border-style: solid; }
+  .toy-col.toy-jp.toy-on .toy-bar { background: #e0457b; border-color: #e0457b; }
+  .toy-col.toy-kr.toy-on .toy-bar { background: #2f56c9; border-color: #2f56c9; }
+  .toy-col.toy-kr.toy-win .toy-bar { box-shadow: 0 0 0 5px rgba(47,86,201,.25), 0 0 22px rgba(47,86,201,.5); }
+  .toy-places { display: flex; justify-content: center; gap: 14px; max-width: 300px; margin: 12px auto 0; padding: 0 6px; }
+  .toy-places .toy-btn { flex: 1; max-width: 70px; min-width: 0; padding: 0; font-size: 30px; }
+  .toy-places .toy-btn.toy-on { background: #ffd7e5; }
+  html[data-theme="dark"] .toy-places .toy-btn.toy-on { background: #4a2a3a; }
+  .toy-face { font-size: 40px; line-height: 1.1; margin-top: 12px; visibility: hidden; }
+  .toy .toy-face.toy-on { visibility: visible; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🍢">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chart" aria-hidden="true">
+      <div class="toy-col toy-town"><span class="toy-tag"><span class="toy-n" data-v="×1.0">?</span></span><div class="toy-bar"><span class="toy-food">🍢</span></div></div>
+      <div class="toy-col toy-jp"><span class="toy-tag"><span class="toy-n" data-v="×1.5">?</span></span><div class="toy-bar"><span class="toy-food">🍢</span></div></div>
+      <div class="toy-col toy-kr"><span class="toy-tag"><span class="toy-n" data-v="×1.0">?</span></span><div class="toy-bar"><span class="toy-food">🍢</span></div></div>
+    </div>
+    <div class="toy-places">
+      <button type="button" class="toy-btn toy-pl" aria-label="🏙">🏙</button>
+      <button type="button" class="toy-btn toy-pl" aria-label="🇯🇵⚾">🇯🇵</button>
+      <button type="button" class="toy-btn toy-pl" aria-label="🇰🇷⚾">🇰🇷</button>
+    </div>
+    <div class="toy-face" aria-hidden="true">🇰🇷⚾ 😊 💴</div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var cols = qa('.toy-col'), pls = qa('.toy-pl'), face = q('.toy-face');
+    if (cols.length < 3 || pls.length < 3) return;
+    var H = [60, 90, 62], done = false;
+    function show(i, on) {
+      var c = cols[i], bar = c.querySelector('.toy-bar');
+      c.classList.toggle('toy-on', on);
+      pls[i].classList.toggle('toy-on', on);
+      if (bar) bar.style.height = on ? H[i] + '%' : '';
+      var n = c.querySelector('.toy-n');
+      if (n) n.textContent = on ? n.getAttribute('data-v') : '?';
+    }
+    function check() {
+      var all = cols.every(function (c) { return c.classList.contains('toy-on'); });
+      cols[2].classList.toggle('toy-win', all);
+      if (face) face.classList.toggle('toy-on', all);
+      if (all && !done) { done = true; setTimeout(function () { pop(cols[2], ['🍢', '🇰🇷', '⚾', '😊', '✨'], 18); }, still() ? 0 : 500); }
+      if (!all) done = false;
+    }
+    pls.forEach(function (b, i) {
+      b.addEventListener('click', function () {
+        var on = !cols[i].classList.contains('toy-on');
+        show(i, on);
+        if (on) { bump(cols[i].querySelector('.toy-tag')); if (i === 1) setTimeout(function () { bump(cols[1].querySelector('.toy-food'), 'toy-wig'); }, 400); }
+        check();
+      });
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () { for (var i = 0; i < 3; i++) show(i, false); check(); });
+  })();
+  </script>
+
   <a class="next" href="../seat-qr-code-mobile-order/index.html">
     <div>
       <div class="next-kicker">NEXT · 24 SEC</div>

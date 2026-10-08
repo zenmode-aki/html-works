@@ -549,6 +549,136 @@
   </section>
   </div>
 
+  <style>
+  .toy { --ta: #c28a00; --ts: #ecdca0; --ti: #3a3219; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fffbe8, #fff1b8); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #2e2a19, #201d12); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-chip { display: inline-flex; align-items: center; gap: 12px; margin: 8px 0 12px; padding: 8px 20px; border-radius: 999px;
+    background: #3a3219; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #1a160a; }
+  .toy-chip .toy-face { font-size: 30px; }
+  .toy-desk { position: relative; width: min(310px, 100%); height: 190px; margin: 0 auto; border-radius: 22px; background: #c99a5b;
+    box-shadow: inset 0 0 0 6px #a87a40, 0 6px 0 #7d5a2c; overflow: hidden; }
+  .toy-desk .toy-card { position: absolute; width: 74px; height: 54px; border-radius: 8px; background: #fff;
+    box-shadow: 0 4px 0 rgba(0,0,0,.18); display: flex; align-items: center; justify-content: center; font-size: 28px;
+    border-top: 8px solid #ff8a70; transform: rotate(var(--r, 0deg)); transition: transform .6s ease-in, opacity .6s; }
+  .toy-desk .toy-card:nth-child(5n+2) { border-top-color: #6fc3ff; } .toy-desk .toy-card:nth-child(5n+3) { border-top-color: #6fd8a8; }
+  .toy-desk .toy-card:nth-child(5n+4) { border-top-color: #b48cff; } .toy-desk .toy-card:nth-child(5n) { border-top-color: #ffcf6b; }
+  .toy-desk .toy-card.toy-new { animation: toy-slap .35s cubic-bezier(.2,1.5,.4,1); }
+  @keyframes toy-slap { from { transform: translateY(-60px) rotate(30deg) scale(1.4); opacity: 0; } }
+  .toy-desk .toy-card.toy-ok::after { content: "✓"; position: absolute; right: 4px; bottom: 0; font-size: 20px; color: #34b27d; font-weight: 900; }
+  .toy-desk .toy-card.toy-fly { transform: translate(var(--fx), 240px) rotate(var(--fr)); opacity: 0; }
+  .toy-desk .toy-lost { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 46px; visibility: hidden; }
+  .toy-desk.toy-gone .toy-lost { visibility: visible; }
+  .toy-days { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+  .toy-days .toy-d { min-width: 56px; padding: 6px 10px; border-radius: 14px; background: rgba(0,0,0,.08); font-size: 20px; font-weight: 900; color: #86795a; }
+  .toy-days .toy-d.toy-on { background: #c28a00; color: #fff; }
+  html[data-theme="dark"] .toy-desk { background: #6e5430; box-shadow: inset 0 0 0 6px #5a4426, 0 6px 0 #2a1f10; }
+  html[data-theme="dark"] .toy-desk .toy-card { background: #3a3628; }
+  html[data-theme="dark"] .toy-days .toy-d { background: rgba(255,255,255,.1); color: #cfc3a0; }
+  html[data-theme="dark"] .toy-days .toy-d.toy-on { background: #c28a00; color: #fff; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-desk .toy-card.toy-new, html:not([data-motion="on"]) .toy-desk .toy-card.toy-fly { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-desk .toy-card.toy-new, html[data-motion="off"] .toy-desk .toy-card.toy-fly { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆✏️🗂️">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite"><span class="toy-face">🙂</span><span>🗂️ <span class="toy-n toy-cnt">0</span></span></div>
+    <div class="toy-desk" aria-hidden="true"><span class="toy-lost">🗂️❓</span></div>
+    <div class="toy-days" aria-hidden="true"><span class="toy-d toy-on">🗓️ 0</span><span class="toy-d">1</span><span class="toy-d">2</span><span class="toy-d">3</span></div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-main toy-write" aria-label="✏️ +">✏️ +</button>
+      <button type="button" class="toy-btn toy-next" aria-label="🗓️ ⏩">🗓️ ⏩</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var desk = q('.toy-desk'), lost = q('.toy-lost'), write = q('.toy-write'), next = q('.toy-next'), cnt = q('.toy-cnt'), face = q('.toy-face');
+    var days = qa('.toy-d'), reset = q('.toy-reset');
+    if (!desk || !write || !next || !cnt || !face || !reset) return;
+    var TODO = ['📚', '🧹', '☕', '🛒', '💻', '🧺', '📝', '🎧'];
+    var cards = [], day = 0;
+    var FACE = ['😆', '🙂', '😐', '😅'];
+    function draw() {
+      cnt.textContent = String(cards.filter(function (c) { return !c.classList.contains('toy-fly'); }).length);
+      days.forEach(function (d, i) { d.classList.toggle('toy-on', i === day); });
+      face.textContent = cards.length === 0 ? '🙂' : FACE[day];
+      write.disabled = day > 0 || cards.length >= 8;
+      next.disabled = cards.length === 0 || day >= 3;
+      desk.classList.toggle('toy-gone', day >= 3);
+    }
+    write.addEventListener('click', function () {
+      if (day > 0 || cards.length >= 8) return;
+      var c = document.createElement('span');
+      c.className = 'toy-card';
+      c.textContent = TODO[cards.length % TODO.length];
+      var col = cards.length % 4, row = Math.floor(cards.length / 4);
+      c.style.left = (6 + col * 23) + '%';
+      c.style.top = (18 + row * 80) + 'px';
+      c.style.setProperty('--r', (Math.random() * 14 - 7).toFixed(1) + 'deg');
+      c.style.setProperty('--fx', (Math.random() * 120 - 60).toFixed(0) + 'px');
+      c.style.setProperty('--fr', (Math.random() * 180 - 90).toFixed(0) + 'deg');
+      desk.insertBefore(c, lost);
+      cards.push(c);
+      bump(c, 'toy-new'); bump(face);
+      draw();
+    });
+    next.addEventListener('click', function () {
+      if (day >= 3 || !cards.length) return;
+      day += 1;
+      if (day === 1) { cards[0].classList.add('toy-ok'); }
+      if (day === 2) { cards.forEach(function (c, i) { if (i % 2) c.classList.add('toy-fly'); }); }
+      if (day === 3) {
+        cards.forEach(function (c) { c.classList.add('toy-fly'); });
+        pop(desk, ['🗂️', '😅', '💨'], 14);
+      }
+      bump(face);
+      draw();
+    });
+    reset.addEventListener('click', function () {
+      cards.forEach(function (c) { if (c.parentNode) c.parentNode.removeChild(c); });
+      cards = []; day = 0; draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../kanayama-station-ceiling/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>

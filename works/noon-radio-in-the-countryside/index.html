@@ -495,6 +495,135 @@
     </p>
   </section>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #e6f8f0, #d4efdc 55%, #fff4d6); --tedge: #fff; --tglow: rgba(31,154,120,.22); --tink: #24332d; --tbtn: #fff; --tsh: #a8d8c2; --ttrack: rgba(36,51,45,.12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #15302a, #183a2e 55%, #2f2b1b); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #e9fbf2; --tbtn: #24362e; --tsh: #0c1813; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-scene { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 8px; }
+  .toy-face { position: relative; width: 120px; height: 120px; border-radius: 50%; background: #fff; border: 7px solid #1f9a78; box-shadow: 0 6px 0 #13664f; }
+  html[data-theme="dark"] .toy-face { background: #e9f3ee; }
+  .toy-face .toy-tk { position: absolute; left: 50%; top: 4px; width: 4px; height: 10px; margin-left: -2px; border-radius: 2px; background: #24332d; transform-origin: 50% 49px; }
+  .toy-face .toy-h, .toy-face .toy-m { position: absolute; left: 50%; bottom: 50%; border-radius: 4px; background: #24332d; transform-origin: 50% 100%; transition: transform .5s cubic-bezier(.3,1.4,.5,1); }
+  .toy-face .toy-h { width: 7px; height: 30px; margin-left: -3.5px; }
+  .toy-face .toy-m { width: 4px; height: 44px; margin-left: -2px; background: #1f9a78; }
+  .toy-face .toy-dot { position: absolute; left: 50%; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: #24332d; }
+  .toy-radio { width: 92px; min-height: 92px; padding: 0; font-size: 50px; border-radius: 26px; }
+  .toy-radio.toy-ring { animation: toy-ring .18s linear 8; background: #fff4c2; }
+  @keyframes toy-ring { 25% { transform: rotate(-7deg); } 75% { transform: rotate(7deg); } }
+  .toy-notes { display: flex; justify-content: center; align-items: flex-end; gap: 14px; height: 64px; margin-top: 10px; }
+  .toy-notes span { font-size: 30px; line-height: 1; opacity: .15; transition: opacity .15s, transform .25s cubic-bezier(.2,1.6,.4,1); }
+  .toy-notes span.toy-on { opacity: 1; }
+  .toy-notes span:nth-child(1).toy-on { transform: translateY(-28px); }
+  .toy-notes span:nth-child(2).toy-on { transform: translateY(-14px); }
+  .toy-notes span:nth-child(3).toy-on { transform: translateY(-20px); }
+  .toy-notes span:nth-child(4).toy-on { transform: translateY(0); }
+  .toy-fwd { background: #6fcf9f; box-shadow: 0 6px 0 #1f9a78; min-width: 96px; font-size: 30px; }
+  .toy-fwd:active { box-shadow: 0 1px 0 #1f9a78; }
+  .toy-row .toy-pill { margin: 0; }
+  .toy-pill .toy-n { min-width: 2.6ch; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🔔">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-scene">
+      <div class="toy-face" aria-hidden="true"><span class="toy-tk"></span><span class="toy-tk" style="transform:rotate(90deg)"></span><span class="toy-tk" style="transform:rotate(180deg)"></span><span class="toy-tk" style="transform:rotate(270deg)"></span><span class="toy-h"></span><span class="toy-m"></span><span class="toy-dot"></span></div>
+      <button type="button" class="toy-btn toy-radio" aria-label="📻">📻</button>
+    </div>
+    <div class="toy-notes" aria-hidden="true"><span>🎵</span><span>🎵</span><span>🎵</span><span>🎵</span></div>
+    <div class="toy-row" style="align-items:center">
+      <button type="button" class="toy-btn toy-fwd" aria-label="⏩">⏩</button>
+      <div class="toy-pill" aria-live="polite"><span aria-hidden="true">🕛</span><span class="toy-n">9:00</span></div>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var hh = q('.toy-h'), mm = q('.toy-m'), radio = q('.toy-radio'), notes = qa('.toy-notes span'), fwd = q('.toy-fwd'), num = q('.toy-n');
+    if (!hh || !radio || !fwd || !num) return;
+    var hour = 9, timers = [], ac = null, done = false;
+    // kin-kon-kan-kon: four bell notes
+    var FREQ = [659.3, 523.3, 587.3, 392.0];
+    function tone(f, at) {
+      try {
+        if (!ac) { var C = window.AudioContext || window.webkitAudioContext; if (!C) return; ac = new C(); }
+        var o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime + at;
+        o.type = 'sine'; o.frequency.value = f;
+        g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.09, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+        o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t + 1);
+      } catch (e) {}
+    }
+    function clear() { timers.forEach(clearTimeout); timers = []; notes.forEach(function (n) { n.classList.remove('toy-on'); }); radio.classList.remove('toy-ring'); }
+    function chime() {
+      clear();
+      bump(radio, 'toy-ring');
+      FREQ.forEach(function (f, i) {
+        tone(f, i * 0.55);
+        timers.push(setTimeout(function () { if (notes[i]) notes[i].classList.add('toy-on'); }, i * 550));
+      });
+      timers.push(setTimeout(function () { notes.forEach(function (n) { n.classList.remove('toy-on'); }); }, 3600));
+    }
+    function draw() {
+      hh.style.transform = 'rotate(' + ((hour % 12) * 30) + 'deg)';
+      if (mm) mm.style.transform = 'rotate(0deg)';
+      num.textContent = hour + ':00';
+      fwd.disabled = hour >= 12;
+    }
+    fwd.addEventListener('click', function () {
+      if (hour >= 12) return;
+      hour++; draw(); bump(num.parentNode);
+      if (hour === 12) {
+        timers.push(setTimeout(function () { chime(); if (!done) { done = true; pop(radio, ['🔔', '🎵', '🏫', '✨', '🐧'], 18); } }, still() ? 0 : 450));
+      }
+    });
+    radio.addEventListener('click', function () {
+      if (hour === 12) chime();
+      else { bump(radio, 'toy-wig'); bump(num.parentNode, 'toy-wig'); }
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () { clear(); hour = 9; done = false; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../gifu-drive-service-areas/index.html">
     <div>
       <div class="next-kicker">NEXT · 95 SEC</div>

@@ -593,6 +593,114 @@
   </section>
   </div>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #e6e8fb, #d6daf6 55%, #fde9d9); --tedge: #fff; --tglow: rgba(59,63,158,.22); --tink: #23243a; --tbtn: #fff; --tsh: #b6bcef; --ttrack: rgba(35,36,58,.12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #1d1f3a, #22254a 55%, #3a2a24); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #eef0ff; --tbtn: #2c2f52; --tsh: #12132a; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-trip { position: relative; height: 150px; max-width: 320px; margin: 8px auto 0; border-radius: 22px; overflow: hidden;
+    background: linear-gradient(180deg, #14164a, #2b2f7a 70%, #3b3f9e); transition: background .8s; }
+  .toy-trip.toy-dawn { background: linear-gradient(180deg, #7fb8ff, #ffc9a0 70%, #ffe7b8); }
+  .toy-trip .toy-sky { position: absolute; right: 14px; top: 10px; font-size: 30px; line-height: 1; }
+  .toy-trip .toy-road { position: absolute; left: 0; right: 0; bottom: 0; height: 46px; background: #4b4a55; }
+  .toy-trip .toy-road::before { content: ""; position: absolute; left: 0; right: 0; top: 21px; height: 4px;
+    background: repeating-linear-gradient(90deg, #fff 0 14px, transparent 14px 28px); opacity: .6; }
+  .toy-trip .toy-end { position: absolute; bottom: 40px; font-size: 26px; line-height: 1; }
+  .toy-trip .toy-a { left: 6px; } .toy-trip .toy-b { right: 6px; }
+  .toy-trip .toy-p { position: absolute; bottom: 46px; font-size: 20px; line-height: 1; opacity: .85; }
+  .toy-trip .toy-bus { position: absolute; left: 6px; bottom: 8px; font-size: 38px; line-height: 1; transform: scaleX(-1); transition: left .6s cubic-bezier(.3,1.2,.5,1); }
+  .toy-trip .toy-zz { position: absolute; left: 30px; bottom: 50px; font-size: 22px; line-height: 1; transition: left .6s cubic-bezier(.3,1.2,.5,1); animation: toy-zz 1.6s ease-in-out infinite; }
+  @keyframes toy-zz { 50% { transform: translateY(-6px); opacity: .6; } }
+  .toy-row .toy-pill { margin: 0; }
+  .toy-pill .toy-n { min-width: 3.4ch; }
+  .toy-go { background: #3b3f9e; box-shadow: 0 6px 0 #23266a; min-width: 96px; font-size: 30px; }
+  .toy-go:active { box-shadow: 0 1px 0 #23266a; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🚌🌙">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-trip" aria-hidden="true">
+      <span class="toy-sky">🌙</span>
+      <span class="toy-end toy-a">🗼</span><span class="toy-end toy-b">🏙️</span>
+      <span class="toy-p" style="left:36%">🅿️</span><span class="toy-p" style="left:66%">🅿️</span>
+      <div class="toy-road"></div>
+      <span class="toy-bus">🚌</span><span class="toy-zz">💤</span>
+    </div>
+    <div class="toy-row" style="align-items:center">
+      <button type="button" class="toy-btn toy-go" aria-label="💤 ➡️">💤</button>
+      <div class="toy-pill" aria-live="polite"><span aria-hidden="true">🕛</span><span class="toy-n">0:00</span></div>
+      <div class="toy-pill"><span>¥</span><span class="toy-n">2000</span></div>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var trip = q('.toy-trip'), bus = q('.toy-bus'), zz = q('.toy-zz'), sky = q('.toy-sky'), go = q('.toy-go'), clock = q('.toy-n');
+    if (!trip || !bus || !go || !clock) return;
+    var STOPS = [0, .18, .36, .5, .66, 1], TIMES = ['0:00', '1:00', '2:00', '3:00', '4:00', '5:30'], at = 0;
+    function draw() {
+      var w = trip.clientWidth - bus.offsetWidth - 12;
+      var x = Math.round(6 + w * STOPS[at]);
+      bus.style.left = x + 'px';
+      if (zz) { zz.style.left = (x + 24) + 'px'; zz.style.visibility = at >= STOPS.length - 1 ? 'hidden' : 'visible'; }
+      clock.textContent = TIMES[at];
+      var end = at >= STOPS.length - 1;
+      trip.classList.toggle('toy-dawn', end);
+      if (sky) sky.textContent = end ? '🌅' : '🌙';
+      go.textContent = end ? '🌅' : '💤';
+      go.disabled = end;
+    }
+    go.addEventListener('click', function () {
+      if (at >= STOPS.length - 1) return;
+      at++; draw(); bump(clock.parentNode);
+      if (at === 2 || at === 4) setTimeout(function () { bump(bus, 'toy-wig'); }, still() ? 0 : 600);
+      if (at === STOPS.length - 1) setTimeout(function () { pop(bus, ['🌅', '🗼', '🚌', '😊', '✨'], 18); }, still() ? 0 : 650);
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () { at = 0; draw(); });
+    window.addEventListener('resize', draw);
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../ginza-tokyo-areas-are-deep/index.html">
     <div>
       <div class="next-kicker">NEXT · 75 SEC</div>

@@ -493,6 +493,125 @@
     </p>
   </section>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #f4f6f2, #fbeee6 60%, #e9eef0); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(29,36,32,.22); font-weight: 800; color: #1d2420; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #1d2420; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #1d2420; background: #fff; box-shadow: 0 6px 0 #d9c3b4; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #d9c3b4; }
+  .toy-btn.toy-main { background: #e63b2e; color: #fff; box-shadow: 0 6px 0 #9c1f16; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #9c1f16; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #9c1f16; background: #fff;
+    box-shadow: 0 4px 0 #d9c3b4; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #d9c3b4; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #e63b2e, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #232a26, #2e2420 60%, #1d2428); border-color: rgba(255,255,255,.12); color: #f1f5f2; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #f1f5f2; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #9c1f16; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-win2 { position: relative; width: min(300px, 100%); height: 74px; margin: 4px auto 10px; border-radius: 18px; overflow: hidden;
+    background: linear-gradient(#cfe8ff 0 40%, #4b5058 40% 82%, #6fbf73 82%); box-shadow: inset 0 0 0 5px #fff, 0 4px 0 #d9c3b4; }
+  .toy-win2::after { content: ""; position: absolute; left: 0; right: 0; top: 60%; border-top: 3px dashed rgba(255,255,255,.6); }
+  .toy-win2 .toy-zoom { position: absolute; top: 30px; left: -60px; font-size: 32px; line-height: 1; z-index: 1; }
+  .toy-win2 .toy-zoom .toy-face { display: inline-block; transform: scaleX(-1); }
+  .toy-win2 .toy-zoom.toy-go { animation: toy-zoom .7s linear; }
+  @keyframes toy-zoom { from { left: -60px; } to { left: 110%; } }
+  .toy-cupbox { position: relative; display: flex; align-items: flex-end; justify-content: center; gap: 18px; height: 130px; }
+  .toy-cup { position: relative; width: 90px; height: 96px; border-radius: 6px 6px 30px 30px; background: #fff; overflow: hidden;
+    box-shadow: inset 0 0 0 5px #e9dfd6, 0 6px 0 #d9c3b4; }
+  .toy-cupw { position: relative; }
+  .toy-win2 .toy-flag2 { position: absolute; right: 10px; top: 4px; font-size: 24px; line-height: 1; }
+  .toy-cupw::after { content: ""; position: absolute; right: -26px; top: 22px; width: 26px; height: 36px; border: 7px solid #fff; border-left: 0; border-radius: 0 20px 20px 0; }
+  .toy-cup .toy-coffee { position: absolute; left: 5px; right: 5px; bottom: 5px; height: 80%; border-radius: 0 0 26px 26px;
+    background: linear-gradient(#c88a5a, #6b3d1f); transition: height .4s ease; }
+  .toy-cupbox .toy-steam { position: absolute; top: -32px; left: 50%; margin-left: -13px; font-size: 26px; line-height: 1; opacity: .8;
+    animation: toy-steam 1.8s ease-in-out infinite; }
+  .toy-cupbox.toy-empty .toy-steam { visibility: hidden; }
+  @keyframes toy-steam { 0%, 100% { transform: translateY(4px); opacity: .3; } 50% { transform: translateY(-6px); opacity: .9; } }
+  .toy-cupbox .toy-pizza { position: absolute; left: calc(50% + 76px); bottom: 6px; font-size: 50px; line-height: 1; opacity: 0; transform: scale(.3) rotate(-30deg); transition: opacity .3s, transform .5s cubic-bezier(.2,1.6,.4,1); }
+  .toy-cupbox.toy-empty .toy-pizza { opacity: 1; transform: none; }
+  .toy-btn.toy-main { min-width: 150px; }
+  html[data-theme="dark"] .toy-cup { background: #e9e2da; }
+  html[data-theme="dark"] .toy-cupw::after { border-color: #e9e2da; }
+  html[data-theme="dark"] .toy-win2 { box-shadow: inset 0 0 0 5px #3a403c, 0 4px 0 #121016; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-win2 .toy-zoom, html:not([data-motion="on"]) .toy-cupbox .toy-steam, html:not([data-motion="on"]) .toy-cupbox .toy-pizza { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-win2 .toy-zoom, html[data-motion="off"] .toy-cupbox .toy-steam, html[data-motion="off"] .toy-cupbox .toy-pizza { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆☕">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-cnt">🏎️ <span><span class="toy-n toy-c">0</span>/5</span></span>
+    </div>
+    <div class="toy-win2" aria-hidden="true"><span class="toy-flag2">🏁</span><span class="toy-zoom"><span class="toy-face">🏎️</span></span></div>
+    <div class="toy-cupbox" aria-hidden="true">
+      <div class="toy-cupw"><span class="toy-steam">♨️</span><div class="toy-cup"><span class="toy-coffee"></span></div></div>
+      <span class="toy-pizza">🍕</span>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-main toy-sip" aria-label="☕">☕ <small>−1</small></button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var zoom = q('.toy-zoom'), coffee = q('.toy-coffee'), box2 = q('.toy-cupbox'), sip = q('.toy-sip'), cEl = q('.toy-c'), chip = q('.toy-cnt');
+    if (!zoom || !coffee || !box2 || !sip || !cEl) return;
+    var n = 0, MAX = 5;
+    function draw() {
+      coffee.style.height = (80 * (1 - n / MAX)) + '%';
+      cEl.textContent = String(n);
+      sip.disabled = n >= MAX;
+      box2.classList.toggle('toy-empty', n >= MAX);
+      chip.classList.toggle('toy-win', n >= MAX);
+    }
+    sip.addEventListener('click', function () {
+      if (n >= MAX) return;
+      n++; draw(); bump(chip);
+      bump(zoom, 'toy-go');
+      if (n === MAX) setTimeout(function () { pop(box2, ['🍕', '☕', '🏁', '🎉', '🐧'], 18); }, 300);
+    });
+    reset.addEventListener('click', function () { n = 0; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../suzuka-welcome-sign-is-a-race/index.html">
     <div>
       <div class="next-kicker">NEXT · 88 SEC</div>

@@ -552,6 +552,119 @@
   </section>
   </div>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #e3f8ee, #c9efdc 55%, #fff4d2); --tedge: #fff; --tglow: rgba(35,132,92,.22); --tink: #173a2b; --tbtn: #fff; --tsh: #9fcfb7; --ttrack: rgba(23,58,43,.12); --tfill: linear-gradient(90deg, #8fd9b6, #23845c); --tacc: #23845c;
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #15302a, #1b3a2e 55%, #2f2b1b); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #e9fbf2; --tbtn: #24362e; --tsh: #0c1813; --ttrack: rgba(255,255,255,.14); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-top { display: inline-flex; align-items: center; gap: 8px; margin: 8px 0 6px; padding: 8px 20px; border-radius: 999px;
+    background: var(--tacc); color: #fff; font-size: 28px; line-height: 1.1; box-shadow: 0 5px 0 #145a3d; }
+  .toy-top .toy-of { font-size: 20px; opacity: .8; }
+  .toy-line { position: relative; max-width: 300px; margin: 6px auto 0; padding-top: 52px; }
+  .toy-rail { position: absolute; left: 29px; right: 29px; top: 82px; height: 10px; border-radius: 9px;
+    background: repeating-linear-gradient(90deg, var(--tink) 0 14px, transparent 14px 22px); opacity: .28; }
+  .toy-line .toy-train { position: absolute; left: 0; top: 4px; width: 58px; font-size: 42px; line-height: 1;
+    transition: transform .7s cubic-bezier(.45,.05,.3,1); }
+  .toy-train.toy-go { animation: toy-rock .18s linear 4; }
+  @keyframes toy-rock { 50% { transform: var(--tx) translateY(-3px) rotate(-3deg); } }
+  .toy-stops { position: relative; display: flex; justify-content: space-between; }
+  .toy-stop { padding: 0; font-size: 30px; }
+  .toy-stop.toy-past { background: var(--tacc); box-shadow: 0 6px 0 #145a3d; }
+  .toy-stop.toy-next { animation: toy-glow 1s ease-in-out infinite; }
+  @keyframes toy-glow { 50% { box-shadow: 0 6px 0 var(--tsh), 0 0 0 8px rgba(35,132,92,.3); } }
+  .toy-end { margin-top: 16px; font-size: 44px; line-height: 1.1; visibility: hidden; opacity: 0; transform: translateX(-40px);
+    transition: opacity .3s, transform .6s cubic-bezier(.2,1.4,.4,1); }
+  .toy-end.toy-on { visibility: visible; opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🚃">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-top" aria-live="polite"><span aria-hidden="true">🔁</span><span class="toy-n">0</span><span class="toy-of">/3</span></div>
+    <div class="toy-line">
+      <div class="toy-rail" aria-hidden="true"></div>
+      <div class="toy-train" aria-hidden="true">🚃</div>
+      <div class="toy-stops">
+        <button type="button" class="toy-btn toy-stop toy-past" aria-label="🏯">🏯</button>
+        <button type="button" class="toy-btn toy-stop toy-next" aria-label="🚉 1">🚉</button>
+        <button type="button" class="toy-btn toy-stop" aria-label="🚉 2">🚉</button>
+        <button type="button" class="toy-btn toy-stop" aria-label="🏞️">🏞️</button>
+      </div>
+    </div>
+    <div class="toy-end" aria-hidden="true">🚗💨</div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var stops = qa('.toy-stop'), train = q('.toy-train'), num = q('.toy-n'), end = q('.toy-end'), line = q('.toy-line');
+    if (!stops.length || !train || !num || !line) return;
+    var at = 0;
+    function place() {
+      var s = stops[at], x = s.offsetLeft + (s.offsetWidth - 58) / 2;
+      train.style.setProperty('--tx', 'translateX(' + x + 'px)');
+      train.style.transform = 'translateX(' + x + 'px)';
+    }
+    function draw() {
+      stops.forEach(function (s, i) {
+        s.classList.toggle('toy-past', i <= at);
+        s.classList.toggle('toy-next', i === at + 1);
+      });
+      num.textContent = String(at);
+      if (end) end.classList.toggle('toy-on', at === stops.length - 1);
+      place();
+    }
+    stops.forEach(function (s, i) {
+      s.addEventListener('click', function () {
+        if (i !== at + 1) { bump(s, 'toy-wig'); bump(stops[Math.min(at + 1, stops.length - 1)], 'toy-wig'); return; }
+        at = i;
+        draw();
+        bump(train, 'toy-go');
+        bump(num.parentNode);
+        if (at === stops.length - 1) setTimeout(function () { pop(end || s, ['🚃', '🏞️', '🚗', '🎉', '✨'], 18); }, still() ? 0 : 650);
+      });
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () { at = 0; draw(); });
+    window.addEventListener('resize', place);
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../eigenji-japan-heritage-temple/index.html">
     <div>
       <div class="next-kicker">NEXT · 34 SEC</div>

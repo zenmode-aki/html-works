@@ -517,6 +517,128 @@
   </section>
   </div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fffbe8, #fff2c2 60%, #eaf6ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(194,138,0,.25); font-weight: 800; color: #3a3219; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #3a3219; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #3a3219; background: #fff; box-shadow: 0 6px 0 #f0d98a; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #f0d98a; }
+  .toy-btn.toy-main { background: #e0a400; color: #fff; box-shadow: 0 6px 0 #9a7000; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #9a7000; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #9a7000; background: #fff;
+    box-shadow: 0 4px 0 #f0d98a; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #f0d98a; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #e0a400, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #33301c, #3a3218 60%, #1c2838); border-color: rgba(255,255,255,.12); color: #fff8dc; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #fff8dc; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #9a7000; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-pals { display: flex; justify-content: center; gap: 14px; margin-top: 8px; }
+  .toy-palw { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .toy-pal { width: 120px; height: 120px; padding: 0; border: 0; border-radius: 30px; cursor: pointer; font: inherit;
+    background: #fff; box-shadow: 0 7px 0 #f0d98a; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: box-shadow .1s, transform .1s, background .3s; }
+  .toy-pal:active { transform: translateY(5px); box-shadow: 0 2px 0 #f0d98a; }
+  .toy-pal .toy-g { display: inline-block; font-size: 64px; line-height: 1; }
+  .toy-pal.toy-wig .toy-g { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 0%, 100% { transform: rotate(0) scale(1); } 25% { transform: rotate(-14deg) scale(1.15); } 75% { transform: rotate(14deg) scale(1.15); } }
+  .toy-pal.toy-full { background: #fff2c2; box-shadow: 0 7px 0 #e0a400; }
+  .toy.toy-party .toy-pal .toy-g { animation: toy-dance .6s ease-in-out infinite alternate; }
+  @keyframes toy-dance { from { transform: translateY(0) rotate(-8deg); } to { transform: translateY(-12px) rotate(8deg); } }
+  .toy-hearts { display: flex; gap: 2px; font-size: 18px; line-height: 1; }
+  .toy-hearts span { opacity: .18; filter: grayscale(1); transition: opacity .2s, filter .2s, transform .25s cubic-bezier(.2,1.6,.4,1); }
+  .toy-hearts span.toy-on { opacity: 1; filter: none; }
+  html[data-theme="dark"] .toy-pal { background: #3a3424; box-shadow: 0 7px 0 #121016; }
+  html[data-theme="dark"] .toy-pal.toy-full { background: #5a4a1c; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-pal .toy-g, html:not([data-motion="on"]) .toy.toy-party .toy-pal .toy-g { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-pal .toy-g, html[data-motion="off"] .toy.toy-party .toy-pal .toy-g { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🐌🐝">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-cnt">💛 <span><span class="toy-n toy-h">0</span>/10</span></span>
+    </div>
+    <div class="toy-pals">
+      <div class="toy-palw">
+        <button type="button" class="toy-pal toy-snail" aria-label="🐌"><span class="toy-g">🐌</span></button>
+        <div class="toy-hearts" aria-hidden="true"><span>💛</span><span>💛</span><span>💛</span><span>💛</span><span>💛</span></div>
+      </div>
+      <div class="toy-palw">
+        <button type="button" class="toy-pal toy-bee" aria-label="🐝"><span class="toy-g">🐝</span></button>
+        <div class="toy-hearts" aria-hidden="true"><span>💛</span><span>💛</span><span>💛</span><span>💛</span><span>💛</span></div>
+      </div>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var pals = qa('.toy-pal'), hEl = q('.toy-h'), chip = q('.toy-cnt');
+    if (pals.length !== 2 || !hEl) return;
+    var cnt = [0, 0], party = false;
+    function draw() {
+      pals.forEach(function (p, i) {
+        var hs = p.parentNode.querySelectorAll('.toy-hearts span');
+        for (var j = 0; j < hs.length; j++) hs[j].classList.toggle('toy-on', j < cnt[i]);
+        p.classList.toggle('toy-full', cnt[i] >= 5);
+      });
+      hEl.textContent = String(cnt[0] + cnt[1]);
+      chip.classList.toggle('toy-win', party);
+      box.classList.toggle('toy-party', party);
+    }
+    pals.forEach(function (p, i) {
+      p.addEventListener('click', function () {
+        bump(p, 'toy-wig');
+        pop(p, [i ? '🐝' : '🐌', '💛'], 4);
+        if (cnt[i] < 5) { cnt[i]++; bump(chip); }
+        if (!party && cnt[0] >= 5 && cnt[1] >= 5) {
+          party = true;
+          setTimeout(function () { pop(box.querySelector('.toy-pals'), ['🐌', '🐝', '💛', '🎉', '🏁'], 20); }, 200);
+        }
+        draw();
+      });
+    });
+    reset.addEventListener('click', function () { cnt = [0, 0]; party = false; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../night-bus-nagoya-to-tokyo-2000-yen/index.html">
     <div>
       <div class="next-kicker">NEXT · 45 SEC</div>

@@ -530,6 +530,124 @@
   </figure>
   </div>
 
+  <style>
+  .toy { --ta: #2f67c9; --ts: #b7cbe8; --ti: #1f2d44; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #eef6ff, #dcebff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #1e2a3c, #151d2a); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-chip { display: inline-flex; align-items: center; gap: 8px; margin: 8px 0 12px; padding: 8px 20px; border-radius: 999px;
+    background: #2f67c9; color: #fff; font-size: 26px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #1b3f80; }
+  .toy-chip.toy-done { background: #34b27d; box-shadow: 0 5px 0 #1f7a53; }
+  .toy-lane { position: relative; height: 66px; width: min(300px, 100%); margin: 0 auto 14px; border-radius: 18px; overflow: hidden;
+    background: linear-gradient(180deg, #bfe0ff 0 58%, #6b7a90 58%); }
+  .toy-lane .toy-home, .toy-lane .toy-pot { position: absolute; bottom: 22px; font-size: 30px; line-height: 1; }
+  .toy-lane .toy-home { left: 8px; }
+  .toy-lane .toy-pot { right: 8px; }
+  .toy-lane .toy-car { position: absolute; left: 44px; bottom: 4px; font-size: 32px; line-height: 1; transform: scaleX(-1); }
+  .toy-lane .toy-car.toy-drive { animation: toy-drive .9s ease-in-out; }
+  @keyframes toy-drive { 0% { transform: translateX(0) scaleX(-1); } 70% { transform: translateX(calc(min(300px, 78vw) - 130px)) scaleX(-1); } 100% { transform: translateX(0) scaleX(-1); } }
+  .toy-lane .toy-note { position: absolute; left: 50%; top: 4px; font-size: 22px; opacity: 0; }
+  .toy-lane .toy-note.toy-sing { animation: toy-sing .9s ease-out; }
+  @keyframes toy-sing { 0% { opacity: 0; transform: translateY(14px); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(-8px) rotate(14deg); } }
+  .toy-weeks { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: min(300px, 100%); margin: 0 auto; }
+  .toy-btn.toy-wk { min-width: 0; min-height: 76px; padding: 6px; font-size: 38px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .toy-btn.toy-wk .toy-d { font-size: 16px; font-weight: 900; color: #5d7090; }
+  .toy-btn.toy-wk.toy-ate { background: #fff4c2; box-shadow: 0 6px 0 #e0c060; }
+  .toy-wk.toy-flip { animation: toy-flip .3s ease-in-out; }
+  @keyframes toy-flip { 50% { transform: scale(.85) rotate(-4deg); } }
+  html[data-theme="dark"] .toy-chip { background: #3f78dc; }
+  html[data-theme="dark"] .toy-lane { background: linear-gradient(180deg, #2c4466 0 58%, #3d4656 58%); }
+  html[data-theme="dark"] .toy-btn.toy-wk.toy-ate { background: #4a3f1c; box-shadow: 0 6px 0 #2a230d; }
+  html[data-theme="dark"] .toy-btn.toy-wk .toy-d { color: #a9bbd6; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-lane .toy-car.toy-drive, html:not([data-motion="on"]) .toy-lane .toy-note.toy-sing, html:not([data-motion="on"]) .toy-wk.toy-flip { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-lane .toy-car.toy-drive, html[data-motion="off"] .toy-lane .toy-note.toy-sing, html[data-motion="off"] .toy-wk.toy-flip { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🚗🍲">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite">🍲 <span><span class="toy-n toy-got">0</span>/4</span></div>
+    <div class="toy-lane" aria-hidden="true">
+      <span class="toy-home">🏠</span><span class="toy-note">🎵</span><span class="toy-car">🚗</span><span class="toy-pot">🍲</span>
+    </div>
+    <div class="toy-weeks">
+      <button type="button" class="toy-btn toy-wk" aria-label="🗓️ 1"><span class="toy-d">1</span><span class="toy-f">🚗</span></button>
+      <button type="button" class="toy-btn toy-wk" aria-label="🗓️ 2"><span class="toy-d">2</span><span class="toy-f">🚗</span></button>
+      <button type="button" class="toy-btn toy-wk" aria-label="🗓️ 3"><span class="toy-d">3</span><span class="toy-f">🚗</span></button>
+      <button type="button" class="toy-btn toy-wk" aria-label="🗓️ 4"><span class="toy-d">4</span><span class="toy-f">🚗</span></button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var wks = qa('.toy-wk'), got = q('.toy-got'), chip = q('.toy-chip'), car = q('.toy-car'), note = q('.toy-note'), reset = q('.toy-reset');
+    if (!wks.length || !got || !reset) return;
+    var FOOD = ['🍲', '🍜', '🍖', '🍗', '🍚', '🥟'], menu = [], n = 0;
+    function shuffle() {
+      menu = FOOD.slice();
+      for (var i = menu.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = menu[i]; menu[i] = menu[j]; menu[j] = t; }
+    }
+    function clear() {
+      n = 0; shuffle();
+      got.textContent = '0';
+      if (chip) chip.classList.remove('toy-done');
+      wks.forEach(function (b) { b.classList.remove('toy-ate'); var f = b.querySelector('.toy-f'); if (f) f.textContent = '🚗'; });
+    }
+    wks.forEach(function (b, i) {
+      b.addEventListener('click', function () {
+        if (b.classList.contains('toy-ate')) return;
+        b.classList.add('toy-ate');
+        bump(b, 'toy-flip'); bump(car, 'toy-drive'); bump(note, 'toy-sing');
+        var f = b.querySelector('.toy-f');
+        if (f) f.textContent = menu[i];
+        pop(b, [menu[i], '🎵'], 6);
+        n += 1;
+        got.textContent = String(n);
+        if (n >= wks.length) {
+          if (chip) chip.classList.add('toy-done');
+          pop(chip, ['🚗', '🎵', '🍲', '🎉'], 18);
+        }
+      });
+    });
+    reset.addEventListener('click', clear);
+    clear();
+  })();
+  </script>
+
   <a class="next" href="../clark-and-angeles-15-minutes-apart/index.html">
     <div>
       <div class="next-kicker">NEXT · 154 SEC</div>

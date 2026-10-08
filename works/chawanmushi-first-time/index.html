@@ -509,6 +509,114 @@
   </section>
   </div>
 
+  <style>
+  .toy { --ta: #b8871c; --ts: #ecd9a8; --ti: #322536; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fffaf0, #fff0c8); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #2e2919, #211d12); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-chip { display: inline-flex; align-items: center; gap: 10px; margin: 8px 0 10px; padding: 8px 20px; border-radius: 999px;
+    background: #b8871c; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #7d5a0f; }
+  .toy-chip .toy-face { font-size: 30px; }
+  .toy-cup { position: relative; width: 200px; height: 170px; margin: 0 auto; }
+  .toy-cup .toy-steam { position: absolute; left: 50%; top: 0; font-size: 24px; transform: translateX(-50%); animation: toy-steam 2s ease-in-out infinite; }
+  @keyframes toy-steam { 0%, 100% { opacity: .3; transform: translate(-50%, 6px); } 50% { opacity: .9; transform: translate(-50%, -4px); } }
+  .toy-cup .toy-bowl { position: absolute; left: 10px; right: 10px; bottom: 0; height: 120px; border-radius: 12px 12px 70px 70px;
+    background: #fff; border: 6px solid #e9e1d0; overflow: hidden; box-shadow: 0 8px 0 #d9ccb0; }
+  .toy-cup .toy-custard { position: absolute; left: 0; right: 0; bottom: 0; height: 100%; background: linear-gradient(180deg, #ffe58a, #f6cf55);
+    transition: height .35s ease-out; }
+  .toy-cup .toy-in { position: absolute; z-index: 1; left: calc(50% - 24px); top: 40px; font-size: 48px; line-height: 1; transform: scale(.4); opacity: 0; transition: transform .3s cubic-bezier(.2,1.6,.4,1), opacity .2s; }
+  .toy-cup .toy-in.toy-seen { transform: none; opacity: 1; }
+  .toy-cup .toy-spoon { position: absolute; right: -8px; top: 26px; font-size: 40px; line-height: 1; transform: rotate(20deg); }
+  .toy-cup .toy-spoon.toy-dig { animation: toy-dig .4s ease-in-out; }
+  @keyframes toy-dig { 50% { transform: translate(-40px, 30px) rotate(-30deg); } }
+
+  .toy-eq { margin-top: 14px; font-size: 28px; visibility: hidden; transform: scale(.6); opacity: 0; transition: transform .35s cubic-bezier(.2,1.6,.4,1), opacity .2s; }
+  .toy-eq.toy-on { visibility: visible; transform: none; opacity: 1; }
+  html[data-theme="dark"] .toy-cup .toy-bowl { background: #3a3628; border-color: #5a5442; box-shadow: 0 8px 0 #1a1810; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-cup .toy-spoon.toy-dig, html:not([data-motion="on"]) .toy-cup .toy-steam { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-cup .toy-spoon.toy-dig, html[data-motion="off"] .toy-cup .toy-steam { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🥄🍮">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite"><span class="toy-face">😒</span><span>🥄 <span class="toy-n toy-sc">0</span>/5</span></div>
+    <div class="toy-cup" aria-hidden="true">
+      <span class="toy-steam">♨️</span>
+      <span class="toy-bowl">
+        <span class="toy-custard"></span>
+        <span class="toy-in">🥚</span>
+      </span>
+      <span class="toy-spoon">🥄</span>
+    </div>
+    <div class="toy-eq" aria-hidden="true">🍲 ≈ 🍮 ➜ 🥚 !</div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-main toy-go" aria-label="🥄">🥄 +</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var go = q('.toy-go'), custard = q('.toy-custard'), spoon = q('.toy-spoon'), face = q('.toy-face'), sc = q('.toy-sc');
+    var ins = qa('.toy-in'), cup = q('.toy-cup'), reset = q('.toy-reset');
+    if (!go || !custard || !face || !sc || !reset) return;
+    var n = 0, MAX = 5, FACES = ['😒', '🤔', '😮', '🙂', '😋', '😳'];
+    // which scoop shows which hidden thing
+    var SHOW = [5], eq = q('.toy-eq');
+    function draw() {
+      custard.style.height = (100 - n / MAX * 82) + '%';
+      sc.textContent = String(n);
+      face.textContent = FACES[n];
+      ins.forEach(function (el, i) { el.classList.toggle('toy-seen', n >= SHOW[i]); });
+      go.disabled = n >= MAX;
+      if (eq) eq.classList.toggle('toy-on', n >= MAX);
+    }
+    go.addEventListener('click', function () {
+      if (n >= MAX) return;
+      n += 1;
+      bump(spoon, 'toy-dig'); bump(face);
+      draw();
+      if (n >= MAX) pop(cup, ['🥚', '🍮', '😋', '✨'], 18);
+    });
+    reset.addEventListener('click', function () { n = 0; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../suzuka-circuit-cafe/index.html">
     <div>
       <div class="next-kicker">NEXT · 20 SEC</div>

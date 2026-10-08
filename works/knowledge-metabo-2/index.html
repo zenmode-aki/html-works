@@ -480,6 +480,126 @@
     </div>
   </a>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #f9f6ef, #e7e3da 55%, #f3e6cf); --tedge: #fff; --tglow: rgba(47,50,57,.18); --tink: #29303d; --tbtn: #fff; --tsh: #cfc6b4; --ttrack: rgba(41,48,61,.12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #2a2b30, #26272c 55%, #2f2a22); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #f1eee8; --tbtn: #363841; --tsh: #15161a; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-cloud { display: grid; grid-template-columns: repeat(3, 64px); justify-content: center; gap: 10px; margin: 8px auto 0; min-height: 138px; }
+  .toy-bub { width: 64px; padding: 0; font-size: 30px; border-radius: 22px 22px 22px 6px;
+    transition: opacity .3s, transform .35s cubic-bezier(.2,1.5,.4,1), box-shadow .08s; }
+  .toy-bub:nth-child(2n) { border-radius: 22px 22px 6px 22px; }
+  .toy .toy-bub.toy-gone { opacity: 0; transform: scale(.2) translateY(-30px); pointer-events: none; }
+  .toy-road { position: relative; height: 64px; max-width: 300px; margin: 14px auto 0; border-bottom: 5px dashed var(--ttrack); }
+  .toy-road .toy-peng { position: absolute; left: 0; bottom: 4px; font-size: 42px; line-height: 1; transition: left .5s cubic-bezier(.3,1.3,.5,1); }
+  .toy-road .toy-goal { position: absolute; right: 0; bottom: 6px; font-size: 34px; line-height: 1; }
+  .toy-road.toy-stuck .toy-peng { animation: toy-stuck 1s ease-in-out infinite; }
+  @keyframes toy-stuck { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+  .toy-more { background: #697c91; box-shadow: 0 6px 0 #45556a; }
+  .toy .toy-more { color: #fff; }
+  .toy-more:active { box-shadow: 0 1px 0 #45556a; }
+  .toy-pill .toy-n { min-width: 1ch; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆💬🐧">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-cloud">
+      <button type="button" class="toy-btn toy-bub" aria-label="💬">💬</button>
+      <button type="button" class="toy-btn toy-bub" aria-label="📢">📢</button>
+      <button type="button" class="toy-btn toy-bub" aria-label="❓">❓</button>
+      <button type="button" class="toy-btn toy-bub" aria-label="📣">📣</button>
+      <button type="button" class="toy-btn toy-bub" aria-label="💭">💭</button>
+      <button type="button" class="toy-btn toy-bub" aria-label="✅?">✅</button>
+    </div>
+    <div class="toy-road toy-stuck" aria-hidden="true"><span class="toy-peng">🐧</span><span class="toy-goal">🚩</span></div>
+    <div class="toy-row" style="align-items:center">
+      <div class="toy-pill" aria-live="polite" style="margin:0"><span aria-hidden="true">💬</span><span class="toy-n">6</span></div>
+      <button type="button" class="toy-btn toy-more" aria-label="🔎 +">🔎+</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var bubs = qa('.toy-bub'), road = q('.toy-road'), peng = q('.toy-peng'), num = q('.toy-n'), more = q('.toy-more');
+    if (!bubs.length || !num || !more) return;
+    var done = false;
+    function left() { return bubs.filter(function (b) { return !b.classList.contains('toy-gone'); }).length; }
+    function draw() {
+      var n = left();
+      num.textContent = String(n);
+      if (road) road.classList.toggle('toy-stuck', n > 0);
+      if (road && peng) {
+        var w = road.clientWidth - peng.offsetWidth - 44;
+        peng.style.left = Math.round(w * (bubs.length - n) / bubs.length) + 'px';
+      }
+      more.disabled = n >= bubs.length;
+      bubs.forEach(function (b) { b.tabIndex = b.classList.contains('toy-gone') ? -1 : 0; });
+      return n;
+    }
+    bubs.forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.classList.contains('toy-gone')) return;
+        pop(b, ['💨'], 3);
+        b.classList.add('toy-gone');
+        bump(num.parentNode);
+        if (draw() === 0 && !done) { done = true; setTimeout(function () { pop(road || b, ['🐧', '🚩', '✨', '🎉'], 18); }, still() ? 0 : 450); }
+      });
+    });
+    // 🔎 brings one opinion back: the penguin steps back
+    more.addEventListener('click', function () {
+      var gone = bubs.filter(function (b) { return b.classList.contains('toy-gone'); });
+      if (!gone.length) return;
+      var b = gone[Math.floor(Math.random() * gone.length)];
+      b.classList.remove('toy-gone'); bump(b, 'toy-wig'); done = false;
+      draw();
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      bubs.forEach(function (b) { b.classList.remove('toy-gone'); }); done = false; draw();
+    });
+    window.addEventListener('resize', draw);
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../knowledge-metabo-3/index.html">
     <div>
       <div class="next-kicker">NEXT · 49 SEC</div>

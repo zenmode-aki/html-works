@@ -500,6 +500,130 @@
     </a>
   </section>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fff1e4, #ffe0c8 60%, #f3e8ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(0,0,0,.35); font-weight: 800; color: #2a1f1a; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #2a1f1a; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #2a1f1a; background: #fff; box-shadow: 0 6px 0 #f5b98e; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #f5b98e; }
+  .toy-btn.toy-main { background: #f26b1d; color: #fff; box-shadow: 0 6px 0 #a8430b; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #a8430b; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #a8430b; background: #fff;
+    box-shadow: 0 4px 0 #f5b98e; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #f5b98e; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #f26b1d, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #33241a, #2e1f16 60%, #2a2033); border-color: rgba(255,255,255,.12); color: #fff0e4; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #fff0e4; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #a8430b; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-beat { position: relative; width: min(290px, 100%); height: 86px; margin: 6px auto 0; border-radius: 22px; overflow: hidden;
+    background: #2a1f1a; box-shadow: inset 0 0 0 4px #4a3a30; }
+  .toy-beat .toy-zone { position: absolute; left: 36%; width: 28%; top: 8px; bottom: 8px; border-radius: 16px;
+    background: rgba(242,107,29,.35); box-shadow: inset 0 0 0 3px #f26b1d; animation: toy-throb .8s ease-in-out infinite; }
+  @keyframes toy-throb { 50% { background: rgba(242,107,29,.55); } }
+  .toy-beat.toy-hit .toy-zone { background: rgba(47,163,107,.7); box-shadow: inset 0 0 0 3px #2fa36b; }
+  .toy-beat .toy-dot { position: absolute; top: 50%; left: 0; width: 56px; height: 56px; margin: -28px 0 0 -28px; display: flex; align-items: center; justify-content: center;
+    font-size: 42px; line-height: 1; will-change: transform; }
+  .toy-res { display: block; min-height: 40px; margin-top: 8px; font-size: 32px; line-height: 1.2; }
+  .toy-tap { width: 120px; height: 120px; margin-top: 4px; padding: 0; border: 0; border-radius: 50%; cursor: pointer; font: inherit; font-size: 50px; line-height: 1;
+    color: #fff; background: radial-gradient(circle at 35% 30%, #ffb36b, #f26b1d 60%, #c24e0b); box-shadow: 0 8px 0 #8a350a, 0 0 0 6px rgba(242,107,29,.25);
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .07s, box-shadow .07s; }
+  .toy-tap:active { transform: translateY(6px); box-shadow: 0 2px 0 #8a350a, 0 0 0 10px rgba(242,107,29,.35); }
+  .toy-tap[disabled] { opacity: .5; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-beat .toy-zone { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-beat .toy-zone { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🎵">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-cnt">⏱️ <span><span class="toy-n toy-m">0</span>/45</span></span>
+      <span class="toy-chip toy-combo">🔥 <span class="toy-n toy-c">0</span></span>
+    </div>
+    <div class="toy-beat" aria-hidden="true"><span class="toy-zone"></span><span class="toy-dot">🐧</span></div>
+    <span class="toy-res" aria-live="polite"></span>
+    <div><button type="button" class="toy-tap" aria-label="💥">💥</button></div>
+    <div class="toy-meter" aria-hidden="true"><span class="toy-fill"></span></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var beat = q('.toy-beat'), dot = q('.toy-dot'), tap = q('.toy-tap'), mEl = q('.toy-m'), cEl = q('.toy-c'), res = q('.toy-res');
+    var chip = q('.toy-cnt'), fill = q('.toy-fill');
+    if (!beat || !dot || !tap || !mEl || !res) return;
+    var m = 0, combo = 0, pos = .5, raf = 0, t0 = 0, visible = true;
+    function frame(t) {
+      if (!t0) t0 = t;
+      pos = (Math.sin((t - t0) / 1700 * Math.PI * 2 - Math.PI / 2) + 1) / 2;
+      dot.style.transform = 'translateX(' + (28 + pos * (beat.clientWidth - 56)) + 'px)';
+      if (m < 45 && visible) raf = requestAnimationFrame(frame); else raf = 0;
+    }
+    function run() { if (!raf && m < 45 && !still()) raf = requestAnimationFrame(frame); }
+    function park() { dot.style.transform = 'translateX(' + (.5 * beat.clientWidth) + 'px)'; }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) run(); }).observe(beat);
+    }
+    function draw() {
+      mEl.textContent = String(m); cEl.textContent = String(combo);
+      if (fill) fill.style.width = (m / 45 * 100) + '%';
+      chip.classList.toggle('toy-win', m >= 45);
+      tap.disabled = m >= 45;
+    }
+    tap.addEventListener('click', function () {
+      if (m >= 45) return;
+      var hit = still() || (pos > .36 && pos < .64);
+      if (hit) {
+        m += 5; combo++;
+        res.textContent = combo >= 3 ? '💦 🔥' : '💦';
+        beat.classList.add('toy-hit'); setTimeout(function () { beat.classList.remove('toy-hit'); }, 260); bump(chip); pop(dot, ['💦', '🎵'], 4);
+        if (m >= 45) { park(); res.textContent = '🎉 💦 🎉'; pop(beat, ['🐧', '🎵', '💦', '🎉', '🔥'], 18); }
+      } else {
+        combo = 0; res.textContent = '🙈'; bump(res, 'toy-shake');
+      }
+      draw();
+    });
+    reset.addEventListener('click', function () { m = 0; combo = 0; res.textContent = ''; draw(); if (still()) park(); else run(); });
+    draw();
+    if (still()) park(); else run();
+  })();
+  </script>
+
   <a class="next" href="../thank-you-air-conditioner/index.html">
     <div>
       <div class="next-kicker">NEXT · 6 SEC</div>

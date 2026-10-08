@@ -573,6 +573,143 @@
     <p class="big">How many points will there be next week? 🖍</p>
   </section>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fff9ef, #fff0e6 60%, #f3f0ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(216,52,47,.2); font-weight: 800; color: #322536; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #322536; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #322536; background: #fff; box-shadow: 0 6px 0 #f0c2b0; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #f0c2b0; }
+  .toy-btn.toy-main { background: #d8342f; color: #fff; box-shadow: 0 6px 0 #8e1d1a; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #8e1d1a; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #8e1d1a; background: #fff;
+    box-shadow: 0 4px 0 #f0c2b0; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #f0c2b0; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #d8342f, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #33291c, #33201e 60%, #241f3a); border-color: rgba(255,255,255,.12); color: #fff3ec; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #fff3ec; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #8e1d1a; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-paper { width: min(280px, 100%); margin: 4px auto 0; padding: 12px 12px 8px; border-radius: 16px; background: #fff;
+    box-shadow: 0 8px 0 #f0c2b0, 0 0 0 3px #f6e2d6; display: grid; gap: 6px; }
+  .toy-line { position: relative; display: flex; align-items: center; gap: 8px; height: 44px; padding: 0 10px; border: 0; border-radius: 12px;
+    cursor: pointer; font: inherit; background: transparent; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: background .2s; }
+  .toy-line:active { background: #fff3ec; }
+  .toy-line .toy-ink { flex: 1; height: 10px; border-radius: 99px; background: #d9d3e3; }
+  .toy-line .toy-mark { width: 30px; font-size: 24px; line-height: 1; text-align: center; }
+  .toy-line.toy-bad .toy-ink { background: linear-gradient(90deg, #d9d3e3 40%, #ffb8a8 40%); }
+  .toy-line.toy-fixed .toy-ink { background: #d9d3e3; box-shadow: 0 0 0 3px rgba(47,163,107,.35); }
+  .toy-line .toy-ink { position: relative; }
+  .toy-line.toy-fixed .toy-ink::after { content: ""; position: absolute; left: -4px; right: -4px; top: 50%; height: 4px; margin-top: -2px; border-radius: 4px;
+    background: #d8342f; transform-origin: 0 50%; animation: toy-strike .3s ease-out; }
+  @keyframes toy-strike { from { transform: scaleX(0); } }
+  .toy-line.toy-no { animation: toy-shake .35s; }
+  .toy-line.toy-fixed .toy-mark { color: #2fa36b; font-size: 28px; }
+  .toy-week { font-size: 22px; }
+  .toy-btn.toy-main { min-width: 150px; }
+  html[data-theme="dark"] .toy-paper { background: #2b2630; box-shadow: 0 8px 0 #121016, 0 0 0 3px #3a3240; }
+  html[data-theme="dark"] .toy-line .toy-ink, html[data-theme="dark"] .toy-line.toy-fixed .toy-ink { background: #4a4258; }
+  html[data-theme="dark"] .toy-line:active { background: #3a3240; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-line.toy-no, html:not([data-motion="on"]) .toy-line.toy-fixed .toy-ink::after { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-line.toy-no, html[data-motion="off"] .toy-line.toy-fixed .toy-ink::after { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🖍">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip">🔁 <span class="toy-n toy-w">1</span></span>
+      <span class="toy-chip toy-cnt">🎈 <span class="toy-n toy-left">0</span></span>
+    </div>
+    <div class="toy-paper"></div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-main toy-nextw" aria-label="⏭️">⏭️</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var paper = q('.toy-paper'), wEl = q('.toy-w'), leftEl = q('.toy-left'), nextw = q('.toy-nextw'), chip = q('.toy-cnt');
+    if (!paper || !wEl || !leftEl || !nextw) return;
+    var ROWS = 6, PLAN = [4, 3, 2, 1, 0], week = 0, lines = [], left = 0;
+    for (var i = 0; i < ROWS; i++) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'toy-line'; b.setAttribute('aria-label', '📝');
+      b.innerHTML = '<span class="toy-ink"></span><span class="toy-mark"></span>';
+      b.querySelector('.toy-ink').style.marginRight = (i % 3) * 18 + 'px';
+      paper.appendChild(b); lines.push(b);
+      (function (b) {
+        b.addEventListener('animationend', function () { b.classList.remove('toy-no'); });
+        b.addEventListener('click', function () {
+          if (b.classList.contains('toy-bad')) {
+            b.classList.remove('toy-bad'); b.classList.add('toy-fixed');
+            b.querySelector('.toy-mark').textContent = '✓';
+            left--; pop(b, ['🖍'], 3); draw();
+            if (left === 0) { bump(chip); if (week === PLAN.length - 1) pop(paper, ['🖍', '✨', '🎉', '🐧'], 18); }
+          } else if (!b.classList.contains('toy-fixed')) {
+            bump(b, 'toy-no');
+          }
+        });
+      })(b);
+    }
+    function deal() {
+      var n = PLAN[week], idx = lines.map(function (_, i) { return i; }).sort(function () { return Math.random() - .5; }).slice(0, n);
+      lines.forEach(function (b, i) {
+        b.classList.remove('toy-fixed', 'toy-no');
+        var bad = idx.indexOf(i) >= 0;
+        b.classList.toggle('toy-bad', bad);
+        b.querySelector('.toy-mark').textContent = bad ? '🎈' : '';
+      });
+      left = n; wEl.textContent = String(week + 1); draw();
+      if (n === 0) setTimeout(function () { pop(paper, ['✨', '🎉', '🐧', '🖍'], 18); }, 150);
+    }
+    function draw() {
+      leftEl.textContent = String(left);
+      nextw.disabled = left > 0 || week >= PLAN.length - 1;
+      chip.classList.toggle('toy-win', left === 0);
+    }
+    nextw.addEventListener('click', function () {
+      if (left > 0 || week >= PLAN.length - 1) return;
+      week++; deal();
+    });
+    reset.addEventListener('click', function () { week = 0; deal(); });
+    deal();
+  })();
+  </script>
+
   <a class="next" href="../pawapuro/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>

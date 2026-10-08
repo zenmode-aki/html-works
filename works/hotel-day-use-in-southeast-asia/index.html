@@ -584,6 +584,121 @@
   </section>
   </div>
 
+  <style>
+  .toy { --ta: #1b7f99; --ts: #bfe0ea; --ti: #1d3440; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #ecfaff, #d4f1fa); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #1b2c34, #132026); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-clock { display: inline-flex; align-items: center; gap: 10px; margin: 8px 0 12px; padding: 6px 18px; border-radius: 14px;
+    background: #1d3440; color: #7fd6e8; font-size: 28px; font-weight: 900; font-variant-numeric: tabular-nums; box-shadow: 0 5px 0 #0c1a20; }
+  .toy-view { display: flex; align-items: center; justify-content: center; gap: 18px; width: min(300px, 100%); margin: 0 auto; padding: 14px; border-radius: 22px;
+    background: linear-gradient(180deg, #ffd59a, #ff9f7a); transition: background .6s; }
+  .toy-view.toy-night { background: linear-gradient(180deg, #1a2350, #3b3f9e); }
+  .toy-view .toy-mood { font-size: 56px; line-height: 1; }
+  .toy-bat { position: relative; width: 70px; height: 130px; border-radius: 14px; border: 6px solid #1d3440; background: #fff; overflow: hidden; }
+  .toy-bat::before { content: ""; position: absolute; left: 50%; top: -2px; width: 26px; height: 6px; margin-left: -13px; background: #1d3440; border-radius: 0 0 4px 4px; }
+  .toy-bat .toy-lvl { position: absolute; left: 0; right: 0; bottom: 0; height: 15%; background: #e2553f; transition: height .5s ease-out, background .5s; }
+  .toy-bat .toy-bolt { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); font-size: 34px; line-height: 1; }
+  .toy-bat.toy-low .toy-lvl { animation: toy-blink 1s steps(2) infinite; }
+  @keyframes toy-blink { 50% { opacity: .4; } }
+  .toy-btn.toy-act { min-width: 80px; flex-direction: column; display: inline-flex; align-items: center; gap: 2px; }
+  .toy-btn.toy-act .toy-plus { font-size: 15px; font-weight: 900; color: #1b7f99; }
+  .toy-btn.toy-act.toy-used { background: #d4f1fa; }
+  .toy-price { margin-top: 12px; font-size: 22px; color: #5c7a86; }
+  html[data-theme="dark"] .toy-bat { background: #33354a; border-color: #7fd6e8; }
+  html[data-theme="dark"] .toy-bat::before { background: #7fd6e8; }
+  html[data-theme="dark"] .toy-btn.toy-act.toy-used { background: #1f3a44; }
+  html[data-theme="dark"] .toy-btn.toy-act .toy-plus { color: #7fd6e8; }
+  html[data-theme="dark"] .toy-price { color: #9cc0cc; }
+  html[data-theme="dark"] .toy-clock { background: #0c1a20; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-bat.toy-low .toy-lvl { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-bat.toy-low .toy-lvl { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🔑🔋">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-clock" aria-live="polite">🕑 <span class="toy-n toy-time">14:30</span></div>
+    <div class="toy-view" aria-hidden="true">
+      <span class="toy-mood">🥵</span>
+      <span class="toy-bat toy-low"><span class="toy-lvl"></span><span class="toy-bolt">⚡</span></span>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-act" data-h="1" aria-label="🌊">🌊<span class="toy-plus">+0:30</span></button>
+      <button type="button" class="toy-btn toy-act" data-h="0" aria-label="🍔">🍔<span class="toy-plus">+0:30</span></button>
+      <button type="button" class="toy-btn toy-act" data-h="2" aria-label="😴">😴<span class="toy-plus">+3:00</span></button>
+    </div>
+    <div class="toy-price">🔑 ⏱️ 4:00 · ¥2,800</div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var acts = qa('.toy-act'), timeEl = q('.toy-time'), lvl = q('.toy-lvl'), bat = q('.toy-bat'), mood = q('.toy-mood'), view = q('.toy-view'), reset = q('.toy-reset');
+    if (!acts.length || !timeEl || !lvl || !bat || !mood || !reset) return;
+    // 14:30 -> 18:30, battery 15% -> 100%
+    var ADD = { '🌊': [30, 25], '🍔': [30, 15], '😴': [180, 45] };
+    var mins = 0, energy = 15, used = 0;
+    function fmt(m) { var t = 14 * 60 + 30 + m; var h = Math.floor(t / 60), mm = t % 60; return h + ':' + (mm < 10 ? '0' : '') + mm; }
+    function draw() {
+      timeEl.textContent = fmt(mins);
+      lvl.style.height = energy + '%';
+      lvl.style.background = energy >= 100 ? '#34b27d' : (energy >= 50 ? '#ffc23d' : '#e2553f');
+      bat.classList.toggle('toy-low', energy < 30);
+      mood.textContent = energy >= 100 ? '🌙' : (energy >= 50 ? '🙂' : '🥵');
+      if (view) view.classList.toggle('toy-night', energy >= 100);
+    }
+    acts.forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.classList.contains('toy-used')) { bump(b, 'toy-shake'); return; }
+        var k = b.getAttribute('aria-label'), a = ADD[k];
+        if (!a) return;
+        b.classList.add('toy-used');
+        mins += a[0]; energy = Math.min(100, energy + a[1]); used += 1;
+        pop(b, [k, '🔋'], 5);
+        bump(mood);
+        draw();
+        if (used >= acts.length) pop(view || bat, ['🌙', '🔋', '✨', '🎉'], 18);
+      });
+    });
+    reset.addEventListener('click', function () { mins = 0; energy = 15; used = 0; acts.forEach(function (b) { b.classList.remove('toy-used'); }); draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../thailand-first-trip/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>

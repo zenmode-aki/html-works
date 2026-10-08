@@ -554,6 +554,136 @@
   </section>
   </div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #f1f8ee, #e3f2da 60%, #fff4f4); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(63,125,44,.25); font-weight: 800; color: #26341f; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #26341f; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #26341f; background: #fff; box-shadow: 0 6px 0 #bfe0ad; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #bfe0ad; }
+  .toy-btn.toy-main { background: #3f7d2c; color: #fff; box-shadow: 0 6px 0 #285219; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #285219; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #285219; background: #fff;
+    box-shadow: 0 4px 0 #bfe0ad; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #bfe0ad; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #3f7d2c, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #1f2e1a, #1a2a18 60%, #33221f); border-color: rgba(255,255,255,.12); color: #effae8; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #effae8; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #285219; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-hp { display: flex; align-items: center; gap: 8px; width: min(270px, 100%); margin: 8px auto 10px; }
+  .toy-hp .toy-heart { font-size: 30px; line-height: 1; }
+  .toy-hp .toy-bar { flex: 1; height: 20px; border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; box-shadow: inset 0 0 0 3px rgba(0,0,0,.08); }
+  .toy-hp .toy-hpfill { display: block; height: 100%; width: 20%; border-radius: 99px; background: #e2553f; transition: width .5s cubic-bezier(.3,1.3,.5,1), background .3s; }
+  .toy-hp .toy-pct { min-width: 4ch; font-size: 20px; text-align: right; }
+  .toy-map { position: relative; width: min(290px, 100%); height: 200px; margin: 0 auto; border-radius: 22px; overflow: hidden;
+    background: radial-gradient(ellipse at 70% 70%, #8fd0f0 0 22%, transparent 23%), linear-gradient(#cdebbd, #a8d68a); }
+  .toy-map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .toy-map path { fill: none; stroke: #f3e2b8; stroke-width: 8; stroke-linecap: round; }
+  .toy-map .toy-tree { position: absolute; font-size: 26px; line-height: 1; opacity: .9; }
+  .toy-spot { position: absolute; width: 56px; height: 56px; margin: -28px 0 0 -28px; padding: 0; border: 0; border-radius: 50%; cursor: pointer; font: inherit;
+    background: #fff; box-shadow: 0 5px 0 #8bbf73; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: background .25s; }
+  .toy-spot .toy-g { display: inline-block; font-size: 30px; line-height: 1; }
+  .toy-spot.toy-next .toy-g { animation: toy-bob2 1s ease-in-out infinite; }
+  @keyframes toy-bob2 { 50% { transform: translateY(-5px) scale(1.1); } }
+  .toy-spot.toy-been { background: #fff0f4; box-shadow: 0 5px 0 #e89aad, 0 0 0 4px #ff8fab; }
+  .toy-map .toy-pg { position: absolute; width: 36px; margin: 22px 0 0 -18px; font-size: 26px; line-height: 1; pointer-events: none;
+    transition: left .5s ease-in-out, top .5s ease-in-out; z-index: 2; }
+  html[data-theme="dark"] .toy-map { background: radial-gradient(ellipse at 70% 70%, #1f4a5c 0 22%, transparent 23%), linear-gradient(#24391c, #1c2e16); }
+  html[data-theme="dark"] .toy-map path { stroke: #5a5140; }
+  html[data-theme="dark"] .toy-spot { background: #2e3a28; box-shadow: 0 5px 0 #121016; }
+  html[data-theme="dark"] .toy-spot.toy-been { background: #4a2a33; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-spot.toy-next .toy-g { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-spot.toy-next .toy-g { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🌳">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-hp" aria-live="polite">
+      <span class="toy-heart" aria-hidden="true">❤️‍🩹</span>
+      <span class="toy-bar"><span class="toy-hpfill"></span></span>
+      <span class="toy-pct"><span class="toy-n toy-p">20</span>%</span>
+    </div>
+    <div class="toy-map">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M8 88 C 20 60, 30 30, 22 22 S 50 10, 52 40 S 80 30, 84 18 M52 40 C 55 60, 60 70, 70 74"/></svg>
+      <span class="toy-tree" style="left:6%;top:6%" aria-hidden="true">🌳</span>
+      <span class="toy-tree" style="left:40%;top:70%" aria-hidden="true">🌲</span>
+      <span class="toy-tree" style="left:88%;top:44%" aria-hidden="true">🌳</span>
+      <button type="button" class="toy-spot" style="left:22%;top:24%" aria-label="🌉"><span class="toy-g">🌉</span></button>
+      <button type="button" class="toy-spot" style="left:52%;top:40%" aria-label="🛖"><span class="toy-g">🛖</span></button>
+      <button type="button" class="toy-spot" style="left:84%;top:20%" aria-label="🌿"><span class="toy-g">🌿</span></button>
+      <button type="button" class="toy-spot" style="left:70%;top:74%" aria-label="🌙"><span class="toy-g">🌙</span></button>
+      <span class="toy-pg" style="left:8%;top:70%" aria-hidden="true">🐧</span>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var spots = qa('.toy-spot'), pg = q('.toy-pg'), hpf = q('.toy-hpfill'), pEl = q('.toy-p'), heart = q('.toy-heart'), map = q('.toy-map');
+    if (!spots.length || !pg || !hpf || !pEl) return;
+    var hp = 20;
+    function draw() {
+      var been = spots.filter(function (s) { return s.classList.contains('toy-been'); }).length;
+      hp = 20 + been * 20;
+      hpf.style.width = hp + '%';
+      hpf.style.background = hp >= 100 ? '#2fa36b' : (hp >= 60 ? '#f0b429' : '#e2553f');
+      pEl.textContent = String(hp);
+      if (heart) heart.textContent = hp >= 100 ? '❤️' : '❤️‍🩹';
+      spots.forEach(function (s) { s.classList.toggle('toy-next', !s.classList.contains('toy-been')); });
+    }
+    spots.forEach(function (s) {
+      s.addEventListener('click', function () {
+        pg.style.left = s.style.left; pg.style.top = s.style.top;
+        if (s.classList.contains('toy-been')) return;
+        s.classList.add('toy-been');
+        pop(s, ['💗', '✨'], 4);
+        draw(); bump(heart);
+        if (hp >= 100) setTimeout(function () { pop(map, ['❤️', '🌳', '✨', '🎉', '🐧'], 18); }, 450);
+      });
+    });
+    reset.addEventListener('click', function () {
+      spots.forEach(function (s) { s.classList.remove('toy-been'); });
+      pg.style.left = '8%'; pg.style.top = '70%'; draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../three-best-stations-in-nagoya/index.html">
     <div>
       <div class="next-kicker">NEXT · 62 SEC</div>

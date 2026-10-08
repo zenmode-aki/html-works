@@ -568,6 +568,137 @@
   </section>
   </div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #f6f8fc, #e6ecfa 60%, #f3eefc); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(74,92,150,.25); font-weight: 800; color: #322536; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #322536; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #322536; background: #fff; box-shadow: 0 6px 0 #b9c4e6; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #b9c4e6; }
+  .toy-btn.toy-main { background: #4a5c96; color: #fff; box-shadow: 0 6px 0 #2f3d6b; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #2f3d6b; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #2f3d6b; background: #fff;
+    box-shadow: 0 4px 0 #b9c4e6; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #b9c4e6; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #4a5c96, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #232a40, #1d2236 60%, #2a2338); border-color: rgba(255,255,255,.12); color: #eef1ff; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #eef1ff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #2f3d6b; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-roomv { position: relative; width: min(280px, 100%); margin: 4px auto 0; border-radius: 22px; overflow: hidden;
+    box-shadow: inset 0 0 0 3px rgba(0,0,0,.06); }
+  .toy-wall { height: 92px; background: linear-gradient(#fdfbf7, #efe9df); display: flex; align-items: flex-end; justify-content: center; gap: 22px; }
+  .toy-wall .toy-pg { font-size: 52px; line-height: 1; margin-bottom: -4px; }
+  .toy-wall .toy-bed { font-size: 40px; line-height: 1; }
+  .toy-floor { position: relative; height: 96px; overflow: hidden; background: #c9a77c; transition: background .4s, filter .4s; }
+  .toy-floor.toy-s1 { background: #cfae84; }
+  .toy-floor.toy-s2 { background: #d5b58c; filter: saturate(1.1); }
+  .toy-floor.toy-s3 { background: #dbbd96; filter: saturate(1.15) brightness(1.03); }
+  .toy-floor.toy-s4 { background: #e2c7a2; filter: saturate(1.2) brightness(1.06); }
+  .toy-floor.toy-s5 { background: #e9d2b0; filter: saturate(1.25) brightness(1.1); }
+  .toy-floor.toy-s6 { background: #f0dcbd; filter: saturate(1.3) brightness(1.12); }
+  .toy-floor::before { content: ""; position: absolute; inset: 0;
+    background: repeating-linear-gradient(90deg, rgba(0,0,0,.07) 0 2px, transparent 2px 56px); }
+  .toy-floor .toy-refl { position: absolute; left: 0; right: 0; top: -2px; font-size: 52px; line-height: 1;
+    transform: scaleY(-1); opacity: 0; filter: blur(2px); transition: opacity .4s, filter .4s; }
+  .toy-floor .toy-sweep { position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; opacity: 0;
+    background: linear-gradient(100deg, transparent, rgba(255,255,255,.75), transparent); }
+  .toy-floor.toy-wipe .toy-sweep { animation: toy-sweep .55s ease-out; }
+  @keyframes toy-sweep { 0% { left: -60%; opacity: 1; } 100% { left: 120%; opacity: 1; } }
+  .toy-floor .toy-spark { position: absolute; font-size: 22px; line-height: 1; opacity: 0; }
+  .toy-floor.toy-s6 .toy-spark { opacity: 1; animation: toy-twinkle 1.2s ease-in-out infinite; }
+  .toy-floor .toy-spark.toy-p2 { animation-delay: .4s; }
+  .toy-floor .toy-spark.toy-p3 { animation-delay: .8s; }
+  @keyframes toy-twinkle { 0%, 100% { transform: scale(.6); opacity: .4; } 50% { transform: scale(1.15); opacity: 1; } }
+  .toy-btn.toy-main { min-width: 140px; }
+  html[data-theme="dark"] .toy-wall { background: linear-gradient(#3a3646, #2e2b38); }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-floor .toy-sweep, html:not([data-motion="on"]) .toy-floor .toy-spark { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-floor .toy-sweep, html[data-motion="off"] .toy-floor .toy-spark { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🧹">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-shine">✨ <span><span class="toy-n toy-p">0</span>%</span></span>
+    </div>
+    <div class="toy-roomv" aria-hidden="true">
+      <div class="toy-wall"><span class="toy-bed">🛏️</span><span class="toy-pg">🐧</span><span class="toy-bed">🪴</span></div>
+      <div class="toy-floor toy-s0">
+        <span class="toy-refl">🐧</span>
+        <span class="toy-sweep"></span>
+        <span class="toy-spark" style="left:14%;top:30%">✨</span>
+        <span class="toy-spark toy-p2" style="left:72%;top:58%">✨</span>
+        <span class="toy-spark toy-p3" style="left:84%;top:18%">✨</span>
+      </div>
+    </div>
+    <div class="toy-meter" aria-hidden="true"><span class="toy-fill"></span></div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-main toy-wipe-btn" aria-label="🧹">🧹 <small>+</small></button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var floor = q('.toy-floor'), refl = q('.toy-refl'), pEl = q('.toy-p'), chip = q('.toy-shine');
+    var fill = q('.toy-fill'), btn = q('.toy-wipe-btn');
+    if (!floor || !refl || !pEl || !btn) return;
+    var s = 0, MAX = 6;
+    function draw() {
+      floor.className = 'toy-floor toy-s' + s;
+      refl.style.opacity = String(s / MAX * .7);
+      refl.style.filter = 'blur(' + (2 - s / MAX * 2).toFixed(2) + 'px)';
+      pEl.textContent = String(Math.round(s / MAX * 100));
+      if (fill) fill.style.width = (s / MAX * 100) + '%';
+      btn.disabled = s >= MAX;
+      chip.classList.toggle('toy-win', s >= MAX);
+    }
+    btn.addEventListener('click', function () {
+      if (s >= MAX) return;
+      s++; draw(); bump(chip);
+      bump(floor, 'toy-wipe');
+      pop(floor, ['✨'], 2);
+      if (s === MAX) pop(floor, ['✨', '🐧', '🪞', '🎉'], 18);
+    });
+    reset.addEventListener('click', function () { s = 0; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../the-villages-felt-like-korea/index.html">
     <div>
       <div class="next-kicker">NEXT · 40 SEC</div>

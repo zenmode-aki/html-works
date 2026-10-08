@@ -583,6 +583,107 @@
   </section>
   </div>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #e6e8fb, #ffe0d0 60%, #fff3d6); --tedge: #fff; --tglow: rgba(59,63,158,.22); --tink: #23243a; --tbtn: #fff; --tsh: #b6bcef; --ttrack: rgba(35,36,58,.12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #1d1f3a, #3a2430 60%, #3a321e); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #eef0ff; --tbtn: #2c2f52; --tsh: #12132a; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-top { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 6px; font-size: 40px; line-height: 1; }
+  .toy-top .toy-pill { margin: 0; font-size: 24px; }
+  .toy-top .toy-q { display: inline-block; transition: transform .4s cubic-bezier(.2,1.6,.4,1); }
+  .toy-top.toy-solved .toy-q { transform: scale(1.2) rotate(10deg); }
+  .toy-cards { display: grid; grid-template-columns: repeat(2, 120px); justify-content: center; gap: 12px; margin-top: 14px; }
+  .toy-card2 { position: relative; height: 96px; padding: 0; font-size: 40px; border-radius: 22px; }
+  .toy-card2 .toy-mk { position: absolute; right: 8px; top: 6px; font-size: 26px; line-height: 1; visibility: hidden; transform: scale(.3);
+    transition: transform .35s cubic-bezier(.2,1.6,.4,1); }
+  .toy-card2.toy-tried .toy-mk { visibility: visible; transform: none; }
+  .toy-card2.toy-tried.toy-no { opacity: .55; }
+  .toy-card2.toy-tried.toy-yes { background: linear-gradient(160deg, #6550d8, #ff4f8b); box-shadow: 0 6px 0 #3b2a8e; }
+  .toy-card2.toy-yes .toy-mk { color: #fff; }
+  .toy-card2.toy-tried.toy-yes .toy-e { display: inline-block; animation: toy-disco 1.2s linear infinite; }
+  @keyframes toy-disco { to { transform: rotate(360deg); } }
+  .toy-notes { display: flex; justify-content: center; gap: 10px; min-height: 40px; margin-top: 12px; font-size: 28px; line-height: 1; }
+  .toy-notes span { visibility: hidden; }
+  .toy-notes.toy-on span { visibility: visible; animation: toy-hopn .5s ease-in-out infinite alternate; }
+  .toy-notes.toy-on span:nth-child(2n) { animation-delay: -.25s; }
+  @keyframes toy-hopn { to { transform: translateY(-8px); } }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🪩❓">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-top" aria-hidden="true"><span>🏬</span><div class="toy-pill"><span>⏰</span><span class="toy-n">5:46</span></div><span class="toy-q">❓</span></div>
+    <div class="toy-cards">
+      <button type="button" class="toy-btn toy-card2 toy-no" aria-label="💼"><span class="toy-e">💼</span><span class="toy-mk">✗</span></button>
+      <button type="button" class="toy-btn toy-card2 toy-no" aria-label="🧳"><span class="toy-e">🧳</span><span class="toy-mk">✗</span></button>
+      <button type="button" class="toy-btn toy-card2 toy-no" aria-label="🌳"><span class="toy-e">🌳</span><span class="toy-mk">✗</span></button>
+      <button type="button" class="toy-btn toy-card2 toy-yes" aria-label="🪩"><span class="toy-e">🪩</span><span class="toy-mk">✓</span></button>
+    </div>
+    <div class="toy-notes" aria-hidden="true"><span>🎵</span><span>🌅</span><span>🎶</span><span>✨</span><span>🎵</span></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var cards = qa('.toy-card2'), top = q('.toy-top'), qm = q('.toy-q'), notes = q('.toy-notes'), clock = q('.toy-n');
+    if (!cards.length) return;
+    function solve(on) {
+      if (top) top.classList.toggle('toy-solved', on);
+      if (qm) qm.textContent = on ? '😮' : '❓';
+      if (notes) notes.classList.toggle('toy-on', on);
+      if (clock) clock.textContent = on ? '6:00' : '5:46';
+    }
+    cards.forEach(function (c) {
+      c.addEventListener('click', function () {
+        if (c.classList.contains('toy-tried')) { bump(c, 'toy-wig'); return; }
+        c.classList.add('toy-tried');
+        if (c.classList.contains('toy-yes')) {
+          solve(true); bump(c);
+          pop(c, ['🪩', '🎵', '🎶', '🌅', '✨'], 20);
+        } else { bump(c, 'toy-wig'); }
+      });
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () { cards.forEach(function (c) { c.classList.remove('toy-tried'); }); solve(false); });
+  })();
+  </script>
+
   <a class="next" href="../jumped-on-a-jr-train-with-no-plan/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>

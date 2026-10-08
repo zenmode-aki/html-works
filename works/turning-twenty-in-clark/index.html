@@ -524,6 +524,123 @@
   </figure>
   </section>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fff7fb, #ffe6f2 60%, #fff4d6); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(168,63,117,.22); font-weight: 800; color: #322536; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #322536; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #322536; background: #fff; box-shadow: 0 6px 0 #eba0c4; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #eba0c4; }
+  .toy-btn.toy-main { background: #a83f75; color: #fff; box-shadow: 0 6px 0 #6e2149; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #6e2149; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #6e2149; background: #fff;
+    box-shadow: 0 4px 0 #eba0c4; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #eba0c4; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #a83f75, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #3a2230, #33202c 60%, #33301c); border-color: rgba(255,255,255,.12); color: #fff0f7; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #fff0f7; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #6e2149; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-cake { position: relative; width: 230px; max-width: 100%; height: 190px; margin: 6px auto 12px; }
+  .toy-cake .toy-candles { position: absolute; left: 50%; top: 0; transform: translateX(-50%); display: flex; gap: 18px; height: 86px; align-items: flex-end; }
+  .toy-candle { position: relative; width: 14px; height: 50px; border-radius: 4px; background: repeating-linear-gradient(45deg, #ff8fb5 0 6px, #fff 6px 12px);
+    opacity: 0; transform: translateY(20px); transition: opacity .25s, transform .35s cubic-bezier(.2,1.6,.4,1); }
+  .toy-candle.toy-on { opacity: 1; transform: none; }
+  .toy-candle .toy-flame { position: absolute; left: 50%; top: -30px; margin-left: -12px; font-size: 22px; line-height: 1;
+    animation: toy-flick .5s ease-in-out infinite alternate; transform-origin: 50% 100%; }
+  @keyframes toy-flick { from { transform: rotate(-6deg) scale(1); } to { transform: rotate(6deg) scale(1.12); } }
+  .toy-cake.toy-out .toy-flame { visibility: hidden; }
+  .toy-cake .toy-base { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 210px; height: 104px; border-radius: 22px 22px 16px 16px;
+    background: linear-gradient(#fff 0 22%, #ffd1e2 22% 30%, #f6c08a 30% 62%, #ffd1e2 62% 70%, #f6c08a 70%); box-shadow: 0 8px 0 #c98a5a; }
+  .toy-cake .toy-num { position: absolute; left: 0; right: 0; text-align: center; bottom: 32px; font-size: 40px; font-weight: 900; color: #a83f75;
+    text-shadow: 0 3px 0 #fff; }
+  .toy-row .toy-btn { min-width: 120px; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-candle .toy-flame { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-candle .toy-flame { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🎂">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-cnt">🕯️ <span><span class="toy-n toy-c">0</span>/20</span></span>
+    </div>
+    <div class="toy-cake" aria-hidden="true">
+      <div class="toy-candles">
+        <span class="toy-candle"><span class="toy-flame">🔥</span></span><span class="toy-candle"><span class="toy-flame">🔥</span></span>
+        <span class="toy-candle"><span class="toy-flame">🔥</span></span><span class="toy-candle"><span class="toy-flame">🔥</span></span>
+      </div>
+      <div class="toy-base"></div>
+      <span class="toy-num toy-n">0</span>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-add" aria-label="🕯️ +5">🕯️ <small>+5</small></button>
+      <button type="button" class="toy-btn toy-main toy-blow" aria-label="💨">💨</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var cake = q('.toy-cake'), candles = qa('.toy-candle'), add = q('.toy-add'), blow = q('.toy-blow'), cEl = q('.toy-c'), num = q('.toy-num'), chip = q('.toy-cnt');
+    if (!cake || !candles.length || !add || !blow || !cEl) return;
+    var n = 0, out = false;
+    function draw() {
+      candles.forEach(function (c, i) { c.classList.toggle('toy-on', i < n / 5); });
+      cEl.textContent = String(n); if (num) num.textContent = String(n);
+      add.disabled = n >= 20 || out;
+      blow.disabled = n < 20 || out;
+      cake.classList.toggle('toy-out', out);
+      chip.classList.toggle('toy-win', out);
+    }
+    add.addEventListener('click', function () {
+      if (n >= 20 || out) return;
+      n += 5; draw(); bump(chip); if (num) bump(num);
+    });
+    blow.addEventListener('click', function () {
+      if (n < 20 || out) return;
+      out = true; draw();
+      pop(cake.querySelector('.toy-candles'), ['💨'], 6);
+      setTimeout(function () { pop(cake, ['🎂', '🎉', '🎈', '🇵🇭', '🇰🇷', '🐧'], 22); }, 250);
+    });
+    reset.addEventListener('click', function () { n = 0; out = false; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../sm-clark-merry-go-round/index.html">
     <div>
       <div class="next-kicker">NEXT · 13 SEC</div>

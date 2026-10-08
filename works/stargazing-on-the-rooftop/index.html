@@ -631,6 +631,144 @@
   </section>
   </div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #eef0fb, #e2e5f7 60%, #f4ecfa); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(65,76,140,.25); font-weight: 800; color: #232a4d; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #232a4d; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #232a4d; background: #fff; box-shadow: 0 6px 0 #b9c0e6; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #b9c0e6; }
+  .toy-btn.toy-main { background: #414c8c; color: #fff; box-shadow: 0 6px 0 #272f63; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #272f63; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #272f63; background: #fff;
+    box-shadow: 0 4px 0 #b9c0e6; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #b9c0e6; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #414c8c, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #1e2238, #191c30 60%, #241d33); border-color: rgba(255,255,255,.12); color: #eef0ff; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #eef0ff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #272f63; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-sky { position: relative; width: min(300px, 100%); height: 230px; margin: 4px auto 0; border-radius: 22px; overflow: hidden;
+    background: linear-gradient(#0d1233, #232a63 65%, #3d3a78); box-shadow: inset 0 0 0 3px rgba(255,255,255,.08); }
+  .toy-sky svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .toy-sky line { stroke: #ffe48a; stroke-width: 3; stroke-linecap: round; filter: drop-shadow(0 0 4px #ffd23f); }
+  .toy-star { position: absolute; width: 48px; height: 48px; margin: -24px 0 0 -24px; padding: 0; border: 0; border-radius: 50%;
+    cursor: pointer; font: inherit; font-size: 26px; line-height: 1; background: transparent; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; opacity: .55; transition: opacity .2s; }
+  .toy-star .toy-g { display: inline-block; }
+  .toy-star.toy-next { opacity: 1; }
+  .toy-star.toy-next .toy-g { animation: toy-twinkle 1s ease-in-out infinite; }
+  @keyframes toy-twinkle { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+  .toy-star.toy-lit { opacity: 1; filter: drop-shadow(0 0 6px #ffd23f); }
+  .toy-star.toy-lit .toy-g { transform: scale(1.15); }
+  .toy-star.toy-oops .toy-g { animation: toy-shake .35s; }
+  .toy-roof { position: absolute; left: 0; right: 0; bottom: 0; height: 44px; background: #1b1d2e;
+    display: flex; align-items: flex-end; justify-content: space-around; padding: 0 16px 2px; }
+  .toy-roof span { font-size: 30px; line-height: 1; }
+  .toy-roof .toy-line { position: absolute; left: 8%; right: 50%; top: 4px; height: 2px; background: rgba(255,255,255,.4); }
+  .toy-sky .toy-moon { position: absolute; right: 14px; top: 10px; font-size: 34px; line-height: 1; opacity: 0;
+    transform: translateY(30px); transition: opacity .6s, transform .6s; }
+  .toy-sky.toy-done .toy-moon { opacity: 1; transform: none; }
+  .toy-sky .toy-shoot { position: absolute; left: -40px; top: 20px; font-size: 26px; line-height: 1; opacity: 0; }
+  .toy-sky.toy-done .toy-shoot { animation: toy-shoot 1.6s ease-in .2s 2; }
+  @keyframes toy-shoot { 0% { opacity: 1; transform: translate(0, 0); } 100% { opacity: 0; transform: translate(360px, 90px); } }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-star.toy-next .toy-g, html:not([data-motion="on"]) .toy-star.toy-oops .toy-g, html:not([data-motion="on"]) .toy-sky .toy-shoot, html:not([data-motion="on"]) .toy-sky .toy-moon { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-star.toy-next .toy-g, html[data-motion="off"] .toy-star.toy-oops .toy-g, html[data-motion="off"] .toy-sky .toy-shoot, html[data-motion="off"] .toy-sky .toy-moon { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆⭐">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-cnt">⭐ <span><span class="toy-n toy-s">0</span>/6</span></span>
+    </div>
+    <div class="toy-sky">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <span class="toy-shoot" aria-hidden="true">🌠</span>
+      <span class="toy-moon" aria-hidden="true">🌙</span>
+      <button type="button" class="toy-star" style="left:16%;top:22%" aria-label="⭐"><span class="toy-g">⭐</span></button>
+      <button type="button" class="toy-star" style="left:38%;top:12%" aria-label="⭐"><span class="toy-g">⭐</span></button>
+      <button type="button" class="toy-star" style="left:52%;top:36%" aria-label="⭐"><span class="toy-g">⭐</span></button>
+      <button type="button" class="toy-star" style="left:74%;top:26%" aria-label="⭐"><span class="toy-g">⭐</span></button>
+      <button type="button" class="toy-star" style="left:84%;top:56%" aria-label="⭐"><span class="toy-g">⭐</span></button>
+      <button type="button" class="toy-star" style="left:30%;top:52%" aria-label="⭐"><span class="toy-g">⭐</span></button>
+      <div class="toy-roof" aria-hidden="true"><span class="toy-line"></span><span>👕</span><span>🧦</span><span>🐧</span><span>🪴</span></div>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var sky = q('.toy-sky'), svg = q('.toy-sky svg'), stars = qa('.toy-star'), sEl = q('.toy-s'), chip = q('.toy-cnt');
+    if (!sky || !svg || !stars.length || !sEl) return;
+    var at = 0;
+    function xy(b) { return [parseFloat(b.style.left), parseFloat(b.style.top)]; }
+    function draw() {
+      stars.forEach(function (b, i) {
+        b.classList.toggle('toy-lit', i < at);
+        b.classList.toggle('toy-next', i === at);
+      });
+      sEl.textContent = String(at);
+      chip.classList.toggle('toy-win', at >= stars.length);
+      sky.classList.toggle('toy-done', at >= stars.length);
+    }
+    function line(a, b) {
+      var p = xy(a), r = xy(b);
+      var l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      l.setAttribute('x1', p[0]); l.setAttribute('y1', p[1]); l.setAttribute('x2', r[0]); l.setAttribute('y2', r[1]);
+      l.setAttribute('vector-effect', 'non-scaling-stroke');
+      svg.appendChild(l);
+    }
+    stars.forEach(function (b, i) {
+      b.addEventListener('animationend', function () { b.classList.remove('toy-oops'); });
+      b.addEventListener('click', function () {
+        if (at >= stars.length) return;
+        if (i !== at) { if (i > at) bump(stars[at], 'toy-oops'); return; }
+        if (at > 0) line(stars[at - 1], b);
+        at++;
+        pop(b, ['✨'], 4);
+        if (at === stars.length) { line(b, stars[0]); pop(sky, ['⭐', '🌙', '✨', '🎉', '🐧'], 18); }
+        draw(); bump(chip);
+      });
+    });
+    reset.addEventListener('click', function () { at = 0; while (svg.firstChild) svg.removeChild(svg.firstChild); draw(); });
+    draw();
+  })();
+  </script>
+
   <div class="chap-tracker" aria-hidden="true"><span data-c="c1" style="--c: #ff8a70">1</span><span data-c="c2" style="--c: #4d9de0">2</span><span data-c="c3" style="--c: #34b27d">3</span></div>
 
   <!-- 🌲 バギオの6本 -->

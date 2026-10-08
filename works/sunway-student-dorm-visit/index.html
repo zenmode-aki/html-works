@@ -523,6 +523,133 @@
   </figure>
   </div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fff1f5, #ffe3ec 60%, #e9f4ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(207,63,114,.25); font-weight: 800; color: #3d2230; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #3d2230; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #3d2230; background: #fff; box-shadow: 0 6px 0 #f3b3c8; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #f3b3c8; }
+  .toy-btn.toy-main { background: #cf3f72; color: #fff; box-shadow: 0 6px 0 #8f2249; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #8f2249; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #8f2249; background: #fff;
+    box-shadow: 0 4px 0 #f3b3c8; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #f3b3c8; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #cf3f72, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #3a2230, #33202a 60%, #1c2638); border-color: rgba(255,255,255,.12); color: #fff0f5; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #fff0f5; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #8f2249; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-yard { position: relative; width: 280px; max-width: 100%; height: 200px; margin: 4px auto 0; border-radius: 22px; overflow: hidden;
+    background: linear-gradient(#cfe8ff, #fff6fa 80%, #9ed49a 80%); }
+  .toy-yard .toy-step { position: absolute; width: 22px; background: #c9b8a6; border-top: 4px solid #e8dccd; }
+  .toy-yard .toy-top { position: absolute; left: 144px; top: 60px; width: 30px; height: 140px; background: #c9b8a6; border-top: 4px solid #e8dccd; }
+  .toy-yard .toy-slide { position: absolute; left: 168px; top: 62px; width: 150px; height: 12px; border-radius: 8px;
+    background: linear-gradient(#ff6b6b, #d92b2b); box-shadow: 0 4px 0 #9c1c1c; transform-origin: 0 50%; transform: rotate(39deg); }
+  .toy-yard .toy-flag { position: absolute; left: 230px; top: 10px; font-size: 30px; line-height: 1; }
+  .toy-yard .toy-pg { position: absolute; left: 0; top: 0; width: 40px; margin-left: -20px; margin-top: -38px; font-size: 36px; line-height: 1;
+    transition: left .28s ease-out, top .28s ease-out, transform .28s; }
+  .toy-yard .toy-pg.toy-sliding { transition: left .8s cubic-bezier(.5,0,.9,.6), top .8s cubic-bezier(.5,0,.9,.6), transform .8s; transform: rotate(-30deg); }
+  .toy-row .toy-btn { min-width: 110px; }
+  html[data-theme="dark"] .toy-yard { background: linear-gradient(#22324a, #2e2430 80%, #2e4a2c 80%); }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🛝">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-cnt">🛝 <span><span class="toy-n toy-s">0</span>/3</span></span>
+    </div>
+    <div class="toy-yard" aria-hidden="true">
+      <span class="toy-flag">🇲🇾</span>
+      <i class="toy-step" style="left:34px;top:140px;height:60px"></i>
+      <i class="toy-step" style="left:56px;top:120px;height:80px"></i>
+      <i class="toy-step" style="left:78px;top:100px;height:100px"></i>
+      <i class="toy-step" style="left:100px;top:80px;height:120px"></i>
+      <i class="toy-step" style="left:122px;top:60px;height:140px"></i>
+      <i class="toy-top"></i>
+      <i class="toy-slide"></i>
+      <span class="toy-pg">🐧</span>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-up" aria-label="🪜 ⬆️">🪜 ⬆️</button>
+      <button type="button" class="toy-btn toy-main toy-go" aria-label="🛝">🛝 ⬇️</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var pg = q('.toy-pg'), up = q('.toy-up'), go = q('.toy-go'), sEl = q('.toy-s'), chip = q('.toy-cnt'), yard = q('.toy-yard');
+    if (!pg || !up || !go || !sEl) return;
+    // spots: ground, 5 steps, top
+    var SPOTS = [[16, 196], [45, 140], [67, 120], [89, 100], [111, 80], [133, 60], [158, 60]];
+    var at = 0, slides = 0, busy = false;
+    function place(x, y) { pg.style.left = x + 'px'; pg.style.top = y + 'px'; }
+    function draw() {
+      up.disabled = busy || at >= SPOTS.length - 1;
+      go.disabled = busy || at < SPOTS.length - 1;
+      sEl.textContent = String(slides);
+      chip.classList.toggle('toy-win', slides >= 3);
+    }
+    up.addEventListener('click', function () {
+      if (busy || at >= SPOTS.length - 1) return;
+      at++; place(SPOTS[at][0], SPOTS[at][1]); draw();
+    });
+    go.addEventListener('click', function () {
+      if (busy || at < SPOTS.length - 1) return;
+      busy = true; draw();
+      pg.classList.add('toy-sliding');
+      place(262, 162);
+      setTimeout(function () {
+        pg.classList.remove('toy-sliding');
+        pop(pg, ['💨', '✨'], 6);
+        if (slides < 3) slides++;
+        if (slides === 3) pop(yard, ['🛝', '🐧', '🎉', '✨', '🇲🇾'], 18);
+        bump(chip);
+        setTimeout(function () { at = 0; place(SPOTS[0][0], SPOTS[0][1]); busy = false; draw(); }, still() ? 0 : 450);
+      }, still() ? 0 : 820);
+    });
+    reset.addEventListener('click', function () { slides = 0; at = 0; busy = false; pg.classList.remove('toy-sliding'); place(SPOTS[0][0], SPOTS[0][1]); draw(); });
+    place(SPOTS[0][0], SPOTS[0][1]); draw();
+  })();
+  </script>
+
   <a class="next" href="../apu-felt-like-the-tech-future/index.html">
     <div>
       <div class="next-kicker">NEXT · 75 SEC</div>

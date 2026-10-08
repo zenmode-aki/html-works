@@ -551,6 +551,110 @@
   </section>
   </div>
 
+  <style>
+  .toy { --ta: #6c47d6; --ts: #d6c8f2; --ti: #2d2540; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #f6f1ff, #ebe2ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #2a2440, #1d192c); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-chip { display: inline-flex; align-items: center; gap: 8px; margin: 8px 0 12px; padding: 8px 20px; border-radius: 999px;
+    background: #6c47d6; color: #fff; font-size: 26px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #46299a; }
+  .toy-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: min(310px, 100%); margin: 0 auto; }
+  .toy-pair .toy-side { position: relative; padding: 10px 6px 12px; border-radius: 22px; background: #fff; box-shadow: 0 6px 0 #d6c8f2; }
+  .toy-pair .toy-tag { display: block; font-size: 18px; font-weight: 900; color: #76698f; }
+  .toy-pair .toy-head { position: relative; height: 120px; display: flex; align-items: flex-end; justify-content: center; }
+  .toy-pair .toy-bird { font-size: 62px; line-height: 1; position: relative; z-index: 1; }
+  .toy-pair .toy-hair { position: absolute; z-index: 2; left: 50%; bottom: 50px; width: 36px; height: 10px; margin-left: -18px;
+    background: #3b2a24; transition: height .45s ease-out, width .45s ease-out, margin .45s ease-out; transform-origin: 50% 100%; }
+  .toy-pair .toy-good .toy-hair { border-radius: 30px 30px 8px 8px; }
+  .toy-pair .toy-cheap .toy-hair { clip-path: polygon(0 100%, 4% 20%, 16% 70%, 26% 0, 38% 60%, 50% 10%, 60% 75%, 74% 5%, 84% 60%, 96% 15%, 100% 100%); }
+  .toy-pair .toy-hair.toy-grow { animation: toy-grow .45s ease-out; }
+  @keyframes toy-grow { 50% { transform: scaleX(1.12); } }
+  .toy-pair .toy-mood { display: block; font-size: 30px; line-height: 1.2; margin-top: 4px; }
+  html[data-theme="dark"] .toy-pair .toy-side { background: #33354a; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-pair .toy-tag { color: #c8bde0; }
+  html[data-theme="dark"] .toy-pair .toy-hair { background: #8a6a5a; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-pair .toy-hair.toy-grow { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-pair .toy-hair.toy-grow { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆✂️💈🗓️">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite">🗓️ <span>+<span class="toy-n toy-day">0</span></span></div>
+    <div class="toy-pair" aria-hidden="true">
+      <div class="toy-side toy-cheap"><span class="toy-tag">✂️ ¥1,000</span><div class="toy-head"><span class="toy-hair"></span><span class="toy-bird">🐧</span></div><span class="toy-mood">🙂</span></div>
+      <div class="toy-side toy-good"><span class="toy-tag">💈 ¥7,000</span><div class="toy-head"><span class="toy-hair"></span><span class="toy-bird">🐧</span></div><span class="toy-mood">🙂</span></div>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-main toy-go" aria-label="🗓️ ⏩">🗓️ ⏩</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var go = q('.toy-go'), day = q('.toy-day'), reset = q('.toy-reset');
+    var hairs = qa('.toy-hair'), moods = qa('.toy-mood'), good = q('.toy-good');
+    if (!go || !day || hairs.length < 2 || moods.length < 2 || !reset) return;
+    var DAYS = [0, 7, 30], H = [10, 20, 32], W = [36, 46, 58], i = 0;
+    var MOOD = [['🙂', '🙂'], ['😐', '😊'], ['😵‍💫', '🤩']];
+    function draw() {
+      day.textContent = String(DAYS[i]);
+      hairs.forEach(function (h) {
+        h.style.height = H[i] + 'px';
+        h.style.width = W[i] + 'px';
+        h.style.marginLeft = (-W[i] / 2) + 'px';
+      });
+      moods[0].textContent = MOOD[i][0];
+      moods[1].textContent = MOOD[i][1];
+      go.disabled = i >= DAYS.length - 1;
+    }
+    go.addEventListener('click', function () {
+      if (i >= DAYS.length - 1) return;
+      i += 1;
+      hairs.forEach(function (h) { bump(h, 'toy-grow'); });
+      moods.forEach(function (m) { bump(m); });
+      draw();
+      if (i >= DAYS.length - 1) pop(good, ['💈', '✨', '🤩', '🐧'], 16);
+    });
+    reset.addEventListener('click', function () { i = 0; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../hairdresser-is-my-hair-partner/index.html">
     <div>
       <div class="next-kicker">NEXT · 44 SEC</div>

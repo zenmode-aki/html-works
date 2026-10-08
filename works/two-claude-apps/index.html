@@ -491,6 +491,151 @@
   </div>
 
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #eceff7, #e0e5f3 60%, #fff3dc); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(25,32,60,.22); font-weight: 800; color: #1d2338; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #1d2338; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #1d2338; background: #fff; box-shadow: 0 6px 0 #c3cae0; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #c3cae0; }
+  .toy-btn.toy-main { background: #e0a13c; color: #fff; box-shadow: 0 6px 0 #a06a14; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #a06a14; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #a06a14; background: #fff;
+    box-shadow: 0 4px 0 #c3cae0; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #c3cae0; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #e0a13c, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #1e2338, #191d30 60%, #33291c); border-color: rgba(255,255,255,.12); color: #eef1fb; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #eef1fb; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #a06a14; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-mac { width: min(290px, 100%); margin: 4px auto 0; }
+  .toy-scr { position: relative; height: 150px; border-radius: 16px 16px 6px 6px; background: linear-gradient(135deg, #2c3a72, #6d5bd0 60%, #e0a13c);
+    border: 6px solid #1d2338; overflow: hidden; }
+  .toy-scr .toy-face { position: absolute; z-index: 3; right: 6px; bottom: 4px; font-size: 30px; line-height: 1; opacity: 0; transform: scale(.4); transition: opacity .2s, transform .3s cubic-bezier(.2,1.6,.4,1); }
+  .toy-scr.toy-panic .toy-face, .toy-scr.toy-calm .toy-face { opacity: 1; transform: none; }
+  .toy-wins { position: absolute; left: 10px; right: 10px; top: 14px; bottom: 10px; display: flex; gap: 8px; justify-content: center; }
+  .toy-win3 { flex: 0 1 120px; border-radius: 10px; background: #fff; box-shadow: 0 6px 16px rgba(0,0,0,.25); display: flex; flex-direction: column;
+    opacity: 0; transform: scale(.3) translateY(40px); transition: opacity .25s, transform .35s cubic-bezier(.2,1.4,.4,1); visibility: hidden; }
+  .toy-win3.toy-open { opacity: 1; transform: none; visibility: visible; }
+  .toy-win3 .toy-bar2 { height: 16px; border-radius: 10px 10px 0 0; background: #e6e8ef; display: flex; gap: 4px; align-items: center; padding-left: 6px; }
+  .toy-win3 .toy-bar2 i { width: 7px; height: 7px; border-radius: 50%; background: #ff6b5f; }
+  .toy-win3 .toy-bar2 i + i { background: #ffbd2e; } .toy-win3 .toy-bar2 i + i + i { background: #28c840; }
+  .toy-win3 .toy-body { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 36px; line-height: 1; }
+  .toy-stand { width: 60px; height: 16px; margin: 0 auto; background: #c3cae0; clip-path: polygon(20% 0, 80% 0, 100% 100%, 0 100%); }
+  .toy-dock { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 12px; }
+  .toy-app { width: 64px; height: 64px; padding: 0; border: 0; border-radius: 18px; cursor: pointer; font: inherit; font-size: 36px; line-height: 1;
+    background: linear-gradient(160deg, #ffe2b0, #e0a13c); box-shadow: 0 6px 0 #a06a14; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, opacity .25s; }
+  .toy-app:active { transform: translateY(5px); box-shadow: 0 1px 0 #a06a14; }
+  .toy-app.toy-hide { visibility: hidden; opacity: 0; width: 0; margin-left: -10px; }
+  .toy-app.toy-new { animation: toy-pop .4s cubic-bezier(.2,1.6,.4,1); }
+  @keyframes toy-pop { from { transform: scale(.2); } to { transform: scale(1); } }
+  html[data-theme="dark"] .toy-win3 { background: #e9ebf2; }
+  html[data-theme="dark"] .toy-stand { background: #3a4060; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🖥️">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-cnt">🖥️ <span><span class="toy-n toy-w">0</span>/2</span></span>
+    </div>
+    <div class="toy-mac" aria-hidden="true">
+      <div class="toy-scr">
+        <span class="toy-face">😱</span>
+        <div class="toy-wins">
+          <div class="toy-win3"><span class="toy-bar2"><i></i><i></i><i></i></span><span class="toy-body">🤖</span></div>
+          <div class="toy-win3"><span class="toy-bar2"><i></i><i></i><i></i></span><span class="toy-body">🤖</span></div>
+        </div>
+      </div>
+      <div class="toy-stand"></div>
+    </div>
+    <div class="toy-dock">
+      <button type="button" class="toy-app" aria-label="🤖">🤖</button>
+      <button type="button" class="toy-app toy-hide" aria-label="🤖">🤖</button>
+      <button type="button" class="toy-btn toy-main toy-copy" aria-label="📋 ×2">📋 <small>×2</small></button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var apps = qa('.toy-app'), wins = qa('.toy-win3'), copy = q('.toy-copy'), scr = q('.toy-scr'), face = q('.toy-face'), wEl = q('.toy-w'), chip = q('.toy-cnt');
+    if (apps.length !== 2 || wins.length !== 2 || !copy || !scr || !wEl) return;
+    var open = [false, false], copied = false, done = false;
+    function draw() {
+      wins.forEach(function (w, i) { w.classList.toggle('toy-open', open[i]); });
+      apps[1].classList.toggle('toy-hide', !copied);
+      apps[1].disabled = !copied;
+      copy.disabled = copied;
+      var n = (open[0] ? 1 : 0) + (open[1] ? 1 : 0);
+      wEl.textContent = String(n);
+      chip.classList.toggle('toy-win', n === 2);
+      return n;
+    }
+    apps.forEach(function (a, i) {
+      a.addEventListener('click', function () {
+        if (i === 1 && !copied) return;
+        if (open[i]) {
+          if (!copied) { scr.classList.remove('toy-calm'); scr.classList.add('toy-panic'); face.textContent = '😱'; bump(scr, 'toy-shake'); }
+          else bump(wins[i]);
+          return;
+        }
+        open[i] = true;
+        var n = draw(); bump(chip);
+        if (n === 2 && !done) {
+          done = true; scr.classList.remove('toy-panic'); scr.classList.add('toy-calm'); face.textContent = '😌';
+          pop(scr, ['🤖', '🖥️', '✨', '🎉', '🐧'], 18);
+        }
+      });
+    });
+    copy.addEventListener('click', function () {
+      if (copied) return;
+      copied = true; draw(); bump(apps[1], 'toy-new'); pop(copy, ['📋'], 3);
+    });
+    reset.addEventListener('click', function () {
+      open = [false, false]; copied = false; done = false;
+      scr.classList.remove('toy-panic', 'toy-calm'); draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../paste-one-at-a-time/index.html">
     <div>
       <div class="next-kicker">NEXT · 48 SEC</div>

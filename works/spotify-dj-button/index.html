@@ -491,6 +491,125 @@
   </section>
   </div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #eafff3, #d9f7e6 60%, #e3ecff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(0,0,0,.35); font-weight: 800; color: #13233d; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #13233d; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #13233d; background: #fff; box-shadow: 0 6px 0 #a8e6c1; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #a8e6c1; }
+  .toy-btn.toy-main { background: #1db954; color: #fff; box-shadow: 0 6px 0 #127a37; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #127a37; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #127a37; background: #fff;
+    box-shadow: 0 4px 0 #a8e6c1; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #a8e6c1; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #1db954, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #10241c, #0f2a1f 60%, #111c33); border-color: rgba(255,255,255,.12); color: #eafff3; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #eafff3; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #127a37; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-deck { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 4px 0 6px; }
+  .toy-disc { font-size: 58px; line-height: 1; display: inline-block; }
+  .toy-deck.toy-play .toy-disc { animation: toy-spin 1.2s linear infinite; }
+  @keyframes toy-spin { to { transform: rotate(360deg); } }
+  .toy-eq { display: flex; align-items: flex-end; gap: 4px; height: 46px; }
+  .toy-eq i { display: block; width: 8px; height: 10px; border-radius: 4px; background: #1db954; }
+  .toy-deck.toy-play .toy-eq i { animation: toy-eq .7s ease-in-out infinite alternate; }
+  .toy-eq i:nth-child(2) { animation-delay: .15s; } .toy-eq i:nth-child(3) { animation-delay: .3s; }
+  .toy-eq i:nth-child(4) { animation-delay: .45s; } .toy-eq i:nth-child(5) { animation-delay: .1s; }
+  @keyframes toy-eq { from { height: 8px; } to { height: 44px; } }
+  .toy-song { display: inline-flex; align-items: center; gap: 10px; min-height: 64px; min-width: 220px; margin: 6px auto 0;
+    padding: 8px 18px; border-radius: 20px; background: #13233d; color: #fff; font-size: 34px; line-height: 1;
+    box-shadow: 0 6px 0 rgba(0,0,0,.3); }
+  .toy-song .toy-heart { font-size: 30px; opacity: .25; transition: opacity .2s; }
+  .toy-song.toy-in .toy-heart { opacity: 1; }
+  .toy-song.toy-in { animation: toy-in .45s cubic-bezier(.2,1.5,.4,1); }
+  @keyframes toy-in { from { transform: translateY(16px) scale(.85); opacity: .3; } to { transform: none; opacity: 1; } }
+  .toy-dj { width: 104px; height: 104px; margin-top: 14px; padding: 0; border: 0; border-radius: 50%; cursor: pointer; font: inherit;
+    font-size: 44px; line-height: 1; color: #fff; background: radial-gradient(circle at 35% 30%, #5fe3a1, #1db954 60%, #128a3d);
+    box-shadow: 0 8px 0 #0d5e2a, 0 0 0 6px rgba(29,185,84,.25); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s; }
+  .toy-dj:active { transform: translateY(6px); box-shadow: 0 2px 0 #0d5e2a, 0 0 0 10px rgba(29,185,84,.35); }
+  html[data-theme="dark"] .toy-song { background: #0a1424; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-deck.toy-play .toy-disc, html:not([data-motion="on"]) .toy-deck.toy-play .toy-eq i, html:not([data-motion="on"]) .toy-song.toy-in { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-deck.toy-play .toy-disc, html[data-motion="off"] .toy-deck.toy-play .toy-eq i, html[data-motion="off"] .toy-song.toy-in { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🎧">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-likes">💚 <span><span class="toy-n toy-l">0</span>/5</span></span>
+    </div>
+    <div class="toy-deck" aria-hidden="true">
+      <span class="toy-disc">💿</span>
+      <span class="toy-eq"><i></i><i></i><i></i><i></i><i></i></span>
+    </div>
+    <div class="toy-song" aria-live="polite"><span class="toy-tune">📻 ❔</span><span class="toy-heart">💚</span></div>
+    <div><button type="button" class="toy-dj" aria-label="🎧">🎧</button></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var deck = q('.toy-deck'), song = q('.toy-song'), tune = q('.toy-tune'), dj = q('.toy-dj'), lEl = q('.toy-l'), chip = q('.toy-likes');
+    if (!deck || !song || !tune || !dj || !lEl) return;
+    var TUNES = ['🎸 🥁', '🎹 🎻', '🎷 🎺', '🎤 ⭐', '🪕 🌈', '🎧 🌙', '🎼 ☀️', '🎻 🌧️'];
+    var n = 0, lastI = -1, stopT = 0;
+    dj.addEventListener('click', function () {
+      var i;
+      do { i = Math.floor(Math.random() * TUNES.length); } while (i === lastI);
+      lastI = i;
+      tune.textContent = TUNES[i];
+      bump(song, 'toy-in');
+      deck.classList.add('toy-play');
+      clearTimeout(stopT); stopT = setTimeout(function () { deck.classList.remove('toy-play'); }, 2600);
+      if (n < 5) {
+        n++; lEl.textContent = String(n); bump(chip);
+        pop(song, ['💚'], 3);
+        if (n === 5) { chip.classList.add('toy-win'); pop(dj, ['🎧', '🎵', '💚', '🎉', '🐧'], 18); }
+      }
+    });
+    reset.addEventListener('click', function () {
+      n = 0; lEl.textContent = '0'; chip.classList.remove('toy-win');
+      tune.textContent = '📻 ❔'; song.classList.remove('toy-in'); deck.classList.remove('toy-play');
+    });
+  })();
+  </script>
+
   <a class="next" href="../trampoline-gym-45-minutes/index.html">
     <div>
       <div class="next-kicker">NEXT · 30 SEC</div>

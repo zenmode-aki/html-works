@@ -535,6 +535,112 @@
   </section>
   </div>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #fff6dc, #f8e6bd 55%, #fdf0f0); --tedge: #fff; --tglow: rgba(154,107,18,.22); --tink: #352c1c; --tbtn: #fff; --tsh: #e2cc95; --ttrack: rgba(53,44,28,.12); --tfill: linear-gradient(90deg, #e8c77a, #9a6b12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #332b18, #2f2817 55%, #2d2222); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #fbf3e2; --tbtn: #3a3222; --tsh: #17130b; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-podium { display: flex; justify-content: center; align-items: flex-end; gap: 8px; max-width: 300px; margin: 10px auto 0; }
+  .toy-spot { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+  .toy-spot .toy-tile { width: 76px; min-height: 76px; padding: 0; font-size: 38px; border-radius: 22px; perspective: 400px; }
+  .toy-tile .toy-face { display: inline-block; transition: transform .45s cubic-bezier(.2,1.5,.4,1); }
+  .toy-tile.toy-open { background: #fff4d0; }
+  html[data-theme="dark"] .toy-tile.toy-open { background: #4a3d1e; }
+  .toy-tile.toy-flip .toy-face { animation: toy-flip .45s ease-out; }
+  @keyframes toy-flip { 0% { transform: rotateY(90deg) scale(.6); } 100% { transform: none; } }
+  .toy-spot .toy-block { width: 100%; margin-top: 12px; border-radius: 14px 14px 4px 4px; display: flex; align-items: flex-start; justify-content: center;
+    padding-top: 8px; font-size: 26px; line-height: 1; color: #fff; }
+  .toy-spot.toy-p1 .toy-block { height: 110px; background: linear-gradient(180deg, #f2c94c, #c99a1e); }
+  .toy-spot.toy-p2 .toy-block { height: 80px; background: linear-gradient(180deg, #cfd6df, #9aa5b1); }
+  .toy-spot.toy-p3 .toy-block { height: 58px; background: linear-gradient(180deg, #e1a46c, #b06f3a); }
+  .toy-mirror { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 16px; font-size: 32px; line-height: 1;
+    visibility: hidden; opacity: 0; transition: opacity .3s; }
+  .toy-mirror.toy-on { visibility: visible; opacity: 1; }
+  .toy-mirror .toy-meter { margin: 0; width: 150px; }
+  .toy-mirror .toy-fill { transition: width 1.6s ease-out; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🏆">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-podium">
+      <div class="toy-spot toy-p2"><button type="button" class="toy-btn toy-tile" data-e="🤖" aria-label="🥈"><span class="toy-face">❓</span></button><div class="toy-block" aria-hidden="true">🥈</div></div>
+      <div class="toy-spot toy-p1"><button type="button" class="toy-btn toy-tile" data-e="✂️" aria-label="🥇"><span class="toy-face">❓</span></button><div class="toy-block" aria-hidden="true">🥇</div></div>
+      <div class="toy-spot toy-p3"><button type="button" class="toy-btn toy-tile" data-e="🛁" aria-label="🥉"><span class="toy-face">❓</span></button><div class="toy-block" aria-hidden="true">🥉</div></div>
+    </div>
+    <div class="toy-mirror" aria-hidden="true"><span>🪞</span><div class="toy-meter"><span class="toy-fill"></span></div><span class="toy-sm">😐</span></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var tiles = qa('.toy-tile'), mirror = q('.toy-mirror'), fill = q('.toy-mirror .toy-fill'), sm = q('.toy-sm');
+    if (!tiles.length) return;
+    var done = false, timer = 0;
+    function open(t, on) {
+      var f = t.querySelector('.toy-face');
+      t.classList.toggle('toy-open', on);
+      if (f) f.textContent = on ? t.getAttribute('data-e') : '❓';
+    }
+    function check() {
+      var first = tiles[1] && tiles[1].classList.contains('toy-open');
+      if (mirror) mirror.classList.toggle('toy-on', !!first);
+      clearTimeout(timer);
+      if (fill) fill.style.width = first ? '100%' : '0';
+      if (sm) { sm.textContent = '😐'; if (first) timer = setTimeout(function () { sm.textContent = '😎'; bump(sm); }, still() ? 0 : 1400); }
+      var all = tiles.every(function (t) { return t.classList.contains('toy-open'); });
+      if (all && !done) { done = true; setTimeout(function () { pop(tiles[1], ['✂️', '🤖', '🛁', '✨', '🏆'], 18); }, still() ? 0 : 400); }
+      if (!all) done = false;
+    }
+    tiles.forEach(function (t) {
+      t.addEventListener('click', function () {
+        var on = !t.classList.contains('toy-open');
+        open(t, on);
+        if (on) bump(t, 'toy-flip');
+        check();
+      });
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () { tiles.forEach(function (t) { open(t, false); }); check(); });
+  })();
+  </script>
+
   <a class="next" href="../nagoya-station-bookshop/index.html">
     <div>
       <div class="next-kicker">NEXT · 8 SEC</div>

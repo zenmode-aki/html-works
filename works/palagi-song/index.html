@@ -584,6 +584,119 @@
     </div>
   </section>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #e6f8f0, #d6f0e2 55%, #e9e6ff); --tedge: #fff; --tglow: rgba(31,154,120,.22); --tink: #24332d; --tbtn: #fff; --tsh: #a8d8c2; --ttrack: rgba(36,51,45,.12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #15302a, #183a2e 55%, #26223a); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #e9fbf2; --tbtn: #24362e; --tsh: #0c1813; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-head { position: relative; height: 170px; max-width: 280px; margin: 6px auto 0; }
+  .toy-head .toy-me { position: absolute; left: 50%; bottom: 6px; transform: translateX(-50%); font-size: 54px; line-height: 1; }
+  .toy-head .toy-ph { position: absolute; left: calc(50% - 74px); bottom: 10px; font-size: 34px; line-height: 1; }
+  .toy-head .toy-face { position: absolute; left: calc(50% + 30px); bottom: 50px; font-size: 28px; line-height: 1; }
+  .toy-head .toy-th { position: absolute; font-size: 28px; line-height: 1; transition: opacity .8s, transform .9s ease-out; }
+  .toy-head .toy-th.toy-gone { opacity: 0; transform: translateY(-30px) scale(.5); }
+  .toy-head.toy-play .toy-th:not(.toy-gone) { animation: toy-spin 2.4s linear infinite; }
+  @keyframes toy-spin { to { transform: rotate(360deg); } }
+  .toy-wave { display: flex; align-items: center; justify-content: center; gap: 5px; height: 40px; margin-top: 6px; }
+  .toy-wave i { width: 8px; height: 8px; border-radius: 5px; background: #6fcf9f; transition: height .3s; }
+  .toy-wave.toy-play i { animation: toy-wv 1.6s ease-in-out infinite; }
+  .toy-wave.toy-play i:nth-child(2) { animation-delay: -.2s; } .toy-wave.toy-play i:nth-child(3) { animation-delay: -.4s; }
+  .toy-wave.toy-play i:nth-child(4) { animation-delay: -.6s; } .toy-wave.toy-play i:nth-child(5) { animation-delay: -.8s; }
+  .toy-wave.toy-play i:nth-child(6) { animation-delay: -1s; } .toy-wave.toy-play i:nth-child(7) { animation-delay: -1.2s; }
+  @keyframes toy-wv { 50% { height: 34px; } }
+  .toy-play-b { background: #1f9a78; box-shadow: 0 6px 0 #13664f; min-width: 110px; font-size: 32px; }
+  .toy-play-b:active { box-shadow: 0 1px 0 #13664f; }
+  .toy-loop.toy-on { background: #c8f0dc; box-shadow: 0 6px 0 #1f9a78; }
+  html[data-theme="dark"] .toy-loop.toy-on { background: #1f5a44; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🎧">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-head" aria-hidden="true">
+      <span class="toy-th" style="left:8%;top:6px">❓</span><span class="toy-th" style="left:42%;top:0">🌀</span><span class="toy-th" style="right:8%;top:10px">💭</span>
+      <span class="toy-th" style="left:2%;top:64px">❗</span><span class="toy-th" style="right:2%;top:70px">🌀</span>
+      <span class="toy-ph">🎧</span><span class="toy-me">🐧</span><span class="toy-face">😵‍💫</span>
+    </div>
+    <div class="toy-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-play-b" aria-label="▶️">▶️</button>
+      <button type="button" class="toy-btn toy-loop" aria-label="🔁">🔁</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var head = q('.toy-head'), ths = qa('.toy-th'), face = q('.toy-face'), wave = q('.toy-wave'), play = q('.toy-play-b'), loop = q('.toy-loop');
+    if (!head || !ths.length || !play) return;
+    var on = false, timer = 0, looped = false, done = false;
+    function left() { return ths.filter(function (t) { return !t.classList.contains('toy-gone'); }); }
+    function mood() {
+      var n = left().length;
+      if (face) face.textContent = n === 0 ? '😌' : n <= 2 ? '🙂' : n <= 4 ? '😐' : '😵‍💫';
+    }
+    function setPlay(v) {
+      on = v; head.classList.toggle('toy-play', v); if (wave) wave.classList.toggle('toy-play', v);
+      play.textContent = v ? '⏸️' : '▶️'; play.setAttribute('aria-label', v ? '⏸️' : '▶️');
+      clearInterval(timer); timer = 0;
+      if (v) timer = setInterval(tick, 1100);
+    }
+    function tick() {
+      var l = left();
+      if (l.length) { l[Math.floor(Math.random() * l.length)].classList.add('toy-gone'); mood(); }
+      if (!left().length) {
+        if (!done) { done = true; bump(face); pop(face || head, ['🎵', '😌', '🎧', '✨', '💚'], 18); }
+        // 🔁 = keep playing, the calm stays
+        if (!looped) setPlay(false);
+      }
+    }
+    play.addEventListener('click', function () { setPlay(!on); bump(play); if (on) tick(); });
+    if (loop) loop.addEventListener('click', function () { looped = !looped; loop.classList.toggle('toy-on', looped); bump(loop); });
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      setPlay(false); done = false; ths.forEach(function (t) { t.classList.remove('toy-gone'); }); mood();
+    });
+    mood();
+  })();
+  </script>
+
   <a class="next" href="../two-music-apps/index.html">
     <div>
       <div class="next-kicker">NEXT · 58 SEC</div>

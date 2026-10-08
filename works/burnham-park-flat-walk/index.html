@@ -335,6 +335,148 @@
             referrerpolicy="no-referrer-when-downgrade"></iframe>
     <figcaption>📍 The flat part of a very hilly city — <b>Burnham Park, Baguio</b> · <a href="https://maps.app.goo.gl/ZiFta7hT45Ru7gPi9" target="_blank" rel="noopener noreferrer">Open in Google Maps ↗</a></figcaption>
   </figure>
+  <style>
+  .toy { --ta: #6550d8; --ts: #d8cdee; --ti: #302547; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fff7dc, #e4f6ee); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #2a2538, #1d2a26); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-chip { display: inline-flex; align-items: center; gap: 12px; margin: 8px 0 12px; padding: 8px 20px; border-radius: 999px;
+    background: #302547; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #17112a; }
+  .toy-chip.toy-done { background: #16b99a; box-shadow: 0 5px 0 #0c7a65; }
+  .toy-trail { position: relative; width: min(310px, 100%); height: 130px; margin: 0 auto; border-radius: 20px; overflow: hidden;
+    background: linear-gradient(180deg, #d9f0ff, #fff7dc); }
+  .toy-trail svg { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+  .toy-trail .toy-ground { fill: #9bd38a; stroke: #4f9a46; stroke-width: 4; stroke-linejoin: round; }
+  .toy-trail .toy-peng { position: absolute; font-size: 34px; line-height: 1; transform: translate(-50%, -92%); transition: left .3s ease-out, top .3s ease-out; }
+  .toy-trail .toy-peng.toy-step { animation: toy-waddle .3s ease-out; }
+  @keyframes toy-waddle { 30% { transform: translate(-50%, -100%) rotate(-10deg); } 70% { transform: translate(-50%, -96%) rotate(10deg); } }
+  .toy-trail .toy-goal { position: absolute; right: 6px; top: 8px; font-size: 30px; line-height: 1; }
+  .toy-mode { display: inline-flex; gap: 6px; padding: 5px; border-radius: 22px; background: rgba(48,37,71,.1); margin-top: 14px; }
+  .toy-mode .toy-btn { box-shadow: none; min-width: 72px; background: transparent; }
+  .toy-mode .toy-btn.toy-sel { background: #fff; box-shadow: 0 4px 0 #d8cdee; }
+  html[data-theme="dark"] .toy-trail { background: linear-gradient(180deg, #24324a, #2a2538); }
+  html[data-theme="dark"] .toy-trail .toy-ground { fill: #3f6e3a; stroke: #6fbf63; }
+  html[data-theme="dark"] .toy-mode { background: rgba(255,255,255,.1); }
+  html[data-theme="dark"] .toy-mode .toy-btn { background: transparent; box-shadow: none; }
+  html[data-theme="dark"] .toy-mode .toy-btn.toy-sel { background: #33354a; box-shadow: 0 4px 0 #11121a; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-trail .toy-peng.toy-step { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-trail .toy-peng.toy-step { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🐧⛰️🌳">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite"><span>👣 <span class="toy-n toy-st">0</span>/6</span><span>💦 <span class="toy-n toy-sw">0</span></span></div>
+    <div class="toy-trail" aria-hidden="true">
+      <svg viewBox="0 0 300 130" preserveAspectRatio="none"><path class="toy-ground" d=""></path></svg>
+      <span class="toy-goal">🌳</span>
+      <span class="toy-peng">🐧</span>
+    </div>
+    <div class="toy-mode">
+      <button type="button" class="toy-btn toy-hill toy-sel" aria-label="⛰️">⛰️</button>
+      <button type="button" class="toy-btn toy-flat" aria-label="🌳">🌳</button>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-main toy-walk" aria-label="👣">👣 ▶</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var path = q('.toy-ground'), peng = q('.toy-peng'), trail = q('.toy-trail'), walk = q('.toy-walk');
+    var hillB = q('.toy-hill'), flatB = q('.toy-flat'), stEl = q('.toy-st'), swEl = q('.toy-sw'), chip = q('.toy-chip'), reset = q('.toy-reset');
+    if (!path || !peng || !trail || !walk || !hillB || !flatB || !stEl || !swEl || !reset) return;
+    var HILL = [95, 45, 90, 35, 85, 40, 80], FLAT = [72, 72, 72, 72, 72, 72, 72];
+    var cur = HILL.slice(), flat = false, st = 0, sw = 0, raf = 0;
+    function shape() {
+      var d = 'M0 130 ';
+      for (var i = 0; i < cur.length; i++) d += 'L' + (i * 50) + ' ' + cur[i].toFixed(1) + ' ';
+      path.setAttribute('d', d + 'L300 130 Z');
+      peng.style.left = (st * 50 / 300 * 100) + '%';
+      peng.style.top = (cur[st] / 130 * 100) + '%';
+    }
+    function morph(to) {
+      cancelAnimationFrame(raf);
+      if (still()) { cur = to.slice(); shape(); return; }
+      var from = cur.slice(), t0 = 0;
+      function f(t) {
+        if (!t0) t0 = t;
+        var k = Math.min(1, (t - t0) / 600), e = 1 - Math.pow(1 - k, 3);
+        for (var i = 0; i < cur.length; i++) cur[i] = from[i] + (to[i] - from[i]) * e;
+        shape();
+        if (k < 1) raf = requestAnimationFrame(f);
+      }
+      raf = requestAnimationFrame(f);
+    }
+    function draw() {
+      stEl.textContent = String(st);
+      swEl.textContent = String(sw);
+      hillB.classList.toggle('toy-sel', !flat);
+      flatB.classList.toggle('toy-sel', flat);
+      var done = st >= 6;
+      walk.disabled = done;
+      if (chip) chip.classList.toggle('toy-done', done && flat);
+      shape();
+    }
+    function setMode(f) {
+      if (flat === f) return;
+      flat = f; st = 0; sw = 0;
+      morph(f ? FLAT : HILL);
+      draw();
+    }
+    hillB.addEventListener('click', function () { setMode(false); });
+    flatB.addEventListener('click', function () { setMode(true); });
+    walk.addEventListener('click', function () {
+      if (st >= 6) return;
+      var up = HILL[st + 1] < HILL[st];
+      st += 1;
+      if (!flat && up) { sw += 1; pop(peng, ['💦'], 4); }
+      bump(peng, 'toy-step');
+      draw();
+      if (st >= 6) {
+        if (flat) pop(trail, ['🐧', '🌳', '😊', '🎉'], 18);
+        else { bump(chip, 'toy-shake'); bump(flatB); }
+      }
+    });
+    reset.addEventListener('click', function () { flat = false; st = 0; sw = 0; morph(HILL); draw(); });
+    draw();
+  })();
+  </script>
+
   <!-- 🌲 バギオの6本 -->
   <nav class="bg-nav" aria-label="Baguio series">
     <div class="bg-nav-head">🌲 BAGUIO, IN 6 POSTS</div>

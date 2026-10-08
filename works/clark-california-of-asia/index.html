@@ -514,6 +514,123 @@
   </section>
   </div>
 
+  <style>
+  .toy { --ta: #1f7a6b; --ts: #bfe2d6; --ti: #322536; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #f2fbf6, #dcf3e8); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #1d2e29, #151f1c); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-chip { display: inline-flex; align-items: center; gap: 8px; margin: 8px 0 12px; padding: 8px 20px; border-radius: 999px;
+    background: #1f7a6b; color: #fff; font-size: 26px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #0f4b41; }
+  .toy-chip.toy-done { background: #ffb347; box-shadow: 0 5px 0 #b87618; }
+  .toy-land { position: relative; width: min(320px, 100%); height: 150px; margin: 0 auto; border-radius: 20px; overflow: hidden;
+    background: linear-gradient(180deg, #bfe6ff, #eaf8ff 60%); }
+  .toy-land .toy-sun { position: absolute; right: 12px; top: 8px; font-size: 26px; animation: toy-spin 8s linear infinite; }
+  @keyframes toy-spin { to { transform: rotate(360deg); } }
+  .toy-land .toy-mts { position: absolute; left: 0; right: 0; bottom: 34px; text-align: center; font-size: 56px; line-height: 1; letter-spacing: -14px;
+    transition: transform .45s ease-out, opacity .45s; transform-origin: 50% 100%; }
+  .toy-land .toy-ground { position: absolute; left: 0; right: 0; bottom: 0; height: 40px; background: #8fd27a; transition: background .4s; }
+  .toy-land .toy-road { position: absolute; left: 0; right: 0; bottom: 6px; height: 8px; background: #6b6b6b; transition: height .45s; }
+  .toy-land .toy-town { position: absolute; left: 0; right: 0; bottom: 24px; display: flex; justify-content: center; align-items: flex-end; transition: gap .45s; }
+  .toy-land .toy-b { font-size: 36px; line-height: 1; transition: font-size .45s; }
+  .toy-land .toy-t { flex-shrink: 0; font-size: 24px; line-height: 1; max-width: 0; overflow: hidden; opacity: 0; transition: max-width .45s, opacity .45s; }
+  .toy-stepper { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 14px; }
+  .toy-stepper .toy-dots { display: flex; gap: 6px; }
+  .toy-stepper .toy-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(0,0,0,.15); transition: background .2s; }
+  .toy-stepper .toy-dot.toy-on { background: #1f7a6b; }
+  html[data-theme="dark"] .toy-land { background: linear-gradient(180deg, #24425a, #1d2e29 60%); }
+  html[data-theme="dark"] .toy-land .toy-ground { background: #3f6e3a; }
+  html[data-theme="dark"] .toy-stepper .toy-dot { background: rgba(255,255,255,.2); }
+  html[data-theme="dark"] .toy-stepper .toy-dot.toy-on { background: #79cbb4; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-land .toy-sun { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-land .toy-sun { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🗾↔️🌴">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite"><span class="toy-flag">🗾</span> ↔️ <span><span class="toy-n toy-w">1</span>×</span></div>
+    <div class="toy-land" aria-hidden="true">
+      <span class="toy-sun">☀️</span>
+      <span class="toy-mts">⛰️⛰️⛰️⛰️</span>
+      <span class="toy-ground"></span><span class="toy-road"></span>
+      <div class="toy-town">
+        <span class="toy-b">🏠</span><span class="toy-t">🌳</span><span class="toy-b">🏢</span><span class="toy-t">🌴</span><span class="toy-b">🏬</span><span class="toy-t">🌳</span><span class="toy-b">🏛️</span>
+      </div>
+    </div>
+    <div class="toy-stepper">
+      <button type="button" class="toy-btn toy-less" aria-label="🗾 −">🗾 −</button>
+      <span class="toy-dots" aria-hidden="true"><span class="toy-dot"></span><span class="toy-dot"></span><span class="toy-dot"></span><span class="toy-dot"></span><span class="toy-dot"></span></span>
+      <button type="button" class="toy-btn toy-main toy-more" aria-label="🌴 +">🌴 +</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var less = q('.toy-less'), more = q('.toy-more'), mts = q('.toy-mts'), road = q('.toy-road'), town = q('.toy-town');
+    var bs = qa('.toy-b'), ts = qa('.toy-t'), dots = qa('.toy-dot'), wEl = q('.toy-w'), flag = q('.toy-flag'), chip = q('.toy-chip');
+    var land = q('.toy-land'), reset = q('.toy-reset');
+    if (!less || !more || !mts || !town || !wEl || !reset) return;
+    var lv = 0, MAX = 4, cheered = false;
+    function draw() {
+      var k = lv / MAX;
+      mts.style.transform = 'scaleY(' + (1 - k * 0.85) + ')';
+      mts.style.opacity = String(1 - k * 0.6);
+      if (road) road.style.height = (8 + k * 14) + 'px';
+      town.style.gap = (k * 6) + "px";
+      bs.forEach(function (b) { b.style.fontSize = (30 + k * 8) + 'px'; });
+      ts.forEach(function (t) { t.style.maxWidth = (k * 40) + 'px'; t.style.opacity = String(k); });
+      dots.forEach(function (d, i) { d.classList.toggle('toy-on', i <= lv); });
+      wEl.textContent = String(lv + 1);
+      if (flag) flag.textContent = lv >= MAX ? '🌴' : '🗾';
+      if (chip) chip.classList.toggle('toy-done', lv >= MAX);
+      less.disabled = lv <= 0;
+      more.disabled = lv >= MAX;
+    }
+    more.addEventListener('click', function () {
+      if (lv >= MAX) return;
+      lv += 1; bump(town); draw();
+      if (lv >= MAX && !cheered) { cheered = true; pop(land || chip, ['🌴', '🏢', '☀️', '🎉'], 18); }
+    });
+    less.addEventListener('click', function () { if (lv <= 0) return; lv -= 1; draw(); });
+    reset.addEventListener('click', function () { lv = 0; cheered = false; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../korean-buffet-every-day/index.html">
     <div>
       <div class="next-kicker">NEXT · 15 SEC</div>

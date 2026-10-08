@@ -562,6 +562,134 @@
   </section>
   </div>
 
+  <style>
+  .toy { --ta: #3f7d2c; --ts: #c6dcb8; --ti: #26341f; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #f1f8ee, #dcefd0); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #22301d, #182214); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-chip { display: inline-flex; align-items: center; gap: 8px; margin: 8px 0 12px; padding: 8px 20px; border-radius: 999px;
+    background: #3f7d2c; color: #fff; font-size: 26px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #24501a; }
+  .toy-chip.toy-done { background: #e0a23a; box-shadow: 0 5px 0 #a06c16; }
+  .toy-hill { position: relative; width: min(310px, 100%); height: 220px; margin: 0 auto; border-radius: 22px; overflow: hidden;
+    background: linear-gradient(180deg, #d9f2ff, #e9f7df 55%, #b9e0a0); }
+  .toy-hill .toy-step { position: absolute; height: 16px; border-radius: 4px; background: #a9a39a; box-shadow: inset 0 -4px 0 #7f7a72; }
+  .toy-hill .toy-step.toy-done { background: #c9b27a; box-shadow: inset 0 -4px 0 #9c8550; }
+  .toy-hill .toy-gate { position: absolute; right: 14px; top: 8px; font-size: 40px; line-height: 1; }
+  .toy-hill .toy-tree { position: absolute; font-size: 28px; line-height: 1; }
+  .toy-hill .toy-leaf { position: absolute; left: 20%; top: -20px; font-size: 18px; animation: toy-fall 4s linear infinite; }
+  @keyframes toy-fall { to { transform: translate(60px, 260px) rotate(300deg); } }
+  .toy-hill .toy-peng { position: absolute; font-size: 32px; line-height: 1; transform: translate(-50%, -100%); transition: left .25s ease-out, top .25s ease-out; }
+  .toy-hill .toy-peng.toy-hop { animation: toy-hop .25s ease-out; }
+  @keyframes toy-hop { 50% { transform: translate(-50%, -125%); } }
+  .toy-hill .toy-peng.toy-wob { animation: toy-wob .35s ease-in-out; }
+  @keyframes toy-wob { 25% { transform: translate(-50%, -100%) rotate(-14deg); } 75% { transform: translate(-50%, -100%) rotate(14deg); } }
+  .toy-btn.toy-foot { min-width: 96px; }
+  .toy-btn.toy-foot.toy-next { background: #ffe58a; box-shadow: 0 6px 0 #d0ab3a; }
+  html[data-theme="dark"] .toy-hill { background: linear-gradient(180deg, #24384a, #22301d 55%, #2f4a25); }
+  html[data-theme="dark"] .toy-btn.toy-foot.toy-next { background: #6e5a18; box-shadow: 0 6px 0 #2a230d; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-hill .toy-peng.toy-hop, html:not([data-motion="on"]) .toy-hill .toy-leaf { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-hill .toy-peng.toy-hop, html[data-motion="off"] .toy-hill .toy-leaf { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🪜⛩️">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite">🪜 <span><span class="toy-n toy-st">0</span>/8</span></div>
+    <div class="toy-hill" aria-hidden="true">
+      <span class="toy-tree" style="left:8px;top:30px">🌲</span><span class="toy-tree" style="left:44%;top:14px">🌳</span><span class="toy-tree" style="right:10px;bottom:10px">🌲</span><span class="toy-tree" style="left:14px;bottom:56px">🌳</span>
+      <span class="toy-leaf">🍃</span>
+      <span class="toy-gate">⛩️</span>
+      <span class="toy-peng">🐧</span>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-foot toy-l" aria-label="👣 ⬅️">⬅️ 👣</button>
+      <button type="button" class="toy-btn toy-foot toy-r" aria-label="👣 ➡️">👣 ➡️</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var hill = q('.toy-hill'), peng = q('.toy-peng'), L = q('.toy-l'), R = q('.toy-r'), st = q('.toy-st'), chip = q('.toy-chip'), reset = q('.toy-reset');
+    if (!hill || !peng || !L || !R || !st || !reset) return;
+    var N = 8, n = 0, steps = [];
+    for (var i = 0; i < N; i++) {
+      var s = document.createElement('span');
+      s.className = 'toy-step';
+      s.style.left = (6 + i * 10) + '%';
+      s.style.width = '16%';
+      s.style.bottom = (8 + i * 20) + 'px';
+      hill.insertBefore(s, peng);
+      steps.push(s);
+    }
+    function place() {
+      var k = Math.max(0, n - 1);
+      peng.style.left = n === 0 ? '6%' : (14 + k * 10) + '%';
+      peng.style.bottom = '';
+      var px = n === 0 ? 8 : (8 + k * 20 + 16);
+      peng.style.top = (hill.clientHeight - px) + 'px';
+    }
+    function draw() {
+      st.textContent = String(n);
+      steps.forEach(function (s, i) { s.classList.toggle('toy-done', i < n); });
+      var wantLeft = n % 2 === 0;
+      L.classList.toggle('toy-next', n < N && wantLeft);
+      R.classList.toggle('toy-next', n < N && !wantLeft);
+      if (chip) chip.classList.toggle('toy-done', n >= N);
+      if (n >= N) peng.textContent = '😊';
+      else peng.textContent = '🐧';
+      place();
+    }
+    function stepFoot(left) {
+      if (n >= N) return;
+      var wantLeft = n % 2 === 0;
+      if (left !== wantLeft) { bump(peng, 'toy-wob'); return; }
+      n += 1;
+      bump(peng, 'toy-hop');
+      draw();
+      if (n >= N) pop(peng, ['⛩️', '🌿', '😊', '🎉'], 18);
+    }
+    L.addEventListener('click', function () { stepFoot(true); });
+    R.addEventListener('click', function () { stepFoot(false); });
+    reset.addEventListener('click', function () { n = 0; draw(); });
+    window.addEventListener('resize', place);
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../best-drive-in-japan-is-in-shiga/index.html">
     <div>
       <div class="next-kicker">NEXT · 12 SEC</div>

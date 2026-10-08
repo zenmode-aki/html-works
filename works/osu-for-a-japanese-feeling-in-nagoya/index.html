@@ -547,6 +547,109 @@
   </section>
   </div>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #ffe6ee, #ffd3e0 55%, #fff1d6); --tedge: #fff; --tglow: rgba(207,63,114,.22); --tink: #3d2230; --tbtn: #fff; --tsh: #f0b3c8; --ttrack: rgba(61,34,48,.12); --tfill: linear-gradient(90deg, #ff9fbf, #cf3f72, #ffb43a);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #3a1d28, #3a1a26 55%, #3a2e1a); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #ffeef4; --tbtn: #3a2632; --tsh: #180d13; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-arcade { position: relative; max-width: 310px; margin: 8px auto 0; padding: 14px 10px 10px; border-radius: 22px 22px 10px 10px;
+    background: linear-gradient(180deg, #4a2a36, #2e1a22); box-shadow: 0 8px 0 #1c0f15; }
+  .toy-arcade::before { content: ""; position: absolute; left: 10px; right: 10px; top: 28px; height: 3px; background: rgba(255,255,255,.25); border-radius: 2px; }
+  .toy-lamps { position: relative; display: flex; justify-content: space-between; }
+  .toy-lamp { width: 52px; min-width: 52px; min-height: 64px; padding: 0; font-size: 34px; border-radius: 18px 18px 22px 22px;
+    background: #6a4252; box-shadow: 0 5px 0 #24141b; }
+  .toy-lamp .toy-e { display: inline-block; filter: grayscale(.85) brightness(.85); transition: filter .25s; }
+  .toy-lamp.toy-on { background: #ff6a5c; box-shadow: 0 5px 0 #a3271c, 0 0 22px 6px rgba(255,120,80,.7); }
+  .toy-lamp.toy-on .toy-e { filter: none; }
+  .toy-lamp.toy-on .toy-e { animation: toy-sway 1.6s ease-in-out infinite alternate; transform-origin: 50% 0; }
+  @keyframes toy-sway { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+  .toy-street { display: flex; align-items: flex-end; justify-content: space-between; height: 70px; margin-top: 12px; padding: 0 6px; font-size: 34px; line-height: 1; }
+  .toy-street .toy-temple { font-size: 46px; transition: filter .4s, transform .5s cubic-bezier(.2,1.6,.4,1); filter: grayscale(.7); }
+  .toy-street.toy-lit .toy-temple { filter: drop-shadow(0 0 12px #ffcf3f); transform: scale(1.12); }
+  .toy-street .toy-me { transition: transform .5s cubic-bezier(.3,1.3,.5,1); }
+  .toy-row .toy-pill { margin: 0; }
+  .toy-pill .toy-n { min-width: 1ch; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🏮">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-arcade">
+      <div class="toy-lamps">
+        <button type="button" class="toy-btn toy-lamp" aria-label="🏮"><span class="toy-e">🏮</span></button>
+        <button type="button" class="toy-btn toy-lamp" aria-label="🏮"><span class="toy-e">🏮</span></button>
+        <button type="button" class="toy-btn toy-lamp" aria-label="🏮"><span class="toy-e">🏮</span></button>
+        <button type="button" class="toy-btn toy-lamp" aria-label="🏮"><span class="toy-e">🏮</span></button>
+        <button type="button" class="toy-btn toy-lamp" aria-label="🏮"><span class="toy-e">🏮</span></button>
+      </div>
+      <div class="toy-street" aria-hidden="true"><span class="toy-me">🐧</span><span class="toy-temple">⛩️</span></div>
+    </div>
+    <div class="toy-meter" aria-hidden="true"><span class="toy-fill"></span></div>
+    <div class="toy-row"><div class="toy-pill" aria-live="polite"><span aria-hidden="true">🎌</span><span class="toy-n">0</span><span>%</span></div></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var lamps = qa('.toy-lamp'), street = q('.toy-street'), me = q('.toy-me'), fill = q('.toy-fill'), num = q('.toy-n');
+    if (!lamps.length || !num) return;
+    var done = false;
+    function draw() {
+      var n = lamps.filter(function (l) { return l.classList.contains('toy-on'); }).length, pct = Math.round(n / lamps.length * 100);
+      num.textContent = String(pct);
+      if (fill) fill.style.width = pct + '%';
+      var full = n === lamps.length;
+      if (street) street.classList.toggle('toy-lit', full);
+      if (me && street) me.style.transform = 'translateX(' + Math.round((street.clientWidth - 110) * n / lamps.length) + 'px)';
+      if (full && !done) { done = true; setTimeout(function () { pop(street || lamps[0], ['🏮', '⛩️', '🎌', '✨', '🐧'], 20); }, still() ? 0 : 450); }
+      if (!full) done = false;
+    }
+    lamps.forEach(function (l) {
+      l.addEventListener('click', function () { l.classList.toggle('toy-on'); bump(l); bump(num.parentNode); draw(); });
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () { lamps.forEach(function (l) { l.classList.remove('toy-on'); }); draw(); });
+    window.addEventListener('resize', draw);
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../hisaya-odori-weekend-events/index.html">
     <div>
       <div class="next-kicker">NEXT · 52 SEC</div>

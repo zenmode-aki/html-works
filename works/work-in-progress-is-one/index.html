@@ -501,6 +501,133 @@
   </section>
   </div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fff8e6, #fbefd2 60%, #e8edf8); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(0,0,0,.35); font-weight: 800; color: #1f2438; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #1f2438; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #1f2438; background: #fff; box-shadow: 0 6px 0 #e6cf95; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #e6cf95; }
+  .toy-btn.toy-main { background: #c9962f; color: #fff; box-shadow: 0 6px 0 #86621a; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #86621a; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #86621a; background: #fff;
+    box-shadow: 0 4px 0 #e6cf95; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #e6cf95; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #c9962f, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #2a2618, #1f2233 60%, #161b2c); border-color: rgba(255,255,255,.12); color: #fff6dc; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #fff6dc; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #86621a; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-lane2 { display: flex; align-items: center; gap: 8px; width: min(290px, 100%); margin: 8px auto 0; padding: 8px; border-radius: 18px;
+    background: rgba(0,0,0,.05); min-height: 64px; }
+  .toy-lane2 .toy-tag { flex: none; width: 34px; font-size: 24px; line-height: 1; text-align: center; }
+  .toy-lane2 .toy-slots { flex: 1; display: flex; flex-wrap: wrap; gap: 6px; }
+  .toy-task { width: 40px; height: 48px; padding: 0; border: 0; border-radius: 12px; cursor: pointer; font: inherit; font-size: 26px; line-height: 1;
+    background: #fff; box-shadow: 0 4px 0 #e6cf95; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-task:active { transform: translateY(3px); box-shadow: 0 1px 0 #e6cf95; }
+  .toy-doing { justify-content: center; background: rgba(201,150,47,.14); box-shadow: inset 0 0 0 3px #c9962f; min-height: 86px; }
+  .toy-doing .toy-slots { justify-content: center; }
+  .toy-doing .toy-task { width: 66px; height: 66px; font-size: 38px; box-shadow: 0 5px 0 #c9962f; }
+  .toy-doing.toy-full .toy-task { animation: toy-work 1.2s ease-in-out infinite; }
+  @keyframes toy-work { 50% { box-shadow: 0 5px 0 #c9962f, 0 0 0 6px rgba(201,150,47,.3); } }
+  .toy-doing.toy-no { animation: toy-shake .4s; }
+  .toy-doing .toy-x { position: absolute; left: 50%; top: 50%; margin: -20px 0 0 -20px; font-size: 40px; line-height: 1; opacity: 0; transition: opacity .2s; pointer-events: none; }
+  .toy-doing { position: relative; }
+  .toy-doing.toy-no .toy-x { opacity: 1; }
+  .toy-done2 .toy-task { cursor: default; background: #e3f7ec; box-shadow: 0 4px 0 #8fd1a8; }
+  html[data-theme="dark"] .toy-lane2 { background: rgba(255,255,255,.06); }
+  html[data-theme="dark"] .toy-task { background: #2e2c3a; box-shadow: 0 4px 0 #0e0d14; }
+  html[data-theme="dark"] .toy-done2 .toy-task { background: #1f4a33; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-doing.toy-full .toy-task, html:not([data-motion="on"]) .toy-doing.toy-no { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-doing.toy-full .toy-task, html[data-motion="off"] .toy-doing.toy-no { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆1️⃣">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-cnt">✅ <span><span class="toy-n toy-d">0</span>/5</span></span>
+    </div>
+    <div class="toy-lane2 toy-todo"><span class="toy-tag" aria-hidden="true">📥</span><span class="toy-slots"></span></div>
+    <div class="toy-lane2 toy-doing"><span class="toy-tag" aria-hidden="true">1️⃣</span><span class="toy-slots"></span><span class="toy-x" aria-hidden="true">✖️</span></div>
+    <div class="toy-lane2 toy-done2"><span class="toy-tag" aria-hidden="true">✅</span><span class="toy-slots"></span></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var todo = q('.toy-todo .toy-slots'), doingL = q('.toy-doing'), doing = q('.toy-doing .toy-slots'), done = q('.toy-done2 .toy-slots');
+    var dEl = q('.toy-d'), chip = q('.toy-cnt');
+    if (!todo || !doing || !done || !dEl) return;
+    var ITEMS = ['📄', '📊', '📦', '✉️', '🧾'];
+    function draw() {
+      var n = done.children.length;
+      dEl.textContent = String(n);
+      doingL.classList.toggle('toy-full', doing.children.length > 0);
+      chip.classList.toggle('toy-win', n === ITEMS.length);
+    }
+    function make(e) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'toy-task'; b.textContent = e; b.setAttribute('aria-label', e);
+      b.addEventListener('click', function () {
+        var where = b.parentNode;
+        if (where === todo) {
+          if (doing.children.length) {
+            doingL.classList.remove('toy-no'); void doingL.offsetWidth; doingL.classList.add('toy-no');
+            setTimeout(function () { doingL.classList.remove('toy-no'); }, 450);
+            return;
+          }
+          doing.appendChild(b); bump(b);
+        } else if (where === doing) {
+          done.appendChild(b); bump(chip); pop(b, ['✅'], 3);
+          if (done.children.length === ITEMS.length) setTimeout(function () { pop(done, ['✅', '1️⃣', '✨', '🎉', '🐧'], 18); }, 150);
+        }
+        draw();
+      });
+      return b;
+    }
+    function init() {
+      [todo, doing, done].forEach(function (s) { while (s.firstChild) s.removeChild(s.firstChild); });
+      ITEMS.forEach(function (e) { todo.appendChild(make(e)); });
+      draw();
+    }
+    reset.addEventListener('click', init);
+    init();
+  })();
+  </script>
+
   <a class="next" href="../udemy-new-hobby/index.html">
     <div>
       <div class="next-kicker">NEXT · 40 SEC</div>

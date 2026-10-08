@@ -602,6 +602,124 @@
   </section>
   </div>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #eaf6e4, #d8eecb 55%, #fff4d6); --tedge: #fff; --tglow: rgba(63,125,44,.22); --tink: #26341f; --tbtn: #fff; --tsh: #b8d8a4; --ttrack: rgba(38,52,31,.12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #1d2b18, #20321a 55%, #2f2b1b); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #eef7e8; --tbtn: #2a3824; --tsh: #10170d; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-scale { position: relative; height: 170px; max-width: 300px; margin: 6px auto 0; }
+  .toy-scale .toy-post { position: absolute; left: 50%; bottom: 0; width: 12px; height: 110px; margin-left: -6px; border-radius: 6px 6px 0 0; background: #8a6a3a; }
+  .toy-scale .toy-base { position: absolute; left: 50%; bottom: 0; width: 90px; height: 12px; margin-left: -45px; border-radius: 8px; background: #6b5230; }
+  .toy-beam { position: absolute; left: 10px; right: 10px; top: 54px; height: 10px; border-radius: 6px; background: #3f7d2c;
+    transform-origin: 50% 50%; transition: transform .6s cubic-bezier(.3,1.5,.5,1); }
+  .toy-pan { position: absolute; top: 8px; width: 96px; transform: translateY(-100%); display: flex; flex-direction: column; align-items: center;
+    transition: transform .6s cubic-bezier(.3,1.5,.5,1); }
+  .toy-pan.toy-l { left: -10px; } .toy-pan.toy-r { right: -10px; }
+  .toy-pan .toy-cs { font-size: 38px; line-height: 1; }
+  .toy-pan .toy-tag { font-size: 20px; line-height: 1; }
+  .toy-pan .toy-got { display: flex; gap: 2px; min-height: 26px; font-size: 22px; line-height: 1; }
+  .toy-pan .toy-got span { animation: toy-in .4s cubic-bezier(.2,1.6,.4,1); }
+  @keyframes toy-in { from { transform: translateY(-20px) scale(.3); } }
+  .toy-chips { display: flex; justify-content: center; gap: 10px; margin-top: 14px; }
+  .toy-chips .toy-btn { width: 76px; padding: 0; font-size: 22px; line-height: 1.15; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .toy-chips .toy-btn .toy-big { font-size: 30px; }
+  .toy-chips .toy-btn.toy-used { opacity: .25; pointer-events: none; }
+  .toy-row .toy-pill { margin: 0; }
+  .toy-pill .toy-n { min-width: 1ch; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆⚖️🏯">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-scale" aria-hidden="true">
+      <span class="toy-post"></span><span class="toy-base"></span>
+      <div class="toy-beam">
+        <div class="toy-pan toy-l"><div class="toy-got"></div><span class="toy-cs">🏯</span><span class="toy-tag">🐙</span></div>
+        <div class="toy-pan toy-r"><div class="toy-got"></div><span class="toy-cs">🏯</span><span class="toy-tag">🐬</span></div>
+      </div>
+    </div>
+    <div class="toy-chips">
+      <button type="button" class="toy-btn toy-chip" data-side="l" data-g="🌳" aria-label="🌳 105"><span class="toy-big">🌳</span><span>🏟️×20</span></button>
+      <button type="button" class="toy-btn toy-chip" data-side="l" data-g="🎫" aria-label="🎫 ¥0"><span class="toy-big">🎫</span><span>¥0</span></button>
+      <button type="button" class="toy-btn toy-chip" data-side="r" data-g="🐬" aria-label="🐬✨"><span class="toy-big">🐬</span><span>✨</span></button>
+    </div>
+    <div class="toy-row"><div class="toy-pill" aria-live="polite"><span aria-hidden="true">🐙</span><span class="toy-n toy-nl">0</span><span>:</span><span class="toy-n toy-nr">0</span><span aria-hidden="true">🐬</span></div></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var beam = q('.toy-beam'), pans = { l: q('.toy-pan.toy-l'), r: q('.toy-pan.toy-r') }, chips = qa('.toy-chip');
+    var nl = q('.toy-nl'), nr = q('.toy-nr');
+    if (!beam || !pans.l || !pans.r || !chips.length || !nl || !nr) return;
+    var sc = { l: 0, r: 0 }, done = false;
+    function draw() {
+      var tilt = Math.max(-14, Math.min(14, (sc.r - sc.l) * 7));
+      beam.style.transform = 'rotate(' + tilt + 'deg)';
+      // keep the castles upright
+      pans.l.style.transform = 'translateY(-100%) rotate(' + (-tilt) + 'deg)';
+      pans.r.style.transform = 'translateY(-100%) rotate(' + (-tilt) + 'deg)';
+      nl.textContent = String(sc.l); nr.textContent = String(sc.r);
+      var all = chips.every(function (c) { return c.classList.contains('toy-used'); });
+      if (all && !done) { done = true; setTimeout(function () { pop(pans.l, ['🏯', '🐙', '🌳', '✨', '🎉'], 18); }, still() ? 0 : 600); }
+    }
+    chips.forEach(function (c) {
+      c.addEventListener('click', function () {
+        if (c.classList.contains('toy-used')) return;
+        var side = c.getAttribute('data-side'), got = pans[side].querySelector('.toy-got');
+        c.classList.add('toy-used'); c.tabIndex = -1;
+        sc[side]++;
+        if (got) { var s = document.createElement('span'); s.textContent = c.getAttribute('data-g'); got.appendChild(s); }
+        bump(nl.parentNode); draw();
+      });
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      sc = { l: 0, r: 0 }; done = false;
+      chips.forEach(function (c) { c.classList.remove('toy-used'); c.tabIndex = 0; });
+      ['l', 'r'].forEach(function (k) { var g = pans[k].querySelector('.toy-got'); if (g) g.textContent = ''; });
+      draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../japanese-subway-smell/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>

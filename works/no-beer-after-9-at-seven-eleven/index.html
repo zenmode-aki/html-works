@@ -551,6 +551,115 @@
   </section>
   </div>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #fff0e6, #ffd9c6 55%, #e8f3ff); --tedge: #fff; --tglow: rgba(212,86,44,.22); --tink: #3b2620; --tbtn: #fff; --tsh: #e8b39c; --ttrack: rgba(59,38,32,.12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #3a241e, #3a221c 55%, #1d2a38); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #fff0ea; --tbtn: #36282a; --tsh: #170f10; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-shop { position: relative; max-width: 290px; margin: 8px auto 0; padding: 12px; border-radius: 18px; background: #fff;
+    box-shadow: 0 6px 0 var(--tsh); }
+  html[data-theme="dark"] .toy-shop { background: #2b2224; }
+  .toy-shop .toy-stripe { height: 10px; margin: -12px -12px 10px; border-radius: 18px 18px 0 0;
+    background: linear-gradient(90deg, #ffb38f, #d4562c); }
+  .toy-clock { display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .toy-clock .toy-btn { width: 54px; min-width: 54px; min-height: 54px; padding: 0; font-size: 26px; background: #ffe3d4; }
+  html[data-theme="dark"] .toy-clock .toy-btn { background: #4a3330; }
+  .toy-clock .toy-time { min-width: 120px; padding: 8px 12px; border-radius: 14px; background: #1d1a14; color: #7dffb0; font-size: 30px;
+    font-weight: 900; font-variant-numeric: tabular-nums; }
+  .toy-clock .toy-time.toy-late { color: #ff7a7a; }
+  .toy-hand { display: flex; align-items: center; justify-content: center; gap: 14px; height: 80px; margin-top: 10px; font-size: 48px; line-height: 1; }
+  .toy-hand .toy-got { display: inline-block; min-width: 60px; }
+  .toy-hand .toy-mk { font-size: 32px; min-width: 40px; }
+  .toy-buy { display: flex; justify-content: center; gap: 10px; margin-top: 8px; }
+  .toy-buy .toy-btn { width: 72px; padding: 0; font-size: 34px; }
+  .toy-buy .toy-beer { background: #ffe08a; box-shadow: 0 6px 0 #c99a1e; }
+  .toy-buy .toy-cola { background: #ffd2d2; box-shadow: 0 6px 0 #c24a4a; }
+  html[data-theme="dark"] .toy-buy .toy-beer { background: #6a5420; }
+  html[data-theme="dark"] .toy-buy .toy-cola { background: #6a2a2a; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🍺🕘">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-shop">
+      <div class="toy-stripe" aria-hidden="true"></div>
+      <div class="toy-clock">
+        <button type="button" class="toy-btn toy-minus" aria-label="🕘 −">−</button>
+        <div class="toy-time toy-late" aria-live="polite"><span class="toy-n">21:30</span></div>
+        <button type="button" class="toy-btn toy-plus" aria-label="🕘 +">+</button>
+      </div>
+      <div class="toy-hand" aria-hidden="true"><span class="toy-got">🐧</span><span class="toy-mk"></span></div>
+    </div>
+    <div class="toy-buy">
+      <button type="button" class="toy-btn toy-beer" aria-label="🍺">🍺</button>
+      <button type="button" class="toy-btn toy-cola" aria-label="🥤">🥤</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var timeEl = q('.toy-time'), num = q('.toy-n'), minus = q('.toy-minus'), plus = q('.toy-plus');
+    var got = q('.toy-got'), mk = q('.toy-mk'), beer = q('.toy-beer'), cola = q('.toy-cola');
+    if (!num || !minus || !plus || !got || !mk || !beer || !cola) return;
+    var m = 21 * 60 + 30, MIN = 18 * 60, MAX = 23 * 60 + 30;
+    function late() { return m >= 21 * 60; }
+    function draw() {
+      var h = Math.floor(m / 60), mm = m % 60;
+      num.textContent = h + ':' + (mm < 10 ? '0' : '') + mm;
+      if (timeEl) timeEl.classList.toggle('toy-late', late());
+      minus.disabled = m <= MIN; plus.disabled = m >= MAX;
+    }
+    function show(e, mark) { got.textContent = e; mk.textContent = mark; bump(got); }
+    minus.addEventListener('click', function () { m = Math.max(MIN, m - 30); draw(); show('🐧', ''); });
+    plus.addEventListener('click', function () { m = Math.min(MAX, m + 30); draw(); show('🐧', ''); });
+    beer.addEventListener('click', function () {
+      if (late()) { show('🚫', '🍺'); bump(timeEl, 'toy-wig'); pop(beer, ['🕘', '🚫'], 4); }
+      else { show('🍺', '✓'); pop(beer, ['🍺', '✨'], 8); }
+    });
+    cola.addEventListener('click', function () { show('🥤', '😌'); pop(cola, ['🥤', '✨', '😌', '🐧'], 16); });
+    if (resetBtn) resetBtn.addEventListener('click', function () { m = 21 * 60 + 30; draw(); show('🐧', ''); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../jalan-alor-quieter-than-khaosan/index.html">
     <div>
       <div class="next-kicker">NEXT · 53 SEC</div>

@@ -301,6 +301,122 @@
     <p class="big">These days, this is what I want to remember.</p>
   </section>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #20274d, #11172c 60%, #2a2350); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(5,9,28,.35); font-weight: 800; color: #0b0f22; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #0b0f22; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #0b0f22; background: #fff; box-shadow: 0 6px 0 #3a4170; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #3a4170; }
+  .toy-btn.toy-main { background: #ffbe54; color: #fff; box-shadow: 0 6px 0 #b07a14; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #b07a14; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #b07a14; background: #fff;
+    box-shadow: 0 4px 0 #3a4170; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #3a4170; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #ffbe54, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #1a2040, #0c1124 60%, #221d42); border-color: rgba(255,255,255,.12); color: #fff0c8; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #fff0c8; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #b07a14; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy { color: #fff0c8; border-color: rgba(255,255,255,.14); }
+  .toy-reset { background: #2b3160; color: #ffbe54; box-shadow: 0 4px 0 #0b0f22; }
+  .toy-now2 { position: relative; width: 150px; height: 150px; margin: 6px auto 4px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle, rgba(255,190,84,.15), rgba(255,190,84,0) 70%); transition: background .5s; }
+  .toy-now2 .toy-bulb { font-size: 64px; line-height: 1; opacity: .35; filter: grayscale(.7); transition: opacity .5s, filter .5s, transform .5s; display: inline-block; }
+  .toy-now2.toy-lit { background: radial-gradient(circle, rgba(255,214,120,.9), rgba(255,190,84,.35) 45%, rgba(255,190,84,0) 70%); }
+  .toy-now2.toy-lit .toy-bulb { opacity: 1; filter: none; animation: toy-glow 1.6s ease-in-out infinite; }
+  @keyframes toy-glow { 50% { transform: scale(1.08); } }
+  .toy-sw { display: grid; grid-template-columns: repeat(2, minmax(0, 130px)); gap: 10px; justify-content: center; margin-top: 8px; }
+  .toy-switch { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 58px; padding: 6px 10px 6px 12px;
+    border: 0; border-radius: 18px; cursor: pointer; font: inherit; font-size: 26px; line-height: 1; color: #fff0c8;
+    background: #2b3160; box-shadow: 0 5px 0 #0b0f22; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-switch .toy-knob { position: relative; width: 52px; height: 30px; border-radius: 99px; background: #ffbe54; transition: background .25s; flex: none; }
+  .toy-switch .toy-knob::after { content: ""; position: absolute; top: 3px; left: 25px; width: 24px; height: 24px; border-radius: 50%; background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,.3); transition: left .25s cubic-bezier(.3,1.4,.5,1); }
+  .toy-switch.toy-off .toy-knob { background: #4a5080; }
+  .toy-switch.toy-off .toy-knob::after { left: 3px; }
+  .toy-switch.toy-off .toy-ico { opacity: .35; filter: grayscale(1); }
+  .toy-switch .toy-ico { transition: opacity .25s, filter .25s; }
+  .toy-chip { background: #0b0f22; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-now2.toy-lit .toy-bulb { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-now2.toy-lit .toy-bulb { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆💡">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-cnt">🔌 <span><span class="toy-n toy-o">0</span>/4</span></span>
+    </div>
+    <div class="toy-now2" aria-hidden="true"><span class="toy-bulb">💡</span></div>
+    <div class="toy-sw">
+      <button type="button" class="toy-switch" aria-label="⏩"><span class="toy-ico">⏩</span><span class="toy-knob"></span></button>
+      <button type="button" class="toy-switch" aria-label="⏪"><span class="toy-ico">⏪</span><span class="toy-knob"></span></button>
+      <button type="button" class="toy-switch" aria-label="😟"><span class="toy-ico">😟</span><span class="toy-knob"></span></button>
+      <button type="button" class="toy-switch" aria-label="💭"><span class="toy-ico">💭</span><span class="toy-knob"></span></button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var sws = qa('.toy-switch'), now2 = q('.toy-now2'), oEl = q('.toy-o'), chip = q('.toy-cnt');
+    if (!sws.length || !now2 || !oEl) return;
+    var done = false;
+    function draw() {
+      var off = sws.filter(function (s) { return s.classList.contains('toy-off'); }).length;
+      oEl.textContent = String(off);
+      now2.classList.toggle('toy-lit', off === sws.length);
+      chip.classList.toggle('toy-win', off === sws.length);
+      sws.forEach(function (s) { s.setAttribute('aria-pressed', s.classList.contains('toy-off') ? 'true' : 'false'); });
+      return off;
+    }
+    sws.forEach(function (s) {
+      s.addEventListener('click', function () {
+        s.classList.toggle('toy-off');
+        var off = draw(); bump(chip);
+        if (off === sws.length && !done) { done = true; pop(now2, ['💡', '✨', '🌙', '🐧'], 16); }
+        if (off < sws.length) done = false;
+      });
+    });
+    reset.addEventListener('click', function () { sws.forEach(function (s) { s.classList.remove('toy-off'); }); done = false; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../gave-up-managing-myself/index.html">
     <div>
       <div class="next-kicker">NEXT · 21 SEC</div>

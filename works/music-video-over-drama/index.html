@@ -582,6 +582,117 @@
     <div class="pick" aria-hidden="true"><span class="no"><b>📺</b><em>Netflix</em></span><span class="no"><b>📱</b><em>Short videos</em></span><span class="yes"><b>🎧</b><em>Music</em></span></div>
   </section>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #e6f8f0, #d3f0e4 55%, #ece6ff); --tedge: #fff; --tglow: rgba(31,154,120,.22); --tink: #24332d; --tbtn: #fff; --tsh: #a8d8c2; --ttrack: rgba(36,51,45,.12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #15302a, #183a2e 55%, #2a2440); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #e9fbf2; --tbtn: #24362e; --tsh: #0c1813; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-sky { position: relative; height: 170px; max-width: 300px; margin: 6px auto 0; border-radius: 22px; overflow: hidden;
+    background: linear-gradient(180deg, #8a93a3, #b9c0cc); transition: background .6s; }
+  .toy-sky.toy-clear { background: linear-gradient(180deg, #8fd3ff, #d8f2ff); }
+  .toy-sky .toy-sun { position: absolute; left: 50%; top: 16px; font-size: 44px; line-height: 1; transform: translateX(-50%) scale(.6); opacity: .25; transition: opacity .5s, transform .6s cubic-bezier(.2,1.5,.4,1); }
+  .toy-sky.toy-clear .toy-sun { opacity: 1; transform: translateX(-50%) scale(1); }
+  .toy-sky .toy-cl { position: absolute; font-size: 46px; line-height: 1; transition: transform .7s cubic-bezier(.5,0,.7,1), opacity .5s; }
+  .toy-sky .toy-cl:nth-of-type(2) { left: 18px; top: 22px; } .toy-sky .toy-cl:nth-of-type(3) { left: 50%; top: 10px; margin-left: -23px; }
+  .toy-sky .toy-cl:nth-of-type(4) { right: 18px; top: 26px; }
+  .toy-sky .toy-cl.toy-gone { opacity: 0; transform: translateY(-140px) scale(.5); }
+  .toy-sky .toy-me { position: absolute; left: 50%; bottom: 10px; font-size: 44px; line-height: 1; transform: translateX(-50%); transition: left .7s cubic-bezier(.3,1.3,.5,1); }
+  .toy-sky .toy-mood { position: absolute; left: calc(50% + 26px); bottom: 50px; font-size: 26px; line-height: 1; }
+  .toy-sky.toy-clear .toy-me { left: 78%; }
+  .toy-sky.toy-clear .toy-mood { left: calc(78% + 26px); transition: left .7s cubic-bezier(.3,1.3,.5,1); }
+  .toy-mv { background: #6fcf9f; box-shadow: 0 6px 0 #1f9a78; }
+  .toy-mv:active { box-shadow: 0 1px 0 #1f9a78; }
+  .toy-tv { background: #e7e2f4; box-shadow: 0 6px 0 #a79bd0; }
+  html[data-theme="dark"] .toy-tv { background: #3a3352; box-shadow: 0 6px 0 #1c1830; }
+  .toy-tv:active { box-shadow: 0 1px 0 #a79bd0; }
+  .toy-pill .toy-n { min-width: 2ch; text-align: right; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🎵🌧️">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-sky" aria-hidden="true">
+      <span class="toy-sun">☀️</span>
+      <span class="toy-cl">🌧️</span><span class="toy-cl">☁️</span><span class="toy-cl">🌧️</span>
+      <span class="toy-me">🐧</span><span class="toy-mood">😞</span>
+    </div>
+    <div class="toy-pill" aria-live="polite"><span aria-hidden="true">⏳</span><span class="toy-n">0</span><span>′</span></div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-mv" aria-label="🎵">🎵</button>
+      <button type="button" class="toy-btn toy-tv" aria-label="📺">📺</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var sky = q('.toy-sky'), cls = qa('.toy-cl'), mood = q('.toy-mood'), num = q('.toy-n'), mv = q('.toy-mv'), tv = q('.toy-tv');
+    if (!sky || !cls.length || !num || !mv || !tv) return;
+    var mins = 0, tvs = 0, done = false;
+    function left() { return cls.filter(function (c) { return !c.classList.contains('toy-gone'); }).length; }
+    function draw() {
+      var n = left();
+      num.textContent = String(mins);
+      sky.classList.toggle('toy-clear', n === 0);
+      if (mood) mood.textContent = n === 0 ? '😆' : tvs >= 2 ? '😵‍💫' : n === 3 ? '😞' : '🙂';
+    }
+    mv.addEventListener('click', function () {
+      var c = cls.filter(function (x) { return !x.classList.contains('toy-gone'); })[0];
+      mins += 4;
+      if (c) { c.classList.add('toy-gone'); pop(mv, ['🎵', '🎶'], 4); }
+      draw(); bump(num.parentNode);
+      if (left() === 0 && !done) { done = true; setTimeout(function () { pop(sky, ['☀️', '🎵', '🐧', '✨', '🎉'], 18); }, still() ? 0 : 500); }
+    });
+    // 📺 takes a lot of time, and the clouds stay
+    tv.addEventListener('click', function () {
+      mins += 50; tvs++;
+      cls.forEach(function (c) { bump(c, 'toy-wig'); });
+      draw(); bump(num.parentNode, 'toy-wig');
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      cls.forEach(function (c) { c.classList.remove('toy-gone'); }); mins = 0; tvs = 0; done = false; draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../nagoya-dome-dragons-chance-theme/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>

@@ -641,6 +641,114 @@
 
   <div class="chap-tracker" aria-hidden="true"><span data-c="c1" style="--c: #ff8a70">1</span><span data-c="c2" style="--c: #4d9de0">2</span><span data-c="c3" style="--c: #34b27d">3</span></div>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #f6ecff, #ead8fa 55%, #fff1e6); --tedge: #fff; --tglow: rgba(123,74,168,.22); --tink: #322536; --tbtn: #fff; --tsh: #cfb3e6; --ttrack: rgba(50,37,54,.12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #2a1f38, #2f2140 55%, #32261e); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #f8efff; --tbtn: #382a48; --tsh: #170f20; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-room { position: relative; width: 230px; max-width: 100%; margin: 6px auto 0; padding: 12px; border-radius: 10px;
+    background: #f3e6d4; border: 8px solid #7b4aa8; box-shadow: 0 8px 0 #4f2c70; }
+  html[data-theme="dark"] .toy-room { background: #4a3d2e; }
+  .toy-room.toy-full { box-shadow: 0 8px 0 #4f2c70, 0 0 0 8px rgba(191,149,221,.45); }
+  .toy-floor { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .toy-cell { height: 70px; border-radius: 10px; border: 3px dashed rgba(123,74,168,.35); display: flex; align-items: center; justify-content: center; font-size: 36px; line-height: 1; }
+  .toy-cell .toy-bed { visibility: hidden; transform: translateY(-40px) scale(.4); opacity: 0; transition: transform .4s cubic-bezier(.2,1.6,.4,1), opacity .2s; }
+  .toy-cell.toy-on { border-style: solid; background: #fff; border-color: #bf95dd; }
+  html[data-theme="dark"] .toy-cell.toy-on { background: #5a4a6a; }
+  .toy-cell.toy-on .toy-bed { visibility: visible; transform: none; opacity: 1; }
+  .toy-win { position: relative; height: 54px; max-width: 230px; margin: 12px auto 0; border-radius: 14px; overflow: hidden;
+    background: linear-gradient(180deg, #bfe6ff, #dff3c8); border: 4px solid #fff; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-win .toy-dog { position: absolute; left: -40px; bottom: 6px; font-size: 30px; line-height: 1; transform: scaleX(-1); }
+  .toy-win .toy-dog.toy-walk { animation: toy-walk 2.6s linear forwards; }
+  @keyframes toy-walk { to { left: 110%; } }
+  .toy-win .toy-tree { position: absolute; right: 18px; bottom: 4px; font-size: 26px; line-height: 1; }
+  .toy-win .toy-fl { position: absolute; left: 8px; top: 4px; font-size: 15px; font-weight: 900; color: #4f2c70; }
+  .toy-add { background: #bf95dd; box-shadow: 0 6px 0 #7b4aa8; min-width: 96px; font-size: 30px; }
+  .toy-add:active { box-shadow: 0 1px 0 #7b4aa8; }
+  .toy-pill .toy-n { min-width: 1ch; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🛏">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-room" aria-hidden="true">
+      <div class="toy-floor">
+        <div class="toy-cell"><span class="toy-bed">🛏️</span></div><div class="toy-cell"><span class="toy-bed">🛏️</span></div>
+        <div class="toy-cell"><span class="toy-bed">🛏️</span></div><div class="toy-cell"><span class="toy-bed">🛏️</span></div>
+      </div>
+    </div>
+    <div class="toy-win" aria-hidden="true"><span class="toy-fl">7</span><span class="toy-tree">🌳</span><span class="toy-dog">🐕</span></div>
+    <div class="toy-row" style="align-items:center">
+      <button type="button" class="toy-btn toy-add" aria-label="🛏️ +">🛏️+</button>
+      <button type="button" class="toy-btn toy-look" aria-label="🪟">🪟</button>
+      <div class="toy-pill" aria-live="polite" style="margin:0"><span aria-hidden="true">🛏️</span><span class="toy-n">0</span><span>/4</span></div>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var cells = qa('.toy-cell'), room = q('.toy-room'), add = q('.toy-add'), look = q('.toy-look'), dog = q('.toy-dog'), num = q('.toy-n');
+    if (!cells.length || !add || !num) return;
+    var n = 0, done = false;
+    function draw() {
+      cells.forEach(function (c, i) { c.classList.toggle('toy-on', i < n); });
+      num.textContent = String(n);
+      if (room) room.classList.toggle('toy-full', n >= cells.length);
+    }
+    add.addEventListener('click', function () {
+      // the room only fits 4 beds
+      if (n >= cells.length) { bump(room, 'toy-wig'); bump(num.parentNode, 'toy-wig'); return; }
+      n++; draw(); bump(num.parentNode);
+      if (n === cells.length && !done) { done = true; setTimeout(function () { pop(room || add, ['🛏️', '🏠', '🐧', '✨'], 16); }, still() ? 0 : 400); }
+    });
+    if (look && dog) look.addEventListener('click', function () {
+      bump(look);
+      if (still()) { pop(look, ['🐕'], 3); return; }
+      dog.classList.remove('toy-walk'); void dog.offsetWidth; dog.classList.add('toy-walk');
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () { n = 0; done = false; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../120-eggs/index.html">
     <div>
       <div class="next-kicker">NEXT · 78 SEC</div>

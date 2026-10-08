@@ -548,6 +548,128 @@
   </section>
   </div>
 
+  <style>
+  .toy { --ta: #d0271d; --ts: #f0c4bd; --ti: #2e2222; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fff3f1, #ffe0da); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #2e2222, #1d1515); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-chip { display: inline-flex; align-items: center; gap: 10px; margin: 8px 0 12px; padding: 8px 20px; border-radius: 999px;
+    background: #2e2222; color: #fff; font-size: 26px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #120c0c; }
+  .toy-chip.toy-done { background: #34b27d; box-shadow: 0 5px 0 #1f7a53; }
+  .toy-chip.toy-jump { background: #d0271d; box-shadow: 0 5px 0 #7d150f; }
+  .toy-gantry { display: inline-flex; gap: 8px; padding: 10px 12px; border-radius: 16px; background: #1d1515; box-shadow: 0 6px 0 #000; }
+  .toy-gantry .toy-lamp { width: 36px; height: 36px; border-radius: 50%; background: #3a2a2a; box-shadow: inset 0 -4px 0 rgba(0,0,0,.4); transition: background .08s, box-shadow .08s; }
+  .toy-gantry .toy-lamp.toy-on { background: #ff2b1c; box-shadow: 0 0 14px #ff2b1c, inset 0 -4px 0 rgba(0,0,0,.25); }
+  .toy-grid { position: relative; width: min(300px, 100%); height: 64px; margin: 14px auto 0; border-radius: 14px; overflow: hidden;
+    background: repeating-linear-gradient(90deg, #4a4a4a 0 30px, #555 30px 60px); border-left: 10px solid; border-image: repeating-linear-gradient(180deg, #fff 0 8px, #222 8px 16px) 10; }
+  .toy-grid .toy-car { position: absolute; left: 8px; top: 12px; font-size: 40px; line-height: 1; transform: scaleX(-1); }
+  .toy-grid .toy-car.toy-zoom { animation: toy-zoom .7s ease-in forwards; }
+  @keyframes toy-zoom { to { transform: translateX(calc(min(300px, 80vw) - 80px)) scaleX(-1); } }
+  .toy-best { margin-top: 10px; font-size: 20px; color: #7d6363; }
+  .toy-btn.toy-go { min-width: 200px; min-height: 64px; }
+  html[data-theme="dark"] .toy-best { color: #c9a9a9; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-grid .toy-car.toy-zoom { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-grid .toy-car.toy-zoom { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🚦🏎️">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite">⏱️ <span class="toy-n toy-ms">0.000</span></div>
+    <div><div class="toy-gantry" aria-hidden="true"><span class="toy-lamp"></span><span class="toy-lamp"></span><span class="toy-lamp"></span><span class="toy-lamp"></span><span class="toy-lamp"></span></div></div>
+    <div class="toy-grid" aria-hidden="true"><span class="toy-car">🏎️</span></div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-main toy-go" aria-label="🚦 ▶">🚦 ▶</button>
+    </div>
+    <div class="toy-best">🏆 <span class="toy-n toy-b">—</span></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var go = q('.toy-go'), lamps = qa('.toy-lamp'), ms = q('.toy-ms'), best = q('.toy-b'), chip = q('.toy-chip'), car = q('.toy-car'), grid = q('.toy-grid'), reset = q('.toy-reset');
+    if (!go || !lamps.length || !ms || !best || !car || !reset) return;
+    // state: 0 idle, 1 lights coming on, 2 lights out (tap!), 3 finished
+    var st = 0, timers = [], tOut = 0, bestV = 0;
+    function clearT() { timers.forEach(clearTimeout); timers = []; }
+    function label(s) { go.textContent = s; go.setAttribute('aria-label', s); }
+    function idle() {
+      clearT(); st = 0;
+      lamps.forEach(function (l) { l.classList.remove('toy-on'); });
+      car.classList.remove('toy-zoom');
+      label('🚦 ▶');
+    }
+    function startSeq() {
+      st = 1; chip.classList.remove('toy-done', 'toy-jump');
+      ms.textContent = '0.000';
+      car.classList.remove('toy-zoom');
+      label('🏎️ !');
+      lamps.forEach(function (l, i) { timers.push(setTimeout(function () { l.classList.add('toy-on'); }, 700 * (i + 1))); });
+      var wait = 700 * lamps.length + 400 + Math.random() * 1800;
+      timers.push(setTimeout(function () {
+        lamps.forEach(function (l) { l.classList.remove('toy-on'); });
+        st = 2; tOut = performance.now();
+      }, wait));
+    }
+    go.addEventListener('click', function () {
+      if (st === 0 || st === 3) { startSeq(); return; }
+      if (st === 1) {
+        clearT();
+        chip.classList.add('toy-jump');
+        ms.textContent = '❌';
+        bump(chip, 'toy-shake');
+        idle();
+        return;
+      }
+      if (st === 2) {
+        var t = (performance.now() - tOut) / 1000;
+        ms.textContent = t.toFixed(3);
+        if (!bestV || t < bestV) { bestV = t; best.textContent = t.toFixed(3); }
+        chip.classList.add('toy-done');
+        bump(car, 'toy-zoom');
+        st = 3;
+        label('🔁 ▶');
+        pop(grid || go, ['🏎️', '🏁', '💨', '🎉'], 16);
+      }
+    });
+    reset.addEventListener('click', function () { bestV = 0; best.textContent = '—'; ms.textContent = '0.000'; chip.classList.remove('toy-done', 'toy-jump'); idle(); });
+    idle();
+  })();
+  </script>
+
   <a class="next" href="../honda-racing-gallery-as-a-new-fan/index.html">
     <div>
       <div class="next-kicker">NEXT · 41 SEC</div>

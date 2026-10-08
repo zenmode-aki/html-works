@@ -534,6 +534,117 @@
   </section>
   </div>
 
+  <style>
+  .toy { --ta: #9a6b12; --ts: #e8d6ae; --ti: #352c1c; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fdf8ee, #f6e8c6); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #2e2919, #201d12); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-chip { display: inline-flex; align-items: center; gap: 8px; margin: 8px 0 12px; padding: 8px 20px; border-radius: 999px;
+    background: #9a6b12; color: #fff; font-size: 26px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #5e410a; }
+  .toy-chip.toy-done { background: #34b27d; box-shadow: 0 5px 0 #1f7a53; }
+  .toy-shops { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: min(320px, 100%); margin: 0 auto; }
+  .toy-btn.toy-shop { min-width: 0; min-height: 140px; padding: 10px 2px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; font-size: 22px; }
+  .toy-btn.toy-shop .toy-sign { font-size: 36px; line-height: 1; }
+  .toy-btn.toy-shop .toy-clue { display: block; font-size: 15px; line-height: 1.2; visibility: hidden; white-space: nowrap; }
+  .toy-btn.toy-shop.toy-seen .toy-clue { visibility: visible; }
+  .toy-btn.toy-shop .toy-q { font-size: 30px; line-height: 1; }
+  .toy-btn.toy-shop.toy-seen .toy-q { display: none; }
+  .toy-btn.toy-shop:nth-child(1) { background: #ffe3ea; } .toy-btn.toy-shop:nth-child(2) { background: #e3f1ff; } .toy-btn.toy-shop:nth-child(3) { background: #e6f7e3; }
+  .toy-btn.toy-shop.toy-flip { animation: toy-flip .3s ease-in-out; }
+  @keyframes toy-flip { 50% { transform: scaleX(.2); } }
+  .toy-btn.toy-shop.toy-win { box-shadow: 0 6px 0 #34b27d, 0 0 0 4px #34b27d; animation: toy-bump .4s ease-out; }
+  .toy-hint { margin-top: 12px; font-size: 22px; }
+  html[data-theme="dark"] .toy-btn.toy-shop:nth-child(1) { background: #4a2a33; } html[data-theme="dark"] .toy-btn.toy-shop:nth-child(2) { background: #23364a; } html[data-theme="dark"] .toy-btn.toy-shop:nth-child(3) { background: #263f26; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-btn.toy-shop.toy-flip, html:not([data-motion="on"]) .toy-btn.toy-shop.toy-win { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-btn.toy-shop.toy-flip, html[data-motion="off"] .toy-btn.toy-shop.toy-win { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🔍💺">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite">🔍 <span><span class="toy-n toy-seen-n">0</span>/3</span></div>
+    <div class="toy-shops">
+      <button type="button" class="toy-btn toy-shop" data-good="0" aria-label="💈"><span class="toy-sign">💈</span><span class="toy-q">❔</span><span class="toy-clue">💺 ⭐</span><span class="toy-clue">✂️ ⚠️</span></button>
+      <button type="button" class="toy-btn toy-shop" data-good="1" aria-label="💈"><span class="toy-sign">💈</span><span class="toy-q">❔</span><span class="toy-clue">💺 ⭐⭐⭐</span><span class="toy-clue">✂️ ✓</span></button>
+      <button type="button" class="toy-btn toy-shop" data-good="0" aria-label="💈"><span class="toy-sign">💈</span><span class="toy-q">❔</span><span class="toy-clue">💺 ⭐⭐</span><span class="toy-clue">✂️ ⚠️</span></button>
+    </div>
+    <div class="toy-hint" aria-hidden="true">🔍 ➜ 👆 ➜ ✓</div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var shops = qa('.toy-shop'), seenN = q('.toy-seen-n'), chip = q('.toy-chip'), reset = q('.toy-reset');
+    if (!shops.length || !seenN || !reset) return;
+    var seen = 0, done = false;
+    function shuffle() {
+      var box = shops[0].parentNode;
+      var order = shops.slice().sort(function () { return Math.random() - 0.5; });
+      order.forEach(function (s) { box.appendChild(s); });
+    }
+    shops.forEach(function (s) {
+      s.addEventListener('click', function () {
+        if (done) return;
+        if (!s.classList.contains('toy-seen')) {
+          s.classList.add('toy-seen');
+          bump(s, 'toy-flip');
+          seen += 1; seenN.textContent = String(seen);
+          return;
+        }
+        if (s.getAttribute('data-good') === '1') {
+          done = true;
+          s.classList.add('toy-win');
+          if (chip) chip.classList.add('toy-done');
+          pop(s, ['💺', '✨', '💈', '🎉'], 18);
+        } else {
+          bump(s, 'toy-shake');
+          pop(s, ['⚠️'], 3);
+        }
+      });
+    });
+    reset.addEventListener('click', function () {
+      seen = 0; done = false; seenN.textContent = '0';
+      if (chip) chip.classList.remove('toy-done');
+      shops.forEach(function (s) { s.classList.remove('toy-seen', 'toy-win'); });
+      shuffle();
+    });
+    shuffle();
+  })();
+  </script>
+
   <a class="next" href="../korean-idol-bangs-side-strands/index.html">
     <div>
       <div class="next-kicker">NEXT · 33 SEC</div>

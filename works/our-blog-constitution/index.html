@@ -574,6 +574,120 @@
     </p>
   </section>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #e6f8f0, #d4efe0 55%, #fff6dc); --tedge: #fff; --tglow: rgba(31,154,120,.22); --tink: #24332d; --tbtn: #fff; --tsh: #a8d8c2; --ttrack: rgba(36,51,45,.12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #15302a, #183a2e 55%, #2f2b1b); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #e9fbf2; --tbtn: #24362e; --tsh: #0c1813; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-pillars { display: flex; justify-content: center; gap: 10px; margin-top: 4px; }
+  .toy-pillars span { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 62px; padding: 6px 0; border-radius: 14px;
+    background: var(--tbtn); box-shadow: 0 4px 0 var(--tsh); font-size: 24px; line-height: 1.1; transition: background .3s; }
+  .toy-pillars span b { font-size: 15px; font-weight: 900; opacity: .7; }
+  .toy-pillars span.toy-hit { background: #ffd8d0; animation: toy-wig .45s ease-in-out; }
+  html[data-theme="dark"] .toy-pillars span.toy-hit { background: #5a2a24; }
+  .toy-desk { position: relative; height: 120px; max-width: 300px; margin: 12px auto 0; }
+  .toy-desk .toy-idea { position: absolute; left: 50%; top: 50%; width: 110px; height: 96px; margin: -48px 0 0 -55px; display: flex; align-items: center; justify-content: center;
+    border-radius: 20px; background: #fff; box-shadow: 0 6px 0 var(--tsh); font-size: 40px; line-height: 1;
+    transition: transform .35s cubic-bezier(.4,0,.6,1), opacity .3s; }
+  html[data-theme="dark"] .toy-desk .toy-idea { background: #2f4a3e; }
+  .toy-desk .toy-idea.toy-out-l { transform: translateX(-130px) rotate(-18deg) scale(.6); opacity: 0; }
+  .toy-desk .toy-idea.toy-out-r { transform: translateX(130px) rotate(18deg) scale(.6); opacity: 0; }
+  .toy-desk .toy-end { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 56px; line-height: 1; visibility: hidden; }
+  .toy-desk.toy-fin .toy-end { visibility: visible; }
+  .toy-desk.toy-fin .toy-idea { visibility: hidden; }
+  .toy-pick .toy-btn { width: 84px; font-size: 32px; }
+  .toy-pick .toy-no { background: #ffe0d8; box-shadow: 0 6px 0 #d48a78; }
+  .toy-pick .toy-yes { background: #c8f0dc; box-shadow: 0 6px 0 #1f9a78; }
+  html[data-theme="dark"] .toy-pick .toy-no { background: #5a2a24; box-shadow: 0 6px 0 #2a1210; }
+  html[data-theme="dark"] .toy-pick .toy-yes { background: #1f5a44; box-shadow: 0 6px 0 #0c2a1f; }
+  .toy-pill .toy-n { min-width: 1ch; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🏛">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-pillars" aria-hidden="true"><span><b>1</b>🏢</span><span><b>2</b>💛</span><span><b>3</b>😄</span></div>
+    <div class="toy-desk" aria-hidden="true"><div class="toy-idea"></div><div class="toy-end">🏛✨</div></div>
+    <div class="toy-row toy-pick">
+      <button type="button" class="toy-btn toy-no" aria-label="❌">❌</button>
+      <button type="button" class="toy-btn toy-yes" aria-label="📤">📤</button>
+    </div>
+    <div class="toy-pill" aria-live="polite"><span aria-hidden="true">✓</span><span class="toy-n">0</span><span>/6</span></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    // ideas: [emoji, ok to post?, which article it breaks (0 = none)]
+    var IDEAS = [['🍜😋', 1, 0], ['🏢🔑', 0, 1], ['🐧🎉', 1, 0], ['😢💢', 0, 2], ['🌏✈️', 1, 0], ['📊🏢', 0, 1]];
+    var desk = q('.toy-desk'), idea = q('.toy-idea'), pillars = qa('.toy-pillars span'), no = q('.toy-no'), yes = q('.toy-yes'), num = q('.toy-n');
+    if (!desk || !idea || !no || !yes || !num) return;
+    var i = 0, good = 0, busy = false;
+    function show() {
+      idea.classList.remove('toy-out-l', 'toy-out-r');
+      if (i >= IDEAS.length) { desk.classList.add('toy-fin'); no.disabled = yes.disabled = true; pop(desk, ['🏛', '💛', '😄', '✨', '🐧'], 18); return; }
+      idea.textContent = IDEAS[i][0]; bump(idea);
+    }
+    function answer(post) {
+      if (busy || i >= IDEAS.length) return;
+      var it = IDEAS[i];
+      if (!!it[1] === post) {
+        busy = true; good++; num.textContent = String(good); bump(num.parentNode);
+        idea.classList.add(post ? 'toy-out-r' : 'toy-out-l');
+        if (post && i === IDEAS.length - 1) pillars[2] && bump(pillars[2]);
+        setTimeout(function () { i++; busy = false; show(); }, still() ? 0 : 350);
+      } else {
+        bump(idea, 'toy-wig');
+        var p = pillars[(it[2] || 3) - 1];
+        if (p) { p.classList.remove('toy-hit'); void p.offsetWidth; p.classList.add('toy-hit'); setTimeout(function () { p.classList.remove('toy-hit'); }, 900); }
+      }
+    }
+    no.addEventListener('click', function () { answer(false); });
+    yes.addEventListener('click', function () { answer(true); });
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      i = 0; good = 0; busy = false; num.textContent = '0'; desk.classList.remove('toy-fin'); no.disabled = yes.disabled = false; show();
+    });
+    show();
+  })();
+  </script>
+
   <a class="next" href="../weekly-strict-ai-editor/index.html">
     <div>
       <div class="next-kicker">NEXT · 69 SEC</div>

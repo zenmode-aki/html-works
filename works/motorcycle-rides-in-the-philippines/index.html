@@ -527,6 +527,115 @@
     </p>
   </section>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #e3f8ef, #c8eedd 55%, #fff3d6); --tedge: #fff; --tglow: rgba(31,154,120,.22); --tink: #24332d; --tbtn: #fff; --tsh: #a8d8c2; --ttrack: rgba(36,51,45,.12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #15302a, #183a2e 55%, #2f2b1b); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #e9fbf2; --tbtn: #24362e; --tsh: #0c1813; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-road { position: relative; height: 128px; max-width: 320px; margin: 8px auto 0; border-radius: 20px; overflow: hidden;
+    background: linear-gradient(180deg, #6d6a74 0 50%, #77747e 50% 100%); box-shadow: inset 0 0 0 4px rgba(255,255,255,.4); }
+  .toy-road::before { content: ""; position: absolute; left: 0; right: 0; top: 62px; height: 4px;
+    background: repeating-linear-gradient(90deg, #ffd54d 0 18px, transparent 18px 32px); }
+  .toy-road .toy-car { position: absolute; top: 16px; font-size: 32px; line-height: 1; transform: scaleX(-1); }
+  .toy-road .toy-taxi { position: absolute; left: 6px; top: 16px; font-size: 32px; line-height: 1; transform: scaleX(-1); }
+  .toy-road .toy-bike { position: absolute; left: 6px; top: 76px; font-size: 34px; line-height: 1; transform: scaleX(-1);
+    transition: left .35s cubic-bezier(.3,1.3,.5,1), top .18s ease-out; }
+  .toy-road .toy-bike.toy-up { top: 46px; }
+  .toy-road .toy-goal { position: absolute; right: 6px; top: 72px; font-size: 32px; line-height: 1; }
+  .toy-road .toy-fume { position: absolute; left: 44px; top: 4px; font-size: 20px; opacity: 0; }
+  .toy-road.toy-jam .toy-fume { opacity: 1; animation: toy-honk .9s ease-in-out infinite; }
+  @keyframes toy-honk { 50% { transform: translateY(-4px) scale(1.15); } }
+  .toy-fares { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .toy-fares .toy-pill { margin-top: 12px; font-size: 22px; padding: 6px 14px; }
+  .toy-fares .toy-pill.toy-win { background: #1f9a78; color: #fff; box-shadow: 0 5px 0 #13664f; }
+  .toy-ride { background: #6fcf9f; box-shadow: 0 6px 0 #1f9a78; min-width: 110px; font-size: 32px; }
+  .toy-ride:active { box-shadow: 0 1px 0 #1f9a78; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🏍️">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-road toy-jam" aria-hidden="true">
+      <span class="toy-fume">💢</span>
+      <span class="toy-taxi">🚕</span>
+      <span class="toy-car" style="left:60px">🚗</span><span class="toy-car" style="left:112px">🚙</span><span class="toy-car" style="left:164px">🚌</span><span class="toy-car" style="left:222px">🚗</span>
+      <span class="toy-bike">🏍️</span>
+      <span class="toy-goal">🏁</span>
+    </div>
+    <div class="toy-fares" aria-live="polite">
+      <div class="toy-pill"><span aria-hidden="true">🚕</span><span>🪙🪙🪙</span><span class="toy-t">⏳</span></div>
+      <div class="toy-pill toy-bp"><span aria-hidden="true">🏍️</span><span>🪙</span><span class="toy-t toy-bt"></span></div>
+    </div>
+    <div class="toy-row"><button type="button" class="toy-btn toy-ride" aria-label="🏍️ ➡️">🏍️➡️</button></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var road = q('.toy-road'), bike = q('.toy-bike'), ride = q('.toy-ride'), bt = q('.toy-bt'), bp = q('.toy-bp'), goal = q('.toy-goal');
+    if (!road || !bike || !ride) return;
+    var step = 0, STEPS = 5, up = 0;
+    function draw() {
+      var w = road.clientWidth - bike.offsetWidth - 44;
+      bike.style.left = Math.round(6 + w * step / STEPS) + 'px';
+      ride.disabled = step >= STEPS;
+      if (bt) bt.textContent = step >= STEPS ? '✓' : '';
+      if (bp) bp.classList.toggle('toy-win', step >= STEPS);
+    }
+    ride.addEventListener('click', function () {
+      if (step >= STEPS) return;
+      step++;
+      // weave: hop up toward the jam, then back down
+      if (!still()) {
+        bike.classList.add('toy-up');
+        clearTimeout(up); up = setTimeout(function () { bike.classList.remove('toy-up'); }, 200);
+      }
+      draw();
+      if (step >= STEPS) setTimeout(function () { bump(goal); pop(goal || bike, ['🏍️', '💨', '🪙', '😆', '🎉'], 18); }, still() ? 0 : 380);
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () { step = 0; bike.classList.remove('toy-up'); draw(); });
+    window.addEventListener('resize', draw);
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../a-jeepney-all-to-myself/index.html">
     <div>
       <div class="next-kicker">NEXT · 61 SEC</div>

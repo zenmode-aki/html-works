@@ -576,6 +576,125 @@
   </section>
   </div>
 
+  <style>
+  .toy { --ta: #1c8a80; --ts: #bde3de; --ti: #322536; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #f1fbfa, #d8f3ef); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #1d2e2c, #151f1e); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-chip { display: inline-flex; align-items: center; gap: 10px; margin: 8px 0 10px; padding: 8px 20px; border-radius: 999px;
+    background: #1c8a80; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #0f5a53; }
+  .toy-chip .toy-face { font-size: 30px; }
+  .toy-noise { display: flex; justify-content: center; gap: 10px; font-size: 26px; line-height: 1; margin-bottom: 8px; transition: opacity .4s, filter .4s; }
+  .toy-noise .toy-hk { display: inline-block; animation: toy-honk .5s ease-in-out infinite alternate; }
+  .toy-noise .toy-hk:nth-child(2n) { animation-delay: .25s; }
+  @keyframes toy-honk { from { transform: translateX(-3px); } to { transform: translateX(3px) rotate(-6deg); } }
+  .toy-yard { position: relative; width: min(300px, 100%); height: 180px; margin: 0 auto; border-radius: 26px;
+    background: #b9e3a6; box-shadow: inset 0 0 0 6px #e8dcc0; }
+  .toy-yard .toy-pool { position: absolute; left: 22%; right: 22%; top: 27%; bottom: 27%; border-radius: 50%;
+    background: radial-gradient(ellipse at 40% 35%, #a9ecff, #3fbbe0 70%); box-shadow: inset 0 0 0 5px #fff; }
+  .toy-yard .toy-tree { position: absolute; font-size: 22px; line-height: 1; }
+  .toy-yard .toy-peng { position: absolute; font-size: 32px; line-height: 1; transform: translate(-50%, -60%); }
+  html[data-theme="dark"] .toy-yard { background: #2f4a2a; box-shadow: inset 0 0 0 6px #4a4433; }
+  html[data-theme="dark"] .toy-yard .toy-pool { background: radial-gradient(ellipse at 40% 35%, #3f8fa8, #1d5c70 70%); box-shadow: inset 0 0 0 5px #9ab; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-noise .toy-hk { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-noise .toy-hk { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🐧🏊">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite"><span class="toy-face">😮‍💨</span><span>🔄 <span class="toy-n toy-lap">0</span>/3</span></div>
+    <div class="toy-noise" aria-hidden="true"><span class="toy-hk">🚗</span><span class="toy-hk">📢</span><span class="toy-hk">🚕</span><span class="toy-hk">📢</span><span class="toy-hk">🚙</span></div>
+    <div class="toy-yard" aria-hidden="true">
+      <span class="toy-pool"></span>
+      <span class="toy-tree" style="left:6px;top:6px">🌴</span><span class="toy-tree" style="right:6px;bottom:6px">🌴</span>
+      <span class="toy-tree" style="right:8px;top:8px">🌿</span><span class="toy-tree" style="left:8px;bottom:8px">🌿</span>
+      <span class="toy-peng">🐧</span>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-main toy-walk" aria-label="🐧 ▶">🐧 ▶</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var yard = q('.toy-yard'), peng = q('.toy-peng'), walk = q('.toy-walk'), lapEl = q('.toy-lap'), face = q('.toy-face');
+    var noise = q('.toy-noise'), reset = q('.toy-reset');
+    if (!yard || !peng || !walk || !lapEl || !face || !noise || !reset) return;
+    var steps = 0, MAX = 12, ang = -Math.PI / 2, raf = 0;
+    var FACES = ['😮‍💨', '😐', '🙂', '😊'];
+    function place() {
+      peng.style.left = (50 + 38 * Math.cos(ang)) + '%';
+      peng.style.top = (50 + 36 * Math.sin(ang)) + '%';
+    }
+    function goTo(target) {
+      cancelAnimationFrame(raf);
+      if (still()) { ang = target; place(); return; }
+      var from = ang, t0 = 0;
+      function f(t) {
+        if (!t0) t0 = t;
+        var k = Math.min(1, (t - t0) / 450);
+        ang = from + (target - from) * (1 - Math.pow(1 - k, 2));
+        place();
+        if (k < 1) raf = requestAnimationFrame(f);
+      }
+      raf = requestAnimationFrame(f);
+    }
+    function draw() {
+      var laps = Math.floor(steps / 4);
+      lapEl.textContent = String(laps);
+      face.textContent = FACES[Math.min(3, laps)];
+      noise.style.opacity = String(1 - steps / MAX * 0.85);
+      noise.style.filter = 'blur(' + (steps / MAX * 2) + 'px)';
+      walk.disabled = steps >= MAX;
+    }
+    walk.addEventListener('click', function () {
+      if (steps >= MAX) return;
+      steps += 1;
+      goTo(-Math.PI / 2 + steps * Math.PI / 2);
+      if (steps % 4 === 0) bump(face);
+      draw();
+      if (steps >= MAX) pop(yard, ['🐧', '🌴', '😊', '✨'], 18);
+    });
+    reset.addEventListener('click', function () { steps = 0; goTo(-Math.PI / 2); draw(); });
+    place(); draw();
+  })();
+  </script>
+
   <a class="next" href="../one-bite-hamburger/index.html">
     <div>
       <div class="next-kicker">NEXT · 16 SEC</div>

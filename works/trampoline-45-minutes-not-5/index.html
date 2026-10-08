@@ -607,6 +607,131 @@
   </section>
   </div>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fff3f1, #ffe6e2 60%, #fff6d6); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(208,39,29,.22); font-weight: 800; color: #2e2222; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #2e2222; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #2e2222; background: #fff; box-shadow: 0 6px 0 #f2b5ad; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #f2b5ad; }
+  .toy-btn.toy-main { background: #d0271d; color: #fff; box-shadow: 0 6px 0 #8a1610; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #8a1610; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #8a1610; background: #fff;
+    box-shadow: 0 4px 0 #f2b5ad; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #f2b5ad; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #d0271d, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #3a2222, #2e2020 60%, #33301c); border-color: rgba(255,255,255,.12); color: #ffeeee; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #ffeeee; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #8a1610; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-gym { position: relative; width: min(280px, 100%); height: 200px; margin: 4px auto 0; border-radius: 22px; overflow: hidden;
+    background: linear-gradient(#2b2238, #45305a); }
+  .toy-gym .toy-notes { position: absolute; left: 16px; top: 14px; font-size: 24px; line-height: 1; animation: toy-notes 1.6s ease-in-out infinite; }
+  @keyframes toy-notes { 50% { transform: translateY(-6px) rotate(10deg); } }
+  .toy-gym .toy-pg { position: absolute; left: 50%; bottom: 52px; width: 50px; margin-left: -25px; font-size: 48px; line-height: 1; }
+  .toy-gym .toy-pg.toy-jump { animation: toy-jump .55s cubic-bezier(.3,0,.4,1); }
+  @keyframes toy-jump { 0% { transform: translateY(0) scaleY(.85); } 45% { transform: translateY(-90px) rotate(-12deg); } 100% { transform: translateY(0); } }
+  .toy-gym .toy-bed { position: absolute; left: 50%; bottom: 34px; width: 150px; height: 22px; margin-left: -75px; border-radius: 50%;
+    background: radial-gradient(#1a1a1a 55%, #ff7a3a 56%); box-shadow: 0 6px 0 #a33f1a; }
+  .toy-gym .toy-bed.toy-jump { animation: toy-bed .55s ease-out; }
+  @keyframes toy-bed { 0% { transform: scaleY(.6) translateY(6px); } 30% { transform: scaleY(1.1); } 100% { transform: none; } }
+  .toy-gym .toy-legs { position: absolute; left: 50%; bottom: 8px; width: 120px; margin-left: -60px; height: 30px;
+    border-left: 6px solid #777; border-right: 6px solid #777; }
+  .toy-gym .toy-shower { position: absolute; right: 14px; top: 12px; font-size: 30px; line-height: 1; opacity: 0; transform: scale(.4); transition: opacity .3s, transform .4s cubic-bezier(.2,1.6,.4,1); }
+  .toy-gym.toy-five .toy-shower { opacity: 1; transform: none; }
+  .toy-gym.toy-five.toy-past .toy-shower { opacity: .3; filter: grayscale(1); }
+  .toy-tl { position: relative; width: min(260px, 100%); margin: 36px auto 0; }
+  .toy-tl .toy-meter { margin: 0 auto; width: 100%; }
+  .toy-tl .toy-mark { position: absolute; top: -26px; font-size: 18px; line-height: 1; transform: translateX(-50%); }
+  .toy-btn.toy-main { min-width: 150px; }
+  html[data-theme="dark"] .toy-gym { background: linear-gradient(#1a1424, #2a1e36); }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-gym .toy-pg.toy-jump, html:not([data-motion="on"]) .toy-gym .toy-bed.toy-jump, html:not([data-motion="on"]) .toy-gym .toy-notes { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-gym .toy-pg.toy-jump, html[data-motion="off"] .toy-gym .toy-bed.toy-jump, html[data-motion="off"] .toy-gym .toy-notes { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🐧⏱️">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-cnt">⏱️ <span><span class="toy-n toy-m">0</span>/45</span></span>
+    </div>
+    <div class="toy-gym" aria-hidden="true">
+      <span class="toy-notes">🎧</span>
+      <span class="toy-shower">🚿</span>
+      <span class="toy-legs"></span>
+      <span class="toy-bed"></span>
+      <span class="toy-pg">🐧</span>
+    </div>
+    <div class="toy-tl" aria-hidden="true">
+      <span class="toy-mark" style="left:11%">🚿</span>
+      <span class="toy-mark" style="left:96%">🏁</span>
+      <div class="toy-meter"><span class="toy-fill"></span></div>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-main toy-hop" aria-label="⬆️ +5">⬆️ <small>+5</small></button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var gym = q('.toy-gym'), pg = q('.toy-pg'), bed = q('.toy-bed'), hop = q('.toy-hop'), mEl = q('.toy-m'), chip = q('.toy-cnt'), fill = q('.toy-fill');
+    if (!gym || !pg || !hop || !mEl) return;
+    var m = 0;
+    function draw() {
+      mEl.textContent = String(m);
+      if (fill) fill.style.width = (m / 45 * 100) + '%';
+      gym.classList.toggle('toy-five', m >= 5);
+      gym.classList.toggle('toy-past', m > 5);
+      chip.classList.toggle('toy-win', m >= 45);
+      hop.disabled = m >= 45;
+    }
+    hop.addEventListener('click', function () {
+      if (m >= 45) return;
+      m += 5; draw();
+      bump(pg, 'toy-jump'); bump(bed, 'toy-jump'); bump(chip);
+      if (m === 5) pop(gym.querySelector('.toy-shower'), ['🚿', '❓'], 5);
+      else pop(pg, ['💦'], 2);
+      if (m === 45) setTimeout(function () { pop(gym, ['🐧', '🎵', '💦', '🎉', '🔥'], 18); }, 300);
+    });
+    reset.addEventListener('click', function () { m = 0; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../jump-one-music-card/index.html">
     <div>
       <div class="next-kicker">NEXT · 32 SEC</div>

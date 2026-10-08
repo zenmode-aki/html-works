@@ -466,6 +466,116 @@
     </p>
   </section>
 
+  <style>
+  .toy { --ta: #b8862b; --ts: #0e0c09; --ti: #fff4d6; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #2b251c, #1e1a14); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #2b251c, #15120d); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy { border-color: rgba(243,201,105,.45); }
+  .toy .toy-btn.toy-reset { background: #3a3226; color: #fff4d6; box-shadow: 0 4px 0 #0e0c09; }
+  .toy-floor { display: inline-flex; align-items: center; gap: 10px; margin: 8px 0 12px; padding: 6px 18px; border-radius: 12px;
+    background: #0e0c09; color: #ff9b3d; font-size: 30px; font-weight: 900; font-variant-numeric: tabular-nums; box-shadow: inset 0 0 0 3px #3a3226; }
+  .toy-floor .toy-arr { font-size: 22px; color: #f3c969; }
+  .toy-shaft { position: relative; width: min(240px, 100%); height: 200px; margin: 0 auto; border-radius: 10px; overflow: hidden;
+    background: linear-gradient(180deg, #fff5d8, #f3c969); border: 8px solid #6e6252; box-shadow: 0 8px 0 #0e0c09; }
+  .toy-shaft .toy-inside { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 14px; font-size: 64px; line-height: 1; }
+  .toy-shaft .toy-door { position: absolute; top: 0; bottom: 0; width: 50%; overflow: hidden; background: #9aa3ad; transition: transform .6s ease-in-out; }
+  .toy-shaft .toy-door.toy-dl { left: 0; border-right: 2px solid #5b636b; }
+  .toy-shaft .toy-door.toy-dr { right: 0; border-left: 2px solid #5b636b; }
+  .toy-shaft.toy-open .toy-dl { transform: translateX(-100%); }
+  .toy-shaft.toy-open .toy-dr { transform: translateX(100%); }
+  .toy-shaft .toy-screen { position: absolute; top: 0; bottom: 0; width: 200%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+  .toy-shaft .toy-dl .toy-screen { left: 0; }
+  .toy-shaft .toy-dr .toy-screen { left: -100%; }
+  .toy-shaft .toy-ad { font-size: 76px; line-height: 1; }
+  .toy-shaft .toy-ad.toy-swap { animation: toy-swap .4s ease-out; }
+  @keyframes toy-swap { from { opacity: 0; transform: scale(.6); } }
+  .toy-shaft .toy-sub { font-size: 26px; line-height: 1; }
+  .toy-shaft.toy-c0 .toy-door { background: linear-gradient(160deg, #ff8a70, #ffcf6b); }
+  .toy-shaft.toy-c1 .toy-door { background: linear-gradient(160deg, #6fc3ff, #b48cff); }
+  .toy-shaft.toy-c2 .toy-door { background: linear-gradient(160deg, #6fd8a8, #e6f27a); }
+  .toy-shaft.toy-c3 .toy-door { background: linear-gradient(160deg, #ff7eb3, #ffb36b); }
+  .toy-shaft.toy-c4 .toy-door { background: linear-gradient(160deg, #8a7dff, #6fe0ff); }
+  .toy-btn.toy-up { min-width: 120px; background: #f3c969; color: #1e1a14; box-shadow: 0 6px 0 #8a6418; }
+  .toy-btn.toy-up:active { box-shadow: 0 1px 0 #8a6418; }
+  html[data-theme="dark"] .toy-btn.toy-up { background: #d8aa48; color: #1e1a14; box-shadow: 0 6px 0 #6e5410; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-shaft .toy-ad.toy-swap { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-shaft .toy-ad.toy-swap { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🔼📺">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-floor" aria-live="polite"><span class="toy-arr">▲</span><span><span class="toy-n toy-fl">1</span>/5</span></div>
+    <div class="toy-shaft toy-c0" aria-hidden="true">
+      <div class="toy-inside">🐧</div>
+      <div class="toy-door toy-dl"><div class="toy-screen"><span class="toy-ad">🍜</span><span class="toy-sub">✨ ¥500 ✨</span></div></div>
+      <div class="toy-door toy-dr"><div class="toy-screen"><span class="toy-ad">🍜</span><span class="toy-sub">✨ ¥500 ✨</span></div></div>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-up" aria-label="🔼">🔼</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var up = q('.toy-up'), shaft = q('.toy-shaft'), fl = q('.toy-fl'), ads = qa('.toy-ad'), subs = qa('.toy-sub'), reset = q('.toy-reset');
+    if (!up || !shaft || !fl || !ads.length || !reset) return;
+    var ADS = [['🍜', '✨ ¥500 ✨'], ['☕', '☕ + 🍰'], ['🎬', '⭐⭐⭐'], ['🏯', '🏯 ⭐'], ['💡', '💡 !']];
+    var f = 1, TOP = 5;
+    function draw(swap) {
+      fl.textContent = String(f);
+      var ad = ADS[f - 1];
+      shaft.className = 'toy-shaft toy-c' + (f - 1) + (f >= TOP ? ' toy-open' : '');
+      ads.forEach(function (a) { a.textContent = ad[0]; if (swap) bump(a, 'toy-swap'); });
+      subs.forEach(function (s) { s.textContent = ad[1]; });
+      up.disabled = f >= TOP;
+    }
+    up.addEventListener('click', function () {
+      if (f >= TOP) return;
+      f += 1;
+      draw(true);
+      if (f >= TOP) setTimeout(function () { pop(shaft, ['📺', '💡', '🐧', '🎉'], 18); }, still() ? 0 : 500);
+    });
+    reset.addEventListener('click', function () { f = 1; draw(false); });
+    draw(false);
+  })();
+  </script>
+
   <a class="next" href="../chinese-taipei-house-in-nagoya/index.html">
     <div>
       <div class="next-kicker">NEXT · 36 SEC</div>

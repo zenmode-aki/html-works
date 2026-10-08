@@ -490,6 +490,113 @@
     <p class="big">First, here is the word I want you to remember today: Knowledge Metabo.</p>
   </section>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #fffaf0, #f2eadc 55%, #e9eedb); --tedge: #fff; --tglow: rgba(75,62,43,.18); --tink: #26352f; --tbtn: #fff; --tsh: #d8c9ae; --ttrack: rgba(38,53,47,.12); --tfill: linear-gradient(90deg, #c87852, #e6b04a, #7d8e63);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #2c2a22, #29271f 55%, #222a22); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #f4efe2; --tbtn: #34322a; --tsh: #151410; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-head { position: relative; height: 170px; padding-top: 34px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .toy-head .toy-brain { display: inline-block; font-size: 50px; line-height: 1; transform: scale(var(--fat, 1));
+    transition: transform .4s cubic-bezier(.2,1.5,.4,1), filter .4s; }
+  .toy-head.toy-heavy .toy-brain { animation: toy-wobble 1.2s ease-in-out infinite; filter: saturate(.6); }
+  @keyframes toy-wobble { 50% { transform: scale(var(--fat, 1)) scaleX(1.08) scaleY(.94); } }
+  .toy-head .toy-pill { position: absolute; left: 0; top: 0; margin: 0; padding: 6px 12px; font-size: 22px; }
+  .toy-head .toy-face { position: absolute; right: 4px; bottom: 6px; font-size: 34px; line-height: 1; }
+  .toy-bat { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 6px; font-size: 30px; line-height: 1; }
+  .toy-bat .toy-meter { margin: 0; width: min(200px, 60%); height: 18px; }
+  .toy-in { background: #697c91; color: #fff; box-shadow: 0 6px 0 #45556a; }
+  .toy .toy-in { color: #fff; }
+  .toy-in:active { box-shadow: 0 1px 0 #45556a; }
+  .toy-use { background: #f0c65e; box-shadow: 0 6px 0 #b98d23; }
+  .toy-use:active { box-shadow: 0 1px 0 #b98d23; }
+  .toy .toy-btn small { font-size: 18px; font-weight: 900; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🧠">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-head" aria-hidden="true">
+      <div class="toy-pill"><span>🧠</span><span>×</span><span class="toy-n toy-x">1.0</span></div>
+      <span class="toy-brain">🧠</span>
+      <span class="toy-face">🙂</span>
+    </div>
+    <div class="toy-bat" aria-live="polite"><span class="toy-bi">🔋</span><div class="toy-meter"><span class="toy-fill"></span></div></div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-in" aria-label="🎧 +">🎧 <small>+</small></button>
+      <button type="button" class="toy-btn toy-use" aria-label="⚡ −">⚡ <small>−</small></button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var head = q('.toy-head'), x = q('.toy-x'), face = q('.toy-face'), bi = q('.toy-bi'), fill = q('.toy-fill');
+    var inB = q('.toy-in'), useB = q('.toy-use');
+    if (!head || !x || !inB || !useB) return;
+    var fat = 0, wasFat = false, MAX = 6;
+    function draw() {
+      var s = 1 + fat * .2;
+      head.style.setProperty('--fat', s.toFixed(2));
+      x.textContent = s.toFixed(1);
+      head.classList.toggle('toy-heavy', fat >= 4);
+      if (face) face.textContent = fat >= MAX ? '😵' : fat >= 4 ? '😩' : fat >= 2 ? '😐' : '🙂';
+      if (bi) bi.textContent = fat >= 4 ? '🪫' : '🔋';
+      if (fill) fill.style.width = Math.round((MAX - fat) / MAX * 100) + '%';
+      inB.disabled = fat >= MAX;
+      useB.disabled = fat <= 0;
+    }
+    inB.addEventListener('click', function () {
+      if (fat >= MAX) return;
+      fat++; if (fat >= 3) wasFat = true;
+      draw(); pop(inB, ['🎧', '📻', '📺'], 3); bump(face);
+    });
+    useB.addEventListener('click', function () {
+      if (fat <= 0) return;
+      fat--; draw(); pop(useB, ['⚡', '💨'], 4); bump(face);
+      if (fat === 0 && wasFat) { wasFat = false; pop(head, ['🧠', '✨', '🔋', '🎉', '🐧'], 18); }
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () { fat = 0; wasFat = false; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../tokyo-yakult-tsubakuro/index.html">
     <div>
       <div class="next-kicker">NEXT · 11 SEC</div>

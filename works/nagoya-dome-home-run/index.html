@@ -534,6 +534,146 @@
     <figcaption>▶️ The stadium erupted with excitement after a home run.⚾️</figcaption>
   </figure>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #e6f8f0, #cdeedf 55%, #fff4d6); --tedge: #fff; --tglow: rgba(31,154,120,.22); --tink: #24332d; --tbtn: #fff; --tsh: #a8d8c2; --ttrack: rgba(36,51,45,.12);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #15302a, #183a2e 55%, #2f2b1b); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #e9fbf2; --tbtn: #24362e; --tsh: #0c1813; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-crowd { display: flex; justify-content: center; gap: 6px; font-size: 30px; line-height: 1; margin-top: 4px; min-height: 44px; align-items: flex-end; }
+  .toy-crowd span { display: inline-block; opacity: .35; transition: opacity .2s; }
+  .toy-crowd.toy-roar span { opacity: 1; animation: toy-jump .35s ease-in-out 6 alternate; }
+  .toy-crowd.toy-roar span:nth-child(2n) { animation-delay: .17s; }
+  @keyframes toy-jump { to { transform: translateY(-14px) scale(1.15); } }
+  .toy-field { position: relative; height: 120px; max-width: 300px; margin: 8px auto 0; border-radius: 20px; overflow: hidden;
+    background: linear-gradient(180deg, #2c3b4f 0 34%, #3fae6e 34% 100%); }
+  .toy-field .toy-zone { position: absolute; left: 44px; bottom: 14px; width: 54px; height: 54px; border-radius: 50%;
+    border: 4px dashed rgba(255,255,255,.75); }
+  .toy-field .toy-peng { position: absolute; left: 4px; bottom: 10px; font-size: 34px; line-height: 1; }
+  .toy-field .toy-bat { position: absolute; left: 30px; bottom: 34px; width: 11px; height: 62px; border-radius: 6px 6px 4px 4px;
+    background: linear-gradient(90deg, #c98a4a, #f0c08a 45%, #b0733a); transform-origin: 50% 100%; transform: rotate(28deg); transition: transform .12s; }
+  .toy-field .toy-bat.toy-swing { transform: rotate(-80deg); }
+  .toy-field .toy-ball { position: absolute; left: 0; bottom: 26px; font-size: 28px; line-height: 1; visibility: hidden; }
+  .toy-field .toy-ball.toy-on { visibility: visible; }
+  .toy-field .toy-mound { position: absolute; right: 10px; bottom: 22px; font-size: 26px; line-height: 1; }
+  .toy-field .toy-big { position: absolute; left: 50%; top: 8px; font-size: 32px; line-height: 1; transform: translateX(-50%) scale(.3); opacity: 0;
+    transition: transform .4s cubic-bezier(.2,1.6,.4,1), opacity .2s; }
+  .toy-field .toy-big.toy-on { transform: translateX(-50%) scale(1); opacity: 1; }
+  .toy-pitch { font-size: 30px; }
+  .toy-swingb { background: #1f9a78; box-shadow: 0 6px 0 #13664f; min-width: 110px; font-size: 32px; }
+  .toy-swingb:active { box-shadow: 0 1px 0 #13664f; }
+  .toy-pill .toy-n { min-width: 1ch; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆⚾💥">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-crowd" aria-hidden="true"><span>📣</span><span>🎉</span><span>⚾</span><span>🎊</span><span>📣</span><span>✨</span></div>
+    <div class="toy-field" aria-hidden="true">
+      <span class="toy-big">💥</span>
+      <span class="toy-zone"></span>
+      <span class="toy-peng">🐧</span>
+      <span class="toy-bat"></span>
+      <span class="toy-ball">⚾</span>
+      <span class="toy-mound">🧢</span>
+    </div>
+    <div class="toy-row" style="align-items:center">
+      <button type="button" class="toy-btn toy-pitch" aria-label="⚾ ▶️">⚾▶️</button>
+      <button type="button" class="toy-btn toy-swingb" aria-label="💥">💥</button>
+    </div>
+    <div class="toy-pill" aria-live="polite"><span aria-hidden="true">💥</span><span>×</span><span class="toy-n">0</span></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var field = q('.toy-field'), ball = q('.toy-ball'), bat = q('.toy-bat'), big = q('.toy-big'), crowd = q('.toy-crowd');
+    var pitch = q('.toy-pitch'), swing = q('.toy-swingb'), num = q('.toy-n'), zone = q('.toy-zone');
+    if (!field || !ball || !bat || !pitch || !swing || !num) return;
+    var raf = 0, flying = false, x = 0, hr = 0, t0 = 0, DUR = 1500, hitT = 0;
+    function startX() { return field.clientWidth - 50; }
+    function setBall(px, py) { ball.style.transform = 'translate(' + px + 'px,' + (py || 0) + 'px)'; }
+    function stop() { cancelAnimationFrame(raf); flying = false; }
+    function pitchIt() {
+      if (flying) return;
+      flying = true; ball.classList.add('toy-on'); if (big) big.classList.remove('toy-on');
+      var sx = startX(); t0 = 0;
+      function step(t) {
+        if (!t0) t0 = t;
+        var k = (t - t0) / DUR;
+        x = sx * (1 - k);
+        setBall(Math.round(x));
+        if (k < 1) raf = requestAnimationFrame(step);
+        else { stop(); ball.classList.remove('toy-on'); pop(field, ['💨'], 3); }
+      }
+      raf = requestAnimationFrame(step);
+    }
+    function homeRun() {
+      stop(); hr++; num.textContent = String(hr); bump(num.parentNode);
+      if (big) big.classList.add('toy-on');
+      if (crowd) { crowd.classList.remove('toy-roar'); void crowd.offsetWidth; crowd.classList.add('toy-roar'); }
+      pop(field, ['⚾', '💥', '🎉', '📣', '✨', '🐧'], 22);
+      var hx = x, h0 = 0;
+      if (still()) { ball.classList.remove('toy-on'); return; }
+      function fly(t) {
+        if (!h0) h0 = t;
+        var k = Math.min(1, (t - h0) / 700);
+        setBall(Math.round(hx + k * 260), Math.round(-k * 150 + k * k * 30));
+        if (k < 1) raf = requestAnimationFrame(fly); else ball.classList.remove('toy-on');
+      }
+      raf = requestAnimationFrame(fly);
+    }
+    pitch.addEventListener('click', pitchIt);
+    swing.addEventListener('click', function () {
+      bat.classList.add('toy-swing'); clearTimeout(hitT); hitT = setTimeout(function () { bat.classList.remove('toy-swing'); }, 220);
+      if (!flying) { bump(bat, 'toy-wig'); return; }
+      var zl = zone ? zone.offsetLeft - 20 : 14, zr = zone ? zone.offsetLeft + zone.offsetWidth + 6 : 100;
+      if (x >= zl && x <= zr) homeRun();
+      else pop(swing, ['💨'], 3);
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      stop(); hr = 0; num.textContent = '0'; ball.classList.remove('toy-on'); if (big) big.classList.remove('toy-on');
+      if (crowd) crowd.classList.remove('toy-roar');
+    });
+  })();
+  </script>
+
   <a class="next" href="../perfectionist-1/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>

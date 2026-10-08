@@ -602,6 +602,123 @@
     </p>
   </section>
 
+  <style>
+  .toy { --ta: #1f9a78; --ts: #d5e4ec; --ti: #322536; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #ffffff, #eef3f6); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #2a2f36, #1c2026); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-chip { display: inline-flex; align-items: center; gap: 8px; margin: 8px 0 12px; padding: 8px 20px; border-radius: 999px;
+    background: #322536; color: #fff; font-size: 26px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #17112a; }
+  .toy-chip.toy-done { background: #1f9a78; box-shadow: 0 5px 0 #0f5e49; }
+  .toy-planet { position: relative; width: min(320px, 100%); height: 240px; margin: 0 auto; border-radius: 60px 60px 28px 28px; overflow: hidden;
+    background: radial-gradient(ellipse at 30% 20%, #ffffff, #e8eef2 55%, #cfdbe2); box-shadow: inset 0 -10px 0 rgba(0,0,0,.05), 0 8px 0 #d5e4ec; }
+  .toy-planet::before, .toy-planet::after { content: ""; position: absolute; border-radius: 50%; border: 3px solid rgba(160,180,195,.35); }
+  .toy-planet::before { left: -30%; top: 40%; width: 160%; height: 90%; }
+  .toy-planet::after { left: -10%; top: 60%; width: 120%; height: 70%; }
+  .toy-planet .toy-ufo { position: absolute; right: 12px; top: 10px; font-size: 26px; animation: toy-hover 3s ease-in-out infinite; }
+  @keyframes toy-hover { 50% { transform: translate(-14px, 6px) rotate(-8deg); } }
+  .toy-btn.toy-runner { position: absolute; z-index: 2; min-width: 60px; min-height: 60px; padding: 0; border-radius: 50%; font-size: 40px;
+    background: transparent; box-shadow: none; transition: left .25s ease-out, top .25s ease-out; }
+  .toy-btn.toy-runner:active { transform: scale(.9); box-shadow: none; }
+  .toy-btn.toy-start { margin-top: 0; }
+  html[data-theme="dark"] .toy-planet { background: radial-gradient(ellipse at 30% 20%, #4a525c, #353b43 55%, #262b31); box-shadow: inset 0 -10px 0 rgba(0,0,0,.2), 0 8px 0 #11141a; }
+  html[data-theme="dark"] .toy-btn.toy-runner { background: transparent; box-shadow: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-planet .toy-ufo { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-planet .toy-ufo { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🛸🐧">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite">🎯 <span><span class="toy-n toy-caught">0</span>/5</span> ⏱️ <span class="toy-n toy-t">0.0</span></div>
+    <div class="toy-planet">
+      <span class="toy-ufo" aria-hidden="true">🛸</span>
+      <button type="button" class="toy-btn toy-runner" aria-label="🐧">🐧</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var runner = q('.toy-runner'), planet = q('.toy-planet'), caught = q('.toy-caught'), tEl = q('.toy-t'), chip = q('.toy-chip'), reset = q('.toy-reset');
+    if (!runner || !planet || !caught || !tEl || !reset) return;
+    var n = 0, MAX = 5, t0 = 0, raf = 0, wander = 0;
+    function jump() {
+      var w = planet.clientWidth - 64, h = planet.clientHeight - 64;
+      runner.style.left = Math.round(4 + Math.random() * w) + 'px';
+      runner.style.top = Math.round(4 + Math.random() * h) + 'px';
+    }
+    function tick() {
+      tEl.textContent = ((performance.now() - t0) / 1000).toFixed(1);
+      raf = requestAnimationFrame(tick);
+    }
+    function loop() {
+      clearTimeout(wander);
+      if (n >= MAX || !t0) return;
+      wander = setTimeout(function () { jump(); loop(); }, 1300);
+    }
+    function draw() {
+      caught.textContent = String(n);
+      if (chip) chip.classList.toggle('toy-done', n >= MAX);
+      runner.textContent = n >= MAX ? '😊' : '🐧';
+    }
+    runner.addEventListener('click', function () {
+      if (n >= MAX) return;
+      if (!t0) { t0 = performance.now(); tick(); }
+      n += 1;
+      pop(runner, ['🐧', '✨'], 5);
+      draw();
+      if (n >= MAX) {
+        cancelAnimationFrame(raf); clearTimeout(wander);
+        pop(planet, ['🐧', '🛸', '🤍', '🎉'], 18);
+        return;
+      }
+      jump(); loop();
+    });
+    reset.addEventListener('click', function () {
+      cancelAnimationFrame(raf); clearTimeout(wander);
+      n = 0; t0 = 0; tEl.textContent = '0.0';
+      runner.style.left = 'calc(50% - 30px)'; runner.style.top = 'calc(50% - 30px)';
+      draw();
+    });
+    runner.style.left = 'calc(50% - 30px)'; runner.style.top = 'calc(50% - 30px)';
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../baguio-language-school-memories/index.html" data-topic="new">
     <div>
       <div class="next-kicker">NEXT · NEW TOPIC</div>

@@ -587,6 +587,139 @@
 
   <div class="chap-tracker" aria-hidden="true"><span data-c="c1" style="--c: #ff8a70">1</span><span data-c="c2" style="--c: #4d9de0">2</span><span data-c="c3" style="--c: #34b27d">3</span></div>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #1e2840, #263357 55%, #3a3220); --tedge: #f3c969; --tglow: rgba(0,0,0,.35); --tink: #fff7e6; --tbtn: #fff; --tsh: #b99446; --ttrack: rgba(255,255,255,.14);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #151c2e, #1b2440 55%, #2a2416); --tedge: #8a6a22; --tbtn: #2a3350; --tsh: #0d1120; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy .toy-btn { color: #322536; }
+  html[data-theme="dark"] .toy .toy-btn { color: #fff7e6; }
+  .toy-wall { position: relative; height: 170px; max-width: 300px; margin: 8px auto 0; overflow: hidden; }
+  .toy-board { position: absolute; left: 50%; top: 4px; width: 240px; max-width: 96%; height: 140px; transform: translateX(-50%);
+    border-radius: 10px; background: #fdfdfb; border: 7px solid #c9ced6; box-shadow: 0 8px 0 #8d95a3;
+    display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 6px 12px; text-align: left;
+    transition: transform .7s cubic-bezier(.6,-.3,.7,1), opacity .5s; }
+  .toy-board.toy-sold { transform: translateX(160%) rotate(14deg); opacity: 0; }
+  .toy-board .toy-line { height: 30px; font-size: 22px; line-height: 30px; color: #1f2744; transition: opacity .6s, filter .6s; white-space: nowrap; overflow: hidden; }
+  .toy-board.toy-old .toy-line { opacity: .22; filter: blur(1px); }
+  .toy-wall .toy-legs { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 170px; height: 20px;
+    border-left: 6px solid #8d95a3; border-right: 6px solid #8d95a3; transition: opacity .5s; }
+  .toy-wall.toy-gone .toy-legs { opacity: 0; }
+  .toy-wall .toy-cash { position: absolute; left: 50%; top: 50%; font-size: 54px; line-height: 1; transform: translate(-50%, -50%) scale(.3); opacity: 0;
+    transition: transform .5s cubic-bezier(.2,1.6,.4,1) .4s, opacity .3s .4s; }
+  .toy-wall.toy-gone .toy-cash { transform: translate(-50%, -50%); opacity: 1; }
+  .toy-steps { display: flex; justify-content: center; gap: 10px; margin-top: 12px; }
+  .toy-steps .toy-btn { width: 64px; padding: 0; font-size: 30px; }
+  .toy-steps .toy-sell { background: #f3c969; box-shadow: 0 6px 0 #c9962f; }
+  .toy-steps .toy-sell:active { box-shadow: 0 1px 0 #c9962f; }
+  .toy-pill { color: #322536; }
+  html[data-theme="dark"] .toy-pill { color: #fff7e6; }
+  .toy-pill .toy-n { min-width: 4ch; text-align: left; }
+  .toy-pill.toy-win { background: #f3c969; box-shadow: 0 5px 0 #c9962f; }
+  html[data-theme="dark"] .toy-pill.toy-win { color: #322536; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆📋💴">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-wall" aria-hidden="true">
+      <div class="toy-board"><div class="toy-line"></div><div class="toy-line"></div><div class="toy-line"></div></div>
+      <div class="toy-legs"></div>
+      <span class="toy-cash">💴</span>
+    </div>
+    <div class="toy-steps">
+      <button type="button" class="toy-btn toy-pen" aria-label="🖊️">🖊️</button>
+      <button type="button" class="toy-btn toy-days" aria-label="⏩">⏩</button>
+      <button type="button" class="toy-btn toy-sell" aria-label="📱">📱</button>
+    </div>
+    <div class="toy-pill" aria-live="polite"><span>¥</span><span class="toy-n">0</span></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var wall = q('.toy-wall'), board = q('.toy-board'), lines = qa('.toy-line'), pen = q('.toy-pen'), days = q('.toy-days'), sell = q('.toy-sell');
+    var num = q('.toy-n'), pill = q('.toy-pill');
+    if (!wall || !board || !lines.length || !pen || !days || !sell || !num) return;
+    var GOALS = ['🎯 ✅ ✅', '📌 1 2 3', '⭐ 📈 🔥'], written = 0, sold = false, raf = 0;
+    function roll(to) {
+      cancelAnimationFrame(raf);
+      if (still()) { num.textContent = String(to); return; }
+      var t0 = 0;
+      function step(t) {
+        if (!t0) t0 = t;
+        var k = Math.min(1, (t - t0) / 900);
+        num.textContent = String(Math.round(to * k / 10) * 10);
+        if (k < 1) raf = requestAnimationFrame(step);
+      }
+      raf = requestAnimationFrame(step);
+    }
+    pen.addEventListener('click', function () {
+      if (sold) return;
+      board.classList.remove('toy-old');
+      if (written < lines.length) { lines[written].textContent = GOALS[written]; bump(lines[written]); written++; }
+      else bump(board, 'toy-wig');
+    });
+    // days pass: nobody updates the board
+    days.addEventListener('click', function () {
+      if (sold) return;
+      board.classList.add('toy-old'); bump(board, 'toy-wig');
+      pop(days, ['💤', '🚽'], 4);
+    });
+    sell.addEventListener('click', function () {
+      if (sold) return;
+      sold = true;
+      board.classList.add('toy-sold'); wall.classList.add('toy-gone');
+      roll(4000);
+      if (pill) pill.classList.add('toy-win');
+      setTimeout(function () { pop(wall, ['💴', '📱', '✨', '🐧', '🎉'], 18); }, still() ? 0 : 900);
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      cancelAnimationFrame(raf); sold = false; written = 0;
+      lines.forEach(function (l) { l.textContent = ''; });
+      board.classList.remove('toy-sold', 'toy-old'); wall.classList.remove('toy-gone');
+      if (pill) pill.classList.remove('toy-win'); num.textContent = '0';
+    });
+  })();
+  </script>
+
   <a class="next" href="../anytime-fitness-for-2-months/index.html">
     <div>
       <div class="next-kicker">NEXT · 111 SEC</div>

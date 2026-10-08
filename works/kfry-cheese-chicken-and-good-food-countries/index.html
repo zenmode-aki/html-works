@@ -564,6 +564,125 @@
   </section>
   </div>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #fff4bf, #ffe39a 55%, #fff6e0); --tedge: #fff; --tglow: rgba(194,138,0,.24); --tink: #3a3219; --tbtn: #fff; --tsh: #e0c27a; --ttrack: rgba(58,50,25,.12); --tfill: linear-gradient(90deg, #ffd54d, #ff9a3c);
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #3a3318, #3a2d16 55%, #2b261c); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #fff7d9; --tbtn: #36301f; --tsh: #17140c; --ttrack: rgba(255,255,255,.12); }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-plate { position: relative; width: 230px; max-width: 100%; height: 170px; margin: 8px auto 0; border-radius: 50%;
+    background: radial-gradient(circle at 50% 45%, #4a4a4a, #222 70%); box-shadow: 0 10px 0 #111, inset 0 0 0 8px #3a3a3a; }
+  .toy-plate .toy-pool { position: absolute; left: 50%; top: 50%; width: 170px; height: 110px; border-radius: 50%;
+    transform: translate(-50%, -50%) scale(var(--melt, 0)); background: radial-gradient(circle, #ffe680, #ffc21a 70%);
+    box-shadow: 0 0 22px rgba(255,200,40,.7); transition: transform .4s cubic-bezier(.2,1.4,.4,1); }
+  .toy-plate .toy-cheese { position: absolute; left: 50%; top: 50%; font-size: 44px; line-height: 1;
+    transform: translate(-50%, -50%) scale(calc(1 - var(--melt, 0))); transition: transform .4s; }
+  .toy-ring { position: absolute; inset: 0; transition: transform .5s cubic-bezier(.3,1.3,.5,1); }
+  .toy-ring span { position: absolute; font-size: 34px; line-height: 1; }
+  .toy-ring span:nth-child(1) { left: 14%; top: 18%; } .toy-ring span:nth-child(2) { right: 14%; top: 18%; }
+  .toy-ring span:nth-child(3) { left: 10%; bottom: 16%; } .toy-ring span:nth-child(4) { right: 10%; bottom: 16%; }
+  .toy-plate.toy-mixed .toy-ring span { filter: drop-shadow(0 0 6px #ffd23a) sepia(.3); }
+  .toy-steam { position: absolute; left: 50%; top: 8px; font-size: 26px; transform: translateX(-50%); opacity: 0; }
+  .toy-plate.toy-hot .toy-steam { opacity: 1; animation: toy-steam 1.6s ease-in-out infinite; }
+  @keyframes toy-steam { 0% { transform: translate(-50%, 6px); opacity: .2; } 50% { opacity: 1; } 100% { transform: translate(-50%, -14px); opacity: 0; } }
+  .toy-pill .toy-n { min-width: 2ch; text-align: right; }
+  .toy-act.toy-fire { background: #ff7a3c; box-shadow: 0 6px 0 #b8481a; color: #fff; }
+  .toy-act.toy-fire:active { box-shadow: 0 1px 0 #b8481a; }
+  .toy-act.toy-mix { background: #ffd54d; box-shadow: 0 6px 0 #c28a00; }
+  .toy-act.toy-mix:active { box-shadow: 0 1px 0 #c28a00; }
+  .toy-yum { font-size: 40px; line-height: 1.1; margin-top: 10px; visibility: hidden; transform: scale(.4); transition: transform .4s cubic-bezier(.2,1.6,.4,1); }
+  .toy-yum.toy-on { visibility: visible; transform: none; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🧀🍗">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-plate" aria-hidden="true">
+      <span class="toy-steam">♨️</span>
+      <span class="toy-pool"></span>
+      <div class="toy-ring"><span>🍗</span><span>🍗</span><span>🍗</span><span>🍗</span></div>
+      <span class="toy-cheese">🧀</span>
+    </div>
+    <div class="toy-meter" aria-hidden="true"><span class="toy-fill"></span></div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-act toy-fire" aria-label="🔥">🔥</button>
+      <button type="button" class="toy-btn toy-act toy-mix" aria-label="🥄" disabled>🥄</button>
+    </div>
+    <div class="toy-pill" aria-live="polite"><span class="toy-n">0</span><span>%</span></div>
+    <div class="toy-yum" aria-hidden="true">😋 🧀🍗 ✨</div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var plate = q('.toy-plate'), ring = q('.toy-ring'), fire = q('.toy-fire'), mix = q('.toy-mix'), fill = q('.toy-fill'), num = q('.toy-n'), yum = q('.toy-yum');
+    if (!plate || !fire || !mix || !num) return;
+    var heat = 0, turns = 0, done = false;
+    function draw() {
+      var melt = heat / 5;
+      plate.style.setProperty('--melt', melt.toFixed(2));
+      plate.classList.toggle('toy-hot', heat > 0);
+      plate.classList.toggle('toy-mixed', turns >= 5);
+      if (ring) ring.style.transform = 'rotate(' + (turns * 72) + 'deg)';
+      var pct = Math.round((heat + turns) * 10);
+      num.textContent = String(pct);
+      if (fill) fill.style.width = pct + '%';
+      fire.disabled = heat >= 5;
+      mix.disabled = heat < 5 || turns >= 5;
+      if (yum) yum.classList.toggle('toy-on', turns >= 5);
+    }
+    fire.addEventListener('click', function () {
+      if (heat >= 5) return;
+      heat++; draw(); bump(q('.toy-cheese'), 'toy-wig');
+      pop(fire, ['🔥'], 3);
+      if (heat === 5) bump(mix);
+    });
+    mix.addEventListener('click', function () {
+      if (heat < 5 || turns >= 5) return;
+      turns++; draw(); bump(num.parentNode);
+      if (turns === 5 && !done) { done = true; pop(plate, ['🧀', '🍗', '😋', '✨', '🎉'], 20); }
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () { heat = 0; turns = 0; done = false; draw(); });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../sunway-student-dorm-visit/index.html">
     <div>
       <div class="next-kicker">NEXT · 4 SEC</div>

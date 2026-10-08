@@ -601,6 +601,129 @@
   </section>
   </div>
 
+  <style>
+  .toy { --ta: #d4562c; --ts: #f0cbb8; --ti: #3b2620; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fff4ee, #ffe4d6); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #33231d, #231814); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-chip { display: inline-flex; align-items: center; gap: 8px; margin: 8px 0 12px; padding: 8px 20px; border-radius: 999px;
+    background: #d4562c; color: #fff; font-size: 26px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #8e3417; }
+  .toy-chip.toy-done { background: #34b27d; box-shadow: 0 5px 0 #1f7a53; }
+  .toy-gate { position: relative; display: grid; grid-template-columns: 1fr 70px 1fr; align-items: center; width: min(320px, 100%); height: 120px; margin: 0 auto; border-radius: 20px; overflow: hidden; }
+  .toy-gate .toy-zone { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; font-size: 22px; }
+  .toy-gate .toy-clark { background: linear-gradient(160deg, #e6f6ff, #d5f0e6); border-right: 8px solid #b5a99a; }
+  .toy-gate .toy-ang { background: linear-gradient(160deg, #ffe6c8, #ffd2b0); border-left: 8px dashed #b5a99a; }
+  .toy-gate .toy-zone .toy-cnt { font-size: 18px; font-weight: 900; }
+  .toy-gate .toy-mid { display: flex; align-items: center; justify-content: center; height: 100%; background: #8a8178; }
+  .toy-gate .toy-car { font-size: 44px; line-height: 1; }
+  .toy-gate .toy-car.toy-arrive { animation: toy-arrive .3s ease-out; }
+  @keyframes toy-arrive { from { transform: translateY(-50px) scale(.6); opacity: 0; } }
+  .toy-gate .toy-car.toy-in-l { animation: toy-left .3s ease-in forwards; }
+  @keyframes toy-left { to { transform: translateX(-90px) scale(.6); opacity: 0; } }
+  .toy-gate .toy-car.toy-in-r { animation: toy-right .3s ease-in forwards; }
+  @keyframes toy-right { to { transform: translateX(90px) scale(.6); opacity: 0; } }
+  .toy-btn.toy-l { background: #dff2fb; box-shadow: 0 6px 0 #9cc8db; }
+  .toy-btn.toy-r { background: #ffe0c4; box-shadow: 0 6px 0 #e0a878; }
+  html[data-theme="dark"] .toy-gate .toy-clark { background: linear-gradient(160deg, #1f3440, #1e3a32); border-right-color: #5a5248; }
+  html[data-theme="dark"] .toy-gate .toy-ang { background: linear-gradient(160deg, #4a3320, #4a2c1e); border-left-color: #5a5248; }
+  html[data-theme="dark"] .toy-gate .toy-mid { background: #4a443e; }
+  html[data-theme="dark"] .toy-btn.toy-l { background: #1f3440; box-shadow: 0 6px 0 #0d171d; }
+  html[data-theme="dark"] .toy-btn.toy-r { background: #4a3320; box-shadow: 0 6px 0 #22170e; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-gate .toy-car.toy-in-l, html:not([data-motion="on"]) .toy-gate .toy-car.toy-in-r, html:not([data-motion="on"]) .toy-gate .toy-car.toy-arrive { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-gate .toy-car.toy-in-l, html[data-motion="off"] .toy-gate .toy-car.toy-in-r, html[data-motion="off"] .toy-gate .toy-car.toy-arrive { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🚧🚗🛺">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite">✓ <span><span class="toy-n toy-ok">0</span>/8</span></div>
+    <div class="toy-gate" aria-hidden="true">
+      <div class="toy-zone toy-clark"><span>🧱🌴</span><span class="toy-cnt toy-n toy-cl">0</span></div>
+      <div class="toy-mid"><span class="toy-car">🚗</span></div>
+      <div class="toy-zone toy-ang"><span>🐕🏘️</span><span class="toy-cnt toy-n toy-an">0</span></div>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-l" aria-label="⬅️ 🧱">⬅️ 🧱</button>
+      <button type="button" class="toy-btn toy-r" aria-label="🐕 ➡️">🐕 ➡️</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var car = q('.toy-car'), L = q('.toy-l'), R = q('.toy-r'), okEl = q('.toy-ok'), cl = q('.toy-cl'), an = q('.toy-an');
+    var chip = q('.toy-chip'), gate = q('.toy-gate'), reset = q('.toy-reset');
+    if (!car || !L || !R || !okEl || !cl || !an || !reset) return;
+    // 🚗 🚙 = proper cars (inside the wall) / 🛺 🏍️ 🚐 = outside
+    var IN = ['🚗', '🚙'], OUT = ['🛺', '🏍️', '🚐'];
+    var queue = [], idx = 0, ok = 0, nl = 0, nr = 0, busy = false;
+    function deal() {
+      queue = ['🚗', '🛺', '🚙', '🏍️', '🚐', '🚗', '🛺', '🚙'];
+      for (var i = queue.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = queue[i]; queue[i] = queue[j]; queue[j] = t; }
+      idx = 0; ok = 0; nl = 0; nr = 0; busy = false;
+      show();
+    }
+    function show() {
+      okEl.textContent = String(ok); cl.textContent = String(nl); an.textContent = String(nr);
+      var done = idx >= queue.length;
+      car.textContent = done ? '🚧' : queue[idx];
+      car.className = 'toy-car';
+      L.disabled = R.disabled = done;
+      if (chip) chip.classList.toggle('toy-done', done);
+      if (!done) bump(car, 'toy-arrive');
+    }
+    function send(left) {
+      if (busy || idx >= queue.length) return;
+      var v = queue[idx], right = left ? IN.indexOf(v) >= 0 : OUT.indexOf(v) >= 0;
+      if (!right) { bump(gate, 'toy-shake'); pop(car, ['❌'], 2); return; }
+      busy = true; ok += 1;
+      if (left) nl += 1; else nr += 1;
+      bump(car, left ? 'toy-in-l' : 'toy-in-r');
+      setTimeout(function () {
+        idx += 1; busy = false; show();
+        if (idx >= queue.length) pop(gate, ['🚗', '🛺', '🌴', '🎉'], 18);
+      }, still() ? 0 : 300);
+    }
+    L.addEventListener('click', function () { send(true); });
+    R.addEventListener('click', function () { send(false); });
+    reset.addEventListener('click', deal);
+    deal();
+  })();
+  </script>
+
   <a class="next" href="../sm-clark-arcade-mario-kart/index.html">
     <div>
       <div class="next-kicker">NEXT · 30 SEC</div>

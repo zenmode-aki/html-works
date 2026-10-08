@@ -563,6 +563,139 @@
     <p class="big">So, in the end, what can it actually do?</p>
   </section>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #f7f5ff, #ece6ff 60%, #ffeef3); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(115,87,232,.22); font-weight: 800; color: #322536; overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chips { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 8px 0 12px; }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; border-radius: 999px;
+    background: #322536; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.15; box-shadow: 0 5px 0 rgba(0,0,0,.28); }
+  .toy-chip.toy-win { background: #2fa36b; }
+  .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 60px; min-height: 58px;
+    padding: 8px 16px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; font-weight: 900;
+    line-height: 1; color: #322536; background: #fff; box-shadow: 0 6px 0 #cbbff5; touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #cbbff5; }
+  .toy-btn.toy-main { background: #7357e8; color: #fff; box-shadow: 0 6px 0 #4a33a8; }
+  .toy-btn.toy-main:active { box-shadow: 0 1px 0 #4a33a8; }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn small { font-size: 18px; font-weight: 900; }
+  .toy-row { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #4a33a8; background: #fff;
+    box-shadow: 0 4px 0 #cbbff5; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #cbbff5; }
+  .toy-meter { height: 14px; margin: 14px auto 2px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #7357e8, #2fa36b); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #241f3a, #1f1a33 60%, #33202a); border-color: rgba(255,255,255,.12); color: #f3efff; }
+  html[data-theme="dark"] .toy-btn, html[data-theme="dark"] .toy-reset { background: #2b2733; color: #f3efff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: #4a33a8; color: #fff; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-chip { background: #121016; }
+  html[data-theme="dark"] .toy-chip.toy-win { background: #1f7a53; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+
+  .toy-mem { display: grid; grid-template-columns: repeat(3, minmax(0, 80px)); gap: 10px; justify-content: center; margin-top: 4px; }
+  .toy-tile { position: relative; height: 80px; padding: 0; border: 0; border-radius: 20px; cursor: pointer; font: inherit;
+    background: linear-gradient(160deg, #9d86ff, #7357e8); box-shadow: 0 6px 0 #4a33a8; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: background .2s, box-shadow .2s; }
+  .toy-tile .toy-back2, .toy-tile .toy-front2 { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; line-height: 1;
+    transition: opacity .2s, transform .25s cubic-bezier(.2,1.5,.4,1); }
+  .toy .toy-tile .toy-back2 { font-size: 30px; color: #fff; }
+  .toy .toy-tile .toy-front2 { font-size: 40px; opacity: 0; transform: scale(.3); }
+  .toy-tile.toy-up { background: #fff; box-shadow: 0 6px 0 #cbbff5; }
+  .toy-tile.toy-up .toy-back2 { opacity: 0; transform: scale(.3); }
+  .toy-tile.toy-up .toy-front2 { opacity: 1; transform: none; }
+  .toy-tile.toy-got { background: #e3f7ec; box-shadow: 0 6px 0 #8fd1a8; }
+  .toy-tile.toy-no { animation: toy-shake .4s; }
+  html[data-theme="dark"] .toy-tile.toy-up { background: #2b2640; box-shadow: 0 6px 0 #121016; }
+  html[data-theme="dark"] .toy-tile.toy-got { background: #1f4a33; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-tile.toy-no { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-tile.toy-no { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🧠">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chips" aria-live="polite">
+      <span class="toy-chip toy-cnt">🧠 <span><span class="toy-n toy-p">0</span>/3</span></span>
+      <span class="toy-chip">🔄 <span class="toy-n toy-t">0</span></span>
+    </div>
+    <div class="toy-mem"></div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var reset = q('.toy-reset');
+    var mem = q('.toy-mem'), pEl = q('.toy-p'), tEl = q('.toy-t'), chip = q('.toy-cnt');
+    if (!mem || !pEl || !tEl) return;
+    var SET = ['🐧', '🍜', '❤️'], tiles = [], open = [], got = 0, tries = 0, lock = false;
+    function build() {
+      while (mem.firstChild) mem.removeChild(mem.firstChild);
+      var deck = SET.concat(SET);
+      for (var i = deck.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = deck[i]; deck[i] = deck[j]; deck[j] = t; }
+      tiles = deck.map(function (e) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'toy-tile'; b.setAttribute('aria-label', '❓');
+        b.innerHTML = '<span class="toy-back2">❔</span><span class="toy-front2"></span>';
+        b.querySelector('.toy-front2').textContent = e;
+        b.setAttribute('data-e', e);
+        b.addEventListener('click', function () { flip(b); });
+        mem.appendChild(b);
+        return b;
+      });
+      open = []; got = 0; tries = 0; lock = false; draw();
+    }
+    function draw() {
+      pEl.textContent = String(got); tEl.textContent = String(tries);
+      chip.classList.toggle('toy-win', got === SET.length);
+    }
+    function flip(b) {
+      if (lock || b.classList.contains('toy-up')) return;
+      b.classList.add('toy-up'); b.setAttribute('aria-label', b.getAttribute('data-e'));
+      open.push(b);
+      if (open.length < 2) return;
+      tries++;
+      var a = open[0], c = open[1];
+      open = [];
+      if (a.getAttribute('data-e') === c.getAttribute('data-e')) {
+        a.classList.add('toy-got'); c.classList.add('toy-got');
+        got++; bump(chip); pop(c, [c.getAttribute('data-e'), '✨'], 5);
+        if (got === SET.length) setTimeout(function () { pop(mem, ['🤖', '🧠', '✓', '🎉', '🐧'], 18); }, 200);
+      } else {
+        lock = true;
+        setTimeout(function () {
+          bump(a, 'toy-no'); bump(c, 'toy-no');
+          a.classList.remove('toy-up'); c.classList.remove('toy-up');
+          a.setAttribute('aria-label', '❓'); c.setAttribute('aria-label', '❓');
+          lock = false;
+        }, 700);
+      }
+      draw();
+    }
+    reset.addEventListener('click', build);
+    build();
+  })();
+  </script>
+
   <a class="next" href="../understand-cursor-again/index.html">
     <div>
       <div class="next-kicker">NEXT · 16 SEC</div>

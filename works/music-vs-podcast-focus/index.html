@@ -393,6 +393,122 @@
   </section>
   </div>
 
+<style>
+  .toy { --tbg: linear-gradient(160deg, #fbf3df, #f1e2c0 55%, #f6ead8); --tedge: #fff; --tglow: rgba(106,90,47,.22); --tink: #3a2f1c; --tbtn: #fffcf6; --tsh: #dcc597; --ttrack: rgba(58,47,28,.12); --tfill: linear-gradient(90deg, #d9653a, #e0b43a, #7fae4a); --tsel: #ffe3b0;
+    position: relative; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: var(--tbg); border: 3px solid var(--tedge); box-shadow: 0 14px 34px var(--tglow);
+    font-weight: 800; color: var(--tink); overflow: hidden; }
+  html[data-theme="dark"] .toy { --tbg: linear-gradient(160deg, #2f2818, #2b2416 55%, #2a241c); --tedge: rgba(255,255,255,.12); --tglow: rgba(0,0,0,.3); --tink: #fbf3e2; --tbtn: #3a3222; --tsh: #17130b; --ttrack: rgba(255,255,255,.12); --tsel: #5a4520; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 58px; min-height: 58px; padding: 8px 14px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--tink); background: var(--tbtn);
+    box-shadow: 0 6px 0 var(--tsh); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--tsh); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--tsh); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-pill { display: flex; width: max-content; max-width: 100%; margin: 14px auto 0; align-items: center; justify-content: center; gap: 8px;
+    padding: 8px 20px; border-radius: 999px; background: var(--tbtn); box-shadow: 0 5px 0 var(--tsh); font-size: 28px; line-height: 1.1; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: var(--ttrack); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--tfill); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.2); } }
+  .toy-wig { animation: toy-wig .45s ease-in-out; }
+  @keyframes toy-wig { 25% { transform: rotate(-12deg); } 75% { transform: rotate(12deg); } }
+  .toy-ch { display: flex; justify-content: center; gap: 10px; margin-top: 6px; }
+  .toy-ch .toy-btn { width: 72px; padding: 0; font-size: 32px; }
+  .toy-ch .toy-btn.toy-sel { background: var(--tsel); box-shadow: 0 6px 0 #c98a3a, inset 0 0 0 3px #c98a3a; }
+  .toy-desk { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 16px; font-size: 40px; line-height: 1; }
+  .toy-desk .toy-wave { display: inline-block; font-size: 30px; }
+  .toy-desk.toy-on .toy-wave { animation: toy-sway 1s ease-in-out infinite alternate; }
+  @keyframes toy-sway { to { transform: translateY(-6px) rotate(8deg); } }
+  .toy-bat { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 12px; font-size: 28px; line-height: 1; }
+  .toy-bat .toy-meter { margin: 0; width: min(180px, 55%); height: 18px; }
+  .toy-done { display: flex; justify-content: center; gap: 4px; margin-top: 12px; min-height: 30px; font-size: 24px; line-height: 1.2; flex-wrap: wrap; }
+  .toy-done span { animation: toy-in .3s cubic-bezier(.2,1.6,.4,1); }
+  @keyframes toy-in { from { transform: scale(.2); } }
+  .toy-work { background: #c98a3a; box-shadow: 0 6px 0 #6a5a2f; min-width: 110px; font-size: 32px; }
+  .toy .toy-work { color: #fff; }
+  .toy-work:active { box-shadow: 0 1px 0 #6a5a2f; }
+  .toy-pill .toy-n { min-width: 1ch; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy, html:not([data-motion="on"]) .toy * { animation: none; }
+  }
+  html[data-motion="off"] .toy, html[data-motion="off"] .toy * { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🎵🎙️">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-ch">
+      <button type="button" class="toy-btn toy-pick toy-sel" data-m="1" aria-label="🎵">🎵</button>
+      <button type="button" class="toy-btn toy-pick" data-m="0" aria-label="🎙️">🎙️</button>
+    </div>
+    <div class="toy-desk toy-on" aria-hidden="true"><span class="toy-wave">🎵</span><span>🎧</span><span class="toy-face">🙂</span><span>💻</span></div>
+    <div class="toy-bat" aria-hidden="true"><span>🧠</span><div class="toy-meter"><span class="toy-fill"></span></div></div>
+    <div class="toy-done" aria-hidden="true"></div>
+    <div class="toy-row" style="align-items:center">
+      <button type="button" class="toy-btn toy-work" aria-label="⌨️">⌨️</button>
+      <div class="toy-pill" aria-live="polite" style="margin:0"><span>✓</span><span class="toy-n">0</span><span>/6</span></div>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, count) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, count);
+    }
+    var resetBtn = q('.toy-reset');
+    var picks = qa('.toy-pick'), desk = q('.toy-desk'), wave = q('.toy-wave'), face = q('.toy-face'), fill = q('.toy-fill');
+    var doneRow = q('.toy-done'), work = q('.toy-work'), num = q('.toy-n');
+    if (!picks.length || !work || !num) return;
+    var music = 1, energy = 100, n = 0, GOAL = 6, celebrated = false;
+    function draw() {
+      if (fill) fill.style.width = energy + '%';
+      if (face) face.textContent = energy <= 0 ? '😵' : energy < 40 ? '😩' : energy < 66 ? '😐' : n >= GOAL ? '😊' : '🙂';
+      if (wave) wave.textContent = music ? '🎵' : '💬';
+      num.textContent = String(n);
+      work.disabled = energy <= 0 || n >= GOAL;
+    }
+    picks.forEach(function (p) {
+      p.addEventListener('click', function () {
+        music = +p.getAttribute('data-m');
+        picks.forEach(function (x) { x.classList.toggle('toy-sel', x === p); });
+        energy = 100; n = 0; celebrated = false;
+        if (doneRow) doneRow.textContent = '';
+        bump(p); draw();
+      });
+    });
+    work.addEventListener('click', function () {
+      if (energy <= 0 || n >= GOAL) return;
+      // 🎙️ talk tires the brain fast; 🎵 only a little
+      energy = Math.max(0, energy - (music ? 5 : 34));
+      n++;
+      if (doneRow) { var s = document.createElement('span'); s.textContent = '📄'; doneRow.appendChild(s); }
+      bump(face); draw();
+      if (energy <= 0) { bump(desk, 'toy-wig'); pop(face || work, ['💤', '🎙️'], 6); }
+      if (n >= GOAL && !celebrated) { celebrated = true; pop(doneRow || work, ['🎵', '📄', '✓', '✨', '🎉'], 18); }
+    });
+    if (resetBtn) resetBtn.addEventListener('click', function () {
+      energy = 100; n = 0; celebrated = false; if (doneRow) doneRow.textContent = ''; draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../splatoon-favorite-weapon/index.html">
     <div>
       <div class="next-kicker">NEXT · 23 SEC</div>

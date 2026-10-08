@@ -589,6 +589,137 @@
     </p>
   </section>
 
+  <style>
+  .toy { --ta: #e0663a; --ts: #f0d2b8; --ti: #322536; margin: 34px 0 0; padding: 20px 16px 20px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #fff8e6, #ffe6d2); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(40,40,80,.16); font-weight: 800; color: var(--ti); overflow: hidden; position: relative; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: var(--ti); background: #fff;
+    box-shadow: 0 6px 0 var(--ts); touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: transform .08s, box-shadow .08s, background .2s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ts); }
+  .toy-btn[disabled] { opacity: .45; cursor: default; }
+  .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  .toy-btn.toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0;
+    border-radius: 50%; font-size: 22px; box-shadow: 0 4px 0 var(--ts); }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .toy-n { font-variant-numeric: tabular-nums; font-weight: 900; }
+  .toy-meter { height: 14px; margin: 14px auto 4px; width: min(260px, 100%); border-radius: 99px; background: rgba(0,0,0,.1); overflow: hidden; }
+  .toy-meter .toy-fill { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--ta); transition: width .35s ease-out; }
+  .toy-bump { animation: toy-bump .3s ease-out; }
+  @keyframes toy-bump { 40% { transform: scale(1.18); } }
+  .toy-shake { animation: toy-shake .4s ease-in-out 2; }
+  @keyframes toy-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #30251c, #211913); border-color: rgba(255,255,255,.12); color: #f3f1ff; }
+  html[data-theme="dark"] .toy-btn { background: #33354a; color: #f3f1ff; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-main { background: var(--ta); color: #fff; }
+  html[data-theme="dark"] .toy-meter { background: rgba(255,255,255,.14); }
+  .toy-path { display: flex; align-items: center; justify-content: center; gap: 4px; margin: 22px auto 14px; width: min(320px, 100%); }
+  .toy-path .toy-dot { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%;
+    background: rgba(0,0,0,.08); font-size: 24px; line-height: 1; filter: grayscale(1); opacity: .55; transition: background .3s, opacity .3s, filter .3s; }
+  .toy-path .toy-dot.toy-ok { background: #ffd9b8; filter: none; opacity: 1; }
+  .toy-path .toy-dot.toy-here { background: #e0663a; filter: none; opacity: 1; box-shadow: 0 0 0 4px #ffd9b8; animation: toy-beat 1.1s ease-in-out infinite; }
+  @keyframes toy-beat { 50% { transform: scale(1.1); } }
+  .toy-path .toy-ln { flex: 0 0 8px; height: 4px; border-radius: 2px; background: rgba(0,0,0,.15); }
+  .toy-stage { min-height: 150px; width: min(310px, 100%); margin: 0 auto; padding: 12px; border-radius: 22px; background: #fff; box-shadow: 0 6px 0 #f0d2b8;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .toy-stage .toy-big { font-size: 46px; line-height: 1.1; letter-spacing: 4px; }
+  .toy-flags { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 100%; }
+  .toy-btn.toy-flag { min-width: 0; padding: 8px 0 4px; font-size: 32px; gap: 2px; flex-direction: column; display: inline-flex; align-items: center; }
+  .toy-btn.toy-flag .toy-cost { font-size: 16px; visibility: hidden; }
+  .toy-btn.toy-flag.toy-no .toy-cost, .toy-btn.toy-flag.toy-yes .toy-cost { visibility: visible; }
+  .toy-btn.toy-flag.toy-no { background: #f2e9e4; opacity: .6; }
+  .toy-btn.toy-flag.toy-yes { background: #d8f5e6; box-shadow: 0 6px 0 #8fd2b0; }
+  html[data-theme="dark"] .toy-path .toy-dot { background: rgba(255,255,255,.1); }
+  html[data-theme="dark"] .toy-path .toy-dot.toy-ok { background: #5a3a24; }
+  html[data-theme="dark"] .toy-path .toy-ln { background: rgba(255,255,255,.2); }
+  html[data-theme="dark"] .toy-stage { background: #33354a; box-shadow: 0 6px 0 #11121a; }
+  html[data-theme="dark"] .toy-btn.toy-flag.toy-no { background: #2a2a33; }
+  html[data-theme="dark"] .toy-btn.toy-flag.toy-yes { background: #1f4434; box-shadow: 0 6px 0 #0d1d16; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-bump, html:not([data-motion="on"]) .toy-shake, html:not([data-motion="on"]) .toy-path .toy-dot.toy-here { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-bump, html[data-motion="off"] .toy-shake, html[data-motion="off"] .toy-path .toy-dot.toy-here { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🌏🏫">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-path" aria-hidden="true">
+      <span class="toy-dot">🌏</span><span class="toy-ln"></span><span class="toy-dot">🏫</span><span class="toy-ln"></span><span class="toy-dot">✉️</span><span class="toy-ln"></span><span class="toy-dot">🧳</span><span class="toy-ln"></span><span class="toy-dot">🎯</span>
+    </div>
+    <div class="toy-stage" aria-live="polite">
+      <div class="toy-flags">
+        <button type="button" class="toy-btn toy-flag" data-ok="0" aria-label="🇬🇧">🇬🇧<span class="toy-cost">💸</span></button>
+        <button type="button" class="toy-btn toy-flag" data-ok="0" aria-label="🇺🇸">🇺🇸<span class="toy-cost">💸</span></button>
+        <button type="button" class="toy-btn toy-flag" data-ok="0" aria-label="🇦🇺">🇦🇺<span class="toy-cost">💸</span></button>
+        <button type="button" class="toy-btn toy-flag" data-ok="1" aria-label="🇲🇾">🇲🇾<span class="toy-cost">✓</span></button>
+      </div>
+      <div class="toy-big"></div>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-main toy-go" aria-label="▶">▶</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    function q(s) { return box.querySelector(s); }
+    function qa(s) { return [].slice.call(box.querySelectorAll(s)); }
+    function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+    function bump(el, c) { if (!el) return; c = c || 'toy-bump'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    var dots = qa('.toy-dot'), flags = qa('.toy-flag'), big = q('.toy-big'), go = q('.toy-go'), flagBox = q('.toy-flags'), stage = q('.toy-stage'), reset = q('.toy-reset');
+    if (dots.length < 5 || !flags.length || !big || !go || !flagBox || !reset) return;
+    // step 0: pick a country, 1: 4 schools, 2: ask by mail, 3: visit (now), 4 stays "?"
+    var step = 0;
+    var SHOW = ['', '🏫🏫🏫🏫', '✉️ ➜ 🏫 ?', '🧳 ✈️ 🇲🇾 📍'];
+    function draw() {
+      dots.forEach(function (d, i) {
+        d.classList.toggle('toy-ok', i < step);
+        d.classList.toggle('toy-here', i === step);
+      });
+      flagBox.style.display = step === 0 ? '' : 'none';
+      big.textContent = step === 0 ? '' : SHOW[step];
+      if (dots[4]) dots[4].textContent = step >= 3 ? '❓' : '🎯';
+      go.disabled = step === 0 || step >= 3;
+    }
+    flags.forEach(function (f) {
+      f.addEventListener('click', function () {
+        if (step !== 0) return;
+        if (f.getAttribute('data-ok') === '1') {
+          f.classList.add('toy-yes');
+          pop(f, ['🇲🇾', '✨'], 6);
+          setTimeout(function () { step = 1; draw(); }, still() ? 0 : 450);
+        } else {
+          f.classList.add('toy-no');
+          bump(f, 'toy-shake');
+        }
+      });
+    });
+    go.addEventListener('click', function () {
+      if (step < 1 || step >= 3) return;
+      step += 1;
+      bump(big);
+      draw();
+      if (step >= 3) pop(stage || go, ['🇲🇾', '🏫', '🧳', '🎉'], 18);
+    });
+    reset.addEventListener('click', function () {
+      step = 0;
+      flags.forEach(function (f) { f.classList.remove('toy-yes', 'toy-no'); });
+      draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../the-tools-i-used/index.html">
     <div>
       <div class="next-kicker">NEXT · 97 SEC</div>
