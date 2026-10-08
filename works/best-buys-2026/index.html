@@ -395,6 +395,135 @@
     </p>
   </section>
 
+
+  <style>
+  .toy { position: relative; margin: 34px 0 0; padding: 20px 14px 0; border-radius: 26px; text-align: center;
+    background: linear-gradient(170deg, #efe6ff, #f7e9ff 55%, #fff4e6); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(138,92,214,.22); font-weight: 800; color: #241f2e; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-sky { position: relative; height: 56px; margin: 6px auto 4px; max-width: 300px; }
+  .toy-cloud { position: absolute; top: 6px; font-size: 38px; line-height: 1; transition: transform .6s ease-in, opacity .6s ease-in; }
+  .toy-cloud.toy-c1 { left: 6%; } .toy-cloud.toy-c2 { left: 40%; top: 0; } .toy-cloud.toy-c3 { right: 6%; }
+  .toy-cloud.toy-gone { opacity: 0; transform: translate(60px, -50px) scale(.5) rotate(20deg); }
+  .toy-sun { position: absolute; left: 50%; top: 0; font-size: 46px; line-height: 1; transform: translateX(-50%) scale(.3); visibility: hidden; opacity: 0;
+    transition: transform .4s cubic-bezier(.3,1.6,.5,1), opacity .3s; }
+  .toy-sky.toy-clear .toy-sun { visibility: visible; opacity: 1; transform: translateX(-50%) scale(1); }
+  .toy-podium { display: flex; align-items: flex-end; justify-content: center; gap: 8px; }
+  .toy-col { display: flex; flex-direction: column; align-items: center; width: 94px; }
+  .toy-prize { width: 72px; height: 72px; margin-bottom: 8px; padding: 0; border: 0; border-radius: 22px; cursor: pointer; font: inherit;
+    font-size: 40px; line-height: 1; background: #fff; box-shadow: 0 6px 0 #d5c4f2; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    transition: box-shadow .15s, background .2s; }
+  .toy-prize .toy-in { display: inline-block; }
+  .toy-prize.toy-open { background: #fff8e1; box-shadow: 0 6px 0 #e6c66a; }
+  .toy-prize.toy-flip { animation: toy-flip .3s ease-in-out; }
+  @keyframes toy-flip { 50% { transform: scaleX(0); } }
+  .toy-prize.toy-hint { animation: toy-pulse 1s ease-in-out infinite; }
+  @keyframes toy-pulse { 0%, 100% { box-shadow: 0 6px 0 #e6c66a, 0 0 0 0 rgba(138,92,214,.5); } 50% { box-shadow: 0 6px 0 #e6c66a, 0 0 0 10px rgba(138,92,214,0); } }
+  .toy-prize.toy-play .toy-in { animation: toy-bop .35s ease-out; }
+  @keyframes toy-bop { 40% { transform: scale(1.25) rotate(-8deg); } }
+  .toy-block { width: 100%; border-radius: 14px 14px 0 0; display: flex; align-items: flex-start; justify-content: center; padding-top: 10px;
+    font-size: 32px; line-height: 1; color: #fff; }
+  .toy-col.toy-p1 .toy-block { height: 120px; background: linear-gradient(#a77ef0, #8a5cd6); }
+  .toy-col.toy-p2 .toy-block { height: 88px; background: linear-gradient(#b9a6dc, #9a86c4); }
+  .toy-col.toy-p3 .toy-block { height: 62px; background: linear-gradient(#d9a07a, #c0835c); }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #8a5cd6; background: #fff;
+    box-shadow: 0 4px 0 #d5c4f2; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #d5c4f2; }
+  html[data-theme="dark"] .toy { background: linear-gradient(170deg, #2a2242, #33224a 55%, #33291f); border-color: rgba(255,255,255,.12); color: #f1eaff; }
+  html[data-theme="dark"] .toy-prize, html[data-theme="dark"] .toy-reset { background: #2f2944; color: #d5c4f2; box-shadow: 0 6px 0 #120e1d; }
+  html[data-theme="dark"] .toy-prize.toy-open { background: #3a3220; box-shadow: 0 6px 0 #1a160c; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-prize,
+    html:not([data-motion="on"]) .toy-prize .toy-in { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-prize, html[data-motion="off"] .toy-prize .toy-in { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🏆">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-sky" aria-hidden="true">
+      <span class="toy-cloud toy-c1">☁️</span><span class="toy-cloud toy-c2">☁️</span><span class="toy-cloud toy-c3">☁️</span>
+      <span class="toy-sun">☀️</span>
+    </div>
+    <div class="toy-podium">
+      <div class="toy-col toy-p2">
+        <button type="button" class="toy-prize" data-item="🖥️" aria-label="🎁"><span class="toy-in">🎁</span></button>
+        <div class="toy-block" aria-hidden="true">🥈</div>
+      </div>
+      <div class="toy-col toy-p1">
+        <button type="button" class="toy-prize" data-item="🎧" aria-label="🎁"><span class="toy-in">🎁</span></button>
+        <div class="toy-block" aria-hidden="true">🥇</div>
+      </div>
+      <div class="toy-col toy-p3">
+        <button type="button" class="toy-prize" data-item="🤖" aria-label="🎁"><span class="toy-in">🎁</span></button>
+        <div class="toy-block" aria-hidden="true">🥉</div>
+      </div>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var prizes = [].slice.call(box.querySelectorAll('.toy-prize'));
+    var clouds = [].slice.call(box.querySelectorAll('.toy-cloud'));
+    var sky = box.querySelector('.toy-sky'), reset = box.querySelector('.toy-reset');
+    var head = box.querySelector('.toy-p1 .toy-prize');
+    if (prizes.length !== 3 || !sky || !reset || !head) return;
+    var blown = 0;
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function pop(el, list, n) {
+      if (!window.pengessoPop) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    function setFace(b, emo) {
+      var s = b.querySelector('.toy-in');
+      b.setAttribute('aria-label', emo);
+      if (still()) { if (s) s.textContent = emo; return; }
+      b.classList.remove('toy-flip'); void b.offsetWidth; b.classList.add('toy-flip');
+      setTimeout(function () { if (s) s.textContent = emo; }, 150);
+    }
+    function allOpen() { return prizes.every(function (b) { return b.classList.contains('toy-open'); }); }
+    prizes.forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (!b.classList.contains('toy-open')) {
+          b.classList.add('toy-open');
+          setFace(b, b.getAttribute('data-item'));
+          setTimeout(function () { pop(b, [b.getAttribute('data-item')], b === head ? 10 : 5); }, 160);
+          if (allOpen()) setTimeout(function () { head.classList.add('toy-hint'); }, 350);
+          return;
+        }
+        if (b !== head || !allOpen() || blown >= clouds.length) return;
+        head.classList.remove('toy-play'); void head.offsetWidth; head.classList.add('toy-play');
+        clouds[blown].classList.add('toy-gone');
+        blown += 1;
+        pop(head, ['🎵', '🎶'], 4);
+        if (blown >= clouds.length) {
+          head.classList.remove('toy-hint');
+          sky.classList.add('toy-clear');
+          setTimeout(function () { pop(sky, ['☀️', '🎧', '🎵', '✨'], 18); }, 200);
+        }
+      });
+    });
+    reset.addEventListener('click', function () {
+      blown = 0;
+      sky.classList.remove('toy-clear');
+      clouds.forEach(function (c) { c.classList.remove('toy-gone'); });
+      prizes.forEach(function (b) {
+        b.classList.remove('toy-open', 'toy-hint', 'toy-flip', 'toy-play');
+        var s = b.querySelector('.toy-in');
+        if (s) s.textContent = '🎁';
+        b.setAttribute('aria-label', '🎁');
+      });
+    });
+  })();
+  </script>
+
   <a class="next" href="../money-well-spent-in-2026/index.html">
     <div>
       <div class="next-kicker">NEXT · 25 SEC</div>

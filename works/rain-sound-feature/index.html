@@ -514,6 +514,153 @@
     </p>
   </section>
 
+
+<style>
+.toy{--ta:#2a5fa0;--tb:#8bb4e8;--tl:#e2edfb;--tx:#1f2c44;--td:#1b3f6e;--tk:#1e2a40}
+.toy{position:relative;box-sizing:border-box;margin:30px 0 12px;padding:14px 14px 18px;border-radius:30px;background:linear-gradient(165deg,var(--tl) 0%,#fff 92%);border:3px solid var(--ta);box-shadow:0 16px 36px rgba(0,0,0,.12);color:var(--tx);text-align:center;font-weight:800;line-height:1.2;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+.toy *,.toy *::before,.toy *::after{box-sizing:border-box}
+.toy .toy-kick{display:inline-block;font-size:30px;line-height:1;margin:0 0 8px;animation:toyKick 1.5s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes toyKick{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-12deg)}}
+.toy button{font-family:inherit;font-weight:900;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:inherit;margin:0;border:0;background:none;padding:0;line-height:1}
+.toy .toy-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:64px;min-height:58px;padding:6px 18px;border-radius:20px;background:var(--ta);color:#fff;font-size:28px;box-shadow:0 5px 0 var(--td);transition:transform .08s,box-shadow .08s,opacity .2s}
+.toy .toy-btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--td)}
+.toy .toy-btn[disabled]{opacity:.38;cursor:default;transform:none;box-shadow:0 5px 0 var(--td)}
+.toy .toy-reset{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#fff;border:3px solid var(--ta);color:var(--ta);font-size:26px;margin-top:14px;transition:transform .2s}
+.toy .toy-reset:active{transform:rotate(-120deg) scale(.92)}
+.toy .toy-n{font-variant-numeric:tabular-nums;font-weight:900}
+.toy .toy-row{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.toy .toy-meter{position:relative;height:20px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden;box-shadow:inset 0 2px 3px rgba(0,0,0,.1)}
+.toy .toy-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--tb),var(--ta));transition:width .35s cubic-bezier(.3,1.4,.5,1)}
+.toy .toy-win{display:block;font-size:40px;line-height:50px;min-height:50px;margin-top:6px;visibility:hidden}
+.toy .toy-win.on{visibility:visible;animation:toyWin .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes toyWin{0%{transform:scale(.2) rotate(-20deg)}100%{transform:scale(1) rotate(0)}}
+.toy .toy-bop{animation:toyBop .38s ease-out}
+@keyframes toyBop{0%{transform:scale(1)}40%{transform:scale(1.28) rotate(-8deg)}100%{transform:scale(1)}}
+.toy .toy-shake{animation:toyShake .42s}
+@keyframes toyShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+html[data-theme="dark"] .toy{background:linear-gradient(165deg,var(--tk) 0%,#1d1e27 92%);color:#f3eff7;border-color:var(--tb);box-shadow:0 16px 36px rgba(0,0,0,.45)}
+html[data-theme="dark"] .toy .toy-reset{background:#262834;color:#fff;border-color:var(--tb)}
+html[data-theme="dark"] .toy .toy-meter{background:rgba(255,255,255,.1)}
+.toy .toy-room{position:relative;height:200px;margin:0 auto;max-width:380px;border-radius:26px;overflow:hidden;background:linear-gradient(180deg,#fdf6e8,#f3ead6);border:3px solid rgba(42,95,160,.25);transition:background .6s}
+.toy .toy-room.wet{background:linear-gradient(180deg,#9fb6d6,#c9d7ea)}
+.toy .toy-nz{position:absolute;font-size:34px;line-height:1;transition:opacity .5s,filter .5s;animation:toyBuzz .5s ease-in-out infinite}
+.toy .toy-nz:nth-child(2){animation-delay:.12s}
+.toy .toy-nz:nth-child(3){animation-delay:.25s}
+.toy .toy-nz:nth-child(4){animation-delay:.37s}
+@keyframes toyBuzz{0%,100%{transform:translate(0,0) rotate(0)}25%{transform:translate(-2px,1px) rotate(-6deg)}75%{transform:translate(2px,-1px) rotate(6deg)}}
+.toy .toy-ear{position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.15);font-size:46px;line-height:84px}
+.toy .toy-note{position:absolute;left:50%;top:50%;font-size:22px;line-height:1;animation:toyNote 2.4s ease-out infinite}
+.toy .toy-note.n2{animation-delay:1.2s}
+@keyframes toyNote{0%{transform:translate(20px,-30px) scale(.6);opacity:0}20%{opacity:1}100%{transform:translate(48px,-86px) scale(1);opacity:0}}
+.toy .toy-drop{position:absolute;top:-30px;width:3px;height:26px;border-radius:2px;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(42,95,160,.75));visibility:hidden;animation:toyRain .9s linear infinite}
+.toy .toy-drop.on{visibility:visible}
+@keyframes toyRain{0%{transform:translateY(0)}100%{transform:translateY(250px)}}
+.toy .toy-cc{display:flex;justify-content:center;align-items:center;gap:14px;margin:16px 0 6px}
+.toy .toy-rain{width:84px;height:84px;border-radius:26px;background:#e8edf5;font-size:44px;box-shadow:0 5px 0 #c3cad6;transition:background .25s,transform .1s}
+.toy .toy-rain[aria-pressed="true"]{background:var(--ta);box-shadow:0 5px 0 var(--td)}
+.toy .toy-rain:active{transform:translateY(3px)}
+.toy .toy-pm{width:58px;min-width:58px;padding:0;font-size:32px;border-radius:50%}
+.toy .toy-lv{display:flex;justify-content:center;gap:6px;margin:8px 0 0}
+.toy .toy-lv i{width:30px;height:12px;border-radius:999px;background:rgba(0,0,0,.1);transition:background .25s}
+.toy .toy-lv i.on{background:var(--ta)}
+.toy .toy-meterrow{display:flex;justify-content:center;align-items:center;gap:8px;font-size:24px;margin-top:10px}
+html[data-theme="dark"] .toy .toy-room{background:linear-gradient(180deg,#2c2a33,#25232b);border-color:rgba(139,180,232,.25)}
+html[data-theme="dark"] .toy .toy-room.wet{background:linear-gradient(180deg,#1e2b44,#24344f)}
+html[data-theme="dark"] .toy .toy-ear{background:#2b2e3b}
+html[data-theme="dark"] .toy .toy-rain{background:#2b2e3b;box-shadow:0 5px 0 #15161d}
+html[data-theme="dark"] .toy .toy-rain[aria-pressed="true"]{background:var(--ta);box-shadow:0 5px 0 var(--td)}
+html[data-theme="dark"] .toy .toy-lv i{background:rgba(255,255,255,.14)}
+html[data-theme="dark"] .toy .toy-lv i.on{background:var(--tb)}
+html[data-theme="dark"] .toy .toy-drop{background:linear-gradient(180deg,rgba(255,255,255,0),rgba(170,200,255,.8))}
+@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .toy *,html:not([data-motion="on"]) .toy *::before,html:not([data-motion="on"]) .toy *::after{animation:none !important}}
+html[data-motion="off"] .toy *,html[data-motion="off"] .toy *::before,html[data-motion="off"] .toy *::after{animation:none !important}
+</style>
+<section class="toy" aria-label="👆🌧️🎧">
+  <div class="toy-kick" aria-hidden="true">👆</div>
+  <div class="toy-room" aria-hidden="true">
+    <span class="toy-nz" style="left:16px;top:18px">🚗</span>
+    <span class="toy-nz" style="right:18px;top:22px">📢</span>
+    <span class="toy-nz" style="left:22px;bottom:20px">🔨</span>
+    <span class="toy-nz" style="right:20px;bottom:18px">🐕</span>
+    <span class="toy-ear">🎧</span>
+    <span class="toy-note">🎵</span><span class="toy-note n2">🎶</span>
+    <i class="toy-drop" style="left:8%;animation-delay:0s"></i><i class="toy-drop" style="left:62%;animation-delay:.35s"></i>
+    <i class="toy-drop" style="left:30%;animation-delay:.6s"></i><i class="toy-drop" style="left:85%;animation-delay:.15s"></i>
+    <i class="toy-drop" style="left:45%;animation-delay:.8s"></i><i class="toy-drop" style="left:18%;animation-delay:.45s"></i>
+    <i class="toy-drop" style="left:74%;animation-delay:.7s"></i><i class="toy-drop" style="left:93%;animation-delay:.25s"></i>
+    <i class="toy-drop" style="left:38%;animation-delay:.1s"></i><i class="toy-drop" style="left:55%;animation-delay:.55s"></i>
+  </div>
+  <div class="toy-cc">
+    <button type="button" class="toy-btn toy-pm toy-minus" aria-label="−">−</button>
+    <button type="button" class="toy-rain" aria-label="🌧️" aria-pressed="false">🌧️</button>
+    <button type="button" class="toy-btn toy-pm toy-plus" aria-label="+">+</button>
+  </div>
+  <div class="toy-lv" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="toy-meterrow" aria-hidden="true"><span>🔊</span><span><span class="toy-n toy-noise">100</span>%</span></div>
+  <div class="toy-win" aria-live="polite">😌🎧✨</div>
+  <button type="button" class="toy-reset" aria-label="↺">↺</button>
+</section>
+<script>
+(function () {
+  var root = document.querySelector('section.toy');
+  if (!root) return;
+  var SLUG = 'rain-sound-feature';
+  function q(s) { return root.querySelector(s); }
+  function qa(s) { return Array.prototype.slice.call(root.querySelectorAll(s)); }
+  function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  function bop(el, c) { if (!el) return; c = c || 'toy-bop'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function boom(el, list, n) { if (!el || !window.pengessoPop) return; var r = el.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n || 16); }
+  function sget(k) { try { return window.localStorage.getItem('pengesso-toy-' + SLUG + '-' + k); } catch (e) { return null; } }
+  function sset(k, v) { try { window.localStorage.setItem('pengesso-toy-' + SLUG + '-' + k, String(v)); } catch (e) {} }
+  var room = q('.toy-room'), nz = qa('.toy-nz'), drops = qa('.toy-drop'), rain = q('.toy-rain'), plus = q('.toy-plus'), minus = q('.toy-minus');
+  var lv = qa('.toy-lv i'), noise = q('.toy-noise'), win = q('.toy-win'), reset = q('.toy-reset');
+  if (!room || !rain || !plus || !minus || !noise || !win || !reset) return;
+  var level = 0, won = false, ac = null, gain = null, src = null, inView = true;
+  function sound(on) {
+    try {
+      if (on && !ac) {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        ac = new AC();
+        var len = ac.sampleRate * 2, buf = ac.createBuffer(1, len, ac.sampleRate), d = buf.getChannelData(0), last = 0;
+        for (var i = 0; i < len; i++) { var w = Math.random() * 2 - 1; last = (last + 0.04 * w) / 1.04; d[i] = last * 3.2 + w * 0.08; }
+        src = ac.createBufferSource(); src.buffer = buf; src.loop = true;
+        var f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1400;
+        gain = ac.createGain(); gain.gain.value = 0;
+        src.connect(f); f.connect(gain); gain.connect(ac.destination);
+        src.start();
+      }
+      if (!ac || !gain) return;
+      if (ac.state === 'suspended' && on) ac.resume();
+      gain.gain.setTargetAtTime(on && inView ? 0.05 + level * 0.035 : 0, ac.currentTime, 0.25);
+    } catch (e) {}
+  }
+  function paint() {
+    room.classList.toggle('wet', level > 0);
+    rain.setAttribute('aria-pressed', level > 0 ? 'true' : 'false');
+    drops.forEach(function (d, i) { d.classList.toggle('on', i < level * 2); });
+    nz.forEach(function (n) { n.style.opacity = String(Math.max(0.08, 1 - level * 0.19)); n.style.filter = 'blur(' + (level * 0.7).toFixed(1) + 'px)'; });
+    lv.forEach(function (b, i) { b.classList.toggle('on', i < level); });
+    noise.textContent = String(100 - level * 20);
+    plus.disabled = level >= 5;
+    minus.disabled = level <= 0;
+    sound(level > 0);
+    if (level >= 5 && !won) {
+      won = true;
+      win.classList.remove('on'); void win.offsetWidth; win.classList.add('on');
+      boom(rain, ['💧', '🌧️', '😌', '🎧'], 16);
+    }
+    if (level < 5 && won) { won = false; win.classList.remove('on'); }
+  }
+  rain.addEventListener('click', function () { level = level > 0 ? 0 : 2; bop(rain); paint(); });
+  plus.addEventListener('click', function () { if (level < 5) { level++; paint(); } });
+  minus.addEventListener('click', function () { if (level > 0) { level--; paint(); } });
+  reset.addEventListener('click', function () { level = 0; paint(); });
+  document.addEventListener('visibilitychange', function () { if (document.hidden) { level = 0; paint(); } });
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { inView = es[0].isIntersecting; if (ac) sound(level > 0); }).observe(root);
+  paint();
+})();
+</script>
   <a class="next" href="../spotify-dj-button/index.html">
     <div>
       <div class="next-kicker">NEXT · 14 SEC</div>

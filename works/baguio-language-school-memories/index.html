@@ -582,6 +582,125 @@
     <figcaption>📍 <b>Pines International Academy</b> · <a href="https://maps.app.goo.gl/ao7oxxCFC9fjyKzd8" target="_blank" rel="noopener noreferrer">Open in Google Maps ↗</a></figcaption>
   </figure>
 
+
+  <style>
+  .toy { position: relative; margin: 34px 0 0; padding: 20px 14px 22px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #dff3e3, #c8ebd3 55%, #f0faf2); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(47,125,85,.22); font-weight: 800; color: #1d3a2a; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-chip { display: inline-flex; align-items: center; gap: 6px; margin: 8px 0 14px; padding: 8px 18px; border-radius: 999px;
+    background: #1d3a2a; color: #fff; font-size: 24px; font-weight: 900; line-height: 1.1; box-shadow: 0 5px 0 #0c1d14; }
+  .toy-chip .toy-n { font-variant-numeric: tabular-nums; }
+  .toy-chip.toy-done { background: #f2b33d; color: #3a2a06; box-shadow: 0 5px 0 #b07c16; }
+  .toy-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 92px)); justify-content: center; gap: 10px; }
+  .toy-card { position: relative; height: 104px; padding: 0; border: 0; border-radius: 20px; cursor: pointer; font: inherit;
+    font-size: 46px; line-height: 1; color: #fff; background: linear-gradient(160deg, #3f9a6b, #2f7d55); box-shadow: 0 6px 0 #1f5a3c;
+    touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: box-shadow .15s, background .15s; }
+  .toy-card .toy-face { display: inline-block; }
+  .toy-card.toy-up { background: #fffdf3; box-shadow: 0 6px 0 #cfe3d4, inset 0 0 0 3px #7cc59a; }
+  .toy-card.toy-got { background: #fff6d6; box-shadow: 0 6px 0 #e3c46a, inset 0 0 0 4px #f2b33d; }
+  .toy-card.toy-flip { animation: toy-flip .3s ease-in-out; }
+  @keyframes toy-flip { 50% { transform: scaleX(0); } }
+  .toy-card.toy-no { animation: toy-no .35s ease-in-out; }
+  @keyframes toy-no { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #2f7d55; background: #fff;
+    box-shadow: 0 4px 0 #b5dcc2; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #b5dcc2; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #183a28, #1d4430 55%, #142b1f); border-color: rgba(255,255,255,.12); color: #e4f7ea; }
+  html[data-theme="dark"] .toy-card.toy-up { background: #26352c; box-shadow: 0 6px 0 #0d1a12, inset 0 0 0 3px #7cc59a; }
+  html[data-theme="dark"] .toy-card.toy-got { background: #3a3218; box-shadow: 0 6px 0 #1a1608, inset 0 0 0 4px #f2b33d; }
+  html[data-theme="dark"] .toy-chip { background: #0c1d14; box-shadow: 0 5px 0 #000; }
+  html[data-theme="dark"] .toy-chip.toy-done { background: #f2b33d; color: #3a2a06; box-shadow: 0 5px 0 #6e4c0a; }
+  html[data-theme="dark"] .toy-reset { background: #26352c; color: #7cc59a; box-shadow: 0 4px 0 #0d1a12; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick, html:not([data-motion="on"]) .toy-card { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick, html[data-motion="off"] .toy-card { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🌲">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-chip" aria-live="polite">✓ <span class="toy-n">0</span>/3</div>
+    <div class="toy-grid">
+      <button type="button" class="toy-card" aria-label="🌲"><span class="toy-face">🌲</span></button>
+      <button type="button" class="toy-card" aria-label="🌲"><span class="toy-face">🌲</span></button>
+      <button type="button" class="toy-card" aria-label="🌲"><span class="toy-face">🌲</span></button>
+      <button type="button" class="toy-card" aria-label="🌲"><span class="toy-face">🌲</span></button>
+      <button type="button" class="toy-card" aria-label="🌲"><span class="toy-face">🌲</span></button>
+      <button type="button" class="toy-card" aria-label="🌲"><span class="toy-face">🌲</span></button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var cards = [].slice.call(box.querySelectorAll('.toy-card'));
+    var num = box.querySelector('.toy-n'), chip = box.querySelector('.toy-chip'), reset = box.querySelector('.toy-reset');
+    if (cards.length !== 6 || !num || !reset) return;
+    var deck = [], open = [], got = 0, busy = false, timer = 0;
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function show(c, emo) {
+      var f = c.querySelector('.toy-face');
+      c.setAttribute('aria-label', emo);
+      if (still()) { if (f) f.textContent = emo; return; }
+      c.classList.remove('toy-flip'); void c.offsetWidth; c.classList.add('toy-flip');
+      setTimeout(function () { if (f) f.textContent = emo; }, 150);
+    }
+    function deal() {
+      deck = ['🏫', '🏫', '🍢', '🍢', '👑', '👑'];
+      for (var i = deck.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = deck[i]; deck[i] = deck[j]; deck[j] = t; }
+      clearTimeout(timer); open = []; got = 0; busy = false;
+      cards.forEach(function (c) {
+        c.classList.remove('toy-up', 'toy-got', 'toy-flip', 'toy-no');
+        var f = c.querySelector('.toy-face');
+        if (f) f.textContent = '🌲';
+        c.setAttribute('aria-label', '🌲');
+      });
+      num.textContent = '0';
+      if (chip) chip.classList.remove('toy-done');
+    }
+    cards.forEach(function (c, i) {
+      c.addEventListener('click', function () {
+        if (busy || c.classList.contains('toy-up') || c.classList.contains('toy-got')) return;
+        c.classList.add('toy-up');
+        show(c, deck[i]);
+        open.push(i);
+        if (open.length < 2) return;
+        var a = open[0], b = open[1];
+        open = [];
+        if (deck[a] === deck[b]) {
+          got += 1;
+          num.textContent = String(got);
+          setTimeout(function () {
+            cards[a].classList.add('toy-got'); cards[b].classList.add('toy-got');
+            if (window.pengessoPop) {
+              var r = c.getBoundingClientRect();
+              window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, got === 3 ? ['🌲', '🏫', '🍢', '👑', '🎉'] : [deck[a]], got === 3 ? 20 : 5);
+            }
+            if (got === 3 && chip) chip.classList.add('toy-done');
+          }, 260);
+        } else {
+          busy = true;
+          timer = setTimeout(function () {
+            [a, b].forEach(function (k) {
+              cards[k].classList.remove('toy-up');
+              show(cards[k], '🌲');
+            });
+            busy = false;
+          }, 800);
+        }
+      });
+    });
+    reset.addEventListener('click', deal);
+    deal();
+  })();
+  </script>
+
   <!-- 🌲 バギオの6本 -->
   <nav class="bg-nav" aria-label="Baguio series">
     <div class="bg-nav-head">🌲 BAGUIO, IN 6 POSTS</div>

@@ -581,6 +581,119 @@
 
   <div class="chap-tracker" aria-hidden="true"><span data-c="c1" style="--c: #ff8a70">1</span><span data-c="c2" style="--c: #4d9de0">2</span><span data-c="c3" style="--c: #34b27d">3</span></div>
 
+  <style>
+.toy{--ta:#e0663a;--ts:#ffc9a8;--tg:#fff3dc;--tk:#322536;position:relative;margin:30px 0 8px;padding:20px 14px 18px;border-radius:30px;background:var(--tbg,linear-gradient(170deg,var(--tg) 0%,#fff 92%));border:3px solid var(--ta);box-shadow:0 9px 0 var(--ts),0 24px 44px rgba(30,20,60,.13);color:var(--tk);font-weight:800;text-align:center;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.toy *{box-sizing:border-box}
+.toy-kick{position:absolute;top:12px;left:14px;font-size:30px;line-height:1;pointer-events:none;animation:toy-kick 1.3s ease-in-out infinite}
+@keyframes toy-kick{0%,100%{transform:translateY(0) rotate(-10deg)}50%{transform:translateY(7px) rotate(-10deg)}}
+.toy button{font-family:inherit;font-weight:900;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;margin:0}
+.toy .toy-reset{position:absolute;top:10px;right:10px;z-index:3;width:50px;height:50px;padding:0;border-radius:50%;border:3px solid var(--ta);background:#fff;color:var(--ta);font-size:26px;line-height:1;transition:transform .3s}
+.toy .toy-reset:active{transform:rotate(-120deg)}
+.toy-n{font-variant-numeric:tabular-nums;font-weight:900}
+html[data-theme="dark"] .toy{background:linear-gradient(170deg,#262236 0%,#17151f 92%);color:#f3eefc;box-shadow:0 9px 0 rgba(0,0,0,.45),0 24px 44px rgba(0,0,0,.35)}
+html[data-theme="dark"] .toy .toy-reset{background:#2b2738;color:#f3eefc}
+@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .toy,html:not([data-motion="on"]) .toy *{animation:none !important;transition:none !important}}
+html[data-motion="off"] .toy,html[data-motion="off"] .toy *{animation:none !important;transition:none !important}
+.toy .toy-head{display:flex;justify-content:center;align-items:center;gap:10px;min-height:52px;margin:0 54px 10px}
+.toy .toy-heart{font-size:46px;line-height:1}
+.toy .toy-bar{width:110px;height:20px;border-radius:999px;background:#fff;border:3px solid var(--ts);overflow:hidden}
+.toy .toy-fill{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#ff8aa8,#ff4f6d);transition:width .45s cubic-bezier(.3,1.4,.5,1)}
+.toy .toy-sea{position:relative;height:190px;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,#9aa7c7 0%,#c9cfe0 60%);transition:background .6s}
+.toy.toy-calm .toy-sea{background:linear-gradient(180deg,#7fd0ff 0%,#d8f2ff 60%)}
+.toy .toy-sun{position:absolute;right:16px;top:12px;font-size:40px;line-height:1;transition:transform .6s,opacity .6s;opacity:.25;transform:translateY(30px) scale(.7)}
+.toy.toy-calm .toy-sun{opacity:1;transform:none}
+.toy .toy-cloud{position:absolute;left:14px;top:14px;font-size:40px;line-height:1;transition:opacity .6s}
+.toy.toy-calm .toy-cloud{opacity:0}
+.toy .toy-wv{position:absolute;left:0;bottom:0;width:200%;height:120px;display:block}
+.toy .toy-wv path{transition:d .5s}
+.toy .toy-wb{animation:toy-slide 4s linear infinite;opacity:.55}
+.toy .toy-wf{animation:toy-slide 2.6s linear infinite}
+@keyframes toy-slide{from{transform:translateX(0)}to{transform:translateX(-25%)}}
+.toy .toy-pen{position:absolute;left:50%;bottom:50px;width:52px;margin-left:-26px;font-size:46px;line-height:1;animation:toy-bob 1.4s ease-in-out infinite}
+@keyframes toy-bob{0%,100%{transform:translateY(var(--toy-a,0px)) rotate(calc(var(--toy-r,0deg) * -1))}50%{transform:translateY(calc(var(--toy-a,0px) * -1)) rotate(var(--toy-r,0deg))}}
+.toy .toy-btns{display:flex;justify-content:center;gap:14px;margin-top:16px}
+.toy .toy-b{height:68px;border-radius:22px;border:3px solid var(--ta);font-size:38px;line-height:1}
+.toy .toy-wait{flex:1.4;max-width:190px;background:var(--ta);box-shadow:0 6px 0 #a3421f}
+.toy .toy-sns{flex:1;max-width:120px;background:#fff;box-shadow:0 6px 0 var(--ts)}
+.toy .toy-b:active{transform:translateY(4px);box-shadow:none}
+.toy .toy-glass{display:inline-block;transition:transform .4s}
+.toy .toy-flip .toy-glass{transform:rotate(180deg)}
+.toy .toy-heart.toy-hop{animation:toy-hop .4s ease-out}
+@keyframes toy-hop{40%{transform:scale(1.25)}}
+html[data-theme="dark"] .toy .toy-bar,html[data-theme="dark"] .toy .toy-sns{background:#2b2738}
+html[data-theme="dark"] .toy .toy-sea{background:linear-gradient(180deg,#3c4560 0%,#2a3046 60%)}
+html[data-theme="dark"] .toy.toy-calm .toy-sea{background:linear-gradient(180deg,#2d5a80 0%,#1f3a52 60%)}
+</style>
+<section class="toy" aria-label="👆🌊">
+  <button type="button" class="toy-reset" aria-label="↺">↺</button>
+  <div class="toy-kick" aria-hidden="true">👆</div>
+  <div class="toy-head" aria-hidden="true"><span class="toy-heart">💔</span><span class="toy-bar"><i class="toy-fill"></i></span></div>
+  <div class="toy-sea" aria-hidden="true">
+    <span class="toy-cloud">🌧️</span><span class="toy-sun">☀️</span>
+    <svg class="toy-wv toy-wb" viewBox="0 0 480 120" preserveAspectRatio="none"><path fill="#4d8fd6" d=""/></svg>
+    <span class="toy-pen">🐧</span>
+    <svg class="toy-wv toy-wf" viewBox="0 0 480 120" preserveAspectRatio="none"><path fill="#2f6fc0" d=""/></svg>
+  </div>
+  <div class="toy-btns">
+    <button type="button" class="toy-b toy-wait" aria-label="⏳"><span class="toy-glass">⏳</span></button>
+    <button type="button" class="toy-b toy-sns" aria-label="📱">📱</button>
+  </div>
+</section>
+<script>
+(function () {
+  var root = document.querySelector('.toy');
+  if (!root) return;
+  var q = function (s) { return root.querySelector(s); };
+  var heart = q('.toy-heart'), fill = q('.toy-fill'), pen = q('.toy-pen'), wait = q('.toy-wait'), sns = q('.toy-sns'),
+    reset = q('.toy-reset'), back = q('.toy-wb path'), front = q('.toy-wf path');
+  if (!heart || !fill || !pen || !wait || !sns || !reset || !back || !front) return;
+  var MAX = 8, lv = MAX, healed = false;
+  function bump(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function wave(amp, base, phase) {
+    var d = 'M0 120 L0 ' + base;
+    for (var x = 0; x <= 480; x += 10) {
+      d += ' L' + x + ' ' + (base + amp * Math.sin((x / 120) * Math.PI * 2 + phase)).toFixed(1);
+    }
+    return d + ' L480 120 Z';
+  }
+  function draw() {
+    var amp = 2 + lv * 3.4;
+    back.setAttribute('d', wave(amp * 0.8, 52, 1.6));
+    front.setAttribute('d', wave(amp, 66, 0));
+    pen.style.setProperty('--toy-a', (2 + lv * 2.2) + 'px');
+    pen.style.setProperty('--toy-r', (lv * 2.2) + 'deg');
+    heart.textContent = lv >= 6 ? '💔' : lv >= 3 ? '❤️‍🩹' : '❤️';
+    fill.style.width = Math.round((MAX - lv) / MAX * 100) + '%';
+    root.classList.toggle('toy-calm', lv === 0);
+  }
+  wait.addEventListener('click', function () {
+    wait.classList.toggle('toy-flip');
+    if (lv === 0) return;
+    lv--;
+    draw();
+    bump(heart, 'toy-hop');
+    if (lv === 0 && !healed) {
+      healed = true;
+      if (window.pengessoPop) {
+        var b = pen.getBoundingClientRect();
+        window.pengessoPop(b.left + b.width / 2, b.top, ['❤️', '☀️', '✨', '🐧'], 16);
+      }
+    }
+  });
+  sns.addEventListener('click', function () {
+    lv = Math.min(MAX, lv + 3);
+    draw();
+    bump(heart, 'toy-hop');
+    if (window.pengessoPop) {
+      var b = sns.getBoundingClientRect();
+      window.pengessoPop(b.left + b.width / 2, b.top, ['🌊', '💥'], 6);
+    }
+  });
+  reset.addEventListener('click', function () { lv = MAX; healed = false; draw(); });
+  draw();
+})();
+</script>
+
   <a class="next" href="../cant-disagree-with-people/index.html">
     <div>
       <div class="next-kicker">NEXT · 70 SEC</div>

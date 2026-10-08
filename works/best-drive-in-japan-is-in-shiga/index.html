@@ -533,6 +533,130 @@
   </figure>
   </div>
 
+
+  <style>
+  .toy { position: relative; margin: 34px 0 0; padding: 20px 14px 22px; border-radius: 28px; text-align: center;
+    background: linear-gradient(160deg, #d8f4fb, #c2ecf6 55%, #effbff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(27,127,153,.22); font-weight: 800; color: #1d3440; overflow: hidden; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-window { position: relative; height: 176px; max-width: 380px; margin: 10px auto 0; border-radius: 34px 34px 22px 22px; overflow: hidden;
+    border: 10px solid #1d3440; background: linear-gradient(#9fe0ff, #dff6ff 58%, #7fd6e8 58%, #4fb6d4 76%, #8fcf72 76%); }
+  .toy-layer { position: absolute; left: 0; display: flex; white-space: nowrap; will-change: transform; }
+  .toy-layer span { display: inline-block; flex: 0 0 auto; text-align: center; line-height: 1; }
+  .toy-far { top: 30px; }
+  .toy-far span { width: 92px; font-size: 64px; }
+  .toy-river { top: 108px; }
+  .toy-river span { width: 70px; font-size: 22px; opacity: .85; }
+  .toy-near { bottom: 0; }
+  .toy-near span { width: 64px; font-size: 44px; }
+  .toy-glass { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(115deg, rgba(255,255,255,.35) 0 18%, transparent 18% 26%, rgba(255,255,255,.18) 26% 30%, transparent 30%); }
+  .toy-meter { display: flex; align-items: center; gap: 10px; max-width: 320px; margin: 16px auto 0; }
+  .toy-meter .toy-face { font-size: 34px; line-height: 1; }
+  .toy-bar { flex: 1; height: 18px; border-radius: 99px; background: rgba(29,52,64,.12); overflow: hidden; }
+  .toy-bar i { display: block; height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #7fd6e8, #1b7f99, #2fa36b); }
+  .toy-go { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 150px; min-height: 66px; margin-top: 16px;
+    padding: 8px 26px; border: 0; border-radius: 24px; cursor: pointer; font: inherit; font-size: 32px; font-weight: 900; line-height: 1;
+    color: #fff; background: #1b7f99; box-shadow: 0 7px 0 #0f5466; touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none; user-select: none; transition: transform .06s, box-shadow .06s; }
+  .toy-go:active { transform: translateY(6px); box-shadow: 0 1px 0 #0f5466; }
+  .toy-go.toy-won { background: #2fa36b; box-shadow: 0 7px 0 #1b6b45; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; cursor: pointer; font: inherit; font-size: 22px; font-weight: 900; color: #1b7f99; background: #fff;
+    box-shadow: 0 4px 0 #a6dceb; touch-action: manipulation; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #a6dceb; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #15323c, #1a3d48 55%, #12262e); border-color: rgba(255,255,255,.12); color: #dff6ff; }
+  html[data-theme="dark"] .toy-window { border-color: #0b1a20; }
+  html[data-theme="dark"] .toy-bar { background: rgba(255,255,255,.12); }
+  html[data-theme="dark"] .toy-reset { background: #1d3a44; color: #7fd6e8; box-shadow: 0 4px 0 #0b1a20; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆🚗">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-window" aria-hidden="true">
+      <div class="toy-layer toy-far"></div>
+      <div class="toy-layer toy-river"></div>
+      <div class="toy-layer toy-near"></div>
+      <div class="toy-glass"></div>
+    </div>
+    <div class="toy-meter" aria-hidden="true"><span class="toy-face">🙂</span><span class="toy-bar"><i></i></span><span class="toy-face">🏞️</span></div>
+    <button type="button" class="toy-go" aria-label="🚗 💨">🚗 💨</button>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var far = box.querySelector('.toy-far'), river = box.querySelector('.toy-river'), near = box.querySelector('.toy-near');
+    var bar = box.querySelector('.toy-bar i'), face = box.querySelector('.toy-meter .toy-face');
+    var go = box.querySelector('.toy-go'), reset = box.querySelector('.toy-reset');
+    if (!far || !river || !near || !bar || !go || !reset) return;
+    function fill(el, list, n) {
+      var a = [];
+      for (var i = 0; i < n * 2; i++) a.push('<span>' + list[i % list.length] + '</span>');
+      el.innerHTML = a.join('');
+    }
+    fill(far, ['⛰️', '🏔️', '⛰️', '⛰️'], 8);
+    fill(river, ['〰️', '〰️', '〰️'], 9);
+    fill(near, ['🌲', '🌳', '🌲', '🌾', '🌳', '🌲'], 12);
+    var x = 0, speed = 0, dist = 0, GOAL = 3200, won = false, raf = 0, last = 0;
+    var FACES = ['🙂', '😊', '😄', '😆'];
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function paint() {
+      var wf = far.scrollWidth / 2 || 1, wr = river.scrollWidth / 2 || 1, wn = near.scrollWidth / 2 || 1;
+      far.style.transform = 'translateX(' + (-(x * .25) % wf).toFixed(1) + 'px)';
+      river.style.transform = 'translateX(' + (-(x * .6) % wr).toFixed(1) + 'px)';
+      near.style.transform = 'translateX(' + (-(x * 1.2) % wn).toFixed(1) + 'px)';
+      var k = Math.min(1, dist / GOAL);
+      bar.style.width = (k * 100).toFixed(1) + '%';
+      if (face) face.textContent = FACES[Math.min(FACES.length - 1, Math.floor(k * FACES.length))];
+    }
+    function win() {
+      won = true;
+      go.classList.add('toy-won');
+      go.textContent = '🏞️ 🎉';
+      if (face) face.textContent = '😆';
+      if (window.pengessoPop) {
+        var r = box.querySelector('.toy-window').getBoundingClientRect();
+        window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['⛰️', '🚗', '🌲', '✨'], 18);
+      }
+    }
+    function tick(t) {
+      raf = 0;
+      var dt = last ? Math.min(.05, (t - last) / 1000) : 0;
+      last = t;
+      speed = Math.max(0, speed - 260 * dt);
+      x += speed * dt;
+      if (!won) { dist += speed * dt; if (dist >= GOAL) win(); }
+      paint();
+      if (speed > 0) raf = requestAnimationFrame(tick); else last = 0;
+    }
+    go.addEventListener('click', function () {
+      if (still()) {
+        x += 160;
+        if (!won) { dist += 400; if (dist >= GOAL) win(); }
+        paint();
+        return;
+      }
+      speed = Math.min(620, speed + 190);
+      if (!raf) { last = 0; raf = requestAnimationFrame(tick); }
+    });
+    reset.addEventListener('click', function () {
+      won = false; dist = 0;
+      go.classList.remove('toy-won');
+      go.textContent = '🚗 💨';
+      paint();
+    });
+    paint();
+  })();
+  </script>
+
   <a class="next" href="../ikeda-farm-gelato-and-tobidashi-kun/index.html">
     <div>
       <div class="next-kicker">NEXT · 25 SEC</div>

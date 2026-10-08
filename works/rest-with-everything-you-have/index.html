@@ -541,6 +541,137 @@
   </section>
   </div>
 
+
+<style>
+.toy{--ta:#c9962f;--tb:#f3c969;--tl:#fff2cf;--tx:#2a2230;--td:#8a6618;--tk:#2b2a3c}
+.toy{position:relative;box-sizing:border-box;margin:30px 0 12px;padding:14px 14px 18px;border-radius:30px;background:linear-gradient(165deg,var(--tl) 0%,#fff 92%);border:3px solid var(--ta);box-shadow:0 16px 36px rgba(0,0,0,.12);color:var(--tx);text-align:center;font-weight:800;line-height:1.2;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+.toy *,.toy *::before,.toy *::after{box-sizing:border-box}
+.toy .toy-kick{display:inline-block;font-size:30px;line-height:1;margin:0 0 8px;animation:toyKick 1.5s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes toyKick{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(-12deg)}}
+.toy button{font-family:inherit;font-weight:900;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;color:inherit;margin:0;border:0;background:none;padding:0;line-height:1}
+.toy .toy-btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:64px;min-height:58px;padding:6px 18px;border-radius:20px;background:var(--ta);color:#fff;font-size:28px;box-shadow:0 5px 0 var(--td);transition:transform .08s,box-shadow .08s,opacity .2s}
+.toy .toy-btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--td)}
+.toy .toy-btn[disabled]{opacity:.38;cursor:default;transform:none;box-shadow:0 5px 0 var(--td)}
+.toy .toy-reset{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:#fff;border:3px solid var(--ta);color:var(--ta);font-size:26px;margin-top:14px;transition:transform .2s}
+.toy .toy-reset:active{transform:rotate(-120deg) scale(.92)}
+.toy .toy-n{font-variant-numeric:tabular-nums;font-weight:900}
+.toy .toy-row{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap}
+.toy .toy-meter{position:relative;height:20px;border-radius:999px;background:rgba(0,0,0,.08);overflow:hidden;box-shadow:inset 0 2px 3px rgba(0,0,0,.1)}
+.toy .toy-fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--tb),var(--ta));transition:width .35s cubic-bezier(.3,1.4,.5,1)}
+.toy .toy-win{display:block;font-size:40px;line-height:50px;min-height:50px;margin-top:6px;visibility:hidden}
+.toy .toy-win.on{visibility:visible;animation:toyWin .7s cubic-bezier(.2,1.6,.4,1)}
+@keyframes toyWin{0%{transform:scale(.2) rotate(-20deg)}100%{transform:scale(1) rotate(0)}}
+.toy .toy-bop{animation:toyBop .38s ease-out}
+@keyframes toyBop{0%{transform:scale(1)}40%{transform:scale(1.28) rotate(-8deg)}100%{transform:scale(1)}}
+.toy .toy-shake{animation:toyShake .42s}
+@keyframes toyShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+html[data-theme="dark"] .toy{background:linear-gradient(165deg,var(--tk) 0%,#1d1e27 92%);color:#f3eff7;border-color:var(--tb);box-shadow:0 16px 36px rgba(0,0,0,.45)}
+html[data-theme="dark"] .toy .toy-reset{background:#262834;color:#fff;border-color:var(--tb)}
+html[data-theme="dark"] .toy .toy-meter{background:rgba(255,255,255,.1)}
+.toy .toy-ring{position:relative;height:190px;margin:0 auto;max-width:380px;border-radius:24px;overflow:hidden;background:linear-gradient(180deg,#26304d 0%,#1a2138 100%);border:3px solid #131a2c}
+.toy .toy-rope{position:absolute;left:0;right:0;height:5px;border-radius:3px;z-index:3}
+.toy .toy-rope.a{top:36px;background:#e8473b}
+.toy .toy-rope.b{top:66px;background:#f3f1ea}
+.toy .toy-rope.c{top:96px;background:#3b7be8}
+.toy .toy-water{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(180deg,#8fd6ff,#3a9ad9);transition:height .3s;z-index:2}
+.toy .toy-water::before{content:"";position:absolute;left:0;right:0;top:-8px;height:16px;border-radius:50%;background:#bfe8ff}
+.toy .toy-actor{position:absolute;left:50%;bottom:22px;width:220px;margin-left:-110px;white-space:nowrap;font-size:62px;line-height:1;z-index:4;transition:bottom .3s}
+.toy .toy-steam{position:absolute;left:50%;top:10px;margin-left:30px;font-size:30px;line-height:1;z-index:5;visibility:hidden}
+.toy .toy-ring.rest .toy-steam{visibility:visible;animation:toySteam 1.6s ease-in-out infinite}
+@keyframes toySteam{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(-8px);opacity:1}}
+.toy .toy-ring.hit{animation:toyShake .42s}
+.toy .toy-ring:not(.rest) .toy-water::before{display:none}
+.toy .toy-bat{display:flex;align-items:center;gap:10px;max-width:330px;margin:14px auto 14px;font-size:30px}
+.toy .toy-bat .toy-meter{flex:1;height:24px}
+.toy .toy-bat .toy-fill{background:linear-gradient(90deg,#ff7a59,#f3c969,#5fd38a)}
+.toy .toy-pct{font-size:22px;min-width:60px;text-align:right}
+.toy .toy-gong{min-width:110px;min-height:70px;font-size:42px;border-radius:999px}
+.toy .toy-punch{background:#e8473b;box-shadow:0 5px 0 #a72b22;min-height:70px;font-size:38px}
+.toy .toy-punch:active{box-shadow:0 1px 0 #a72b22}
+.toy .toy-gong.ding{animation:toyDing .6s ease-out}
+@keyframes toyDing{0%{transform:rotate(0)}20%{transform:rotate(-14deg)}40%{transform:rotate(12deg)}60%{transform:rotate(-8deg)}80%{transform:rotate(4deg)}100%{transform:rotate(0)}}
+@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .toy *,html:not([data-motion="on"]) .toy *::before,html:not([data-motion="on"]) .toy *::after{animation:none !important}}
+html[data-motion="off"] .toy *,html[data-motion="off"] .toy *::before,html[data-motion="off"] .toy *::after{animation:none !important}
+</style>
+<section class="toy" aria-label="👆🔔🛁">
+  <div class="toy-kick" aria-hidden="true">👆</div>
+  <div class="toy-ring" aria-hidden="true">
+    <div class="toy-rope a"></div><div class="toy-rope b"></div><div class="toy-rope c"></div>
+    <div class="toy-water"></div>
+    <span class="toy-actor">🐧🥊</span>
+    <span class="toy-steam">♨️</span>
+  </div>
+  <div class="toy-bat" aria-hidden="true"><span>🔋</span><div class="toy-meter"><div class="toy-fill"></div></div><span class="toy-pct"><span class="toy-n toy-p">20</span>%</span></div>
+  <div class="toy-row">
+    <button type="button" class="toy-btn toy-punch" aria-label="🥊">🥊</button>
+    <button type="button" class="toy-btn toy-gong" aria-label="🔔">🔔</button>
+  </div>
+  <div class="toy-win" aria-live="polite">🏆🛁✨</div>
+  <button type="button" class="toy-reset" aria-label="↺">↺</button>
+</section>
+<script>
+(function () {
+  var root = document.querySelector('section.toy');
+  if (!root) return;
+  var SLUG = 'rest-with-everything-you-have';
+  function q(s) { return root.querySelector(s); }
+  function qa(s) { return Array.prototype.slice.call(root.querySelectorAll(s)); }
+  function still() { try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; } }
+  function bop(el, c) { if (!el) return; c = c || 'toy-bop'; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); }
+  function boom(el, list, n) { if (!el || !window.pengessoPop) return; var r = el.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n || 16); }
+  function sget(k) { try { return window.localStorage.getItem('pengesso-toy-' + SLUG + '-' + k); } catch (e) { return null; } }
+  function sset(k, v) { try { window.localStorage.setItem('pengesso-toy-' + SLUG + '-' + k, String(v)); } catch (e) {} }
+  var ring = q('.toy-ring'), water = q('.toy-water'), actor = q('.toy-actor'), fill = q('.toy-fill'), pEl = q('.toy-p');
+  var punch = q('.toy-punch'), gong = q('.toy-gong'), win = q('.toy-win'), reset = q('.toy-reset');
+  if (!ring || !water || !actor || !fill || !pEl || !punch || !gong || !win || !reset) return;
+  var bat = 20, resting = false, done = false, timer = 0;
+  function paint() {
+    fill.style.width = bat + '%';
+    pEl.textContent = String(Math.round(bat));
+    water.style.height = (resting || done ? Math.round(20 + bat * 0.6) : 0) + 'px';
+    actor.style.bottom = (resting || done ? Math.round(22 + bat * 0.3) : 22) + 'px';
+    ring.classList.toggle('rest', resting || done);
+    gong.disabled = resting || done;
+    punch.disabled = done;
+  }
+  function stop() { if (timer) { clearInterval(timer); timer = 0; } }
+  function finish() {
+    stop(); resting = false; done = true;
+    actor.textContent = '🐧😌';
+    paint();
+    win.classList.remove('on'); void win.offsetWidth; win.classList.add('on');
+    boom(win, ['🏆', '🛁', '✨', '🔔'], 18);
+  }
+  gong.addEventListener('click', function () {
+    if (resting || done) return;
+    bop(gong, 'ding');
+    resting = true;
+    actor.textContent = '🐧';
+    paint();
+    stop();
+    timer = setInterval(function () {
+      bat = Math.min(100, bat + 3);
+      paint();
+      if (bat >= 100) finish();
+    }, 130);
+  });
+  punch.addEventListener('click', function () {
+    if (done) return;
+    bat = Math.max(0, bat - (resting ? 18 : 6));
+    if (resting) { actor.textContent = '🐧🥊'; bop(ring, 'hit'); }
+    else bop(actor);
+    paint();
+    if (resting) setTimeout(function () { if (resting) actor.textContent = '🐧'; }, 450);
+  });
+  reset.addEventListener('click', function () {
+    stop(); bat = 20; resting = false; done = false;
+    actor.textContent = '🐧🥊';
+    win.classList.remove('on');
+    paint();
+  });
+  paint();
+})();
+</script>
   <a class="next" href="../psychiatric-clinic-with-many-doctors/index.html">
     <div>
       <div class="next-kicker">NEXT · 78 SEC</div>

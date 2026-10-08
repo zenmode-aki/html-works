@@ -509,6 +509,142 @@
     </p>
   </section>
 
+  <style>
+.toy{--ta:#1f9a78;--ts:#a6e3c6;--tg:#eafaf2;--tk:#322536;position:relative;margin:30px 0 8px;padding:20px 14px 18px;border-radius:30px;background:var(--tbg,linear-gradient(170deg,var(--tg) 0%,#fff 92%));border:3px solid var(--ta);box-shadow:0 9px 0 var(--ts),0 24px 44px rgba(30,20,60,.13);color:var(--tk);font-weight:800;text-align:center;overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.toy *{box-sizing:border-box}
+.toy-kick{position:absolute;top:12px;left:14px;font-size:30px;line-height:1;pointer-events:none;animation:toy-kick 1.3s ease-in-out infinite}
+@keyframes toy-kick{0%,100%{transform:translateY(0) rotate(-10deg)}50%{transform:translateY(7px) rotate(-10deg)}}
+.toy button{font-family:inherit;font-weight:900;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;margin:0}
+.toy .toy-reset{position:absolute;top:10px;right:10px;z-index:3;width:50px;height:50px;padding:0;border-radius:50%;border:3px solid var(--ta);background:#fff;color:var(--ta);font-size:26px;line-height:1;transition:transform .3s}
+.toy .toy-reset:active{transform:rotate(-120deg)}
+.toy-n{font-variant-numeric:tabular-nums;font-weight:900}
+html[data-theme="dark"] .toy{background:linear-gradient(170deg,#262236 0%,#17151f 92%);color:#f3eefc;box-shadow:0 9px 0 rgba(0,0,0,.45),0 24px 44px rgba(0,0,0,.35)}
+html[data-theme="dark"] .toy .toy-reset{background:#2b2738;color:#f3eefc}
+@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .toy,html:not([data-motion="on"]) .toy *{animation:none !important;transition:none !important}}
+html[data-motion="off"] .toy,html[data-motion="off"] .toy *{animation:none !important;transition:none !important}
+.toy .toy-win{max-width:340px;margin:56px auto 0;border-radius:20px;background:#fff;border:3px solid #cfd8e3;box-shadow:0 8px 0 #dfe6ee;overflow:hidden;text-align:left}
+.toy .toy-bar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#eef2f7;border-bottom:3px solid #cfd8e3;font-size:22px;line-height:1}
+.toy .toy-url{flex:1;height:22px;border-radius:999px;background:#fff;border:2px solid #cfd8e3}
+.toy .toy-form{display:grid;gap:10px;padding:12px}
+.toy .toy-f{display:flex;align-items:center;gap:10px;width:100%;height:58px;padding:0 12px;border-radius:16px;border:3px solid #cfd8e3;background:#f8fafc;font-size:30px;line-height:1;text-align:left}
+.toy .toy-f .toy-line{flex:1;height:16px;border-radius:999px;background:#e6ebf1;overflow:hidden}
+.toy .toy-f .toy-ink{display:block;height:100%;width:0;border-radius:999px;background:var(--ta);transition:width .25s}
+.toy .toy-f .toy-st{width:30px;font-size:24px;text-align:center}
+.toy .toy-f.toy-bad{border-color:#ff5a4f;animation:toy-no .35s}
+.toy .toy-f.toy-bad .toy-ink{background:#ff5a4f}
+.toy .toy-f.toy-full{border-color:var(--ta);background:#e8f8f1}
+@keyframes toy-no{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.toy .toy-btns{display:flex;justify-content:center;gap:14px;margin-top:16px}
+.toy .toy-ai{flex:1;max-width:170px;height:68px;border-radius:22px;border:3px solid var(--ta);background:#ffd54a;font-size:34px;line-height:1;box-shadow:0 6px 0 #c99a00;animation:toy-glow 1.6s ease-in-out infinite}
+@keyframes toy-glow{50%{box-shadow:0 6px 0 #c99a00,0 0 0 8px rgba(255,213,74,.35)}}
+.toy .toy-go{flex:1;max-width:120px;height:68px;border-radius:22px;border:3px solid var(--ta);background:#fff;font-size:34px;line-height:1;box-shadow:0 6px 0 var(--ts)}
+.toy .toy-go[disabled]{opacity:.35;cursor:default}
+.toy.toy-ready .toy-go{background:var(--ta);animation:toy-glow2 1s ease-in-out infinite}
+@keyframes toy-glow2{50%{box-shadow:0 6px 0 var(--ts),0 0 0 9px rgba(31,154,120,.3)}}
+.toy .toy-ai:active,.toy .toy-go:active{transform:translateY(4px);box-shadow:none}
+.toy .toy-done-row{margin-top:12px;font-size:36px;line-height:1;letter-spacing:6px;min-height:40px;visibility:hidden}
+.toy.toy-sent .toy-done-row{visibility:visible;animation:toy-up .5s cubic-bezier(.3,1.6,.5,1)}
+.toy.toy-sent .toy-ai,.toy.toy-sent .toy-go{animation:none}
+@keyframes toy-up{from{transform:scale(.3)}}
+html[data-theme="dark"] .toy .toy-win{background:#1f1d29;border-color:#3a3650;box-shadow:0 8px 0 #121018}
+html[data-theme="dark"] .toy .toy-bar{background:#2b2738;border-color:#3a3650}
+html[data-theme="dark"] .toy .toy-url,html[data-theme="dark"] .toy .toy-go{background:#2b2738;border-color:#3a3650}
+html[data-theme="dark"] .toy .toy-f{background:#262333;border-color:#3a3650}
+html[data-theme="dark"] .toy .toy-f.toy-full{background:#173a30}
+html[data-theme="dark"] .toy .toy-f .toy-line{background:#3a3650}
+</style>
+<section class="toy" aria-label="👆🌐🤖">
+  <button type="button" class="toy-reset" aria-label="↺">↺</button>
+  <div class="toy-kick" aria-hidden="true">👆</div>
+  <div class="toy-win">
+    <div class="toy-bar" aria-hidden="true">🌐<i class="toy-url"></i></div>
+    <div class="toy-form">
+      <button type="button" class="toy-f" aria-label="🎓"><span>🎓</span><span class="toy-line"><i class="toy-ink"></i></span><span class="toy-st"></span></button>
+      <button type="button" class="toy-f" aria-label="🏨"><span>🏨</span><span class="toy-line"><i class="toy-ink"></i></span><span class="toy-st"></span></button>
+      <button type="button" class="toy-f" aria-label="✈️"><span>✈️</span><span class="toy-line"><i class="toy-ink"></i></span><span class="toy-st"></span></button>
+    </div>
+  </div>
+  <div class="toy-btns">
+    <button type="button" class="toy-ai" aria-label="🤖">🤖✨</button>
+    <button type="button" class="toy-go" aria-label="✅" disabled>✅</button>
+  </div>
+  <div class="toy-done-row" aria-hidden="true">🎓🏨✈️💛</div>
+</section>
+<script>
+(function () {
+  var root = document.querySelector('.toy');
+  if (!root) return;
+  var fields = [].slice.call(root.querySelectorAll('.toy-f'));
+  var ai = root.querySelector('.toy-ai'), go = root.querySelector('.toy-go'), reset = root.querySelector('.toy-reset');
+  if (fields.length !== 3 || !ai || !go || !reset) return;
+  var S = fields.map(function () { return { n: 0, bad: false }; });
+  var timers = [];
+  function bump(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
+  function draw() {
+    var all = true;
+    fields.forEach(function (f, i) {
+      var s = S[i];
+      var ink = f.querySelector('.toy-ink'), st = f.querySelector('.toy-st');
+      if (ink) ink.style.width = Math.round(s.n / 3 * 100) + '%';
+      if (st) st.textContent = s.bad ? '❌' : s.n >= 3 ? '✅' : '';
+      f.classList.toggle('toy-bad', s.bad);
+      f.classList.toggle('toy-full', s.n >= 3 && !s.bad);
+      if (s.n < 3 || s.bad) all = false;
+    });
+    var sent = root.classList.contains('toy-sent');
+    root.classList.toggle('toy-ready', all && !sent);
+    go.disabled = !all || sent;
+  }
+  fields.forEach(function (f, i) {
+    f.addEventListener('click', function () {
+      if (root.classList.contains('toy-sent')) return;
+      var s = S[i];
+      if (s.bad) { s.bad = false; draw(); return; }
+      if (s.n >= 3) return;
+      s.n++;
+      if (s.n < 3 && Math.random() < 0.35) { s.bad = true; bump(f, 'toy-bad'); }
+      draw();
+    });
+  });
+  ai.addEventListener('click', function () {
+    if (root.classList.contains('toy-sent')) return;
+    timers.forEach(clearTimeout); timers = [];
+    var k = 0;
+    fields.forEach(function (f, i) {
+      for (var j = 0; j < 3; j++) {
+        timers.push(setTimeout(function () {
+          S[i].bad = false;
+          if (S[i].n < 3) S[i].n++;
+          draw();
+        }, 120 * (k++)));
+      }
+      timers.push(setTimeout(function () {
+        if (!window.pengessoPop) return;
+        var b = f.getBoundingClientRect();
+        window.pengessoPop(b.right - 30, b.top + b.height / 2, ['✨'], 4);
+      }, 120 * k));
+    });
+  });
+  go.addEventListener('click', function () {
+    if (go.disabled) return;
+    root.classList.add('toy-sent');
+    root.classList.remove('toy-ready');
+    go.disabled = true;
+    if (window.pengessoPop) {
+      var b = go.getBoundingClientRect();
+      window.pengessoPop(b.left + b.width / 2, b.top, ['🎓', '🏨', '✈️', '💛', '✨'], 18);
+    }
+  });
+  reset.addEventListener('click', function () {
+    timers.forEach(clearTimeout); timers = [];
+    S.forEach(function (s) { s.n = 0; s.bad = false; });
+    root.classList.remove('toy-sent');
+    draw();
+  });
+  draw();
+})();
+</script>
+
   <a class="next" href="../just-ask-people/index.html">
     <div>
       <div class="next-kicker">NEXT · 26 SEC</div>
