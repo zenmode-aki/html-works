@@ -1619,6 +1619,186 @@
     }).catch(function () {});
   }
 
+  /* 🗺 次はどこへ？（2026-10-08 本人：「それぞれの記事を読み終えるごとに、地図を表示して、好きな記事に飛べるように」）
+     記事のいちばん下（「一覧に戻る」の上）に、アジアの点の地図。国を押すと、その国の記事が並ぶ。日本は街でもしぼれる。
+     データは assets/jump.json（build-site.py が作る）と assets/worldmap-dots.json。題の訳はトップの訳（i18n/top-data.<lang>.json）。
+     下に近づいたときだけ読む（ページを重くしない） */
+  var JM_WORDS = {
+    en: ['🗺 Where to next?', 'Tap a country, then pick a post.', 'posts', 'Show all', '🎲 Surprise me', 'Somewhere else'],
+    ja: ['🗺 次はどこへ行く？', '国をタップして、読みたい記事を選んでください。', '本', 'ぜんぶ見る', '🎲 どこかへ連れていって', 'そのほか'],
+    ko: ['🗺 다음은 어디로 갈까요?', '나라를 누르고, 읽고 싶은 글을 고르세요.', '개', '전부 보기', '🎲 아무 데나 데려가 줘', '그 밖에'],
+    zh: ['🗺 下一站去哪里？', '点一个国家，再选一篇文章。', '篇', '全部显示', '🎲 随便带我去', '其他'],
+    'zh-Hant': ['🗺 下一站去哪裡？', '點一個國家，再選一篇文章。', '篇', '全部顯示', '🎲 隨便帶我去', '其他'],
+    hi: ['🗺 अब कहाँ चलें?', 'किसी देश पर टैप करें, फिर एक पोस्ट चुनें।', 'पोस्ट', 'सब दिखाएँ', '🎲 कहीं भी ले चलो', 'और'],
+    es: ['🗺 ¿Adónde vamos ahora?', 'Toca un país y elige una entrada.', 'entradas', 'Ver todo', '🎲 Sorpréndeme', 'Otros'],
+    ar: ['🗺 إلى أين بعد ذلك؟', 'اضغط على بلد، ثم اختر مقالة.', 'مقالات', 'عرض الكل', '🎲 فاجئني', 'أخرى'],
+    fr: ['🗺 On va où maintenant ?', 'Touche un pays, puis choisis un article.', 'articles', 'Tout voir', '🎲 Surprends-moi', 'Autres'],
+    bn: ['🗺 এরপর কোথায় যাবেন?', 'একটি দেশে ট্যাপ করুন, তারপর একটি লেখা বেছে নিন।', 'টি লেখা', 'সব দেখুন', '🎲 যেকোনো জায়গায় নিয়ে চলো', 'অন্যান্য'],
+    pt: ['🗺 Para onde agora?', 'Toque em um país e escolha um post.', 'posts', 'Ver tudo', '🎲 Me surpreenda', 'Outros'],
+    ru: ['🗺 Куда дальше?', 'Нажмите на страну и выберите запись.', 'записей', 'Показать все', '🎲 Удиви меня', 'Другое'],
+    id: ['🗺 Ke mana selanjutnya?', 'Ketuk sebuah negara, lalu pilih tulisan.', 'tulisan', 'Lihat semua', '🎲 Kejutkan aku', 'Lainnya'],
+    ur: ['🗺 اب کہاں چلیں؟', 'کسی ملک پر ٹیپ کریں، پھر ایک تحریر چنیں۔', 'تحریریں', 'سب دیکھیں', '🎲 کہیں بھی لے چلو', 'دیگر']
+  };
+  var JM_CC = { nagoya: 'JP', tokyo: 'JP', gifu: 'JP', mie: 'JP', osaka: 'JP', shiga: 'JP', seoul: 'KR', cebu: 'PH', baguio: 'PH', clark: 'PH', kl: 'MY', bangkok: 'TH', thailand: 'TH' };
+  var JM_PLACE = { nagoya: 'Nagoya 🏯', tokyo: 'Tokyo 🗼', gifu: 'Gifu 🌿', mie: 'Mie 🏎️', osaka: 'Osaka 🏯', shiga: 'Shiga 🌊', seoul: 'Seoul 🇰🇷',
+    cebu: 'Cebu 🌴', baguio: 'Baguio ⛰️', clark: 'Clark 🏫', kl: 'Kuala Lumpur 🇲🇾', bangkok: 'Bangkok 🛺', thailand: 'Kanchanaburi 🚂' };
+  var JM_FLAG = { JP: '🇯🇵', KR: '🇰🇷', PH: '🇵🇭', MY: '🇲🇾', TH: '🇹🇭' };
+  var JM_EN = { JP: 'Japan', KR: 'Korea', PH: 'Philippines', MY: 'Malaysia', TH: 'Thailand' };
+  function jumpMap() {
+    var m = /\/(works|lab)\/([^\/]+)\//.exec(location.pathname);
+    if (!m || !window.fetch || document.querySelector('.jm')) return;
+    var me = decodeURIComponent(m[2]);
+    var anchor = document.querySelector('a.to-list') || document.querySelector('.lab-nav') || document.querySelector('a.next');
+    if (!anchor) return;
+    var box = document.createElement('section');
+    box.className = 'jm'; box.setAttribute('translate', 'no');
+    anchor.parentNode.insertBefore(box, anchor);
+    var W = JM_WORDS[lang] || JM_WORDS.en;
+    var go = function () {
+      var top = (lang === 'en') ? Promise.resolve({}) :
+        fetch('/i18n/top-data.' + encodeURIComponent(lang) + '.json').then(function (r) { return r.ok ? r.json() : {}; }).then(function (d) { return d.dict || {}; }, function () { return {}; });
+      Promise.all([fetch('/assets/jump.json').then(function (r) { return r.json(); }),
+                   fetch('/assets/worldmap-dots.json').then(function (r) { return r.json(); }), top]).then(function (res) {
+        drawJump(box, me, res[0], res[1], res[2], W);
+      }).catch(function () { box.remove(); });
+    };
+    if (!('IntersectionObserver' in window)) { go(); return; }
+    var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); go(); } }, { rootMargin: '900px 0px' });
+    io.observe(box);
+  }
+  function drawJump(box, me, rows, dots, dict, W) {
+    function tr(en) { var k = fp2(en); return Object.prototype.hasOwnProperty.call(dict, k) ? dict[k] : en; }
+    var regionName = null;
+    try { regionName = new Intl.DisplayNames([lang === 'zh-Hant' ? 'zh-Hant' : lang], { type: 'region' }); } catch (e) {}
+    function cname(cc) { try { return regionName ? regionName.of(cc) : JM_EN[cc]; } catch (e) { return JM_EN[cc]; } }
+    var read = []; try { read = JSON.parse(ss('pengesso-read') || '[]'); } catch (e) {}
+    var posts = rows.filter(function (r) { return r[0] !== me; });
+    var mine = rows.filter(function (r) { return r[0] === me; })[0];
+    var by = {}, other = [];
+    posts.forEach(function (r) { var cc = JM_CC[r[3]]; if (cc) (by[cc] = by[cc] || []).push(r); else other.push(r); });
+    var ccs = Object.keys(JM_FLAG).filter(function (c) { return by[c]; });
+    // 地図の切り抜き：記事のある国の点が入る四角 ＋ 少し余白
+    var pts = {}, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    for (var i = 0; i < dots.p.length; i += 3) {
+      var a2 = dots.cc[dots.p[i + 2]], x = dots.p[i] / 10, y = dots.p[i + 1] / 10;
+      (pts[a2] = pts[a2] || []).push([x, y]);
+      if (JM_FLAG[a2] && by[a2]) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    }
+    if (x0 > x1) { box.remove(); return; }
+    var pad = 14; x0 -= pad; y0 -= pad; x1 += pad; y1 += pad;
+    var vw = x1 - x0, vh = y1 - y0;
+    var svg = '<svg class="jm-svg" viewBox="' + x0 + ' ' + y0 + ' ' + vw + ' ' + vh + '" aria-hidden="true">';
+    var center = {};
+    Object.keys(pts).forEach(function (a2) {
+      var ps = pts[a2].filter(function (q) { return q[0] >= x0 && q[0] <= x1 && q[1] >= y0 && q[1] <= y1; });
+      if (!ps.length) return;
+      var on = JM_FLAG[a2] && by[a2];
+      svg += '<g class="jm-c' + (on ? ' on' : '') + '" data-cc="' + a2 + '">' + ps.map(function (q) {
+        return '<circle cx="' + q[0] + '" cy="' + q[1] + '" r="' + dots.r + '"/>'; }).join('') + '</g>';
+      if (on) { var sx = 0, sy = 0; pts[a2].forEach(function (q) { sx += q[0]; sy += q[1]; }); center[a2] = [sx / pts[a2].length, sy / pts[a2].length]; }
+    });
+    svg += '</svg>';
+    var pins = ccs.map(function (cc, k) {
+      var c = center[cc]; if (!c) return '';
+      return '<button type="button" class="jm-pin" data-cc="' + cc + '" style="left:' + ((c[0] - x0) / vw * 100).toFixed(1) + '%;top:' + ((c[1] - y0) / vh * 100).toFixed(1) + '%;animation-delay:' + (k * .08) + 's" aria-label="' + esc(cname(cc)) + '">' +
+        '<span class="jm-flag">' + JM_FLAG[cc] + '</span><b>' + by[cc].length + '</b></button>';
+    }).join('');
+    box.innerHTML = '<h2 class="jm-h">' + esc(W[0]) + '</h2><p class="jm-sub">' + esc(W[1]) + '</p>' +
+      '<div class="jm-map">' + svg + pins + '</div>' +
+      '<div class="jm-tabs"></div><div class="jm-chips"></div><ul class="jm-list"></ul>' +
+      '<div class="jm-foot"><button type="button" class="jm-more" hidden>' + esc(W[3]) + '</button>' +
+      '<button type="button" class="jm-rand">' + esc(W[4]) + '</button></div>';
+    var tabs = box.querySelector('.jm-tabs'), chips = box.querySelector('.jm-chips'), list = box.querySelector('.jm-list'), more = box.querySelector('.jm-more');
+    var state = { cc: null, place: null, all: false };
+    function card(r) {
+      var unread = read.indexOf(r[0]) < 0;
+      return '<li><a class="jm-card" href="/works/' + encodeURIComponent(r[0]) + '/index.html">' +
+        '<span class="jm-th" style="background-image:url(\'/assets/thumbs/' + encodeURIComponent(r[0]) + '.jpg\')"></span>' +
+        '<span class="jm-tx"><span class="jm-t">' + esc(tr(r[1])) + '</span><span class="jm-s">⚡ ' + r[2] + ' SEC' + (unread ? ' · 🆕' : '') + '</span></span>' +
+        '<span class="jm-go" aria-hidden="true">→</span></a></li>';
+    }
+    function paint() {
+      [].forEach.call(box.querySelectorAll('.jm-pin'), function (b) { b.setAttribute('aria-pressed', b.dataset.cc === state.cc ? 'true' : 'false'); });
+      [].forEach.call(box.querySelectorAll('.jm-c'), function (g) { g.classList.toggle('sel', g.dataset.cc === state.cc); });
+      tabs.innerHTML = ccs.map(function (cc) {
+        return '<button type="button" class="jm-tab" data-cc="' + cc + '" aria-pressed="' + (cc === state.cc) + '">' + JM_FLAG[cc] + ' ' + esc(cname(cc)) + '</button>';
+      }).join('') + (other.length ? '<button type="button" class="jm-tab" data-cc="__" aria-pressed="' + (state.cc === '__') + '">✨ ' + esc(W[5]) + '</button>' : '');
+      var pool = state.cc === '__' ? other : (by[state.cc] || []);
+      var places = {};
+      pool.forEach(function (r) { places[r[3]] = (places[r[3]] || 0) + 1; });
+      var pk = Object.keys(places);
+      chips.innerHTML = (state.cc !== '__' && pk.length > 1) ? pk.sort(function (a, b) { return places[b] - places[a]; }).map(function (p) {
+        return '<button type="button" class="jm-chip" data-p="' + p + '" aria-pressed="' + (p === state.place) + '">' + esc(tr(JM_PLACE[p] || p)) + ' <small>' + places[p] + '</small></button>';
+      }).join('') : '';
+      if (state.place) pool = pool.filter(function (r) { return r[3] === state.place; });
+      pool = pool.slice().sort(function (a, b) { return (read.indexOf(a[0]) >= 0) - (read.indexOf(b[0]) >= 0); });
+      var show = state.all ? pool : pool.slice(0, 5);
+      list.innerHTML = show.map(card).join('');
+      more.hidden = state.all || pool.length <= 5;
+      more.textContent = W[3] + ' (' + pool.length + ' ' + W[2] + ')';
+      list.classList.remove('in'); void list.offsetWidth; list.classList.add('in');
+    }
+    function pick(cc) { state.cc = cc; state.place = null; state.all = false; paint(); }
+    box.addEventListener('click', function (e) {
+      var t = e.target.closest && e.target.closest('button'); if (!t) return;
+      if (t.classList.contains('jm-pin') || t.classList.contains('jm-tab')) {
+        pick(t.dataset.cc);
+        if (window.pengessoPop && t.classList.contains('jm-pin')) { var r = t.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top, [JM_FLAG[t.dataset.cc] || '✨', '✨'], 8); }
+      } else if (t.classList.contains('jm-chip')) { state.place = state.place === t.dataset.p ? null : t.dataset.p; state.all = false; paint(); }
+      else if (t.classList.contains('jm-more')) { state.all = true; paint(); }
+      else if (t.classList.contains('jm-rand')) {
+        var fresh = posts.filter(function (r) { return read.indexOf(r[0]) < 0; });
+        var pool = fresh.length ? fresh : posts;
+        var r = pool[Math.floor(Math.random() * pool.length)];
+        if (r) location.href = '/works/' + encodeURIComponent(r[0]) + '/index.html';
+      }
+    });
+    var start = mine && JM_CC[mine[3]] && by[JM_CC[mine[3]]] ? JM_CC[mine[3]] : (ccs[0] || '__');
+    pick(start);
+    var st = document.createElement('style');
+    st.textContent =
+      '.jm{margin:26px 0 18px;padding:18px 14px 16px;border-radius:26px;background:linear-gradient(160deg,#eef4ff,#fff6ea);border:2px solid rgba(47,86,201,.12);color:#232c48}' +
+      '.jm-h{margin:0 0 4px;font-size:21px;font-weight:900;line-height:1.3}' +
+      '.jm-sub{margin:0 0 10px;font-size:13.5px;font-weight:800;color:#5d6685;line-height:1.6}' +
+      '.jm-map{position:relative;margin:0 -4px;border-radius:20px;background:#dfe9ff;overflow:hidden}' +
+      '.jm-svg{display:block;width:100%;height:auto}' +
+      '.jm-c circle{fill:#c4cde6;transition:fill .3s}.jm-c.on circle{fill:#8ea6ea}.jm-c.sel circle{fill:#2f56c9}' +
+      '.jm-pin{position:absolute;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:4px;min-height:40px;min-width:40px;padding:4px 10px 4px 7px;' +
+      'border:2px solid #fff;border-radius:999px;background:#fff;color:#232c48;font:inherit;font-size:13px;font-weight:900;cursor:pointer;' +
+      'box-shadow:0 6px 16px rgba(35,44,72,.22);animation:jmPop .5s cubic-bezier(.2,1.6,.4,1) both;-webkit-tap-highlight-color:transparent}' +
+      '.jm-pin .jm-flag{font-size:19px;line-height:1}' +
+      '.jm-pin[aria-pressed="true"]{background:#2f56c9;color:#fff;border-color:#2f56c9;z-index:2}' +
+      '.jm-pin[aria-pressed="true"]::after{content:"";position:absolute;inset:-6px;border-radius:999px;border:3px solid rgba(47,86,201,.45);animation:jmRing 1.6s ease-out infinite}' +
+      '@keyframes jmPop{from{opacity:0;transform:translate(-50%,-30%) scale(.5)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}' +
+      '@keyframes jmRing{from{opacity:1;transform:scale(.9)}to{opacity:0;transform:scale(1.35)}}' +
+      '.jm-tabs,.jm-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}' +
+      '.jm-tab,.jm-chip{min-height:40px;padding:6px 13px;border-radius:999px;border:2px solid rgba(35,44,72,.12);background:#fff;color:#232c48;font:inherit;font-size:13px;font-weight:900;cursor:pointer}' +
+      '.jm-tab[aria-pressed="true"]{background:#232c48;color:#fff;border-color:#232c48}' +
+      '.jm-chip small{opacity:.6;font-size:11px}.jm-chip[aria-pressed="true"]{background:#ffc42e;border-color:#ffc42e}' +
+      '.jm-list{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}' +
+      '.jm-list.in li{animation:jmIn .4s ease both}' +
+      '.jm-list.in li:nth-child(2){animation-delay:.05s}.jm-list.in li:nth-child(3){animation-delay:.1s}.jm-list.in li:nth-child(4){animation-delay:.15s}.jm-list.in li:nth-child(5){animation-delay:.2s}' +
+      '@keyframes jmIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}' +
+      '.jm-card{display:flex;align-items:center;gap:12px;padding:9px 12px 9px 9px;border-radius:18px;background:#fff;color:inherit;text-decoration:none;border:1.5px solid rgba(35,44,72,.08)}' +
+      '.jm-th{flex:none;width:56px;height:56px;border-radius:14px;background:#e6ebf7 center/cover no-repeat}' +
+      '.jm-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}' +
+      '.jm-t{font-size:14.5px;font-weight:900;line-height:1.45}' +
+      '.jm-s{font-size:11.5px;font-weight:800;color:#6d7593}' +
+      '.jm-go{flex:none;font-weight:900;color:#2f56c9}' +
+      '.jm-foot{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}' +
+      '.jm-more,.jm-rand{flex:1 1 140px;min-height:48px;border-radius:16px;border:0;font:inherit;font-size:14px;font-weight:900;cursor:pointer}' +
+      '.jm-more{background:#fff;color:#2f56c9;border:2px solid rgba(47,86,201,.25)}.jm-more[hidden]{display:none}' +
+      '.jm-rand{background:linear-gradient(135deg,#ff8a3d,#ff6b8b);color:#fff;box-shadow:0 8px 18px rgba(255,107,139,.3)}' +
+      'html[data-theme="dark"] .jm{background:linear-gradient(160deg,#1f2433,#2a2420);color:#f4f0fa;border-color:rgba(255,255,255,.1)}' +
+      'html[data-theme="dark"] .jm-sub,html[data-theme="dark"] .jm-s{color:#b8b4c8}' +
+      'html[data-theme="dark"] .jm-map{background:#1a2033}html[data-theme="dark"] .jm-c circle{fill:#3a4160}html[data-theme="dark"] .jm-c.on circle{fill:#5b6fae}html[data-theme="dark"] .jm-c.sel circle{fill:#8ea6ff}' +
+      'html[data-theme="dark"] .jm-pin,html[data-theme="dark"] .jm-tab,html[data-theme="dark"] .jm-chip,html[data-theme="dark"] .jm-card,html[data-theme="dark"] .jm-more{background:#22242f;color:#f4f0fa;border-color:rgba(255,255,255,.14)}' +
+      'html[data-theme="dark"] .jm-tab[aria-pressed="true"],html[data-theme="dark"] .jm-pin[aria-pressed="true"]{background:#8ea6ff;color:#14182a}' +
+      '@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .jm-pin,html:not([data-motion="on"]) .jm-list.in li{animation:none}html:not([data-motion="on"]) .jm-pin::after{display:none}}' +
+      'html[data-motion="off"] .jm-pin,html[data-motion="off"] .jm-list.in li{animation:none}html[data-motion="off"] .jm-pin::after{display:none}';
+    document.head.appendChild(st);
+  }
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 
@@ -1665,6 +1845,7 @@
   drawSwitch();
   try { drawMotionNote(); } catch (e) {}
   try { moodMore(); } catch (e) {}
+  try { jumpMap(); } catch (e) {}
   window.pengessoLang = lang;   /* トップの「読みながら勉強」が、いまの言語を知るため */
   if (lang === 'en') { if (!DATA.lazyTop) drawLearn(collectEnglish(), true); return; }
   drawNotice(lang, LANGS[lang] || {});

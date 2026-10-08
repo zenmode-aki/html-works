@@ -206,6 +206,15 @@ def main():
     if not out.exists() or out.read_text(encoding="utf-8") != js:
         out.write_text(js, encoding="utf-8")
 
+    # 🗺 記事を読み終えたら出す「次はどこへ？」の地図（2026-10-08 本人：「読み終えるごとに地図を出して、好きな記事に飛べるように」）
+    #    tools/i18n_runtime.js の jumpMap が読む。[slug, 英語の題, 秒, 場所] の一覧。手で書かない
+    jrows = [[m["slug"], m.get("title", m["slug"]), max(1, m["sec"]), m.get("place", "nagoya")]
+             for m in posts if not m.get("only")]
+    out = ROOT / "assets" / "jump.json"
+    js = json.dumps(jrows, ensure_ascii=False, separators=(",", ":")) + "\n"
+    if not out.exists() or out.read_text(encoding="utf-8") != js:
+        out.write_text(js, encoding="utf-8")
+
     missing = [m["slug"] for m in posts
                if not (ROOT / "assets" / "thumbs" / f"{m['slug']}.jpg").exists()]
     if missing:
