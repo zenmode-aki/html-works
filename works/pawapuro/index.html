@@ -620,6 +620,139 @@ html[data-theme="dark"] .video-card figcaption { background: #1f2230; }
     <figcaption translate="no">▶️ ⚾🎮 Pawapuro</figcaption>
   </figure>
 
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px 18px; border-radius: 28px; text-align: center; position: relative; overflow: hidden;
+    background: linear-gradient(160deg, #ffe3f1, #ece6ff 60%, #e3f6ff); border: 3px solid #fff;
+    box-shadow: 0 14px 34px rgba(139,109,232,.22); font-weight: 800; color: #322536; }
+  .toy .toy-kick.toy-kick { display: block; }
+  .toy-kick { font-size: 34px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  .toy-lamps { display: flex; justify-content: center; align-items: center; gap: 16px; margin: 16px 0 14px; }
+  .toy .toy-lamps.toy-lamps { display: flex; }
+  .toy-lamp { width: 26px; height: 26px; border-radius: 50%; background: rgba(50,37,54,.15); box-shadow: inset 0 -3px 0 rgba(0,0,0,.12);
+    transition: background .2s, transform .25s cubic-bezier(.2,1.6,.4,1); }
+  .toy-lamp.toy-on { background: #ffcf3a; transform: scale(1.15); box-shadow: 0 0 0 5px rgba(255,207,58,.3); }
+  .toy-field { position: relative; height: 210px; width: min(300px, 100%); margin: 0 auto; border-radius: 22px; overflow: hidden;
+    background: radial-gradient(circle at 50% 18%, #e7c28f 0 30px, transparent 31px), linear-gradient(#5fbf6a, #3e9a4d); }
+  .toy-field .toy-pitcher { position: absolute; left: 50%; top: 6px; margin-left: -20px; font-size: 40px; line-height: 1; }
+  .toy-field .toy-zone { position: absolute; left: 50%; bottom: 14px; width: 74px; height: 62px; margin-left: -37px; border-radius: 10px;
+    border: 4px solid rgba(255,255,255,.9); background: rgba(255,255,255,.15); transition: background .2s; }
+  .toy-field .toy-zone.toy-hit { background: rgba(255,207,58,.55); }
+  .toy-field .toy-ball { position: absolute; left: 0; top: 0; font-size: 28px; line-height: 1; visibility: hidden; will-change: transform; }
+  .toy-field .toy-trail { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; }
+  .toy-row { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+  .toy-btn { min-width: 76px; min-height: 60px; padding: 8px 12px; border: 0; border-radius: 20px; cursor: pointer;
+    font: inherit; font-size: 28px; font-weight: 900; line-height: 1; color: #fff; background: #8b6de8;
+    box-shadow: 0 6px 0 #5a42a8; touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: transform .08s, box-shadow .08s; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #5a42a8; }
+  .toy-btn.toy-p2 { background: #ff6fae; box-shadow: 0 6px 0 #c23f7c; }
+  .toy-btn.toy-p2:active { box-shadow: 0 1px 0 #c23f7c; }
+  .toy-btn.toy-p3 { background: #12a3bd; box-shadow: 0 6px 0 #0b6f81; }
+  .toy-btn.toy-p3:active { box-shadow: 0 1px 0 #0b6f81; }
+  .toy-btn[disabled] { opacity: .4; cursor: default; }
+  .toy-reset { position: absolute; z-index: 3; top: 12px; right: 12px; width: 50px; height: 50px; padding: 0; border: 0;
+    border-radius: 50%; font: inherit; font-size: 22px; font-weight: 900; color: #876f84; background: #fff; cursor: pointer;
+    box-shadow: 0 4px 0 #d8c8f0; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .toy-reset:active { transform: translateY(3px); box-shadow: 0 1px 0 #d8c8f0; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #3a2230, #2a2238 60%, #1f2c3a); border-color: rgba(255,255,255,.12); color: #f4ecff; }
+  html[data-theme="dark"] .toy-lamp { background: rgba(255,255,255,.12); }
+  html[data-theme="dark"] .toy-lamp.toy-on { background: #ffcf3a; }
+  html[data-theme="dark"] .toy-reset { background: #2d2838; color: #f4ecff; box-shadow: 0 4px 0 #14111a; }
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) .toy-kick { animation: none; }
+  }
+  html[data-motion="off"] .toy-kick { animation: none; }
+  </style>
+  <section class="toy" aria-label="👆⚾">
+    <button type="button" class="toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">👆</div>
+    <div class="toy-lamps" aria-hidden="true"><span class="toy-lamp"></span><span class="toy-lamp"></span><span class="toy-lamp"></span></div>
+    <div class="toy-field" aria-hidden="true">
+      <svg class="toy-trail" viewBox="0 0 300 210" preserveAspectRatio="none"><path fill="none" stroke="rgba(255,255,255,.75)" stroke-width="4" stroke-linecap="round" stroke-dasharray="12 9"></path></svg>
+      <span class="toy-pitcher">🐧</span>
+      <div class="toy-zone"></div>
+      <span class="toy-ball">⚾</span>
+    </div>
+    <div class="toy-row">
+      <button type="button" class="toy-btn toy-p1" data-p="l" aria-label="↩️ ⚾">↩️</button>
+      <button type="button" class="toy-btn toy-p2" data-p="r" aria-label="↪️ ⚾">↪️</button>
+      <button type="button" class="toy-btn toy-p3" data-p="d" aria-label="⤵️ ⚾">⤵️</button>
+    </div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy');
+    if (!box) return;
+    var field = box.querySelector('.toy-field'), ball = box.querySelector('.toy-ball'), zone = box.querySelector('.toy-zone');
+    var path = box.querySelector('.toy-trail path'), lamps = [].slice.call(box.querySelectorAll('.toy-lamp'));
+    var btns = [].slice.call(box.querySelectorAll('.toy-row .toy-btn')), reset = box.querySelector('.toy-reset');
+    if (!field || !ball || !zone || !btns.length || !reset) return;
+    var strikes = 0, busy = false, raf = 0;
+    function still() {
+      try { return window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { return false; }
+    }
+    function pop(el, list, n) {
+      if (!window.pengessoPop || !el) return;
+      var r = el.getBoundingClientRect();
+      window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, list, n);
+    }
+    // point on the pitch in the 300 x 210 field box, t from 0 to 1
+    function pt(kind, t) {
+      var x = 150, y = 46 + (168 - 46) * t;
+      if (kind === 'l') x = 150 - 120 * Math.sin(Math.PI * t) * (1 - t * .25);
+      else if (kind === 'r') x = 150 + 120 * Math.sin(Math.PI * t) * (1 - t * .25);
+      else { y = 46 + 60 * t + 62 * Math.pow(t, 4); x = 150 + 18 * Math.sin(Math.PI * 2 * t); }
+      return [x, y];
+    }
+    function draw() {
+      lamps.forEach(function (l, i) { l.classList.toggle('toy-on', i < strikes); });
+      btns.forEach(function (b) { b.disabled = busy || strikes >= lamps.length; });
+    }
+    function land() {
+      busy = false;
+      strikes = Math.min(lamps.length, strikes + 1);
+      zone.classList.add('toy-hit');
+      setTimeout(function () { zone.classList.remove('toy-hit'); }, 300);
+      draw();
+      if (strikes >= lamps.length) pop(zone, ['⚾', '🔥', '🐧', '🎉'], 18);
+      else pop(zone, ['⚾'], 3);
+    }
+    function pitch(kind) {
+      if (busy || strikes >= lamps.length) return;
+      busy = true;
+      draw();
+      var w = field.clientWidth, h = field.clientHeight, sx = w / 300, sy = h / 210;
+      var d = '';
+      for (var i = 0; i <= 30; i++) { var p = pt(kind, i / 30); d += (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }
+      if (path) path.setAttribute('d', d);
+      ball.style.visibility = 'visible';
+      function place(t) {
+        var p = pt(kind, t);
+        ball.style.transform = 'translate(' + (p[0] * sx - 14) + 'px,' + (p[1] * sy - 14) + 'px) rotate(' + (t * 900) + 'deg)';
+      }
+      if (still()) { place(1); land(); return; }
+      var t0 = 0;
+      cancelAnimationFrame(raf);
+      function step(ts) {
+        if (!t0) t0 = ts;
+        var t = Math.min(1, (ts - t0) / 900);
+        place(t);
+        if (t < 1) raf = requestAnimationFrame(step); else land();
+      }
+      raf = requestAnimationFrame(step);
+    }
+    btns.forEach(function (b) { b.addEventListener('click', function () { pitch(b.getAttribute('data-p')); }); });
+    reset.addEventListener('click', function () {
+      cancelAnimationFrame(raf);
+      busy = false; strikes = 0;
+      ball.style.visibility = 'hidden';
+      if (path) path.removeAttribute('d');
+      draw();
+    });
+    draw();
+  })();
+  </script>
+
   <a class="next" href="../best-buys-2026/index.html">
     <div>
       <div class="next-kicker">NEXT · 18 SEC</div>
