@@ -78,7 +78,7 @@ def to_lab_page(slug, doc, labs, works, nxt):
         s = m.group(2)
         return f"{m.group(1)}../../works/{s}/" if s in works and s not in labs else m.group(0)
     doc = re.sub(r'(href=")\.\./([a-z0-9-]+)/', fix, doc)
-    doc = doc.replace('<div class="stage stage-public">PUBLIC</div>', '<div class="stage stage-lab">LAB</div>')
+    doc = doc.replace('<div class="stage stage-public">PUBLIC</div>', '<div class="stage stage-lab" translate="no">LAB</div>')
     doc = doc.replace(f"https://15-second-blog.com/works/{slug}/", f"https://15-second-blog.com/lab/{slug}/")
     doc = doc.replace("<head>", "<head>\n" + NOINDEX, 1)
     doc = doc.replace("</head>", CSS + "</head>", 1)
@@ -101,7 +101,7 @@ def to_lab_page(slug, doc, labs, works, nxt):
 def from_lab_page(slug, doc):
     doc = strip_marks(doc)
     doc = doc.replace('href="../index.html"', 'href="../../index.html"').replace('href="../../works/', 'href="../')
-    doc = doc.replace('<div class="stage stage-lab">LAB</div>', '<div class="stage stage-public">PUBLIC</div>')
+    doc = doc.replace('<div class="stage stage-lab" translate="no">LAB</div>', '<div class="stage stage-public">PUBLIC</div>')
     return doc.replace(f"https://15-second-blog.com/lab/{slug}/", f"https://15-second-blog.com/works/{slug}/")
 
 
