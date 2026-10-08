@@ -455,8 +455,12 @@ window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, emo, 18);
 var liking = false;
 function toggleLike(btn) {
 if (!cfg || !state.post || liking) return;
-if (blocked()) { openExplainer(); return; }
 var p = state.post, on = !p.lk, before = { l: p.l, lk: p.lk };
+if (blocked()) {
+p.lk = on; p.l = Math.max(0, p.l + (on ? 1 : -1)); setLikedLocal(slug, on); render();
+var hb0 = qs('.px-heart'); if (on && hb0) { hb0.classList.add('pop'); burst(hb0); setTimeout(function () { hb0.classList.remove('pop'); }, 700); }
+return;
+}
 liking = true;
 p.lk = on; p.l = Math.max(0, p.l + (on ? 1 : -1)); setLikedLocal(slug, on);
 render();
@@ -625,7 +629,7 @@ if (cfg.demo) { var d = el('div', 'px-demo', esc(t('demo'))); d.setAttribute('tr
 if (px.justToggled) toast(px.justToggled === 'off' ? t('offToast') : t('onToast'));
 if (kind === 'post') {
 loadComments();
-var showOnly = function () { api('GET', '/v1/post?p=' + encodeURIComponent(slug) + '&v=' + vid()).then(function (r) { if (r && r.ok) { state.post = r.post; render(); } }).catch(function () {}); };
+var showOnly = function () { api('GET', '/v1/post?p=' + encodeURIComponent(slug) + '&v=' + vid()).then(function (r) { if (r && r.ok) { state.post = r.post; if (likedLocal().indexOf(slug) >= 0 && !r.post.lk) { r.post.lk = true; r.post.l += 1; } render(); } }).catch(function () {}); };
 if (mayCount()) whenReady(startCounting); else showOnly();
 } else if (kind === 'home') {
 if (mayCount()) whenReady(function () { api('POST', '/v1/hit', { p: '_home', l: LANG, r: refCategory(), v: vid() }).catch(function () {}); });

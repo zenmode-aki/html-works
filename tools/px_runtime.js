@@ -497,8 +497,15 @@
   var liking = false;
   function toggleLike(btn) {
     if (!cfg || !state.post || liking) return;
-    if (blocked()) { openExplainer(); return; }
     var p = state.post, on = !p.lk, before = { l: p.l, lk: p.lk };
+    /* 📱 2026-10-08 本人：「スマホでいいねを押すと、説明文が出てしまう。気軽に押せるようにして」
+       数えない端末（?count=off の運営者の端末）では、前は説明の画面が開いていた。いまは普通に押せて、ハートも飛ぶ。
+       ただし本物の数には足さない（自分のいいねで数字を盛らない）。その端末の中にだけ覚える */
+    if (blocked()) {
+      p.lk = on; p.l = Math.max(0, p.l + (on ? 1 : -1)); setLikedLocal(slug, on); render();
+      var hb0 = qs('.px-heart'); if (on && hb0) { hb0.classList.add('pop'); burst(hb0); setTimeout(function () { hb0.classList.remove('pop'); }, 700); }
+      return;
+    }
     liking = true;
     p.lk = on; p.l = Math.max(0, p.l + (on ? 1 : -1)); setLikedLocal(slug, on);
     render();
@@ -677,7 +684,7 @@
     if (kind === 'post') {
       loadComments();
       /* 数えられない端末でも、数字は見せる（数えずに読むだけ） */
-      var showOnly = function () { api('GET', '/v1/post?p=' + encodeURIComponent(slug) + '&v=' + vid()).then(function (r) { if (r && r.ok) { state.post = r.post; render(); } }).catch(function () {}); };
+      var showOnly = function () { api('GET', '/v1/post?p=' + encodeURIComponent(slug) + '&v=' + vid()).then(function (r) { if (r && r.ok) { state.post = r.post; if (likedLocal().indexOf(slug) >= 0 && !r.post.lk) { r.post.lk = true; r.post.l += 1; } render(); } }).catch(function () {}); };
       if (mayCount()) whenReady(startCounting); else showOnly();
     } else if (kind === 'home') {
       if (mayCount()) whenReady(function () { api('POST', '/v1/hit', { p: '_home', l: LANG, r: refCategory(), v: vid() }).catch(function () {}); });
