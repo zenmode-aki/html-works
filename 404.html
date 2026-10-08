@@ -91,6 +91,10 @@
 (function () {
   var m = location.pathname.match(/\/works\/([a-z0-9-]+)\/?/);
   if (!m || !window.fetch) return;
+  /* 🧪 2026-10-08：試作の棚（lab/）に移した記事は、そちらへそのまま連れていく（リンクを貼ってくれた人のために） */
+  fetch('/lab/slugs.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : []; }).then(function (list) {
+    if (list.indexOf(m[1]) >= 0) location.replace('/lab/' + m[1] + '/' + location.search + location.hash);
+  }).catch(function () {});
   fetch('/draft/slugs.json', { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : []; }).then(function (list) {
     if (list.indexOf(m[1]) < 0) return;
     document.getElementById('code').textContent = '📝 COMING BACK SOON';

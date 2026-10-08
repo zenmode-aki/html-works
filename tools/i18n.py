@@ -29,6 +29,10 @@ WORKS = ROOT / "works"
 DRAFT_MODE = "--draft" in sys.argv
 if DRAFT_MODE:
     WORKS = ROOT / "draft"
+# 🧪 試作の棚（tools/lab.py）：--lab のときは lab/ を、日本語と韓国語で作る。トップページは触らない（下書きと同じあつかい）
+LAB_MODE = "--lab" in sys.argv
+if LAB_MODE:
+    WORKS, DRAFT_MODE = ROOT / "lab", True
 I18N = ROOT / "i18n"
 RUNTIME = ROOT / "tools" / "i18n_runtime.js"
 START, END = "<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->", "<!-- 🌐 i18n:end -->"
@@ -208,6 +212,8 @@ def strip_block(doc):
 
 # ── 言語ごとのデータ ──────────────────────────────
 def langs_available():
+    if LAB_MODE:
+        return ["ja", "ko"]
     if DRAFT_MODE:
         return ["ja"]
     return sorted(p.stem.split(".", 1)[1] for p in I18N.glob("ui.*.json"))
@@ -516,7 +522,7 @@ def status():
 
 
 def main():
-    args = [a for a in sys.argv[1:] if a != "--draft"]   # --draft はどこに書いてもいい（2026-10-05）
+    args = [a for a in sys.argv[1:] if a not in ("--draft", "--lab")]   # --draft はどこに書いてもいい（2026-10-05）
     langs = langs_available()
     uis = {l: load(I18N / f"ui.{l}.json") for l in langs}
     tops = {l: load(I18N / f"top.{l}.json") for l in langs}

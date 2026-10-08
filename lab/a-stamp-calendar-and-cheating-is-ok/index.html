@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="robots" content="noindex, nofollow" /><!-- 🧪 lab -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Put a flower stamp on your calendar, and it is OK to cheat a little</title>
+<!-- ⬇️ OGP（tools/ogp.py） -->
+<meta name="description" content="Record the things you want to continue with a flower stamp on a calendar." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
+<meta property="og:title" content="Put a flower stamp on your calendar, and it is OK to cheat a little" />
+<meta property="og:description" content="Record the things you want to continue with a flower stamp on a calendar." />
+<meta property="og:url" content="https://15-second-blog.com/lab/a-stamp-calendar-and-cheating-is-ok/" />
+<meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/a-stamp-calendar-and-cheating-is-ok.jpg" />
+<meta property="og:image:alt" content="A chubby round chenille yarn penguin hugging a realistic fresh white daikon radish with green leaves" />
+<meta name="twitter:card" content="summary_large_image" />
+<!-- ⬆️ OGP -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* 🐼 元気が出る心理学シリーズ（2026-10-05）。真面目な話 → ポップに（トーン反転）。花丸の赤とオレンジとアスファルトのグレー。7日のスタンプカードで、大根がアスファルトを突き破る */
+  :root {
+    --bg: #fff7f3;
+    --text: #33231f;
+    --muted: #87695f;
+    --a: #d42b3a;
+    --ink: #4a1418;
+    --bigc: #d42b3a;
+    --bigdark: #ffb3b9;
+    --photo: #ffe6df;
+    --shadow: 0 20px 55px rgba(190,60,50,.17);
+    --glow1: rgba(255,120,110,.26);
+    --glow2: rgba(255,170,70,.22);
+    --glow3: rgba(120,200,110,.16);
+    --g1: #ef3b48;
+    --g2: #ff7a3d;
+    --g3: #46506e;
+    --btnink: #b8222f;
+    --btnshadow: #f1a4a9;
+    --card: rgba(255,255,255,.95);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 10% 6%, var(--glow1), transparent 26%),
+      radial-gradient(circle at 92% 18%, var(--glow2), transparent 28%),
+      radial-gradient(circle at 50% 100%, var(--glow3), transparent 36%),
+      var(--bg);
+  }
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .home { display: inline-block; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: #fff; color: var(--a);
+    border: 2px solid rgba(255,255,255,.9); font-size: 14px; text-decoration: none; box-shadow: 0 6px 16px rgba(60,50,90,.10); }
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge { padding: 10px 16px; border-radius: 999px; background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em; box-shadow: 0 6px 16px rgba(60,50,90,.08); }
+  .stage { padding: 10px 13px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .12em; white-space: nowrap;
+    box-shadow: 0 6px 16px rgba(60,50,90,.16); }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label { color: var(--a); font-size: 13px; font-weight: 800; letter-spacing: .14em; margin-bottom: 16px; }
+  .label .topic { display: inline-block; margin-right: 10px; padding: 5px 12px; border-radius: 999px; background: var(--a); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em; }
+  h1 { margin: 0 0 22px; color: var(--ink); font-size: clamp(32px, 6.4vw, 56px); line-height: 1.08; letter-spacing: -.04em;
+    text-wrap: balance; text-shadow: 0 4px 0 rgba(255,255,255,.75); }
+
+  .photo { margin: 0 0 24px; overflow: hidden; background: var(--photo); border: 7px solid rgba(255,255,255,.8); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg); }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  .card { position: relative; margin-top: 18px; padding: 24px 26px; background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,50,90,.09); }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label { font-size: 12.5px; font-weight: 900; letter-spacing: .16em; color: var(--a); text-transform: uppercase; }
+  p { margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif; font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72; font-weight: 700; }
+  .big { font-size: clamp(23px, 4vw, 32px); font-weight: 850; line-height: 1.42; color: var(--bigc);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ════ ⚡ 触って遊べる部品（共通）════
+     文字はぜんぶ HTML に置いて、JS は class・data-*・数字・絵文字だけを変える（訳がそのまま効くように） */
+  .game { position: relative; overflow: hidden; margin-top: 26px; padding: 22px 16px 20px; border-radius: 30px; text-align: center; color: #fff;
+    background: linear-gradient(150deg, var(--g1) 0%, var(--g2) 55%, var(--g3) 100%); box-shadow: var(--shadow); }
+  .game-kicker { font-size: 12px; font-weight: 900; letter-spacing: .18em; opacity: .92; }
+  .game-title { margin-top: 4px; font-size: clamp(21px, 4.6vw, 28px); font-weight: 900; line-height: 1.25; }
+  .game-sub { margin: 6px auto 0; max-width: 440px; font-size: 14.5px; font-weight: 800; line-height: 1.5; opacity: .95; }
+  .gbtn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 56px; padding: 12px 20px; border: 0; border-radius: 999px;
+    cursor: pointer; font: inherit; font-size: 17px; font-weight: 900; line-height: 1.25; color: var(--btnink); background: #fff;
+    box-shadow: 0 7px 0 var(--btnshadow), 0 14px 24px rgba(0,0,0,.16); transition: transform .08s ease, box-shadow .08s ease;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+  .gbtn:active { transform: translateY(6px); box-shadow: 0 1px 0 var(--btnshadow), 0 5px 12px rgba(0,0,0,.16); }
+  .gbtn:focus-visible, .again:focus-visible { outline: 4px solid #fff; outline-offset: 3px; }
+  .gbtn[disabled] { opacity: .45; cursor: default; }
+  .again { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; margin-top: 14px; padding: 10px 22px; border-radius: 999px;
+    border: 2px solid rgba(255,255,255,.7); background: rgba(255,255,255,.16); color: #fff; font: inherit; font-size: 15px; font-weight: 900; cursor: pointer;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
+  .gmeter { position: relative; height: 16px; margin: 14px auto 0; max-width: 380px; border-radius: 999px; background: rgba(255,255,255,.25); overflow: hidden; }
+  .gmeter i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 999px; background: #fff; transition: width .45s cubic-bezier(.2,1.2,.4,1); }
+  .gmeter-label { display: flex; justify-content: space-between; gap: 8px; max-width: 380px; margin: 5px auto 0; font-size: 12px; font-weight: 900; opacity: .9; }
+  @keyframes shake { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+  @keyframes boing { 0% { transform: scale(1); } 35% { transform: scale(1.22) rotate(-4deg); } 70% { transform: scale(.94) rotate(2deg); } 100% { transform: scale(1); } }
+  @keyframes popin { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: none; } }
+  .shake { animation: shake .4s ease; }
+  .boing { animation: boing .45s ease; }
+  .rules3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  .rules3 > div { padding: 10px 6px; border-radius: 16px; background: #fff0ec; color: #8a2a22; font-size: 13.5px; font-weight: 900; text-align: center; line-height: 1.35; }
+  .rules3 .e { display: block; font-size: 24px; margin-bottom: 2px; }
+
+  /* 💮 7日のスタンプカード */
+  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; max-width: 440px; margin: 14px auto 0; padding: 10px 8px; border-radius: 20px; background: #fffaf2; }
+  .day { position: relative; display: grid; place-items: center; aspect-ratio: 1 / 1.25; border-radius: 12px; background: #fff; box-shadow: inset 0 0 0 2px #f1dfd4; }
+  .day .dn { position: absolute; top: 3px; left: 5px; font-size: 11px; font-weight: 900; color: #b48a7c; }
+  .day .st { font-size: clamp(20px, 6.2vw, 30px); line-height: 1; }
+  .day.today { box-shadow: inset 0 0 0 3px #ff7a3d, 0 0 0 3px rgba(255,122,61,.25); animation: glow 1.2s ease-in-out infinite alternate; }
+  @keyframes glow { to { box-shadow: inset 0 0 0 3px #ff7a3d, 0 0 0 6px rgba(255,122,61,.15); } }
+  .day.stamped .st { animation: slam .42s cubic-bezier(.2,1.4,.4,1) both; }
+  @keyframes slam { 0% { opacity: 0; transform: scale(2.4) rotate(-25deg); } 70% { opacity: 1; transform: scale(.92) rotate(-8deg); } 100% { transform: scale(1) rotate(-8deg); } }
+  .day.shoe::after { content: "👟"; position: absolute; right: 2px; bottom: 2px; font-size: 12px; }
+  .ground { position: relative; height: 170px; max-width: 440px; margin: 12px auto 0; border-radius: 20px; overflow: hidden;
+    background: linear-gradient(180deg, #bfeaff 0 70px, #4a4f60 70px 96px, #9b6b45 96px 100%); }
+  .crack { position: absolute; left: 50%; top: 60px; margin-left: -22px; font-size: 40px; line-height: 1; opacity: 0; transform: scale(.3); transition: opacity .3s ease, transform .3s cubic-bezier(.2,1.5,.4,1); z-index: 4; }
+  .game[data-broke="1"] .crack { opacity: 1; transform: none; animation: fadecrack 1.6s .3s ease forwards; }
+  @keyframes fadecrack { to { opacity: 0; transform: scale(1.4); } }
+  .radish { --y: 132px; position: absolute; left: 50%; top: 0; width: 46px; margin-left: -23px; z-index: 2;
+    transform: translateY(var(--y)); transition: transform .55s cubic-bezier(.2,1.3,.4,1); }
+  .radish .lv { display: block; text-align: center; font-size: 30px; line-height: 1; margin-bottom: -6px; }
+  .radish .root { display: block; width: 46px; height: 74px; margin: 0 auto; border-radius: 48% 48% 50% 50% / 30% 30% 70% 70%;
+    background: linear-gradient(180deg, #d9f2c4 0%, #ffffff 30%, #f3f0ea 100%); box-shadow: inset -6px -4px 0 rgba(0,0,0,.06); }
+  .radish .face { position: absolute; left: 0; right: 0; top: 44px; text-align: center; font-size: 15px; }
+  .asphalt-top { position: absolute; left: 0; right: 0; top: 70px; height: 26px; background: #4a4f60; z-index: 3;
+    transition: clip-path .3s ease; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+  .game[data-broke="1"] .asphalt-top { clip-path: polygon(0 0, 36% 0, 43% 100%, 57% 100%, 64% 0, 100% 0, 100% 100%, 0 100%); }
+  .count { margin-top: 10px; font-size: 15.5px; font-weight: 900; }
+  .count b { font-size: 26px; margin: 0 4px; }
+  .acts { display: grid; gap: 10px; max-width: 440px; margin: 12px auto 0; }
+  .acts .gbtn { width: 100%; }
+  .game[data-s="end"] .acts { display: none; }
+  .toast { min-height: 26px; margin-top: 10px; font-size: 15.5px; font-weight: 900; }
+  .toast span { display: none; }
+  .game[data-s="play"][data-t="all"] .t-all, .game[data-s="play"][data-t="shoe"] .t-shoe,
+  .game[data-s="play"][data-t="rest"] .t-rest, .game[data-s="play"][data-t="back"] .t-back { display: inline; animation: popin .25s ease both; }
+  .end { display: none; max-width: 420px; margin: 12px auto 0; padding: 14px; border-radius: 20px; background: rgba(255,255,255,.22); font-size: 17px; font-weight: 900; line-height: 1.45; }
+  .game[data-s="end"] .end { display: block; animation: popin .35s ease both; }
+  .end > div { display: none; }
+  .game[data-broke="1"] .e-broke, .game[data-broke="0"] .e-grow { display: block; }
+  .again { display: none; }
+  .game[data-s="end"] .again { display: inline-flex; }
+
+  .credit { margin-top: 22px; text-align: center; font-size: 13px; font-weight: 800; color: var(--muted); }
+
+  /* ⚡ モーションキット */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1 { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+  .js .card, .js .game { opacity: 0; transform: translateY(18px); transition: opacity .55s ease-out, transform .55s ease-out; }
+  .js .card.in, .js .game.in { opacity: 1; transform: none; }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card { border-radius: 23px; }
+    .card { padding: 20px; }
+    .game { padding: 20px 12px 18px; border-radius: 26px; }
+  }
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+    .gbtn { font-size: 15.5px; padding: 12px 14px; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important; transition: none !important;
+    }
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .game,
+    html.js:not([data-motion="on"]) .next { opacity: 1 !important; transform: none !important; }
+  }
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .game,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+
+  html[data-theme="dark"] .card { background: #22242f; border-color: rgba(255,255,255,.08); }
+  html[data-theme="dark"] .home, html[data-theme="dark"] .wc-badge { background: #22242f; border-color: rgba(255,255,255,.1); }
+  html[data-theme="dark"] h1 { color: #f4f0fa; text-shadow: none; }
+  html[data-theme="dark"] .big { color: var(--bigdark); }
+  html[data-theme="dark"] .photo { background: #2a2c38; }
+  html[data-theme="dark"] .gbtn { background: #f1edf7; }
+  html[data-theme="dark"] .rules3 > div { background: #44201c; color: #ffc6bd; }
+  html[data-theme="dark"] .cal { background: #efe8de; }
+  html[data-theme="dark"] .day { background: #faf6f0; }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
+<style id="lab-css">
+  /* 🧪 試作の棚の印（tools/lab.py）。本番に戻すと消える */
+  .lab-ribbon { display: flex; align-items: center; justify-content: center; gap: 6px 10px; flex-wrap: wrap; margin: 0 0 14px;
+    padding: 10px 14px; border-radius: 14px; background: #eef2f7; border: 1.5px dashed rgba(60,80,110,.28);
+    color: #3c4a60; font-size: 13px; font-weight: 800; line-height: 1.5; text-align: center; }
+  .lab-ribbon a { color: inherit; }
+  .stage-lab { background: #dfe6ef !important; color: #34445c !important; }
+  @media (max-width: 600px) { .topbar { flex-wrap: wrap; row-gap: 8px; } .stage-lab { padding-inline: 8px !important; letter-spacing: .04em !important; } }
+  .lab-nav { display: grid; gap: 12px; margin-top: 26px; }
+  .lab-next { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 20px; border-radius: 22px;
+    text-decoration: none; color: #2c3a50; background: #eef2f7; border: 2px dashed rgba(60,80,110,.25); font-weight: 900; }
+  .lab-next small { display: block; font-size: 12px; letter-spacing: .12em; opacity: .75; }
+  .lab-next span.t { display: block; font-size: 17px; line-height: 1.4; }
+  .lab-back { justify-self: center; display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; background: #fff; color: #232c48; border: 2px solid rgba(35,44,72,.14); text-decoration: none; font-weight: 900; }
+  .lab-home { justify-self: center; font-size: 13px; font-weight: 700; color: inherit; opacity: .6; }
+  html[data-theme="dark"] .lab-ribbon, html[data-theme="dark"] .lab-next { background: #252b36; color: #d6deea; border-color: rgba(214,222,234,.25); }
+  html[data-theme="dark"] .lab-back { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"56ef6ba9bb"},"ko":{"v":"97496763d2"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=e7bf3489d0"></script>
+<script src="/assets/px.js?v=10d546d761" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+  <!-- 🧪 lab-ribbon:start（tools/lab.py） -->
+  <div class="lab-ribbon" translate="no">🧪 LAB · 試作 — AIが読書メモから一気に作った記事です。本番の一覧には出していません · <a href="../index.html">試作の一覧</a></div>
+  <!-- 🧪 lab-ribbon:end -->
+
+  <div class="topbar">
+    <a class="home" href="../index.html">← Back</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 62 words · 21 sec</div>
+      <div class="stage stage-lab">LAB</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 21 SEC</div>
+  <h1>Put a flower stamp on your calendar, and it is OK to cheat a little <span class="float">💮</span></h1>
+  <!-- 🏷 タグ（tools/tags.py） -->
+  <style id="post-tags-css">.post-tags{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 18px}.post-tags a{display:inline-flex;align-items:center;padding:6px 11px;border-radius:999px;background:#fff;border:1.5px solid rgba(35,44,72,.12);color:#3a3550;font-size:12.5px;font-weight:800;line-height:1.2;text-decoration:none;transition:transform .15s,border-color .15s}.post-tags a:hover{transform:translateY(-1px);border-color:#8b6de8}.post-tags a.place{background:#f3effc}html[data-theme="dark"] .post-tags a{background:#22242f;border-color:#33364a;color:#e6e2ff}html[data-theme="dark"] .post-tags a.place{background:#2a2540}@media (prefers-reduced-motion:reduce){.post-tags a{transition:none}}</style><nav class="post-tags" aria-label="Tags"><a href="../../index.html?tag=psychology#posts">🧠 Psychology</a><a href="../../index.html?tag=productivity#posts">✅ Productivity</a><a href="../../index.html?tag=walking#posts">🚶 Walks</a></nav>
+  <!-- /🏷 -->
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1168" height="880" src="img/dc2ce3a41891.jpg" alt="A chubby round chenille yarn penguin hugging a realistic fresh white daikon radish with green leaves" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💮</span>
+      <span class="card-label">Flower Stamp</span>
+    </div>
+    <p>Record the things you want to continue with a flower stamp on a calendar.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">👟</span>
+      <span class="card-label">Cheating Is OK</span>
+    </div>
+    <p>Even if you only put on your shoes and go outside, you can give it a flower stamp.</p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔄</span>
+      <span class="card-label">Start Again</span>
+    </div>
+    <p>Even after 4 days off, if you start again the next day, it is a flower stamp.</p>
+    <div class="rules3" aria-hidden="true">
+      <div><span class="e">💪</span>Did it all = 💮</div>
+      <div><span class="e">👟</span>Only shoes = 💮</div>
+      <div><span class="e">🔄</span>Came back = 💮</div>
+    </div>
+  </section>
+
+  <!-- ⚡ 触って遊べる部品：7日のスタンプカード（大根がアスファルトを突き破る） -->
+  <section class="game" data-s="play" data-t="" data-broke="0" aria-live="polite">
+    <div class="game-kicker">⚡ TRY IT</div>
+    <div class="game-title">My 7-day stamp card</div>
+    <div class="game-sub">Your goal: walk every day. What did you do today? Every stamp helps the radish grow.</div>
+    <div class="cal" aria-hidden="true">
+      <div class="day"><span class="dn">1</span><span class="st"></span></div>
+      <div class="day"><span class="dn">2</span><span class="st"></span></div>
+      <div class="day"><span class="dn">3</span><span class="st"></span></div>
+      <div class="day"><span class="dn">4</span><span class="st"></span></div>
+      <div class="day"><span class="dn">5</span><span class="st"></span></div>
+      <div class="day"><span class="dn">6</span><span class="st"></span></div>
+      <div class="day"><span class="dn">7</span><span class="st"></span></div>
+    </div>
+    <div class="ground" aria-hidden="true">
+      <div class="radish"><span class="lv">🌿</span><span class="root"></span><span class="face">•ᴗ•</span></div>
+      <div class="asphalt-top"></div>
+      <div class="crack">💥</div>
+    </div>
+    <div class="count"><span class="cl">💮 Flower stamps:</span> <b class="cn">0</b> / 7</div>
+    <div class="acts">
+      <button class="gbtn act" type="button" data-a="all">💪 I walked 30 minutes</button>
+      <button class="gbtn act" type="button" data-a="shoe">👟 I only put on my shoes</button>
+      <button class="gbtn act" type="button" data-a="rest">😴 I rested today</button>
+    </div>
+    <div class="toast">
+      <span class="t-all">💮 Great! Flower stamp!</span>
+      <span class="t-shoe">💮 Shoes on? That counts! Flower stamp!</span>
+      <span class="t-rest">😴 Rest is OK. Tomorrow is a new day.</span>
+      <span class="t-back">🔄 You came back! That is a flower stamp!</span>
+    </div>
+    <div class="end">
+      <div class="e-broke">🥳 The radish broke through the asphalt! Slow and steady wins.</div>
+      <div class="e-grow">🌱 The radish is growing slowly. That is OK. Keep going!</div>
+    </div>
+    <button class="again" type="button">↺ New week</button>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🌱</span>
+      <span class="card-label">Slow Radish</span>
+    </div>
+    <p class="big">It is said a radish can break through asphalt because it grows slowly.</p>
+  </section>
+  <div class="credit">📚 I learned this from the Japanese blog "Panda no Ondo".</div>
+  <!-- 🧪 lab-nav:start（tools/lab.py） -->
+  <nav class="lab-nav" translate="no">
+    <a class="lab-next" href="../write-if-then-plans/index.html"><span><small>NEXT · 次の試作</small><span class="t">「〇〇したら△△する」と決めると、習慣が続きやすい</span></span><span aria-hidden="true">🧪</span></a>
+    <a class="lab-back" href="../index.html">🧪 ← 試作の一覧 / All lab posts</a>
+    <a class="lab-home" href="../../index.html">ブログのトップへ ↗</a>
+  </nav>
+  <!-- 🧪 lab-nav:end -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .game, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); } });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  setTimeout(function () { if (!document.querySelector('.card.in, .next.in')) showAll(); }, 1600);
+})();
+</script>
+<script>
+/* 💮 スタンプカード：JS は data-*・class・style と、絵文字・数字だけを変える。文字は上の HTML（訳がそのまま効く） */
+(function () {
+  var g = document.querySelector('.game'); if (!g) return;
+  var days = [].slice.call(g.querySelectorAll('.day')), radish = g.querySelector('.radish'), cn = g.querySelector('.cn');
+  var d = 0, stamps = 0, rested = false, tT = 0;
+  var Y = [132, 120, 106, 90, 34, 22, 14, 10];   /* 花丸の数 → 大根の高さ。3つまではアスファルトの下、4つで突き破る */
+  function toast(k) { clearTimeout(tT); g.setAttribute('data-t', ''); void g.offsetWidth; g.setAttribute('data-t', k); tT = setTimeout(function () { g.setAttribute('data-t', ''); }, 1800); }
+  function mark() { days.forEach(function (x, i) { x.classList.toggle('today', i === d && d < 7); }); }
+  function grow() {
+    radish.style.setProperty('--y', Y[Math.min(stamps, 7)] + 'px');
+    var broke = stamps >= 4;
+    if (broke && g.getAttribute('data-broke') !== '1') {
+      g.setAttribute('data-broke', '1');
+      if (window.pengessoPop) { var r = g.querySelector('.ground').getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + 70, ['💥', '🌿', '✨'], 12); }
+    }
+  }
+  function reset() {
+    clearTimeout(tT); d = 0; stamps = 0; rested = false; cn.textContent = '0';
+    days.forEach(function (x) { x.classList.remove('stamped', 'shoe', 'today'); x.querySelector('.st').textContent = ''; });
+    g.setAttribute('data-broke', '0'); g.setAttribute('data-t', ''); g.setAttribute('data-s', 'play');
+    radish.style.setProperty('--y', Y[0] + 'px'); mark();
+  }
+  g.querySelectorAll('.act').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (g.getAttribute('data-s') !== 'play' || d >= 7) return;
+      var a = b.getAttribute('data-a'), cell = days[d];
+      if (a === 'rest') {
+        cell.querySelector('.st').textContent = '💤'; rested = true; toast('rest');
+      } else {
+        cell.querySelector('.st').textContent = '💮';
+        cell.classList.remove('stamped'); void cell.offsetWidth; cell.classList.add('stamped');
+        if (a === 'shoe') cell.classList.add('shoe');
+        stamps++; cn.textContent = String(stamps);
+        toast(rested ? 'back' : a);
+        rested = false;
+        if (window.pengessoPop) { var r = cell.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['💮', '✨'], 6); }
+        grow();
+      }
+      d++; mark();
+      if (d >= 7) {
+        setTimeout(function () {
+          g.setAttribute('data-s', 'end');
+          if (stamps >= 4 && window.pengessoPop) { var r = radish.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top + r.height / 2, ['🌿', '💮', '🐧', '✨'], 18); }
+        }, 650);
+      }
+    });
+  });
+  g.querySelector('.again').addEventListener('click', reset);
+  reset();
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った（1枚目のカード）
+S2 → 使った（2枚目のカード）
+S3 → 使った（3枚目のカード）
+S4 → 使った（4枚目のカード・.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label / h1 / 遊べる部品の文字 ← 本人の素材の要約・演出（word数対象外）
+-->
