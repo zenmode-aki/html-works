@@ -120,7 +120,7 @@ TOPICS = [("feelings", "🫧", "気持ち"), ("friends", "💬", "人づきあ�
           ("sleep", "😴", "眠り"), ("health", "🍵", "体"), ("walking", "👟", "歩く"), ("family", "🏠", "家族"), ("money", "💴", "お金"),
           ("books", "📖", "本のメモ"), ("tips", "💡", "小さなコツ")]
 
-SERIES = [("happy-psychology", "🐼 しあわせ心理学のメモから"), ("burkeman-notes", "📘 時間と生き方の本のメモから"), ("", "🗂 そのほか")]
+SERIES = [("happy-psychology", "🐼 しあわせ心理学のメモから"), ("time-and-life-notes", "📘 時間と生き方の本のメモから"), ("", "🗂 そのほか")]
 
 
 def index_html(rows):
