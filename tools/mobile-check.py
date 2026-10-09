@@ -95,20 +95,20 @@ def browser():
     sys.exit("❌ Chrome が見つかりません（環境変数 CHROME に場所を入れてください）")
 
 
-def run(url, reduce):
+def run(url, reduce, budget=7000):
     for _ in range(2):          # 開けなかったら、1回だけやり直す
-        res = run_once(url, reduce)
+        res = run_once(url, reduce, budget)
         if res is not None: return res
     return None
 
 
-def run_once(url, reduce):
+def run_once(url, reduce, budget=7000):
     d = tempfile.mkdtemp(prefix="mchk")
     try:
         # 外のサイト（YouTube・地図・フォントなど）には行かせない。待たされて遅くなる・不安定になるのを防ぐ（自分のサーバーだけ見る）
         cmd = browser() + ["--disable-gpu", "--no-sandbox", f"--user-data-dir={d}", "--window-size=390,844",
                            "--host-resolver-rules=MAP * ~NOTFOUND , EXCLUDE 127.0.0.1",
-                           "--virtual-time-budget=7000", "--dump-dom"]
+                           f"--virtual-time-budget={budget}", "--dump-dom"]
         if reduce: cmd.append("--force-prefers-reduced-motion")
         r = subprocess.run(cmd + [url], capture_output=True, text=True, timeout=60)
         m = re.search(r'<pre id="mc">(.*?)</pre>', r.stdout, re.S)
@@ -156,14 +156,21 @@ def main():
             tag = f"{j[0]} [{'動きを減らす' if j[1] else '普通'}]"
             if res is None: failed.append(tag); continue
             bad = judge(res, j[1])
-            if bad: problems[tag] = bad
+            if bad: problems[tag] = (j, bad)
+    # 4つ同時に開くと、機械が忙しくてスクリプトが読み終わる前に止まることがある（2026-10-09：1本ずつなら毎回通った）。
+    # 引っかかったページだけ、1本ずつ・時間を延ばして見直す。それでも出るものだけを問題にする
+    for tag, (j, _) in list(problems.items()):
+        res = run(urls[j], j[1], 15000)
+        bad = judge(res, j[1]) if res is not None else ["開けなかった"]
+        if bad: problems[tag] = (j, bad)
+        else: del problems[tag]
     srv.shutdown()
     if failed: print("⚠️ 開けなかった:", ", ".join(failed[:12]))
     if not problems and not failed:
         print(f"✅ スマホ幅（390px）× 普通／動きを減らす：{len(slugs)}本とも問題なし"); return
     if problems:
         print(f"❌ スマホで問題があるページ：{len(problems)}件")
-        for tag, bad in problems.items():
+        for tag, (_, bad) in problems.items():
             print("  ", tag)
             for b in bad: print("      ·", b)
     sys.exit(1)
