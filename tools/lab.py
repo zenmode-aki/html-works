@@ -224,6 +224,7 @@ def build():
     r = subprocess.run([sys.executable, str(ROOT / "tools" / "i18n.py"), "--lab"], cwd=ROOT, capture_output=True, text=True)
     if r.returncode != 0:
         print(r.stdout[-2000:], r.stderr[-2000:]); raise SystemExit("❌ 試作の訳の埋め込みに失敗")
+    subprocess.run([sys.executable, str(ROOT / "tools" / "furigana.py"), "--lab"], cwd=ROOT, capture_output=True, text=True)   # 英語のページの「日本語を学ぶ」のふりがな
     LAB.mkdir(exist_ok=True)
     (LAB / "index.html").write_text(index_html(rows), encoding="utf-8")
     (LAB / "slugs.json").write_text(json.dumps(sorted(labs)) + "\n", encoding="utf-8")

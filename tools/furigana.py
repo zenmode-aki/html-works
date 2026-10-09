@@ -36,7 +36,7 @@ import sys
 from collections import Counter, namedtuple
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-WORKS = ROOT / "works"
+WORKS = ROOT / ("lab" if "--lab" in sys.argv else "works")   # --lab：試作の棚（lab/）
 OVERRIDES = ROOT / "tools" / "furigana-overrides.json"
 VERSION = "2"
 
