@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+# minimal macOS sips emulator (PIL) for Linux
+import sys
+from PIL import Image
+a=sys.argv[1:]; gets=[]; ops=[]; fmt=None; q=90; out=None; i=0; files=[]
+while i<len(a):
+    x=a[i]
+    if x=='-g': gets.append(a[i+1]); i+=2
+    elif x=='-z': ops.append(('z',int(a[i+1]),int(a[i+2]))); i+=3
+    elif x=='-Z': ops.append(('Z',int(a[i+1]))); i+=2
+    elif x=='-c': ops.append(('c',int(a[i+1]),int(a[i+2]))); i+=3
+    elif x in('--setProperty','-s'):
+        k,v=a[i+1],a[i+2]; i+=3
+        if k=='format': fmt=v
+        elif k=='formatOptions': q=int(v) if v.isdigit() else 90
+    elif x=='--out': out=a[i+1]; i+=2
+    else: files.append(x); i+=1
+f=files[-1]; im=Image.open(f)
+if gets:
+    print(f); 
+    for g in gets: print(f'  {g}: {im.width if g=="pixelWidth" else im.height}')
+    sys.exit(0)
+for o in ops:
+    if o[0]=='z': im=im.resize((o[2],o[1]),Image.LANCZOS)
+    elif o[0]=='Z':
+        s=o[1]/max(im.size)
+        if s<1: im=im.resize((round(im.width*s),round(im.height*s)),Image.LANCZOS)
+    elif o[0]=='c':
+        h,w=o[1],o[2]; l=(im.width-w)//2; t=(im.height-h)//2; im=im.crop((l,t,l+w,t+h))
+dst=out or f
+if fmt=='jpeg' or dst.lower().endswith(('.jpg','.jpeg')):
+    im.convert('RGB').save(dst,'JPEG',quality=q)
+else: im.save(dst)
+print(dst)
