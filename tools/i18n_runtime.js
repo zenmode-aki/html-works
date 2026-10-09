@@ -1622,7 +1622,7 @@
   /* 🗺 次はどこへ？（2026-10-08 本人：「それぞれの記事を読み終えるごとに、地図を表示して、好きな記事に飛べるように」）
      記事のいちばん下（「一覧に戻る」の上）に、アジアの点の地図。国を押すと、その国の記事が並ぶ。日本は街でもしぼれる。
      データは assets/jump.json（build-site.py が作る）と assets/worldmap-dots.json。題の訳はトップの訳（i18n/top-data.<lang>.json）。
-     下に近づいたときだけ読む（ページを重くしない） */
+     下に近づいたときだけ読む（ページを重くしない）。2026-10-09：点の地図をやめて、トップと同じ色鉛筆の地図（assets/maps.json）に */
   var JM_WORDS = {
     en: ['🗺 Where to next?', 'Tap a country, then pick a post.', 'posts', 'Show all', '🎲 Surprise me', 'Somewhere else'],
     ja: ['🗺 次はどこへ行く？', '国をタップして、読みたい記事を選んでください。', '本', 'ぜんぶ見る', '🎲 どこかへ連れていって', 'そのほか'],
@@ -1658,7 +1658,7 @@
       var top = (lang === 'en') ? Promise.resolve({}) :
         fetch('/i18n/top-data.' + encodeURIComponent(lang) + '.json').then(function (r) { return r.ok ? r.json() : {}; }).then(function (d) { return d.dict || {}; }, function () { return {}; });
       Promise.all([fetch('/assets/jump.json').then(function (r) { return r.json(); }),
-                   fetch('/assets/worldmap-dots.json').then(function (r) { return r.json(); }), top]).then(function (res) {
+                   fetch('/assets/maps.json').then(function (r) { return r.json(); }), top]).then(function (res) {
         drawJump(box, me, res[0], res[1], res[2], W);
       }).catch(function () { box.remove(); });
     };
@@ -1666,50 +1666,33 @@
     var io = new IntersectionObserver(function (es) { if (es[0].isIntersecting) { io.disconnect(); go(); } }, { rootMargin: '900px 0px' });
     io.observe(box);
   }
-  function drawJump(box, me, rows, dots, dict, W) {
+  function drawJump(box, me, rows, MAPS, dict, W) {
     function tr(en) { var k = fp2(en); return Object.prototype.hasOwnProperty.call(dict, k) ? dict[k] : en; }
     var regionName = null;
     try { regionName = new Intl.DisplayNames([lang === 'zh-Hant' ? 'zh-Hant' : lang], { type: 'region' }); } catch (e) {}
     function cname(cc) { try { return regionName ? regionName.of(cc) : JM_EN[cc]; } catch (e) { return JM_EN[cc]; } }
+    // 街の名前：日本語は地図の「j」、英語はそのまま、ほかの言語はトップの訳（なければ英語）
+    function pname(t) {
+      if (lang === 'ja' && t.j) return t.j;
+      if (lang === 'en') return t.n;
+      return tr(JM_PLACE[t.p] || t.n).replace(/\s*[^\s\wÀ-￯]+$/, '').replace(/\s*[\uD800-\uDFFF☀-➿️]+$/, '') || t.n;
+    }
     var read = []; try { read = JSON.parse(ss('pengesso-read') || '[]'); } catch (e) {}
     var posts = rows.filter(function (r) { return r[0] !== me; });
     var mine = rows.filter(function (r) { return r[0] === me; })[0];
-    var by = {}, other = [];
-    posts.forEach(function (r) { var cc = JM_CC[r[3]]; if (cc) (by[cc] = by[cc] || []).push(r); else other.push(r); });
+    var by = {}, other = [], nPl = {};
+    posts.forEach(function (r) { var cc = JM_CC[r[3]]; if (cc) { (by[cc] = by[cc] || []).push(r); nPl[r[3]] = (nPl[r[3]] || 0) + 1; } else other.push(r); });
     var ccs = Object.keys(JM_FLAG).filter(function (c) { return by[c]; });
-    // 地図の切り抜き：記事のある国の点が入る四角 ＋ 少し余白
-    var pts = {}, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
-    for (var i = 0; i < dots.p.length; i += 3) {
-      var a2 = dots.cc[dots.p[i + 2]], x = dots.p[i] / 10, y = dots.p[i + 1] / 10;
-      (pts[a2] = pts[a2] || []).push([x, y]);
-      if (JM_FLAG[a2] && by[a2]) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
-    }
-    if (x0 > x1) { box.remove(); return; }
-    var pad = 14; x0 -= pad; y0 -= pad; x1 += pad; y1 += pad;
-    var vw = x1 - x0, vh = y1 - y0;
-    var svg = '<svg class="jm-svg" viewBox="' + x0 + ' ' + y0 + ' ' + vw + ' ' + vh + '" aria-hidden="true">';
-    var center = {};
-    Object.keys(pts).forEach(function (a2) {
-      var ps = pts[a2].filter(function (q) { return q[0] >= x0 && q[0] <= x1 && q[1] >= y0 && q[1] <= y1; });
-      if (!ps.length) return;
-      var on = JM_FLAG[a2] && by[a2];
-      svg += '<g class="jm-c' + (on ? ' on' : '') + '" data-cc="' + a2 + '">' + ps.map(function (q) {
-        return '<circle cx="' + q[0] + '" cy="' + q[1] + '" r="' + dots.r + '"/>'; }).join('') + '</g>';
-      if (on) { var sx = 0, sy = 0; pts[a2].forEach(function (q) { sx += q[0]; sy += q[1]; }); center[a2] = [sx / pts[a2].length, sy / pts[a2].length]; }
-    });
-    svg += '</svg>';
-    var pins = ccs.map(function (cc, k) {
-      var c = center[cc]; if (!c) return '';
-      return '<button type="button" class="jm-pin" data-cc="' + cc + '" style="left:' + ((c[0] - x0) / vw * 100).toFixed(1) + '%;top:' + ((c[1] - y0) / vh * 100).toFixed(1) + '%;animation-delay:' + (k * .08) + 's" aria-label="' + esc(cname(cc)) + '">' +
-        '<span class="jm-flag">' + JM_FLAG[cc] + '</span><b>' + by[cc].length + '</b></button>';
-    }).join('');
+    if (!ccs.length && !other.length) { box.remove(); return; }
     box.innerHTML = '<h2 class="jm-h">' + esc(W[0]) + '</h2><p class="jm-sub">' + esc(W[1]) + '</p>' +
-      '<div class="jm-map">' + svg + pins + '</div>' +
+      '<div class="jm-map"><div class="jm-paper"></div><button type="button" class="jm-back" aria-label="🌏" hidden>← 🌏</button></div>' +
       '<div class="jm-tabs"></div><div class="jm-chips"></div><ul class="jm-list"></ul>' +
       '<div class="jm-foot"><button type="button" class="jm-more" hidden>' + esc(W[3]) + '</button>' +
       '<button type="button" class="jm-rand">' + esc(W[4]) + '</button></div>';
+    var cityOf = {}; MAPS.asia.cities.forEach(function (t) { cityOf[t.p] = t; });
+    var mapEl = box.querySelector('.jm-paper'), back = box.querySelector('.jm-back');
     var tabs = box.querySelector('.jm-tabs'), chips = box.querySelector('.jm-chips'), list = box.querySelector('.jm-list'), more = box.querySelector('.jm-more');
-    var state = { cc: null, place: null, all: false };
+    var state = { cc: null, place: null, all: false, view: 'asia' };
     function card(r) {
       var unread = read.indexOf(r[0]) < 0;
       return '<li><a class="jm-card" href="/works/' + encodeURIComponent(r[0]) + '/index.html">' +
@@ -1717,9 +1700,53 @@
         '<span class="jm-tx"><span class="jm-t">' + esc(tr(r[1])) + '</span><span class="jm-s">⚡ ' + r[2] + ' SEC' + (unread ? ' · 🆕' : '') + '</span></span>' +
         '<span class="jm-go" aria-hidden="true">→</span></a></li>';
     }
+    // 🗺 トップ（index.html）と同じ、色鉛筆の地図（2026-10-09 本人：「記事の最後の地図が雑い。トップの地図を埋め込んで」）。形は assets/maps.json（トップの MAPS と同じもの）
+    function fsize() { var w = mapEl.getBoundingClientRect().width || 360; return Math.max(26, Math.round(26 * 540 / w)); }
+    function label(cls, data, x, y, dx, dy, a, txt, fs, dot) {
+      var tw = txt.length * fs * 0.6 + 12, th = fs * 1.5, rx = (a === 'end') ? dx - tw + 4 : dx - 4;
+      return '<g class="jm-city ' + cls + '" ' + data + ' transform="translate(' + x + ',' + y + ')">' +
+        '<rect class="jm-hit" x="' + (rx - 24) + '" y="' + (dy - fs * 1.1) + '" width="' + (tw + 30) + '" height="' + th + '" rx="12"/>' +
+        (dot ? '<circle class="jm-ring" r="10"/><circle class="jm-dot" r="10"/>' : '') +
+        '<text class="jm-cname" font-size="' + fs + '" text-anchor="' + a + '" x="' + dx + '" y="' + dy + '">' + esc(txt) + '</text></g>';
+    }
+    function drawMap() {
+      var jp = state.view === 'japan', m = jp ? MAPS.japan : MAPS.asia, fs = fsize();
+      back.hidden = !jp;
+      var s = '<svg class="jm-svg" viewBox="0 0 ' + m.w + ' ' + m.h + '" role="img" aria-label="🗺">' +
+        '<defs><filter id="jmPencil" x="-6%" y="-6%" width="112%" height="112%"><feTurbulence type="fractalNoise" baseFrequency="0.014 0.02" numOctaves="4" seed="11" result="n"/>' +
+        '<feDisplacementMap in="SourceGraphic" in2="n" scale="13" xChannelSelector="R" yChannelSelector="G"/></filter>' +
+        '<filter id="jmGrain"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" seed="3"/><feColorMatrix type="saturate" values="0"/></filter></defs>' +
+        '<rect class="jm-sea" width="' + m.w + '" height="' + m.h + '"/><g filter="url(#jmPencil)">';
+      m.other.forEach(function (o) { s += '<path class="jm-lo" d="' + o.d + '"/>'; });
+      m.focus.forEach(function (o) {
+        var code = jp ? o.code : o.code.toUpperCase();
+        var has = jp ? nPl[o.code] : by[code];
+        var on = jp ? state.place === o.code : state.cc === code;
+        s += '<path class="jm-ln' + (has ? ' has' : '') + (on ? ' on' : '') + '" d="' + o.d + '" ' + (jp ? 'data-p="' + o.code + '"' : 'data-cc="' + code + '"') + '/>';
+      });
+      s += '</g>';
+      if (jp) {
+        m.cities.forEach(function (t) {
+          var n = nPl[t.p]; if (!n) return;
+          s += label('has' + (state.place === t.p ? ' on' : ''), 'data-p="' + t.p + '"', t.x, t.y, t.dx, t.dy, t.a, pname(t) + ' ' + n, fs, false);
+        });
+      } else {
+        m.marks.forEach(function (t) {
+          var CC = t.c.toUpperCase(), n = by[CC] ? by[CC].length : 0; if (!n) return;
+          // 🇵🇭 街が2つ以上ある国は、選んだら街ごとに開く（トップと同じ）。タイは開かない。日本は日本地図に切りかわる
+          var cities = m.cities.filter(function (c) { return c.c === t.c && nPl[c.p]; });
+          if (state.cc === CC && cities.length > 1 && t.c !== 'th' && t.c !== 'jp') {
+            cities.forEach(function (c) { s += label('has sub' + (state.place === c.p ? ' on' : ''), 'data-p="' + c.p + '" data-cc="' + CC + '"', c.x, c.y, c.dx, c.dy, c.a, pname(c) + ' ' + nPl[c.p], fs, true); });
+            return;
+          }
+          s += label('has' + (state.cc === CC ? ' on' : ''), 'data-cc="' + CC + '"', t.x, t.y, t.dx, t.dy, t.a, JM_FLAG[CC] + ' ' + (lang === 'ja' ? t.j : lang === 'en' ? t.n : cname(CC)) + ' ' + n, fs, true);
+        });
+      }
+      s += '<rect class="jm-grain" width="' + m.w + '" height="' + m.h + '" filter="url(#jmGrain)"/></svg>';
+      mapEl.innerHTML = s;
+    }
     function paint() {
-      [].forEach.call(box.querySelectorAll('.jm-pin'), function (b) { b.setAttribute('aria-pressed', b.dataset.cc === state.cc ? 'true' : 'false'); });
-      [].forEach.call(box.querySelectorAll('.jm-c'), function (g) { g.classList.toggle('sel', g.dataset.cc === state.cc); });
+      drawMap();
       tabs.innerHTML = ccs.map(function (cc) {
         return '<button type="button" class="jm-tab" data-cc="' + cc + '" aria-pressed="' + (cc === state.cc) + '">' + JM_FLAG[cc] + ' ' + esc(cname(cc)) + '</button>';
       }).join('') + (other.length ? '<button type="button" class="jm-tab" data-cc="__" aria-pressed="' + (state.cc === '__') + '">✨ ' + esc(W[5]) + '</button>' : '');
@@ -1728,7 +1755,8 @@
       pool.forEach(function (r) { places[r[3]] = (places[r[3]] || 0) + 1; });
       var pk = Object.keys(places);
       chips.innerHTML = (state.cc !== '__' && pk.length > 1) ? pk.sort(function (a, b) { return places[b] - places[a]; }).map(function (p) {
-        return '<button type="button" class="jm-chip" data-p="' + p + '" aria-pressed="' + (p === state.place) + '">' + esc(tr(JM_PLACE[p] || p)) + ' <small>' + places[p] + '</small></button>';
+        var t = cityOf[p], em = (JM_PLACE[p] || '').split(' ').pop();
+        return '<button type="button" class="jm-chip" data-p="' + p + '" aria-pressed="' + (p === state.place) + '">' + esc(t ? pname(t) + ' ' + em : tr(JM_PLACE[p] || p)) + ' <small>' + places[p] + '</small></button>';
       }).join('') : '';
       if (state.place) pool = pool.filter(function (r) { return r[3] === state.place; });
       pool = pool.slice().sort(function (a, b) { return (read.indexOf(a[0]) >= 0) - (read.indexOf(b[0]) >= 0); });
@@ -1738,13 +1766,27 @@
       more.textContent = W[3] + ' (' + pool.length + ' ' + W[2] + ')';
       list.classList.remove('in'); void list.offsetWidth; list.classList.add('in');
     }
-    function pick(cc) { state.cc = cc; state.place = null; state.all = false; paint(); }
+    function pick(cc, keepView) {
+      state.cc = (state.cc === cc && keepView) ? state.cc : cc; state.place = null; state.all = false;
+      if (!keepView) state.view = cc === 'JP' ? 'japan' : 'asia';
+      paint();
+    }
+    function zoom() { mapEl.classList.remove('jm-open'); void mapEl.offsetWidth; mapEl.classList.add('jm-open'); }
+    function pop(t, e) { if (!window.pengessoPop) return; window.pengessoPop(e.clientX || 0, e.clientY || 0, [JM_FLAG[state.cc] || '✨', '✨'], 8); }
     box.addEventListener('click', function (e) {
+      var g = e.target.closest && e.target.closest('.jm-city, .jm-ln');
+      if (g && mapEl.contains(g)) {
+        if (g.dataset.p) {   // 街・県を押した → その街だけ
+          if (g.dataset.cc && g.dataset.cc !== state.cc) state.cc = g.dataset.cc;
+          if (state.view === 'japan') state.cc = 'JP';
+          state.place = state.place === g.dataset.p ? null : g.dataset.p; state.all = false; paint(); pop(g, e);
+        } else if (g.dataset.cc && by[g.dataset.cc]) { pick(g.dataset.cc); if (state.view === 'japan') zoom(); pop(g, e); }
+        return;
+      }
       var t = e.target.closest && e.target.closest('button'); if (!t) return;
-      if (t.classList.contains('jm-pin') || t.classList.contains('jm-tab')) {
-        pick(t.dataset.cc);
-        if (window.pengessoPop && t.classList.contains('jm-pin')) { var r = t.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top, [JM_FLAG[t.dataset.cc] || '✨', '✨'], 8); }
-      } else if (t.classList.contains('jm-chip')) { state.place = state.place === t.dataset.p ? null : t.dataset.p; state.all = false; paint(); }
+      if (t.classList.contains('jm-back')) { state.view = 'asia'; drawMap(); zoom(); }
+      else if (t.classList.contains('jm-tab')) { pick(t.dataset.cc); }
+      else if (t.classList.contains('jm-chip')) { state.place = state.place === t.dataset.p ? null : t.dataset.p; state.all = false; paint(); }
       else if (t.classList.contains('jm-more')) { state.all = true; paint(); }
       else if (t.classList.contains('jm-rand')) {
         var fresh = posts.filter(function (r) { return read.indexOf(r[0]) < 0; });
@@ -1754,23 +1796,30 @@
       }
     });
     var start = mine && JM_CC[mine[3]] && by[JM_CC[mine[3]]] ? JM_CC[mine[3]] : (ccs[0] || '__');
-    pick(start);
+    // 最初はアジア全体を見せる（どこへでも行けると分かるように）。リストは、いま読んだ記事の国
+    state.cc = start; paint();
+    var rs = 0; addEventListener('resize', function () { clearTimeout(rs); rs = setTimeout(drawMap, 200); });
     var st = document.createElement('style');
     st.textContent =
       '.jm{margin:26px 0 18px;padding:18px 14px 16px;border-radius:26px;background:linear-gradient(160deg,#eef4ff,#fff6ea);border:2px solid rgba(47,86,201,.12);color:#232c48}' +
       '.jm-h{margin:0 0 4px;font-size:21px;font-weight:900;line-height:1.3}' +
       '.jm-sub{margin:0 0 10px;font-size:13.5px;font-weight:800;color:#5d6685;line-height:1.6}' +
-      '.jm-map{position:relative;margin:0 -4px;border-radius:20px;background:#dfe9ff;overflow:hidden}' +
+      '.jm-map{position:relative;margin:0 -4px;border-radius:18px;background:#f3f7fb;overflow:hidden;box-shadow:inset 0 0 0 2px rgba(35,44,72,.06)}' +
+      '.jm-paper::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;background:repeating-linear-gradient(44deg,rgba(255,255,255,.5) 0 1.5px,transparent 1.5px 5px)}' +
       '.jm-svg{display:block;width:100%;height:auto}' +
-      '.jm-c circle{fill:#c4cde6;transition:fill .3s}.jm-c.on circle{fill:#8ea6ea}.jm-c.sel circle{fill:#2f56c9}' +
-      '.jm-pin{position:absolute;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:4px;min-height:40px;min-width:40px;padding:4px 10px 4px 7px;' +
-      'border:2px solid #fff;border-radius:999px;background:#fff;color:#232c48;font:inherit;font-size:13px;font-weight:900;cursor:pointer;' +
-      'box-shadow:0 6px 16px rgba(35,44,72,.22);animation:jmPop .5s cubic-bezier(.2,1.6,.4,1) both;-webkit-tap-highlight-color:transparent}' +
-      '.jm-pin .jm-flag{font-size:19px;line-height:1}' +
-      '.jm-pin[aria-pressed="true"]{background:#2f56c9;color:#fff;border-color:#2f56c9;z-index:2}' +
-      '.jm-pin[aria-pressed="true"]::after{content:"";position:absolute;inset:-6px;border-radius:999px;border:3px solid rgba(47,86,201,.45);animation:jmRing 1.6s ease-out infinite}' +
-      '@keyframes jmPop{from{opacity:0;transform:translate(-50%,-30%) scale(.5)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}' +
-      '@keyframes jmRing{from{opacity:1;transform:scale(.9)}to{opacity:0;transform:scale(1.35)}}' +
+      '.jm-open .jm-svg{animation:jmZoom .42s cubic-bezier(.2,.9,.3,1) both}@keyframes jmZoom{from{opacity:0;transform:scale(.965)}to{opacity:1;transform:none}}' +
+      '.jm-sea{fill:#dceaf4}.jm-grain{opacity:.13;mix-blend-mode:multiply;pointer-events:none}' +
+      '.jm-lo{fill:#ece6d9;stroke:#c9c0ac;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}' +
+      '.jm-ln{fill:#e4e0d2;stroke:#b3a98f;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}' +
+      '.jm-ln.has{fill:#a9d6ae;stroke:#4e7f5c;stroke-width:3.4;cursor:pointer;transition:fill .18s}.jm-ln.has:hover{fill:#8fc99a}.jm-ln.on{fill:#ffcf5c;stroke:#a8781f}' +
+      '.jm-city{cursor:pointer}.jm-hit{fill:transparent}' +
+      '.jm-dot{fill:#2f56c9;stroke:#16265c;stroke-width:3.4}.jm-city.on .jm-dot{fill:#ffc42e;stroke:#8a5f00}' +
+      '.jm-ring{fill:none;stroke:#2f56c9;stroke-width:3;opacity:0;transform-box:fill-box;transform-origin:center;animation:jmRing 2.4s ease-out infinite}.jm-city.on .jm-ring{stroke:#e0a100}' +
+      '@keyframes jmRing{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(3.2)}}' +
+      '.jm-cname{font-family:inherit;font-weight:900;fill:#1b2138;paint-order:stroke;stroke:#fffdf8;stroke-width:7;stroke-linejoin:round;pointer-events:none}' +
+      '.jm-city.on .jm-cname{fill:#8a5000}' +
+      '.jm-city.sub{animation:jmSub .38s cubic-bezier(.2,1.4,.4,1) both}@keyframes jmSub{from{opacity:0}to{opacity:1}}' +
+      '.jm-back{position:absolute;left:10px;top:10px;min-height:44px;padding:6px 14px;border-radius:999px;border:2px solid #fff;background:rgba(255,255,255,.92);color:#232c48;font:inherit;font-size:15px;font-weight:900;cursor:pointer;box-shadow:0 6px 16px rgba(35,44,72,.2)}.jm-back[hidden]{display:none}' +
       '.jm-tabs,.jm-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}' +
       '.jm-tab,.jm-chip{min-height:40px;padding:6px 13px;border-radius:999px;border:2px solid rgba(35,44,72,.12);background:#fff;color:#232c48;font:inherit;font-size:13px;font-weight:900;cursor:pointer}' +
       '.jm-tab[aria-pressed="true"]{background:#232c48;color:#fff;border-color:#232c48}' +
@@ -1791,11 +1840,13 @@
       '.jm-rand{background:linear-gradient(135deg,#ff8a3d,#ff6b8b);color:#fff;box-shadow:0 8px 18px rgba(255,107,139,.3)}' +
       'html[data-theme="dark"] .jm{background:linear-gradient(160deg,#1f2433,#2a2420);color:#f4f0fa;border-color:rgba(255,255,255,.1)}' +
       'html[data-theme="dark"] .jm-sub,html[data-theme="dark"] .jm-s{color:#b8b4c8}' +
-      'html[data-theme="dark"] .jm-map{background:#1a2033}html[data-theme="dark"] .jm-c circle{fill:#3a4160}html[data-theme="dark"] .jm-c.on circle{fill:#5b6fae}html[data-theme="dark"] .jm-c.sel circle{fill:#8ea6ff}' +
-      'html[data-theme="dark"] .jm-pin,html[data-theme="dark"] .jm-tab,html[data-theme="dark"] .jm-chip,html[data-theme="dark"] .jm-card,html[data-theme="dark"] .jm-more{background:#22242f;color:#f4f0fa;border-color:rgba(255,255,255,.14)}' +
-      'html[data-theme="dark"] .jm-tab[aria-pressed="true"],html[data-theme="dark"] .jm-pin[aria-pressed="true"]{background:#8ea6ff;color:#14182a}' +
-      '@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .jm-pin,html:not([data-motion="on"]) .jm-list.in li{animation:none}html:not([data-motion="on"]) .jm-pin::after{display:none}}' +
-      'html[data-motion="off"] .jm-pin,html[data-motion="off"] .jm-list.in li{animation:none}html[data-motion="off"] .jm-pin::after{display:none}';
+      'html[data-theme="dark"] .jm-map{background:#1b2230}html[data-theme="dark"] .jm-sea{fill:#1d2a3b}html[data-theme="dark"] .jm-lo{fill:#2e3342;stroke:#4a5064}' +
+      'html[data-theme="dark"] .jm-ln{fill:#353a4a;stroke:#596078}html[data-theme="dark"] .jm-ln.has{fill:#3d7b56;stroke:#8fd1a4}html[data-theme="dark"] .jm-ln.on{fill:#d9a520;stroke:#ffe08a}' +
+      'html[data-theme="dark"] .jm-cname{fill:#f1eefa;stroke:#1b2230}html[data-theme="dark"] .jm-dot{fill:#7b96ff;stroke:#eef1ff}html[data-theme="dark"] .jm-paper::after{opacity:.06}html[data-theme="dark"] .jm-grain{opacity:.06;mix-blend-mode:screen}' +
+      'html[data-theme="dark"] .jm-back,html[data-theme="dark"] .jm-tab,html[data-theme="dark"] .jm-chip,html[data-theme="dark"] .jm-card,html[data-theme="dark"] .jm-more{background:#22242f;color:#f4f0fa;border-color:rgba(255,255,255,.14)}' +
+      'html[data-theme="dark"] .jm-tab[aria-pressed="true"]{background:#8ea6ff;color:#14182a}' +
+      '@media (prefers-reduced-motion: reduce){html:not([data-motion="on"]) .jm-ring,html:not([data-motion="on"]) .jm-city.sub,html:not([data-motion="on"]) .jm-open .jm-svg,html:not([data-motion="on"]) .jm-list.in li{animation:none}}' +
+      'html[data-motion="off"] .jm-ring,html[data-motion="off"] .jm-city.sub,html[data-motion="off"] .jm-open .jm-svg,html[data-motion="off"] .jm-list.in li{animation:none}';
     document.head.appendChild(st);
   }
 

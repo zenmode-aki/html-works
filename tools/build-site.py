@@ -215,6 +215,15 @@ def main():
     if not out.exists() or out.read_text(encoding="utf-8") != js:
         out.write_text(js, encoding="utf-8")
 
+    # 🗺 その地図の形（2026-10-09 本人：「記事の最後の地図が雑い。トップの地図を埋め込んで」）。
+    #    トップ（index.html）の MAPS（tools/make-maps.py が焼き込む）を、そのまま assets/maps.json に写す。手で書かない
+    mm = re.search(r"var MAPS = (\{.*?\});\s*\n", (ROOT / "index.html").read_text(encoding="utf-8"), re.S)
+    if mm:
+        out = ROOT / "assets" / "maps.json"
+        js = json.dumps(json.loads(mm.group(1)), ensure_ascii=False, separators=(",", ":")) + "\n"
+        if not out.exists() or out.read_text(encoding="utf-8") != js:
+            out.write_text(js, encoding="utf-8")
+
     missing = [m["slug"] for m in posts
                if not (ROOT / "assets" / "thumbs" / f"{m['slug']}.jpg").exists()]
     if missing:
