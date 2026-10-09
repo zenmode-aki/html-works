@@ -1798,7 +1798,7 @@
     var start = mine && JM_CC[mine[3]] && by[JM_CC[mine[3]]] ? JM_CC[mine[3]] : (ccs[0] || '__');
     // 最初はアジア全体を見せる（どこへでも行けると分かるように）。リストは、いま読んだ記事の国
     state.cc = start; paint();
-    var rs = 0; addEventListener('resize', function () { clearTimeout(rs); rs = setTimeout(drawMap, 200); });
+    var rs = 0, lastW = innerWidth; addEventListener('resize', function () { if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(rs); rs = setTimeout(drawMap, 200); });   // スマホは下にスクロールするだけで resize が来る。幅が変わったときだけ描き直す
     var st = document.createElement('style');
     st.textContent =
       '.jm{margin:26px 0 18px;padding:18px 14px 16px;border-radius:26px;background:linear-gradient(160deg,#eef4ff,#fff6ea);border:2px solid rgba(47,86,201,.12);color:#232c48}' +
