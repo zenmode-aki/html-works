@@ -61,8 +61,8 @@ PLACES = {
 #    仕事の記事を本番に戻すときは、PLAN.md「💼 仕事は業界でまとめる」で書き直してから
 JOBS = [
     ("mcd",    "🍔", "Food service",      "Japan",       None),
-    ("clark",  "🏫", "Education",         "Philippines", None),
-    ("cebu",   "💻", "IT",                "Philippines", None),
+    ("edu",    "🏫", "Education",         "Philippines", None),
+    ("it",     "💻", "IT",                "Philippines", None),
     ("netops", "🛠", "IT infrastructure", "Japan",       None),
 ]
 LEGACY_JOB_POSTS = {}

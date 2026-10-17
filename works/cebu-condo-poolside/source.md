@@ -36,7 +36,6 @@ SOURCE MAPには影響しない）。
   「The poolside, with the city towers behind」（プールサイドの写真だったため）
 - images/poolside.jpg のキャプションは削除。「写真だけでいいよ」との指示のため
 
-## 仕事ページへの関連づけ
+## 話題
 
-ブリッジSEの時期のセブ暮らしなので、tools/build-site.py の
-LEGACY_JOB_POSTS["cebu"] にこの記事も足すこと（他のセブ暮らし5本と同じ扱い）。
+セブでの暮らしの話（topic は ph）。
