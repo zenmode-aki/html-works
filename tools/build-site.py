@@ -60,10 +60,10 @@ PLACES = {
 #    会社名・街・仕事の中身は出さない。業界と国だけ。記事は並べない（topic を None にしている）。
 #    仕事の記事を本番に戻すときは、PLAN.md「💼 仕事は業界でまとめる」で書き直してから
 JOBS = [
-    ("mcd",    "🍔", "Food service",      "Japan",       None),
+    ("food",   "🍔", "Food service",      "Japan",       None),
     ("edu",    "🏫", "Education",         "Philippines", None),
     ("it",     "💻", "IT",                "Philippines", None),
-    ("netops", "🛠", "IT infrastructure", "Japan",       None),
+    ("infra",  "🛠", "IT infrastructure", "Japan",       None),
 ]
 LEGACY_JOB_POSTS = {}
 

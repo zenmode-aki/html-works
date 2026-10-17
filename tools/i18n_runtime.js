@@ -660,7 +660,7 @@
       'padding:7px 7px 7px 12px;border-radius:14px;background:#2b2440;color:#fff;font-size:13px;font-weight:800;cursor:pointer;' +
       'box-shadow:0 10px 26px rgba(0,0,0,.2);animation:i18n-tip-in .35s cubic-bezier(.2,1.4,.4,1) both}' +
       '.i18n-tip::before{content:"";position:absolute;right:-5px;top:50%;margin-top:-6px;width:12px;height:12px;background:#2b2440;transform:rotate(45deg)}' +
-      '.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:32px;height:32px;flex:none;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
+      '.i18n-tip button{border:0;background:rgba(255,255,255,.14);color:#fff;width:40px;height:40px;flex:none;border-radius:50%;font-size:15px;line-height:1;cursor:pointer}' +
       'html[dir="rtl"] .i18n-tip{right:auto;left:calc(100% + 12px)}html[dir="rtl"] .i18n-tip::before{right:auto;left:-5px}' +
       '.i18n-tip .i18n-tip-text{color:#fff !important;font-weight:800}' +
       '.i18n-tip-text.in{animation:i18n-tip-in .3s ease-out both}.i18n-tip.bye{opacity:0;transition:opacity .35s}' +
@@ -1176,7 +1176,7 @@
       '.study-tip.it{background:#1f7a55;box-shadow:0 10px 24px rgba(31,122,85,.35)}.study-tip.it::before{background:#1f7a55}' +
       '.study-tip::before{content:"";position:absolute;left:26px;top:-7px;width:14px;height:14px;background:#5b4bb0;transform:rotate(45deg);border-radius:3px}' +
       'html[dir="rtl"] .study-tip{left:auto;right:0}html[dir="rtl"] .study-tip::before{left:auto;right:26px}' +
-      '.study-tip button{flex:none;width:28px;height:28px;margin:-4px 0;border:0;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font:inherit;cursor:pointer}' +
+      '.study-tip button{flex:none;width:40px;height:40px;margin:-8px -6px -8px 0;border:0;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font:inherit;cursor:pointer}' +
       '.study-tip .t{transition:opacity .25s}.study-tip .t.fade{opacity:0}' +
       '.study-tip.bye{opacity:0;transition:opacity .35s}' +
       /* 📱 スマホでは、吹き出しを題名の上に重ねない（2026-10-05：iPhone で最初の3回、題名が隠れていた）。ボタンの下の1行として出す */
@@ -1533,7 +1533,9 @@
       if (old) old.remove();
       tip = document.createElement('div');
       tip.className = 'study-tip'; tip.setAttribute('role', 'status');
-      tip.innerHTML = '<span class="t"></span><button type="button" aria-label="×">×</button>';
+      tip.innerHTML = '<span class="t"></span><button type="button">×</button>';
+      var tipL = LANGS[document.documentElement.lang];   /* 読み上げで「×」ではなく「閉じる」と読ませる（2026-10-17） */
+      tip.lastChild.setAttribute('aria-label', (tipL && tipL.noticeDismiss) || 'Close');
       var tx = tip.firstChild, n = 0;
       tx.textContent = lines[0];
       tip.addEventListener('click', function (e) {

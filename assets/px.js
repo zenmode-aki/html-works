@@ -641,7 +641,7 @@ var feed = qs('#feed');
 if (feed && window.MutationObserver) new MutationObserver(function () { decorateFeed(); }).observe(feed, { childList: true });
 }
 }
-var CM_SRC = '/assets/comments.js?v=8ac6e4d3be';
+var CM_SRC = '/assets/comments.js?v=395b23b94e';
 function loadComments() {
 if (cfg.demo || /^__/.test(CM_SRC)) return;
 var anchor = ensureEnd(); if (!anchor) return;
