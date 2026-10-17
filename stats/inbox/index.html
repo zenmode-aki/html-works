@@ -8,7 +8,7 @@
 <link rel="icon" href="../../assets/pengesso/pengesso-01.jpg">
 <!-- 📮 ご主人の受け箱（2026-10-05）
      ・読者がコメント欄で「ご主人だけに」を選んで書いたもの、AI が「ご主人への質問・お願い」と判断したものが届く
-     ・3日待ちのコメント・公開したもの・出さなかったものも、ここで全部見られる。ご主人の判断で、出す／隠す／消す
+     ・AI が読んでいる最中のコメント・公開したもの・出さなかったものも、ここで全部見られる。ご主人の判断で、出す／隠す／消す
      ・合言葉（ADMIN_KEY）がないと何も見えない。合言葉はリポジトリには書かない。
        Mac のキーチェーン「pengesso-admin-key」に入っている（ターミナル：security find-generic-password -s pengesso-admin-key -w）
      ・この端末に一度入れれば、次からは自動（localStorage） -->
@@ -52,7 +52,7 @@
 <div class="wrap">
   <a class="back" href="../">← 数字のページ</a>
   <h1>📮 受け箱</h1>
-  <p class="lead">読者からの「ご主人だけに」のメッセージと、コメントぜんぶ。コメントは3日待ってから AI が読んで、そのまま出す・やさしく言い換えて出す・ここに回す・出さない、を決めます。</p>
+  <p class="lead">読者からの「ご主人だけに」のメッセージと、コメントぜんぶ。コメントは送られたらすぐに AI が読んで、そのまま出す・やさしく言い換えて出す・ここに回す・出さない、を決めます。</p>
   <div id="app"></div>
 </div>
 <script>
@@ -85,7 +85,7 @@
     });
   }
 
-  var TABS = [['inbox', '📮 ご主人へ'], ['wait', '⏳ 3日待ち'], ['pub', '✅ 公開中'], ['no', '🚫 出さなかった'], ['all', 'ぜんぶ']];
+  var TABS = [['inbox', '📮 ご主人へ'], ['wait', '⏳ AI が読む前'], ['pub', '✅ 公開中'], ['no', '🚫 出さなかった'], ['all', 'ぜんぶ']];
   function inTab(r) {
     if (tab === 'all') return true;
     if (tab === 'inbox') return r.st === 'inbox';
@@ -99,11 +99,11 @@
       var n = rows.filter(function (r) { var o = tab; tab = t[0]; var x = inTab(r); tab = o; return x; }).length;
       return '<button type="button" data-t="' + t[0] + '" aria-pressed="' + (tab === t[0]) + '">' + t[1] + ' ' + n + (t[0] === 'inbox' && unseen ? '<b>' + unseen + '</b>' : '') + '</button>';
     }).join('') + '</div>';
-    html += '<div class="tools"><span>コメントは1時間に1回、3日たったものを AI が読みます。</span><span><button class="btn ghost small" data-op="reload">↻ 読み直す</button> <button class="btn ghost small" data-op="run">🤖 いますぐ AI に読ませる</button></span></div>';
+    html += '<div class="tools"><span>コメントは送られたらすぐ AI が読みます。読めなかったものは、1時間に1回もう一度読みます。</span><span><button class="btn ghost small" data-op="reload">↻ 読み直す</button> <button class="btn ghost small" data-op="run">🤖 いますぐ AI に読ませる</button></span></div>';
     var list = rows.filter(inTab);
     if (!list.length) html += '<div class="empty">ここには、まだ何もありません 🐧</div>';
     html += list.map(function (r) {
-      var st = { wait: '⏳ 3日待ち', err: '⏳ AI が読めなかった（また試す）', ok: '✅ そのまま公開', soft: '🪄 言い換えて公開', inbox: '📮 ご主人へ', no: '🚫 出さない' }[r.st] || r.st;
+      var st = { wait: '⏳ AI が読む前', err: '⏳ AI が読めなかった（また試す）', ok: '✅ そのまま公開', soft: '🪄 言い換えて公開', inbox: '📮 ご主人へ', no: '🚫 出さない' }[r.st] || r.st;
       var meta = '<span>' + st + '</span><span>' + when(r.ts) + '</span><a href="/works/' + esc(r.slug) + '/" target="_blank" rel="noopener">' + esc(r.slug) + '</a>' +
         '<span>' + esc(r.nick || '名無し') + '</span>' + (r.home ? '<span>' + flag(r.home) + ' ' + esc(cname(r.home)) + ' に住んでいる</span>' : '') +
         (r.cc && r.cc !== 'ZZ' ? '<span>（いま ' + flag(r.cc) + ' から）</span>' : '') + (r.lang ? '<span>' + esc(lname(r.lang)) + 'で読んでいる</span>' : '') +
@@ -127,7 +127,7 @@
     if (op === 'reload') return load();
     if (op === 'logout') { put(KEY, null); key = ''; askKey(); return; }
     if (op === 'delete' && !confirm('このコメントを消します。もとに戻せません。いいですか？')) return;
-    if (op === 'run' && !confirm('3日待っていないものも含めて、待っているコメントをいますぐ AI に読ませます。')) return;
+    if (op === 'run' && !confirm('まだ AI が読めていないコメントを、いますぐ AI に読ませます。')) return;
     b.disabled = true;
     call('POST', { op: op, id: +b.dataset.id || 0 }).then(function (r) {
       if (op === 'run' && r && r.ok) alert('AI が ' + r.n + '件 読みました' + (r.left ? '（' + r.left + '件は、AI が読めませんでした。あとでまた試します）' : ''));

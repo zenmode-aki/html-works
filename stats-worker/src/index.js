@@ -60,7 +60,7 @@ export class Stats extends DurableObject {
     q("CREATE TABLE IF NOT EXISTS likes(slug TEXT, vid TEXT, cc TEXT, ts INTEGER, PRIMARY KEY(slug, vid)) WITHOUT ROWID");
     q("CREATE TABLE IF NOT EXISTS t_like(slug TEXT PRIMARY KEY, n INTEGER NOT NULL) WITHOUT ROWID");
     q("CREATE TABLE IF NOT EXISTS rl_like(day TEXT, ih TEXT, n INTEGER NOT NULL, PRIMARY KEY(day, ih)) WITHOUT ROWID");
-    // 💬 コメント（2026-10-05）。st: wait（3日待ち）→ ok（そのまま）/ soft（AIがやさしく言い換えた）/ inbox（ご主人だけが読む）/ no（出さない）
+    // 💬 コメント（2026-10-05）。st: wait（AI が読む前。2026-10-17 から送ったらすぐ読む）→ ok（そのまま）/ soft（AIがやさしく言い換えた）/ inbox（ご主人だけが読む）/ no（出さない）
     q(`CREATE TABLE IF NOT EXISTS comments(id INTEGER PRIMARY KEY AUTOINCREMENT, slug TEXT NOT NULL, vid TEXT NOT NULL,
         nick TEXT, home TEXT, cc TEXT, lang TEXT, kind TEXT, body TEXT NOT NULL, ts INTEGER NOT NULL,
         st TEXT NOT NULL DEFAULT 'wait', shown TEXT, why TEXT, done INTEGER, seen INTEGER DEFAULT 0)`);
@@ -253,7 +253,8 @@ export class Stats extends DurableObject {
   }
 
   /* ───────── 💬 コメント ─────────
-     ・書いたコメントは、すぐには出さない。3日おいてから AI が読む（勢いで書いたものを、そのまま出さないため）
+     ・書いたコメントは、送ったらすぐに AI が読んで、すぐに出す（2026-10-17 本人：「即時で反映される感じでいい」。前は3日待っていた）
+     ・AI が5秒で読み終わらないときは、そのまま裏で読み続けて、読めたら出す。AI が読めなかったものは、1時間に1回の cron がもう一度読む
      ・AI の判断：そのまま出す（ok）／やさしい言い方に直して出す（soft）／ご主人への質問・お願いは、ご主人だけが読む（inbox）／出さない（no）
      ・「ご主人へ」を選んで書いたものは、待たずにご主人の受け箱へ（みんなには見えない）
      ・書いた人は、自分のコメントがいまどうなっているかを見られる（同じ端末の vid で） */
@@ -274,7 +275,12 @@ export class Stats extends DurableObject {
     const st = kind === "q" ? "inbox" : "wait";
     this.sql.exec("INSERT INTO comments(slug,vid,nick,home,cc,lang,kind,body,ts,st,done) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
       a.slug, a.vid, a.nick, a.home, a.cc, a.lang, kind, a.body, now, st, kind === "q" ? now : null);
-    return { ok: 1, st, list: this.commentList(a.slug, a.vid) };
+    if (kind === "q") return { ok: 1, st, list: this.commentList(a.slug, a.vid) };
+    const id = this.sql.exec("SELECT last_insert_rowid() id").one().id;
+    const work = this.judgeOne({ id, slug: a.slug, nick: a.nick, lang: a.lang, body: a.body });
+    const fin = await Promise.race([work, new Promise((r) => setTimeout(() => r(null), 5000))]);
+    this.memo.delete("site");
+    return { ok: 1, st: fin || "wait", list: this.commentList(a.slug, a.vid) };
   }
 
   commentList(slug, vid) {
@@ -283,23 +289,27 @@ export class Stats extends DurableObject {
     const mine = vid ? this.sql.exec("SELECT id, kind, body, st, ts FROM comments WHERE slug=? AND vid=? ORDER BY ts DESC LIMIT 20", slug, vid).toArray()
       .map((r) => ({ id: r.id, k: r.kind, t: r.body, st: r.st === "soft" ? "ok" : r.st === "no" ? "wait" : r.st === "err" ? "wait" : r.st, at: r.ts })) : [];
     // 出さないと決めたものも、書いた人には「待っている」と見せる（何度も書き直してすり抜けようとさせない）
-    return { pub, mine, hold: 3 };
+    return { pub, mine, hold: 0 };
   }
 
   async comments(a) { return { ok: 1, ...this.commentList(a.slug, VID_RE.test(a.vid || "") ? a.vid : "") }; }
 
-  /* 3日たったコメントを AI が読む（1時間に1回、cron から） */
+  /* 1本を AI が読んで、結果を書きこむ。読めなかったら err（cron がもう一度読む） */
+  async judgeOne(c) {
+    const d = await judge(this.env, c);
+    if (!d) { this.sql.exec("UPDATE comments SET st='err' WHERE id=? AND st IN ('wait','err')", c.id); return null; }
+    this.sql.exec("UPDATE comments SET st=?, shown=?, why=?, done=? WHERE id=? AND st IN ('wait','err')", d.st, d.text, d.why, Date.now(), c.id);
+    return d.st;
+  }
+
+  /* まだ読めていないコメントを AI が読む（1時間に1回、cron から。送ったときに読めなかったものの拾い直し）。
+     送ったばかり（2分以内）のものは、裏で読んでいる最中かもしれないので飛ばす */
   async moderate(force) {
     const now = Date.now();
     const due = this.sql.exec("SELECT id, slug, nick, lang, body FROM comments WHERE st IN ('wait','err') AND ts<? ORDER BY ts LIMIT 25",
-      force ? now : now - 3 * DAY_MS).toArray();
+      force ? now : now - 120000).toArray();
     let n = 0;
-    for (const c of due) {
-      const d = await judge(this.env, c);
-      if (!d) { this.sql.exec("UPDATE comments SET st='err' WHERE id=?", c.id); continue; }
-      this.sql.exec("UPDATE comments SET st=?, shown=?, why=?, done=? WHERE id=?", d.st, d.text, d.why, now, c.id);
-      n++;
-    }
+    for (const c of due) { if (await this.judgeOne(c)) n++; }
     return { ok: 1, n, left: due.length - n };
   }
 
@@ -448,7 +458,7 @@ export default {
     }
   },
 
-  // ⏰ 1時間に1回：3日たったコメントを AI が読む
+  // ⏰ 1時間に1回：送ったときに AI が読めなかったコメントを、もう一度読む
   async scheduled(event, env, ctx) {
     const stub = env.STATS.get(env.STATS.idFromName("main"), { locationHint: "apac" });
     ctx.waitUntil(stub.moderate(false));

@@ -1,6 +1,6 @@
 /* 💬 コメント（assets/comments.js。px.js が、記事のいちばん下に近づいたときだけ読む）
    2026-10-05 本人の要望：
-   ・書いたコメントは、すぐには出さない。3日おいてから AI が読む
+   ・書いたコメントは、送ったらすぐに AI が読んで、すぐに出す（2026-10-17 本人：「即時で反映される感じでいい」。前は3日待っていた）
    ・そのままで大丈夫なら、そのまま出す。言い方がきついものは、AI がやさしく言い換えて出す（「言い換えました」と書く）
    ・ご主人への質問・お願いは、みんなには出さない。ご主人だけが読む（受け箱：/stats/inbox/）
    ・住んでいる国と、読んでいる言語を聞く（名前は書かなくていい）
@@ -18,48 +18,48 @@
   function put(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 
   var T = {
-    en: { title: '💬 Leave a note', sub: 'Comments appear 3 days later. An AI reads each one first. If the words are a bit sharp, it says them more gently. Questions for the owner go only to the owner.',
+    en: { title: '💬 Leave a note', sub: 'Comments appear right away. An AI reads each one first. If the words are a bit sharp, it says them more gently. Questions for the owner go only to the owner.',
       none: 'No comments yet. Be the first?', toAll: '💬 For everyone', toOwner: '📮 Only to the owner',
-      toAllHint: 'Shown on this page after 3 days.', toOwnerHint: 'Not shown on the page. Only the owner reads it.',
+      toAllHint: 'Shown on this page right away.', toOwnerHint: 'Not shown on the page. Only the owner reads it.',
       ph: 'Write something… (up to 500 characters)', phOwner: 'A question or a wish for the owner…', nick: 'Name (optional)', nickPh: 'A penguin with no name',
       home: 'Where you live', homeNone: 'Rather not say', reading: 'Reading in', send: 'Send', sending: 'Sending…',
-      sentAll: 'Thank you! 💌 It will appear here in about 3 days.', sentOwner: 'Thank you! 📮 It went to the owner. It will not be shown on the page.',
+      sentAll: 'Thank you! 💌 It is shown here now.', sentWait: 'Thank you! 💌 It will appear here soon.', sentOwner: 'Thank you! 📮 It went to the owner. It will not be shown on the page.',
       mine: 'Your notes on this post', wait: '⏳ Waiting · about {d} more days', waitSoon: '⏳ Waiting · soon', ok: '✅ Shown', inbox: '📮 Delivered to the owner',
       soft: '🪄 Said more gently by AI', anon: 'A penguin with no name', err: 'Could not send. Please try again later.', limit: 'That is a lot for today. Please try again tomorrow.',
       short: 'A little more, please.', long: 'Up to 500 characters, please.', more: 'Show all {n}', rules: 'No links, no ads, no names of other people.' },
-    ja: { title: '💬 ひとこと、どうぞ', sub: 'コメントは3日後に出ます。その前に AI が読みます。言い方が少しきついときは、やさしい言い方に直して出します。ご主人への質問は、ご主人だけが読みます。',
+    ja: { title: '💬 ひとこと、どうぞ', sub: 'コメントは、すぐに出ます。その前に AI が読みます。言い方が少しきついときは、やさしい言い方に直して出します。ご主人への質問は、ご主人だけが読みます。',
       none: 'まだコメントはありません。最初のひとことを、どうぞ。', toAll: '💬 みんなに', toOwner: '📮 ご主人だけに',
-      toAllHint: '3日後に、このページに出ます。', toOwnerHint: 'ページには出ません。ご主人だけが読みます。',
+      toAllHint: 'すぐに、このページに出ます。', toOwnerHint: 'ページには出ません。ご主人だけが読みます。',
       ph: 'ひとこと、どうぞ…（500文字まで）', phOwner: 'ご主人への質問や、書いてほしいこと…', nick: '名前（なくてもいい）', nickPh: '名無しのペンギン',
       home: '住んでいる国', homeNone: '書かない', reading: '読んでいる言語', send: '送る', sending: '送っています…',
-      sentAll: 'ありがとうございます！💌 3日くらいで、ここに出ます。', sentOwner: 'ありがとうございます！📮 ご主人に届けました。ページには出ません。',
+      sentAll: 'ありがとうございます！💌 ここに出ました。', sentWait: 'ありがとうございます！💌 少ししたら、ここに出ます。', sentOwner: 'ありがとうございます！📮 ご主人に届けました。ページには出ません。',
       mine: 'この記事に書いたもの', wait: '⏳ 公開待ち・あと{d}日くらい', waitSoon: '⏳ 公開待ち・もうすぐ', ok: '✅ 公開されました', inbox: '📮 ご主人に届きました',
       soft: '🪄 AI がやさしく言い換えました', anon: '名無しのペンギン', err: 'うまく送れませんでした。少したってから、もう一度どうぞ。', limit: '今日はたくさん書いてもらいました。また明日どうぞ。',
       short: 'もう少しだけ、どうぞ。', long: '500文字までで、お願いします。', more: '{n}件ぜんぶ見る', rules: 'リンク・宣伝・ほかの人の名前は書かないでください。' },
-    ko: { title: '💬 한마디 남겨 주세요', sub: '댓글은 3일 뒤에 보여요. 그 전에 AI가 읽어요. 말투가 조금 날카로우면 부드럽게 바꿔서 보여 줘요. 주인에게 하는 질문은 주인만 읽어요.',
+    ko: { title: '💬 한마디 남겨 주세요', sub: '댓글은 바로 보여요. 그 전에 AI가 읽어요. 말투가 조금 날카로우면 부드럽게 바꿔서 보여 줘요. 주인에게 하는 질문은 주인만 읽어요.',
       none: '아직 댓글이 없어요. 첫 한마디를 남겨 주세요.', toAll: '💬 모두에게', toOwner: '📮 주인에게만',
-      toAllHint: '3일 뒤에 이 페이지에 보여요.', toOwnerHint: '페이지에는 안 보여요. 주인만 읽어요.',
+      toAllHint: '바로 이 페이지에 보여요.', toOwnerHint: '페이지에는 안 보여요. 주인만 읽어요.',
       ph: '한마디 남겨 주세요… (500자까지)', phOwner: '주인에게 질문이나 바라는 것…', nick: '이름 (없어도 돼요)', nickPh: '이름 없는 펭귄',
       home: '사는 나라', homeNone: '안 쓸래요', reading: '읽는 언어', send: '보내기', sending: '보내는 중…',
-      sentAll: '고마워요! 💌 3일쯤 뒤에 여기에 보여요.', sentOwner: '고마워요! 📮 주인에게 전했어요. 페이지에는 안 보여요.',
+      sentAll: '고마워요! 💌 여기에 보여요.', sentWait: '고마워요! 💌 조금 뒤에 여기에 보여요.', sentOwner: '고마워요! 📮 주인에게 전했어요. 페이지에는 안 보여요.',
       mine: '이 글에 쓴 것', wait: '⏳ 공개 대기 · {d}일쯤 남음', waitSoon: '⏳ 공개 대기 · 곧', ok: '✅ 공개됐어요', inbox: '📮 주인에게 전달됐어요',
       soft: '🪄 AI가 부드럽게 바꿨어요', anon: '이름 없는 펭귄', err: '보내지 못했어요. 조금 뒤에 다시 해 주세요.', limit: '오늘은 많이 써 주셨어요. 내일 또 와 주세요.',
       short: '조금만 더 써 주세요.', long: '500자까지 부탁해요.', more: '{n}개 모두 보기', rules: '링크·광고·다른 사람의 이름은 쓰지 말아 주세요.' },
-    zh: { title: '💬 留下一句话吧', sub: '评论会在3天后显示。在那之前 AI 会先读一遍。如果语气有点重，会改成温和的说法再显示。给主人的问题只有主人会看。',
+    zh: { title: '💬 留下一句话吧', sub: '评论会马上显示。在那之前 AI 会先读一遍。如果语气有点重，会改成温和的说法再显示。给主人的问题只有主人会看。',
       none: '还没有评论。来留下第一句话吧。', toAll: '💬 给大家', toOwner: '📮 只给主人',
-      toAllHint: '3天后显示在这个页面。', toOwnerHint: '不会显示在页面上，只有主人会看。',
+      toAllHint: '马上显示在这个页面。', toOwnerHint: '不会显示在页面上，只有主人会看。',
       ph: '写点什么吧…（最多500字）', phOwner: '想问主人的问题或想看的内容…', nick: '名字（可以不填）', nickPh: '无名企鹅',
       home: '居住的国家', homeNone: '不填', reading: '阅读语言', send: '发送', sending: '发送中…',
-      sentAll: '谢谢！💌 大约3天后会显示在这里。', sentOwner: '谢谢！📮 已送到主人那里，不会显示在页面上。',
+      sentAll: '谢谢！💌 已经显示在这里了。', sentWait: '谢谢！💌 稍后会显示在这里。', sentOwner: '谢谢！📮 已送到主人那里，不会显示在页面上。',
       mine: '你在这篇写的', wait: '⏳ 等待公开 · 大约还有{d}天', waitSoon: '⏳ 等待公开 · 快了', ok: '✅ 已公开', inbox: '📮 已送到主人那里',
       soft: '🪄 AI 改成了温和的说法', anon: '无名企鹅', err: '没能发送，请稍后再试。', limit: '今天已经写了很多啦，明天再来吧。',
       short: '再多写一点吧。', long: '请写在500字以内。', more: '查看全部 {n} 条', rules: '请不要写链接、广告或别人的名字。' },
-    'zh-Hant': { title: '💬 留下一句話吧', sub: '留言會在3天後顯示。在那之前 AI 會先讀一遍。如果語氣有點重，會改成溫和的說法再顯示。給主人的問題只有主人會看。',
+    'zh-Hant': { title: '💬 留下一句話吧', sub: '留言會馬上顯示。在那之前 AI 會先讀一遍。如果語氣有點重，會改成溫和的說法再顯示。給主人的問題只有主人會看。',
       none: '還沒有留言。來留下第一句話吧。', toAll: '💬 給大家', toOwner: '📮 只給主人',
-      toAllHint: '3天後顯示在這個頁面。', toOwnerHint: '不會顯示在頁面上，只有主人會看。',
+      toAllHint: '馬上顯示在這個頁面。', toOwnerHint: '不會顯示在頁面上，只有主人會看。',
       ph: '寫點什麼吧…（最多500字）', phOwner: '想問主人的問題或想看的內容…', nick: '名字（可以不填）', nickPh: '無名企鵝',
       home: '居住的國家', homeNone: '不填', reading: '閱讀語言', send: '送出', sending: '送出中…',
-      sentAll: '謝謝！💌 大約3天後會顯示在這裡。', sentOwner: '謝謝！📮 已送到主人那裡，不會顯示在頁面上。',
+      sentAll: '謝謝！💌 已經顯示在這裡了。', sentWait: '謝謝！💌 稍後會顯示在這裡。', sentOwner: '謝謝！📮 已送到主人那裡，不會顯示在頁面上。',
       mine: '你在這篇寫的', wait: '⏳ 等待公開 · 大約還有{d}天', waitSoon: '⏳ 等待公開 · 快了', ok: '✅ 已公開', inbox: '📮 已送到主人那裡',
       soft: '🪄 AI 改成了溫和的說法', anon: '無名企鵝', err: '沒能送出，請稍後再試。', limit: '今天已經寫了很多啦，明天再來吧。',
       short: '再多寫一點吧。', long: '請寫在500字以內。', more: '查看全部 {n} 則', rules: '請不要寫連結、廣告或別人的名字。' }
@@ -134,9 +134,8 @@
     'html[data-theme="dark"] .cm-msg{background:#1c2a24;color:#8fe0b8}html[data-theme="dark"] .cm-msg.bad{background:#3a1c26;color:#ff9fb8}'
   ].join('');
 
-  var box = null, data = { pub: [], mine: [], hold: 3 }, mode = 'c', showAll = false, sending = false;
+  var box = null, data = { pub: [], mine: [], hold: 0 }, mode = 'c', showAll = false, sending = false;
 
-  function ago(ms) { var d = Math.ceil((ms + 3 * 86400000 - Date.now()) / 86400000); return d; }
   function dateOf(ms) { try { return new Intl.DateTimeFormat(LANG, { month: 'short', day: 'numeric' }).format(new Date(ms)); } catch (e) { return ''; } }
 
   function renderList() {
@@ -157,7 +156,7 @@
     var mine = data.mine || [];
     if (mine.length) {
       html += '<div class="cm-mine"><b>' + esc(t('mine')) + '</b>' + mine.slice(0, 5).map(function (m) {
-        var s = m.st === 'inbox' ? t('inbox') : m.st === 'ok' ? t('ok') : (ago(m.at) > 0 ? t('wait', { d: ago(m.at) }) : t('waitSoon'));
+        var s = m.st === 'inbox' ? t('inbox') : m.st === 'ok' ? t('ok') : t('waitSoon');
         return '<div><q>' + esc(m.t) + '</q><span>' + esc(s) + '</span></div>';
       }).join('') + '</div>';
     }
@@ -218,7 +217,7 @@
       C.api('POST', '/v1/comment', { p: C.slug, v: C.vid(), n: nick, h: h, l: l, t: text, k: mode, hp: form.url.value }).then(function (r) {
         if (r && r.ok) {
           ta.value = ''; count();
-          say(r.st === 'inbox' ? t('sentOwner') : t('sentAll'));
+          say(r.st === 'inbox' ? t('sentOwner') : r.st === 'ok' || r.st === 'soft' ? t('sentAll') : t('sentWait'));
           if (r.list) { data = r.list; renderList(); }
           if (window.pengessoPop) { var b = btn.getBoundingClientRect(); window.pengessoPop(b.left + b.width / 2, b.top, mode === 'q' ? ['📮', '💌', '✨'] : ['💌', '💬', '✨', '🐧'], 16); }
         } else say(r && r.e === 'limit' ? t('limit') : r && r.e === 'short' ? t('short') : t('err'), true);
