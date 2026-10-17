@@ -10,7 +10,7 @@
 
   絵      assets/thumbs-src/<slug>.jpg（1000×750 の表紙）
   題      meta.json の title
-  説明    本文の最初のカードの、最初の文（英語）
+  説明    本文の最初のカードの、最初の文（英語）。meta.json に "description" があればそちら
 
 <head> の中の目印にはさまれた部分だけを書き替える。手で書かない。
     <!-- ⬇️ OGP（tools/ogp.py） --> … <!-- ⬆️ OGP -->
@@ -78,7 +78,8 @@ def post(slug: str) -> bool:
     img = ROOT / "assets" / "thumbs-src" / f"{slug}.jpg"
     if not img.exists():
         img = ROOT / "assets" / "thumbs" / f"{slug}.jpg"
-    block = tags(meta.get("title", slug), first_sentence(doc),
+    # meta.json に "description"（本文にある本人の文）があれば、最初の一文のかわりにそれを使う（2026-10-17）
+    block = tags(meta.get("title", slug), meta.get("description") or first_sentence(doc),
                  f"{SITE}works/{slug}/", SITE + img.relative_to(ROOT).as_posix(),
                  meta.get("thumbAlt", ""), "article", own)
     return put(idx, block)
