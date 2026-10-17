@@ -16,7 +16,7 @@ S8. 私の場合は、「音楽＋何かの作業」の方が相性がいいみ�
 
 ## Part 1・2
 
-[[ebinpu-podcast-recommendation]] / [[ebinpu-new-perspective]]
+[[ebinpu-podcast-recommendation]]（Part 1・2 は 2026-09-11 に1本にまとめた）
 
 ## トーン（PROMPT.md のトーン反転ルール）
 
