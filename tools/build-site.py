@@ -55,11 +55,16 @@ PLACES = {
 }
 
 
-# 💼 職歴（JOBS）は持たない（2026-10-01 本人が決めた）
-#    「働いた会社ごとに記録すると、かえって会社が特定できる。業界でまとめる。
-#      会社のことと仕事の中身は書かない。業界の抽象的な話だけ書く」
-#    トップの「Jobs he has had」の部屋もなくした。index.html の JOBS は空のまま作る。
-JOBS = []
+# 💼 経験したことのある業界（2026-10-17 本人：「仕事の経歴のカテゴリーを、パッとわかるように戻して」）
+#    2026-10-01 に「Jobs he has had」の部屋をなくしたが、業界の札だけ戻した（本人が選んだ形）。
+#    会社名・街・仕事の中身は出さない。業界と国だけ。記事は並べない（topic を None にしている）。
+#    仕事の記事を本番に戻すときは、PLAN.md「💼 仕事は業界でまとめる」で書き直してから
+JOBS = [
+    ("mcd",    "🍔", "Food service",      "Japan",       None),
+    ("clark",  "🏫", "Education",         "Philippines", None),
+    ("cebu",   "💻", "IT",                "Philippines", None),
+    ("netops", "🛠", "IT infrastructure", "Japan",       None),
+]
 LEGACY_JOB_POSTS = {}
 
 
@@ -155,7 +160,8 @@ def inject(page: pathlib.Path, items):
     jobs = []
     for k, e, en, where, topic in JOBS:
         posts = list(LEGACY_JOB_POSTS.get(k, []))
-        posts += [sl for sl in by_topic.get(topic, []) if sl not in posts]
+        if topic:
+            posts += [sl for sl in by_topic.get(topic, []) if sl not in posts]
         jobs.append("  {k:%r, e:%r, en:%r, where:%r, posts:%r}," % (k, e, en, where, posts))
     t, n3 = re.subn(r"(/\* ⬇️ JOBS:START.*?⬇️ \*/\n)var JOBS = .*?\n(/\* ⬆️ JOBS:END)",
                     lambda mm: mm.group(1) + "var JOBS = [\n" + "\n".join(jobs) + "\n];\n" + mm.group(2),
