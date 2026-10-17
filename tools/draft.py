@@ -28,7 +28,7 @@ WORKS, DRAFT = ROOT / "works", ROOT / "draft"
 GOAL = 1000
 WORK_TOPICS = {"netops", "work", "bridge", "bridgese", "mcd"}
 # 本番トップの「もうすぐ公開」に出す下書き（2026-09-30 本人：3本だけ・元気でくだらなくて面白いもの。公開したら次の候補に入れかえる）
-PEEK_PICKS = ["cabbage-and-black-pepper", "boodle-fight-lunch", "no-public-scolding"]  # 2026-10-17 favorite-foreigners-2026・oliver-burkeman-blog を本番に出したので入れかえ（年齢・大学見学のタイトルは出さない）
+PEEK_PICKS = ["cabbage-and-black-pepper", "a-note-for-japanese-readers"]  # 2026-10-17 boodle-fight-lunch・no-public-scolding は原稿が 11_🌉 ブリッジSE（職場の話）なので外した（憲法 第1条）  # 2026-10-17 favorite-foreigners-2026・oliver-burkeman-blog を本番に出したので入れかえ（年齢・大学見学のタイトルは出さない）
 
 _spec = importlib.util.spec_from_file_location("chk", ROOT / "tools" / "check.py")
 chk = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(chk)
@@ -295,8 +295,7 @@ def coming_soon(infos, today):
     # 2026-09-30 本人：チラ見せは3本だけ。元気でくだらなくて面白いタイトルを手で選ぶ（PEEK_PICKS）
     by = {x["slug"]: x for x in peek}
     picked = [by[s] for s in PEEK_PICKS if s in by]
-    if len(picked) < 3:
-        picked += [x for x in peek if x not in picked][:3 - len(picked)]
+    # 2026-10-17 自動の穴うめはしない：topic が ph でも職場の原稿（10_/11_/12_）がまぎれるため。手で選んだものだけ出す
     data = {"asOf": today.isoformat(), "n": len(infos),
             "peek": [x["t"] for x in picked[:3]]}
     payload = json.dumps(data, ensure_ascii=False, separators=(",", ":")).replace("<", "\\u003c")
