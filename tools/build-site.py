@@ -55,17 +55,20 @@ PLACES = {
 }
 
 
-# 💼 経験したことのある業界（2026-10-17 本人：「仕事の経歴のカテゴリーを、パッとわかるように戻して」）
-#    2026-10-01 に「Jobs he has had」の部屋をなくしたが、業界の札だけ戻した（本人が選んだ形）。
-#    会社名・街・仕事の中身は出さない。業界と国だけ。記事は並べない（topic を None にしている）。
-#    仕事の記事を本番に戻すときは、PLAN.md「💼 仕事は業界でまとめる」で書き直してから
+# 💼 経験したことのある業界（2026-10-17 本人：「仕事の経歴のカテゴリーを、パッとわかるように戻して」
+#    「仕事の記事も全然入れちゃっていいよ」「役職まで書いた方がいい」）
+#    札は 業界・国・そのときの役割。会社名と街は出さない。記事は topic と、下の手で決めた分から入る
 JOBS = [
-    ("food",   "🍔", "Food service",      "Japan",       None),
-    ("edu",    "🏫", "Education",         "Philippines", None),
-    ("it",     "💻", "IT",                "Philippines", None),
-    ("infra",  "🛠", "IT infrastructure", "Japan",       None),
+    ("food",   "🍔", "Food service",                "Japan",       "Waiter, serving food to guests",      None),
+    ("edu",    "🏫", "English education",           "Philippines", "Local Japanese staff member",         None),
+    ("it",     "💻", "IT (web development)",        "Philippines", "Japanese–English translator",         "bridge"),
+    ("infra",  "🛠", "IT infrastructure / Telecom", "Japan",       "Operations and maintenance operator", "netops"),
 ]
-LEGACY_JOB_POSTS = {}
+# topic では決まらないぶん（語学学校の職場の話は topic が ph、セブの職場の話も ph）
+LEGACY_JOB_POSTS = {
+    "edu": ["airport-pickup-tug-of-war", "be-friends-with-the-agents", "gifts-from-students"],
+    "it":  ["japan-philippines-work", "no-public-scolding", "boodle-fight-lunch"],
+}
 
 
 def collect(base: pathlib.Path):
@@ -158,11 +161,13 @@ def inject(page: pathlib.Path, items):
     for m in items:
         by_topic.setdefault(m.get("topic"), []).append(m["slug"])
     jobs = []
-    for k, e, en, where, topic in JOBS:
+    for k, e, en, where, role, topic in JOBS:
         posts = list(LEGACY_JOB_POSTS.get(k, []))
         if topic:
             posts += [sl for sl in by_topic.get(topic, []) if sl not in posts]
-        jobs.append("  {k:%r, e:%r, en:%r, where:%r, posts:%r}," % (k, e, en, where, posts))
+        live = {m["slug"] for m in items}
+        posts = [sl for sl in posts if sl in live]
+        jobs.append("  {k:%r, e:%r, en:%r, where:%r, role:%r, posts:%r}," % (k, e, en, where, role, posts))
     t, n3 = re.subn(r"(/\* ⬇️ JOBS:START.*?⬇️ \*/\n)var JOBS = .*?\n(/\* ⬆️ JOBS:END)",
                     lambda mm: mm.group(1) + "var JOBS = [\n" + "\n".join(jobs) + "\n];\n" + mm.group(2),
                     t, flags=re.S)

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Network operations also means sending a real person out to the site</title>
+<!-- ⬇️ OGP（tools/ogp.py） -->
+<meta name="description" content="When people hear network operations, they tend to think it is just sitting coolly in front of a computer, but actually it is a pretty hands-on, ung…" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
+<meta property="og:title" content="Network operations also means sending a real person out to the site" />
+<meta property="og:description" content="When people hear network operations, they tend to think it is just sitting coolly in front of a computer, but actually it is a pretty hands-on, ung…" />
+<meta property="og:url" content="https://15-second-blog.com/works/sending-people-to-the-site/" />
+<meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/sending-people-to-the-site.jpg" />
+<meta property="og:image:alt" content="A cut paper diorama penguin waving at a small paper van driving away, boxes and cables around" />
+<meta name="twitter:card" content="summary_large_image" />
+<!-- ⬆️ OGP -->
+<!-- 🕶 タブのアイコン。ペンゲッソがサングラスをかけている顔（2026-09-11） -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  :root {
+    --bg: #fff2e0;
+    --card: rgba(255,255,255,.94);
+    --text: #40291a;
+    --muted: #8f6a42;
+    --pink: #e06510;
+    --purple: #5f47c8;
+    --line: rgba(0,0,0,.10);
+    --shadow: 0 20px 55px rgba(60,50,90,.10);
+    --round: 28px;
+    --chip: rgba(0,0,0,.05);
+  }
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 8% 4%,   rgba(255,185,110,.40),  transparent 24%),
+      radial-gradient(circle at 96% 14%, rgba(255,140,150,.18), transparent 27%),
+      radial-gradient(circle at 50% 100%,rgba(150,215,235,.14), transparent 35%),
+      var(--bg);
+  }
+
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+  }
+  .home {
+    display: inline-block; min-height: 44px; padding: 12px 18px;
+    border-radius: 999px; background: var(--card); color: var(--purple);
+    border: 2px solid var(--line);
+    font-size: 14px; text-decoration: none;
+    box-shadow: 0 6px 16px rgba(60,50,90,.10);
+  }
+  .home:hover { transform: translateY(-2px); }
+
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge {
+    padding: 10px 16px; border-radius: 999px;
+    background: var(--card); border: 2px solid var(--line);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em;
+    box-shadow: 0 6px 16px rgba(60,50,90,.10);
+  }
+  .stage {
+    padding: 10px 13px; border-radius: 999px;
+    font-size: 11px; font-weight: 900; letter-spacing: .12em;
+    white-space: nowrap; box-shadow: 0 6px 16px rgba(60,50,90,.10);
+  }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+
+  /* 🏷 カテゴリーのバッジ（2026-09-11）
+     記事を開いた瞬間に「何の話か」が分かるようにするためのもの。
+     meta.json の topic から入る */
+  .label .topic {
+    display: inline-block; margin-right: 10px; padding: 5px 12px;
+    border-radius: 999px; background: var(--purple); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em;
+  }
+
+  .label {
+    color: var(--purple); font-size: 13px; font-weight: 800;
+    letter-spacing: .14em; margin-bottom: 16px;
+  }
+
+  h1 {
+    margin: 0 0 22px; color: #4a3020;
+    font-size: clamp(30px, 5.4vw, 50px); line-height: 1.08;
+    letter-spacing: -.035em; text-wrap: balance;
+  }
+
+  .photo {
+    margin: 0 0 24px; overflow: hidden; background: var(--chip);
+    border: 7px solid var(--card); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg);
+  }
+  .photo img { display: block; width: 100%; height: auto; }
+  .photo + .photo { transform: rotate(.4deg); }
+  figcaption {
+    padding: 10px 14px 12px; color: var(--muted); font-size: 12.5px;
+    font-family: "Trebuchet MS", sans-serif; background: var(--card);
+  }
+
+  .card {
+    position: relative; margin-top: 18px; padding: 24px 26px;
+    background: var(--card); border: 2px solid var(--line);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,50,90,.10);
+  }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label {
+    font-size: 12.5px; font-weight: 900; letter-spacing: .16em;
+    color: var(--purple); text-transform: uppercase;
+  }
+
+  p {
+    margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif;
+    font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72;
+  }
+  .big { font-size: clamp(22px, 3.6vw, 31px); font-weight: 850; line-height: 1.42;
+         color: #c9611a;
+         font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ── 飾り（文章ではない。読むものではなく、見て分かるもの）───── */
+  .stickers { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .sticker {
+    display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--pink); color: #fff; font-size: 15px;
+    box-shadow: 0 3px 8px rgba(60,50,90,.10);
+  }
+  .steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+  .step {
+    padding: 9px 13px; border-radius: 999px; background: var(--chip);
+    font-family: "Trebuchet MS", sans-serif; font-size: 13px; font-weight: 700;
+  }
+  .arrow { color: var(--purple); font-weight: 900; }
+  .expand { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin-top: 14px; }
+  .expand .key {
+    padding: 9px 15px; border-radius: 12px; background: var(--purple); color: #fff;
+    font-family: "Menlo", "Consolas", monospace; font-size: 15px; font-weight: 700;
+  }
+  .expand .out {
+    flex: 1 1 220px; padding: 9px 14px; border-radius: 12px; background: var(--chip);
+    font-family: "Trebuchet MS", sans-serif; font-size: 13px;
+  }
+  .screens { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 14px; }
+  .scr {
+    width: 34px; height: 22px; border-radius: 4px;
+    background: linear-gradient(160deg, var(--pink), var(--purple)); opacity: .82;
+  }
+  .pinned { margin-top: 14px; border-radius: 16px; overflow: hidden; border: 2px solid var(--line); }
+  .pin {
+    padding: 10px 14px; font-family: "Trebuchet MS", sans-serif; font-size: 13px;
+    background: var(--chip); border-bottom: 1px dashed var(--line);
+  }
+  .pin:last-child { border-bottom: 0; }
+  .halves { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .half {
+    padding: 14px 12px; border-radius: 16px; text-align: center;
+    font-family: "Trebuchet MS", sans-serif; font-size: 13px; font-weight: 700;
+  }
+  .half.h1 { background: var(--chip); }
+  .half.h2 { background: linear-gradient(180deg, var(--pink), var(--purple)); color: #fff; }
+  .banner {
+    margin-top: 14px; padding: 12px 16px; border-radius: 12px;
+    background: linear-gradient(90deg, var(--pink), var(--purple)); color: #fff;
+    font-family: "Trebuchet MS", sans-serif; font-size: 13.5px; font-weight: 800;
+    letter-spacing: .06em;
+  }
+  .clockline, .ruler {
+    margin-top: 14px; padding: 11px 16px; border-radius: 12px; background: var(--chip);
+    font-family: "Menlo", "Consolas", monospace; font-size: 15px; font-weight: 700;
+    color: var(--purple); text-align: center;
+  }
+  .clocks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .cl {
+    padding: 9px 14px; border-radius: 999px; background: var(--purple); color: #fff;
+    font-family: "Menlo", "Consolas", monospace; font-size: 14px; font-weight: 700;
+  }
+  .logbox { margin-top: 14px; border-radius: 14px; overflow: hidden; border: 2px solid var(--line); }
+  .logline {
+    padding: 9px 14px; font-family: "Menlo", "Consolas", monospace; font-size: 12.5px;
+    background: var(--chip); border-bottom: 1px solid var(--line); color: var(--muted);
+  }
+  .logline:nth-child(2) { color: var(--purple); font-weight: 700; }
+  .logline:last-child { border-bottom: 0; }
+  .meter {
+    margin-top: 14px; height: 18px; border-radius: 999px; overflow: hidden;
+    background: var(--chip);
+  }
+  .meter .fill {
+    display: block; height: 100%;
+    background: linear-gradient(90deg, var(--pink), var(--purple));
+  }
+  .rope { display: flex; gap: 6px; margin-top: 14px; }
+  .seg {
+    flex: 1; padding: 13px 6px; border-radius: 12px; text-align: center;
+    font-family: "Trebuchet MS", sans-serif; font-size: 12px; font-weight: 700;
+    background: var(--chip); color: var(--muted);
+  }
+  .seg.s2 { background: linear-gradient(180deg, var(--pink), var(--purple)); color: #fff; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+  .chip {
+    padding: 9px 14px; border-radius: 999px; background: var(--chip);
+    font-family: "Trebuchet MS", sans-serif; font-size: 13px; font-weight: 700;
+  }
+  .chip.off { opacity: .5; text-decoration: line-through; }
+  .barrel { display: flex; gap: 4px; margin-top: 14px; }
+  .plank {
+    flex: 1; height: 54px; border-radius: 6px;
+    background: linear-gradient(180deg, var(--pink), var(--purple)); opacity: .85;
+  }
+  .plank.gone { background: var(--chip); opacity: 1; }
+  .waterline {
+    position: relative; margin-top: 14px; height: 54px; border-radius: 14px;
+    overflow: hidden; background: var(--chip);
+  }
+  .waterline .lvl {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 62%;
+    background: linear-gradient(180deg, var(--purple), var(--pink)); opacity: .75;
+  }
+  /* 小さなアイコン（引き伸ばさない） */
+  .iconrow { display: flex; justify-content: center; margin-top: 16px; }
+  .iconimg {
+    width: 74px; height: 74px; display: block; border-radius: 18px;
+    background: #fff; padding: 8px; box-shadow: 0 6px 18px rgba(60,50,90,.10);
+  }
+  .waterline .cm {
+    position: absolute; right: 14px; top: 9px; color: var(--muted);
+    font-family: "Menlo", "Consolas", monospace; font-size: 13px; font-weight: 700;
+  }
+
+  .next {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: #fff; box-shadow: var(--shadow);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .next:hover, .next:focus-visible { transform: translateY(-4px); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title  { margin-top: 4px; font-size: clamp(16px, 2.7vw, 20px); line-height: 1.3; }
+  .next-arrow  { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット（_template/index.html と同じ） */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1     { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+
+  .js .card, .js .next {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .55s ease-out, transform .55s ease-out;
+  }
+  .js .card.in, .js .next.in { opacity: 1; transform: none; }
+
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  /* この記事だけの動き */
+  @keyframes nudge { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+  .card.in .card-emoji { animation: nudge 2.6s ease-in-out infinite alternate; }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home     { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage    { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .halves { grid-template-columns: 1fr; }
+    .expand .out { flex-basis: 100%; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+    /* このページが「ふわっと出す」ために最初に隠している要素（opacity: 0 にしているもの）だけ、はじめから見せる。ページごとに数え上げた（2026-10-04）。ほかの部品（言語メニュー・勉強バーなど）はさわらない */
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .next {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+  /* ✨ 動きの設定（2026-10-04）：本人がフッターの「✨ 動き」で ON を選んだら、端末が「減らす」でも動かす。OFF なら、端末が「減らさない」でも止める。上の @media は auto（端末にしたがう）のときだけ効く */
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+/* ⬇️ tools/components.py */
+  /* 🗺 地図 — 上空からその場所の雰囲気がわかるようにする */
+  .map-card, .video-card { margin: 18px 0 0; overflow: hidden;
+       border: 7px solid rgba(255,255,255,.8); border-radius: 30px;
+       box-shadow: var(--shadow); background: #dde7ea; }
+  .map-card iframe { display: block; width: 100%;
+       height: clamp(220px, 45vw, 330px); border: 0; }
+  .video-card { background: #000; }
+  .video-card .ratio { position: relative; width: 100%; padding-top: 56.25%; }
+  .video-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .map-card figcaption, .video-card figcaption {
+       display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+       padding: 11px 16px 13px; background: #fff; color: var(--muted);
+       font-size: 12.5px; font-family: "Trebuchet MS", sans-serif; }
+  .map-card figcaption a, .video-card figcaption a {
+       color: var(--accent, #2f8fbf); font-weight: 700; text-decoration: none; }
+  .map-card figcaption a:hover, .video-card figcaption a:hover { text-decoration: underline; }
+
+  /* 🎞 スライド — 写真を全部縦に流さず、横にスワイプして見る */
+  .slides { margin: 18px 0 0; }
+  .slides-track { display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 12px;
+       scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+       scrollbar-width: none; }
+  .slides-track::-webkit-scrollbar { display: none; }
+  .slides-track figure { flex: 0 0 86%; margin: 0; scroll-snap-align: center;
+       overflow: hidden; background: #fff; border: 6px solid rgba(255,255,255,.85);
+       border-radius: 24px; box-shadow: var(--shadow); }
+  .slides-track img { display: block; width: 100%; height: clamp(200px, 52vw, 280px);
+       object-fit: cover; }
+  .slides-track figcaption { padding: 9px 14px 11px; color: var(--muted);
+       font-size: 12px; font-family: "Trebuchet MS", sans-serif; }
+  .slides-dots { display: flex; justify-content: center; align-items: center; gap: 7px; }
+  /* 記事ごとに明るい配色と暗い配色があるので、色を決め打ちしない。
+     currentColor（その記事の文字色）を薄めて使えば、どちらでも必ず見える */
+  .slides-dots i { width: 7px; height: 7px; border-radius: 50%;
+       background: currentColor; opacity: .28;
+       transition: transform .3s ease, opacity .3s ease; }
+  .slides-dots i.on { opacity: 1; transform: scale(1.55); }
+  .slides-hint { margin-top: 9px; text-align: center; color: var(--muted);
+       font-size: 11.5px; letter-spacing: .1em; font-family: "Trebuchet MS", sans-serif; }
+
+  /* 2026-09-26 幅320pxの小さいスマホで「戻る」と「○ words」の札が横にはみ出していた */
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+/* ⬇️ tools/components.py : dark */
+  /* 🌙 ダークモードで、動画・地図・スライドの白い枠と説明だけが浮いていた（2026-09-26） */
+  html[data-theme="dark"] .map-card, html[data-theme="dark"] .video-card { border-color: rgba(255,255,255,.10); }
+  html[data-theme="dark"] .map-card figcaption, html[data-theme="dark"] .video-card figcaption,
+  html[data-theme="dark"] .slides-track figure { background: #22242f; color: #cfc8dc; }
+  html[data-theme="dark"] .slides-track figure { border-color: rgba(255,255,255,.10); }
+  html[data-theme="dark"] .map-card figcaption a, html[data-theme="dark"] .video-card figcaption a { color: #8fd3ff; }
+  html[data-theme="dark"] .slides-arrow { background: rgba(34,36,47,.94); color: #f4f0fa; }
+
+  /* 2026-09-26 カードや動画のすぐ下の写真が、すき間0pxでくっついていた */
+  :is(.card, .video-card, .map-card, .uni-tags, figure.hero) + figure.photo { margin-top: 18px; }
+  /* 2026-09-26 「次の記事」の白い字が、グラデーションの明るい側で薄く見えた。うっすら影をつける */
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"4cf5dd0a4e"},"bn":{"v":"3e7d68c3c6"},"ceb":{"v":"69da90a82b"},"cs":{"v":"b0fdc0a1f0"},"da":{"v":"1612551b5d"},"de":{"v":"91a8f6c0a0"},"el":{"v":"dcc0fe32bc"},"es":{"v":"31c72bad63"},"fa":{"v":"cd127c8204"},"fi":{"v":"b4264e0273"},"fil":{"v":"7a2689413b"},"fr":{"v":"bdce2d66a4"},"he":{"v":"54932f9d5b"},"hi":{"v":"218990f5dd"},"id":{"v":"de6c28c390"},"it":{"v":"8179a722d2"},"ja":{"v":"8d019ef53f"},"ko":{"v":"57ae1c5f3e"},"mr":{"v":"7e5e42c058"},"ms":{"v":"b7001ff649"},"nb":{"v":"7342dab1e8"},"ne":{"v":"a239e7b18d"},"nl":{"v":"8b3135686c"},"pa":{"v":"012b6663ac"},"pl":{"v":"c7f223c142"},"pt":{"v":"de2df3f9ab"},"ro":{"v":"c76f34b820"},"ru":{"v":"41396281ac"},"sv":{"v":"9a7b37ed38"},"sw":{"v":"4fe8f30729"},"ta":{"v":"6a5536244c"},"te":{"v":"b2a50a97f2"},"th":{"v":"0af3debe12"},"tr":{"v":"f9f909f90b"},"uk":{"v":"5d2f650e82"},"ur":{"v":"84f2a6b1bc"},"vi":{"v":"120b317eb2"},"zh":{"v":"cd160d8ef8"},"zh-Hant":{"v":"3fe761650f"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=370e885bac"></script>
+<script src="/assets/px.js?v=c661036bcd" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <a class="home" href="../../index.html">&larr; Back to all works</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 116 words · 39 sec</div>
+      <div class="stage stage-public">PUBLIC</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🛠 NETWORK OPERATIONS</span>⚡ 39 SEC</div>
+  <h1>Network operations also means sending a real person out to the site <span class="float">🚚</span></h1>
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1000" height="1000" src="img/6c5f92a4c569.jpg" alt="A cut paper diorama penguin waving at a small paper van driving away, boxes and cables around" />
+  </figure>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">💻</span>
+      <span class="card-label">People Think Cool</span>
+    </div>
+    <p>
+      When people hear network operations, they tend to think it is just sitting coolly in front of a computer, but actually it is a pretty hands-on, unglamorous job.
+    </p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔌</span>
+      <span class="card-label">Boxes On Site</span>
+    </div>
+    <p>
+      At the customer&rsquo;s place there is equipment like home gateways, ONUs, routers, modems, media converters and VoIP gateways, and when these break, or the cable connecting them is cut, that is a fault too.
+    </p>
+    <div class="chips" aria-hidden="true"><span class="chip">Home gateway</span><span class="chip">ONU</span><span class="chip">Router</span><span class="chip">Modem</span><span class="chip">Media converter</span><span class="chip">VoIP gateway</span></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🚚</span>
+      <span class="card-label">Someone Goes There</span>
+    </div>
+    <p>
+      For a physical fault like that, we ask a field technician to go to the site, and we ask them to swap the equipment or repair the cable.
+    </p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🐧</span>
+      <span class="card-label">I Thought So</span>
+    </div>
+    <p class="big">
+      Until I got to know this job, I also thought it was a job where you just sit in front of a computer and operate it.
+    </p>
+  </section>
+
+
+  <a class="next" href="../double-check-every-15-minutes/index.html">
+    <div>
+      <div class="next-kicker">NEXT · 25 SEC</div>
+      <div class="next-title">I say please double check about once every 15 minutes</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../maybe-a-mouse-chewed-it/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">We look at the papers and guess that maybe a mouse chewed the cable</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../search-before-you-think/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/search-before-you-think.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 29 SEC</span></div>
+            <div class="rel-title">When I do not know something, I search the old records before I think</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../shakuyou-borrow-the-line/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/shakuyou-borrow-the-line.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 23 SEC</span></div>
+            <div class="rel-title">Everyone at work asks if I got the shakuyou, which means borrowing a line</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../spare-machine-needs-config/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/spare-machine-needs-config.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 36 SEC</span></div>
+            <div class="rel-title">A spare machine does not work until someone puts the config in</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../questions-at-1pm-and-530pm/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/questions-at-1pm-and-530pm.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 60 SEC</span></div>
+            <div class="rel-title">I send all my questions at 1pm and 5:30pm using a scheduled message</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../turning-twenty-in-clark/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/turning-twenty-in-clark.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 37 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">I turned twenty in Clark and a lot of people celebrated with me</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  // 保険：1枚も出てこなかったら全部見せる
+  setTimeout(function () {
+    if (!document.querySelector('.card.in, .next.in')) showAll();
+  }, 1600);
+})();
+
+  /* 🎞 スライド：いま何枚目を見ているかを丸で出す */
+  document.querySelectorAll('.slides').forEach(function (box) {
+    var track = box.querySelector('.slides-track');
+    var dots  = box.querySelector('.slides-dots');
+    if (!track || !dots) return;
+    var figs = Array.prototype.slice.call(track.children);
+    figs.forEach(function () { dots.appendChild(document.createElement('i')); });
+    var marks = Array.prototype.slice.call(dots.children);
+    if (marks[0]) marks[0].className = 'on';
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var i = figs.indexOf(e.target);
+        marks.forEach(function (m, j) { m.className = (i === j) ? 'on' : ''; });
+      });
+    }, { root: track, threshold: 0.6 });
+    figs.forEach(function (f) { io.observe(f); });
+  });
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+素材：10_🛠 ネットワーク運用保守/📄 記事/31_✅_人を現場に送るのも仕事.txt
+
+S1  → 使った
+S2  → 使った
+S3  → 使った
+S4  → 使った
+
+素材の4文すべてを使いました。語数のために削った文はありません
+（2026-09-10 に語数の上限・下限を廃止したため）。
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+飾り（.steps / .chips / .meter など）は見た目だけで、<p> ではありません（word数対象外）。
+
+削った文：なし
+追加した文：0
+整理テキスト：card-label 4個 / h1 ← 本人の素材だけを要約・英訳（word数対象外）
+-->

@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>I send all my questions at 1pm and 5:30pm using a scheduled message</title>
+<!-- ⬇️ OGP（tools/ogp.py） -->
+<meta name="description" content="I send my questions together at 1pm and 5:30pm." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
+<meta property="og:title" content="I send all my questions at 1pm and 5:30pm using a scheduled message" />
+<meta property="og:description" content="I send my questions together at 1pm and 5:30pm." />
+<meta property="og:url" content="https://15-second-blog.com/works/questions-at-1pm-and-530pm/" />
+<meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/questions-at-1pm-and-530pm.jpg" />
+<meta property="og:image:alt" content="An amigurumi penguin dropping small folded notes into a big envelope with a round clock behind" />
+<meta name="twitter:card" content="summary_large_image" />
+<!-- ⬆️ OGP -->
+<!-- 🕶 タブのアイコン。ペンゲッソがサングラスをかけている顔（2026-09-11） -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  :root {
+    --bg: #fff6d9;
+    --card: rgba(255,255,255,.94);
+    --text: #3d3110;
+    --muted: #86702f;
+    --pink: #e0820c;
+    --purple: #5b5bd6;
+    --line: rgba(0,0,0,.10);
+    --shadow: 0 20px 55px rgba(60,50,90,.10);
+    --round: 28px;
+    --chip: rgba(0,0,0,.05);
+  }
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 8% 4%,   rgba(255,215,90,.42),  transparent 24%),
+      radial-gradient(circle at 96% 14%, rgba(255,140,120,.20), transparent 27%),
+      radial-gradient(circle at 50% 100%,rgba(120,220,190,.14), transparent 35%),
+      var(--bg);
+  }
+
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+  }
+  .home {
+    display: inline-block; min-height: 44px; padding: 12px 18px;
+    border-radius: 999px; background: var(--card); color: var(--purple);
+    border: 2px solid var(--line);
+    font-size: 14px; text-decoration: none;
+    box-shadow: 0 6px 16px rgba(60,50,90,.10);
+  }
+  .home:hover { transform: translateY(-2px); }
+
+  .badges { display: flex; align-items: center; gap: 8px; }
+  .wc-badge {
+    padding: 10px 16px; border-radius: 999px;
+    background: var(--card); border: 2px solid var(--line);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em;
+    box-shadow: 0 6px 16px rgba(60,50,90,.10);
+  }
+  .stage {
+    padding: 10px 13px; border-radius: 999px;
+    font-size: 11px; font-weight: 900; letter-spacing: .12em;
+    white-space: nowrap; box-shadow: 0 6px 16px rgba(60,50,90,.10);
+  }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+
+  /* 🏷 カテゴリーのバッジ（2026-09-11）
+     記事を開いた瞬間に「何の話か」が分かるようにするためのもの。
+     meta.json の topic から入る */
+  .label .topic {
+    display: inline-block; margin-right: 10px; padding: 5px 12px;
+    border-radius: 999px; background: var(--purple); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em;
+  }
+
+  .label {
+    color: var(--purple); font-size: 13px; font-weight: 800;
+    letter-spacing: .14em; margin-bottom: 16px;
+  }
+
+  h1 {
+    margin: 0 0 22px; color: #4a3a0e;
+    font-size: clamp(30px, 5.4vw, 50px); line-height: 1.08;
+    letter-spacing: -.035em; text-wrap: balance;
+  }
+
+  .photo {
+    margin: 0 0 24px; overflow: hidden; background: var(--chip);
+    border: 7px solid var(--card); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg);
+  }
+  .photo img { display: block; width: 100%; height: auto; }
+  .photo + .photo { transform: rotate(.4deg); }
+  figcaption {
+    padding: 10px 14px 12px; color: var(--muted); font-size: 12.5px;
+    font-family: "Trebuchet MS", sans-serif; background: var(--card);
+  }
+
+  .card {
+    position: relative; margin-top: 18px; padding: 24px 26px;
+    background: var(--card); border: 2px solid var(--line);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(60,50,90,.10);
+  }
+  .card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label {
+    font-size: 12.5px; font-weight: 900; letter-spacing: .16em;
+    color: var(--purple); text-transform: uppercase;
+  }
+
+  p {
+    margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif;
+    font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72;
+  }
+  .big { font-size: clamp(22px, 3.6vw, 31px); font-weight: 850; line-height: 1.42;
+         color: #a06a10;
+         font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ── 飾り（文章ではない。読むものではなく、見て分かるもの）───── */
+  .stickers { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .sticker {
+    display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%;
+    background: var(--pink); color: #fff; font-size: 15px;
+    box-shadow: 0 3px 8px rgba(60,50,90,.10);
+  }
+  .steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+  .step {
+    padding: 9px 13px; border-radius: 999px; background: var(--chip);
+    font-family: "Trebuchet MS", sans-serif; font-size: 13px; font-weight: 700;
+  }
+  .arrow { color: var(--purple); font-weight: 900; }
+  .expand { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; margin-top: 14px; }
+  .expand .key {
+    padding: 9px 15px; border-radius: 12px; background: var(--purple); color: #fff;
+    font-family: "Menlo", "Consolas", monospace; font-size: 15px; font-weight: 700;
+  }
+  .expand .out {
+    flex: 1 1 220px; padding: 9px 14px; border-radius: 12px; background: var(--chip);
+    font-family: "Trebuchet MS", sans-serif; font-size: 13px;
+  }
+  .screens { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 14px; }
+  .scr {
+    width: 34px; height: 22px; border-radius: 4px;
+    background: linear-gradient(160deg, var(--pink), var(--purple)); opacity: .82;
+  }
+  .pinned { margin-top: 14px; border-radius: 16px; overflow: hidden; border: 2px solid var(--line); }
+  .pin {
+    padding: 10px 14px; font-family: "Trebuchet MS", sans-serif; font-size: 13px;
+    background: var(--chip); border-bottom: 1px dashed var(--line);
+  }
+  .pin:last-child { border-bottom: 0; }
+  .halves { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .half {
+    padding: 14px 12px; border-radius: 16px; text-align: center;
+    font-family: "Trebuchet MS", sans-serif; font-size: 13px; font-weight: 700;
+  }
+  .half.h1 { background: var(--chip); }
+  .half.h2 { background: linear-gradient(180deg, var(--pink), var(--purple)); color: #fff; }
+  .banner {
+    margin-top: 14px; padding: 12px 16px; border-radius: 12px;
+    background: linear-gradient(90deg, var(--pink), var(--purple)); color: #fff;
+    font-family: "Trebuchet MS", sans-serif; font-size: 13.5px; font-weight: 800;
+    letter-spacing: .06em;
+  }
+  .clockline, .ruler {
+    margin-top: 14px; padding: 11px 16px; border-radius: 12px; background: var(--chip);
+    font-family: "Menlo", "Consolas", monospace; font-size: 15px; font-weight: 700;
+    color: var(--purple); text-align: center;
+  }
+  .clocks { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .cl {
+    padding: 9px 14px; border-radius: 999px; background: var(--purple); color: #fff;
+    font-family: "Menlo", "Consolas", monospace; font-size: 14px; font-weight: 700;
+  }
+  .logbox { margin-top: 14px; border-radius: 14px; overflow: hidden; border: 2px solid var(--line); }
+  .logline {
+    padding: 9px 14px; font-family: "Menlo", "Consolas", monospace; font-size: 12.5px;
+    background: var(--chip); border-bottom: 1px solid var(--line); color: var(--muted);
+  }
+  .logline:nth-child(2) { color: var(--purple); font-weight: 700; }
+  .logline:last-child { border-bottom: 0; }
+  .meter {
+    margin-top: 14px; height: 18px; border-radius: 999px; overflow: hidden;
+    background: var(--chip);
+  }
+  .meter .fill {
+    display: block; height: 100%;
+    background: linear-gradient(90deg, var(--pink), var(--purple));
+  }
+  .rope { display: flex; gap: 6px; margin-top: 14px; }
+  .seg {
+    flex: 1; padding: 13px 6px; border-radius: 12px; text-align: center;
+    font-family: "Trebuchet MS", sans-serif; font-size: 12px; font-weight: 700;
+    background: var(--chip); color: var(--muted);
+  }
+  .seg.s2 { background: linear-gradient(180deg, var(--pink), var(--purple)); color: #fff; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+  .chip {
+    padding: 9px 14px; border-radius: 999px; background: var(--chip);
+    font-family: "Trebuchet MS", sans-serif; font-size: 13px; font-weight: 700;
+  }
+  .chip.off { opacity: .5; text-decoration: line-through; }
+  .barrel { display: flex; gap: 4px; margin-top: 14px; }
+  .plank {
+    flex: 1; height: 54px; border-radius: 6px;
+    background: linear-gradient(180deg, var(--pink), var(--purple)); opacity: .85;
+  }
+  .plank.gone { background: var(--chip); opacity: 1; }
+  .waterline {
+    position: relative; margin-top: 14px; height: 54px; border-radius: 14px;
+    overflow: hidden; background: var(--chip);
+  }
+  .waterline .lvl {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 62%;
+    background: linear-gradient(180deg, var(--purple), var(--pink)); opacity: .75;
+  }
+  /* 小さなアイコン（引き伸ばさない） */
+  .iconrow { display: flex; justify-content: center; margin-top: 16px; }
+  .iconimg {
+    width: 74px; height: 74px; display: block; border-radius: 18px;
+    background: #fff; padding: 8px; box-shadow: 0 6px 18px rgba(60,50,90,.10);
+  }
+  .waterline .cm {
+    position: absolute; right: 14px; top: 9px; color: var(--muted);
+    font-family: "Menlo", "Consolas", monospace; font-size: 13px; font-weight: 700;
+  }
+
+  .next {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: #fff; box-shadow: var(--shadow);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .next:hover, .next:focus-visible { transform: translateY(-4px); }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title  { margin-top: 4px; font-size: clamp(16px, 2.7vw, 20px); line-height: 1.3; }
+  .next-arrow  { font-size: 26px; flex: 0 0 auto; }
+
+  /* ⚡ モーションキット（_template/index.html と同じ） */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1     { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+
+  .js .card, .js .next {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .55s ease-out, transform .55s ease-out;
+  }
+  .js .card.in, .js .next.in { opacity: 1; transform: none; }
+
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  /* この記事だけの動き */
+  @keyframes nudge { from { transform: translateY(0); } to { transform: translateY(-3px); } }
+  .card.in .card-emoji { animation: nudge 2.6s ease-in-out infinite alternate; }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home     { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage    { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .halves { grid-template-columns: 1fr; }
+    .expand .out { flex-basis: 100%; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+    /* このページが「ふわっと出す」ために最初に隠している要素（opacity: 0 にしているもの）だけ、はじめから見せる。ページごとに数え上げた（2026-10-04）。ほかの部品（言語メニュー・勉強バーなど）はさわらない */
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .next {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+  /* ✨ 動きの設定（2026-10-04）：本人がフッターの「✨ 動き」で ON を選んだら、端末が「減らす」でも動かす。OFF なら、端末が「減らさない」でも止める。上の @media は auto（端末にしたがう）のときだけ効く */
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+/* ⬇️ tools/components.py */
+  /* 🗺 地図 — 上空からその場所の雰囲気がわかるようにする */
+  .map-card, .video-card { margin: 18px 0 0; overflow: hidden;
+       border: 7px solid rgba(255,255,255,.8); border-radius: 30px;
+       box-shadow: var(--shadow); background: #dde7ea; }
+  .map-card iframe { display: block; width: 100%;
+       height: clamp(220px, 45vw, 330px); border: 0; }
+  .video-card { background: #000; }
+  .video-card .ratio { position: relative; width: 100%; padding-top: 56.25%; }
+  .video-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .map-card figcaption, .video-card figcaption {
+       display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+       padding: 11px 16px 13px; background: #fff; color: var(--muted);
+       font-size: 12.5px; font-family: "Trebuchet MS", sans-serif; }
+  .map-card figcaption a, .video-card figcaption a {
+       color: var(--accent, #2f8fbf); font-weight: 700; text-decoration: none; }
+  .map-card figcaption a:hover, .video-card figcaption a:hover { text-decoration: underline; }
+
+  /* 🎞 スライド — 写真を全部縦に流さず、横にスワイプして見る */
+  .slides { margin: 18px 0 0; }
+  .slides-track { display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 12px;
+       scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+       scrollbar-width: none; }
+  .slides-track::-webkit-scrollbar { display: none; }
+  .slides-track figure { flex: 0 0 86%; margin: 0; scroll-snap-align: center;
+       overflow: hidden; background: #fff; border: 6px solid rgba(255,255,255,.85);
+       border-radius: 24px; box-shadow: var(--shadow); }
+  .slides-track img { display: block; width: 100%; height: clamp(200px, 52vw, 280px);
+       object-fit: cover; }
+  .slides-track figcaption { padding: 9px 14px 11px; color: var(--muted);
+       font-size: 12px; font-family: "Trebuchet MS", sans-serif; }
+  .slides-dots { display: flex; justify-content: center; align-items: center; gap: 7px; }
+  /* 記事ごとに明るい配色と暗い配色があるので、色を決め打ちしない。
+     currentColor（その記事の文字色）を薄めて使えば、どちらでも必ず見える */
+  .slides-dots i { width: 7px; height: 7px; border-radius: 50%;
+       background: currentColor; opacity: .28;
+       transition: transform .3s ease, opacity .3s ease; }
+  .slides-dots i.on { opacity: 1; transform: scale(1.55); }
+  .slides-hint { margin-top: 9px; text-align: center; color: var(--muted);
+       font-size: 11.5px; letter-spacing: .1em; font-family: "Trebuchet MS", sans-serif; }
+
+
+  /* 📚 章でまとめる（2026-09-24 本人の要望：文字だけのカードの羅列をやめて、AIの工夫で見やすく。本文は1文字も変えていない） */
+  .chap { --c: #8b6de8; margin-top: 30px; padding: 16px 12px 18px; border-radius: 30px;
+    background: color-mix(in srgb, var(--c) 11%, transparent); border: 3px solid color-mix(in srgb, var(--c) 70%, white);
+    scroll-margin-top: 14px; }
+  .chap-head { display: flex; align-items: center; gap: 13px; padding: 2px 6px 4px; }
+  .chap-num { flex: none; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 19px;
+    background: var(--c); color: #fff; font-size: 32px; font-weight: 900; transform: rotate(-6deg);
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--c) 35%, transparent); }
+  .chap-title { font-size: clamp(19px, 3.2vw, 24px); font-weight: 900; line-height: 1.3; }
+  .chap .card { margin-top: 14px; border-left: 6px solid var(--c); }
+  .chap .card-label { color: var(--c); }
+  .beat + .beat { margin-top: 16px; padding-top: 16px; border-top: 2px dashed color-mix(in srgb, var(--c) 30%, transparent); }
+  .beat .card-head { margin-bottom: 6px; }
+  .chap .photo, .chap figure { margin-top: 14px; }
+  .card p.bubble { position: relative; padding: 13px 17px; border-radius: 20px 20px 20px 5px;
+    background: var(--c, var(--purple)); color: #fff; font-weight: 900; }
+  .chap.seen .chap-num { animation: chap-pop .55s cubic-bezier(.2,1.6,.4,1) both; }
+  @keyframes chap-pop { 0% { transform: scale(.3) rotate(-30deg); opacity: 0; } 100% { transform: scale(1) rotate(-6deg); opacity: 1; } }
+  .chap-tracker { position: fixed; right: 12px; bottom: 14px; z-index: 20; display: flex; gap: 5px; padding: 6px;
+    border-radius: 999px; background: rgba(255,255,255,.93); box-shadow: 0 6px 20px rgba(0,0,0,.14);
+    opacity: 0; transform: translateY(10px); transition: opacity .25s, transform .25s; pointer-events: none; }
+  html[data-theme="dark"] .chap-tracker { background: rgba(34,36,48,.95); }
+  .chap-tracker.show { opacity: 1; transform: none; }
+  .chap-tracker span { display: grid; place-items: center; width: 27px; height: 27px; border-radius: 50%;
+    font-size: 13px; font-weight: 900; color: #9aa0ad; background: rgba(0,0,0,.06); transition: background .2s, color .2s, transform .2s; }
+  .chap-tracker span.on { background: var(--c); color: #fff; transform: scale(1.15); }
+  @media (prefers-reduced-motion: reduce) {
+    .chap.seen .chap-num { animation: none; } .chap-tracker, .chap-tracker span { transition: none; }
+  }
+  /* 2026-09-26 幅320pxの小さいスマホで「戻る」と「○ words」の札が横にはみ出していた */
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+/* ⬇️ tools/components.py : dark */
+  /* 🌙 ダークモードで、動画・地図・スライドの白い枠と説明だけが浮いていた（2026-09-26） */
+  html[data-theme="dark"] .map-card, html[data-theme="dark"] .video-card { border-color: rgba(255,255,255,.10); }
+  html[data-theme="dark"] .map-card figcaption, html[data-theme="dark"] .video-card figcaption,
+  html[data-theme="dark"] .slides-track figure { background: #22242f; color: #cfc8dc; }
+  html[data-theme="dark"] .slides-track figure { border-color: rgba(255,255,255,.10); }
+  html[data-theme="dark"] .map-card figcaption a, html[data-theme="dark"] .video-card figcaption a { color: #8fd3ff; }
+  html[data-theme="dark"] .slides-arrow { background: rgba(34,36,47,.94); color: #f4f0fa; }
+
+  /* 2026-09-26 カードや動画のすぐ下の写真が、すき間0pxでくっついていた */
+  :is(.card, .video-card, .map-card, .uni-tags, figure.hero) + figure.photo { margin-top: 18px; }
+  /* 2026-09-26 「次の記事」の白い字が、グラデーションの明るい側で薄く見えた。うっすら影をつける */
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<script>document.documentElement.className += " js";</script>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"37b223ea7b"},"bn":{"v":"c1643fabe7"},"ceb":{"v":"88e6b7430b"},"cs":{"v":"eb1648376b"},"da":{"v":"5b35289044"},"de":{"v":"5ba6f7ebdf"},"el":{"v":"4584ccb8c8"},"es":{"v":"1718eae648"},"fa":{"v":"5617d8c28b"},"fi":{"v":"859fc94600"},"fil":{"v":"2626ffe931"},"fr":{"v":"6a0677a11a"},"he":{"v":"4daae4c416"},"hi":{"v":"27d1014f28"},"id":{"v":"aa5fc4efb0"},"it":{"v":"22b4e3c64d"},"ja":{"v":"7cd6512cdc"},"ko":{"v":"0fabb1ce45"},"mr":{"v":"1246352035"},"ms":{"v":"f6cd9552de"},"nb":{"v":"211701f17d"},"ne":{"v":"5179c530e3"},"nl":{"v":"d5794954f5"},"pa":{"v":"0ed436ae49"},"pl":{"v":"479aabbe59"},"pt":{"v":"8029af8c7e"},"ro":{"v":"7ececca46a"},"ru":{"v":"b383cd26b1"},"sv":{"v":"b16a3241b4"},"sw":{"v":"44e0d402a4"},"ta":{"v":"9e973d1b93"},"te":{"v":"cef2d2cea0"},"th":{"v":"1ac398365f"},"tr":{"v":"cb48e0274b"},"uk":{"v":"1759486fde"},"ur":{"v":"d20074718f"},"vi":{"v":"2647fc1a3f"},"zh":{"v":"52b911c98d"},"zh-Hant":{"v":"99e09b6d5e"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=370e885bac"></script>
+<script src="/assets/px.js?v=c661036bcd" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <a class="home" href="../../index.html">&larr; Back to all works</a>
+    <div class="badges">
+      <div class="wc-badge">⚡ 180 words · 60 sec</div>
+      <div class="stage stage-public">PUBLIC</div>
+    </div>
+  </div>
+
+  <div class="label"><span class="topic">🛠 NETWORK OPERATIONS</span>⚡ 60 SEC</div>
+  <h1>I send all my questions at 1pm and 5:30pm using a scheduled message <span class="float">⏰</span></h1>
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1000" height="1000" src="img/916f4d25a0a7.jpg" alt="An amigurumi penguin dropping small folded notes into a big envelope with a round clock behind" />
+  </figure>
+
+  <div class="chap" id="c1" style="--c: #ff8a70">
+    <div class="chap-head"><span class="chap-num" aria-hidden="true">1</span><span class="chap-title">📨 A scheduled message</span></div>
+  <section class="card">
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">⏰</span>
+        <span class="card-label">Twice A Day</span>
+      </div>
+      <p>
+        I send my questions together at 1pm and 5:30pm.
+      </p>
+      <div class="clocks" aria-hidden="true"><span class="cl">13:00</span><span class="cl">17:30</span></div>
+    </div>
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">📮</span>
+        <span class="card-label">Scheduled Message</span>
+      </div>
+      <p>
+        In Teams, I have made a scheduled message addressed to my senior.
+      </p>
+      <div class="iconrow"><img class="iconimg" src="data:image/jpeg;base64,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" alt="The Microsoft Teams app icon" /></div>
+    </div>
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">✍️</span>
+        <span class="card-label">Keep Adding</span>
+      </div>
+      <p>
+        Whenever a question comes to mind, I keep adding it there.
+      </p>
+    </div>
+  </section>
+  </div>
+
+  <div class="chap" id="c2" style="--c: #4d9de0">
+    <div class="chap-head"><span class="chap-num" aria-hidden="true">2</span><span class="chap-title">🤔 Why twice a day</span></div>
+  <section class="card">
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">🕐</span>
+        <span class="card-label">Thirty Minutes</span>
+      </div>
+      <p>
+        With questions at work, if you ask right away, it is surprisingly often not a big deal, and there are times when I can solve it myself in about 30 minutes.
+      </p>
+    </div>
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">😔</span>
+        <span class="card-label">A Bit Sorry</span>
+      </div>
+      <p>
+        At times like that, I feel a little sorry, wondering whether my senior is thinking &ldquo;you should look up something like that yourself&rdquo;.
+      </p>
+    </div>
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">🌫</span>
+        <span class="card-label">Or I Forget</span>
+      </div>
+      <p>
+        But if I decide to put it off, by the time 2 or 3 hours have passed, I have already forgotten even what it was I did not understand.
+      </p>
+    </div>
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">⚖️</span>
+        <span class="card-label">Neither Is Good</span>
+      </div>
+      <p>
+        So asking right away is not good, and putting it off is not good either. Both feel half-hearted, so in the end I decided to send them at fixed times, 1pm and 5:30pm.
+      </p>
+    </div>
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">🧹</span>
+        <span class="card-label">Fewer Silly Ones</span>
+      </div>
+      <p class="big">
+        That way I do not forget my questions, and I also get time to read them over once before I send them, so I feel like there are fewer nonsense questions too.
+      </p>
+    </div>
+  </section>
+  </div>
+
+
+  <a class="next" href="../search-before-you-think/index.html">
+    <div>
+      <div class="next-kicker">NEXT · 29 SEC</div>
+      <div class="next-title">When I do not know something, I search the old records before I think</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../i-only-cover-the-middle/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">In a phone network my part is sometimes only the middle</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../one-second-stops-a-factory/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/one-second-stops-a-factory.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 21 SEC</span></div>
+            <div class="rel-title">My customers are companies, and 1 second of downtime can stop a factory</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../one-loose-plank-leaks-everything/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/one-loose-plank-leaks-everything.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 25 SEC</span></div>
+            <div class="rel-title">One loose plank makes the whole barrel leak, they taught me in training</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../sending-people-to-the-site/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/sending-people-to-the-site.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 39 SEC</span></div>
+            <div class="rel-title">Network operations also means sending a real person out to the site</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../nothing-goes-home-with-me/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/nothing-goes-home-with-me.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 37 SEC</span></div>
+            <div class="rel-title">I cannot take a single page of work material home with me</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../paraphrase-to-hack-the-score/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/paraphrase-to-hack-the-score.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 27 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">In IELTS, saying the same thing a different way was how you hacked the score</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
+</main>
+
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+  // 保険：1枚も出てこなかったら全部見せる
+  setTimeout(function () {
+    if (!document.querySelector('.card.in, .next.in')) showAll();
+  }, 1600);
+})();
+
+  /* 🎞 スライド：いま何枚目を見ているかを丸で出す */
+  document.querySelectorAll('.slides').forEach(function (box) {
+    var track = box.querySelector('.slides-track');
+    var dots  = box.querySelector('.slides-dots');
+    if (!track || !dots) return;
+    var figs = Array.prototype.slice.call(track.children);
+    figs.forEach(function () { dots.appendChild(document.createElement('i')); });
+    var marks = Array.prototype.slice.call(dots.children);
+    if (marks[0]) marks[0].className = 'on';
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var i = figs.indexOf(e.target);
+        marks.forEach(function (m, j) { m.className = (i === j) ? 'on' : ''; });
+      });
+    }, { root: track, threshold: 0.6 });
+    figs.forEach(function (f) { io.observe(f); });
+  });
+</script>
+<script>
+/* 📚 いま読んでいる章の番号を光らせる */
+(function(){
+  var tr = document.querySelector('.chap-tracker');
+  if (!('IntersectionObserver' in window)) { [].forEach.call(document.querySelectorAll('.chap'), function(c){ c.classList.add('seen'); }); return; }
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('seen');
+      if (!tr) return;
+      tr.classList.add('show');
+      [].forEach.call(tr.children, function(x){ x.classList.toggle('on', x.dataset.c === e.target.id); });
+    });
+  }, { rootMargin: '-40% 0px -45% 0px' });
+  [].forEach.call(document.querySelectorAll('.chap'), function(c){ io.observe(c); });
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+素材：10_🛠 ネットワーク運用保守/📄 記事/25_✅_質問は13時と17時半にまとめて送る.txt（写真も同ファイル）
+
+S1  → 使った
+S2  → 使った
+S3  → 使った
+S4  → 使った
+S5  → 使った
+S6  → 使った
+S7  → 使った
+S8  → 使った
+
+素材の8文すべてを使いました。語数のために削った文はありません
+（2026-09-10 に語数の上限・下限を廃止したため）。
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。
+飾り（.steps / .chips / .meter など）は見た目だけで、<p> ではありません（word数対象外）。
+
+削った文：なし
+追加した文：0
+（2026-09-24：本文は変えずに、カードを章にまとめて色分けした。章の見出しは整理テキスト）
+整理テキスト：card-label 8個 / h1 ← 本人の素材だけを要約・英訳（word数対象外）
+-->

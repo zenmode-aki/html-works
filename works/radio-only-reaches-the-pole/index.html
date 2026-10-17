@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- 👇 差し替える -->
+<title>The radio from your phone only reaches the pole nearby</title>
+<!-- ⬇️ OGP（tools/ogp.py） -->
+<meta name="description" content="Before I joined network operations, I was pretty clueless." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
+<meta property="og:title" content="The radio from your phone only reaches the pole nearby" />
+<meta property="og:description" content="Before I joined network operations, I was pretty clueless." />
+<meta property="og:url" content="https://15-second-blog.com/works/radio-only-reaches-the-pole/" />
+<meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/radio-only-reaches-the-pole.jpg" />
+<meta property="og:image:alt" content="An amigurumi penguin holding a phone and looking up at a base station antenna on a utility pole" />
+<meta name="twitter:card" content="summary_large_image" />
+<!-- ⬆️ OGP -->
+<!-- 🕶 タブのアイコン。ペンゲッソがサングラスをかけている顔（2026-09-11） -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* ⚡ 色は記事ごとに変えていい。トーン反転ルール（PROMPT.md）に従うこと。
+     真面目な話 → ポップに。どうでもいい話 → 荘厳に。 */
+  :root {
+    --bg: #f2f9ff;
+    --card: rgba(255,255,255,.94);
+    --text: #322536;
+    --muted: #876f84;
+    --pink: #8ecdf5;
+    --purple: #3a7fc4;
+    --line: rgba(91,52,103,.12);
+    --shadow: 0 20px 55px rgba(115,70,111,.16);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 8% 4%,   rgba(255,212,92,.33),  transparent 24%),
+      radial-gradient(circle at 96% 14%, rgba(255,111,174,.20), transparent 27%),
+      radial-gradient(circle at 50% 100%,rgba(101,214,189,.16), transparent 35%),
+      var(--bg);
+  }
+
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  /* ── 上のバー：戻る導線 と ワード数バッジ ───────────────── */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+  }
+  .home {
+    display: inline-block; min-height: 44px; padding: 12px 18px;
+    border-radius: 999px; background: #fff; color: var(--purple);
+    border: 2px solid rgba(255,255,255,.9);
+    font-size: 14px; text-decoration: none;
+    box-shadow: 0 6px 16px rgba(115,70,111,.10);
+  }
+  .home:hover { transform: translateY(-2px); }
+
+  .badges { display: flex; align-items: center; gap: 8px; }
+  /* ⚡ 読者への親切であり、AIが盛っていないことの証拠でもある */
+  .wc-badge {
+    padding: 10px 16px; border-radius: 999px;
+    background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em;
+    box-shadow: 0 6px 16px rgba(115,70,111,.08);
+  }
+
+  /* ── 🚦 公開ずみの印を右上に必ず出す ────────────────────────
+     出す場所は works/ の1つだけなので、記事はぜんぶ PUBLIC。
+     2026-09-04 に本番前（staging/）をやめたので STAGING はもう無い。
+     tools/check.py --site が「STAGING が残っていないか」を見ている */
+  .stage {
+    padding: 10px 13px; border-radius: 999px;
+    font-size: 11px; font-weight: 900; letter-spacing: .12em;
+    white-space: nowrap; box-shadow: 0 6px 16px rgba(115,70,111,.16);
+  }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+
+  /* 🏷 カテゴリーのバッジ（2026-09-11）
+     記事を開いた瞬間に「何の話か」が分かるようにするためのもの。
+     meta.json の topic から入る */
+  .label .topic {
+    display: inline-block; margin-right: 10px; padding: 5px 12px;
+    border-radius: 999px; background: var(--purple); color: #fff;
+    font-size: 11.5px; font-weight: 900; letter-spacing: .12em;
+  }
+
+  .label {
+    color: var(--purple); font-size: 13px; font-weight: 800;
+    letter-spacing: .14em; margin-bottom: 16px;
+  }
+
+  h1 {
+    margin: 0 0 22px; color: #3b2745;
+    font-size: clamp(34px, 6.6vw, 60px); line-height: 1.06;
+    letter-spacing: -.05em; text-wrap: balance;
+    text-shadow: 0 4px 0 rgba(255,255,255,.75);
+  }
+
+  /* ── 写真（base64で埋め込む。tools/embed.py がやる）─────────── */
+  .photo {
+    margin: 0 0 24px; overflow: hidden; background: #f3e9f2;
+    border: 7px solid rgba(255,255,255,.78); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg);
+  }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  /* ── 本文カード：枚数の上限はもうありません。素材の文の数だけ並べる ──── */
+  .card {
+    position: relative; margin-top: 18px; padding: 24px 26px;
+    background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(115,70,111,.09);
+    backdrop-filter: blur(8px);
+  }
+
+  /* ── カードの見出し：絵文字だけにしない。英単語2〜3語を必ず付ける ──
+     🧠 THE PROBLEM  /  ⚡ ONE FIX  /  🎯 SO WHAT
+     tools/check.py が card の枚数と card-label の数を照合している */
+  .card-head {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+  }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label {
+    font-size: 12.5px; font-weight: 900; letter-spacing: .16em;
+    color: var(--purple); text-transform: uppercase;
+  }
+
+  p {
+    margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif;
+    font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72;
+  }
+  /* オチの一言（本人の言葉） */
+  .big { font-size: clamp(23px, 4vw, 34px); font-weight: 850; line-height: 1.42; color: #6d3a63;
+         font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ── タイムライン（段階を見せるとき）──────────────────── */
+  .timeline { display: grid; gap: 14px; margin-top: 16px; }
+  .timeline-item {
+    display: grid; grid-template-columns: 160px 1fr; align-items: center; gap: 14px;
+    padding: 16px 18px; border: 2px solid rgba(255,255,255,.9); border-radius: 22px;
+    box-shadow: 0 7px 18px rgba(115,70,111,.07);
+  }
+  .timeline-item:nth-child(1) { background: #fff5c9; }
+  .timeline-item:nth-child(2) { background: #e7f5ff; }
+  .timeline-item:nth-child(3) { background: #f4eaff; }
+  .timeline-item:nth-child(4) { background: #e6fbf4; }
+  .stage  { font-weight: 900; color: #6f52ca; }
+  .device { font-weight: 750; color: #49354d; }
+
+  /* ── BEFORE THIS 🔗：記事を分けたときだけ、いちばん上に置く ────────
+     PROMPT.md §4「それでも分けるときは、前の記事に飛べるようにする」。
+     分けていない記事では <a class="prev"> ごと消す */
+  .prev {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px; min-height: 44px; padding: 14px 18px;
+    border-radius: 20px; text-decoration: none;
+    background: rgba(255,255,255,.7); border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); box-shadow: 0 6px 16px rgba(115,70,111,.08);
+    transition: transform .18s ease;
+  }
+  .prev:hover, .prev:focus-visible { transform: translateX(-3px); }
+  .prev-kicker {
+    flex: 0 0 auto; font-size: 10.5px; font-weight: 900;
+    letter-spacing: .16em; color: var(--purple);
+  }
+  .prev-title { font-size: 14px; line-height: 1.35; }
+
+  /* ── Next ⚡：次の記事へ直行する。ショート動画のスワイプの代わり ──── */
+  .next {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: #fff; box-shadow: var(--shadow);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .next:hover, .next:focus-visible {
+    transform: translateY(-4px); box-shadow: 0 26px 60px rgba(115,70,111,.26);
+  }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title  { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow  { font-size: 26px; flex: 0 0 auto; }
+
+  /* ── YouTube（iframeにしない。カードでリンク）───────────── */
+  .youtube-card {
+    display: block; margin-top: 28px; overflow: hidden; color: #fff; text-decoration: none;
+    border: 6px solid rgba(255,255,255,.9); border-radius: 30px; background: #25152c;
+    box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .youtube-card:hover, .youtube-card:focus-visible {
+    transform: translateY(-4px) rotate(-.3deg); box-shadow: 0 25px 65px rgba(115,70,111,.24);
+  }
+  /* サムネが読めなくても、下地のグラデーションで崩れない */
+  .youtube-thumb {
+    position: relative; display: grid; min-height: 210px; place-items: center; overflow: hidden;
+    background: linear-gradient(135deg, rgba(76,36,93,.78), rgba(255,111,174,.62));
+  }
+  .play {
+    display: grid; position: relative; z-index: 1; width: 78px; height: 78px;
+    place-items: center; padding-left: 5px; border-radius: 50%;
+    background: #fff; color: #f04476; font-size: 34px; box-shadow: 0 10px 25px rgba(0,0,0,.24);
+  }
+  .youtube-footer {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 16px 18px 18px; font-size: 16px;
+  }
+  .watch-button {
+    display: inline-block; flex: 0 0 auto; min-height: 44px; padding: 13px 16px;
+    border-radius: 999px; background: #ff4f78; color: #fff; font-size: 14px;
+    box-shadow: 0 5px 0 #c9355b;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     ⚡ モーションキット
+     すごいアニメは作らない。「開いた瞬間に何か動いた」程度でいい。
+     部品を消してもここは残しておく。CSSは触らなくていい。
+     ════════════════════════════════════════════════════════════ */
+
+  /* 1. 上のもの（ラベル・h1・写真）は開いた瞬間に一度だけ出る */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1     { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+
+  /* 2. カードはスクロールで下からふわっと出る（下の <script> が .in を付ける）
+        ⚠️ .js が付いているときだけ隠す。JSが動かない環境では最初から見えている。
+           こうしないと「真っ白なページ」になる */
+  .js .card, .js .next {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .55s ease-out, transform .55s ease-out;
+  }
+  .js .card.in, .js .next.in { opacity: 1; transform: none; }
+
+  /* 3. 見出しラベルはカードより少し遅れて左から入る */
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+
+  /* 4. アクセント絵文字を1つだけ、ゆっくり揺らし続ける（.float を付けた要素） */
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+
+  /* 5. オチだけ少し強めにポンと出る */
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    /* 375pxでも「戻る」と2つのバッジが1行に収まるように詰める */
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home     { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage    { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .youtube-card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .timeline-item { grid-template-columns: 1fr; gap: 4px; }
+    .youtube-thumb { min-height: 175px; }
+    .youtube-footer { align-items: flex-start; flex-direction: column; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと。
+     これが無いと tools/check.py が落ちる */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+    /* このページが「ふわっと出す」ために最初に隠している要素（opacity: 0 にしているもの）だけ、はじめから見せる。ページごとに数え上げた（2026-10-04）。ほかの部品（言語メニュー・勉強バーなど）はさわらない */
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .next {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+  /* ✨ 動きの設定（2026-10-04）：本人がフッターの「✨ 動き」で ON を選んだら、端末が「減らす」でも動かす。OFF なら、端末が「減らさない」でも止める。上の @media は auto（端末にしたがう）のときだけ効く */
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+/* ⬇️ tools/components.py */
+  /* 🗺 地図 — 上空からその場所の雰囲気がわかるようにする */
+  .map-card, .video-card { margin: 18px 0 0; overflow: hidden;
+       border: 7px solid rgba(255,255,255,.8); border-radius: 30px;
+       box-shadow: var(--shadow); background: #dde7ea; }
+  .map-card iframe { display: block; width: 100%;
+       height: clamp(220px, 45vw, 330px); border: 0; }
+  .video-card { background: #000; }
+  .video-card .ratio { position: relative; width: 100%; padding-top: 56.25%; }
+  .video-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .map-card figcaption, .video-card figcaption {
+       display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+       padding: 11px 16px 13px; background: #fff; color: var(--muted);
+       font-size: 12.5px; font-family: "Trebuchet MS", sans-serif; }
+  .map-card figcaption a, .video-card figcaption a {
+       color: var(--accent, #2f8fbf); font-weight: 700; text-decoration: none; }
+  .map-card figcaption a:hover, .video-card figcaption a:hover { text-decoration: underline; }
+
+  /* 🎞 スライド — 写真を全部縦に流さず、横にスワイプして見る */
+  .slides { margin: 18px 0 0; }
+  .slides-track { display: flex; gap: 12px; overflow-x: auto; padding: 4px 2px 12px;
+       scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+       scrollbar-width: none; }
+  .slides-track::-webkit-scrollbar { display: none; }
+  .slides-track figure { flex: 0 0 86%; margin: 0; scroll-snap-align: center;
+       overflow: hidden; background: #fff; border: 6px solid rgba(255,255,255,.85);
+       border-radius: 24px; box-shadow: var(--shadow); }
+  .slides-track img { display: block; width: 100%; height: clamp(200px, 52vw, 280px);
+       object-fit: cover; }
+  .slides-track figcaption { padding: 9px 14px 11px; color: var(--muted);
+       font-size: 12px; font-family: "Trebuchet MS", sans-serif; }
+  .slides-dots { display: flex; justify-content: center; align-items: center; gap: 7px; }
+  /* 記事ごとに明るい配色と暗い配色があるので、色を決め打ちしない。
+     currentColor（その記事の文字色）を薄めて使えば、どちらでも必ず見える */
+  .slides-dots i { width: 7px; height: 7px; border-radius: 50%;
+       background: currentColor; opacity: .28;
+       transition: transform .3s ease, opacity .3s ease; }
+  .slides-dots i.on { opacity: 1; transform: scale(1.55); }
+  .slides-hint { margin-top: 9px; text-align: center; color: var(--muted);
+       font-size: 11.5px; letter-spacing: .1em; font-family: "Trebuchet MS", sans-serif; }
+
+
+  /* 📚 章でまとめる（2026-09-24 本人の要望：文字だけのカードの羅列をやめて、AIの工夫で見やすく。本文は1文字も変えていない） */
+  .chap { --c: #8b6de8; margin-top: 30px; padding: 16px 12px 18px; border-radius: 30px;
+    background: color-mix(in srgb, var(--c) 11%, transparent); border: 3px solid color-mix(in srgb, var(--c) 70%, white);
+    scroll-margin-top: 14px; }
+  .chap-head { display: flex; align-items: center; gap: 13px; padding: 2px 6px 4px; }
+  .chap-num { flex: none; display: grid; place-items: center; width: 56px; height: 56px; border-radius: 19px;
+    background: var(--c); color: #fff; font-size: 32px; font-weight: 900; transform: rotate(-6deg);
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--c) 35%, transparent); }
+  .chap-title { font-size: clamp(19px, 3.2vw, 24px); font-weight: 900; line-height: 1.3; }
+  .chap .card { margin-top: 14px; border-left: 6px solid var(--c); }
+  .chap .card-label { color: var(--c); }
+  .beat + .beat { margin-top: 16px; padding-top: 16px; border-top: 2px dashed color-mix(in srgb, var(--c) 30%, transparent); }
+  .beat .card-head { margin-bottom: 6px; }
+  .chap .photo, .chap figure { margin-top: 14px; }
+  .card p.bubble { position: relative; padding: 13px 17px; border-radius: 20px 20px 20px 5px;
+    background: var(--c, var(--purple)); color: #fff; font-weight: 900; }
+  .chap.seen .chap-num { animation: chap-pop .55s cubic-bezier(.2,1.6,.4,1) both; }
+  @keyframes chap-pop { 0% { transform: scale(.3) rotate(-30deg); opacity: 0; } 100% { transform: scale(1) rotate(-6deg); opacity: 1; } }
+  .chap-tracker { position: fixed; right: 12px; bottom: 14px; z-index: 20; display: flex; gap: 5px; padding: 6px;
+    border-radius: 999px; background: rgba(255,255,255,.93); box-shadow: 0 6px 20px rgba(0,0,0,.14);
+    opacity: 0; transform: translateY(10px); transition: opacity .25s, transform .25s; pointer-events: none; }
+  html[data-theme="dark"] .chap-tracker { background: rgba(34,36,48,.95); }
+  .chap-tracker.show { opacity: 1; transform: none; }
+  .chap-tracker span { display: grid; place-items: center; width: 27px; height: 27px; border-radius: 50%;
+    font-size: 13px; font-weight: 900; color: #9aa0ad; background: rgba(0,0,0,.06); transition: background .2s, color .2s, transform .2s; }
+  .chap-tracker span.on { background: var(--c); color: #fff; transform: scale(1.15); }
+  @media (prefers-reduced-motion: reduce) {
+    .chap.seen .chap-num { animation: none; } .chap-tracker, .chap-tracker span { transition: none; }
+  }
+  /* 2026-09-26 幅320pxの小さいスマホで「戻る」と「○ words」の札が横にはみ出していた */
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+/* ⬇️ tools/components.py : dark */
+  /* 🌙 ダークモードで、動画・地図・スライドの白い枠と説明だけが浮いていた（2026-09-26） */
+  html[data-theme="dark"] .map-card, html[data-theme="dark"] .video-card { border-color: rgba(255,255,255,.10); }
+  html[data-theme="dark"] .map-card figcaption, html[data-theme="dark"] .video-card figcaption,
+  html[data-theme="dark"] .slides-track figure { background: #22242f; color: #cfc8dc; }
+  html[data-theme="dark"] .slides-track figure { border-color: rgba(255,255,255,.10); }
+  html[data-theme="dark"] .map-card figcaption a, html[data-theme="dark"] .video-card figcaption a { color: #8fd3ff; }
+  html[data-theme="dark"] .slides-arrow { background: rgba(34,36,47,.94); color: #f4f0fa; }
+
+  /* 2026-09-26 カードや動画のすぐ下の写真が、すき間0pxでくっついていた */
+  :is(.card, .video-card, .map-card, .uni-tags, figure.hero) + figure.photo { margin-top: 18px; }
+  /* 2026-09-26 「次の記事」の白い字が、グラデーションの明るい側で薄く見えた。うっすら影をつける */
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
+<script>document.documentElement.className += " js";</script>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"45fa415391"},"bn":{"v":"cebc69e640"},"ceb":{"v":"c20ca7f9e0"},"cs":{"v":"07a9999428"},"da":{"v":"4f38ec2a04"},"de":{"v":"136630556d"},"el":{"v":"cf25104c03"},"es":{"v":"9fb1cc60b5"},"fa":{"v":"75b283e249"},"fi":{"v":"03464afbf3"},"fil":{"v":"d1fc9cace9"},"fr":{"v":"709295eb2c"},"he":{"v":"d489b41592"},"hi":{"v":"60ff76137b"},"id":{"v":"8e5ed97e31"},"it":{"v":"c3e3654d83"},"ja":{"v":"042c0225e5"},"ko":{"v":"40cd240408"},"mr":{"v":"0f43dcbc94"},"ms":{"v":"3e3d5334c2"},"nb":{"v":"116b90a3b4"},"ne":{"v":"29867c50d3"},"nl":{"v":"5353b470a3"},"pa":{"v":"c094e8fc1f"},"pl":{"v":"0fe7acda76"},"pt":{"v":"b6446c2afe"},"ro":{"v":"a04fb6673a"},"ru":{"v":"90850c7fe6"},"sv":{"v":"0103e7456f"},"sw":{"v":"d614e111cf"},"ta":{"v":"fc44692531"},"te":{"v":"24a8d7c250"},"th":{"v":"823ff9d55e"},"tr":{"v":"a3b599173e"},"uk":{"v":"c0c90106c7"},"ur":{"v":"a2bde4ea24"},"vi":{"v":"88fbffc797"},"zh":{"v":"e4d8e6b690"},"zh-Hant":{"v":"05bf004aa6"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=370e885bac"></script>
+<script src="/assets/px.js?v=c661036bcd" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <!-- works/<slug>/ からも drafts/<slug>/ からも、リポジトリ直下の index.html に届く -->
+    <a class="home" href="../../index.html">← Back</a>
+    <div class="badges">
+      <!-- 👇 python3 tools/check.py --fix-badge が正しい数字に直してくれる -->
+      <div class="wc-badge">⚡ 158 words · 53 sec</div>
+      <!-- 🚦 出す場所は1つだけ。記事はぜんぶ PUBLIC -->
+      <div class="stage stage-public">PUBLIC</div>
+    </div>
+  </div>
+
+
+  <div class="label"><span class="topic">🛠 NETWORK OPERATIONS</span>⚡ 53 SEC</div>
+  <h1>I used to think my phone talked to space <span class="float">🐧</span></h1>
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="900" height="900" src="img/393ea5382906.jpg" alt="An amigurumi penguin holding a phone and looking up at a base station antenna on a utility pole" />
+  </figure>
+
+  <div class="chap" id="c1" style="--c: #ff8a70">
+    <div class="chap-head"><span class="chap-num" aria-hidden="true">1</span><span class="chap-title">🤔 What I used to think</span></div>
+  <section class="card">
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">🙃</span>
+        <span class="card-label">Pretty Clueless</span>
+      </div>
+      <p>
+        Before I joined network operations, I was pretty clueless.
+      </p>
+    </div>
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">🛰️</span>
+        <span class="card-label">Straight Up</span>
+      </div>
+      <p>
+        I thought that when you use the internet on a phone or a computer, the phone shoots radio waves whoosh, all the way up into space, and that is how it communicates.
+      </p>
+    </div>
+  </section>
+  </div>
+
+  <div class="chap" id="c2" style="--c: #4d9de0">
+    <div class="chap-head"><span class="chap-num" aria-hidden="true">2</span><span class="chap-title">🔌 It's mostly cable</span></div>
+  <section class="card">
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">📡</span>
+        <span class="card-label">Only The Pole</span>
+      </div>
+      <p>
+        But usually, it is nothing like that. The radio my phone sends only reaches something called a base station, on a nearby utility pole or building.
+      </p>
+    </div>
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">🔌</span>
+        <span class="card-label">All Cable</span>
+      </div>
+      <p>
+        From there on, it is all fiber. It is physically connected, with cable.
+      </p>
+    </div>
+  </section>
+  <figure class="photo">
+    <img loading="lazy" decoding="async" width="900" height="900" src="img/a02b9f0ab228.jpg" alt="Undersea fiber optic cables running along the ocean floor between continents" />
+  </figure>
+  <section class="card">
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">🌏</span>
+        <span class="card-label">Across Oceans</span>
+      </div>
+      <p>
+        Even from Japan to Brazil or America, it is laid out like a power grid, and one way or another it is all connected.
+      </p>
+    </div>
+  </section>
+  </div>
+
+  <div class="chap" id="c3" style="--c: #34b27d">
+    <div class="chap-head"><span class="chap-num" aria-hidden="true">3</span><span class="chap-title">🧭 Routers show the way</span></div>
+  <section class="card">
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">🕸️</span>
+        <span class="card-label">Like Cobweb</span>
+      </div>
+      <p>
+        The thing is, it is spread out messily like a cobweb, so you get lost in it like a maze.
+      </p>
+    </div>
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">🧭</span>
+        <span class="card-label">Routers Help</span>
+      </div>
+      <p>
+        What stops you getting lost is the router, and thanks to it you reach your destination properly.
+      </p>
+    </div>
+    <div class="beat">
+  <div class="card-head">
+        <span class="card-emoji" aria-hidden="true">💡</span>
+        <span class="card-label">Much Easier</span>
+      </div>
+      <p class="big">
+        Networks are physically connected. Once you know just that, this job gets a lot easier to understand.
+      </p>
+    </div>
+  </section>
+  </div>
+
+  <div class="chap-tracker" aria-hidden="true"><span data-c="c1" style="--c: #ff8a70">1</span><span data-c="c2" style="--c: #4d9de0">2</span><span data-c="c3" style="--c: #34b27d">3</span></div>
+
+
+
+  <a class="next" href="../ip-phone-goes-sideways/index.html">
+    <div>
+      <div class="next-kicker">NEXT · 58 SEC</div>
+      <div class="next-title">An IP phone does not have to climb to the top</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../one-loose-plank-leaks-everything/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">One loose plank makes the whole barrel leak, they taught me in training</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../even-veterans-use-the-manual/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/even-veterans-use-the-manual.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 49 SEC</span></div>
+            <div class="rel-title">Even the veterans work while looking at the manual</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../five-computers-in-one-day/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/five-computers-in-one-day.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 32 SEC</span></div>
+            <div class="rel-title">I log into about 5 computers in one day</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../fixing-it-is-not-the-end/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/fixing-it-is-not-the-end.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 43 SEC</span></div>
+            <div class="rel-title">Fixing the fault is not the end of it</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../the-day-of-the-baseball-final/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/the-day-of-the-baseball-final.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 56 SEC</span></div>
+            <div class="rel-title">The day of the baseball tournament was the best shift</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../i-made-10000-yen-from-what-i-know/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/i-made-10000-yen-from-what-i-know.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 60 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">My mother's friend gave me 10,000 yen for showing how I use AI</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
+</main>
+
+<!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+
+  // 保険：何かの理由で1枚も出てこなかったら、全部見せる。
+  // 演出のために本文が読めない、が絶対に起きないようにする
+  setTimeout(function () {
+    if (!document.querySelector('.card.in, .next.in')) showAll();
+  }, 1600);
+})();
+
+  /* 🎞 スライド：いま何枚目を見ているかを丸で出す */
+  document.querySelectorAll('.slides').forEach(function (box) {
+    var track = box.querySelector('.slides-track');
+    var dots  = box.querySelector('.slides-dots');
+    if (!track || !dots) return;
+    var figs = Array.prototype.slice.call(track.children);
+    figs.forEach(function () { dots.appendChild(document.createElement('i')); });
+    var marks = Array.prototype.slice.call(dots.children);
+    if (marks[0]) marks[0].className = 'on';
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var i = figs.indexOf(e.target);
+        marks.forEach(function (m, j) { m.className = (i === j) ? 'on' : ''; });
+      });
+    }, { root: track, threshold: 0.6 });
+    figs.forEach(function (f) { io.observe(f); });
+  });
+</script>
+<script>
+/* 📚 いま読んでいる章の番号を光らせる */
+(function(){
+  var tr = document.querySelector('.chap-tracker');
+  if (!('IntersectionObserver' in window)) { [].forEach.call(document.querySelectorAll('.chap'), function(c){ c.classList.add('seen'); }); return; }
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (!e.isIntersecting) return;
+      e.target.classList.add('seen');
+      if (!tr) return;
+      tr.classList.add('show');
+      [].forEach.call(tr.children, function(x){ x.classList.toggle('on', x.dataset.c === e.target.id); });
+    });
+  }, { rootMargin: '-40% 0px -45% 0px' });
+  [].forEach.call(document.querySelectorAll('.chap'), function(c){ io.observe(c); });
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 1枚目、h1
+S2 → 2枚目
+S3 → 3枚目
+S4 → 4枚目
+S5 → 5枚目
+S6 → 6枚目
+S7 → 7枚目
+S8 → 8枚目（.big）
+
+本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
+S番号に対応しない英文は1つもありません。素材の文は1つも落としていません。
+
+削った文：なし
+追加した文：0
+（2026-09-24：本文は変えずに、カードを章にまとめて色分けした。章の見出しは整理テキスト）
+整理テキスト：card-label 8個 / h1 ← 本人の素材だけを要約・英訳（word数対象外）
+-->
