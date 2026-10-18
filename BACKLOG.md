@@ -15,6 +15,7 @@
 
 ## 🧊 2026-10-18：ITの勉強で固まっている → 1週間後に続き
 
+- ❓ toy の中の人・手の絵文字（🏊 cebu-condo-poolside・malaysia-apartment-stays／💇 korean-idol-bangs-side-strands／🙏 malaysia-apartment-stays）は本人に聞く。👣👀🙈🙊🤩👾 は決まりに入るかどうか未定（2026-10-19：👆 は ▼ にした）
 - ✅ 「ITの勉強をしたいのに、情報が多すぎて固まっている」（`too-much-to-learn-in-it`）を本番に（英日韓中）
 - 🗓 **2026-10-25ごろ**：「どうやって切り抜けたか」の記事を書く（meta.json に `"follows": "too-much-to-learn-in-it"`）。書けたら、トップの「🌀 いま悩み中」の投稿を solved にして「✅ Found an answer」に
 - 🌀 トップに「いま悩み中」（X みたいな短い投稿）を作った。新しい悩みは index.html の .wfeed のいちばん上に1つ足す
