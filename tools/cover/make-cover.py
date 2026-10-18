@@ -87,7 +87,8 @@ RENDER_JS = """
 let pw; try { pw = require('playwright'); } catch (e) { pw = require(require('child_process').execSync('npm root -g').toString().trim() + '/playwright'); }
 const jobs = JSON.parse(require('fs').readFileSync(process.argv[2]));
 (async () => {
-  const b = await pw.chromium.launch(); const p = await b.newPage({ viewport: { width: 1200, height: 900 } });
+  // PW_SINGLE=1：サンドボックスの中で Chromium がふつうに起動できないとき用（2026-10-18）
+  const b = await pw.chromium.launch(process.env.PW_SINGLE ? { args: ['--single-process', '--no-sandbox'] } : {}); const p = await b.newPage({ viewport: { width: 1200, height: 900 } });
   for (const j of jobs) { await p.setViewportSize({ width: j.w, height: j.h }); await p.goto('file://' + j.html); await p.waitForTimeout(150); await p.screenshot({ path: j.out, type: 'jpeg', quality: 90 }); }
   await b.close();
 })();
