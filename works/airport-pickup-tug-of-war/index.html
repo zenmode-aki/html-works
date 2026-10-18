@@ -274,7 +274,8 @@
     }
     /* このページが「ふわっと出す」ために最初に隠している要素（opacity: 0 にしているもの）だけ、はじめから見せる。ページごとに数え上げた（2026-10-04）。ほかの部品（言語メニュー・勉強バーなど）はさわらない */
     html.js:not([data-motion="on"]) .card,
-    html.js:not([data-motion="on"]) .next {
+    html.js:not([data-motion="on"]) .next,
+    html.js:not([data-motion="on"]) .tq .tq-q {
       opacity: 1 !important;
       transform: none !important;
     }
@@ -283,6 +284,7 @@
   html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
   html.js[data-motion="off"] .card,
   html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+  html.js[data-motion="off"] .tq .tq-q { opacity: 1 !important; transform: none !important; }
 
   /* 📚 章でまとめる（2026-09-24 本人の要望：文字だけのカードの羅列をやめて、AIの工夫で見やすく。本文は1文字も変えていない） */
   .chap { --c: #8b6de8; margin-top: 30px; padding: 16px 12px 18px; border-radius: 30px;
@@ -297,6 +299,34 @@
   .chap .card-label { color: var(--c); }
   .beat + .beat { margin-top: 16px; padding-top: 16px; border-top: 2px dashed color-mix(in srgb, var(--c) 30%, transparent); }
   .beat .card-head { margin-bottom: 6px; }
+
+  /* 🐧❓ 名前の発音に首をかしげる（2026-10-18 討論で決定。困っているのは自分だけ。文は足していない） */
+  .tq { display: inline-flex; align-items: center; gap: 1px; min-height: 40px; cursor: pointer; }
+  .tq-bird { display: inline-block; transform-origin: 50% 90%; }
+  .tq.tq-on .tq-bird { transform: rotate(-14deg); animation: tq-tilt .6s ease-in-out 3; }
+  @keyframes tq-tilt { 0% { transform: rotate(0); } 35% { transform: rotate(-14deg); } 70% { transform: rotate(10deg); } 100% { transform: rotate(-14deg); } }
+  .tq-q { display: inline-block; font-size: .72em; }
+  .js .tq:not(.tq-on) .tq-q2, .js .tq:not(.tq-on) .tq-q3 { opacity: 0; }
+  .tq.tq-on .tq-q2 { animation: tq-in .3s .6s both cubic-bezier(.3,1.6,.5,1); }
+  .tq.tq-on .tq-q3 { animation: tq-in .3s 1.2s both cubic-bezier(.3,1.6,.5,1); }
+  @keyframes tq-in { 0% { opacity: 0; transform: scale(.3); } 100% { opacity: 1; transform: scale(1); } }
+  /* 🇰🇷✈️🇵🇭 何回めくっても同じ便しか出ない到着ボード（本人の「今思うと面白い」の所。便名・時刻・数字は入れない） */
+  .board { margin: 14px 0 2px; padding: 14px 14px 12px; border-radius: 20px; background: #1f2744; box-shadow: 0 6px 0 #11172c; text-align: center; }
+  .board-rows { display: grid; gap: 6px; max-width: 260px; margin: 0 auto; perspective: 400px; }
+  .board-row { display: flex; justify-content: space-around; align-items: center; padding: 6px 10px; border-radius: 10px; background: #2c3760; font-size: 26px; line-height: 1.2; transform-origin: 50% 50%; }
+  .board.board-flip .board-row { animation: board-flip .45s ease-in-out both; }
+  .board.board-flip .board-row:nth-child(2) { animation-delay: .09s; }
+  .board.board-flip .board-row:nth-child(3) { animation-delay: .18s; }
+  @keyframes board-flip { 0% { transform: rotateX(0); } 50% { transform: rotateX(90deg); } 100% { transform: rotateX(0); } }
+  .board-foot { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 12px; }
+  .board-bird { display: inline-block; font-size: 34px; line-height: 1; }
+  .board.board-flip .board-bird { animation: board-no .6s ease-in-out; }
+  @keyframes board-no { 20% { transform: rotate(-16deg); } 45% { transform: rotate(14deg); } 70% { transform: rotate(-10deg); } 100% { transform: rotate(0); } }
+  .board-go { display: inline-flex; align-items: center; justify-content: center; min-width: 64px; min-height: 52px; padding: 6px 18px; border: 0; border-radius: 18px; cursor: pointer; font: inherit; font-size: 26px; font-weight: 900; line-height: 1; background: #ffd34d; box-shadow: 0 5px 0 #c99a12; touch-action: manipulation; }
+  .board-go:active { transform: translateY(4px); box-shadow: 0 1px 0 #c99a12; }
+  html[data-theme="dark"] .board { background: #141a30; box-shadow: 0 6px 0 #05070f; }
+  html[data-theme="dark"] .board-row { background: #232c4d; }
+  html[data-theme="dark"] .board-go { background: #e8b92c; box-shadow: 0 5px 0 #8a6a0c; }
   .chap .photo, .chap figure { margin-top: 14px; }
   .card p.bubble { position: relative; padding: 13px 17px; border-radius: 20px 20px 20px 5px;
     background: var(--c, var(--purple)); color: #fff; font-weight: 900; }
@@ -447,7 +477,7 @@
 </style>
 <!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
 <style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
-<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"0e9958dafb"},"bn":{"v":"65d29d3745"},"ceb":{"v":"e20000f9bb"},"cs":{"v":"5a442711bc"},"da":{"v":"f760166748"},"de":{"v":"3a933f7655"},"el":{"v":"f5f1402a5a"},"es":{"v":"e5e78d2141"},"fa":{"v":"2ec95046d5"},"fi":{"v":"87fa111426"},"fil":{"v":"b17db9656e"},"fr":{"v":"6598569f18"},"he":{"v":"4e9c6bc6c6"},"hi":{"v":"f526bc6054"},"id":{"v":"566fed088b"},"it":{"v":"4e4504ec8a"},"ja":{"v":"f650387081"},"ko":{"v":"76b57326c0"},"mr":{"v":"1e754612d2"},"ms":{"v":"393f92ceb8"},"nb":{"v":"a03ec4b6d1"},"ne":{"v":"ca5769e9fd"},"nl":{"v":"2dc4827f1c"},"pa":{"v":"30e65f937b"},"pl":{"v":"1e63646a7a"},"pt":{"v":"59bb88b9c6"},"ro":{"v":"20694aff96"},"ru":{"v":"61004d1078"},"sv":{"v":"4637bd47b2"},"sw":{"v":"810e81c9be"},"ta":{"v":"b0ff0a614c"},"te":{"v":"97fb6e2c65"},"th":{"v":"1e6975e68e"},"tr":{"v":"5c060a7ee4"},"uk":{"v":"bc1f693605"},"ur":{"v":"ea41e281aa"},"vi":{"v":"bdf7e68a16"},"zh":{"v":"84ad3a1eaa"},"zh-Hant":{"v":"8121fe5d87"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script type="application/json" id="i18n-data">{"langs":{"ar":{"v":"13fda0a43e"},"bn":{"v":"dac5c6d5db"},"ceb":{"v":"0efbde22ad"},"cs":{"v":"08477936ee"},"da":{"v":"99bd3a584e"},"de":{"v":"8b4de54fb1"},"el":{"v":"8170ab6c58"},"es":{"v":"6262cecb2a"},"fa":{"v":"9fd2457380"},"fi":{"v":"4903a55394"},"fil":{"v":"b9c1bb2a77"},"fr":{"v":"1435da6249"},"he":{"v":"2dcdcccded"},"hi":{"v":"45e10ee05f"},"id":{"v":"a14dbd0e0e"},"it":{"v":"520d425487"},"ja":{"v":"825d42f943"},"ko":{"v":"abff053f64"},"mr":{"v":"8dea07ddaa"},"ms":{"v":"dcc2e658ad"},"nb":{"v":"f335bcd1e2"},"ne":{"v":"ec40c066e4"},"nl":{"v":"610cbac619"},"pa":{"v":"5dabcf0438"},"pl":{"v":"57c9df6288"},"pt":{"v":"f16e78898e"},"ro":{"v":"ea4427dc03"},"ru":{"v":"d816d05efb"},"sv":{"v":"7d35a4afb9"},"sw":{"v":"160f6715c1"},"ta":{"v":"94d753ab47"},"te":{"v":"304add6bf5"},"th":{"v":"a2e306669f"},"tr":{"v":"066edce3b6"},"uk":{"v":"8d1c45beb1"},"ur":{"v":"c05488b1ac"},"vi":{"v":"aa4632e959"},"zh":{"v":"5b6cc674bd"},"zh-Hant":{"v":"95f8e61b4f"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
 <script src="/assets/i18n-runtime.js?v=370e885bac"></script>
 <script src="/assets/px.js?v=c661036bcd" defer></script>
 <!-- 🌐 i18n:end -->
@@ -460,14 +490,14 @@
     <a class="home" href="../../index.html">← Back</a>
     <div class="badges">
       <!-- 👇 python3 tools/check.py --fix-badge が正しい数字に直してくれる -->
-      <div class="wc-badge">⚡ 182 words · 61 sec</div>
+      <div class="wc-badge">⚡ 233 words · 78 sec</div>
       <!-- 🚦 出す場所は1つだけ。記事はぜんぶ PUBLIC -->
       <div class="stage stage-public">PUBLIC</div>
     </div>
   </div>
 
 
-  <div class="label"><span class="topic">🇵🇭 LIVING IN THE PHILIPPINES</span>⚡ 61 SEC</div>
+  <div class="label"><span class="topic">🇵🇭 LIVING IN THE PHILIPPINES</span>⚡ 78 SEC</div>
   <h1>Picking students up at the airport was a tug of war with the heat <span class="float">🐧</span></h1>
 
   <figure class="photo">
@@ -527,14 +557,25 @@
       <p>
         There were so many flights from Korea to Clark that just telling them apart was hard work. Looking back, it is kind of funny.
       </p>
+      <div class="toy board" aria-label="🇰🇷✈️🇵🇭">
+        <div class="board-rows" aria-hidden="true">
+          <div class="board-row"><span>🇰🇷</span><span>✈️</span><span>🇵🇭</span></div>
+          <div class="board-row"><span>🇰🇷</span><span>✈️</span><span>🇵🇭</span></div>
+          <div class="board-row"><span>🇰🇷</span><span>✈️</span><span>🇵🇭</span></div>
+        </div>
+        <div class="board-foot">
+          <span class="board-bird" aria-hidden="true">🐧</span>
+          <button type="button" class="board-go" aria-label="🔄">🔄</button>
+        </div>
+      </div>
     </div>
     <div class="beat">
   <div class="card-head">
-        <span class="card-emoji" aria-hidden="true">🗣</span>
+        <span class="card-emoji tq" aria-hidden="true"><span class="tq-bird">🐧</span><span class="tq-q tq-q1">❓</span><span class="tq-q tq-q2">❓</span><span class="tq-q tq-q3">❓</span></span>
         <span class="card-label">Hard To Pronounce</span>
       </div>
       <p>
-        Korean and Chinese names were hard for me too. At first, I did not even know how to say &quot;Are you Mr. so and so?&quot;
+        Also, as a Japanese person, telling Korean and Chinese people's names apart was very difficult, and at the beginning I had a lot of trouble. When I said &quot;Are you Mr. so and so?&quot;, I did not know how to pronounce it. If it is a Japanese name it is easy, but that part was difficult.
       </p>
     </div>
     <div class="beat">
@@ -543,7 +584,7 @@
         <span class="card-label">Actually Fun</span>
       </div>
       <p class="big">
-        But the airport pickup was basically fun. While waiting, I met interesting people and made friends with managers from other language schools.
+        But the airport pickup was basically fun. While I was waiting I met all kinds of interesting people, and at pickups I met managers from other language schools, and we became friends and talked, so I have fairly fun memories of it.
       </p>
     </div>
   </section>
@@ -692,15 +733,40 @@
     figs.forEach(function (f) { io.observe(f); });
   });
 </script>
+<script>
+/* 🐧❓ と 🇰🇷✈️🇵🇭 の到着ボード（2026-10-18） */
+(function () {
+  var tq = document.querySelector('.tq');
+  if (tq) {
+    var on = function () { tq.classList.remove('tq-on'); void tq.offsetWidth; tq.classList.add('tq-on'); };
+    tq.addEventListener('click', on);
+    if (!('IntersectionObserver' in window)) on();
+    else {
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (e.isIntersecting) { on(); io.disconnect(); } });
+      }, { threshold: 0.6 });
+      io.observe(tq);
+    }
+  }
+  var board = document.querySelector('.board');
+  var go = board && board.querySelector('.board-go');
+  if (go) {
+    go.addEventListener('click', function () {
+      board.classList.remove('board-flip'); void board.offsetWidth; board.classList.add('board-flip');
+    });
+  }
+})();
+</script>
 </body>
 </html>
 
 <!-- SOURCE MAP
-本文（.card の中の <p>）の英文はすべて、21_🇵🇭 クラーク/📄 記事/02_✅_空港ピックアップ.txt の各段落から訳したものです。
+本文（.card の中の <p>）の英文はすべて、21_🇵🇭 クラーク/📄 記事/02_📝_空港ピックアップ.txt の各段落から訳したものです。
 対応しない英文は1つもありません。素材の文は1つも落としていません。
 
-削った文：なし
+削った文：なし（2026-10-18：c305c69de2 で落ちていた S10・S12・S14 を直訳で戻した）
 追加した文：0
+S6 は日本語版では原稿どおり、英文は「Too Hot Outside」の段落の要約のまま
 （2026-09-24：本文は変えずに、カードを章にまとめて色分けした。章の見出しは整理テキスト）
 整理テキスト：card-label 7個 / h1 ← 本人の素材だけを要約・英訳
 -->

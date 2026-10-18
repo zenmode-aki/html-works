@@ -441,6 +441,7 @@ class Reader:
         """ヘボン式。単語ごとに空白。ふりがなと同じ読み（上書き・数字＋助数詞）を使う。
         つなげて読む部分（動詞＋ます＋た、お＋茶 …）は、かなのままつなげてから変換する（「行っ＋て」→ itte）"""
         t = re.sub("[\U0001F000-\U0001FFFF☀-➿️‍]", "", text)
+        t = t.replace("〇〇", "まるまる")   # 〇〇 を「rei rei（ゼロゼロ）」と読まない
         items, prev1 = [], ""
         for c in self.chunks(t):
             s = c.surface

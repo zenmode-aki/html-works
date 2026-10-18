@@ -237,6 +237,11 @@
   /* 5. オチだけ少し強めにポンと出る */
   @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
   .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+  /* 🎈 S8：S7（300km/h）で大きくした直後に、部屋の話でしぼむ（2026-10-18 討論で決定。文は1文字も変えていない） */
+  .card p.deflate { font-size: .9em; transform: rotate(-1deg); transform-origin: left center; }
+  .js .card p.deflate:not(.in) { opacity: 0; }
+  .card.in p.deflate.in { animation: deflate .75s .2s both cubic-bezier(.3,1.5,.5,1); }
+  @keyframes deflate { 0% { opacity: 0; transform: scale(1.3); } 50% { opacity: 1; transform: scale(.88) rotate(-2.5deg); } 100% { opacity: 1; transform: rotate(-1deg); } }
 
   @media (max-width: 600px) {
     main { width: min(100% - 18px, 720px); padding-top: 16px; }
@@ -262,7 +267,8 @@
     }
     /* このページが「ふわっと出す」ために最初に隠している要素（opacity: 0 にしているもの）だけ、はじめから見せる。ページごとに数え上げた（2026-10-04）。ほかの部品（言語メニュー・勉強バーなど）はさわらない */
     html.js:not([data-motion="on"]) .card,
-    html.js:not([data-motion="on"]) .next {
+    html.js:not([data-motion="on"]) .next,
+    html.js:not([data-motion="on"]) .card p.deflate {
       opacity: 1 !important;
       transform: none !important;
     }
@@ -271,6 +277,7 @@
   html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
   html.js[data-motion="off"] .card,
   html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+  html.js[data-motion="off"] .card p.deflate { opacity: 1 !important; transform: none !important; }
 
   /* 🏷 カテゴリーのバッジ（2026-09-11） */
   .label .topic {
@@ -548,7 +555,7 @@
         <span class="card-emoji" aria-hidden="true">😮‍💨</span>
         <span class="card-label">A Little Relief</span>
       </div>
-      <p>
+      <p class="deflate">
         I felt a little relieved. Well, my room is still dirty, though.
       </p>
     </div>
@@ -780,7 +787,7 @@ html[data-theme="dark"] .toy.toy-calm .toy-sea{background:linear-gradient(180deg
 <!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
 <script>
 (function () {
-  var items = [].slice.call(document.querySelectorAll('.card, .next'));
+  var items = [].slice.call(document.querySelectorAll('.card, .next, .deflate'));
   function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
 
   if (!('IntersectionObserver' in window)) { showAll(); return; }
@@ -847,7 +854,7 @@ S4  → 使った（Asking AI）
 S5  → 使った（Watching Frieren）
 S6  → 使った（F1 Drivers）
 S7  → 使った（Same As Me・.big）
-S8  → 使った（A Little Relief）
+S8  → 使った（A Little Relief・しぼむ見せ方 .deflate）
 S9  → 使った（The Impact）
 S10  → 使った（Places To Avoid・.big）
 （2026-09-24：本人の指示で、アカウント削除・地元の友達・不思議の3段落を原稿ごと削除）
