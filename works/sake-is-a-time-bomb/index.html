@@ -278,11 +278,13 @@
       opacity: 1 !important;
       transform: none !important;
     }
+    html.js:not([data-motion="on"]) .big.boom { opacity: 1 !important; transform: none !important; }
   }
   /* ✨ 動きの設定（2026-10-04）：本人がフッターの「✨ 動き」で ON を選んだら、端末が「減らす」でも動かす。OFF なら、端末が「減らさない」でも止める。上の @media は auto（端末にしたがう）のときだけ効く */
   html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
   html.js[data-motion="off"] .card,
   html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+  html.js[data-motion="off"] .big.boom { opacity: 1 !important; transform: none !important; }
 
   /* 🛤 カードを1本の線でつなぐ（2026-09-24 本人の要望：見た目はAIの工夫で。本文は1文字も変えていない） */
   .path { position: relative; margin-top: 6px; padding-left: 30px; }
@@ -296,6 +298,20 @@
   .path > .card:last-of-type::before { background: var(--purple); }
   .path > figure, .path > div { margin-left: -30px; position: relative; z-index: 1; } /* 写真を線より上に（線が写真にかぶっていた） */
   @keyframes path-dot { from { transform: scale(0); } to { transform: scale(1); } }
+
+  /* 💣 オチ（S13）の前に導火線。燃えきってから S13 がドンと出る（2026-10-18 討論で決定。文は1文字も変えていない） */
+  .big.boom { position: relative; margin-top: 46px; }
+  .big.boom::before { content: "💣 · · · · · ·"; position: absolute; left: 0; top: -36px; font-size: 18px; letter-spacing: .12em; color: var(--purple); white-space: nowrap; }
+  .js .card .big.boom:not(.in) { opacity: 0; }
+  .card.in .big.boom:not(.in) { animation: none; }
+  .card.in .big.boom.in { animation: boom .55s 1.2s both cubic-bezier(.2,1.8,.4,1); }
+  .big.boom.in::before { animation: fuse 1.2s steps(6) both; }
+  @keyframes fuse { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+  @keyframes boom { 0% { opacity: 0; transform: translateY(-8px) rotate(-2deg); } 45% { opacity: 1; transform: rotate(2deg); } 100% { opacity: 1; transform: none; } }
+  /* 😎 余裕だと思っていた3文だけ、のんきな緑に（色だけ） */
+  .chill { color: #178a68; }
+  html[data-theme="dark"] .card p.chill:not(.bubble):not(.big):not(.closing-line) { color: #6fe0bd !important; } /* ランタイムのダーク文字色（!important）より強く */
+  html[data-theme="dark"] .big.boom::before { color: #b9a4ff; }
   @media (prefers-reduced-motion: reduce) { .path > .card.in::before { animation: none; } }
 
   /* 🐧 2026-09-26 追加の部品：箇条書き・ランキング・調べた豆知識・リンクカード・シリーズの帯 */
@@ -528,10 +544,10 @@
       <span class="card-label">Easy, Easy</span>
     </div>
     <p>I also drank sake in Tenma.</p>
-    <p>When I drank the sake, I thought, "Oh, I can totally handle this."</p>
-    <p>I thought, "What, this is easy, easy."</p>
-    <p>I thought I could handle it better than beer.</p>
-    <p>But before I knew it, I was asleep on the street, knocked out.</p>
+    <p class="chill">When I drank the sake, I thought, "Oh, I can totally handle this."</p>
+    <p class="chill">I thought, "What, this is easy, easy."</p>
+    <p class="chill">I thought I could handle it better than beer.</p>
+    <p class="big boom">But before I knew it, I was asleep on the street, knocked out.</p>
   </section>
   <section class="card">
     <div class="card-head">
@@ -793,7 +809,7 @@
 <!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
 <script>
 (function () {
-  var items = [].slice.call(document.querySelectorAll('.card, .next'));
+  var items = [].slice.call(document.querySelectorAll('.card, .next, .boom'));
   function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
 
   if (!('IntersectionObserver' in window)) { showAll(); return; }
@@ -848,7 +864,7 @@ S9  → 使った（カード）
 S10  → 使った（カード）
 S11  → 使った（カード）
 S12  → 使った（カード）
-S13  → 使った（カード）
+S13  → 使った（オチ .big）
 S14  → 使った（カード）
 S15  → 使った（カード）
 S16  → 使った（カード）

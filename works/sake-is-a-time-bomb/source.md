@@ -87,7 +87,7 @@ S29. （ビールだけは、飲んでも気持ち悪くならないんです）
 
 images/cover.jpg — 生成（z_image）。A matte plastic model penguin at a bar counter with a sake bottle, a small cup and a round toy bomb with a timer
 使った組み合わせ：ゆるふわなペンギン × マットなプラモデル × 日本酒とおもちゃの時限爆弾
-images/scene.jpg — 本人の写真（生成（z_image）の2枚目）
+images/scene.jpg — 生成（z_image）の2枚目
 
 ---
 このファイルがAIに渡す原本です。index.html は出力物。
