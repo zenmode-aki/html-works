@@ -262,7 +262,8 @@
     }
     /* このページが「ふわっと出す」ために最初に隠している要素（opacity: 0 にしているもの）だけ、はじめから見せる。ページごとに数え上げた（2026-10-04）。ほかの部品（言語メニュー・勉強バーなど）はさわらない */
     html.js:not([data-motion="on"]) .card,
-    html.js:not([data-motion="on"]) .next {
+    html.js:not([data-motion="on"]) .next,
+    html.js:not([data-motion="on"]) .chat .bubble {
       opacity: 1 !important;
       transform: none !important;
     }
@@ -270,7 +271,8 @@
   /* ✨ 動きの設定（2026-10-04）：本人がフッターの「✨ 動き」で ON を選んだら、端末が「減らす」でも動かす。OFF なら、端末が「減らさない」でも止める。上の @media は auto（端末にしたがう）のときだけ効く */
   html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
   html.js[data-motion="off"] .card,
-  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+  html.js[data-motion="off"] .next,
+  html.js[data-motion="off"] .chat .bubble { opacity: 1 !important; transform: none !important; }
 
   /* 🏷 カテゴリーのバッジ（2026-09-11） */
   .label .topic {
@@ -415,6 +417,13 @@
   .bubble { max-width: 82%; padding: 10px 14px; border-radius: 18px; font-size: 15px; font-weight: 800; }
   .bubble.them { background: #fff; border: 2px solid #ffc2cf; border-bottom-left-radius: 4px; }
   .bubble.me { justify-self: end; background: #ff8fa8; color: #fff; border-bottom-right-radius: 4px; }
+  /* 🎯 オチ：反射の「へぇ！」を大きく・食い気味に（2026-10-18・文は足していない） */
+  .bubble.me.punch { font-size: clamp(30px, 6vw, 40px); padding: 12px 20px; background: #d6456f; font-family: "Arial Rounded MT Bold","Avenir Next Rounded","Trebuchet MS",sans-serif; font-weight: 850; line-height: 1.2; transform-origin: right bottom; }
+  .js .chat:not(.in) .bubble { opacity: 0; }
+  .chat + p { margin-top: 14px; }
+  .chat.in .bubble.them { animation: pop .35s .1s both ease-out; }
+  .chat.in .bubble.me.punch { animation: snap .45s .3s both cubic-bezier(.2,1.6,.4,1); }
+  @keyframes snap { 0% { opacity:0; transform: translateX(48px) scale(.55) rotate(8deg); } 60% { opacity:1; transform: translateX(-6px) scale(1.12) rotate(-3deg); } 100% { transform:none; } }
   .venn { position: relative; height: 140px; margin-top: 16px; }
   .venn .c { position: absolute; top: 10px; width: 120px; height: 120px; border-radius: 50%; display: grid; place-items: center; font-weight: 900; font-size: 15px; }
   .venn .c1 { left: calc(50% - 100px); background: rgba(121,191,255,.45); } .venn .c2 { left: calc(50% - 20px); background: rgba(255,160,122,.45); }
@@ -574,10 +583,10 @@
     <p>
       A normal person might be able to say "no way."
     </p>
+    <div class="chat" aria-hidden="true"><div class="bubble them">Eating gummies after brushing your teeth is good for your health!</div><div class="bubble me punch">Oh! Is that so~</div></div>
     <p>
       But I really cannot say it. I accept it by reflex, saying "Oh! Is that so~," and I cannot have a conversation where I disagree.
     </p>
-    <div class="chat" aria-hidden="true"><div class="bubble them">Eating gummies after brushing your teeth is good for your health!</div><div class="bubble me">Oh! Is that so~</div></div>
   </section>
   <section class="card">
     <div class="card-head">
@@ -602,7 +611,7 @@
     <p>
       How can I say "I think your opinion is wrong" without hurting the other person?
     </p>
-    <p class="big">
+    <p>
       This is my small worry right now.
     </p>
   </section>
@@ -690,7 +699,7 @@
     var yes = q('.toy-yes'), fire = q('.toy-fire'), no = q('.toy-no-btn'), reply = q('.toy-reply'), peng = q('.toy-peng');
     var fill = q('.toy-fill'), yc = q('.toy-yc'), reset = q('.toy-reset'), talk = q('.toy-talk');
     if (!yes || !fire || !no || !reply || !fill || !yc || !reset) return;
-    var heat = 0, ys = 0, done = false;
+    var heat = 0, ys = 0, done = false, fails = 0; // fails：❌ のつもりが反射で ⭕ になった回数（2回までは負ける・2026-10-18）
     function draw() {
       fill.style.width = (heat / 5 * 100) + '%';
       yc.textContent = String(ys);
@@ -719,6 +728,17 @@
     });
     no.addEventListener('click', function () {
       if (heat < 5 || done) return;
+      if (fails < 2) {
+        fails += 1; ys += 1; heat = 0;
+        reply.textContent = '⭕ !  ~';
+        reply.classList.remove('toy-no');
+        bump(peng, 'toy-nod');
+        pop(no, ['🙊'], 4);
+        draw();
+        no.textContent = '⭕';
+        setTimeout(draw, 500);
+        return;
+      }
       done = true;
       reply.textContent = '🤔 ❌ 💚';
       reply.classList.add('toy-no');
@@ -726,7 +746,7 @@
       draw();
     });
     reset.addEventListener('click', function () {
-      heat = 0; ys = 0; done = false;
+      heat = 0; ys = 0; done = false; fails = 0;
       reply.textContent = '…'; reply.classList.remove('toy-no');
       draw();
     });
@@ -819,7 +839,7 @@
 <!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
 <script>
 (function () {
-  var items = [].slice.call(document.querySelectorAll('.card, .next'));
+  var items = [].slice.call(document.querySelectorAll('.card, .next, .chat'));
   function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
 
   if (!('IntersectionObserver' in window)) { showAll(); return; }
@@ -862,11 +882,9 @@
 </html>
 
 <!-- SOURCE MAP
-S1〜S10 → 2026-09-26 に本人が書き直した原稿を、順番どおりに5枚のカードと動画・グラフに使用
-（S1 → 1枚目、S2 → 1枚目、動画、S3〜S4 → 2枚目、S5〜S6 → 3枚目＋国ごとの数のグラフ、S7〜S10 → 4枚目・S10がオチ）
+S1〜S12 → 2026-09-26 に本人が書き直した原稿を、順番どおりに5枚のカードに使用
+（S1〜S2 → 1枚目、S3〜S4 → 2枚目、S5〜S7 → 3枚目＋吹き出し（S6 と S7 の間。S5・S7 のセリフの再利用・aria-hidden）、S8〜S10 → 4枚目、S11〜S12 → 5枚目。動画・グラフはなし。オチは吹き出しの "Oh! Is that so~"）
 本文（.card の中の <p>）の英文はすべて、上のどれかのS番号から訳したものです。
 
-削った文：なし
-追加した文：0
-整理テキスト：card-label 4個 / h1 ← 本人の素材だけを要約・英訳
+削った文：なし / 追加した文：0 / 整理テキスト：card-label 5個 / h1 ← 本人の素材だけを要約・英訳
 -->
