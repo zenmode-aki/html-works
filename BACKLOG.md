@@ -39,6 +39,8 @@
 - 🙋 **本人が数本読んで、日本語の感じを確かめる** → 良ければ `python3 tools/lab.py publish <slug>` で本番へ（表紙は Higgsfield で作り直してから）
 - 表紙を Higgsfield で記事ごとに作り直す（試作の306本）。2026-10-09 本人：「ペンギンが大きすぎて幼稚すぎて嫌」→ 主役は記事の「もの」、ペンゲッソは画面の1割くらいで端に、大人っぽい写真の静物。指示文は `tools/cover/lab-prompts.json`（`python3 tools/cover/lab-prompts.py` が作る）。画像を作れる Higgsfield（`https://mcp.higgsfield.ai/mcp`。いまのコネクタ claude-mcp.higgsfield.ai は作れない）を本人がつないだら、nano_banana_2・4:3・参考画像 `tools/cover/pengesso.png` で、まず5本ためしてから全部
 - ✅ 2026-10-20 **Higgsfield で画像を作れるようになった**：MCP のコネクタではなく、**CLI**（`npm i -g @higgsfield/cli` → `higgsfield auth login`（ブラウザで許可）→ `higgsfield workspace set 1de4fbf1-4afc-42c7-9240-d0eba9895c2d`）。作り方：`higgsfield generate create nano_banana_flash --prompt "…" --aspect_ratio 4:3 --resolution 2k --image-references tools/cover/pengesso.png --wait`。1枚あたり数クレジット（残り約630）
+- ✅ 2026-10-20 本番248本の表紙を全部見た。雑だった6本（絵文字だけ3本・黒い帯・ステンドグラス・暗い）を Higgsfield で作り直し、悩み中のアイコンもペンゲッソの写真（`assets/pengesso-avatar.jpg`）に。残りは前のふわふわペンギンで、雑ではない
+- 🖼 次：下書き（draft/）と試作の棚（lab/）の make-cover の仮の表紙（152本）を Higgsfield で。1枚2クレジット・残り約620
 - 🙋 スマホで `lab/` が読めない件：2026-10-09 に**本物の WebKit（Safari のエンジン・iPhone 13 の画面）**で本番の一覧と記事を開いた → 普通・動きを減らすの両方で、最後まで全部読めた（JSエラー0・隠れた文字0・はみ出し0）。※クラウドのテスト（`mtest-lab.js`）は名前が webkit でも中身は Chrome だった。本物の iPhone でまだ読めなければ、Safari の履歴とキャッシュを消す／コンテンツブロッカーを切る → それでもだめなら `?debug=1` の画面の写真をもらう
 - ✅ これまでの記事191本すべてに、押して遊べる部品（言葉なし・絵文字と数字だけ）。読み終えたら「🗺 次はどこへ？」の地図
 - ✅ 試作の記事の `series` の名前を `burkeman-notes` → `time-and-life-notes` に変えた（2026-10-09。39本と `tools/lab.py`）
