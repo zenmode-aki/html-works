@@ -38,6 +38,9 @@
 - ✅ 2026-10-09 夜：ローカルの AI が306本の日本語を全部読んだ。表記ゆれ（友達/友だち など）49本・敬語のまま残っていた題名の訳12本・不自然な文2つを直した。全体に自然に読める
 - 🙋 **本人が数本読んで、日本語の感じを確かめる** → 良ければ `python3 tools/lab.py publish <slug>` で本番へ（表紙は Higgsfield で作り直してから）
 - 表紙を Higgsfield で記事ごとに作り直す（試作の306本）。2026-10-09 本人：「ペンギンが大きすぎて幼稚すぎて嫌」→ 主役は記事の「もの」、ペンゲッソは画面の1割くらいで端に、大人っぽい写真の静物。指示文は `tools/cover/lab-prompts.json`（`python3 tools/cover/lab-prompts.py` が作る）。画像を作れる Higgsfield（`https://mcp.higgsfield.ai/mcp`。いまのコネクタ claude-mcp.higgsfield.ai は作れない）を本人がつないだら、nano_banana_2・4:3・参考画像 `tools/cover/pengesso.png` で、まず5本ためしてから全部
+- ✍️ 2026-10-20 夜の原稿3本（`32_💡 気づきと学び/📄 記事/33〜35_✍️`）：小さく生きる／答えはマーケットにある／1日の終わりを決める。本人が読んだら下書きサイト → 本番へ
+- 📣 トップに SNS の枠を作る（本人の希望）：X・Reddit（準備中）＋「note は2027年に解禁予定（英単語の語源など。アメブロ・はてなにも同時に）」。**ブログは本音、SNS は明るくハイテンション**で、世界にワクワクする情報を増やすキャラ
+- 🗓 情報発信は1日30分・夜9時で1日おしまい（本人が決めた）。Google カレンダーはまだつながっていない
 - ✅ 2026-10-20 **Higgsfield で画像を作れるようになった**：MCP のコネクタではなく、**CLI**（`npm i -g @higgsfield/cli` → `higgsfield auth login`（ブラウザで許可）→ `higgsfield workspace set 1de4fbf1-4afc-42c7-9240-d0eba9895c2d`）。作り方：`higgsfield generate create nano_banana_flash --prompt "…" --aspect_ratio 4:3 --resolution 2k --image-references tools/cover/pengesso.png --wait`。1枚あたり数クレジット（残り約630）
 - ✅ 2026-10-20 本番248本の表紙を全部見た。雑だった6本（絵文字だけ3本・黒い帯・ステンドグラス・暗い）を Higgsfield で作り直し、悩み中のアイコンもペンゲッソの写真（`assets/pengesso-avatar.jpg`）に。残りは前のふわふわペンギンで、雑ではない
 - 🖼 次：下書き（draft/）と試作の棚（lab/）の make-cover の仮の表紙（152本）を Higgsfield で。1枚2クレジット・残り約620
