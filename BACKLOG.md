@@ -27,7 +27,7 @@
 
 - ✅ 「SNSが嫌いな私が、1か月だけXとRedditをやってみる」（`sns-for-one-month`）を本番に（英日韓中）
 - 🗓 **2026-11-17ごろ**：1か月たってどんな気持ちになったかの「レビュー記事」を書く（記事の中で「11月の中ごろに戻ってきます」と約束した）。meta.json に `"follows": "sns-for-one-month"` を付ける
-- 表紙は make-cover.py の仮のもの。Higgsfield で作り直すなら差し替える
+- ✅ 2026-10-20 表紙を Higgsfield で作り直した（too-much-to-learn-in-it も）。トップの「🌀 いま悩み中」のカードにも表紙を出した。新しい悩みを足すときも `<img class="wimg" src="assets/thumbs-src/<slug>.jpg" …>` を入れる
 - ✅ 2026-10-17 確認：Higgsfield のコネクタで**画像が作れるようになった**（generate_image・z_image は1枚0.15クレジット・残り636.4）。下の「画像を作れない」は古いメモ
 
 ## 🔥 2026-10-08 本人から（いちばん先）
@@ -38,7 +38,7 @@
 - ✅ 2026-10-09 夜：ローカルの AI が306本の日本語を全部読んだ。表記ゆれ（友達/友だち など）49本・敬語のまま残っていた題名の訳12本・不自然な文2つを直した。全体に自然に読める
 - 🙋 **本人が数本読んで、日本語の感じを確かめる** → 良ければ `python3 tools/lab.py publish <slug>` で本番へ（表紙は Higgsfield で作り直してから）
 - 表紙を Higgsfield で記事ごとに作り直す（試作の306本）。2026-10-09 本人：「ペンギンが大きすぎて幼稚すぎて嫌」→ 主役は記事の「もの」、ペンゲッソは画面の1割くらいで端に、大人っぽい写真の静物。指示文は `tools/cover/lab-prompts.json`（`python3 tools/cover/lab-prompts.py` が作る）。画像を作れる Higgsfield（`https://mcp.higgsfield.ai/mcp`。いまのコネクタ claude-mcp.higgsfield.ai は作れない）を本人がつないだら、nano_banana_2・4:3・参考画像 `tools/cover/pengesso.png` で、まず5本ためしてから全部
-- ⚠️ Higgsfield はつながった（2026-10-09）。でも、このコネクタは**画像を作れない**（できるのは、作った画像の一覧・残りクレジット（636）を見ることだけ）。表紙は、本人が Higgsfield のサイトで作る → 画像を `03_📷 写真の受け箱/` などに置けば、AI が記事に付ける。または画像を作れる別の道（API キーなど）を相談
+- ✅ 2026-10-20 **Higgsfield で画像を作れるようになった**：MCP のコネクタではなく、**CLI**（`npm i -g @higgsfield/cli` → `higgsfield auth login`（ブラウザで許可）→ `higgsfield workspace set 1de4fbf1-4afc-42c7-9240-d0eba9895c2d`）。作り方：`higgsfield generate create nano_banana_flash --prompt "…" --aspect_ratio 4:3 --resolution 2k --image-references tools/cover/pengesso.png --wait`。1枚あたり数クレジット（残り約630）
 - 🙋 スマホで `lab/` が読めない件：2026-10-09 に**本物の WebKit（Safari のエンジン・iPhone 13 の画面）**で本番の一覧と記事を開いた → 普通・動きを減らすの両方で、最後まで全部読めた（JSエラー0・隠れた文字0・はみ出し0）。※クラウドのテスト（`mtest-lab.js`）は名前が webkit でも中身は Chrome だった。本物の iPhone でまだ読めなければ、Safari の履歴とキャッシュを消す／コンテンツブロッカーを切る → それでもだめなら `?debug=1` の画面の写真をもらう
 - ✅ これまでの記事191本すべてに、押して遊べる部品（言葉なし・絵文字と数字だけ）。読み終えたら「🗺 次はどこへ？」の地図
 - ✅ 試作の記事の `series` の名前を `burkeman-notes` → `time-and-life-notes` に変えた（2026-10-09。39本と `tools/lab.py`）
