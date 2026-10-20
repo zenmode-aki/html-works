@@ -27,4 +27,4 @@ ITの勉強をしたいのに、情報が多すぎて固まっている。1週�
 
 ## 画像
 
-images/cover.jpg — tools/cover/make-cover.py（📺・#2f7fd6）
+images/cover.jpg — Higgsfield（nano_banana_flash・4:3・参考画像 tools/cover/pengesso.png）で 2026-10-20 に作った

@@ -56,7 +56,7 @@ SNSが嫌いな私が、1か月だけ匿名でXとRedditをやってみて、ど
 
 ## 画像
 
-images/cover.jpg — tools/cover/make-cover.py（📱・#7b5ce0）。Higgsfield で作り直すときはここを置き換える
+images/cover.jpg — Higgsfield（nano_banana_flash・4:3・参考画像 tools/cover/pengesso.png）で 2026-10-20 に作った
 
 ## YouTube
 
