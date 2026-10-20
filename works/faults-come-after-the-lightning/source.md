@@ -29,7 +29,7 @@ S1〜S4 → **全部使いました。**語数のために削った文はあり�
 
 ## 画像
 
-images/cover.jpg — 生成。A stained glass penguin under a soft lightning bolt with small boxes flickering back on around its feet
+images/cover.jpg — Higgsfield（nano_banana_flash・4:3・参考画像 tools/cover/pengesso.png）で 2026-10-20 に作った
 使った組み合わせ：ゆるふわなペンギン × ステンドグラス × 雷と灯りなおす小さな箱
 
 ## 匿名まわりの判断

@@ -24,7 +24,7 @@ S11. 怒られる道が2本あるということは、意見を言える道も2�
 
 ## 画像
 
-なし。一覧のサムネは絵文字のタイル（assets/thumbs-src/temp-worker-feedback-two-ways.jpg）。
+images/cover.jpg — Higgsfield（nano_banana_flash・4:3・参考画像 tools/cover/pengesso.png）で 2026-10-20 に作った
 図：フィードバックの道（直接／派遣元を通して）・勤務表のチェック（前は❌がまじる→今は全部✅。曜日や回数は図のための例）・同じ道を逆向きに（私→上司）
 
 追加した文：1（S11「怒られる道が2本あるということは、意見を言える道も2本あるということですね。」）

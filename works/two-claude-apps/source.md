@@ -23,7 +23,7 @@ S5. 投稿する前に自己解決しました🙂‍↕️
 
 ## 画像
 
-images/cover.jpg — 生成。スポットライトの下に同じ姿で2体ならぶプラモデルのペンギン
+images/cover.jpg — Higgsfield（nano_banana_flash・4:3・参考画像 tools/cover/pengesso.png）で 2026-10-20 に作った
 images/claude-icon.jpg — 📷 あきくんが添付した Claude Code のアプリアイコン
 使った組み合わせ：ペンギン × マットなプラモデル × 暗い舞台とスポットライト
 

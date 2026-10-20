@@ -43,7 +43,7 @@ S24. ほかにもあったかな〜。また思い出したら、追記したい
 
 ## 画像
 
-なし。一覧のサムネは絵文字のタイル（assets/thumbs-src/windows-shortcuts-i-learned.jpg）。
+images/cover.jpg — Higgsfield（nano_banana_flash・4:3・参考画像 tools/cover/pengesso.png）で 2026-10-20 に作った
 図：押されるキー・日付が入るセル・切り替わるアプリ・2つのデスクトップ・ファイルの島・マウスの速さのつまみ（アプリ名は一般名だけ）
 
 追加した文：1（S20「フォルダを1つずつクリックしてたどるより、ずっと速いです。」）

@@ -24,7 +24,7 @@ S11. だから夜勤中は、いつも「7時まで、7時まで。あと少し�
 
 ## 画像
 
-なし。一覧のサムネは絵文字のタイル（assets/thumbs-src/night-shift-energy-after-7am.jpg）。
+images/cover.jpg — Higgsfield（nano_banana_flash・4:3・参考画像 tools/cover/pengesso.png）で 2026-10-20 に作った
 図：時間ごとの電池（20%と60%は本人の数字。ほかの長さは体感）・体力のグラフ（魔の時間＝1〜6時・7時に黄色い点）
 
 追加した文：0
