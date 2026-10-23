@@ -639,7 +639,8 @@
       '.i18n-results{min-height:0;overflow-y:auto;overscroll-behavior:contain}' +
       '.i18n-group-label{padding:8px 10px 4px;color:#8a7d99;font-size:11px;font-weight:900;letter-spacing:.04em}' +
       '.i18n-menu .i18n-name{min-width:0;overflow-wrap:anywhere}' +
-      '.i18n-float{position:fixed;top:10px;right:10px;z-index:50}' +
+      '.i18n-float{position:fixed;top:calc(10px + env(safe-area-inset-top, 0px));right:10px;z-index:50}' +
+      '.i18n-row.i18n-top{margin:0;padding:calc(10px + env(safe-area-inset-top, 0px)) 10px 6px}' +
       '.i18n-cur{gap:7px;max-width:min(100%,calc(100vw - 90px));padding:8px 12px 8px 10px;background:#8b6de8;color:#fff;box-shadow:0 4px 12px rgba(139,109,232,.35)}' +
       '.i18n-cur:hover{background:#7a5bdc}' +
       '.i18n-globe{font-size:17px;line-height:1}' +
@@ -879,6 +880,14 @@
       row.appendChild(wrap);
       bar.parentNode.insertBefore(row, bar.nextSibling);
       switchMount = row;
+    } else if (window.matchMedia && window.matchMedia('(max-width: 720px)').matches) {
+      /* スマホは浮かせない。iPhone の Chrome はページをアドレスバーの裏まで広げるので、
+         fixed で上に置くとバーに隠れる。ページの先頭に1行つくって、そこに置く */
+      var topRow = document.createElement('div');
+      topRow.className = 'i18n-row i18n-top';
+      topRow.appendChild(wrap);
+      document.body.insertBefore(topRow, document.body.firstChild);
+      switchMount = topRow;
     } else { wrap.className += ' i18n-float'; document.body.appendChild(wrap); switchMount = wrap; }
   }
 
