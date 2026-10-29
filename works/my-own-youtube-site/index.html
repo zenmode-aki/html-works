@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!-- 👇 差し替える -->
+<title>Making my own YouTube site was really good</title>
+<!-- ⬇️ OGP（tools/ogp.py） -->
+<meta name="description" content="Something I made recently that was surprisingly good is my own YouTube site." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Pengesso ⚡ 15 Second Blog" />
+<meta property="og:title" content="Making my own YouTube site was really good" />
+<meta property="og:description" content="Something I made recently that was surprisingly good is my own YouTube site." />
+<meta property="og:url" content="https://15-second-blog.com/works/my-own-youtube-site/" />
+<meta property="og:image" content="https://15-second-blog.com/assets/thumbs-src/my-own-youtube-site.jpg" />
+<meta property="og:image:alt" content="A navy plush penguin with sunglasses relaxing on a sofa in front of a TV with calm video thumbnails" />
+<meta name="twitter:card" content="summary_large_image" />
+<!-- ⬆️ OGP -->
+<!-- 🕶 タブのアイコン。ペンゲッソがサングラスをかけている顔（2026-09-11） -->
+<link rel="icon" type="image/png" sizes="32x32" href="../../assets/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon-180.png" />
+<style>
+  /* ⚡ 色は記事ごとに変えていい。トーン反転ルール（PROMPT.md）に従うこと。
+     真面目な話 → ポップに。どうでもいい話 → 荘厳に。 */
+  :root {
+    --bg: #fff7fb;
+    --card: rgba(255,255,255,.94);
+    --text: #322536;
+    --muted: #876f84;
+    --pink: #ff6fae;
+    --purple: #8b6de8;
+    --line: rgba(91,52,103,.12);
+    --shadow: 0 20px 55px rgba(115,70,111,.16);
+    --round: 28px;
+  }
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    color: var(--text);
+    font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif;
+    background:
+      radial-gradient(circle at 8% 4%,   rgba(255,212,92,.33),  transparent 24%),
+      radial-gradient(circle at 96% 14%, rgba(255,111,174,.20), transparent 27%),
+      radial-gradient(circle at 50% 100%,rgba(101,214,189,.16), transparent 35%),
+      var(--bg);
+  }
+
+  main { width: min(720px, calc(100% - 24px)); margin: 0 auto; padding: 22px 0 70px; }
+
+  /* ── 上のバー：戻る導線 と ワード数バッジ ───────────────── */
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 20px;
+  }
+  .home {
+    display: inline-block; min-height: 44px; padding: 12px 18px;
+    border-radius: 999px; background: #fff; color: var(--purple);
+    border: 2px solid rgba(255,255,255,.9);
+    font-size: 14px; text-decoration: none;
+    box-shadow: 0 6px 16px rgba(115,70,111,.10);
+  }
+  .home:hover { transform: translateY(-2px); }
+
+  .badges { display: flex; align-items: center; gap: 8px; }
+  /* ⚡ 読者への親切であり、AIが盛っていないことの証拠でもある */
+  .wc-badge {
+    padding: 10px 16px; border-radius: 999px;
+    background: #fff; border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); font-size: 13px; letter-spacing: .04em;
+    box-shadow: 0 6px 16px rgba(115,70,111,.08);
+  }
+
+  /* ── 🚦 公開ずみの印を右上に必ず出す ────────────────────────
+     出す場所は works/ の1つだけなので、記事はぜんぶ PUBLIC。
+     2026-09-04 に本番前（staging/）をやめたので STAGING はもう無い。
+     tools/check.py --site が「STAGING が残っていないか」を見ている */
+  .stage {
+    padding: 10px 13px; border-radius: 999px;
+    font-size: 11px; font-weight: 900; letter-spacing: .12em;
+    white-space: nowrap; box-shadow: 0 6px 16px rgba(115,70,111,.16);
+  }
+  .stage-public { background: #23c98a; color: #04331d; }
+
+  .label {
+    color: var(--purple); font-size: 13px; font-weight: 800;
+    letter-spacing: .14em; margin-bottom: 16px;
+  }
+
+  h1 {
+    margin: 0 0 22px; color: #3b2745;
+    font-size: clamp(34px, 6.6vw, 60px); line-height: 1.06;
+    letter-spacing: -.05em; text-wrap: balance;
+    text-shadow: 0 4px 0 rgba(255,255,255,.75);
+  }
+
+  /* ── 写真（base64で埋め込む。tools/embed.py がやる）─────────── */
+  .photo {
+    margin: 0 0 24px; overflow: hidden; background: #f3e9f2;
+    border: 7px solid rgba(255,255,255,.78); border-radius: 32px;
+    box-shadow: var(--shadow); transform: rotate(-.35deg);
+  }
+  .photo img { display: block; width: 100%; height: auto; }
+
+  /* ── 本文カード：枚数の上限はもうありません。素材の文の数だけ並べる ──── */
+  .card {
+    position: relative; margin-top: 18px; padding: 24px 26px;
+    background: var(--card); border: 2px solid rgba(255,255,255,.92);
+    border-radius: var(--round); box-shadow: 0 12px 32px rgba(115,70,111,.09);
+    backdrop-filter: blur(8px);
+  }
+
+  /* ── カードの見出し：絵文字だけにしない。英単語2〜3語を必ず付ける ──
+     🧠 THE PROBLEM  /  ⚡ ONE FIX  /  🎯 SO WHAT
+     tools/check.py が card の枚数と card-label の数を照合している */
+  .card-head {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+  }
+  .card-emoji { font-size: 26px; line-height: 1; }
+  .card-label {
+    font-size: 12.5px; font-weight: 900; letter-spacing: .16em;
+    color: var(--purple); text-transform: uppercase;
+  }
+
+  p {
+    margin: 0; font-family: "Trebuchet MS", "Avenir Next Rounded", sans-serif;
+    font-size: clamp(17px, 2.4vw, 21px); line-height: 1.72;
+  }
+  /* オチの一言（本人の言葉） */
+  .big { font-size: clamp(23px, 4vw, 34px); font-weight: 850; line-height: 1.42; color: #6d3a63;
+         font-family: "Arial Rounded MT Bold", "Avenir Next Rounded", "Trebuchet MS", sans-serif; }
+
+  /* ── タイムライン（段階を見せるとき）──────────────────── */
+  .timeline { display: grid; gap: 14px; margin-top: 16px; }
+  .timeline-item {
+    display: grid; grid-template-columns: 160px 1fr; align-items: center; gap: 14px;
+    padding: 16px 18px; border: 2px solid rgba(255,255,255,.9); border-radius: 22px;
+    box-shadow: 0 7px 18px rgba(115,70,111,.07);
+  }
+  .timeline-item:nth-child(1) { background: #fff5c9; }
+  .timeline-item:nth-child(2) { background: #e7f5ff; }
+  .timeline-item:nth-child(3) { background: #f4eaff; }
+  .timeline-item:nth-child(4) { background: #e6fbf4; }
+  .stage  { font-weight: 900; color: #6f52ca; }
+  .device { font-weight: 750; color: #49354d; }
+
+  /* ── BEFORE THIS 🔗：記事を分けたときだけ、いちばん上に置く ────────
+     PROMPT.md §4「それでも分けるときは、前の記事に飛べるようにする」。
+     分けていない記事では <a class="prev"> ごと消す */
+  .prev {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px; min-height: 44px; padding: 14px 18px;
+    border-radius: 20px; text-decoration: none;
+    background: rgba(255,255,255,.7); border: 2px solid rgba(255,255,255,.9);
+    color: var(--muted); box-shadow: 0 6px 16px rgba(115,70,111,.08);
+    transition: transform .18s ease;
+  }
+  .prev:hover, .prev:focus-visible { transform: translateX(-3px); }
+  .prev-kicker {
+    flex: 0 0 auto; font-size: 10.5px; font-weight: 900;
+    letter-spacing: .16em; color: var(--purple);
+  }
+  .prev-title { font-size: 14px; line-height: 1.35; }
+
+  /* ── Next ⚡：次の記事へ直行する。ショート動画のスワイプの代わり ──── */
+  .next {
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    margin-top: 34px; min-height: 44px; padding: 20px 24px;
+    border-radius: var(--round); text-decoration: none;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: #fff; box-shadow: var(--shadow);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .next:hover, .next:focus-visible {
+    transform: translateY(-4px); box-shadow: 0 26px 60px rgba(115,70,111,.26);
+  }
+  .next-kicker { font-size: 11.5px; font-weight: 900; letter-spacing: .18em; opacity: .82; }
+  .next-title  { margin-top: 4px; font-size: clamp(17px, 3vw, 21px); line-height: 1.3; }
+  .next-arrow  { font-size: 26px; flex: 0 0 auto; }
+
+  /* ── YouTube（iframeにしない。カードでリンク）───────────── */
+  .youtube-card {
+    display: block; margin-top: 28px; overflow: hidden; color: #fff; text-decoration: none;
+    border: 6px solid rgba(255,255,255,.9); border-radius: 30px; background: #25152c;
+    box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .youtube-card:hover, .youtube-card:focus-visible {
+    transform: translateY(-4px) rotate(-.3deg); box-shadow: 0 25px 65px rgba(115,70,111,.24);
+  }
+  /* サムネが読めなくても、下地のグラデーションで崩れない */
+  .youtube-thumb {
+    position: relative; display: grid; min-height: 210px; place-items: center; overflow: hidden;
+    background: linear-gradient(135deg, rgba(76,36,93,.78), rgba(255,111,174,.62));
+  }
+  .play {
+    display: grid; position: relative; z-index: 1; width: 78px; height: 78px;
+    place-items: center; padding-left: 5px; border-radius: 50%;
+    background: #fff; color: #f04476; font-size: 34px; box-shadow: 0 10px 25px rgba(0,0,0,.24);
+  }
+  .youtube-footer {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 16px 18px 18px; font-size: 16px;
+  }
+  .watch-button {
+    display: inline-block; flex: 0 0 auto; min-height: 44px; padding: 13px 16px;
+    border-radius: 999px; background: #ff4f78; color: #fff; font-size: 14px;
+    box-shadow: 0 5px 0 #c9355b;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     ⚡ モーションキット
+     すごいアニメは作らない。「開いた瞬間に何か動いた」程度でいい。
+     部品を消してもここは残しておく。CSSは触らなくていい。
+     ════════════════════════════════════════════════════════════ */
+
+  /* 1. 上のもの（ラベル・h1・写真）は開いた瞬間に一度だけ出る */
+  @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .label { animation: rise .5s .05s both ease-out; }
+  h1     { animation: rise .6s .12s both ease-out; }
+  .photo { animation: rise .6s .22s both ease-out; }
+
+  /* 2. カードはスクロールで下からふわっと出る（下の <script> が .in を付ける）
+        ⚠️ .js が付いているときだけ隠す。JSが動かない環境では最初から見えている。
+           こうしないと「真っ白なページ」になる */
+  .js .card, .js .next {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .55s ease-out, transform .55s ease-out;
+  }
+  .js .card.in, .js .next.in { opacity: 1; transform: none; }
+
+  /* 3. 見出しラベルはカードより少し遅れて左から入る */
+  @keyframes slide-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+  .card.in .card-label { animation: slide-in .45s .18s both ease-out; }
+
+  /* 4. アクセント絵文字を1つだけ、ゆっくり揺らし続ける（.float を付けた要素） */
+  @keyframes float { from { transform: translateY(0) rotate(-3deg); } to { transform: translateY(-9px) rotate(3deg); } }
+  .float { display: inline-block; animation: float 3.4s ease-in-out infinite alternate; }
+
+  /* 5. オチだけ少し強めにポンと出る */
+  @keyframes pop { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
+  .card.in .big { animation: pop .5s .1s both cubic-bezier(.2,1.3,.4,1); }
+
+  @media (max-width: 600px) {
+    main { width: min(100% - 18px, 720px); padding-top: 16px; }
+    /* 375pxでも「戻る」と2つのバッジが1行に収まるように詰める */
+    .topbar { flex-wrap: nowrap; gap: 8px; }
+    .badges { gap: 6px; }
+    .home     { padding: 12px 13px; font-size: 13px; white-space: nowrap; }
+    .wc-badge { padding: 10px 11px; font-size: 12px; white-space: nowrap; }
+    .stage    { padding: 10px 10px; font-size: 10px; letter-spacing: .08em; }
+    .photo, .card, .youtube-card, .next { border-radius: 23px; }
+    .card { padding: 20px; }
+    .timeline-item { grid-template-columns: 1fr; gap: 4px; }
+    .youtube-thumb { min-height: 175px; }
+    .youtube-footer { align-items: flex-start; flex-direction: column; }
+  }
+
+  /* ⚠️ 動きが苦手な人のための逃げ道。消さないこと。
+     これが無いと tools/check.py が落ちる */
+  @media (prefers-reduced-motion: reduce) {
+    html:not([data-motion="on"]) *, html:not([data-motion="on"]) *::before, html:not([data-motion="on"]) *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+    /* このページが「ふわっと出す」ために最初に隠している要素（opacity: 0 にしているもの）だけ、はじめから見せる。ページごとに数え上げた（2026-10-04）。ほかの部品（言語メニュー・勉強バーなど）はさわらない */
+    html.js:not([data-motion="on"]) .card,
+    html.js:not([data-motion="on"]) .next {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+  /* ✨ 動きの設定（2026-10-04）：本人がフッターの「✨ 動き」で ON を選んだら、端末が「減らす」でも動かす。OFF なら、端末が「減らさない」でも止める。上の @media は auto（端末にしたがう）のときだけ効く */
+  html[data-motion="off"] *, html[data-motion="off"] *::before, html[data-motion="off"] *::after { animation: none !important; transition: none !important; }
+  html.js[data-motion="off"] .card,
+  html.js[data-motion="off"] .next { opacity: 1 !important; transform: none !important; }
+  /* 2026-09-26 幅320pxの小さいスマホで「戻る」と「○ words」の札が横にはみ出していた */
+  @media (max-width: 360px) {
+    .topbar { flex-wrap: wrap; }
+    .home { padding: 12px 11px; font-size: 12.5px; }
+    .wc-badge { padding: 9px 9px; font-size: 11.5px; letter-spacing: 0; }
+  }
+  /* 2026-09-26 カードや動画のすぐ下の写真が、すき間0pxでくっついていた */
+  :is(.card, .video-card, .map-card, .uni-tags, figure.hero) + figure.photo { margin-top: 18px; }
+  /* 2026-09-26 「次の記事」の白い字が、グラデーションの明るい側で薄く見えた。うっすら影をつける */
+  .next .next-title, .next .next-kicker { text-shadow: 0 1px 3px rgba(20,10,40,.28); }
+</style>
+<!-- JSが動く環境でだけ「隠してから出す」演出を有効にする。消さないこと -->
+<script>document.documentElement.className += " js";</script>
+<style id="related-css">
+  /* ✨ こちらもどうぞ（tools/post-bottom.py が入れる）。色は記事ごとの --purple / --text に合わせる */
+  .related { margin: 34px 0 0; }
+  .related-h { margin: 0 0 12px; font-size: 18px; font-weight: 900; letter-spacing: .02em; color: var(--text, #232c48); }
+  .related-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  .rel-card { display: flex; align-items: center; gap: 14px; padding: 10px 14px 10px 10px; border-radius: 20px;
+    text-decoration: none; color: var(--text, #232c48); background: rgba(255,255,255,.92);
+    border: 2px solid var(--line, rgba(35,44,72,.1)); box-shadow: 0 8px 22px -14px rgba(35,44,72,.45);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .rel-card:hover, .rel-card:focus-visible { transform: translateY(-2px); border-color: var(--purple, #8b6de8);
+    box-shadow: 0 14px 26px -14px rgba(35,44,72,.5); }
+  .rel-card:focus-visible { outline: 3px solid var(--purple, #8b6de8); outline-offset: 3px; }
+  .rel-thumb { flex: 0 0 auto; width: 68px; height: 68px; border-radius: 16px; background-color: #f1ecf8;
+    background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(0,0,0,.06); }
+  .rel-body { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .rel-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 900;
+    letter-spacing: .08em; color: var(--purple, #6b4fd0); }
+  .rel-chip { padding: 2px 8px; border-radius: 999px; background: var(--purple, #6b4fd0); color: #fff; letter-spacing: .02em; }
+  .rel-title { font-size: 15.5px; font-weight: 800; line-height: 1.38; overflow-wrap: anywhere; }
+  .rel-go { margin-left: auto; flex: 0 0 auto; font-size: 18px; opacity: .55; }
+  html[data-theme="dark"] .related-h { color: #f4f0fa; }
+  html[data-theme="dark"] .rel-card { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.14); }
+  html[data-theme="dark"] .rel-thumb { background-color: #2e3140; }
+  html[dir="rtl"] .rel-go { transform: scaleX(-1); }
+  @media (prefers-reduced-motion: reduce) { .rel-card { transition: none; } .rel-card:hover { transform: none; } }
+</style>
+<style id="tolist-css">
+  /* 📚 一覧に戻る（tools/post-bottom.py が入れる）。次・前の記事とは形を変えて、迷わないように */
+  .to-list { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px auto 0; min-height: 52px;
+    width: fit-content; max-width: 100%; padding: 13px 26px; border-radius: 999px; text-decoration: none;
+    color: #232c48; background: #fff; border: 2px solid rgba(35,44,72,.12); box-shadow: 0 8px 20px -10px rgba(35,44,72,.35);
+    font-size: 15.5px; font-weight: 900; transition: transform .18s ease, box-shadow .18s ease; }
+  .to-list:hover, .to-list:focus-visible { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(35,44,72,.45); }
+  .to-list:focus-visible { outline: 3px solid #8b6de8; outline-offset: 3px; }
+  .to-list-ic { font-size: 20px; line-height: 1; }
+  html[data-theme="dark"] .to-list { background: #22242f; color: #f4f0fa; border-color: rgba(255,255,255,.16); }
+  @media (prefers-reduced-motion: reduce) { .to-list { transition: none; } }
+</style>
+<style id="shared-fix-css">
+  /* 🧰 全記事に効く小さな直し（tools/post-bottom.py が入れる。2026-10-03 の UI 見直し） */
+  /* 🖥 PC では表紙を切らずに少し小さく。1280×800 で、本文が2画面目からだった */
+  @media (min-width: 700px) {
+    :is(h1, h1 + .post-tags) + figure.photo { width: min(100%, calc(44vh * 4 / 3 + 14px)); margin-left: auto; margin-right: auto; }
+  }
+  /* ➡️「次の記事」：左側（文字のあるところ）を少し暗くして、白い字を読みやすく */
+  .next { position: relative; isolation: isolate; }
+  .next::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+    background: linear-gradient(90deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  html[dir="rtl"] .next::before { background: linear-gradient(270deg, rgba(28,14,48,.36), rgba(28,14,48,.16) 62%, rgba(28,14,48,0)); }
+  .next .next-kicker { opacity: 1; }
+  /* 🇯🇵 日本語の太い丸ゴシックは 11px だとつぶれる */
+  html:lang(ja) .topic, html:lang(ja) .next-kicker, html:lang(ja) .prev-kicker, html:lang(ja) .rel-kicker { font-size: 12.5px; }
+  /* 読む人には関係ない「PUBLIC」の札は、読み込み中も見せない（HTML には残す。check.py が確かめるため） */
+  .stage-public { display: none !important; }
+</style>
+<style id="prev-css">
+  /* ⏮ 前の記事へ（tools/prev-links.py が入れる） */
+  .prev { display: flex; align-items: center; gap: 12px; margin-top: 12px; min-height: 44px; padding: 13px 18px;
+    border-radius: 20px; text-decoration: none; color: inherit; background: rgba(255,255,255,.72);
+    border: 2px dashed rgba(0,0,0,.14); transition: transform .18s ease, background .18s ease; }
+  .prev:hover, .prev:focus-visible { transform: translateX(-4px); background: rgba(255,255,255,.95); }
+  .prev-arrow { flex: none; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,.07); font-size: 17px; font-weight: 900; }
+  .prev-kicker { font-size: 11px; font-weight: 900; letter-spacing: .16em; opacity: .65; }
+  .prev-title { margin-top: 2px; font-size: 15px; font-weight: 800; line-height: 1.35; }
+  html[data-theme="dark"] .prev { background: #22242f; border-color: rgba(255,255,255,.16); color: #ece8f3; }
+  html[data-theme="dark"] .prev-arrow { background: rgba(255,255,255,.1); }
+  @media (prefers-reduced-motion: reduce) { .prev { transition: none; } }
+</style>
+<!-- 🌐 i18n:start（python3 tools/i18n.py が作る。手で書かない） -->
+<style id="pengesso-global">@view-transition { navigation: auto; } ::view-transition-old(root) { animation: .16s ease both pg-out; } ::view-transition-new(root) { animation: .28s ease both pg-in; } @keyframes pg-out { to { opacity: 0; } } @keyframes pg-in { from { opacity: 0; transform: translateY(8px); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"])::view-transition-group(*), html:not([data-motion="on"])::view-transition-old(*), html:not([data-motion="on"])::view-transition-new(*) { animation: none !important; } } html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; } :lang(ko) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { word-break: keep-all; overflow-wrap: break-word; } :lang(ja) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title), :lang(zh) :is(h1, h2, h3, p, li, figcaption, blockquote, dt, dd, .big, .card-label, .next-title, .prev-title, .rel-title, .post-title) { line-break: strict; } @media (hover: none) { :is(a.next, a.prev, a.rel-card, a.to-list, a.home, a.post, a.hero-try, a.hero-learn, a.btn, .post-tags a, .part-nav a, .nav a, button.chip, button.room, button.job, button.mood, button.tg, button.place, button.learn-toggle, button.hero-pengesso):active { scale: .975; transition: scale .1s ease-out; } a, button, summary, label { -webkit-tap-highlight-color: rgba(139, 109, 232, .16); } } @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) :active { scale: none !important; } } html[data-motion="off"] :active { scale: none !important; } @media (pointer: coarse) { :is(.post-tags a, .theme-btn, .i18n-opt, button.tg, button.chip, button.place) { min-height: 40px; } .post-tags a { display: inline-flex; align-items: center; } }</style>
+<script type="application/json" id="i18n-data">{"langs":{"ja":{"v":"c1fefdf1b6"}},"uiData":true,"uiV":"b59d99a7cd"}</script>
+<script src="/assets/i18n-runtime.js?v=2410520659"></script>
+<script src="/assets/px.js?v=c661036bcd" defer></script>
+<!-- 🌐 i18n:end -->
+</head>
+<body>
+<main>
+
+  <div class="topbar">
+    <!-- works/<slug>/ からも drafts/<slug>/ からも、リポジトリ直下の index.html に届く -->
+    <a class="home" href="../../index.html">← Back</a>
+    <div class="badges">
+      <!-- 👇 python3 tools/check.py --fix-badge が正しい数字に直してくれる -->
+      <div class="wc-badge">⚡ 185 words · 62 sec</div>
+      <!-- 🚦 出す場所は1つだけ。記事はぜんぶ PUBLIC -->
+      <div class="stage stage-public">PUBLIC</div>
+    </div>
+  </div>
+
+  <!-- 🔗 記事を分けたときだけ使う。分けていないなら、この <a> ごと消す（PROMPT.md §4） -->
+  <!--
+  <a class="prev" href="../__PREV_SLUG__/index.html">
+    <span class="prev-kicker">BEFORE THIS</span>
+    <span class="prev-title">前の記事の内容がわかる一文</span>
+  </a>
+  -->
+
+  <div class="label"><span class="topic">🐧 EVERYDAY LIFE</span>⚡ 62 SEC</div>
+  <h1>Making my own YouTube site was really good <span class="float">🍵</span></h1>
+  <!-- 🏷 タグ（tools/tags.py） -->
+  <style id="post-tags-css">.post-tags{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 18px}.post-tags a{display:inline-flex;align-items:center;padding:6px 11px;border-radius:999px;background:#fff;border:1.5px solid rgba(35,44,72,.12);color:#3a3550;font-size:12.5px;font-weight:800;line-height:1.2;text-decoration:none;transition:transform .15s,border-color .15s}.post-tags a:hover{transform:translateY(-1px);border-color:#8b6de8}.post-tags a.place{background:#f3effc}html[data-theme="dark"] .post-tags a{background:#22242f;border-color:#33364a;color:#e6e2ff}html[data-theme="dark"] .post-tags a.place{background:#2a2540}@media (prefers-reduced-motion:reduce){.post-tags a{transition:none}}</style><nav class="post-tags" aria-label="Tags"><a href="../../index.html?tag=video#posts">🎬 Video</a><a href="../../index.html?tag=tech-tools#posts">📱 Apps &amp; gadgets</a><a href="../../index.html?tag=happiness#posts">😊 Happiness</a><a href="../../index.html?tag=study#posts">📚 Learning</a><a href="../../index.html?tag=mindset#posts">💭 Mindset</a></nav>
+  <!-- /🏷 -->
+
+  <figure class="photo">
+    <img fetchpriority="high" decoding="async" width="1200" height="900" src="img/cover.jpg" alt="A navy plush penguin with a blue cap and sunglasses relaxing on a sofa in front of a TV with calm video thumbnails" />
+  </figure>
+
+  <style>
+  .yt-card { margin: 16px 0 0; overflow: hidden; border-radius: 24px; background: #000; box-shadow: var(--shadow); }
+  .yt-card .ratio { position: relative; width: 100%; padding-top: 56.25%; }
+  .yt-card iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .yt-card figcaption { padding: 12px 16px; background: #fff; color: var(--text); font-weight: 800; font-size: 14px; }
+  html[data-theme="dark"] .yt-card figcaption { background: #22242f; color: #ece8f3; }
+  .rank { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 8px; padding: 4px 12px; border-radius: 999px; background: #fff1d6; font-weight: 900; font-size: 13px; }
+  html[data-theme="dark"] .rank { background: #3a2f1c; color: #fff; }
+  </style>
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🛠️</span>
+      <span class="card-label">Worth Making</span>
+    </div>
+    <p>
+      Something I made recently that was surprisingly good is my own YouTube site.
+    </p>
+    <p>
+      I am the type who likes to learn from videos.
+    </p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🚨</span>
+      <span class="card-label">Loud Thumbnails</span>
+    </div>
+    <p>
+      But when I watch on YouTube, my eyes get pulled by extreme thumbnails.
+    </p>
+    <p>
+      Even if I do not open the video, just seeing that thumbnail lowers my happiness a little.
+    </p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🍵</span>
+      <span class="card-label">Only My Favorites</span>
+    </div>
+    <p>
+      So, when I make my own YouTube site, I can only watch videos I like.
+    </p>
+    <p>
+      I can also choose shuffle play, continuous play, and how fast to play.
+    </p>
+    <p>
+      Anyway, it calms me down. It relaxes me.
+    </p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">📚</span>
+      <span class="card-label">Calm Learning</span>
+    </div>
+    <p>
+      To be honest, YouTube may be exciting entertainment content.
+    </p>
+    <p>
+      But what I like is, surprisingly, learning things calmly that make me more knowledgeable.
+    </p>
+    <p>
+      I really hate videos where people are just making noise.
+    </p>
+    <p>
+      I am not good with videos that make people worried, like "Wow, this AI is crazy."
+    </p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔍</span>
+      <span class="card-label">People I Trust</span>
+    </div>
+    <p>
+      Instead, I really trust people who explain things calmly and plainly, based on primary sources.
+    </p>
+    <p>
+      So I collect only those people's videos.
+    </p>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <span class="card-emoji" aria-hidden="true">🔒</span>
+      <span class="card-label">Not Public</span>
+    </div>
+    <p>
+      I could put this site on the internet, but then my Google API costs would get high.
+    </p>
+    <p class="big">I am sorry, but I cannot do that. 🙏</p>
+  </section>
+
+  <style>
+  .toy { margin: 34px 0 0; padding: 20px 16px; border-radius: 28px; text-align: center; background: linear-gradient(160deg, #eef7f0, #dff0ff); border: 3px solid #fff; box-shadow: 0 14px 34px rgba(40,70,60,.16); font-weight: 900; position: relative; }
+  .toy-kick { font-size: 22px; line-height: 1; animation: toy-bob 1.4s ease-in-out infinite; }
+  @keyframes toy-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  .toy-grid { display: grid; grid-template-columns: repeat(3, 64px); gap: 8px; justify-content: center; margin: 10px 0; }
+  .toy-grid span { display: flex; align-items: center; justify-content: center; height: 54px; border-radius: 12px; background: #fff; font-size: 30px; transition: transform .2s; }
+  .toy-grid span.flip { transform: rotateY(180deg); }
+  .toy-btn { min-width: 64px; min-height: 58px; padding: 8px 18px; border: 0; border-radius: 20px; cursor: pointer; font: inherit; font-size: 28px; background: #3a9a6a; color: #fff; box-shadow: 0 6px 0 #26704c; touch-action: manipulation; }
+  .toy-btn:active { transform: translateY(5px); box-shadow: 0 1px 0 #26704c; }
+  .toy-btn.toy-reset { position: absolute; top: 12px; right: 12px; min-width: 50px; min-height: 50px; padding: 0; font-size: 22px; background: #fff; color: #222; box-shadow: 0 4px 0 #ddd; }
+  .toy-meter { font-size: 26px; margin-top: 8px; }
+  html[data-theme="dark"] .toy { background: linear-gradient(160deg, #1f3328, #1f2a3a); border-color: #33465a; color: #fff; }
+  html[data-theme="dark"] .toy-grid span { background: #2a2f3a; }
+  @media (prefers-reduced-motion: reduce) { html:not([data-motion="on"]) .toy-kick { animation: none; } html:not([data-motion="on"]) .toy-grid span { transition: none; } }
+  html[data-motion="off"] .toy-kick { animation: none; } html[data-motion="off"] .toy-grid span { transition: none; }
+  </style>
+  <!-- 押して遊べる部品：🧹 を押すと、さわがしいサムネが1つずつ落ち着いたものに変わる。全部変わると 😌（言葉は使わない） -->
+  <section class="toy" aria-label="🧹">
+    <button type="button" class="toy-btn toy-reset" aria-label="↺">↺</button>
+    <div class="toy-kick" aria-hidden="true">▼</div>
+    <div class="toy-grid" aria-hidden="true"><span>🔥</span><span>😱</span><span>💥</span><span>🚨</span><span>🤯</span><span>⚠️</span></div>
+    <button type="button" class="toy-btn toy-main" aria-label="🧹">🧹</button>
+    <div class="toy-meter" aria-live="polite">😣</div>
+  </section>
+  <script>
+  (function () {
+    var box = document.querySelector('.toy'); if (!box) return;
+    var cells = [].slice.call(box.querySelectorAll('.toy-grid span')), meter = box.querySelector('.toy-meter');
+    var loud = ['🔥', '😱', '💥', '🚨', '🤯', '⚠️'], calm = ['📚', '🍵', '🌿', '📻', '🌙', '🐧'], moods = ['😣', '😕', '😐', '🙂', '😊', '😌', '😌'], n = 0;
+    box.querySelector('.toy-main').addEventListener('click', function () {
+      if (n >= cells.length) return;
+      var c = cells[n]; c.classList.add('flip'); (function (c, k) { setTimeout(function () { c.textContent = calm[k]; c.classList.remove('flip'); }, 150); })(c, n);
+      n++; meter.textContent = moods[n];
+      if (n === cells.length && window.pengessoPop) { var r = meter.getBoundingClientRect(); window.pengessoPop(r.left + r.width / 2, r.top, ['🍵', '🌿', '📚'], 18); }
+    });
+    box.querySelector('.toy-reset').addEventListener('click', function () { n = 0; cells.forEach(function (c, k) { c.textContent = loud[k]; }); meter.textContent = '😣'; });
+  })();
+  </script>
+
+  <a class="next" href="../pawapuro/index.html">
+    <div>
+      <div class="next-kicker">NEXT · 55 SEC</div>
+      <div class="next-title">I Played Pawapuro Again After a Long Time! 🎮</div>
+    </div>
+    <div class="next-arrow" aria-hidden="true">⚡</div>
+  </a>
+  <!-- ⏮ 前の記事へ（tools/prev-links.py） -->
+  <a class="prev" href="../youtubers-i-love-2026/index.html">
+    <span class="prev-arrow" aria-hidden="true">←</span>
+    <div>
+      <div class="prev-kicker">PREVIOUS POST</div>
+      <div class="prev-title">The YouTubers I love in 2026</div>
+    </div>
+  </a>
+  <!-- /⏮ -->
+  <!-- ✨ こちらもどうぞ（tools/post-bottom.py） -->
+  <section class="related" aria-labelledby="related-h">
+    <h2 class="related-h" id="related-h">✨ You might also like</h2>
+    <ul class="related-list">
+      <li>
+        <a class="rel-card" href="../home-workout-with-youtube/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/home-workout-with-youtube.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 38 SEC</span></div>
+            <div class="rel-title">Working out with a YouTube video is fun</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../stop-overthinking-practice/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/stop-overthinking-practice.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 62 SEC</span></div>
+            <div class="rel-title">Stop Overthinking Practice 🌀</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../ebinpu-podcast-recommendation/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/ebinpu-podcast-recommendation.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 31 SEC</span></div>
+            <div class="rel-title">I like a podcast by Ebinpu, and it gives me a view I did not have</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../i-want-to-fix-my-interpretation/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/i-want-to-fix-my-interpretation.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 36 SEC</span></div>
+            <div class="rel-title">I want to decide once that my life is fun, and stop checking it every time</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li>
+        <a class="rel-card" href="../japanese-subway-smell/index.html">
+          <span class="rel-thumb" aria-hidden="true" style="background-image:url('../../assets/thumbs/japanese-subway-smell.jpg')"></span>
+          <div class="rel-body">
+            <div class="rel-kicker"><span class="rel-sec">⚡ 18 SEC</span>
+            <span class="rel-chip">🎲 Something different</span></div>
+            <div class="rel-title">I like the smell while waiting on Japanese subway platforms</div>
+          </div>
+          <span class="rel-go" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+  <!-- /✨ -->
+  <!-- 📚 一覧に戻る（tools/post-bottom.py） -->
+  <a class="to-list" href="../../index.html#posts">
+    <span class="to-list-ic" aria-hidden="true">📚</span>
+    <span class="to-list-t">← Back to all works</span>
+  </a>
+  <!-- /📚 -->
+
+  <!-- YouTubeがあるとき（要らなければ丸ごと消す） -->
+  <!--
+  <a class="youtube-card" href="https://youtu.be/XXXX" target="_blank" rel="noopener noreferrer" aria-label="Watch on YouTube">
+    <div class="youtube-thumb" aria-hidden="true"><span class="play">▶</span></div>
+    <div class="youtube-footer">
+      <span>🐧</span>
+      <span class="watch-button">▶ Watch on YouTube</span>
+    </div>
+  </a>
+  -->
+
+</main>
+
+<!-- ⚡ 見えたカードに .in を付けるだけ。外部ライブラリは入れない -->
+<script>
+(function () {
+  var items = [].slice.call(document.querySelectorAll('.card, .next'));
+  function showAll() { items.forEach(function (el) { el.classList.add('in'); }); }
+
+  if (!('IntersectionObserver' in window)) { showAll(); return; }
+
+  var seen = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); seen.unobserve(e.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+  items.forEach(function (el) { seen.observe(el); });
+
+  // 保険：何かの理由で1枚も出てこなかったら、全部見せる。
+  // 演出のために本文が読めない、が絶対に起きないようにする
+  setTimeout(function () {
+    if (!document.querySelector('.card.in, .next.in')) showAll();
+  }, 1600);
+})();
+</script>
+</body>
+</html>
+
+<!-- SOURCE MAP
+S1 → 使った
+S2 → 使った
+S3 → 使った
+S4 → 使った
+S5 → 使った
+S6 → 使った
+S7 → 使った
+S8 → 使った
+S9 → 使った
+S10 → 使った
+S11 → 使った
+S12 → 使った
+S13 → 使った
+S14 → 使った
+S15 → 使った
+
+本文の英文はすべて、上のどれかのS番号から訳したものです。
+削った文：0
+追加した文：0
+整理テキスト：card-label / h1 / 順位の札 / 動画の題名（YouTube の oEmbed で確かめた）
+-->
