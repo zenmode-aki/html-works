@@ -15,6 +15,14 @@
 }
 html[data-motion="off"]::view-transition-group(*), html[data-motion="off"]::view-transition-old(*), html[data-motion="off"]::view-transition-new(*) { animation: none !important; }
 
+/* 🖼 表紙がつながるページ移動（2026-11-01 本人「派手に改善」）
+   トップで押したカードの小さな表紙と、記事の大きな表紙に同じ名前 cover を付ける。対応ブラウザ（Chrome 126〜・Safari 18.2〜）では
+   小さな表紙が大きな表紙へ動いて広がる。名前はトップ側の JS が「押した1枚」にだけ付ける（2つあると遷移が止まるため）。
+   動きを減らす・OFF のときは上の view-transition の指定で止まる */
+main > figure.photo:first-of-type img { view-transition-name: cover; }
+::view-transition-group(cover) { animation-duration: .38s; animation-timing-function: cubic-bezier(.2,.9,.3,1); }
+::view-transition-old(cover), ::view-transition-new(cover) { animation: none; mix-blend-mode: normal; height: 100%; object-fit: cover; }
+
 /* 📖 読みやすさ（2026-10-04）
    ・韓国語：単語の途中で折り返さない（スペースで折る）。長すぎる語だけは、はみ出さずに折る
    ・日本語・中国語：行のはじめに「ゃ」「ー」「、」などが来ない（きびしい禁則）

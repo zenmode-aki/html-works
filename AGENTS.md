@@ -36,7 +36,7 @@
    - 🔄 自分とまったくちがう方向から考えるAI（`pengesso-contrarian`）：前提そのものを疑う
    - 🤡 お笑い専門のAI（`pengesso-comedian`）：もっと笑える・面白くできないかを見る
    - 🧱 ゼロから組み立て直すAI（`pengesso-rewriter-from-zero`）・📜 憲法の番人（`pengesso-constitution-checker`）・🔍 一次情報の係（`pengesso-primary-source-researcher`）
-   - 最後に 🧑‍⚖️ 編集長（`pengesso-editor-in-chief`）が、言い分を読み比べて決める。エージェントの定義は `/Users/akiezaki/vscode-html-15seconds/.claude/agents/`
+   - 最後に 🧑‍⚖️ 編集長（`pengesso-editor-in-chief`）が、言い分を読み比べて決める。エージェントの定義は `tools/agents/`（14本。2026-11-01 に古い `~/vscode-html-15seconds/.claude/agents/` から写した。Claude Code で使うときは `.claude/agents/` にコピー）
 4. 決めたことは、本人の言葉を書き足さない（PROMPT.md §1.5）・憲法を破らない、の範囲で本番に出す
 
 ## ✂️ 訳の分担と順番（2026-09-29 本人が更新）
