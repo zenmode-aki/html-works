@@ -1,0 +1,66 @@
+/* 共通の見た目。15秒ブログ（ペンゲッソの色）に合わせてある。
+   記事ごとのデザインは各記事の <style> で変えてOK。ここは「どのページでも同じでいいもの」だけ。
+   絵文字は使わない（2026-11-03 本人：「雑すぎるから」）。アイコンは images/icons/（Higgsfield で作った SVG）。 */
+:root {
+  --navy:   #232c48;   /* ペンゲッソのからだ */
+  --blue:   #2f56c9;   /* 帽子 */
+  --yellow: #ffc42e;   /* くちばしと足 */
+  --cream:  #f6efe3;   /* 背景 */
+  --paper:  #fffdf8;
+  --ink:    #1b2138;
+  --muted:  #6d7593;
+  --line:   rgba(35,44,72,.10);
+  --round:  22px;
+  --shadow: 0 18px 50px rgba(35,44,72,.13);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--cream); color: var(--ink);
+  font: 500 16px/1.8 "Hiragino Maru Gothic ProN", "Arial Rounded MT Bold", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--blue); }
+.wrap { width: min(760px, calc(100% - 32px)); margin: 0 auto; }
+
+/* ── ヘッダー（全ページ同じ） ── */
+.site-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 0; }
+/* ことばの切りかえ（日本語・EN・한국어） */
+.lang { display: inline-flex; padding: 3px; border-radius: 999px; background: rgba(255,255,255,.7); border: 1px solid var(--line); flex: none; }
+.lang button { min-height: 32px; padding: 0 10px; border: 0; border-radius: 999px; background: none; color: var(--muted); font: inherit; font-size: 12px; font-weight: 800; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--navy); color: #fff; }
+.i18n[hidden] { display: none; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
+.brand-mark { width: 44px; height: 44px; border-radius: 14px; overflow: hidden; background: var(--navy); box-shadow: 0 6px 16px rgba(35,44,72,.22); flex: none; }
+.brand-mark img { width: 100%; height: 100%; object-fit: cover; }
+.brand-name { display: block; font-size: 16px; font-weight: 900; line-height: 1.3; }
+.brand-sub { display: block; font-size: 11.5px; color: var(--muted); line-height: 1.3; }
+
+/* ── タグ（小さい丸ラベル） ── */
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 11px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 700; line-height: 1.6; white-space: nowrap;
+  background: rgba(255,255,255,.75); color: var(--muted); border: 1px solid var(--line); text-decoration: none; }
+.tag img { width: 18px; height: 18px; object-fit: contain; border-radius: 4px; }
+.tag.on { background: var(--navy); color: #fff; border-color: var(--navy); }   /* メモがあるタグ */
+
+/* ── 15秒バッジ ── */
+.sec { display: inline-block; padding: 1px 9px; border-radius: 999px; background: var(--yellow); color: #4a2c00; font-size: 11.5px; font-weight: 900; white-space: nowrap; }
+
+/* ===== 共通フッター（assets/site.js が中身を入れる） ===== */
+#common-footer { margin-top: 56px; padding: 28px 0 40px; background: var(--navy); color: #fff; }
+.cf-inner { width: min(760px, calc(100% - 32px)); margin: 0 auto; display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+@media (max-width: 560px) { .cf-inner { grid-template-columns: 1fr; } }
+.cf-card { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 18px; text-decoration: none; color: #fff;
+  background: rgba(255,255,255,.08); border: 1.5px solid rgba(255,255,255,.18); transition: background .2s ease, transform .2s ease; }
+a.cf-card:hover, a.cf-card:focus-visible { background: rgba(255,255,255,.16); transform: translateY(-2px); }
+.cf-card img { width: 40px; height: 40px; border-radius: 12px; object-fit: cover; flex: none; }
+.cf-text { display: grid; gap: 0; min-width: 0; }
+.cf-kicker { font-size: 11px; font-weight: 900; letter-spacing: .12em; color: var(--yellow); }
+.cf-title { font-size: 15px; font-weight: 900; }
+.cf-sub { font-size: 12px; color: rgba(255,255,255,.7); }
+.cf-advice[aria-disabled="true"] { opacity: .6; }
+.cf-note { width: min(760px, calc(100% - 32px)); margin: 18px auto 0; font-size: 12px; color: rgba(255,255,255,.55); }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
