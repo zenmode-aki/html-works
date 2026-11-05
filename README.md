@@ -1,5 +1,10 @@
 # ⚡ 15 Second Blog
 
+> **2026-11-05：編集元と公開先を移行しました。**
+>
+> ブログは https://15-second-blog.com/ （Vercel）で配信しています。今後の編集元は [aki-os/projects/html-works](https://github.com/zenmode-aki/aki-os/tree/main/projects/html-works) です。このリポジトリは旧版・復旧用として保持し、新しい記事や修正を二重に push しません。
+> 最新の決まり・残作業は移行先の AGENTS.md / CLAUDE.md / BACKLOG.md を参照してください。以下は移行前の記録です。会話と作業報告はやさしい自然な関西弁でお願いします。
+
 **15秒で読み切れる、かんたんな英語のHTML記事を置くところ。**
 
 ビルドもCMSもログインも要らない。HTMLを1枚書いて、push するだけ。
