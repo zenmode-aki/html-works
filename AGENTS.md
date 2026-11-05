@@ -1,5 +1,10 @@
 # AGENTS.md（Codex / ChatGPT 用の入口）
 
+> **2026-11-05：編集元と公開先を移行しました。**
+>
+> ブログは https://15-second-blog.com/ （Vercel）で配信しています。今後の編集元は [aki-os/projects/html-works](https://github.com/zenmode-aki/aki-os/tree/main/projects/html-works) です。このリポジトリは旧版・復旧用として保持し、新しい記事や修正を二重に push しません。
+> 最新の決まり・残作業は移行先の AGENTS.md / CLAUDE.md / BACKLOG.md を参照してください。以下は移行前の記録です。会話と作業報告はやさしい自然な関西弁でお願いします。
+
 このリポジトリのルールは **[CLAUDE.md](CLAUDE.md) に全部あります。最初に読んでください。** Claude Code と同じルールで動きます。いまの状態（本番はここ・検査が赤い理由・表紙の新しい決まり・まだ決まっていないこと）は [HANDOFF_2026-11-01.md](HANDOFF_2026-11-01.md)。
 
 特に大事なこと：
